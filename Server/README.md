@@ -1,5 +1,5 @@
 # EASYSHARE
-Easyshare is a file exchange tool from the European Commission. Its source code is published as open source software under the terms of the EUPL public license. EUSurvey is a servlet based application and can be installed on any servlet container.
+Easyshare is a file exchange tool from the European Commission. Its source code is published as open source software under the terms of the EUPL public license. 
 
 * [Latest Sonar Cloud analysis](https://sonarcloud.io/dashboard?id=CIRCABC_EasyShare) ![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CIRCABC_EasyShare&metric=bugs) ![Code smells](https://sonarcloud.io/api/project_badges/measure?project=CIRCABC_EasyShare&metric=code_smells) ![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CIRCABC_EasyShare&metric=coverage)
 
@@ -12,7 +12,7 @@ Easyshare is a file exchange tool from the European Commission. Its source code 
 ## Quick start
 
 ### Database initialization
-1. Create eusurvey schema;
+1. Create easyshare schema;
 ``` sql 
 CREATE DATABASE easyshare; 
 ```
@@ -20,7 +20,7 @@ CREATE DATABASE easyshare;
 2. Create a user which will access this schema;
 ``` sql 
 CREATE USER 'easyshare'@'localhost' IDENTIFIED BY 'easyshare'; 
-GRANT ALL PRIVILEGES ON eusurveydb.* TO 'easyshare'@'localhost';
+GRANT ALL PRIVILEGES ON easyshare.* TO 'easyshare'@'localhost';
 ```
 
 3. Set event-scheduler to ON.
