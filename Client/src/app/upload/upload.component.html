@@ -1,0 +1,165 @@
+<form [formGroup]="uploadform" (ngSubmit)="submit()">
+  <div class="field">
+    <label class="label">Source</label>
+    <div class="control">
+      <!-- SELECT IMPORT-->
+      <div class="select">
+        <select formControlName="selectImport">
+          <option *ngFor="let option of selectImportOptions" [value]="option.displayedValue">{{option.displayedName}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="selectImportIsDisk()">
+    <!-- DRAG AND DROP-->
+    <div class="field">
+      <label class="label">File</label>
+      <div class="file" [class.has-name]="getFileFromDisk() !== undefined">
+        <label class="file-label">
+          <!-- INPUT -->
+          <input id="fileFromDisk" class="file-input" type="file" formControlName="fileFromDisk">
+          <span class="file-cta">
+            <span class="file-label">
+              Browse...
+            </span>
+          </span>
+          <!-- FILE SIZE AND NAME -->
+          <span *ngIf="getFileFromDisk()" class="file-name">
+            {{getFileFromDisk()?.name}}
+            ({{getFileFromDisk()?.size}} Bytes)
+          </span>
+        </label>
+        <label class="label error" *ngIf="uf['fileFromDisk'].errors && uf['fileFromDisk'].errors.forbiddenFileSize">File
+          size bigger than
+          {{uf['fileFromDisk'].errors.forbiddenFileSize.value}} bytes
+        </label>
+      </div>
+    </div>
+    <div class="field">
+      <!-- DRAG AND DROP BOX -->
+      <div (drop)="drop($event)" class="container">
+        <div class="notification dragAndDrop">
+          Or simply drag and drop one file here
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!selectImportIsDisk()">
+    <div class="field">
+      <label class="label">Interest group</label>
+      <div class="select">
+        <!-- SELECT INTEREST GROUP -->
+        <select formControlName="selectInterestGroupID">
+          <option *ngFor="let igOption of selectIGoptions" [value]="igOption.id">{{igOption.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="getSelectInterestGroup()" class="field">
+    <label class="label">Select file from library</label>
+    <span class="file-cta">
+      <span class="file-label" (click)="toggleModal()" disabled>Browse {{getSelectInterestGroup()?.name}} library</span>
+    </span>
+    <div [class]="modalClass">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p *ngIf="!selectedFolder" class="modal-card-title">Browsing {{getSelectInterestGroup()?.name}} library</p>
+          <p *ngIf="selectedFolder" class="modal-card-title">Browsing {{selectedFolder?.name}} folder in
+            {{getSelectInterestGroup()?.name}}</p>
+          <button (click)="toggleModal()" class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class='field level'>
+            <div class="level-left">
+              <label class="label">Folders</label>
+            </div>
+            <div class="level-right">
+              <label class="label">Documents</label>
+            </div>
+          </div>
+          <div class='field level'>
+            <div *ngIf="!selectedFolder" class="foldersAndFiles">
+              <div class="level" *ngFor="let fol of selectedIGFolders" (click)="onClickFolder(fol)">{{fol.name}}
+                <div class="level-right" *ngFor="let doc of fol.subFiles">{{doc.name}}</div>
+              </div>
+            </div>
+            <div *ngIf="selectedFolder" class="foldersAndFiles">
+              <div class="level" *ngFor="let fol of selectedFolder?.subFolders" (click)="onClickFolder(fol)">
+                {{fol.name}}
+                <div class="level-right" *ngFor="let doc of fol.subFiles">{{doc.name}}</div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <footer class="modal-card-foot">
+          <button (click)="toggleModal()" class="button">Select</button>
+          <button (click)="toggleModal()" class="button">Cancel</button>
+        </footer>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="field">
+    <label class="label">How to share?</label>
+    <div class="field-body">
+      <div class="field is-narrow">
+        <div class="control">
+          <label class="radio">
+            <input type="radio" required formControlName="emailOrLink" value='Email'>Email
+          </label>
+          <label class="radio">
+            <input type="radio" (click)="resetEmailsWithMessages()" required formControlName="emailOrLink"
+              value='Link'>Link
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- EMAILS AND USER NAMES -->
+  <div *ngIf="emailOrLinkIsEmail()" class="field">
+    <div class="field">
+      <label class="label">Email/Username</label>
+      <div formArrayName="emailsWithMessages">
+        <button class="button" (click)="addEmailsWithMessages()">Add email</button>
+        <div *ngFor="let emailAndText of emailsWithMessages.controls; let i=index">
+          <div [formGroupName]="i">
+            <label class="label">Email:</label>
+            <input class="input" type="text" formControlName="email">
+            <label class="label">Text: (optional)</label>
+            <textarea class="textarea" formControlName="message"
+              placeholder="e.g. Please enter a message for the recipient of this file"></textarea>
+            <button class="button" (click)="deleteEmailsWithMessages(i)">Delete this recipient</button>
+            <label class="label error" *ngIf="
+              getEmailsWithMessagesOnlyMessage(i)
+              && getEmailsWithMessagesOnlyMessage(i).errors
+              && getEmailsWithMessagesOnlyMessage(i).errors.forbiddenMessageLength">Text length bigger than
+              {{getEmailsWithMessagesOnlyMessage(i).errors.forbiddenMessageLength.value}} characters !
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label class="checkbox">
+      <input type="checkbox" [checked]="moreOptions" (change)="moreOptionsChange()">
+      More options...
+    </label>
+  </div>
+  <div class="field" *ngIf="moreOptions">
+    <label class="label">Expiration date (default is 7 days from now)</label>
+      <p-calendar [minDate]=getTomorrow() [maxDate]=get7DaysAfterToday() styleClass="control" inputStyleClass="input" panelStyleClass="table" formControlName="expirationDate" dateFormat="dd/mm/yy" [placeholder]="'dd/mm/yyyy'"></p-calendar>
+  </div>
+  <div class="field" *ngIf="moreOptions">
+    <label class="label">Password (optional) {{getPassword()}}</label>
+    <input formControlName="password" class="input" type="password" placeholder="Password on file download">
+  </div>
+  <br>
+  <div class="field">
+    <button class="button is-link" [class.is-loading]="uploadInProgress" type="submit" [disabled]="!uploadform.valid">Submit</button>
+  </div>
+</form>
