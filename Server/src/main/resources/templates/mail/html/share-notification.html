@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email with inline image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+    <span th:text="${uploader}">Uploader</span> shared <span th:text="${filename}">Filename</span>" with you.
+</p>
+<p th:if="${message != null}">
+    "<em th:text="${message}}">Message</em>"
+</p>
+<p>
+    Best regards, <br/>
+    <em>The EasyShare Team</em>
+</p>
+</body>
+</html>

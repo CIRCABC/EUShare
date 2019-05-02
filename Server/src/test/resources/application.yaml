@@ -1,0 +1,32 @@
+cors:
+  origin: '*'
+server:
+  port: 8888
+easyshare:
+  expirationdays: 7
+  defaultuserspace: 5368709120
+  disks:
+    - C:\temp\easyshare
+spring:
+  datasource:
+    #jdbc:oracle:thin:@localhost:1521:testing
+    url: jdbc:mysql://localhost:3306/easyshare
+    username: easyshare
+    password: easyshare
+    driver:
+      #oracle.jdbc.driver.OracleDriver
+      class: com.mysql.jdbc.Driver
+  jpa:
+    #org.hibernate.dialect.Oracle10gDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: localhost
+    port: 25
+    username: username
+    password: password
+  servlet:
+    multipart:
+      max-file-size: 256MB
+      max-request-size: 256MB

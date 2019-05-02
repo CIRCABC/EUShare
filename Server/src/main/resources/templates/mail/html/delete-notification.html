@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all">Template for HTML email with inline image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p>
+    Your file "<span th:text="${filename}">File Name</span>" got deleted for the following reason:
+</p>
+<p>
+    <em th:text="${reason}">Reason</em>
+</p>
+<p>
+    Best regards, <br/>
+    <em>The EasyShare Team</em>
+</p>
+</body>
+</html>
