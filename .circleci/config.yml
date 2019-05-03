@@ -68,8 +68,8 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: install-angular-wee
-          command: npm install -g @angular/cli
+          name: build-app
+          command: npm run build
 workflows:
   version: 2.1
   build_backend_and_frontend:
