@@ -28,7 +28,8 @@ import { BASE_PATH, Configuration, ConfigurationParameters } from './openapi';
 import { environment } from '../environments/environment';
 import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
 import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
-
+import { NotificationComponent } from './common/notification/notification.component';
+import { NotificationSystemComponent } from './common/notification/notification-system.component';
 
 const routes: Routes = [
   {
@@ -50,7 +51,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent,
-      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent],
+      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent, NotificationComponent, NotificationSystemComponent],
   imports: [
     ApiModule,
     BrowserModule,
@@ -67,21 +68,3 @@ const routes: Routes = [
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
-/**
- import { ApiModule, Configuration, ConfigurationParameters } from '';
-
-export function apiConfigFactory (): Configuration => {
-  const params: ConfigurationParameters = {
-    // set configuration parameters here.
-  }
-  return new Configuration(params);
-}
-
-@NgModule({
-    imports: [ ApiModule.forRoot(apiConfigFactory) ],
-    declarations: [ AppComponent ],
-    providers: [],
-    bootstrap: [ AppComponent ]
-})
- */

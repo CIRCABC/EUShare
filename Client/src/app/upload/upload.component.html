@@ -1,4 +1,4 @@
-<form [formGroup]="uploadform" (ngSubmit)="submit()">
+<form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
   <div class="field">
     <label class="label">Source</label>
     <div class="control">
@@ -70,7 +70,7 @@
           <p *ngIf="!selectedFolder" class="modal-card-title">Browsing {{getSelectInterestGroup()?.name}} library</p>
           <p *ngIf="selectedFolder" class="modal-card-title">Browsing {{selectedFolder?.name}} folder in
             {{getSelectInterestGroup()?.name}}</p>
-          <button (click)="toggleModal()" class="delete" aria-label="close"></button>
+          <button type="button" (click)="toggleModal()" class="delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
           <div class='field level'>
@@ -96,8 +96,8 @@
           </div>
         </section>
         <footer class="modal-card-foot">
-          <button (click)="toggleModal()" class="button">Select</button>
-          <button (click)="toggleModal()" class="button">Cancel</button>
+          <button type="button" (click)="toggleModal()" class="button">Select</button>
+          <button type="button" (click)="toggleModal()" class="button">Cancel</button>
         </footer>
       </div>
     </div>
@@ -124,20 +124,21 @@
     <div class="field">
       <label class="label">Email/Username</label>
       <div formArrayName="emailsWithMessages">
-        <button class="button" (click)="addEmailsWithMessages()">Add email</button>
+        <button class="button" type="button" (click)="addEmailsWithMessages()">Add recipient</button>
         <div *ngFor="let emailAndText of emailsWithMessages.controls; let i=index">
           <div [formGroupName]="i">
             <label class="label">Email:</label>
             <input class="input" type="text" formControlName="email">
+            <label class="label error" *ngIf="uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['email'].errors &&
+            uf['emailsWithMessages'].at(i).controls['email'].errors.pattern && uf['emailsWithMessages'].at(i).controls['email'].dirty && uf['emailsWithMessages'].at(i).controls['email'].touched">Invalid email form ! {{uf['emailsWithMessages'].at(i).controls['email'].errors.value}}
+            </label>
             <label class="label">Text: (optional)</label>
             <textarea class="textarea" formControlName="message"
               placeholder="e.g. Please enter a message for the recipient of this file"></textarea>
-            <button class="button" (click)="deleteEmailsWithMessages(i)">Delete this recipient</button>
-            <label class="label error" *ngIf="
-              getEmailsWithMessagesOnlyMessage(i)
-              && getEmailsWithMessagesOnlyMessage(i).errors
-              && getEmailsWithMessagesOnlyMessage(i).errors.forbiddenMessageLength">Text length bigger than
-              {{getEmailsWithMessagesOnlyMessage(i).errors.forbiddenMessageLength.value}} characters !
+            <button class="button" type="button" (click)="deleteEmailsWithMessages(i)">Delete this recipient</button>
+            <label class="label error" *ngIf=" uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['message'].errors &&
+            uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength && uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value">Text length bigger than
+              {{uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value}} characters !
             </label>
           </div>
         </div>
@@ -155,7 +156,7 @@
       <p-calendar [minDate]=getTomorrow() [maxDate]=get7DaysAfterToday() styleClass="control" inputStyleClass="input" panelStyleClass="table" formControlName="expirationDate" dateFormat="dd/mm/yy" [placeholder]="'dd/mm/yyyy'"></p-calendar>
   </div>
   <div class="field" *ngIf="moreOptions">
-    <label class="label">Password (optional) {{getPassword()}}</label>
+    <label class="label">Password (optional)</label>
     <input formControlName="password" class="input" type="password" placeholder="Password on file download">
   </div>
   <br>

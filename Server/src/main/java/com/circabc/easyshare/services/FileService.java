@@ -18,6 +18,7 @@ import com.circabc.easyshare.exceptions.EmptyFilenameException;
 import com.circabc.easyshare.exceptions.FileLargerThanAllocationException;
 import com.circabc.easyshare.exceptions.IllegalFileSizeException;
 import com.circabc.easyshare.exceptions.IllegalFileStateException;
+import com.circabc.easyshare.exceptions.MessageTooLongException;
 import com.circabc.easyshare.exceptions.UnknownFileException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserHasInsufficientSpaceException;
@@ -220,10 +221,14 @@ public class FileService implements FileServiceInterface {
 
     @Override
     public void addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException, UnknownUserException, WrongEmailStructureException {
+            throws UnknownFileException, UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
+            MessageTooLongException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
             DBFile dbFile = findAvailableFile(fileId);
             Set<DBUser> dbUserSet = dbFile.getSharedWith();
+            if(recipient.getMessage() !=null && recipient.getMessage().length() >=400) {
+                throw new MessageTooLongException();
+            }
             if (dbUserSet.add(userService.getUserOrCreateExternalUser(recipient))) {
                 dbFile.setSharedWith(dbUserSet);
                 fileRepository.saveAndFlush(dbFile);
@@ -280,7 +285,7 @@ public class FileService implements FileServiceInterface {
         }
 
         List<DBUser> recipientDBUserList = new LinkedList<>();
-        for(Recipient recipient: recipientList ) {
+        for (Recipient recipient: recipientList ) {
             recipientDBUserList.add(userService.getUserOrCreateExternalUser(recipient));
         }
 
