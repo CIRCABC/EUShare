@@ -11,8 +11,6 @@ import { Component, OnInit } from '@angular/core';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FileInfoUploader, SessionService, FileService, MeService, UserInfo } from '../../openapi';
 import { Router } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
-import { mergeMap, flatMap, map, concatMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-shared-files',
@@ -38,11 +36,11 @@ export class MySharedFilesComponent implements OnInit {
     const id = this.session.getStoredId();
     if (id) {
       this.myId = id;
-      let userInfo = this.meApi.getUserInfo().subscribe(
+      this.meApi.getUserInfo().subscribe(
         userInfo => {
           this.files = new Array();
           this.fileIds = new Array();
-          userInfo.uploadedFiles.map(str => {
+          userInfo.uploadedFiles.forEach(str => {
             this.fileApi.getFileFileInfoUploader(str).subscribe(fileInfoUploader => {
               this.files.push(fileInfoUploader);
               this.fileIds.push(str);
@@ -75,8 +73,8 @@ export class MySharedFilesComponent implements OnInit {
 
   public delete(i: number) {
     this.fileApi.deleteFile(this.fileIds[i]).subscribe(value => {
-      this.fileIds.splice(i,1);
-      this.files.splice(i,1);
+      this.fileIds.splice(i, 1);
+      this.files.splice(i, 1);
     });
   }
 

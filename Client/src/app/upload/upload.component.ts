@@ -229,17 +229,17 @@ export class UploadComponent implements OnInit {
   }
 
   getEmailsWithMessagesOnlyMessage(i: number): AbstractControl | null {
-    const formGroup = this.getEmailsWithMessagesFormgroup(i);
-    if (formGroup) {
-      return formGroup.controls['message'];
-    }
-    return null;
+    return this.getEmailsWithMessagesOnlyOne(i, 'message');
   }
 
   getEmailsWithMessagesOnlyEmail(i: number): AbstractControl | null {
+    return this.getEmailsWithMessagesOnlyOne(i, 'email');
+  }
+
+  getEmailsWithMessagesOnlyOne(i: number, emailOrMessage: string) {
     const formGroup = this.getEmailsWithMessagesFormgroup(i);
     if (formGroup) {
-      return formGroup.controls['email'];
+      return formGroup.controls[emailOrMessage];
     }
     return null;
   }

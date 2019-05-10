@@ -11,5 +11,5 @@ import { Recipient } from './recipient';
 
 export interface PutUserShares {
   add: Recipient[];
-  remove: String[];
+  remove: string[];
 }

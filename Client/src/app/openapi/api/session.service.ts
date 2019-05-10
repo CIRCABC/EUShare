@@ -136,8 +136,6 @@ export class SessionService {
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
-        let _text = 'text';
-
         return this.httpClient.post(`${this.configuration.basePath}/login`,
             credentials,
             {
