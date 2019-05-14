@@ -38,7 +38,6 @@ import com.circabc.easyshare.model.FileBasics;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.Recipient;
-import com.google.common.io.FileBackedOutputStream;
 
 @Entity
 @Table(name = "Files")

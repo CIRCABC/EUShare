@@ -19,6 +19,7 @@ import { FolderInfo } from '../interfaces/folder-info';
 import { CalendarModule } from 'primeng/calendar';
 import { MeService, FileService, FileRequest, Recipient } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
+import {environment} from '../../environments/environment'
 
 @Component({
   selector: 'app-upload',
@@ -302,6 +303,12 @@ export class UploadComponent implements OnInit {
         }
         const fileId = await this.fileApi.postFileFileRequest(myFileRequest).toPromise();
         await this.fileApi.postFileContent(fileId, this.getFileFromDisk()).toPromise();
+
+        if(this.emailOrLinkIsEmail()) {
+          this.notificationService.addSuccessMessage('Your recipients have been notified by mail that they may download the shared file!', false);
+        } else {
+          this.notificationService.addSuccessMessage('Please share the following link with your recipients: '+ environment.backend_url + '/' + fileId, false);
+        }
       } catch (e) {
         console.error(e);
         this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
