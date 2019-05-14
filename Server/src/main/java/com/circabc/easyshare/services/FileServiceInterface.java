@@ -20,6 +20,7 @@ import com.circabc.easyshare.exceptions.EmptyFilenameException;
 import com.circabc.easyshare.exceptions.FileLargerThanAllocationException;
 import com.circabc.easyshare.exceptions.IllegalFileSizeException;
 import com.circabc.easyshare.exceptions.IllegalFileStateException;
+import com.circabc.easyshare.exceptions.MessageTooLongException;
 import com.circabc.easyshare.exceptions.UnknownFileException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserHasInsufficientSpaceException;
@@ -38,7 +39,7 @@ public interface FileServiceInterface {
             throws UnknownUserException, UnknownFileException, UserUnauthorizedException;
 
     public void addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException, UnknownUserException, WrongEmailStructureException;
+            throws UnknownFileException, UserUnauthorizedException, UnknownUserException, WrongEmailStructureException, MessageTooLongException;
 
     public DownloadReturn downloadOnBehalfOf(String fileId, String password, String requesterId)
             throws UnknownFileException, WrongPasswordException, UserUnauthorizedException, UnknownUserException;

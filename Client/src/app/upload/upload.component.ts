@@ -8,9 +8,9 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { messageToRecipientValidator, sourceValidator, customFileValidator, globalValidator } from './upload.validators';
-import { Component, OnInit } from '@angular/core';
-import { FormArray, ReactiveFormsModule, FormGroup, Validators, ValidatorFn, AbstractControl, FormBuilder } from '@angular/forms';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import { FormArray, ReactiveFormsModule, FormGroup, Validators, ValidatorFn, AbstractControl, FormBuilder, ValidationErrors, FormControl, NgForm } from '@angular/forms';
+import { faUpload, faBug } from '@fortawesome/free-solid-svg-icons';
 import { ApiService } from '../service/api.service';
 import { CircabcService } from '../service/circabc.service';
 import { InterestGroup } from '../interfaces/interest-group';
@@ -18,6 +18,8 @@ import { fbind } from 'q';
 import { FolderInfo } from '../interfaces/folder-info';
 import { CalendarModule } from 'primeng/calendar';
 import { MeService, FileService, FileRequest, Recipient } from '../openapi';
+import { NotificationService } from '../common/notification/notification.service';
+import {environment} from '../../environments/environment'
 
 @Component({
   selector: 'app-upload',
@@ -25,6 +27,7 @@ import { MeService, FileService, FileRequest, Recipient } from '../openapi';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
+
   selectImportOptions: Array<NameAndValue> = [];
   faUpload = faUpload;
   selectIGoptions?: InterestGroup[];
@@ -34,6 +37,8 @@ export class UploadComponent implements OnInit {
   uploadInProgress = false;
 
   private leftSpaceInBytes = 0;
+  private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
+
   public uploadform!: FormGroup;
   private formBuilder: FormBuilder;
 
@@ -42,7 +47,7 @@ export class UploadComponent implements OnInit {
   modalClass = 'modal';
   submited = false;
 
-  constructor(private fb: FormBuilder, private meApi: MeService, private fileApi: FileService, private circabc: CircabcService) {
+  constructor(private fb: FormBuilder, private meApi: MeService, private fileApi: FileService, private circabc: CircabcService, private notificationService: NotificationService) {
     this.formBuilder = fb;
   }
 
@@ -53,16 +58,21 @@ export class UploadComponent implements OnInit {
         this.leftSpaceInBytes = leftSpaceInBytes;
       }
       this.leftSpaceInBytes = 0;
+    }).catch(error => {
+      this.notificationService.addErrorMessage('A problem occured while retrieving your user informations');
     });
   }
 
   initializeAvailableIGs() {
     this.meApi.getUserInfo().toPromise().then((userInfo => {
-      console.log('Retrieving memberships for ' + userInfo.id);
       this.circabc.getUserMembership(userInfo.id).then((memberShip => {
         this.selectIGoptions = memberShip.interestGroups;
-      }));
-    }));
+      })).catch(error => {
+        this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
+      });
+    })).catch(error => {
+      this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
+    });
   }
 
   initializeEventListeners() {
@@ -99,13 +109,15 @@ export class UploadComponent implements OnInit {
 
   initializedEmailsWithMessages(): FormGroup {
     return this.formBuilder.group({
-      email: ['', Validators.compose([Validators.required, Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')])],
-      message: ['', Validators.compose([messageToRecipientValidator(20)])]
-    });
+      email: new FormControl('', Validators.compose([
+        Validators.required,
+        Validators.pattern(this.emailRegex)])),
+      message: ['', Validators.compose([messageToRecipientValidator(400)])]
+    }, { updateOn: 'blur' });
   }
 
+
   ngOnInit() {
-    console.log('ngOnInit');
     this.initializeEventListeners();
     this.initializeSelectImportOption();
     this.initializeAvailableSpace();
@@ -180,6 +192,7 @@ export class UploadComponent implements OnInit {
       });
     }
   }
+
   onClickFolder(fol: FolderInfo) {
     this.selectedFolder = fol;
   }
@@ -199,7 +212,7 @@ export class UploadComponent implements OnInit {
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
-    formArray.push(this.initializedEmailsWithMessages());
+    //formArray.push(this.initializedEmailsWithMessages());
   }
   getEmailsWithMessagesFormgroupNumber(): number {
     const formArray: FormArray = <FormArray>this.uploadform.controls['emailsWithMessages'];
@@ -217,17 +230,17 @@ export class UploadComponent implements OnInit {
   }
 
   getEmailsWithMessagesOnlyMessage(i: number): AbstractControl | null {
-    const formGroup = this.getEmailsWithMessagesFormgroup(i);
-    if (formGroup) {
-      return formGroup.controls['message'];
-    }
-    return null;
+    return this.getEmailsWithMessagesOnlyOne(i, 'message');
   }
 
   getEmailsWithMessagesOnlyEmail(i: number): AbstractControl | null {
+    return this.getEmailsWithMessagesOnlyOne(i, 'email');
+  }
+
+  getEmailsWithMessagesOnlyOne(i: number, emailOrMessage: string) {
     const formGroup = this.getEmailsWithMessagesFormgroup(i);
     if (formGroup) {
-      return formGroup.controls['email'];
+      return formGroup.controls[emailOrMessage];
     }
     return null;
   }
@@ -264,56 +277,48 @@ export class UploadComponent implements OnInit {
   }
 
   async submit() {
-    console.log('submit!');
     this.uploadInProgress = true;
-
-    const recipients = Array<Recipient>();
-
-    for (let _i = 0; _i < this.getEmailsWithMessagesFormgroupNumber(); _i++) {
-      const item = this.getEmailsWithMessagesOnlyEmail(_i);
-      if (item) {
-        recipients.push({ emailOrID: item.value, message: '' });
-      }
-    }
-
     if (this.getFileFromDisk()) {
       try {
-        let fileRequest: FileRequest;
         let recipientArray = new Array<Recipient>();
         for (let i = 0; i < this.getEmailsWithMessagesFormgroupNumber(); i++) {
           const message: string = this.getEmailsWithMessagesFormgroup(i)!.controls['message'].value;
           const email: string = this.getEmailsWithMessagesFormgroup(i)!.controls['email'].value;
-          console.log(email + i);
-          console.log(message + i);
           if (email) {
             recipientArray.push({ emailOrID: email, message: message }
             )
           } else {
-            // modal error
+            return;
           }
         }
-        let myFileRequest : FileRequest = {
-          expirationDate: this.getExpirationDate().toISOString().substring(0,10),
+        let myFileRequest: FileRequest = {
+          expirationDate: this.getExpirationDate().toISOString().substring(0, 10),
           hasPassword: (this.getPassword() != null && this.getPassword() !== ""),
           name: this.getFileFromDisk().name,
           size: this.getFileFromDisk().size,
           sharedWith: recipientArray
-          };
-        if(this.getPassword()!=="") {
+        };
+        if (this.getPassword() !== "") {
           myFileRequest.password = this.getPassword();
         }
-        this.fileApi.postFileFileRequest(myFileRequest).subscribe(value => {
-          console.log('fileId = '+ value);
-          this.fileApi.postFileContent(value, this.getFileFromDisk()).subscribe(value =>{
-            console.log(value);
-          })
-        });
+        const fileId = await this.fileApi.postFileFileRequest(myFileRequest).toPromise();
+        await this.fileApi.postFileContent(fileId, this.getFileFromDisk()).toPromise();
+
+        if(this.emailOrLinkIsEmail()) {
+          this.notificationService.addSuccessMessage('Your recipients have been notified by mail that they may download the shared file!', false);
+        } else {
+          this.notificationService.addSuccessMessage('Please share the following link with your recipients: '+ environment.backend_url + '/' + fileId, false);
+        }
       } catch (e) {
         console.error(e);
+        this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
+        this.uploadInProgress = false;
+        return;
       }
     }
-
     this.uploadInProgress = false;
+    this.initializeFormGroup();
+    this.notificationService.addSuccessMessage('Your upload was successful!', true);
   }
 
   toggleModal() {
@@ -332,7 +337,20 @@ export class UploadComponent implements OnInit {
     }
   }
   get uf() { return this.uploadform.controls; }
+
+  getFormValidationErrors() {
+    Object.keys(this.uploadform.controls).forEach(key => {
+      const controlErrors: ValidationErrors | null = this.uploadform.get(key)!.errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach(keyError => {
+          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
+        });
+      }
+    });
+  }
 }
+
+
 
 
 export enum SelectImportEnum {

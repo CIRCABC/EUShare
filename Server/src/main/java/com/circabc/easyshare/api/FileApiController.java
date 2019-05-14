@@ -30,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.exceptions.CouldNotAllocateFileException;
@@ -39,6 +40,7 @@ import com.circabc.easyshare.exceptions.EmptyFilenameException;
 import com.circabc.easyshare.exceptions.FileLargerThanAllocationException;
 import com.circabc.easyshare.exceptions.IllegalFileSizeException;
 import com.circabc.easyshare.exceptions.IllegalFileStateException;
+import com.circabc.easyshare.exceptions.MessageTooLongException;
 import com.circabc.easyshare.exceptions.NoAuthenticationException;
 import com.circabc.easyshare.exceptions.UnknownFileException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
@@ -196,7 +198,9 @@ public class FileApiController extends AbstractController implements FileApi {
     public ResponseEntity<String> postFileFileRequest(@RequestBody(required = false) FileRequest fileRequest) {
         if (fileRequest == null || fileRequest.getExpirationDate() == null || fileRequest.getHasPassword() == null
                 || fileRequest.getName() == null || fileRequest.getSize() == null || fileRequest.getSharedWith() == null
-                || fileRequest.getSharedWith().isEmpty()) {
+                || fileRequest.getSharedWith().isEmpty()
+                || fileRequest.getSharedWith().stream().filter(recipient -> recipient.getEmailOrID().equals(null))
+                        .collect(Collectors.toSet()).size() != 0) {
             ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     HttpErrorAnswerBuilder.build400EmptyToString());
             throw responseStatusException;
@@ -206,7 +210,8 @@ public class FileApiController extends AbstractController implements FileApi {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
             String fileId = fileService.allocateFileOnBehalfOf(fileRequest.getExpirationDate(), fileRequest.getName(),
-                    fileRequest.getPassword(), requesterId, fileRequest.getSharedWith(), fileRequest.getSize().longValue(), requesterId);
+                    fileRequest.getPassword(), requesterId, fileRequest.getSharedWith(),
+                    fileRequest.getSize().longValue(), requesterId);
             return new ResponseEntity<String>(fileId, HttpStatus.OK);
         } catch (IllegalFileSizeException | DateLiesInPastException | UserHasInsufficientSpaceException
                 | UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
@@ -291,6 +296,10 @@ public class FileApiController extends AbstractController implements FileApi {
             log.warn(exc3.getMessage(), exc3);
             ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
                     HttpErrorAnswerBuilder.build404FileNotFoundToString(), exc3);
+            throw responseStatusException;
+        } catch (MessageTooLongException e) {
+            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    HttpErrorAnswerBuilder.build400EmptyToString());
             throw responseStatusException;
         }
     }

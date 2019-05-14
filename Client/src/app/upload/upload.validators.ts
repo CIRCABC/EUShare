@@ -15,6 +15,9 @@ export function sourceValidator(allowedValues: Array<string>): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
         const source = control.value;
         const forbidden = !allowedValues.includes(source);
+        if(forbidden) {
+            console.log('forbiddenSource!')
+        }
         return forbidden ? { 'forbiddenSource': { value: control.value } } : null;
     };
 }
