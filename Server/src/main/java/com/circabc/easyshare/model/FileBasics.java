@@ -12,16 +12,19 @@ package com.circabc.easyshare.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * FileBasics
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
 
 public class FileBasics   {
   @JsonProperty("expirationDate")

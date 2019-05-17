@@ -65,6 +65,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @RunWith(SpringRunner.class)
 @WebMvcTest(FileApiController.class)
 public class FileApiControllerTest {
+        final String userCredentialsInAuthorizationHeader = "username:password";
+        final String fakeAuthenticatedUserId = "fakeAuthenticatedUserId";
+        final String fakeSearchedFileId = "fakeSearchedFileId";
+        final String fakeSearchedUserId = "fakeSearchedUserId";
 
         @Autowired
         private MockMvc mockMvc;
@@ -77,13 +81,8 @@ public class FileApiControllerTest {
 
         @Test
         public void deleteFile200() throws Exception {
-                final String userCredentialsInAuthorizationHeader = "username:password";
-                when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-
+                when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
                 doNothing().when(fileService).deleteFileOnBehalfOf(anyString(), anyString(), anyString());
-
                 this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId)
                                 .param("reason", "fakeReason")
                                 .header("Authorization",
@@ -92,55 +91,42 @@ public class FileApiControllerTest {
                                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
         }
 
+        
         @Test
-        public void deleteFile403ForUserUnauthorized() throws Exception {
+        public void deleteFile401ForNoAuthentication() throws Exception {
                 Status status = new Status();
-                status.setCode(403);
-                status.setMessage("NotAuthorized");
-                final String userCredentialsInAuthorizationHeader = "username:password";
+                status.setCode(401);
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
+                this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId)
+                                .param("reason", "fakeReason").accept(MediaType.APPLICATION_JSON)).andDo(print())
+                                .andExpect(status().isUnauthorized())
+                                .andExpect(content().string(containsString(TestHelper.asJsonString(status))));
+        }
 
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-
-                doThrow(new UserUnauthorizedException()).when(fileService).deleteFileOnBehalfOf(anyString(),
-                                anyString(), anyString());
-
+        @Test
+        public void deleteFile401ForWrongAuthentication() throws Exception {
+                Status status = new Status();
+                status.setCode(401);
+                when(service.getAuthenticatedUserId(any(Credentials.class)))
+                                .thenThrow(new WrongAuthenticationException());
                 this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId)
                                 .param("reason", "fakeReason")
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
                                                                 userCredentialsInAuthorizationHeader.getBytes()))
-                                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden())
+                                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isUnauthorized())
                                 .andExpect(content().string(containsString(TestHelper.asJsonString(status))));
         }
 
         @Test
-        public void deleteFile403ForNoAuthentication() throws Exception {
+        public void deleteFile403ForUserUnauthorized() throws Exception {
                 Status status = new Status();
                 status.setCode(403);
                 status.setMessage("NotAuthorized");
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-
                 doThrow(new UserUnauthorizedException()).when(fileService).deleteFileOnBehalfOf(anyString(),
                                 anyString(), anyString());
 
-                this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId)
-                                .param("reason", "fakeReason").accept(MediaType.APPLICATION_JSON)).andDo(print())
-                                .andExpect(status().isForbidden())
-                                .andExpect(content().string(containsString(TestHelper.asJsonString(status))));
-        }
-
-        @Test
-        public void deleteFile403ForWrongAuthentication() throws Exception {
-                Status status = new Status();
-                status.setCode(403);
-                status.setMessage("NotAuthorized");
-                final String userCredentialsInAuthorizationHeader = "username:password";
-                when(service.getAuthenticatedUserId(any(Credentials.class)))
-                                .thenThrow(new WrongAuthenticationException());
-                final String fakeSearchedFileId = "fakeSearchedUserId";
                 this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId)
                                 .param("reason", "fakeReason")
                                 .header("Authorization",
@@ -154,9 +140,7 @@ public class FileApiControllerTest {
         public void deleteFile404UnknownUser() throws Exception {
                 Status status = new Status();
                 status.setCode(404);
-                final String userCredentialsInAuthorizationHeader = "username:password";
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-                final String fakeSearchedFileId = "fakeSearchedUserId";
                 doThrow(new UnknownUserException()).when(fileService).deleteFileOnBehalfOf(anyString(), anyString(),
                                 anyString());
                 this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId)
@@ -172,9 +156,7 @@ public class FileApiControllerTest {
         public void deleteFile404UnknownFile() throws Exception {
                 Status status = new Status();
                 status.setCode(404);
-                final String userCredentialsInAuthorizationHeader = "username:password";
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-                final String fakeSearchedFileId = "fakeSearchedUserId";
                 doThrow(new UnknownFileException()).when(fileService).deleteFileOnBehalfOf(anyString(), anyString(),
                                 anyString());
                 this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId)
@@ -188,14 +170,8 @@ public class FileApiControllerTest {
 
         @Test
         public void deleteFileSharedWithUser200() throws Exception {
-                final String userCredentialsInAuthorizationHeader = "username:password";
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-                final String fakeSearchedUserId = "fakeSearchedUserId";
-
                 doNothing().when(fileService).deleteFileOnBehalfOf(anyString(), anyString(), anyString());
-
                 this.mockMvc.perform(MockMvcRequestBuilders
                                 .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
                                 .header("Authorization",
@@ -209,13 +185,7 @@ public class FileApiControllerTest {
                 Status status = new Status();
                 status.setCode(403);
                 status.setMessage("NotAuthorized");
-
-                final String userCredentialsInAuthorizationHeader = "username:password";
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-                final String fakeSearchedUserId = "fakeSearchedUserId";
-
                 doThrow(new UserUnauthorizedException()).when(fileService).removeShareOnFileOnBehalfOf(anyString(),
                                 anyString(), anyString());
 
@@ -229,37 +199,27 @@ public class FileApiControllerTest {
         }
 
         @Test
-        public void deleteFileSharedWithUser403ForNoAuthentication() throws Exception {
+        public void deleteFileSharedWithUser401ForNoAuthentication() throws Exception {
                 Status status = new Status();
-                status.setCode(403);
-                status.setMessage("NotAuthorized");
+                status.setCode(401);
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-                final String fakeSearchedUserId = "fakeSearchedUserId";
-                this.mockMvc.perform(MockMvcRequestBuilders
-                                .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
-                                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden())
+                this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
+                                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isUnauthorized())
                                 .andExpect(content().string(containsString(TestHelper.asJsonString(status))));
         }
 
         @Test
-        public void deleteFileSharedWithUser403ForWrongAuthentication() throws Exception {
+        public void deleteFileSharedWithUser401ForWrongAuthentication() throws Exception {
                 Status status = new Status();
-                status.setCode(403);
-                status.setMessage("NotAuthorized");
-
-                final String userCredentialsInAuthorizationHeader = "username:password";
+                status.setCode(401);
                 when(service.getAuthenticatedUserId(any(Credentials.class)))
                                 .thenThrow(new WrongAuthenticationException());
-
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-                final String fakeSearchedUserId = "fakeSearchedUserId";
                 this.mockMvc.perform(MockMvcRequestBuilders
                                 .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
                                                                 userCredentialsInAuthorizationHeader.getBytes()))
-                                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden())
+                                .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isUnauthorized())
                                 .andExpect(content().string(containsString(TestHelper.asJsonString(status))));
         }
 
@@ -268,13 +228,7 @@ public class FileApiControllerTest {
                 Status status = new Status();
                 status.setCode(404);
                 status.setMessage("FileNotFound");
-
-                final String userCredentialsInAuthorizationHeader = "username:password";
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-                final String fakeSearchedUserId = "fakeSearchedUserId";
-
                 doThrow(new UnknownFileException()).when(fileService).removeShareOnFileOnBehalfOf(anyString(),
                                 anyString(), anyString());
                 this.mockMvc.perform(MockMvcRequestBuilders
@@ -291,13 +245,7 @@ public class FileApiControllerTest {
                 Status status = new Status();
                 status.setCode(404);
                 status.setMessage("UserNotFound");
-
-                final String userCredentialsInAuthorizationHeader = "username:password";
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("fakeAuthenticatedUserId");
-
-                final String fakeSearchedFileId = "fakeSearchedUserId";
-                final String fakeSearchedUserId = "fakeSearchedUserId";
-
                 doThrow(new UnknownUserException()).when(fileService).removeShareOnFileOnBehalfOf(anyString(),
                                 anyString(), anyString());
                 this.mockMvc.perform(MockMvcRequestBuilders

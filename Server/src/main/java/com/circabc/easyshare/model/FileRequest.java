@@ -11,20 +11,24 @@
 package com.circabc.easyshare.model;
 
 import java.util.Objects;
+import com.circabc.easyshare.model.FileBasics;
 import com.circabc.easyshare.model.Recipient;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * FileRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
 
 public class FileRequest   {
   @JsonProperty("expirationDate")

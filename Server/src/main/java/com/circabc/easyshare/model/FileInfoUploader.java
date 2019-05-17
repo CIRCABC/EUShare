@@ -11,20 +11,24 @@
 package com.circabc.easyshare.model;
 
 import java.util.Objects;
-import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.FileBasics;
+import com.circabc.easyshare.model.RecipientWithLink;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * FileInfoUploader
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
 
 public class FileInfoUploader   {
   @JsonProperty("expirationDate")
@@ -39,9 +43,12 @@ public class FileInfoUploader   {
   @JsonProperty("size")
   private BigDecimal size;
 
+  @JsonProperty("fileId")
+  private String fileId;
+
   @JsonProperty("sharedWith")
   @Valid
-  private List<Recipient> sharedWith = new ArrayList<>();
+  private List<RecipientWithLink> sharedWith = new ArrayList<>();
 
   public FileInfoUploader expirationDate(LocalDate expirationDate) {
     this.expirationDate = expirationDate;
@@ -130,12 +137,33 @@ public class FileInfoUploader   {
     this.size = size;
   }
 
-  public FileInfoUploader sharedWith(List<Recipient> sharedWith) {
+  public FileInfoUploader fileId(String fileId) {
+    this.fileId = fileId;
+    return this;
+  }
+
+  /**
+   * file id
+   * @return fileId
+  */
+  @ApiModelProperty(required = true, value = "file id")
+  @NotNull
+
+
+  public String getFileId() {
+    return fileId;
+  }
+
+  public void setFileId(String fileId) {
+    this.fileId = fileId;
+  }
+
+  public FileInfoUploader sharedWith(List<RecipientWithLink> sharedWith) {
     this.sharedWith = sharedWith;
     return this;
   }
 
-  public FileInfoUploader addSharedWithItem(Recipient sharedWithItem) {
+  public FileInfoUploader addSharedWithItem(RecipientWithLink sharedWithItem) {
     this.sharedWith.add(sharedWithItem);
     return this;
   }
@@ -149,11 +177,11 @@ public class FileInfoUploader   {
 
   @Valid
 @Size(min=1,max=10) 
-  public List<Recipient> getSharedWith() {
+  public List<RecipientWithLink> getSharedWith() {
     return sharedWith;
   }
 
-  public void setSharedWith(List<Recipient> sharedWith) {
+  public void setSharedWith(List<RecipientWithLink> sharedWith) {
     this.sharedWith = sharedWith;
   }
 
@@ -171,12 +199,13 @@ public class FileInfoUploader   {
         Objects.equals(this.hasPassword, fileInfoUploader.hasPassword) &&
         Objects.equals(this.name, fileInfoUploader.name) &&
         Objects.equals(this.size, fileInfoUploader.size) &&
+        Objects.equals(this.fileId, fileInfoUploader.fileId) &&
         Objects.equals(this.sharedWith, fileInfoUploader.sharedWith);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDate, hasPassword, name, size, sharedWith);
+    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith);
   }
 
   @Override
@@ -188,6 +217,7 @@ public class FileInfoUploader   {
     sb.append("    hasPassword: ").append(toIndentedString(hasPassword)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
+    sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -27,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
 
 @Configuration
 @EnableSwagger2
@@ -76,6 +76,6 @@ public class OpenAPIDocumentationConfig {
             return Paths.removeAdjacentForwardSlashes(
                     uriComponentsBuilder.path(operationPath.replaceFirst("^" + basePath, "")).build().toString());
         }
-    }
+    }  
 
 }

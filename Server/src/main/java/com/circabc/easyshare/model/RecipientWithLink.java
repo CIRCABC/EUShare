@@ -11,6 +11,7 @@
 package com.circabc.easyshare.model;
 
 import java.util.Objects;
+import com.circabc.easyshare.model.Recipient;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
@@ -20,11 +21,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Recipient
+ * RecipientWithLink
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
 
-public class Recipient   {
+public class RecipientWithLink   {
   @JsonProperty("emailOrName")
   private String emailOrName;
 
@@ -34,7 +35,13 @@ public class Recipient   {
   @JsonProperty("sendEmail")
   private Boolean sendEmail;
 
-  public Recipient emailOrName(String emailOrName) {
+  @JsonProperty("recipientId")
+  private String recipientId;
+
+  @JsonProperty("downloadLink")
+  private String downloadLink;
+
+  public RecipientWithLink emailOrName(String emailOrName) {
     this.emailOrName = emailOrName;
     return this;
   }
@@ -55,7 +62,7 @@ public class Recipient   {
     this.emailOrName = emailOrName;
   }
 
-  public Recipient message(String message) {
+  public RecipientWithLink message(String message) {
     this.message = message;
     return this;
   }
@@ -75,7 +82,7 @@ public class Recipient   {
     this.message = message;
   }
 
-  public Recipient sendEmail(Boolean sendEmail) {
+  public RecipientWithLink sendEmail(Boolean sendEmail) {
     this.sendEmail = sendEmail;
     return this;
   }
@@ -95,6 +102,47 @@ public class Recipient   {
     this.sendEmail = sendEmail;
   }
 
+  public RecipientWithLink recipientId(String recipientId) {
+    this.recipientId = recipientId;
+    return this;
+  }
+
+  /**
+   * Id of the recipient
+   * @return recipientId
+  */
+  @ApiModelProperty(value = "Id of the recipient")
+
+
+  public String getRecipientId() {
+    return recipientId;
+  }
+
+  public void setRecipientId(String recipientId) {
+    this.recipientId = recipientId;
+  }
+
+  public RecipientWithLink downloadLink(String downloadLink) {
+    this.downloadLink = downloadLink;
+    return this;
+  }
+
+  /**
+   * Download link to a specific file
+   * @return downloadLink
+  */
+  @ApiModelProperty(required = true, value = "Download link to a specific file")
+  @NotNull
+
+
+  public String getDownloadLink() {
+    return downloadLink;
+  }
+
+  public void setDownloadLink(String downloadLink) {
+    this.downloadLink = downloadLink;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -104,25 +152,29 @@ public class Recipient   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Recipient recipient = (Recipient) o;
-    return Objects.equals(this.emailOrName, recipient.emailOrName) &&
-        Objects.equals(this.message, recipient.message) &&
-        Objects.equals(this.sendEmail, recipient.sendEmail);
+    RecipientWithLink recipientWithLink = (RecipientWithLink) o;
+    return Objects.equals(this.emailOrName, recipientWithLink.emailOrName) &&
+        Objects.equals(this.message, recipientWithLink.message) &&
+        Objects.equals(this.sendEmail, recipientWithLink.sendEmail) &&
+        Objects.equals(this.recipientId, recipientWithLink.recipientId) &&
+        Objects.equals(this.downloadLink, recipientWithLink.downloadLink);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(emailOrName, message, sendEmail);
+    return Objects.hash(emailOrName, message, sendEmail, recipientId, downloadLink);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Recipient {\n");
+    sb.append("class RecipientWithLink {\n");
     
     sb.append("    emailOrName: ").append(toIndentedString(emailOrName)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");
+    sb.append("    recipientId: ").append(toIndentedString(recipientId)).append("\n");
+    sb.append("    downloadLink: ").append(toIndentedString(downloadLink)).append("\n");
     sb.append("}");
     return sb.toString();
   }

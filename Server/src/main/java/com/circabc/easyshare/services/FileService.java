@@ -351,22 +351,11 @@ public class FileService implements FileServiceInterface {
      * access the file, the file is unknown or the given password is wrong.
      */
     @Override
-    public DownloadReturn downloadOnBehalfOf(String fileId, String password, String requesterId)
+    public DownloadReturn downloadFile(String fileId, String password)
             throws UnknownFileException, WrongPasswordException, UserUnauthorizedException, UnknownUserException {
         DBFile dbFile = findAvailableFile(fileId);
 
-        String userId = requesterId;
-
-        if (!mayAccess(userId, fileId)) {
-            throw new UserUnauthorizedException();
-        }
-
         File file = Paths.get(dbFile.getPath()).toFile();
-
-        if (userId.equals(dbFile.getUploader().getId())) {
-            // if uploader is downloader, don't require password
-            return new DownloadReturn(file, dbFile.getFilename());
-        }
 
         if (dbFile.getPassword() != null && !BCrypt.checkpw(password, dbFile.getPassword())) {
             throw new WrongPasswordException();

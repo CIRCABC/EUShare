@@ -11,17 +11,21 @@
 package com.circabc.easyshare.model;
 
 import java.util.Objects;
+import com.circabc.easyshare.model.FileBasics;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * FileInfoRecipient
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
 
 public class FileInfoRecipient   {
   @JsonProperty("expirationDate")
@@ -36,8 +40,8 @@ public class FileInfoRecipient   {
   @JsonProperty("size")
   private BigDecimal size;
 
-  @JsonProperty("uploader")
-  private String uploader;
+  @JsonProperty("uploaderName")
+  private String uploaderName;
 
   public FileInfoRecipient expirationDate(LocalDate expirationDate) {
     this.expirationDate = expirationDate;
@@ -126,25 +130,24 @@ public class FileInfoRecipient   {
     this.size = size;
   }
 
-  public FileInfoRecipient uploader(String uploader) {
-    this.uploader = uploader;
+  public FileInfoRecipient uploaderName(String uploaderName) {
+    this.uploaderName = uploaderName;
     return this;
   }
 
   /**
-   * User ID
-   * @return uploader
+   * name of the uploader
+   * @return uploaderName
   */
-  @ApiModelProperty(required = true, value = "User ID")
-  @NotNull
+  @ApiModelProperty(value = "name of the uploader")
 
 
-  public String getUploader() {
-    return uploader;
+  public String getUploaderName() {
+    return uploaderName;
   }
 
-  public void setUploader(String uploader) {
-    this.uploader = uploader;
+  public void setUploaderName(String uploaderName) {
+    this.uploaderName = uploaderName;
   }
 
 
@@ -161,12 +164,12 @@ public class FileInfoRecipient   {
         Objects.equals(this.hasPassword, fileInfoRecipient.hasPassword) &&
         Objects.equals(this.name, fileInfoRecipient.name) &&
         Objects.equals(this.size, fileInfoRecipient.size) &&
-        Objects.equals(this.uploader, fileInfoRecipient.uploader);
+        Objects.equals(this.uploaderName, fileInfoRecipient.uploaderName);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDate, hasPassword, name, size, uploader);
+    return Objects.hash(expirationDate, hasPassword, name, size, uploaderName);
   }
 
   @Override
@@ -178,7 +181,7 @@ public class FileInfoRecipient   {
     sb.append("    hasPassword: ").append(toIndentedString(hasPassword)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
-    sb.append("    uploader: ").append(toIndentedString(uploader)).append("\n");
+    sb.append("    uploaderName: ").append(toIndentedString(uploaderName)).append("\n");
     sb.append("}");
     return sb.toString();
   }
