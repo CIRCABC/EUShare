@@ -153,11 +153,11 @@ public class RecipientWithLink   {
       return false;
     }
     RecipientWithLink recipientWithLink = (RecipientWithLink) o;
-    return Objects.equals(this.emailOrName, recipientWithLink.emailOrName) &&
+    return Objects.equals(this.emailOrName, recipientWithLink.emailOrName) && //NOSONAR
         Objects.equals(this.message, recipientWithLink.message) &&
         Objects.equals(this.sendEmail, recipientWithLink.sendEmail) &&
         Objects.equals(this.recipientId, recipientWithLink.recipientId) &&
-        Objects.equals(this.downloadLink, recipientWithLink.downloadLink);
+        Objects.equals(this.downloadLink, recipientWithLink.downloadLink); 
   }
 
   @Override
@@ -169,7 +169,6 @@ public class RecipientWithLink   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class RecipientWithLink {\n");
-    
     sb.append("    emailOrName: ").append(toIndentedString(emailOrName)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");

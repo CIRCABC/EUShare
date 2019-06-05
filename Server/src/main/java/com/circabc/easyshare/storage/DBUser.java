@@ -18,24 +18,29 @@ import javax.persistence.*;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.model.UserSpace;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "Users")
 public class DBUser {
     @Getter
     @Setter
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<DBFile> sharedFiles = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+    private Set<DBUserFile> filesReceived = new HashSet<>();
 
     @Id
     @Getter
     @Setter
+    @Column(nullable = false)
+    @GeneratedValue(generator = "prod-generator")
+    @GenericGenerator(name = "prod-generator", 
+      strategy = "com.circabc.easyshare.storage.SecureRandomIdentifierGenerator")
     private String id;
 
     @Getter
@@ -46,27 +51,37 @@ public class DBUser {
 
     @Getter
     @Setter
+    @Column(nullable = false)
     private long totalSpace;
 
     @Getter
     @Setter
-    @OneToMany(mappedBy = "uploader", fetch = FetchType.EAGER)
-    private Set<DBFile> uploads = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "uploader", cascade = CascadeType.ALL)
+    private Set<DBFile> filesUploaded = new HashSet<>();
 
     @Getter
     @Setter
-    @Column(unique=true)
+    @Column(unique = true)
     private String username;
 
     @Getter
     @Setter
     private String password;
 
+    @Getter
+    @Setter
+    @Column(nullable=true, unique= true)
+    private String email;
+
+    @Getter
+    @Setter
+    private String name;
+
     private DBUser() {
+
     }
 
-    private DBUser(String id, long totalSpace, Role role) {
-        this.id = id;
+    private DBUser(long totalSpace, Role role) {
         this.totalSpace = totalSpace;
         this.role = role;
     }
@@ -74,8 +89,14 @@ public class DBUser {
     /**
      * Create a new user with specified role {@code EXTERNAL}
      */
-    public static DBUser createExternalUser(String mail) {
-        return new DBUser(mail, 0, Role.EXTERNAL);
+    public static DBUser createExternalUser(String mail, String name) throws IllegalArgumentException {
+        if(mail == null && name == null) {
+            throw new IllegalArgumentException();
+        }
+       DBUser dbUser = new DBUser(0, Role.EXTERNAL);
+       dbUser.setEmail(mail);
+       dbUser.setName(name);
+       return dbUser;
     }
 
     /**
@@ -83,14 +104,16 @@ public class DBUser {
      *
      * @throws IllegalArgumentException If {@code totalSpace < 0}
      */
-    public static DBUser createInternalUser(String id, String username, String password, long totalSpace) {
+    public static DBUser createInternalUser(String email, String name, String password, long totalSpace, String username) {
         if (totalSpace < 0) {
             throw new IllegalArgumentException();
         }
-
-        DBUser dbUser = new DBUser(id, totalSpace, Role.INTERNAL);
-        dbUser.setUsername(username);
+        DBUser dbUser = new DBUser(totalSpace, Role.INTERNAL);
+        dbUser.setEmail(email);
+        dbUser.setName(name);
         dbUser.setPassword(password);
+        dbUser.setTotalSpace(totalSpace);
+        dbUser.setUsername(username);
         return dbUser;
     }
 
@@ -100,7 +123,7 @@ public class DBUser {
 
     @Transient
     private long getUsedSpace() {
-        return this.uploads.stream().mapToLong(DBFile::getSize).sum();
+        return this.filesUploaded.stream().mapToLong(DBFile::getSize).sum();
     }
 
     /**
@@ -111,7 +134,7 @@ public class DBUser {
         userInfo.setTotalSpace(new BigDecimal(this.totalSpace));
         List<String> uploadedFiles = new ArrayList<>();
         long totalSize = 0;
-        for (DBFile upload : this.uploads) {
+        for (DBFile upload : this.filesUploaded) {
             if (upload.getStatus() == DBFile.Status.AVAILABLE) {
                 uploadedFiles.add(upload.getId());
                 totalSize = totalSize + upload.getSize();
@@ -119,8 +142,6 @@ public class DBUser {
         }
         userInfo.setUsedSpace(new BigDecimal(totalSize));
         userInfo.setId(this.id);
-        userInfo.setUploadedFiles(uploadedFiles);
-        userInfo.setSharedFiles(this.sharedFiles.stream().filter(dbFile -> dbFile.getStatus().equals(DBFile.Status.AVAILABLE)).map(dbFile -> dbFile.getId()).collect(Collectors.toList()));
         userInfo.isAdmin(this.role.equals(Role.ADMIN));
         return userInfo;
     }
@@ -129,7 +150,7 @@ public class DBUser {
         UserSpace userSpace = new UserSpace();
         userSpace.setTotalSpace(new BigDecimal(this.totalSpace));
         long totalSize = 0;
-        for (DBFile upload : this.uploads) {
+        for (DBFile upload : this.filesUploaded) {
             if (upload.getStatus() == DBFile.Status.AVAILABLE) {
                 totalSize = totalSize + upload.getSize();
             }
@@ -139,8 +160,23 @@ public class DBUser {
     }
 
     public enum Role {
-        EXTERNAL,
-        INTERNAL,
-        ADMIN
+        EXTERNAL, INTERNAL, ADMIN
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DBUser)){
+            return false;
+        }
+        DBUser other = (DBUser) o;
+        return (id != null && id.equals(other.getId()));
+    }
+ 
+    @Override
+    public int hashCode() {
+        return 31;
     }
 }
