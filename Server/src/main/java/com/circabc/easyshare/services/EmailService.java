@@ -76,7 +76,7 @@ public class EmailService {
     public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message) throws MessagingException {
         Context ctx = new Context();
         ctx.setVariable(FILENAME, fileInfo.getName());
-        ctx.setVariable(UPLOADER, fileInfo.getUploader());
+        ctx.setVariable(UPLOADER, fileInfo.getUploaderName());
         ctx.setVariable("message", message);
         String content = this.templateEngine.process("mail/html/share-notification", ctx);
 

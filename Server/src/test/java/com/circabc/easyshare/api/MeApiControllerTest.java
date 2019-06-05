@@ -43,7 +43,8 @@ import static org.hamcrest.Matchers.containsString;
 @RunWith(SpringRunner.class)
 @WebMvcTest(MeApiController.class)
 public class MeApiControllerTest {
-
+    final String userCredentialsInAuthorizationHeader = "username:password";
+    
     @Autowired
     private MockMvc mockMvc;
 
@@ -52,14 +53,12 @@ public class MeApiControllerTest {
 
     @Test
     public void getUserInfo200() throws Exception {
-        final String userCredentialsInAuthorizationHeader = "username:password";
+        
         when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("username");
         UserInfo fakeUserInfo = new UserInfo();
         fakeUserInfo.setId("username");
         fakeUserInfo.setIsAdmin(false);
-        fakeUserInfo.setSharedFiles(Collections.emptyList());
         fakeUserInfo.setTotalSpace(new BigDecimal(1024*1204));
-        fakeUserInfo.setUploadedFiles(Collections.emptyList());
         fakeUserInfo.setUsedSpace(new BigDecimal(0));
         when(service.getUserInfoOnBehalfOf(anyString(),anyString())).thenReturn(fakeUserInfo);
         this.mockMvc.perform(MockMvcRequestBuilders.get("/me/userInfo").header("Authorization",

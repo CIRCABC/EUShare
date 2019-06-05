@@ -59,7 +59,7 @@ public class LoginApiController implements LoginApi {
         try {
             return new ResponseEntity<String>(userService.getAuthenticatedUserId(credentials), HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
-            log.warn("wrong authentication !");
+            log.debug("wrong authentication !");
             ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.UNAUTHORIZED,
             HttpErrorAnswerBuilder.build401EmptyToString(), exc);
             throw responseStatusException;

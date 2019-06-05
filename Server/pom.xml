@@ -149,9 +149,14 @@
             <version>1.16.20</version>
             <scope>provided</scope>
         </dependency>
+        <!-- databases -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
@@ -213,4 +218,13 @@
             <version>2.6</version>
         </dependency>
     </dependencies>
+    <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>3.0.0-M3</version>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>
