@@ -10,4 +10,6 @@
 package com.circabc.easyshare.exceptions;
 
 public class UserUnauthorizedException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 }

@@ -9,4 +9,6 @@
  */
 package com.circabc.easyshare.exceptions;
 public class FileLargerThanAllocationException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 }

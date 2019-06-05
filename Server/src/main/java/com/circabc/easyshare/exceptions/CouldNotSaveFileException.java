@@ -11,6 +11,8 @@
 package com.circabc.easyshare.exceptions;
 
 public class CouldNotSaveFileException extends Exception {
+    private static final long serialVersionUID = 1L;
+
     public CouldNotSaveFileException() {
         super();
     }

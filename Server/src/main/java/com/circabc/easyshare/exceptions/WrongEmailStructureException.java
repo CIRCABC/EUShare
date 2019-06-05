@@ -11,5 +11,7 @@
 package com.circabc.easyshare.exceptions;
 
 public class WrongEmailStructureException extends Exception {
+
+    private static final long serialVersionUID = 1L;
     
 }

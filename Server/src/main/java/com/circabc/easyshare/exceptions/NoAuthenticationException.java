@@ -12,4 +12,6 @@ package com.circabc.easyshare.exceptions;
 
 public class NoAuthenticationException extends Exception {
 
+    private static final long serialVersionUID = 1L;
+
 }
