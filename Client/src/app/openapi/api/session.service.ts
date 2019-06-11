@@ -1,12 +1,3 @@
-/*
-EasyShare - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "EasyShare" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -39,7 +30,7 @@ import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class SessionService {
 
@@ -112,7 +103,6 @@ export class SessionService {
     public postLogin(credentials: Credentials, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
     public postLogin(credentials: Credentials, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
         if (credentials === null || credentials === undefined) {
-            console.error('Required parameter credentials was null or undefined when calling postLogin');
             throw new Error('Required parameter credentials was null or undefined when calling postLogin.');
         }
 
