@@ -50,11 +50,10 @@ import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
 import com.circabc.easyshare.model.Credentials;
-import com.circabc.easyshare.model.FileInfoRecipient;
-import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.validation.FileRequestValidator;
+import com.circabc.easyshare.model.validation.RecipientValidator;
 import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.UserService;
 import com.circabc.easyshare.services.FileService.DownloadReturn;
@@ -151,40 +150,6 @@ public class FileApiController extends AbstractController implements FileApi {
         }
     }
 
-    // @Override
-    public ResponseEntity<FileInfoRecipient> getFileFileInfoRecipient(@PathVariable("fileID") String fileID) {
-        try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
-            FileInfoRecipient fileInfoRecipient = fileService.getFileInfoRecipientOnBehalfOf(fileID, requesterId);
-            return new ResponseEntity<>(fileInfoRecipient, HttpStatus.OK);
-        } catch (UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-        } catch (UnknownFileException exc2) {
-            log.warn(exc2.getMessage(), exc2);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
-                    exc2);
-        }
-    }
-
-    // @Override
-    public ResponseEntity<FileInfoUploader> getFileFileInfoUploader(@PathVariable("fileID") String fileID) {
-        try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
-            FileInfoUploader fileInfoUploader = fileService.getFileInfoUploaderOnBehalfOf(fileID, requesterId);
-            return new ResponseEntity<>(fileInfoUploader, HttpStatus.OK);
-        } catch (UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-        } catch (UnknownFileException exc2) {
-            log.warn(exc2.getMessage(), exc2);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
-                    exc2);
-        }
-    }
-
     @Override
     public ResponseEntity<String> postFileFileRequest(@RequestBody(required = false) FileRequest fileRequest) {
         if (!FileRequestValidator.validate(fileRequest)) {
@@ -272,7 +237,7 @@ public class FileApiController extends AbstractController implements FileApi {
 
     @Override
     public ResponseEntity<Void> postFileSharedWith(@PathVariable("fileID") String fileID, @RequestBody Recipient recipient) {
-        if (recipient == null) {
+        if (!RecipientValidator.validate(recipient)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     HttpErrorAnswerBuilder.build400EmptyToString());
         }

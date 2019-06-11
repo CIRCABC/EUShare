@@ -43,13 +43,7 @@ public class FileRequestValidator {
             return false;
         }
         for(Recipient recipient : fileRequest.getSharedWith()) {
-            if (recipient.getEmailOrName() == null) {
-                return false;
-            }
-            if (recipient.getSendEmail() == null) {
-                return false;
-            }
-            if (recipient.getSendEmail() && recipient.getMessage() == null) {
+            if (!RecipientValidator.validate(recipient)) {
                 return false;
             }
         }

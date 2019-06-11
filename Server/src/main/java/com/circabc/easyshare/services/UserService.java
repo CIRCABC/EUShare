@@ -62,18 +62,17 @@ public class UserService {
     }
 
     public DBUser createAdminUser(String password) {
-        DBUser user = this.createInternalUser("admin@admin.admin", "admin", password, "username"); // NOSONAR
+        DBUser user = this.createInternalUser("admin@admin.admin", "admin", password, "admin"); // NOSONAR
         user.setRole(Role.ADMIN);
         return userRepository.save(user);
     }
 
-    public DBUser createExternalUser(String email, String name) throws WrongEmailStructureException {
-        if (StringUtils.validateEmailAddress(email)) {
+    /**
+     * One of the arguments can be null
+     */
+    public DBUser createExternalUser(String email, String name) {
             DBUser user = DBUser.createExternalUser(email, name);
             return userRepository.save(user);
-        } else {
-            throw new WrongEmailStructureException();
-        }
     }
 
     DBUser getDbUser(String userId) throws UnknownUserException {
@@ -104,11 +103,15 @@ public class UserService {
     }
 
     public void createDefaultUsers() {
-        if (userRepository.findOneByUsername("admin") == null) {
+        if (userRepository.findOneByUsername("admin") == null && userRepository.findOneByEmail("admin@admin.admin") == null) {
             this.createAdminUser("admin");
+        } else {
+            log.warn("Admin could not be created, already exists");
         }
-        if (userRepository.findOneByUsername("username") == null) {
+        if (userRepository.findOneByUsername("username") == null && userRepository.findOneByEmail("email@email.com") == null)  {
             this.createInternalUser("email@email.com", "name", "username", "password");
+        } else {
+            log.warn("Internal user could not be created, already exists");
         }
     }
 

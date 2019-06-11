@@ -23,7 +23,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,7 +37,7 @@ import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.UserInfo;
-import com.circabc.easyshare.model.UserSpace;
+import com.circabc.easyshare.model.validation.UserInfoValidator;
 import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.UserService;
 
@@ -111,6 +110,10 @@ public class UserApiController extends AbstractController implements UserApi {
     public ResponseEntity<UserInfo> putUserUserInfo(
         @PathVariable("userID") String userID,
         @RequestBody UserInfo userInfo) {
+            if (!UserInfoValidator.validate(userInfo)) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        HttpErrorAnswerBuilder.build400EmptyToString());
+            }
             try {
                 Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
                 String requesterId = userService.getAuthenticatedUserId(credentials);

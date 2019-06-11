@@ -39,8 +39,7 @@ public class DBUser {
     @Setter
     @Column(nullable = false)
     @GeneratedValue(generator = "prod-generator")
-    @GenericGenerator(name = "prod-generator", 
-      strategy = "com.circabc.easyshare.storage.SecureRandomIdentifierGenerator")
+    @GenericGenerator(name = "prod-generator", strategy = "com.circabc.easyshare.storage.SecureRandomIdentifierGenerator")
     private String id;
 
     @Getter
@@ -61,7 +60,7 @@ public class DBUser {
 
     @Getter
     @Setter
-    @Column(unique = true)
+    @Column(nullable = true, unique = true)
     private String username;
 
     @Getter
@@ -70,11 +69,12 @@ public class DBUser {
 
     @Getter
     @Setter
-    @Column(nullable=true, unique= true)
+    @Column(nullable = true, unique = true)
     private String email;
 
     @Getter
     @Setter
+    @Column(nullable = true)
     private String name;
 
     private DBUser() {
@@ -90,13 +90,13 @@ public class DBUser {
      * Create a new user with specified role {@code EXTERNAL}
      */
     public static DBUser createExternalUser(String mail, String name) throws IllegalArgumentException {
-        if(mail == null && name == null) {
+        if (mail == null && name == null) {
             throw new IllegalArgumentException();
         }
-       DBUser dbUser = new DBUser(0, Role.EXTERNAL);
-       dbUser.setEmail(mail);
-       dbUser.setName(name);
-       return dbUser;
+        DBUser dbUser = new DBUser(0, Role.EXTERNAL);
+        dbUser.setEmail(mail);
+        dbUser.setName(name);
+        return dbUser;
     }
 
     /**
@@ -104,7 +104,8 @@ public class DBUser {
      *
      * @throws IllegalArgumentException If {@code totalSpace < 0}
      */
-    public static DBUser createInternalUser(String email, String name, String password, long totalSpace, String username) {
+    public static DBUser createInternalUser(String email, String name, String password, long totalSpace,
+            String username) {
         if (totalSpace < 0) {
             throw new IllegalArgumentException();
         }
@@ -168,13 +169,13 @@ public class DBUser {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DBUser)){
+        if (!(o instanceof DBUser)) {
             return false;
         }
         DBUser other = (DBUser) o;
         return (id != null && id.equals(other.getId()));
     }
- 
+
     @Override
     public int hashCode() {
         return 31;

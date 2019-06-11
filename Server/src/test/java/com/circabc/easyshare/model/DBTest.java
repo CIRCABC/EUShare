@@ -18,6 +18,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.circabc.easyshare.api.TestHelper;
 import com.circabc.easyshare.storage.DBFile;
 import com.circabc.easyshare.storage.DBUser;
 import com.circabc.easyshare.storage.DBUserFile;
@@ -34,8 +35,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import edu.emory.mathcs.backport.java.util.Collections;
+import lombok.extern.slf4j.Slf4j;
 
 
+@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DBTest {
@@ -53,11 +56,21 @@ public class DBTest {
     @Test
     @Transactional
     public void creationOfaUserTest() {
-        DBUser dbUser = DBUser.createInternalUser("email@email.com", "name", "password", 1024, "username"); //NOSONAR
+        DBUser dbUser = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername"); //NOSONAR
         userRepository.save(dbUser);
-        assertEquals(dbUser, userRepository.findOneByEmail("email@email.com"));
-        assertEquals(dbUser, userRepository.findOneByName("name"));
-        assertEquals(dbUser, userRepository.findOneByUsername("username"));
+        assertEquals(dbUser, userRepository.findOneByEmail("emailA@email.com"));
+        assertEquals(dbUser, userRepository.findOneByName("uniqueName"));
+        assertEquals(dbUser, userRepository.findOneByUsername("uniqueUsername"));
+    }
+
+    @Test
+    @Transactional
+    public void creationOfanExternalUserTest() {
+        DBUser dbUser = DBUser.createExternalUser("emailA@email.com", null);
+        dbUser = userRepository.save(dbUser);
+        assertEquals(dbUser, userRepository.findOneByEmail("emailA@email.com"));
+        assertEquals(dbUser, userRepository.findOneByName(null));
+        assertEquals(dbUser, userRepository.findOneByUsername(null));
     }
 
     @Test
@@ -72,10 +85,11 @@ public class DBTest {
     @Test
     @Transactional
     public void creationOfaUserToFileTest() {
-        DBUser uploader = DBUser.createInternalUser("email@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
         userRepository.save(uploader);
+
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
-        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name"); //NOSONAR
+        DBUser shareUser = DBUser.createExternalUser("emailExternal@email.com", null); //NOSONAR
         DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
 
         shareUser.getFilesReceived().add(dbUserFile);
@@ -83,10 +97,10 @@ public class DBTest {
         userRepository.save(shareUser);
         fileRepository.save(dbFile);
 
-        DBUser uploaderSaved = userRepository.findOneByEmail("email@email.com");
+        DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
         assertEquals(uploader, uploaderSaved);
 
-        DBUser shareUserSaved = userRepository.findOneByEmail("email2@email.com");
+        DBUser shareUserSaved = userRepository.findOneByEmail("emailExternal@email.com");
         assertEquals(shareUser, shareUserSaved);
         assertEquals(shareUser.getFilesReceived().iterator().next(), dbUserFile);
         assertEquals(userFileRepository.findOneByDownloadId(dbUserFile.getDownloadId()), shareUserSaved.getFilesReceived().iterator().next());
@@ -95,7 +109,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByReceiver() {
-        DBUser uploader = DBUser.createInternalUser("email@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
         userRepository.save(uploader);
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
@@ -123,7 +137,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByUploader() {
-        DBUser uploader = DBUser.createInternalUser("email@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
         userRepository.save(uploader);
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
@@ -142,10 +156,10 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfUsersByEmail() {
-        DBUser uploader = DBUser.createInternalUser("email@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
         userRepository.save(uploader);
 
-        List<DBUser> foundUsers = userRepository.findByEmailStartsWith("email", PageRequest.of(0,10));
+        List<DBUser> foundUsers = userRepository.findByEmailStartsWith("emailA", PageRequest.of(0,10));
         assertEquals(1, foundUsers.size());
         assertEquals(uploader, foundUsers.get(0));
     }

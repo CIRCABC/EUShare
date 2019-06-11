@@ -34,6 +34,11 @@ Build the application's jar using the following command:
 mvn clean install
 ```
 
+Build the test report by running the following command:
+``` batch
+mvn surefire-report:report
+```
+
 ## Repository conventions
 ### Workflow
 We apply the [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
