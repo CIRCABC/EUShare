@@ -32,3 +32,6 @@
 .settings/
 .classpath
 .project
+
+# SonarQube
+.sonarlint/
