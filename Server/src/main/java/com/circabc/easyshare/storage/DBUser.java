@@ -142,7 +142,8 @@ public class DBUser {
             }
         }
         userInfo.setUsedSpace(new BigDecimal(totalSize));
-        userInfo.setId(this.id);
+        userInfo.setId(this.getId());
+        userInfo.setName(this.getName());
         userInfo.isAdmin(this.role.equals(Role.ADMIN));
         return userInfo;
     }

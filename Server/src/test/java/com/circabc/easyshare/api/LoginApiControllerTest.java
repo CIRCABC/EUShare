@@ -42,7 +42,7 @@ public class LoginApiControllerTest {
     private UserService service;
 
     @Test
-    public void postLoginResponse200() throws Exception {
+    public void postLoginResponse200() throws Exception {//NOSONAR
         Credentials credentials = new Credentials();
         credentials.setEmail("email");
         credentials.setPassword("password");
@@ -54,7 +54,7 @@ public class LoginApiControllerTest {
     }
 
     @Test
-    public void postLoginResponse400() throws Exception {
+    public void postLoginResponse400() throws Exception {//NOSONAR
         Status status = new Status();
         status.setCode(400);
         this.mockMvc
@@ -65,7 +65,7 @@ public class LoginApiControllerTest {
     }
 
     @Test
-    public void postLoginResponse401() throws Exception {
+    public void postLoginResponse401() throws Exception {//NOSONAR
         Status status = new Status();
         status.setCode(401);
         Credentials credentials = new Credentials();
@@ -80,7 +80,7 @@ public class LoginApiControllerTest {
     }
 
     @Test
-    public void postLoginResponse500() throws Exception {
+    public void postLoginResponse500() throws Exception {//NOSONAR
         Status status = new Status();
         status.setCode(500);
         Credentials credentials = new Credentials();

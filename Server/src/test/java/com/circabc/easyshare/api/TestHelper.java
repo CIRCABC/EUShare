@@ -26,7 +26,7 @@ public class TestHelper {
             final String jsonContent = mapper.writeValueAsString(obj);
             return jsonContent;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e);//NOSONAR
         }
     } 
 }

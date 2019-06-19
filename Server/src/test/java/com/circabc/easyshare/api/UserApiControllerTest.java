@@ -14,7 +14,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -445,5 +444,81 @@ public class UserApiControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isInternalServerError())
                 .andExpect(content().string(containsString(TestHelper.asJsonString(status))));
+    }
+    
+    @Test
+    public void getUserInfo200() throws Exception {//NOSONAR
+        when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
+        UserInfo fakeUserInfo = new UserInfo();
+        fakeUserInfo.setId("id");
+        fakeUserInfo.setIsAdmin(false);
+        fakeUserInfo.setTotalSpace(new BigDecimal(1024*1204));
+        fakeUserInfo.setUsedSpace(new BigDecimal(0));
+        when(service.getUserInfoOnBehalfOf(anyString(),anyString())).thenReturn(fakeUserInfo);
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/"+fakeSearchedUserId+"/userInfo").header("Authorization",
+                        "Basic " + Base64.getEncoder().encodeToString(userCredentialsInAuthorizationHeader.getBytes()))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString(TestHelper.asJsonString(fakeUserInfo))));
+    }
+
+    @Test
+    public void getUserInfo403ForWrongCredentials() throws Exception {//NOSONAR
+        final String userWrongCredentialsInAuthorizationHeader = "username:password";
+        Status status = new Status();
+        status.setCode(403);
+        status.setMessage("NotAuthorized");
+        // userService knows that the user has not provided good credentials
+        when(service.getAuthenticatedUserId(any(Credentials.class))).thenThrow(new WrongAuthenticationException());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/"+fakeSearchedUserId+"/userInfo").header("Authorization",
+                        "Basic " + Base64.getEncoder().encodeToString(userWrongCredentialsInAuthorizationHeader.getBytes()))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isForbidden()).andExpect(content().string(containsString(TestHelper.asJsonString(status))));
+    }
+
+    @Test
+    public void getUserInfo403ForNoCredentials() throws Exception {//NOSONAR
+        Status status = new Status();
+        status.setCode(403);
+        status.setMessage("NotAuthorized");
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/"+fakeSearchedUserId+"/userInfo")
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isForbidden()).andExpect(content().string(containsString(TestHelper.asJsonString(status))));
+    }
+
+    @Test
+    public void getUserInfo500ForUnknownUserException() throws Exception {//NOSONAR
+        Status status = new Status();
+        status.setCode(500);
+        when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
+        when(service.getUserInfoOnBehalfOf(anyString(),anyString())).thenThrow(new UserUnauthorizedException());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/"+fakeSearchedUserId+"/userInfo").header("Authorization",
+                        "Basic " + Base64.getEncoder().encodeToString(userCredentialsInAuthorizationHeader.getBytes()))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isInternalServerError()).andExpect(content().string(containsString(TestHelper.asJsonString(status))));
+    }
+
+  
+    @Test
+    public void getUserInfo500ForNullPointerException() throws Exception {//NOSONAR
+        Status status = new Status();
+        status.setCode(500);
+        when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("username");
+        when(service.getUserInfoOnBehalfOf(anyString(),anyString())).thenThrow(new NullPointerException());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/"+fakeSearchedUserId+"/userInfo").header("Authorization",
+                        "Basic " + Base64.getEncoder().encodeToString(userCredentialsInAuthorizationHeader.getBytes()))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isInternalServerError()).andExpect(content().string(containsString(TestHelper.asJsonString(status))));
+    }
+
+    @Test
+    public void getUserInfo500ForUserNotFoundException() throws Exception {//NOSONAR
+        Status status = new Status();
+        status.setCode(500);
+        when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("username");
+        when(service.getUserInfoOnBehalfOf(anyString(),anyString())).thenThrow(new UnknownUserException());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/"+fakeSearchedUserId+"/userInfo").header("Authorization",
+                        "Basic " + Base64.getEncoder().encodeToString(userCredentialsInAuthorizationHeader.getBytes()))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isInternalServerError()).andExpect(content().string(containsString(TestHelper.asJsonString(status))));
     }
 }

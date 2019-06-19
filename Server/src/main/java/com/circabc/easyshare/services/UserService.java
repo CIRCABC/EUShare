@@ -89,10 +89,10 @@ public class UserService {
             return dbUser;
         } else {
             if (StringUtils.validateEmailAddress(emailOrName)) {
-                this.createExternalUser(emailOrName, null);
+                return this.createExternalUser(emailOrName, null);
             }
             if (StringUtils.validateUsername(emailOrName)) {
-                this.createExternalUser(null, emailOrName);
+                return this.createExternalUser(null, emailOrName);
             }
             throw new WrongEmailStructureException();
         }

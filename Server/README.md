@@ -39,6 +39,16 @@ Build the test report by running the following command:
 mvn surefire-report:report
 ```
 
+Run the application by running the following command:
+``` batch
+java -jar target\<applicationName>.jar
+```
+
+Run the application in debug mode by running the following command:
+``` batch
+java -jar target\<applicationName>.jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+```
+
 ## Repository conventions
 ### Workflow
 We apply the [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).

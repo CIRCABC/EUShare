@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -114,17 +115,12 @@ public class DBFile {
 
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
-        List<RecipientWithLink> sharedWithRecipients = new ArrayList<>();
-        for (DBUserFile dbUserFile : this.sharedWith) {
-            RecipientWithLink recipient = new RecipientWithLink();
-            recipient.setEmailOrName(dbUserFile.getReceiver().getName());
-            recipient.setRecipientId(dbUserFile.getReceiver().getId());
-            sharedWithRecipients.add(recipient);
-        }
+        List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream().map(dbUserFile -> dbUserFile.toRecipientWithLink()).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password!=null);
         fileInfoUploader.setName(this.filename);
         fileInfoUploader.setSize(new BigDecimal(this.size));
+        fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
         return fileInfoUploader;
     }

@@ -17,6 +17,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.RecipientWithLink;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -79,5 +82,33 @@ public class DBUserFile {
     @Override
     public int hashCode() {
         return 31;
+    }
+
+    public Recipient toRecipient() {
+        Recipient recipient = new Recipient();
+        if (this.getReceiver().getEmail() != null){
+            recipient.setEmailOrName(this.getReceiver().getEmail());
+            recipient.setSendEmail(true);
+        } else {
+            recipient.setEmailOrName(this.getReceiver().getName());
+            recipient.setSendEmail(false);
+        }
+        recipient.setMessage(this.getMessage());
+        return recipient;
+    }
+
+    public RecipientWithLink toRecipientWithLink(){
+        RecipientWithLink recipientWithLink = new RecipientWithLink();
+        if (this.getReceiver().getEmail() != null){
+            recipientWithLink.setEmailOrName(this.getReceiver().getEmail());
+            recipientWithLink.setSendEmail(true);
+        } else {
+            recipientWithLink.setEmailOrName(this.getReceiver().getName());
+            recipientWithLink.setSendEmail(false);
+        }
+        recipientWithLink.setRecipientId(this.getReceiver().getId());
+        recipientWithLink.setMessage(this.getMessage());
+        recipientWithLink.setDownloadLink(this.getDownloadId());
+        return recipientWithLink;
     }
 }

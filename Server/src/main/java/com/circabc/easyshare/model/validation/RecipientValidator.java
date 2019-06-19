@@ -26,9 +26,6 @@ public class RecipientValidator {
         if (recipient.getSendEmail() == null) {
             return false;
         }
-        if (recipient.getSendEmail() && recipient.getMessage() == null) {
-            return false;
-        }
         return true;
     }
 }
