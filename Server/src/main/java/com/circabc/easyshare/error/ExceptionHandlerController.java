@@ -15,7 +15,9 @@ import javax.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
@@ -31,12 +33,21 @@ public class ExceptionHandlerController {
       return new ResponseEntity<>(exception.getMessage(), exception.getStatus());
    }
 
+   @ExceptionHandler( value = MissingServletRequestParameterException.class)
+   public ResponseEntity<Object> missingServletRequestParameterException(MissingServletRequestParameterException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),HttpStatus.BAD_REQUEST);
+   }
   
    @ExceptionHandler(value = HttpMediaTypeNotSupportedException.class)
    public ResponseEntity<Object> httpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
-      log.error(exception.getMessage(),exception);
-      return new ResponseEntity<>(HttpErrorAnswerBuilder.build500MediaTypeNotSupportedToString(),
-            HttpStatus.INTERNAL_SERVER_ERROR);
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),
+            HttpStatus.BAD_REQUEST);
+   }
+
+   @ExceptionHandler( value = HttpMediaTypeNotAcceptableException.class)
+   public ResponseEntity<Object> httpMediaTypeNotAcceptableException(HttpMediaTypeNotAcceptableException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),
+            HttpStatus.BAD_REQUEST);
    }
 
    @ExceptionHandler(value = org.springframework.http.converter.HttpMessageNotReadableException.class)

@@ -15,9 +15,13 @@
  */
 package com.circabc.easyshare.api;
 
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.Status;
-import io.swagger.annotations.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,9 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import javax.validation.Valid;
-import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Validated
 @Api(value = "login", description = "the login API")
@@ -38,13 +45,14 @@ public interface LoginApi {
         return Optional.empty();
     }
 
-    @ApiOperation(value = "", nickname = "postLogin", notes = "", response = String.class, tags={ "Session", })
+    @ApiOperation(value = "", nickname = "postLogin", notes = "Used to login by internal users", response = String.class, tags={ "Session", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Returns the session ID to use in all other requests", response = String.class),
+        @ApiResponse(code = 200, message = "Returns the user id to use in all other requests", response = String.class),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "Unauthorized the Error message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/login",
-        produces = { "text/plain"}, 
+        produces = { "text/plain", "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
     default ResponseEntity<String> postLogin(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Credentials credentials) {

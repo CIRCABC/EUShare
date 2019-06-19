@@ -71,6 +71,9 @@ jobs:
           name: build-app
           command: npm run build
       - run:
+          name: check-license
+          command: npm run licchkadd
+      - run:
           name: Install Sonarqube scanner
           command: |
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip

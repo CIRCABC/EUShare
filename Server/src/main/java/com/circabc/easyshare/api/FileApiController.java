@@ -28,9 +28,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.exceptions.CouldNotAllocateFileException;
@@ -50,15 +50,15 @@ import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
 import com.circabc.easyshare.model.Credentials;
-import com.circabc.easyshare.model.FileInfoRecipient;
-import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.validation.FileRequestValidator;
+import com.circabc.easyshare.model.validation.RecipientValidator;
 import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.UserService;
 import com.circabc.easyshare.services.FileService.DownloadReturn;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Slf4j
 @Controller
@@ -85,16 +85,18 @@ public class FileApiController extends AbstractController implements FileApi {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
             fileService.deleteFileOnBehalfOf(fileID, reason, requesterId);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        } catch (UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+            log.debug("wrong authentication !");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
+        } catch (UserUnauthorizedException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
         } catch (UnknownUserException | UnknownFileException exc3) {
             log.warn(exc3.getMessage(), exc3);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc3);
-            throw responseStatusException;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc3);
         }
     }
 
@@ -105,21 +107,22 @@ public class FileApiController extends AbstractController implements FileApi {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
             fileService.removeShareOnFileOnBehalfOf(fileID, userID, requesterId);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        } catch (UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+            log.debug("wrong authentication !");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
+        } catch (UserUnauthorizedException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
         } catch (UnknownUserException exc2) {
             log.warn(exc2.getMessage(), exc2);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     HttpErrorAnswerBuilder.build404UserNotFoundToString(), exc2);
-            throw responseStatusException;
         } catch (UnknownFileException exc3) {
             log.warn(exc3.getMessage(), exc3);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     HttpErrorAnswerBuilder.build404FileNotFoundToString(), exc3);
-            throw responseStatusException;
         }
     }
 
@@ -127,180 +130,139 @@ public class FileApiController extends AbstractController implements FileApi {
     public ResponseEntity<Resource> getFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "password", required = false) String password) {
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
-            DownloadReturn downloadReturn = fileService.downloadOnBehalfOf(fileID, password, requesterId);
+            DownloadReturn downloadReturn = fileService.downloadFile(fileID, password);
             File file = downloadReturn.getFile();
             InputStream stream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(stream);
-            return new ResponseEntity<Resource>(inputStreamResource, HttpStatus.OK);
-        } catch (UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
+            return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
         } catch (UnknownFileException exc3) {
             log.warn(exc3.getMessage(), exc3);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc3);
-            throw responseStatusException;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc3);
         } catch (WrongPasswordException exc4) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    HttpErrorAnswerBuilder.build401EmptyToString(), exc4);
-            throw responseStatusException;
-        } catch (UnknownUserException | FileNotFoundException exc5) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc4);
+        } catch (FileNotFoundException exc5) {
             log.error(exc5.getMessage(), exc5);
             // should never occur
-            ResponseStatusException responseStatusException = new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString());
-            throw responseStatusException;
-        }
-    }
-
-    @Override
-    public ResponseEntity<FileInfoRecipient> getFileFileInfoRecipient(@PathVariable("fileID") String fileID) {
-        try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
-            FileInfoRecipient fileInfoRecipient = fileService.getFileInfoRecipientOnBehalfOf(fileID, requesterId);
-            return new ResponseEntity<FileInfoRecipient>(fileInfoRecipient, HttpStatus.OK);
-        } catch (UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
-        } catch (UnknownFileException exc2) {
-            log.warn(exc2.getMessage(), exc2);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc2);
-            throw responseStatusException;
-        }
-    }
-
-    @Override
-    public ResponseEntity<FileInfoUploader> getFileFileInfoUploader(@PathVariable("fileID") String fileID) {
-        try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
-            FileInfoUploader fileInfoUploader = fileService.getFileInfoUploaderOnBehalfOf(fileID, requesterId);
-            return new ResponseEntity<FileInfoUploader>(fileInfoUploader, HttpStatus.OK);
-        } catch (UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
-        } catch (UnknownFileException exc2) {
-            log.warn(exc2.getMessage(), exc2);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc2);
-            throw responseStatusException;
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString());
         }
     }
 
     @Override
     public ResponseEntity<String> postFileFileRequest(@RequestBody(required = false) FileRequest fileRequest) {
-        if (fileRequest == null || fileRequest.getExpirationDate() == null || fileRequest.getHasPassword() == null
-                || fileRequest.getName() == null || fileRequest.getSize() == null || fileRequest.getSharedWith() == null
-                || fileRequest.getSharedWith().isEmpty()
-                || fileRequest.getSharedWith().stream().filter(recipient -> recipient.getEmailOrID().equals(null))
-                        .collect(Collectors.toSet()).size() != 0) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    HttpErrorAnswerBuilder.build400EmptyToString());
-            throw responseStatusException;
+        if (!FileRequestValidator.validate(fileRequest)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
-
         try {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
             String fileId = fileService.allocateFileOnBehalfOf(fileRequest.getExpirationDate(), fileRequest.getName(),
                     fileRequest.getPassword(), requesterId, fileRequest.getSharedWith(),
                     fileRequest.getSize().longValue(), requesterId);
-            return new ResponseEntity<String>(fileId, HttpStatus.OK);
-        } catch (IllegalFileSizeException | DateLiesInPastException | UserHasInsufficientSpaceException
-                | UserUnauthorizedException | NoAuthenticationException | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
+            return new ResponseEntity<>(fileId, HttpStatus.OK);
+        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+            log.debug("wrong authentication !");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
+        } catch (IllegalFileSizeException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403IllegalFileSizeToString(), exc);
+        } catch (DateLiesInPastException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403DateLiesInPastToString(), exc);
+        } catch (UserHasInsufficientSpaceException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403UserHasInsufficientSpaceToString(), exc);
+        } catch (UserUnauthorizedException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
-        } catch (UnknownUserException exc2) {
-            log.warn(exc2.getMessage(), exc2);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc2);
-            throw responseStatusException;
-        } catch (EmptyFilenameException | CouldNotAllocateFileException exc3) {
-            log.error(exc3.getMessage(), exc3);
-            // should never occur
-            ResponseStatusException responseStatusException = new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString());
-            throw responseStatusException;
+        } catch (EmptyFilenameException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403EmptyFileNameToString(), exc);
         } catch (WrongEmailStructureException e) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    HttpErrorAnswerBuilder.build400EmptyToString());
-            throw responseStatusException;
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403WrongEmailStructureToString(), e);
+        } catch (CouldNotAllocateFileException | UnknownUserException exc3) {
+            log.error(exc3.getMessage(), exc3);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString());
         }
     }
 
     @Override
     public ResponseEntity<Void> postFileContent(@PathVariable("fileID") String fileID,
             @RequestBody(required = false) Resource body) {
-        if (body == null) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    HttpErrorAnswerBuilder.build400EmptyToString());
-            throw responseStatusException;
+        try {
+            if ((body == null) || body.contentLength() == 0) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        HttpErrorAnswerBuilder.build400EmptyToString());
+            }
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            // should never occur
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString());
         }
 
         try {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
             fileService.saveOnBehalfOf(fileID, body, requesterId);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        } catch (FileLargerThanAllocationException | IllegalFileSizeException | UserUnauthorizedException
-                | NoAuthenticationException | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    HttpErrorAnswerBuilder.build401EmptyToString(), exc);
+        } catch (FileLargerThanAllocationException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+            HttpErrorAnswerBuilder.build403FileLargerThanAllocationToString(), exc);
+        } catch (IllegalFileSizeException exc ){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+            HttpErrorAnswerBuilder.build403IllegalFileSizeToString(), exc);
+        } catch (UserUnauthorizedException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
         } catch (UnknownFileException exc2) {
             log.warn(exc2.getMessage(), exc2);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     HttpErrorAnswerBuilder.build404EmptyToString(), exc2);
-            throw responseStatusException;
         } catch (IllegalFileStateException | CouldNotSaveFileException exc3) {
             log.error(exc3.getMessage(), exc3);
             // should never occur
-            ResponseStatusException responseStatusException = new ResponseStatusException(
+            throw new ResponseStatusException(
                     HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString());
-            throw responseStatusException;
         }
     }
 
     @Override
-    public ResponseEntity<Void> postFileSharedWith(@PathVariable("fileID") String fileID,
-            @RequestBody(required = false) Recipient recipient) {
-        if (recipient == null) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
+    public ResponseEntity<Void> postFileSharedWith(@PathVariable("fileID") String fileID, @RequestBody Recipient recipient) {
+        if (!RecipientValidator.validate(recipient)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     HttpErrorAnswerBuilder.build400EmptyToString());
-            throw responseStatusException;
         }
         try {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
             fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
-            return new ResponseEntity<Void>(HttpStatus.OK);
-        } catch (WrongEmailStructureException | UserUnauthorizedException | NoAuthenticationException
-                | WrongAuthenticationException exc) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.FORBIDDEN,
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(NoAuthenticationException| WrongAuthenticationException exc) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+            HttpErrorAnswerBuilder.build401EmptyToString(), exc);
+        } catch ( UserUnauthorizedException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-            throw responseStatusException;
         } catch (UnknownFileException exc2) {
             log.warn(exc2.getMessage(), exc2);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404FileNotFoundToString(), exc2);
-            throw responseStatusException;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    HttpErrorAnswerBuilder.build404EmptyToString(), exc2);
         } catch (UnknownUserException exc3) {
             log.warn(exc3.getMessage(), exc3);
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404FileNotFoundToString(), exc3);
-            throw responseStatusException;
-        } catch (MessageTooLongException e) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    HttpErrorAnswerBuilder.build400EmptyToString());
-            throw responseStatusException;
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    HttpErrorAnswerBuilder.build404EmptyToString(), exc3);
+        } catch (MessageTooLongException | WrongEmailStructureException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    HttpErrorAnswerBuilder.build400EmptyToString(), e);
         }
     }
 

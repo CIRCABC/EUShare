@@ -15,9 +15,15 @@
  */
 package com.circabc.easyshare.api;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import com.circabc.easyshare.model.Status;
 import com.circabc.easyshare.model.UserInfo;
-import io.swagger.annotations.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +33,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Validated
 @Api(value = "users", description = "the users API")
@@ -41,18 +49,19 @@ public interface UsersApi {
         return Optional.empty();
     }
 
-    @ApiOperation(value = "", nickname = "getUsers", notes = "", response = UserInfo.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "", nickname = "getUsersUserInfo", notes = "Used by the administrators in order to search for INTERNAL users' UserInfo", response = UserInfo.class, responseContainer = "List", authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "Users", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS Returns a pageSize number of UserInfos corresponding to the searchString and the pageNumber", response = UserInfo.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "SUCCESS Returns a pageSize number of UserInfos corresponding to the searchString and the pageNumber for internal users Users", response = UserInfo.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
-        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
-    @RequestMapping(value = "/users",
+    @RequestMapping(value = "/users/userInfo",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
-    default ResponseEntity<List<UserInfo>> getUsers(@NotNull @ApiParam(value = "Number of persons returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "searchString", required = true) String searchString) {
+    default ResponseEntity<List<UserInfo>> getUsersUserInfo(@NotNull @ApiParam(value = "Number of persons returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "searchString", required = true) String searchString) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

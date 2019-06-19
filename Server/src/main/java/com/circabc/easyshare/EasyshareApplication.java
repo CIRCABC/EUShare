@@ -10,9 +10,7 @@
 
 package com.circabc.easyshare;
 
-import com.circabc.easyshare.configuration.EasyShareConfiguration;
 import com.circabc.easyshare.services.UserService;
-import com.circabc.easyshare.storage.DBUser;
 import com.fasterxml.jackson.databind.Module;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,6 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.event.ContextStartedEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 

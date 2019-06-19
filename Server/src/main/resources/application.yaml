@@ -9,6 +9,10 @@ easyshare:
   maxSizeAllowedInBytes: 4294967296 
   disks:
     - C:\temp\easyshare
+logging:
+  level:
+    org.springframework: ERROR
+    org.hibernate.SQL: DEBUG
 spring:
   jackson:
     date-format: com.circabc.easyshare.RFC3339DateFormat

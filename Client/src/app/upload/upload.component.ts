@@ -10,16 +10,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { messageToRecipientValidator, sourceValidator, customFileValidator, globalValidator } from './upload.validators';
 import { Component, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { FormArray, ReactiveFormsModule, FormGroup, Validators, ValidatorFn, AbstractControl, FormBuilder, ValidationErrors, FormControl, NgForm } from '@angular/forms';
-import { faUpload, faBug } from '@fortawesome/free-solid-svg-icons';
-import { ApiService } from '../service/api.service';
+import { faUpload} from '@fortawesome/free-solid-svg-icons';
 import { CircabcService } from '../service/circabc.service';
 import { InterestGroup } from '../interfaces/interest-group';
-import { fbind } from 'q';
 import { FolderInfo } from '../interfaces/folder-info';
-import { CalendarModule } from 'primeng/calendar';
-import { MeService, FileService, FileRequest, Recipient } from '../openapi';
+import { FileService, FileRequest, Recipient, UsersService, SessionService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
-import {environment} from '../../environments/environment'
+import { environment } from '../../environments/environment'
+import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 @Component({
   selector: 'app-upload',
@@ -47,32 +45,38 @@ export class UploadComponent implements OnInit {
   modalClass = 'modal';
   submited = false;
 
-  constructor(private fb: FormBuilder, private meApi: MeService, private fileApi: FileService, private circabc: CircabcService, private notificationService: NotificationService) {
+  constructor(private fb: FormBuilder, private sessionApi: SessionService, private userApi: UsersService, private fileApi: FileService, private circabc: CircabcService, private notificationService: NotificationService) {
     this.formBuilder = fb;
   }
 
   initializeAvailableSpace() {
-    this.meApi.getUserInfo().toPromise().then((me) => {
-      const leftSpaceInBytes = me.totalSpace - me.usedSpace;
-      if (leftSpaceInBytes > 0) {
-        this.leftSpaceInBytes = leftSpaceInBytes;
-      }
-      this.leftSpaceInBytes = 0;
-    }).catch(error => {
-      this.notificationService.addErrorMessage('A problem occured while retrieving your user informations');
-    });
+    const id = this.sessionApi.getStoredId();
+    if (id) {
+      this.userApi.getUserUserInfo(id).toPromise().then((me) => {
+        const leftSpaceInBytes = me.totalSpace - me.usedSpace;
+        if (leftSpaceInBytes > 0) {
+          this.leftSpaceInBytes = leftSpaceInBytes;
+        }
+        this.leftSpaceInBytes = 0;
+      }).catch(error => {
+        this.notificationService.addErrorMessage('A problem occured while retrieving your user informations');
+      });
+    }
   }
 
   initializeAvailableIGs() {
-    this.meApi.getUserInfo().toPromise().then((userInfo => {
-      this.circabc.getUserMembership(userInfo.id).then((memberShip => {
-        this.selectIGoptions = memberShip.interestGroups;
-      })).catch(error => {
+    const id = this.sessionApi.getStoredId();
+    if (id) {
+      this.userApi.getUserUserInfo(id).toPromise().then((me) => {
+        this.circabc.getUserMembership(me.id).then((memberShip => {
+          this.selectIGoptions = memberShip.interestGroups;
+        })).catch(error => {
+          this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
+        });
+      }).catch (error => {
         this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
       });
-    })).catch(error => {
-      this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
-    });
+    }
   }
 
   initializeEventListeners() {
@@ -284,12 +288,14 @@ export class UploadComponent implements OnInit {
         for (let i = 0; i < this.getEmailsWithMessagesFormgroupNumber(); i++) {
           const message: string = this.getEmailsWithMessagesFormgroup(i)!.controls['message'].value;
           const email: string = this.getEmailsWithMessagesFormgroup(i)!.controls['email'].value;
-          if (email) {
-            recipientArray.push({ emailOrID: email, message: message }
-            )
-          } else {
-            return;
+          let recipient: Recipient = {
+            emailOrName: email,
+            sendEmail: this.emailOrLinkIsEmail()
           }
+          if(message && message!="" && this.emailOrLinkIsEmail){
+            recipient.message = message;
+          }
+        recipientArray.push(recipient);
         }
         let myFileRequest: FileRequest = {
           expirationDate: this.getExpirationDate().toISOString().substring(0, 10),
@@ -304,13 +310,12 @@ export class UploadComponent implements OnInit {
         const fileId = await this.fileApi.postFileFileRequest(myFileRequest).toPromise();
         await this.fileApi.postFileContent(fileId, this.getFileFromDisk()).toPromise();
 
-        if(this.emailOrLinkIsEmail()) {
+        if (this.emailOrLinkIsEmail()) {
           this.notificationService.addSuccessMessage('Your recipients have been notified by mail that they may download the shared file!', false);
         } else {
-          this.notificationService.addSuccessMessage('Please share the following link with your recipients: '+ environment.backend_url + '/' + fileId, false);
+          this.notificationService.addSuccessMessage('Please share the following link with your recipients: ' + environment.backend_url + '/' + fileId, false);
         }
       } catch (e) {
-        console.error(e);
         this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
         this.uploadInProgress = false;
         return;

@@ -14,15 +14,16 @@
  */
 package com.circabc.easyshare.api;
 
-import com.circabc.easyshare.model.FileInfoRecipient;
-import com.circabc.easyshare.model.FileInfoUploader;
+import java.util.Optional;
+
+import javax.validation.Valid;
+
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
-import org.springframework.core.io.Resource;
 import com.circabc.easyshare.model.Status;
-import io.swagger.annotations.*;
+
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +33,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 
-import javax.validation.Valid;
-import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.Authorization;
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Validated
 @Api(value = "file", description = "the file API")
@@ -44,12 +49,13 @@ public interface FileApi {
         return Optional.empty();
     }
 
-    @ApiOperation(value = "", nickname = "deleteFile", notes = "", authorizations = {
+    @ApiOperation(value = "", nickname = "deleteFile", notes = "Used by INTERNAL users and ADMIN in order to delete a file", authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "File", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS Deletes the file content and its meta data, also sends an email to original requester with the reason of deletion if the reason is given"),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message can be NotAuthorized", response = Status.class),
+        @ApiResponse(code = 200, message = "SUCCESS Deletes the file content and its meta data, also sends an email to original uploader with the reason of deletion if the reason is given"),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
         @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/{fileID}",
@@ -61,11 +67,12 @@ public interface FileApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "deleteFileSharedWithUser", notes = "", authorizations = {
+    @ApiOperation(value = "", nickname = "deleteFileSharedWithUser", notes = "Used by INTERNAL users in order to delete a share link for one of the shared users", authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "File", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS"),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
         @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be either FileNotFound or UserNotFound", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
@@ -78,9 +85,7 @@ public interface FileApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "getFile", notes = "", response = Resource.class, authorizations = {
-        @Authorization(value = "basicAuth")
-    }, tags={ "File", })
+    @ApiOperation(value = "", nickname = "getFile", notes = "Used by INTERNAL and EXTERNAL users to download a shared file", response = Resource.class, tags={ "File", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS Returns the file and sends a mail to original uploader to inform him of the download", response = Resource.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
@@ -95,64 +100,15 @@ public interface FileApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "getFileFileInfoRecipient", notes = "", response = FileInfoRecipient.class, authorizations = {
-        @Authorization(value = "basicAuth")
-    }, tags={ "File", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS Returns the FileInfoRecipient of the corresponding fileID", response = FileInfoRecipient.class),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
-        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
-        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
-    @RequestMapping(value = "/file/{fileID}/fileInfoRecipient",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    default ResponseEntity<FileInfoRecipient> getFileFileInfoRecipient(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "null");
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    @ApiOperation(value = "", nickname = "getFileFileInfoUploader", notes = "", response = FileInfoUploader.class, authorizations = {
-        @Authorization(value = "basicAuth")
-    }, tags={ "File", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS Returns the FileInfoRecipient of the corresponding fileID", response = FileInfoUploader.class),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
-        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
-        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
-    @RequestMapping(value = "/file/{fileID}/fileInfoUploader",
-        produces = { "application/json" }, 
-        method = RequestMethod.GET)
-    default ResponseEntity<FileInfoUploader> getFileFileInfoUploader(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    ApiUtil.setExampleResponse(request, "application/json", "null");
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    @ApiOperation(value = "", nickname = "postFileContent", notes = "Adds the user to the list of people with which the file is shared, it can be a userID or an email", authorizations = {
+    @ApiOperation(value = "", nickname = "postFileContent", notes = "Used by INTERNAL users in order to post the file content on the pre-reserved file space", authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "File", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS"),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
-        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be FileNotFound or UserNotFound", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, FileLargerThanAllocation, IllegalFileSize", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/{fileID}/fileRequest/fileContent",
         produces = { "application/json" }, 
@@ -164,32 +120,34 @@ public interface FileApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "postFileFileRequest", notes = "", response = String.class, authorizations = {
+    @ApiOperation(value = "", nickname = "postFileFileRequest", notes = "Used by INTERNAL users in order to request the reservation of space for a file", response = String.class, authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "File", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS Returns the File ID of the newly-created file", response = String.class),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized or InssuficientMemoryLeft", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/fileRequest",
         produces = { "text/plain", "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<String> postFileFileRequest(@ApiParam(value = "The id of the file will be ignored here" ,required=true )  @Valid @RequestBody FileRequest fileRequest) {
+    default ResponseEntity<String> postFileFileRequest(@ApiParam(value = "" ,required=true )  @Valid @RequestBody FileRequest fileRequest) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
 
 
-    @ApiOperation(value = "", nickname = "postFileSharedWith", notes = "Adds the user to the list of people with which the file is shared, it can be a userID or an email", authorizations = {
+    @ApiOperation(value = "", nickname = "postFileSharedWith", notes = "Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required", authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "File", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS"),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
-        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be FileNotFound or UserNotFound", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/{fileID}/fileRequest/sharedWith",
         produces = { "application/json" }, 

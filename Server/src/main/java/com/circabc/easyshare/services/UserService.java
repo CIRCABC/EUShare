@@ -24,6 +24,7 @@ import com.circabc.easyshare.model.UserSpace;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.circabc.easyshare.storage.DBUser;
@@ -32,6 +33,7 @@ import com.circabc.easyshare.storage.DBUser.Role;
 import com.circabc.easyshare.utils.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -48,65 +50,68 @@ public class UserService {
 
     public String getAuthenticatedUserId(Credentials credentials) throws WrongAuthenticationException {
         DBUser dbUser = userRepository.findOneByUsername(credentials.getEmail());
-        if (dbUser != null) {
-            if (dbUser.getPassword().equals(credentials.getPassword())) {
-                return dbUser.getId();
-            }
+        if (dbUser != null && dbUser.getPassword().equals(credentials.getPassword())) {
+            return dbUser.getId();
         }
         throw new WrongAuthenticationException();
     }
 
-
-    public DBUser createInternalUser(String userId, String username, String password) {
-        DBUser user = DBUser.createInternalUser(userId, username, password, esConfig.getDefaultUserSpace());
-        return userRepository.saveAndFlush(user);
-    }
-
-    public DBUser createInternalUser(String username, String password) {
-        String userId = StringUtils.randomString();
-        DBUser user = DBUser.createInternalUser(userId, username, password, esConfig.getDefaultUserSpace());
-        return userRepository.saveAndFlush(user);
+    public DBUser createInternalUser(String email, String name, String password, String username) {
+        DBUser user = DBUser.createInternalUser(email, name, password, esConfig.getDefaultUserSpace(), username);
+        return userRepository.save(user);
     }
 
     public DBUser createAdminUser(String password) {
-        DBUser user = this.createInternalUser("admin", password);
+        DBUser user = this.createInternalUser("admin@admin.admin", "admin", password, "admin"); // NOSONAR
         user.setRole(Role.ADMIN);
-        return userRepository.saveAndFlush(user);
+        return userRepository.save(user);
     }
 
-    public DBUser createExternalUser(String email) throws WrongEmailStructureException {
-        if(StringUtils.validateEmailAddress(email)) {
-            DBUser user = DBUser.createExternalUser(email);
-            return userRepository.saveAndFlush(user);
-        } else {
-            throw new WrongEmailStructureException();
-        }
+    /**
+     * One of the arguments can be null
+     */
+    public DBUser createExternalUser(String email, String name) {
+            DBUser user = DBUser.createExternalUser(email, name);
+            return userRepository.save(user);
     }
 
-    public DBUser getDbUser(String userId) throws UnknownUserException {
+    DBUser getDbUser(String userId) throws UnknownUserException {
         return userRepository.findById(userId).orElseThrow(() -> new UnknownUserException());
     }
 
     public DBUser getUserOrCreateExternalUser(Recipient recipient) throws WrongEmailStructureException {
-        final String emailOrId = recipient.getEmailOrID();
-        final DBUser dbUser = userRepository.findById(emailOrId).orElse(null);
+        final String emailOrName = recipient.getEmailOrName();
+        DBUser dbUser = userRepository.findOneByName(emailOrName);
+        if (dbUser == null) {
+            dbUser = userRepository.findOneByEmail(emailOrName);
+        }
         if (dbUser != null) {
             return dbUser;
         } else {
-           return createExternalUser(emailOrId);
+            if (StringUtils.validateEmailAddress(emailOrName)) {
+                return this.createExternalUser(emailOrName, null);
+            }
+            if (StringUtils.validateUsername(emailOrName)) {
+                return this.createExternalUser(null, emailOrName);
+            }
+            throw new WrongEmailStructureException();
         }
     }
 
     public List<DBUser> getDbUsersByIds(Iterable<String> ids) {
-        return userRepository.findAllById(ids);
+        return (List<DBUser>) userRepository.findAllById(ids);
     }
 
     public void createDefaultUsers() {
-        if (userRepository.findOneByUsername("admin") == null) {
+        if (userRepository.findOneByUsername("admin") == null && userRepository.findOneByEmail("admin@admin.admin") == null) {
             this.createAdminUser("admin");
+        } else {
+            log.warn("Admin could not be created, already exists");
         }
-        if (userRepository.findOneByUsername("username") == null) {
-            this.createInternalUser("username", "password");
+        if (userRepository.findOneByUsername("username") == null && userRepository.findOneByEmail("email@email.com") == null)  {
+            this.createInternalUser("email@email.com", "name", "username", "password");
+        } else {
+            log.warn("Internal user could not be created, already exists");
         }
     }
 
@@ -140,6 +145,45 @@ public class UserService {
         }
     }
 
+    public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId) throws UnknownUserException,
+            UserUnauthorizedException, ExternalUserCannotBeAdminException, IllegalSpaceException {
+        String userId = userInfo.getId();
+        if (this.isAdmin(requesterId)) {
+            UserInfo oldUserInfo = this.getUserInfo(userId);
+            // Id, Name, UsedSpace
+            if (!oldUserInfo.getId().equals(userId) || !oldUserInfo.getName().equals(userInfo.getName())
+                    || !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
+                throw new UserUnauthorizedException();
+            }
+            // isAdmin
+            if (!oldUserInfo.getIsAdmin().equals(userInfo.getIsAdmin())) {
+                if (oldUserInfo.getIsAdmin()) {
+                    this.revokeAdminRights(userId);
+                } else {
+                    this.grantAdminRights(userId);
+                }
+            }
+            // TotalSpace
+            if (!oldUserInfo.getTotalSpace().equals(userInfo.getTotalSpace())) {
+                this.setSpace(userId, userInfo.getTotalSpace().longValue());
+            }
+            return userInfo;
+        } else {
+            throw new UserUnauthorizedException();
+        }
+
+    }
+
+    public List<UserInfo> getUsersUserInfoOnBehalfOf(int pageSize, int pageNumber, String searchString,
+            String requesterId) throws UnknownUserException, UserUnauthorizedException {
+        if (isAdmin(requesterId)) {
+            return userRepository.findByEmailStartsWith(searchString, PageRequest.of(pageNumber, pageSize)).stream()
+                    .map(dbUser -> dbUser.toUserInfo()).collect(Collectors.toList());
+        } else {
+            throw new UserUnauthorizedException();
+        }
+    }
+
     public UserSpace getUserSpaceOnBehalfOf(String userId, String requesterId)
             throws UserUnauthorizedException, UnknownUserException {
         if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
@@ -158,15 +202,14 @@ public class UserService {
         }
     }
 
-    boolean isRequesterIdEqualsToUserIdOrIsAnAdmin(String userId, String requesterId)
-            throws UnknownUserException {
+    boolean isRequesterIdEqualsToUserIdOrIsAnAdmin(String userId, String requesterId) throws UnknownUserException {
         return ((requesterId.equals(userId)) || (this.getDbUser(requesterId).getRole().equals(Role.ADMIN)));
     }
 
     /**
      * Grant admin rights to the specified user.
      */
-    public void grantAdminRights(String userId) throws UnknownUserException, ExternalUserCannotBeAdminException {
+    private void grantAdminRights(String userId) throws UnknownUserException, ExternalUserCannotBeAdminException {
         DBUser user = this.getDbUser(userId);
 
         if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
@@ -174,7 +217,7 @@ public class UserService {
         }
 
         user.setRole(DBUser.Role.ADMIN);
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
     }
 
     public boolean isAdmin(String userId) throws UnknownUserException {
@@ -185,11 +228,11 @@ public class UserService {
     /**
      * Resets the role of a user to {@code INTERNAL}.
      */
-    public void revokeAdminRights(String userId) throws UnknownUserException {
+    private void revokeAdminRights(String userId) throws UnknownUserException {
         DBUser user = this.getDbUser(userId);
         if (user.getRole().equals(Role.ADMIN)) {
             user.setRole(DBUser.Role.INTERNAL);
-            userRepository.saveAndFlush(user);
+            userRepository.save(user);
         }
     }
 
@@ -205,13 +248,13 @@ public class UserService {
     /**
      * Sets {@code userId}'s maximum space to {@code space}
      */
-    public void setSpace(String userId, long space) throws IllegalSpaceException, UnknownUserException {
+    private void setSpace(String userId, long space) throws IllegalSpaceException, UnknownUserException {
         if (space < 0) {
             throw new IllegalSpaceException();
         }
         DBUser user = this.getDbUser(userId);
         user.setTotalSpace(space);
-        userRepository.saveAndFlush(user);
+        userRepository.save(user);
     }
 
     public void setSpaceOnBehalfOf(String userId, long space, String requesterId)

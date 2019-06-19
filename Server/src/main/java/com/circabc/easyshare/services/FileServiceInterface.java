@@ -41,14 +41,20 @@ public interface FileServiceInterface {
     public void addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
             throws UnknownFileException, UserUnauthorizedException, UnknownUserException, WrongEmailStructureException, MessageTooLongException;
 
-    public DownloadReturn downloadOnBehalfOf(String fileId, String password, String requesterId)
-            throws UnknownFileException, WrongPasswordException, UserUnauthorizedException, UnknownUserException;
+    public DownloadReturn downloadFile(String fileId, String password)
+                throws UnknownFileException, WrongPasswordException, UserUnauthorizedException, UnknownUserException;
 
     public FileInfoRecipient getFileInfoRecipientOnBehalfOf(String fileId, String requesterId)
             throws UnknownFileException, UserUnauthorizedException;
 
+    public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(int pageSize, int pageNumber, String userId, String requesterId)
+    throws UserUnauthorizedException, UnknownUserException;
+    
     public FileInfoUploader getFileInfoUploaderOnBehalfOf(String fileId, String requesterId)
             throws UnknownFileException, UserUnauthorizedException;
+
+    public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(int pageSize, int pageNumber, String userId, String requesterId)
+     throws UserUnauthorizedException, UnknownUserException;
 
     public String allocateFileOnBehalfOf(LocalDate expirationDate, String fileName, String password, String uploaderId, List<Recipient> recipientList, long filesize,
             String requesterId) throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,

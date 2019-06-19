@@ -10,23 +10,21 @@
 
 package com.circabc.easyshare.model;
 
-import java.util.Objects;
-import com.circabc.easyshare.model.UserSpace;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.Objects;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * UserInfo
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 public class UserInfo   {
   @JsonProperty("totalSpace")
@@ -38,13 +36,8 @@ public class UserInfo   {
   @JsonProperty("id")
   private String id;
 
-  @JsonProperty("uploadedFiles")
-  @Valid
-  private List<String> uploadedFiles = new ArrayList<>();
-
-  @JsonProperty("sharedFiles")
-  @Valid
-  private List<String> sharedFiles = new ArrayList<>();
+  @JsonProperty("name")
+  private String name;
 
   @JsonProperty("isAdmin")
   private Boolean isAdmin;
@@ -101,10 +94,10 @@ public class UserInfo   {
   }
 
   /**
-   * User ID (email address in case of external user)
+   * User ID
    * @return id
   */
-  @ApiModelProperty(required = true, value = "User ID (email address in case of external user)")
+  @ApiModelProperty(required = true, value = "User ID")
   @NotNull
 
 
@@ -116,56 +109,25 @@ public class UserInfo   {
     this.id = id;
   }
 
-  public UserInfo uploadedFiles(List<String> uploadedFiles) {
-    this.uploadedFiles = uploadedFiles;
-    return this;
-  }
-
-  public UserInfo addUploadedFilesItem(String uploadedFilesItem) {
-    this.uploadedFiles.add(uploadedFilesItem);
+  public UserInfo name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
-   * Files the user has uploaded
-   * @return uploadedFiles
+   * User name (email address in case of external user)
+   * @return name
   */
-  @ApiModelProperty(required = true, value = "Files the user has uploaded")
+  @ApiModelProperty(required = true, value = "User name (email address in case of external user)")
   @NotNull
 
 
-  public List<String> getUploadedFiles() {
-    return uploadedFiles;
+  public String getName() {
+    return name;
   }
 
-  public void setUploadedFiles(List<String> uploadedFiles) {
-    this.uploadedFiles = uploadedFiles;
-  }
-
-  public UserInfo sharedFiles(List<String> sharedFiles) {
-    this.sharedFiles = sharedFiles;
-    return this;
-  }
-
-  public UserInfo addSharedFilesItem(String sharedFilesItem) {
-    this.sharedFiles.add(sharedFilesItem);
-    return this;
-  }
-
-  /**
-   * Files the user has given access to
-   * @return sharedFiles
-  */
-  @ApiModelProperty(required = true, value = "Files the user has given access to")
-  @NotNull
-
-
-  public List<String> getSharedFiles() {
-    return sharedFiles;
-  }
-
-  public void setSharedFiles(List<String> sharedFiles) {
-    this.sharedFiles = sharedFiles;
+  public void setName(String name) {
+    this.name = name;
   }
 
   public UserInfo isAdmin(Boolean isAdmin) {
@@ -199,17 +161,16 @@ public class UserInfo   {
       return false;
     }
     UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.totalSpace, userInfo.totalSpace) &&
+    return Objects.equals(this.totalSpace, userInfo.totalSpace) &&//NOSONAR
         Objects.equals(this.usedSpace, userInfo.usedSpace) &&
         Objects.equals(this.id, userInfo.id) &&
-        Objects.equals(this.uploadedFiles, userInfo.uploadedFiles) &&
-        Objects.equals(this.sharedFiles, userInfo.sharedFiles) &&
+        Objects.equals(this.name, userInfo.name) &&
         Objects.equals(this.isAdmin, userInfo.isAdmin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalSpace, usedSpace, id, uploadedFiles, sharedFiles, isAdmin);
+    return Objects.hash(totalSpace, usedSpace, id, name, isAdmin);
   }
 
   @Override
@@ -220,8 +181,7 @@ public class UserInfo   {
     sb.append("    totalSpace: ").append(toIndentedString(totalSpace)).append("\n");
     sb.append("    usedSpace: ").append(toIndentedString(usedSpace)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    uploadedFiles: ").append(toIndentedString(uploadedFiles)).append("\n");
-    sb.append("    sharedFiles: ").append(toIndentedString(sharedFiles)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    isAdmin: ").append(toIndentedString(isAdmin)).append("\n");
     sb.append("}");
     return sb.toString();

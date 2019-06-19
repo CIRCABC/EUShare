@@ -9,8 +9,10 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { FileInfoUploader, SessionService, FileService, MeService, UserInfo } from '../../openapi';
+import { FileInfoUploader, SessionService, FileService, UsersService, UserInfo } from '../../openapi';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../common/notification/notification.service';
+import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-my-shared-files',
@@ -20,34 +22,32 @@ import { Router } from '@angular/router';
 export class MySharedFilesComponent implements OnInit {
 
   faLock = faLock;
+  faTrashAlt = faTrashAlt;
 
   fileIds = Array<string>();
-  files = Array<FileInfoUploader>();
+  fileInfoUploaderArray = Array<FileInfoUploader>();
   loading = false;
   modalActive = false;
   modalError = false;
   modalFileId = '';
   modalFileName = '';
-  myId!: string;
+  myName!: string;
 
-  constructor(private session: SessionService, private meApi: MeService, private fileApi: FileService, private router: Router) { }
+  constructor(private session: SessionService, private userApi: UsersService, private fileApi: FileService, private router: Router, private notificationService: NotificationService) { }
 
   ngOnInit() {
     const id = this.session.getStoredId();
     if (id) {
-      this.myId = id;
-      this.meApi.getUserInfo().subscribe(
-        userInfo => {
-          this.files = new Array();
-          this.fileIds = new Array();
-          userInfo.uploadedFiles.forEach(str => {
-            this.fileApi.getFileFileInfoUploader(str).subscribe(fileInfoUploader => {
-              this.files.push(fileInfoUploader);
-              this.fileIds.push(str);
-            });
-          });
-        }
-      );
+      this.userApi.getUserUserInfo(id).toPromise().then(userInfo => {
+        this.myName = userInfo.name;
+      }).catch(error => {
+        this.notificationService.errorMessageToDisplay(error, 'downloading your user\'s information');
+      })
+      this.userApi.getFilesFileInfoUploader(id, 10, 0).toPromise().then(fileInfoUploaderArray => {
+        this.fileInfoUploaderArray = fileInfoUploaderArray;
+      }).catch(error => {
+        this.notificationService.errorMessageToDisplay(error, 'fetching your uploaded files');
+      });
     } else {
       this.router.navigateByUrl('login');
     }
@@ -55,9 +55,11 @@ export class MySharedFilesComponent implements OnInit {
   }
 
   public download(fileId: string, fileName: string, filePassword?: string) {
-    this.fileApi.getFile(fileId, filePassword).subscribe(file => {
+    this.fileApi.getFile(fileId, filePassword).toPromise().then(file => {
       saveAs(file, fileName);
-    })
+    }).catch(error => {
+      this.notificationService.errorMessageToDisplay(error, 'downloading your file');
+    });
   }
 
 
@@ -72,10 +74,22 @@ export class MySharedFilesComponent implements OnInit {
   }
 
   public delete(i: number) {
-    this.fileApi.deleteFile(this.fileIds[i]).subscribe(value => {
-      this.fileIds.splice(i, 1);
-      this.files.splice(i, 1);
+    this.fileApi.deleteFile(this.fileInfoUploaderArray[i].fileId).toPromise().then(success => {
+      this.fileInfoUploaderArray.splice(i, 1);
+      this.notificationService.addSuccessMessage('Successfully deleted file named ' + this.fileInfoUploaderArray[i].name);
+    }).catch(error => {
+      this.notificationService.errorMessageToDisplay(error, 'deleting your file');
     });
   }
+
+  public deleteShare(fileId: string, fileName: string, shareId: string, shareName: string, fileIndex: number, shareIndex: number) {
+    this.fileApi.deleteFileSharedWithUser(fileId, shareId).toPromise().then(success => {
+      this.fileInfoUploaderArray[fileIndex].sharedWith.splice(shareIndex, 1);
+      this.notificationService.addSuccessMessage('Successfully removed file ' + fileName + ' \'s share with ' + shareName);
+    }).catch(error => {
+      this.notificationService.errorMessageToDisplay(error, 'removing the file\'s share');
+    });
+  }
+
 
 }

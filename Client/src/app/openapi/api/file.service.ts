@@ -27,8 +27,6 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
-import { FileInfoRecipient } from '../model/fileInfoRecipient';
-import { FileInfoUploader } from '../model/fileInfoUploader';
 import { FileRequest } from '../model/fileRequest';
 import { Recipient } from '../model/recipient';
 import { Status } from '../model/status';
@@ -74,7 +72,7 @@ export class FileService {
 
     /**
      * 
-     * 
+     * Used by INTERNAL users and ADMIN in order to delete a file
      * @param fileID The id of the file
      * @param reason Reason for deletion of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -125,7 +123,7 @@ export class FileService {
 
     /**
      * 
-     * 
+     * Used by INTERNAL users in order to delete a share link for one of the shared users
      * @param fileID The id of the file
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -173,7 +171,7 @@ export class FileService {
 
     /**
      * 
-     * 
+     * Used by INTERNAL and EXTERNAL users to download a shared file
      * @param fileID The id of the file
      * @param password Password of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -194,10 +192,6 @@ export class FileService {
 
         let headers = this.defaultHeaders;
 
-        // authentication (basicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
             'application/octet-stream',
@@ -226,95 +220,7 @@ export class FileService {
 
     /**
      * 
-     * 
-     * @param fileID The id of the file
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getFileFileInfoRecipient(fileID: string, observe?: 'body', reportProgress?: boolean): Observable<FileInfoRecipient>;
-    public getFileFileInfoRecipient(fileID: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileInfoRecipient>>;
-    public getFileFileInfoRecipient(fileID: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileInfoRecipient>>;
-    public getFileFileInfoRecipient(fileID: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        if (fileID === null || fileID === undefined) {
-            throw new Error('Required parameter fileID was null or undefined when calling getFileFileInfoRecipient.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (basicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<FileInfoRecipient>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileInfoRecipient`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param fileID The id of the file
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getFileFileInfoUploader(fileID: string, observe?: 'body', reportProgress?: boolean): Observable<FileInfoUploader>;
-    public getFileFileInfoUploader(fileID: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileInfoUploader>>;
-    public getFileFileInfoUploader(fileID: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileInfoUploader>>;
-    public getFileFileInfoUploader(fileID: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        if (fileID === null || fileID === undefined) {
-            throw new Error('Required parameter fileID was null or undefined when calling getFileFileInfoUploader.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (basicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<FileInfoUploader>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileInfoUploader`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * Adds the user to the list of people with which the file is shared, it can be a userID or an email
+     * Used by INTERNAL users in order to post the file content on the pre-reserved file space
      * @param fileID The id of the file
      * @param body The file bytes
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -365,8 +271,8 @@ export class FileService {
 
     /**
      * 
-     * 
-     * @param fileRequest The id of the file will be ignored here
+     * Used by INTERNAL users in order to request the reservation of space for a file
+     * @param fileRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -386,8 +292,8 @@ export class FileService {
         }
         // to determine the Accept header
         const httpHeaderAccepts: string[] = [
-            'text/plain',
-            'application/json'
+            'text/plain'
+            //'application/json'
         ];
         const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         if (httpHeaderAcceptSelected !== undefined) {
@@ -404,7 +310,7 @@ export class FileService {
         }
 
         return this.httpClient.post(`${this.configuration.basePath}/file/fileRequest`,
-            fileRequest,
+                    fileRequest,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -417,7 +323,7 @@ export class FileService {
 
     /**
      * 
-     * Adds the user to the list of people with which the file is shared, it can be a userID or an email
+     * Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required
      * @param fileID The id of the file
      * @param recipient The userID or email of user to share the file with
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

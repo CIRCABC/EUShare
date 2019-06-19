@@ -53,7 +53,7 @@ public class MountPoint {
 
     /**
      * Tries to reserve specified space by creating a sparse file.
-     *
+     * If the file path is already taken, removes it
      * @return Absolute path to file if it could be created, else Optional.empty()
      */
     public Optional<String> tryReserveSpace(@NonNull String id, long filesize) {
@@ -69,9 +69,11 @@ public class MountPoint {
                 f.setLength(filesize);
             }
         } catch (IOException e) {
+            // TODO: remove this deletion
             try {
                 Files.deleteIfExists(path);
             } catch (IOException ignored) {
+                log.warn("Trying to reserve a space already taken !", ignored);
             }
 
             log.error(String.format("Could not save file: %s", e.toString()),e);

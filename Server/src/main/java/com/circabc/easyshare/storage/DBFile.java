@@ -13,6 +13,8 @@ package com.circabc.easyshare.storage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.math.BigDecimal;
@@ -23,21 +25,25 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.ForeignKey;
 
 import com.circabc.easyshare.model.FileBasics;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
-import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.RecipientWithLink;
 
 @Entity
 @Table(name = "Files")
@@ -51,6 +57,7 @@ public class DBFile {
     private String filename;
 
     @Id
+    @Column(name="FILE_ID", nullable = false, unique= true)
     private String id;
 
     @Column(nullable = false)
@@ -61,8 +68,8 @@ public class DBFile {
     @Column(nullable = false)
     private String path;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<DBUser> sharedWith;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy ="file", cascade = CascadeType.ALL)
+    private Set<DBUserFile> sharedWith;
 
     @Column(name = "fileSize", nullable = false)
     private long size;
@@ -72,13 +79,14 @@ public class DBFile {
     private Status status = Status.ALLOCATED;
 
     @ManyToOne(optional = false)
+    @JoinColumn(foreignKey= @ForeignKey(name = "Fk_to_uploader"))
     private DBUser uploader;
 
-    DBFile(String id, DBUser uploader, Collection<DBUser> sharedWith, String filename, long size, LocalDate expirationDate, String path) {
+    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size, LocalDate expirationDate, String path) {
         this(id, uploader, sharedWith, filename, size, expirationDate, path, null);
     }
-
-    public DBFile(String id, DBUser uploader, Collection<DBUser> sharedWith, String filename, long size, LocalDate expirationDate, String path, String password) {
+    
+    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size, LocalDate expirationDate, String path, String password) { //NOSONAR
         this.id = id;
         this.uploader = uploader;
         this.sharedWith = new HashSet<>(sharedWith);
@@ -101,22 +109,18 @@ public class DBFile {
         fileInfoRecipient.setHasPassword(this.password != null);
         fileInfoRecipient.setName(this.filename);
         fileInfoRecipient.setSize(new BigDecimal(this.size));
-        fileInfoRecipient.uploader(this.uploader.getId());
+        fileInfoRecipient.setUploaderName(this.uploader.getName());
         return fileInfoRecipient;
     }
 
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
-        List<Recipient> sharedWithRecipients = new ArrayList<>();
-        for (DBUser dbUser : this.sharedWith) {
-            Recipient recipient = new Recipient();
-            recipient.setEmailOrID(dbUser.getId());
-            sharedWithRecipients.add(recipient);
-        }
+        List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream().map(dbUserFile -> dbUserFile.toRecipientWithLink()).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password!=null);
         fileInfoUploader.setName(this.filename);
         fileInfoUploader.setSize(new BigDecimal(this.size));
+        fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
         return fileInfoUploader;
     }
@@ -140,5 +144,22 @@ public class DBFile {
         UPLOADING,
         AVAILABLE,
         DELETED
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof DBFile)){
+            return false;
+        }
+        DBFile other = (DBFile) o;
+        return (id != null && id.equals(other.getId()));
+    }
+ 
+    @Override
+    public int hashCode() {
+        return 31;
     }
 }

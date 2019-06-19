@@ -15,6 +15,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HttpErrorAnswerBuilder {
+
+    private HttpErrorAnswerBuilder() {
+
+    }
+
     public static Status build400Empty() {
         return buildEmpty(400);
     }
@@ -25,6 +30,34 @@ public class HttpErrorAnswerBuilder {
     
     private static Status build403NotAuthorized() {
         return buildWithMessage(403, "NotAuthorized");
+    }
+
+    private static Status build403FileLargerThanAllocation() {
+        return buildWithMessage(403, "FileLargerThanAllocation");
+    }
+
+    private static Status build403InssuficientMemoryLeft() {
+        return buildWithMessage(403, "InssuficientMemoryLeft");
+    }
+
+    private static Status build403IllegalFileSize() {
+        return buildWithMessage(403, "IllegalFileSize");
+    }
+
+    private static Status build403DateLiesInPast() {
+        return buildWithMessage(403, "DateLiesInPast");
+    }
+
+    private static Status build403UserHasInsufficientSpace() {
+        return buildWithMessage(403, "UserHasInsufficientSpace");
+    }
+
+    private static Status build403EmptyFileName() {
+        return buildWithMessage(403, "EmptyFileName");
+    }
+
+    private static Status build403WrongEmailStructure() {
+        return buildWithMessage(403, "WrongEmailStructure");
     }
 
     private static Status build404Empty() {
@@ -72,12 +105,40 @@ public class HttpErrorAnswerBuilder {
         return mapAStatus(build403NotAuthorized());
     }
 
+    public static String build403InssuficientMemoryLeftToString() {
+        return mapAStatus(build403InssuficientMemoryLeft());
+    }
+
+    public static String build403IllegalFileSizeToString() {
+        return mapAStatus(build403IllegalFileSize());
+    }
+
+    public static String build403DateLiesInPastToString() {
+        return mapAStatus(build403DateLiesInPast());
+    }
+
+    public static String build403EmptyFileNameToString() {
+        return mapAStatus(build403EmptyFileName());
+    }
+
+    public static String build403WrongEmailStructureToString() {
+        return mapAStatus(build403WrongEmailStructure());
+    }
+
+    public static String build403FileLargerThanAllocationToString() {
+        return mapAStatus(build403FileLargerThanAllocation());
+    }
+
     public static String build404EmptyToString() {
         return mapAStatus(build404Empty());
     }
 
     public static String build404FileNotFoundToString() {
         return mapAStatus(build404FileNotFound());
+    }
+
+    public static String build403UserHasInsufficientSpaceToString() {
+        return mapAStatus(build403UserHasInsufficientSpace());
     }
 
     public static String build404UserNotFoundToString() {
@@ -96,7 +157,7 @@ public class HttpErrorAnswerBuilder {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(status);
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e) {//NOSONAR
             // ignore
             return "";
         }

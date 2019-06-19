@@ -11,4 +11,6 @@
 package com.circabc.easyshare.exceptions;
 
 public class DateLiesInPastException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 }

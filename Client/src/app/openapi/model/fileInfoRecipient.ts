@@ -39,8 +39,8 @@ export interface FileInfoRecipient {
      */
     size: number;
     /**
-     * User ID
+     * name of the uploader
      */
-    uploader: string;
+    uploaderName: string;
 }
 

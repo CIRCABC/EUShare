@@ -39,7 +39,7 @@ import { routerNgProbeToken } from '@angular/router/src/router_module';
 
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class SessionService {
 
@@ -76,7 +76,7 @@ export class SessionService {
     }
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration, private router: Router) {
 
-        if (configuration) {
+       if (configuration) {
             this.configuration = configuration;
             this.configuration.basePath = configuration.basePath || basePath || this.basePath;
 
@@ -102,7 +102,7 @@ export class SessionService {
 
     /**
      * 
-     * 
+     * Used to login by internal users
      * @param credentials 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -112,7 +112,6 @@ export class SessionService {
     public postLogin(credentials: Credentials, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
     public postLogin(credentials: Credentials, observe: any = 'body', reportProgress: boolean = false): Observable<any> {
         if (credentials === null || credentials === undefined) {
-            console.error('Required parameter credentials was null or undefined when calling postLogin');
             throw new Error('Required parameter credentials was null or undefined when calling postLogin.');
         }
 

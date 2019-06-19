@@ -10,10 +10,15 @@
 
 package com.circabc.easyshare.storage;
 
-import java.util.Optional;
+import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface UserRepository extends JpaRepository<DBUser, String> {
+public interface UserRepository extends PagingAndSortingRepository<DBUser, String> {
+    public List<DBUser> findAllById(String id);
     public DBUser findOneByUsername(String username);
+    public DBUser findOneByEmail(String email);
+    public DBUser findOneByName(String name);
+    public List<DBUser> findByEmailStartsWith(String start, Pageable page);
 }

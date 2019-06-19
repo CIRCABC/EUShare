@@ -35,13 +35,9 @@ export interface UserInfo {
      */
     id: string;
     /**
-     * Files the user has uploaded
+     * User name
      */
-    uploadedFiles: Array<string>;
-    /**
-     * Files the user has given access to
-     */
-    sharedFiles: Array<string>;
+    name: string;
     /**
      * True if the user is admin
      */

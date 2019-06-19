@@ -11,41 +11,47 @@
 package com.circabc.easyshare.model;
 
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.*;
 
 /**
  * Recipient
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 public class Recipient   {
-  @JsonProperty("emailOrID")
-  private String emailOrID;
+  @JsonProperty("emailOrName")
+  private String emailOrName;
 
   @JsonProperty("message")
   private String message;
 
-  public Recipient emailOrID(String emailOrID) {
-    this.emailOrID = emailOrID;
+  @JsonProperty("sendEmail")
+  private Boolean sendEmail;
+
+  public Recipient emailOrName(String emailOrName) {
+    this.emailOrName = emailOrName;
     return this;
   }
 
   /**
-   * User ID (email in case of external user)
-   * @return emailOrID
+   * Email or name of the recipient
+   * @return emailOrName
   */
-  @ApiModelProperty(required = true, value = "User ID (email in case of external user)")
+  @ApiModelProperty(required = true, value = "Email or name of the recipient")
   @NotNull
 
 
-  public String getEmailOrID() {
-    return emailOrID;
+  public String getEmailOrName() {
+    return emailOrName;
   }
 
-  public void setEmailOrID(String emailOrID) {
-    this.emailOrID = emailOrID;
+  public void setEmailOrName(String emailOrName) {
+    this.emailOrName = emailOrName;
   }
 
   public Recipient message(String message) {
@@ -68,6 +74,26 @@ public class Recipient   {
     this.message = message;
   }
 
+  public Recipient sendEmail(Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+    return this;
+  }
+
+  /**
+   * True to send an email with the download link
+   * @return sendEmail
+  */
+  @ApiModelProperty(value = "True to send an email with the download link")
+
+
+  public Boolean getSendEmail() {
+    return sendEmail;
+  }
+
+  public void setSendEmail(Boolean sendEmail) {
+    this.sendEmail = sendEmail;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -78,13 +104,14 @@ public class Recipient   {
       return false;
     }
     Recipient recipient = (Recipient) o;
-    return Objects.equals(this.emailOrID, recipient.emailOrID) &&
-        Objects.equals(this.message, recipient.message);
+    return Objects.equals(this.emailOrName, recipient.emailOrName) &&
+        Objects.equals(this.message, recipient.message) &&
+        Objects.equals(this.sendEmail, recipient.sendEmail);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(emailOrID, message);
+    return Objects.hash(emailOrName, message, sendEmail);
   }
 
   @Override
@@ -92,8 +119,9 @@ public class Recipient   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Recipient {\n");
     
-    sb.append("    emailOrID: ").append(toIndentedString(emailOrID)).append("\n");
+    sb.append("    emailOrName: ").append(toIndentedString(emailOrName)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");
     sb.append("}");
     return sb.toString();
   }
