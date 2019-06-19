@@ -45,4 +45,5 @@ testem.log
 Thumbs.db
 
 # Sonar
-/.scannerwork
+.scannerwork/
+.sonarlint/
