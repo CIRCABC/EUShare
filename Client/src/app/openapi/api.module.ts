@@ -13,7 +13,6 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { FileService } from './api/file.service';
-import { MeService } from './api/me.service';
 import { SessionService } from './api/session.service';
 import { UsersService } from './api/users.service';
 
@@ -23,7 +22,6 @@ import { UsersService } from './api/users.service';
   exports:      [],
   providers: [
     FileService,
-    MeService,
     SessionService,
     UsersService ]
 })

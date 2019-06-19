@@ -10,18 +10,22 @@
 
 package com.circabc.easyshare.model;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * FileInfoRecipient
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 public class FileInfoRecipient   {
   @JsonProperty("expirationDate")
@@ -135,7 +139,8 @@ public class FileInfoRecipient   {
    * name of the uploader
    * @return uploaderName
   */
-  @ApiModelProperty(value = "name of the uploader")
+  @ApiModelProperty(required = true, value = "name of the uploader")
+  @NotNull
 
 
   public String getUploaderName() {

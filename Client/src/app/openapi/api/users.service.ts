@@ -1,12 +1,3 @@
-/*
-EasyShare - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "EasyShare" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -27,9 +18,10 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { FileInfoRecipient } from '../model/fileInfoRecipient';
+import { FileInfoUploader } from '../model/fileInfoUploader';
 import { Status } from '../model/status';
 import { UserInfo } from '../model/userInfo';
-import { UserSpace } from '../model/userSpace';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -72,7 +64,129 @@ export class UsersService {
 
     /**
      * 
+     * Used by the INTERNAL users in order to search the files they have recieved
+     * @param userID The id of the user
+     * @param pageSize Number of files returned
+     * @param pageNumber Page number
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean): Observable<Array<FileInfoRecipient>>;
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FileInfoRecipient>>>;
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FileInfoRecipient>>>;
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (userID === null || userID === undefined) {
+            throw new Error('Required parameter userID was null or undefined when calling getFilesFileInfoRecipient.');
+        }
+        if (pageSize === null || pageSize === undefined) {
+            throw new Error('Required parameter pageSize was null or undefined when calling getFilesFileInfoRecipient.');
+        }
+        if (pageNumber === null || pageNumber === undefined) {
+            throw new Error('Required parameter pageNumber was null or undefined when calling getFilesFileInfoRecipient.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (pageSize !== undefined && pageSize !== null) {
+            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+        }
+        if (pageNumber !== undefined && pageNumber !== null) {
+            queryParameters = queryParameters.set('pageNumber', <any>pageNumber);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (basicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<FileInfoRecipient>>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/files/fileInfoRecipient`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * 
+     * Used by the INTERNAL users in order to search their own files&#39; FileInfoUploader
+     * @param userID The id of the user
+     * @param pageSize Number of files returned
+     * @param pageNumber Page number
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean): Observable<Array<FileInfoUploader>>;
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FileInfoUploader>>>;
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FileInfoUploader>>>;
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (userID === null || userID === undefined) {
+            throw new Error('Required parameter userID was null or undefined when calling getFilesFileInfoUploader.');
+        }
+        if (pageSize === null || pageSize === undefined) {
+            throw new Error('Required parameter pageSize was null or undefined when calling getFilesFileInfoUploader.');
+        }
+        if (pageNumber === null || pageNumber === undefined) {
+            throw new Error('Required parameter pageNumber was null or undefined when calling getFilesFileInfoUploader.');
+        }
+
+        let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
+        if (pageSize !== undefined && pageSize !== null) {
+            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+        }
+        if (pageNumber !== undefined && pageNumber !== null) {
+            queryParameters = queryParameters.set('pageNumber', <any>pageNumber);
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (basicAuth) required
+        if (this.configuration.username || this.configuration.password) {
+            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
+        }
+        // to determine the Accept header
+        const httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.get<Array<FileInfoUploader>>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/files/fileInfoUploader`,
+            {
+                params: queryParameters,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * 
+     * Used by the users in order to fetch their personnal information
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -116,69 +230,25 @@ export class UsersService {
 
     /**
      * 
-     * 
-     * @param userID The id of the user
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getUserUserSpace(userID: string, observe?: 'body', reportProgress?: boolean): Observable<UserSpace>;
-    public getUserUserSpace(userID: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserSpace>>;
-    public getUserUserSpace(userID: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserSpace>>;
-    public getUserUserSpace(userID: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        if (userID === null || userID === undefined) {
-            throw new Error('Required parameter userID was null or undefined when calling getUserUserSpace.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (basicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-        ];
-
-        return this.httpClient.get<UserSpace>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/userInfo/userSpace`,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
+     * Used by the administrators in order to search for INTERNAL users&#39; UserInfo
      * @param pageSize Number of persons returned
      * @param pageNumber Page number
      * @param searchString 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsers(pageSize: number, pageNumber: number, searchString: string, observe?: 'body', reportProgress?: boolean): Observable<Array<UserInfo>>;
-    public getUsers(pageSize: number, pageNumber: number, searchString: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserInfo>>>;
-    public getUsers(pageSize: number, pageNumber: number, searchString: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserInfo>>>;
-    public getUsers(pageSize: number, pageNumber: number, searchString: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'body', reportProgress?: boolean): Observable<Array<UserInfo>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserInfo>>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserInfo>>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling getUsers.');
+            throw new Error('Required parameter pageSize was null or undefined when calling getUsersUserInfo.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling getUsers.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling getUsersUserInfo.');
         }
         if (searchString === null || searchString === undefined) {
-            throw new Error('Required parameter searchString was null or undefined when calling getUsers.');
+            throw new Error('Required parameter searchString was null or undefined when calling getUsersUserInfo.');
         }
 
         let queryParameters = new HttpParams({encoder: new CustomHttpUrlEncodingCodec()});
@@ -211,7 +281,7 @@ export class UsersService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<UserInfo>>(`${this.configuration.basePath}/users`,
+        return this.httpClient.get<Array<UserInfo>>(`${this.configuration.basePath}/users/userInfo`,
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
@@ -224,21 +294,21 @@ export class UsersService {
 
     /**
      * 
-     * 
+     * Used by the administrators in order to update a specific INTERNAL user total space or admin status
      * @param userID The id of the user
-     * @param body use &#39;true&#39; or &#39;false&#39;
+     * @param userInfo 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public putUserIsAdmin(userID: string, body: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public putUserIsAdmin(userID: string, body: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public putUserIsAdmin(userID: string, body: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public putUserIsAdmin(userID: string, body: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'body', reportProgress?: boolean): Observable<UserInfo>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserInfo>>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserInfo>>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (userID === null || userID === undefined) {
-            throw new Error('Required parameter userID was null or undefined when calling putUserIsAdmin.');
+            throw new Error('Required parameter userID was null or undefined when calling putUserUserInfo.');
         }
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling putUserIsAdmin.');
+        if (userInfo === null || userInfo === undefined) {
+            throw new Error('Required parameter userInfo was null or undefined when calling putUserUserInfo.');
         }
 
         let headers = this.defaultHeaders;
@@ -258,69 +328,15 @@ export class UsersService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'text/plain'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
-        return this.httpClient.put<any>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/userInfo/isAdmin`,
-            body,
-            {
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * 
-     * 
-     * @param userID The id of the user
-     * @param body will be transformed to number
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public putUserTotalSpace(userID: string, body: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public putUserTotalSpace(userID: string, body: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public putUserTotalSpace(userID: string, body: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public putUserTotalSpace(userID: string, body: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
-        if (userID === null || userID === undefined) {
-            throw new Error('Required parameter userID was null or undefined when calling putUserTotalSpace.');
-        }
-        if (body === null || body === undefined) {
-            throw new Error('Required parameter body was null or undefined when calling putUserTotalSpace.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        // authentication (basicAuth) required
-        if (this.configuration.username || this.configuration.password) {
-            headers = headers.set('Authorization', 'Basic ' + btoa(this.configuration.username + ':' + this.configuration.password));
-        }
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
             'application/json'
         ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'text/plain'
-        ];
         const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
         if (httpContentTypeSelected !== undefined) {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/userInfo/userSpace/totalSpace`,
-            body,
+        return this.httpClient.put<UserInfo>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/userInfo`,
+            userInfo,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

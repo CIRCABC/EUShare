@@ -39,7 +39,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Validated
 @Api(value = "users", description = "the users API")
@@ -54,6 +54,7 @@ public interface UsersApi {
     }, tags={ "Users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS Returns a pageSize number of UserInfos corresponding to the searchString and the pageNumber for internal users Users", response = UserInfo.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })

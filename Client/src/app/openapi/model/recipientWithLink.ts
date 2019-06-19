@@ -9,9 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Recipient } from './recipient';
 
 
-export interface Recipient { 
+export interface RecipientWithLink { 
     /**
      * Email or name of the recipient
      */
@@ -24,5 +25,13 @@ export interface Recipient {
      * True to send an email with the download link
      */
     sendEmail?: boolean;
+    /**
+     * Id of the recipient
+     */
+    recipientId?: string;
+    /**
+     * Download link to a specific file
+     */
+    downloadLink: string;
 }
 

@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")

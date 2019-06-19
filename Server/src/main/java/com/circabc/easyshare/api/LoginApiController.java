@@ -26,7 +26,7 @@ import org.springframework.web.server.ResponseStatusException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Slf4j
 @Controller

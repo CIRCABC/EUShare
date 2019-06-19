@@ -23,7 +23,7 @@ import javax.validation.constraints.*;
 /**
  * RecipientWithLink
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 public class RecipientWithLink   {
   @JsonProperty("emailOrName")
@@ -157,7 +157,7 @@ public class RecipientWithLink   {
         Objects.equals(this.message, recipientWithLink.message) &&
         Objects.equals(this.sendEmail, recipientWithLink.sendEmail) &&
         Objects.equals(this.recipientId, recipientWithLink.recipientId) &&
-        Objects.equals(this.downloadLink, recipientWithLink.downloadLink); 
+        Objects.equals(this.downloadLink, recipientWithLink.downloadLink);
   }
 
   @Override
@@ -169,6 +169,7 @@ public class RecipientWithLink   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class RecipientWithLink {\n");
+    
     sb.append("    emailOrName: ").append(toIndentedString(emailOrName)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");

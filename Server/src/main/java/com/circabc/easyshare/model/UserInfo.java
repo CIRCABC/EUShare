@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiModelProperty;
 /**
  * UserInfo
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 public class UserInfo   {
   @JsonProperty("totalSpace")
@@ -94,10 +94,10 @@ public class UserInfo   {
   }
 
   /**
-   * User ID (email address in case of external user)
+   * User ID
    * @return id
   */
-  @ApiModelProperty(required = true, value = "User ID (email address in case of external user)")
+  @ApiModelProperty(required = true, value = "User ID")
   @NotNull
 
 
@@ -115,10 +115,10 @@ public class UserInfo   {
   }
 
   /**
-   * User name
+   * User name (email address in case of external user)
    * @return name
   */
-  @ApiModelProperty(required = true, value = "User name")
+  @ApiModelProperty(required = true, value = "User name (email address in case of external user)")
   @NotNull
 
 

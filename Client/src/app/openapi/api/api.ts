@@ -9,10 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 export * from './file.service';
 import { FileService } from './file.service';
-export * from './me.service';
-import { MeService } from './me.service';
 export * from './session.service';
 import { SessionService } from './session.service';
 export * from './users.service';
 import { UsersService } from './users.service';
-export const APIS = [FileService, MeService, SessionService, UsersService];
+export const APIS = [FileService, SessionService, UsersService];

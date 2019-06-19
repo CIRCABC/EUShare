@@ -41,7 +41,7 @@ import com.circabc.easyshare.model.validation.UserInfoValidator;
 import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.UserService;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-04-10T14:56:31.271+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Slf4j
 @Controller
@@ -128,6 +128,24 @@ public class UserApiController extends AbstractController implements UserApi {
             } catch (UnknownUserException e) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(), e);
             }
+    }
+
+    @Override
+    public ResponseEntity<UserInfo> getUserUserInfo(@PathVariable("userID") String userID){
+        try {
+            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
+            String userId = userService.getAuthenticatedUserId(credentials);
+            UserInfo userInfo = userService.getUserInfoOnBehalfOf(userId, userId);
+            return new ResponseEntity<>(userInfo, HttpStatus.OK);
+        } catch (NoAuthenticationException | WrongAuthenticationException exc2) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+            HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc2);
+        } catch (UserUnauthorizedException | UnknownUserException exc3) {
+            log.error(exc3.getMessage(),exc3);
+            // should never occur
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+            HttpErrorAnswerBuilder.build500EmptyToString());
+        }
     }
 
 }

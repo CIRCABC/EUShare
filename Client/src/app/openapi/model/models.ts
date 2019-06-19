@@ -13,6 +13,7 @@ export * from './fileInfoRecipient';
 export * from './fileInfoUploader';
 export * from './fileRequest';
 export * from './recipient';
+export * from './recipientWithLink';
 export * from './status';
 export * from './userInfo';
 export * from './userSpace';

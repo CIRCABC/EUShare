@@ -11,18 +11,17 @@
 package com.circabc.easyshare.model;
 
 import java.util.Objects;
+
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
+
 import io.swagger.annotations.ApiModelProperty;
-import org.openapitools.jackson.nullable.JsonNullable;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * Status
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 public class Status   {
   @JsonProperty("code")

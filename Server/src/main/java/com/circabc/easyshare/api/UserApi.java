@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 @Validated
 @Api(value = "user", description = "the user API")
@@ -58,7 +58,8 @@ public interface UserApi {
     }, tags={ "Users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber", response = FileInfoRecipient.class, responseContainer = "List"),
-        @ApiResponse(code = 401, message = "Unauthorized the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/user/{userID}/files/fileInfoRecipient",
@@ -83,14 +84,40 @@ public interface UserApi {
     }, tags={ "Users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber. For each RecipientWithLink, the id is required !", response = FileInfoUploader.class, responseContainer = "List"),
-        @ApiResponse(code = 401, message = "Unauthorized the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
-        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/user/{userID}/files/fileInfoUploader",
         produces = { "application/json" }, 
         method = RequestMethod.GET)
     default ResponseEntity<List<FileInfoUploader>> getFilesFileInfoUploader(@ApiParam(value = "The id of the user",required=true) @PathVariable("userID") String userID,@NotNull @ApiParam(value = "Number of files returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    @ApiOperation(value = "", nickname = "getUserUserInfo", notes = "Used by the users in order to fetch their personnal information", response = UserInfo.class, authorizations = {
+        @Authorization(value = "basicAuth")
+    }, tags={ "Users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "SUCCESS Returns the UserInfo of the selected user", response = UserInfo.class),
+        @ApiResponse(code = 401, message = "Unauthorized the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, will be sent before 404", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
+    @RequestMapping(value = "/user/{userID}/userInfo",
+        produces = { "application/json" }, 
+        method = RequestMethod.GET)
+    default ResponseEntity<UserInfo> getUserUserInfo(@ApiParam(value = "The id of the user",required=true) @PathVariable("userID") String userID) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

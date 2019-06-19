@@ -23,7 +23,7 @@ import javax.validation.constraints.*;
 /**
  * UserSpace
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-05-17T14:19:30.497+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
 public class UserSpace   {
   @JsonProperty("totalSpace")
