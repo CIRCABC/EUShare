@@ -10,6 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionService, Credentials, ApiModule } from '../openapi';
+import { NotificationService } from '../common/notification/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ import { SessionService, Credentials, ApiModule } from '../openapi';
 export class LoginComponent implements OnInit {
   id = '';
   password: string = '';
-  constructor(private api: SessionService, private router: Router) { }
+  constructor(private api: SessionService, private router: Router, private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
@@ -30,13 +31,12 @@ export class LoginComponent implements OnInit {
       password: this.password
     }
 
-    this.api.postLogin(credentials).subscribe(identifier => {
+    this.api.postLogin(credentials).toPromise().then(identifier => {
       this.api.setStoredCredentials(credentials);
       this.api.setStoredId(identifier);
       this.router.navigateByUrl('home');
-    },
-      err => console.error('Observer got an error: ' + err),
-      () => console.log('Observer got a complete notification')
-    );
+    }).catch(error => {
+      this.notificationService.errorMessageToDisplay(error, 'logging in');
+    });
   }
 }

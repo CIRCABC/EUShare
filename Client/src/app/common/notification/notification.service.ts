@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { NotificationLevel } from './notification-level';
 import { NotificationMessage } from './notification-message';
 import { Subject, Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +83,35 @@ export class NotificationService {
         finalDisplayTime
       );
       this.messageSource.next(uiMessage);
+    }
+  }
+
+  public errorMessageToDisplay(httpErrorResponse: HttpErrorResponse, action: string) {
+    console.log(httpErrorResponse);
+    switch (httpErrorResponse.status) {
+      case 400: {
+        this.addErrorMessage('The server was unable to understand your request while ' + action + '. Please try again later or contact the support.', false);
+        break;
+      }
+      case 401: {
+        this.addErrorMessage('Wrong credentials, please try again.', true);
+        break;
+      }
+      case 403: {
+        this.addErrorMessage('You are not authorized to ' + action + '.', false);
+        break;
+      }
+      case 404: {
+        this.addErrorMessage('The server was unable to find the resource while' + action + '. Please try again later or contact the support', false);
+        break;
+      }
+      case 500: {
+        this.addErrorMessage('An internal server error occured while' + action + '. Please try again later or contact the support', false);
+        break;
+      }
+      default: {
+        this.addErrorMessage('An unexepected error occured while ' + action + '! Please contact the support.')
+      }
     }
   }
 
