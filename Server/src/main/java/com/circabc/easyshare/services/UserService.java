@@ -81,7 +81,7 @@ public class UserService {
 
     public DBUser getUserOrCreateExternalUser(Recipient recipient) throws WrongEmailStructureException {
         final String emailOrName = recipient.getEmailOrName();
-        DBUser dbUser = userRepository.findOneByName(emailOrName);
+        DBUser dbUser = userRepository.findOneByNameAndRole(emailOrName, DBUser.Role.EXTERNAL);
         if (dbUser == null) {
             dbUser = userRepository.findOneByEmail(emailOrName);
         }

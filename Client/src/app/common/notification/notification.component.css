@@ -33,3 +33,8 @@
   animation-timing-function: ease-in;
   animation-fill-mode: forwards;
 }
+
+.notification {
+  margin-top: 0.2em;
+  z-index: 45;
+}

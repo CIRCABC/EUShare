@@ -13,6 +13,7 @@ package com.circabc.easyshare.services;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -348,30 +349,29 @@ public class FileService implements FileServiceInterface {
             throws WrongPasswordException, UnknownFileException {
 
         DBFile dbFile;
-
         DBUserFile dbUserFile = userFileRepository.findOneByDownloadId(fileId);
         if (dbUserFile == null) {
-            dbFile = findAvailableFile(fileId, false);
-            File file = Paths.get(dbFile.getPath()).toFile();
-            return new DownloadReturn(file, dbFile.getFilename());
+            dbFile = findAvailableFile(fileId, true);
         } else {
             dbFile = dbUserFile.getFile();
             String userIdentifier = dbUserFile.getReceiver().getEmail();
             if (userIdentifier == null) {
                 userIdentifier = dbUserFile.getReceiver().getName();
             }
-            try {
-                emailService.sendDownloadNotification(dbFile.getUploader().getId(), userIdentifier,
-                        dbFile.toFileBasics());
-            } catch (MessagingException e) {
-                log.error("Error happened when sending download notification for file " + fileId, e);
+            if (this.esConfig.isActivateMailService()) {
+                try {
+                    this.emailService.sendDownloadNotification(dbFile.getUploader().getEmail(), userIdentifier,
+                            dbFile.toFileBasics());
+                } catch (MessagingException | ConnectException e) {
+                    log.error("Error happened when sending download notification for file " + fileId, e);
+                }
             }
-            if (dbFile.getPassword() != null && !BCrypt.checkpw(password, dbFile.getPassword())) {
-                throw new WrongPasswordException();
-            }
-            File file = Paths.get(dbFile.getPath()).toFile();
-            return new DownloadReturn(file, dbFile.getFilename());
         }
+        if (dbFile.getPassword() != null && !BCrypt.checkpw(password, dbFile.getPassword())) {
+            throw new WrongPasswordException();
+        }
+        File file = Paths.get(dbFile.getPath()).toFile();
+        return new DownloadReturn(file, dbFile.getFilename());
     }
 
     @Override

@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SessionService, Credentials, ApiModule } from '../openapi';
+import { SessionService, Credentials, ApiModule, UsersService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 
 @Component({
@@ -20,7 +20,7 @@ import { NotificationService } from '../common/notification/notification.service
 export class LoginComponent implements OnInit {
   id = '';
   password: string = '';
-  constructor(private api: SessionService, private router: Router, private notificationService: NotificationService) { }
+  constructor(private api: SessionService, private userApi: UsersService, private router: Router, private notificationService: NotificationService) { }
 
   ngOnInit() {
   }
@@ -34,6 +34,11 @@ export class LoginComponent implements OnInit {
     this.api.postLogin(credentials).toPromise().then(identifier => {
       this.api.setStoredCredentials(credentials);
       this.api.setStoredId(identifier);
+      this.userApi.getUserUserInfo(identifier).toPromise().then(userInfo => {
+        this.api.setStoredUserInfo(userInfo);
+      }).catch(error => {
+        this.notificationService.errorMessageToDisplay(error, 'downloading your user\'s information');
+      })
       this.router.navigateByUrl('home');
     }).catch(error => {
       this.notificationService.errorMessageToDisplay(error, 'logging in');

@@ -36,10 +36,11 @@ import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
 import { Router } from '@angular/router';
 import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { UserInfo } from '../model/userInfo';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SessionService {
 
@@ -63,8 +64,20 @@ export class SessionService {
         return null;
     }
 
+    public getStoredUserInfo(): UserInfo | null {
+        let userInfoStringified = localStorage.getItem('ES_USERINFO');
+        if (userInfoStringified) {
+            return JSON.parse(userInfoStringified);
+        }
+        return null;
+    }
+
     public getStoredId(): string | null {
         return localStorage.getItem('ES_USERID');
+    }
+
+    public getStoredName(): string | null {
+        return localStorage.getItem('ES_USERNAME');
     }
 
     public setStoredCredentials(credentials: Credentials) {
@@ -74,9 +87,17 @@ export class SessionService {
     public setStoredId(id: string) {
         localStorage.setItem('ES_USERID', id);
     }
+
+    public setStoredName(name: string) {
+        localStorage.setItem('ES_USERNAME', name);
+    }
+
+    public setStoredUserInfo(userInfo: UserInfo) {
+        localStorage.setItem('ES_USERINFO', JSON.stringify(userInfo));
+    }
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration, private router: Router) {
 
-       if (configuration) {
+        if (configuration) {
             this.configuration = configuration;
             this.configuration.basePath = configuration.basePath || basePath || this.basePath;
 
