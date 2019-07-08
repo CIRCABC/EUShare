@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import java.net.ConnectException;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -40,17 +42,18 @@ public class EmailService {
 
     private void sendMessage(String recipient, String content) throws MessagingException {
         MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(sender.createMimeMessage(), "UTF-8");
-
+        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
         helper.setTo(recipient);
         helper.setText(content, true);
+        helper.setSubject("Easy share download !");
+
         sender.send(message);
     }
 
     /**
      * Send notification to {@code recipient} that {@code downloaderId} downloaded a file.
      */
-    public void sendDownloadNotification(String recipient, String downloaderId, FileBasics fileInfo) throws MessagingException {
+    public void sendDownloadNotification(String recipient, String downloaderId, FileBasics fileInfo) throws MessagingException, ConnectException {
         Context ctx = new Context();
         ctx.setVariable(DOWNLOADER, downloaderId);
         ctx.setVariable(FILENAME, fileInfo.getName());

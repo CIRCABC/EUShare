@@ -1,21 +1,6 @@
-<h1 class="title">Welcome {{myName}}!</h1>
-
-<div class="modal" [class.is-active]="modalActive">
-  <div class="modal-background"></div>
-  <div class="modal-content">
-    <div class="field is-grouped">
-      <div class="control is-expanded">
-        <input class="input" type="password" placeholder="Type password here" #passwordInput>
-      </div>
-      <div class="control">
-        <button class="button is-primary"
-          (click)="download(modalFileId, modalFileName, passwordInput.value)">Download</button>
-      </div>
-    </div>
-  </div>
-  <button class="modal-close is-large" (click)="closeModal()" aria-label="close"></button>
-</div>
-
+<h1 class="title">Uploaded Files</h1>
+<app-password-modal></app-password-modal>
+<app-file-link-modal></app-file-link-modal>
 <table class="table is-fullwidth is-hoverable">
   <thead>
     <tr>
@@ -34,14 +19,21 @@
       <td>
         <span *ngFor="let share of file.sharedWith.sort() let j = index" [attr.data-index]="j">
           {{share.emailOrName}}
-          <a (click)="deleteShare(file.fileId, file.name, share.recipientId, share.emailOrName, i,j)"><fa-icon [icon]="faTrashAlt"></fa-icon></a>
+          <a title="Remove the link to the file for {{share.emailOrName}}"
+            (click)="deleteShare(file.fileId, file.name, share.recipientId, share.emailOrName, i,j)">
+            <fa-icon [icon]="faUserTimes"></fa-icon>
+          </a>
+          <a title="Display the link to the file for {{share.emailOrName}}"
+            (click)="openFileLinkModal(share.downloadLink , file.name, file.hasPassword)">
+            <fa-icon [icon]="faExternalLinkAlt"></fa-icon>
+          </a>
           <br>
         </span>
       </td>
       <td class="align-right">
         <a class="button is-danger is-outlined" (click)="delete(i)">Delete</a>
         <a *ngIf="file.hasPassword" class="button is-link is-outlined"
-          (click)="openModal(file.fileId, file.name)">Download</a>
+          (click)="openPasswordModal(file.fileId, file.name)">Download</a>
         <a *ngIf="!file.hasPassword" class="button is-link is-outlined"
           (click)="download(file.fileId, file.name)">Download</a>
       </td>

@@ -111,11 +111,11 @@ export class NotificationService {
         break;
       }
       case 404: {
-        this.addErrorMessage('The server was unable to find the resource while' + action + '. Please try again later or contact the support', false);
+        this.addErrorMessage('The server was unable to find the resource while ' + action + '. Please try again later or contact the support', false);
         break;
       }
       case 500: {
-        this.addErrorMessage('An internal server error occured while' + action + '. Please try again later or contact the support', false);
+        this.addErrorMessage('An internal server error occured while ' + action + '. Please try again later or contact the support', false);
         break;
       }
       default: {

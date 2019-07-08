@@ -1,3 +1,4 @@
+<h1 class="title">Share a new file</h1>
 <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
   <div class="field">
     <label class="label">Source</label>
@@ -109,10 +110,10 @@
       <div class="field is-narrow">
         <div class="control">
           <label class="radio">
-            <input type="radio" required formControlName="emailOrLink" value='Email'>Email
+            <input type="radio" required formControlName="emailOrLink" (click)="resetRecipients()" value='Email'>Email
           </label>
           <label class="radio">
-            <input type="radio" (click)="resetEmailsWithMessages()" required formControlName="emailOrLink"
+            <input type="radio" (click)="resetRecipients()" required formControlName="emailOrLink"
               value='Link'>Link
           </label>
         </div>
@@ -120,29 +121,57 @@
     </div>
   </div>
   <!-- EMAILS AND USER NAMES -->
-  <div *ngIf="emailOrLinkIsEmail()" class="field">
-    <div class="field">
-      <label class="label">Email/Username</label>
-      <div formArrayName="emailsWithMessages">
-        <button class="button" type="button" (click)="addEmailsWithMessages()">Add recipient</button>
-        <div *ngFor="let emailAndText of emailsWithMessages.controls; let i=index">
-          <div [formGroupName]="i">
-            <label class="label">Email:</label>
-            <input class="input" type="text" formControlName="email">
-            <label class="label error" *ngIf="uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['email'].errors &&
-            uf['emailsWithMessages'].at(i).controls['email'].errors.pattern && uf['emailsWithMessages'].at(i).controls['email'].dirty && uf['emailsWithMessages'].at(i).controls['email'].touched">Invalid email form ! {{uf['emailsWithMessages'].at(i).controls['email'].errors.value}}
-            </label>
-            <label class="label">Text: (optional)</label>
-            <textarea class="textarea" formControlName="message"
-              placeholder="e.g. Please enter a message for the recipient of this file"></textarea>
-            <button class="button" type="button" (click)="deleteEmailsWithMessages(i)">Delete this recipient</button>
-            <label class="label error" *ngIf=" uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['message'].errors &&
-            uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength && uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value">Text length bigger than
-              {{uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value}} characters !
-            </label>
+  <div class="field">
+    <label class="label">Recipients</label>
+    <div *ngIf="emailOrLinkIsEmail()" formArrayName="emailsWithMessages">
+      <div *ngFor="let emailAndText of emailsWithMessages.controls; let i=index" class="media">
+        <div class="media-left">
+          <div class="square"></div>
+        </div>
+        <div [formGroupName]="i" class="media-content">
+          <label class="label">Email:</label>
+          <input class="input" type="text" formControlName="email">
+          <label class="label error"
+            *ngIf="uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['email'].errors &&
+            uf['emailsWithMessages'].at(i).controls['email'].errors.pattern && uf['emailsWithMessages'].at(i).controls['email'].dirty && uf['emailsWithMessages'].at(i).controls['email'].touched">Invalid
+            email form ! {{uf['emailsWithMessages'].at(i).controls['email'].errors.value}}
+          </label>
+          <label class="label">Text: (optional)</label>
+          <textarea class="textarea" formControlName="message"
+            placeholder="e.g. Please enter a message for the recipient of this file"></textarea>
+
+          <label class="label error"
+            *ngIf=" uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['message'].errors &&
+            uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength && uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value">Text
+            length bigger than
+            {{uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value}} characters !
+          </label>
+          <div class="level">
+            <button class="button is-danger is-outlined level-left" type="button"
+              (click)="deleteEmailsWithMessages(i)">Delete
+              recipient</button>
           </div>
         </div>
       </div>
+      <button class="button is-link is-outlined" type="button" (click)="addEmailsWithMessages()">Add more
+        recipients...</button>
+    </div>
+    <div *ngIf="emailOrLinkIsLink()" formArrayName="namesOnly">
+      <div *ngFor="let recipientName of namesOnly.controls; let i=index" class="media">
+        <div class="media-left">
+          <div class="square"></div>
+        </div>
+        <div [formGroupName]="i" class="media-content">
+          <label class="label">Name:</label>
+          <input class="input" type="text" formControlName="name">
+          <div class="level">
+            <button class="button is-danger is-outlined level-left" type="button" (click)="deleteNamesOnly(i)">Delete
+              recipient</button>
+          </div>
+        </div>
+      </div>
+      <button class="button is-link is-outlined" type="button" (click)="addNamesOnly()">Add more
+        recipients...</button>
     </div>
   </div>
   <div class="field">
@@ -153,7 +182,9 @@
   </div>
   <div class="field" *ngIf="moreOptions">
     <label class="label">Expiration date (default is 7 days from now)</label>
-      <p-calendar [minDate]=getTomorrow() [maxDate]=get7DaysAfterToday() styleClass="control" inputStyleClass="input" panelStyleClass="table" formControlName="expirationDate" dateFormat="dd/mm/yy" [placeholder]="'dd/mm/yyyy'"></p-calendar>
+    <p-calendar [minDate]=getTomorrow() [maxDate]=get7DaysAfterToday() styleClass="control" inputStyleClass="input"
+      panelStyleClass="table" formControlName="expirationDate" dateFormat="dd/mm/yy" [placeholder]="'dd/mm/yyyy'">
+    </p-calendar>
   </div>
   <div class="field" *ngIf="moreOptions">
     <label class="label">Password (optional)</label>
@@ -161,6 +192,7 @@
   </div>
   <br>
   <div class="field">
-    <button class="button is-link" [class.is-loading]="uploadInProgress" type="submit" [disabled]="!uploadform.valid">Submit</button>
+    <button class="button is-link" [class.is-loading]="uploadInProgress" type="submit"
+      [disabled]="!uploadform.valid">Submit</button>
   </div>
 </form>

@@ -12,7 +12,9 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { FileInfoUploader, SessionService, FileService, UsersService, UserInfo } from '../../openapi';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../common/notification/notification.service';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faUserTimes, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { ModalsService } from '../../common/modals/modals.service';
+import { environment } from '../../../environments/environment.prod';
 
 @Component({
   selector: 'app-my-shared-files',
@@ -21,38 +23,46 @@ import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 })
 export class MySharedFilesComponent implements OnInit {
 
-  faLock = faLock;
-  faTrashAlt = faTrashAlt;
+  public faLock = faLock;
+  public faUserTimes = faUserTimes;
+  public faExternalLinkAlt = faExternalLinkAlt;
 
-  fileIds = Array<string>();
-  fileInfoUploaderArray = Array<FileInfoUploader>();
-  loading = false;
-  modalActive = false;
-  modalError = false;
-  modalFileId = '';
-  modalFileName = '';
-  myName!: string;
+  public fileInfoUploaderArray!: FileInfoUploader[];
+  private nextFileInfoUploaderArray!: FileInfoUploader[];
+  private previousFileInfoUploaderArray!: FileInfoUploader[];
+  private myId!: string;
+  private displayedPageNumber!: number;
 
-  constructor(private session: SessionService, private userApi: UsersService, private fileApi: FileService, private router: Router, private notificationService: NotificationService) { }
+  constructor(private session: SessionService, private userApi: UsersService, private fileApi: FileService, private router: Router, private notificationService: NotificationService,
+    private modalService: ModalsService) { }
 
-  ngOnInit() {
+
+  public ngOnInit() {
     const id = this.session.getStoredId();
     if (id) {
-      this.userApi.getUserUserInfo(id).toPromise().then(userInfo => {
-        this.myName = userInfo.name;
-      }).catch(error => {
-        this.notificationService.errorMessageToDisplay(error, 'downloading your user\'s information');
-      })
-      this.userApi.getFilesFileInfoUploader(id, 10, 0).toPromise().then(fileInfoUploaderArray => {
-        this.fileInfoUploaderArray = fileInfoUploaderArray;
+      this.myId = id;
+      this.userApi.getFilesFileInfoUploader(id, 10, 0).toPromise().then(result => {
+        this.fileInfoUploaderArray = result;
+        if (this.fileInfoUploaderArray.length === 10) {
+          this.userApi.getFilesFileInfoUploader(id, 10, 1).toPromise().then(result => {
+            this.nextFileInfoUploaderArray = result;
+          }).catch(error => {
+            this.notificationService.errorMessageToDisplay(error, 'fetching your uploaded files');
+          });
+        }
       }).catch(error => {
         this.notificationService.errorMessageToDisplay(error, 'fetching your uploaded files');
       });
     } else {
-      this.router.navigateByUrl('login');
+      this.router.navigateByUrl('/login');
     }
-
   }
+
+  public displayNextFileInfoUploaderArray() {
+    this.previousFileInfoUploaderArray = Array.from(this.fileInfoUploaderArray);
+    this.fileInfoUploaderArray = Array.from(this.nextFileInfoUploaderArray);
+  }
+
 
   public download(fileId: string, fileName: string, filePassword?: string) {
     this.fileApi.getFile(fileId, filePassword).toPromise().then(file => {
@@ -62,22 +72,27 @@ export class MySharedFilesComponent implements OnInit {
     });
   }
 
-
-  public openModal(fileId: string, fileName: string) {
-    this.modalActive = true;
-    this.modalFileId = fileId;
-    this.modalFileName = fileName;
+  public openPasswordModal(fileId: string, fileName: string) {
+    this.modalService.activatePasswordModal(fileId, fileName);
   }
 
-  public closeModal() {
-    this.modalActive = false;
+  public openFileLinkModal(downloadLink: string, fileName: string, isPasswordProtected: boolean) {
+    let fileLinkBuild = environment.frontend_url + '/filelink/' + downloadLink + '/' + encodeURIComponent(btoa(fileName)) + '/';
+    if (isPasswordProtected) {
+      fileLinkBuild = fileLinkBuild + '1';
+    } else {
+      fileLinkBuild = fileLinkBuild + '0';
+    }
+    this.modalService.activateFileLinkModal(fileLinkBuild);
   }
 
   public delete(i: number) {
     this.fileApi.deleteFile(this.fileInfoUploaderArray[i].fileId).toPromise().then(success => {
+      const deletedFileName:string = this.fileInfoUploaderArray[i].name;
       this.fileInfoUploaderArray.splice(i, 1);
-      this.notificationService.addSuccessMessage('Successfully deleted file named ' + this.fileInfoUploaderArray[i].name);
+      this.notificationService.addSuccessMessage('Successfully deleted file named ' + deletedFileName);
     }).catch(error => {
+      console.log(error);
       this.notificationService.errorMessageToDisplay(error, 'deleting your file');
     });
   }

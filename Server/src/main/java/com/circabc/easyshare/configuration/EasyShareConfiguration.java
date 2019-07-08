@@ -34,6 +34,9 @@ public class EasyShareConfiguration {
     private int expirationDays;
 
     @NotNull
+    private boolean activateMailService;
+
+    @NotNull
     private long maxSizeAllowedInBytes;
 
     public LocalDate defaultExpirationDate() {

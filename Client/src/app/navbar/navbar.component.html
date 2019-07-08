@@ -23,9 +23,10 @@
       </div>
       <div class="navbar-end">
         <div *ngIf="loggedIn" class="navbar-item">
-          <p class="control">
-            <button class="button is-danger" (click)="logout()">Logout</button>
-          </p>
+            Logged as {{userName}}
+        </div>
+        <div *ngIf="loggedIn" class="navbar-item">
+          <button class="button is-danger" (click)="logout()">Logout</button>
         </div>
       </div>
     </div>

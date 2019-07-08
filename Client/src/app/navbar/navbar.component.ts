@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { faUpload, faUsers, faShare, faCloudDownloadAlt, faShareAlt } from '@fortawesome/free-solid-svg-icons';
-import { SessionService } from '../openapi';
+import { SessionService, UserInfo } from '../openapi';
 
 @Component({
   selector: 'app-navbar',
@@ -17,21 +17,29 @@ import { SessionService } from '../openapi';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  faUpload = faUpload;
-  faUsers = faUsers;
-  faShare = faShare;
-  faCloudDownloadAlt = faCloudDownloadAlt;
-  faShareAlt = faShareAlt;
+  public faUpload = faUpload;
+  public faUsers = faUsers;
+  public faShare = faShare;
+  public faCloudDownloadAlt = faCloudDownloadAlt;
+  public faShareAlt = faShareAlt;
+  public userName!: string;
+  public isAdmin: boolean = false;
 
-  constructor(private service: SessionService) {}
+  constructor(private sessionService: SessionService) { }
 
-  ngOnInit() {}
+  ngOnInit() { 
+    let userInfo:UserInfo | null = this.sessionService.getStoredUserInfo();
+    if(userInfo) {
+      this.isAdmin = userInfo.isAdmin;
+      this.userName = userInfo.name;
+    }
+  }
 
   logout() {
-    this.service.logout();
+    this.sessionService.logout();
   }
 
   get loggedIn(): boolean {
-    return this.service.getStoredCredentials() !== null 
+    return this.sessionService.getStoredCredentials() !== null
   }
 }

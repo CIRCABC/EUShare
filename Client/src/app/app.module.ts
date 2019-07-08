@@ -30,6 +30,9 @@ import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.
 import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
 import { NotificationComponent } from './common/notification/notification.component';
 import { NotificationSystemComponent } from './common/notification/notification-system.component';
+import { FilelinkComponent } from './filelink/filelink.component';
+import { PasswordModalComponent } from './common/modals/password-modal/password-modal.component';
+import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
 
 const routes: Routes = [
   {
@@ -46,12 +49,16 @@ const routes: Routes = [
     path: 'upload',
     component: UploadComponent,
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'filelink/:id/:filenameb64/:isPasswordProtected',
+    component: FilelinkComponent
   }
 ];
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent,
-      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent, NotificationComponent, NotificationSystemComponent],
+      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent, NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent, FileLinkModalComponent],
   imports: [
     ApiModule,
     BrowserModule,

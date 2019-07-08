@@ -7,6 +7,7 @@ easyshare:
   defaultuserspace: 5368709120
   # 4Gb
   maxSizeAllowedInBytes: 4294967296 
+  activateMailService: true
   disks:
     - C:\temp\easyshare
 logging:
@@ -30,10 +31,12 @@ spring:
     #org.hibernate.dialect.Oracle10gDialect
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   mail:
     host: localhost
     port: 25
+    username: username
+    password: password
   servlet:
     multipart:
       max-file-size: 256MB
