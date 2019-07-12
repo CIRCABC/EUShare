@@ -76,7 +76,7 @@ public class DBTest {
     @Test
     @Transactional
     public void creationOfaFileTest() {
-        DBUser dbUser = DBUser.createInternalUser("email@email.com", "name", "password", 1024, "username");
+        DBUser dbUser = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(dbUser);
         DBFile dbFile = new DBFile("id", dbUser, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path"); //NOSONAR
         fileRepository.save(dbFile);
@@ -85,7 +85,7 @@ public class DBTest {
     @Test
     @Transactional
     public void creationOfaUserToFileTest() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(uploader);
 
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
@@ -109,7 +109,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByReceiver() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(uploader);
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
@@ -137,7 +137,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByUploader() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(uploader);
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
@@ -156,7 +156,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfUsersByEmail() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "name", "password", 1024, "username");
+        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(uploader);
 
         List<DBUser> foundUsers = userRepository.findByEmailStartsWith("emailA", PageRequest.of(0,10));

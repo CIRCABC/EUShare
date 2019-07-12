@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { messageToRecipientValidator, sourceValidator, customFileValidator, globalValidator } from './upload.validators';
+import { messageToRecipientValidator, sourceValidator, customFileValidator, globalValidator, customFileValidatorAsync } from './upload.validators';
 import { Component, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { FormArray, ReactiveFormsModule, FormGroup, Validators, ValidatorFn, AbstractControl, FormBuilder, ValidationErrors, FormControl, NgForm } from '@angular/forms';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -18,6 +18,7 @@ import { FileService, FileRequest, Recipient, UsersService, SessionService } fro
 import { NotificationService } from '../common/notification/notification.service';
 import { environment } from '../../environments/environment'
 import { routerNgProbeToken } from '@angular/router/src/router_module';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -43,35 +44,35 @@ export class UploadComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private sessionApi: SessionService, private userApi: UsersService, private fileApi: FileService, private circabc: CircabcService, private notificationService: NotificationService) {
     this.formBuilder = fb;
+    this.initializeFormGroup();
   }
 
-  initializeAvailableSpace() {
+  async initializeAvailableSpace() {
     const id = this.sessionApi.getStoredId();
     if (id) {
-      this.userApi.getUserUserInfo(id).toPromise().then((me) => {
-        const leftSpaceInBytes = me.totalSpace - me.usedSpace;
-        if (leftSpaceInBytes > 0) {
-          this.leftSpaceInBytes = leftSpaceInBytes;
+      try {
+        const me = await this.userApi.getUserUserInfo(id).toPromise();
+        if (me && (me.totalSpace - me.usedSpace) > 0) {
+          this.leftSpaceInBytes = (me.totalSpace - me.usedSpace);
+        } else {
+          this.leftSpaceInBytes = 0;
         }
-        this.leftSpaceInBytes = 0;
-      }).catch(error => {
+      } catch (error) {
         this.notificationService.addErrorMessage('A problem occured while retrieving your user informations');
-      });
+      }
     }
   }
 
-  initializeAvailableIGs() {
+  async initializeAvailableIGs() {
     const id = this.sessionApi.getStoredId();
     if (id) {
-      this.userApi.getUserUserInfo(id).toPromise().then((me) => {
-        this.circabc.getUserMembership(me.id).then((memberShip => {
-          this.selectIGoptions = memberShip.interestGroups;
-        })).catch(error => {
-          this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
-        });
-      }).catch(error => {
+      try {
+        const me = await this.userApi.getUserUserInfo(id).toPromise();
+        const memberShip = await this.circabc.getUserMembership(me.id);
+        this.selectIGoptions = memberShip.interestGroups;
+      } catch (error){
         this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
-      });
+      }
     }
   }
 
@@ -84,7 +85,7 @@ export class UploadComponent implements OnInit {
     }, false);
   }
 
-  initializeSelectImportOption() {
+  async initializeSelectImportOption() {
     const selectNames: Array<string> = Object.values(SelectImportEnum);
     const selectValues: Array<string> = Object.keys(SelectImportEnum);
     this.selectImportOptions = new Array<NameAndValue>();
@@ -100,10 +101,10 @@ export class UploadComponent implements OnInit {
       selectInterestGroupID: [undefined],
       emailOrLink: ['', Validators.required],
       emailsWithMessages: this.formBuilder.array([
-        this.initializedEmailsWithMessages()
+        //this.initializedEmailsWithMessages()
       ]),
       namesOnly: this.formBuilder.array([
-        this.initializeNamesOnly()
+        // this.initializeNamesOnly()
       ]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
       password: [undefined]
@@ -126,11 +127,11 @@ export class UploadComponent implements OnInit {
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.initializeEventListeners();
-    this.initializeSelectImportOption();
-    this.initializeAvailableSpace();
-    this.initializeAvailableIGs();
+    await this.initializeSelectImportOption();
+    await this.initializeAvailableSpace();
+    await this.initializeAvailableIGs();
     this.initializeFormGroup();
   }
 
@@ -265,7 +266,7 @@ export class UploadComponent implements OnInit {
   addNamesOnly() {
     this.namesOnly.push(this.initializeNamesOnly());
   }
-  
+
   deleteNamesOnly(i: number) {
     this.namesOnly.removeAt(i);
   }
@@ -369,14 +370,12 @@ export class UploadComponent implements OnInit {
         }
         const fileId = await this.fileApi.postFileFileRequest(myFileRequest).toPromise();
         await this.fileApi.postFileContent(fileId, this.getFileFromDisk()).toPromise();
-
-
         if (this.emailOrLinkIsEmail()) {
           this.notificationService.addSuccessMessage('Your recipients have been notified by mail that they may download the shared file!', false);
         } else {
           this.notificationService.addSuccessMessage('Please find for each of your recipients, a personnal download link on the My Shared Files page', false);
-          //this.notificationService.addSuccessMessage('Please share the following link with your recipients: ' + environment.frontend_url + '/filelink/' + fileId +'/' + btoa(myFileRequest.name), false);
         }
+        await this.initializeAvailableSpace();
       } catch (e) {
         this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
         this.uploadInProgress = false;

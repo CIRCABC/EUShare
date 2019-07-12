@@ -109,7 +109,7 @@ public class UserService {
             log.warn("Admin could not be created, already exists");
         }
         if (userRepository.findOneByUsername("username") == null && userRepository.findOneByEmail("email@email.com") == null)  {
-            this.createInternalUser("email@email.com", "name", "username", "password");
+            this.createInternalUser("email@email.com", "name", "password", "username");
         } else {
             log.warn("Internal user could not be created, already exists");
         }

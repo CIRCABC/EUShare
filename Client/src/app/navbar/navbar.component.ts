@@ -22,17 +22,24 @@ export class NavbarComponent implements OnInit {
   public faShare = faShare;
   public faCloudDownloadAlt = faCloudDownloadAlt;
   public faShareAlt = faShareAlt;
-  public userName!: string;
-  public isAdmin: boolean = false;
+  public userName: string | null = null;
+  public isAdmin: boolean | null = null;
 
   constructor(private sessionService: SessionService) { }
 
-  ngOnInit() { 
-    let userInfo:UserInfo | null = this.sessionService.getStoredUserInfo();
-    if(userInfo) {
-      this.isAdmin = userInfo.isAdmin;
+  ngOnInit() {
+    const userInfo = this.sessionService.getStoredUserInfo();
+    if (userInfo) {
       this.userName = userInfo.name;
+      this.isAdmin = userInfo.isAdmin;
     }
+
+    this.sessionService.userInfo$.subscribe(userInfo => {
+      this.userName = userInfo.name;
+      this.isAdmin = userInfo.isAdmin;
+    }, error => {
+
+    });
   }
 
   logout() {
