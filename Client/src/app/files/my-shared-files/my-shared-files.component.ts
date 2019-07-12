@@ -54,7 +54,7 @@ export class MySharedFilesComponent implements OnInit {
         this.notificationService.errorMessageToDisplay(error, 'fetching your uploaded files');
       });
     } else {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl('');
     }
   }
 

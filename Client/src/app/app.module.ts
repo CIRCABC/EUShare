@@ -33,6 +33,7 @@ import { NotificationSystemComponent } from './common/notification/notification-
 import { FilelinkComponent } from './filelink/filelink.component';
 import { PasswordModalComponent } from './common/modals/password-modal/password-modal.component';
 import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
+import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,11 @@ const routes: Routes = [
     canActivate: [LoginGuard]
   },
   {
+    path: 'download',
+    component: SharedWithMeComponent,
+    canActivate: [LoginGuard]
+  },
+  {
     path: 'filelink/:id/:filenameb64/:isPasswordProtected',
     component: FilelinkComponent
   }
@@ -58,7 +64,7 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent,
-      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent, NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent, FileLinkModalComponent],
+      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent, NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent, FileLinkModalComponent, SharedWithMeComponent],
   imports: [
     ApiModule,
     BrowserModule,
