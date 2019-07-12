@@ -42,5 +42,9 @@ export interface FileInfoRecipient {
      * name of the uploader
      */
     uploaderName: string;
+    /**
+     * download file id
+     */
+    fileId: string;
 }
 

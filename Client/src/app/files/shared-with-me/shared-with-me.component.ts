@@ -29,7 +29,7 @@ export class SharedWithMeComponent implements OnInit {
   private initializeFileInfoRecipientArray() {
     const userId = this.session.getStoredId();
     if (userId) {
-      this.userApi.getFilesFileInfoRecipient(userId, this.pageSize, this.pageNumber).toPromise().then(fileInfoRecipientArray => {
+        this.userApi.getFilesFileInfoRecipient(userId, this.pageSize, this.pageNumber).toPromise().then(fileInfoRecipientArray => {
         this.fileInfoRecipientArray = fileInfoRecipientArray;
       }).catch((error) => {
         this.notificationService.errorMessageToDisplay(error, 'fetching files shared with you');

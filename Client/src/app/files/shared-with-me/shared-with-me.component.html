@@ -21,9 +21,9 @@
       </td>
       <td class="align-right">
         <a *ngIf="file.hasPassword" class="button is-link is-outlined"
-          (click)="openPasswordModal(file.name, file.name)">Download</a>
+          (click)="openPasswordModal(file.fileId, file.name)">Download</a>
         <a *ngIf="!file.hasPassword" class="button is-link is-outlined"
-          (click)="download(file.name, file.name)">Download</a>
+          (click)="download(file.fileId, file.name)">Download</a>
       </td>
     </tr>
   </tbody>

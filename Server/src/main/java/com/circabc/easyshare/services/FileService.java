@@ -379,7 +379,7 @@ public class FileService implements FileServiceInterface {
             throws UnknownFileException, UserUnauthorizedException {
         DBFile f = findAvailableFile(fileId, true);
         if (requesterId.equals(f.getUploader().getId())) {
-            return f.toFileInfoRecipient();
+            return f.toFileInfoRecipient(requesterId);
         } else {
             throw new UserUnauthorizedException();
         }
@@ -392,7 +392,7 @@ public class FileService implements FileServiceInterface {
             return fileRepository
                     .findByStatusAndSharedWith_Receiver_Id(DBFile.Status.AVAILABLE, userId,
                             PageRequest.of(pageNumber, pageSize))
-                    .stream().map(dbFile -> dbFile.toFileInfoRecipient()).collect(Collectors.toList());
+                    .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
         } else {
             throw new UserUnauthorizedException();
         }

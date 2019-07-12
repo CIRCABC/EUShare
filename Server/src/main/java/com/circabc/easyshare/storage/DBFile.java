@@ -57,7 +57,7 @@ public class DBFile {
     private String filename;
 
     @Id
-    @Column(name="FILE_ID", nullable = false, unique= true)
+    @Column(name = "FILE_ID", nullable = false, unique = true)
     private String id;
 
     @Column(nullable = false)
@@ -68,7 +68,7 @@ public class DBFile {
     @Column(nullable = false)
     private String path;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy ="file", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file", cascade = CascadeType.ALL)
     private Set<DBUserFile> sharedWith;
 
     @Column(name = "fileSize", nullable = false)
@@ -79,14 +79,16 @@ public class DBFile {
     private Status status = Status.ALLOCATED;
 
     @ManyToOne(optional = false)
-    @JoinColumn(foreignKey= @ForeignKey(name = "Fk_to_uploader"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_uploader"))
     private DBUser uploader;
 
-    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size, LocalDate expirationDate, String path) {
+    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
+            LocalDate expirationDate, String path) {
         this(id, uploader, sharedWith, filename, size, expirationDate, path, null);
     }
-    
-    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size, LocalDate expirationDate, String path, String password) { //NOSONAR
+
+    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
+            LocalDate expirationDate, String path, String password) { // NOSONAR
         this.id = id;
         this.uploader = uploader;
         this.sharedWith = new HashSet<>(sharedWith);
@@ -103,21 +105,27 @@ public class DBFile {
     private DBFile() {
     }
 
-    public FileInfoRecipient toFileInfoRecipient() {
+    public FileInfoRecipient toFileInfoRecipient(String recipientId) {
         FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();
         fileInfoRecipient.setExpirationDate(this.expirationDate);
         fileInfoRecipient.setHasPassword(this.password != null);
         fileInfoRecipient.setName(this.filename);
         fileInfoRecipient.setSize(new BigDecimal(this.size));
         fileInfoRecipient.setUploaderName(this.uploader.getName());
+        for (DBUserFile dbUserFile : this.getSharedWith()) {
+            if(dbUserFile.getReceiver().getId() == recipientId) {
+                fileInfoRecipient.setFileId(dbUserFile.getDownloadId());
+            }
+        }
         return fileInfoRecipient;
     }
 
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
-        List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream().map(dbUserFile -> dbUserFile.toRecipientWithLink()).collect(Collectors.toList());
+        List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream()
+                .map(dbUserFile -> dbUserFile.toRecipientWithLink()).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
-        fileInfoUploader.setHasPassword(this.password!=null);
+        fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);
         fileInfoUploader.setSize(new BigDecimal(this.size));
         fileInfoUploader.setFileId(this.getId());
@@ -140,10 +148,7 @@ public class DBFile {
     }
 
     public enum Status {
-        ALLOCATED,
-        UPLOADING,
-        AVAILABLE,
-        DELETED
+        ALLOCATED, UPLOADING, AVAILABLE, DELETED
     }
 
     @Override
@@ -151,13 +156,13 @@ public class DBFile {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DBFile)){
+        if (!(o instanceof DBFile)) {
             return false;
         }
         DBFile other = (DBFile) o;
         return (id != null && id.equals(other.getId()));
     }
- 
+
     @Override
     public int hashCode() {
         return 31;
