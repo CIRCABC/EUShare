@@ -10,21 +10,20 @@
 
 package com.circabc.easyshare.storage;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface FileRepository extends PagingAndSortingRepository<DBFile, String> {
     List<DBFile> findByExpirationDateBefore(LocalDate date);
 
-    Optional<DBFile> findByStatusAndSharedWith_DownloadId(DBFile.Status status, String downloadId);
+    DBFile findByStatusAndSharedWith_DownloadId(DBFile.Status status, String downloadId);
 
-    Optional<DBFile> findByStatusAndId(DBFile.Status status, String id);
+    DBFile findByStatusAndId(DBFile.Status status, String id);
+
+    DBFile findOneById(String id);
 
     List<DBFile> findByStatus(DBFile.Status status, Pageable page);
 

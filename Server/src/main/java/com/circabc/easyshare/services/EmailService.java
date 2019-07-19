@@ -29,7 +29,7 @@ import com.circabc.easyshare.model.FileInfoRecipient;
  * Service for sending emails from EasyShare
  */
 @Service
-public class EmailService {
+public class EmailService implements EmailServiceInterface {
     private static final String DOWNLOADER = "downloader";
     private static final String FILENAME = "filename";
     private static final String UPLOADER = "uploader";
@@ -51,9 +51,12 @@ public class EmailService {
     }
 
     /**
-     * Send notification to {@code recipient} that {@code downloaderId} downloaded a file.
+     * Send notification to {@code recipient} that {@code downloaderId} downloaded a
+     * file.
      */
-    public void sendDownloadNotification(String recipient, String downloaderId, FileBasics fileInfo) throws MessagingException, ConnectException {
+    @Override
+    public void sendDownloadNotification(String recipient, String downloaderId, FileBasics fileInfo)
+            throws MessagingException, ConnectException {
         Context ctx = new Context();
         ctx.setVariable(DOWNLOADER, downloaderId);
         ctx.setVariable(FILENAME, fileInfo.getName());
@@ -64,7 +67,9 @@ public class EmailService {
     /**
      * Send notification to {@code recipient} that one of his files got deleted.
      */
-    public void sendFileDeletedNotification(String recipient, FileBasics fileInfo, String reason) throws MessagingException {
+    @Override
+    public void sendFileDeletedNotification(String recipient, FileBasics fileInfo, String reason)
+            throws MessagingException {
         Context ctx = new Context();
         ctx.setVariable(FILENAME, fileInfo.getName());
         ctx.setVariable("reason", reason);
@@ -76,13 +81,14 @@ public class EmailService {
     /**
      * Send notification to {@code recipient} that someone shared a file with him.
      */
-    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message) throws MessagingException {
+    @Override
+    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message)
+            throws MessagingException {
         Context ctx = new Context();
         ctx.setVariable(FILENAME, fileInfo.getName());
         ctx.setVariable(UPLOADER, fileInfo.getUploaderName());
         ctx.setVariable("message", message);
         String content = this.templateEngine.process("mail/html/share-notification", ctx);
-
         sendMessage(recipient, content);
     }
 }

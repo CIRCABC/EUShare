@@ -81,7 +81,7 @@ public class DBUserFile {
  
     @Override
     public int hashCode() {
-        return 31;
+        return downloadId.hashCode();
     }
 
     public Recipient toRecipient() {

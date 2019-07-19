@@ -35,18 +35,17 @@ import com.circabc.easyshare.utils.StringUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 @Slf4j
 @Service
-public class UserService {
+public class UserService implements UserServiceInterface {
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     private EasyShareConfiguration esConfig;
-
-    private UserService() {
-    }
 
     public String getAuthenticatedUserId(Credentials credentials) throws WrongAuthenticationException {
         DBUser dbUser = userRepository.findOneByUsername(credentials.getEmail());
@@ -136,6 +135,8 @@ public class UserService {
         return this.getDbUser(userId).toUserSpace();
     }
 
+    @Override
+    @Transactional
     public UserInfo getUserInfoOnBehalfOf(String userId, String requesterId)
             throws UnknownUserException, UserUnauthorizedException {
         if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
@@ -145,6 +146,8 @@ public class UserService {
         }
     }
 
+    @Override
+    @Transactional
     public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId) throws UnknownUserException,
             UserUnauthorizedException, ExternalUserCannotBeAdminException, IllegalSpaceException {
         String userId = userInfo.getId();
@@ -174,6 +177,8 @@ public class UserService {
 
     }
 
+    @Override
+    @Transactional
     public List<UserInfo> getUsersUserInfoOnBehalfOf(int pageSize, int pageNumber, String searchString,
             String requesterId) throws UnknownUserException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
@@ -184,6 +189,8 @@ public class UserService {
         }
     }
 
+    @Override
+    @Transactional
     public UserSpace getUserSpaceOnBehalfOf(String userId, String requesterId)
             throws UserUnauthorizedException, UnknownUserException {
         if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
@@ -193,6 +200,8 @@ public class UserService {
         }
     }
 
+    @Override
+    @Transactional
     public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
             throws UnknownUserException, ExternalUserCannotBeAdminException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
@@ -236,6 +245,8 @@ public class UserService {
         }
     }
 
+    @Override
+    @Transactional
     public void revokeAdminRightsOnBehalfOf(String userId, String requesterId)
             throws UnknownUserException, UserUnauthorizedException {
         if (this.isAdmin(requesterId)) {
@@ -257,6 +268,8 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Override
+    @Transactional
     public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
             throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException {
         if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {

@@ -88,22 +88,39 @@ public class DBTest {
         DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(uploader);
 
-        DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
-        DBUser shareUser = DBUser.createExternalUser("emailExternal@email.com", null); //NOSONAR
-        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
-
-        shareUser.getFilesReceived().add(dbUserFile);
-        dbFile.getSharedWith().add(dbUserFile);
-        userRepository.save(shareUser);
-        fileRepository.save(dbFile);
-
+        // Verify insertion
         DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
         assertEquals(uploader, uploaderSaved);
 
+        DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
+        fileRepository.save(dbFile);
+
+        // Verify insertion
+        DBFile dbFileSaved = fileRepository.findOneById("id");
+        assertEquals(dbFile, dbFileSaved);
+
+        DBUser shareUser = DBUser.createExternalUser("emailExternal@email.com", null); //NOSONAR
+        userRepository.save(shareUser);
+
+        // Verify insertion
         DBUser shareUserSaved = userRepository.findOneByEmail("emailExternal@email.com");
         assertEquals(shareUser, shareUserSaved);
-        assertEquals(shareUser.getFilesReceived().iterator().next(), dbUserFile);
-        assertEquals(userFileRepository.findOneByDownloadId(dbUserFile.getDownloadId()), shareUserSaved.getFilesReceived().iterator().next());
+
+        DBUserFile dbUserFile = new DBUserFile("downloadId", shareUser, dbFile);
+        userFileRepository.save(dbUserFile);
+
+        // Verify insertion
+        DBUserFile dbUserFileSaved = userFileRepository.findOneByDownloadId("downloadId");
+        assertEquals(new DBUserFile("downloadId",shareUser,dbFile), dbUserFileSaved);
+
+        // Verify deletion
+        //userFileRepository.deleteByDownloadId("downloadId");
+        userFileRepository.deleteByReceiver_idAndFile_id(shareUserSaved.getId(), dbFileSaved.getId());
+        DBUserFile dbUserFileDeleted = userFileRepository.findOneByDownloadId("downloadId");
+        assertEquals(null, dbUserFileDeleted);
+
+        DBUser shareUserSavedWithSharedFileDeleted = userRepository.findOneByEmail("emailExternal@email.com");
+        assertEquals(0, shareUserSavedWithSharedFileDeleted.getFilesReceived().size());
     }
 
     @Test
@@ -111,15 +128,17 @@ public class DBTest {
     public void searchOfAFileByReceiver() {
         DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(uploader);
+
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
-        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name");
-        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
-
-        shareUser.getFilesReceived().add(dbUserFile);
-        dbFile.getSharedWith().add(dbUserFile);
-        userRepository.save(shareUser);
         fileRepository.save(dbFile);
+
+        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name");
+        userRepository.save(shareUser);
+
+        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
+        userFileRepository.save(dbUserFile);
+        
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Receiver_Id(DBFile.Status.AVAILABLE, shareUser.getId(), PageRequest.of(0,10));
 
         assertEquals(1, shareUsersFiles.size());
@@ -139,15 +158,17 @@ public class DBTest {
     public void searchOfAFileByUploader() {
         DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
         userRepository.save(uploader);
+
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(), "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
-        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name");
-        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
-
-        shareUser.getFilesReceived().add(dbUserFile);
-        dbFile.getSharedWith().add(dbUserFile);
-        userRepository.save(shareUser);
         fileRepository.save(dbFile);
+
+        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name");
+        userRepository.save(shareUser);
+
+        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
+        userFileRepository.save(dbUserFile);
+
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_Id(DBFile.Status.AVAILABLE, uploader.getId(), PageRequest.of(0,10));
         assertEquals(1, shareUsersFiles.size());
         assertEquals(dbFile, shareUsersFiles.get(0));

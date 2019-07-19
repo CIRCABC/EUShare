@@ -34,6 +34,26 @@ public class DBUser {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     private Set<DBUserFile> filesReceived = new HashSet<>();
 
+    public void addFilesRecieved(DBFile dbFile, String downloadId) {
+        DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile);
+        filesReceived.add(dbUserFile);
+        dbFile.getSharedWith().add(dbUserFile);
+    }
+    
+    public void addFilesRecieved(DBFile dbFile, String downloadId, String message) {
+        DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile, message);
+        filesReceived.add(dbUserFile);
+        dbFile.getSharedWith().add(dbUserFile);
+	}
+
+	public void removeFilesRecieved(DBFile dbFile, String downloadId) {
+        DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile);
+        dbFile.getSharedWith().remove(dbUserFile);
+        filesReceived.remove(dbUserFile);
+        dbUserFile.setFile(null);
+        dbUserFile.setReceiver(null);
+	}
+
     @Id
     @Getter
     @Setter
@@ -179,6 +199,6 @@ public class DBUser {
 
     @Override
     public int hashCode() {
-        return 31;
+        return id.hashCode();
     }
 }
