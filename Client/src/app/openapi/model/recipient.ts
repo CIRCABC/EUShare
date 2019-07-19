@@ -32,6 +32,6 @@ export interface Recipient {
     /**
      * True to send an email with the download link
      */
-    sendEmail?: boolean;
+    sendEmail: boolean;
 }
 

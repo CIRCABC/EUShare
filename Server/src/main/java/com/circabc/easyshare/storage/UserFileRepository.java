@@ -10,8 +10,10 @@
 
 package com.circabc.easyshare.storage;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface UserFileRepository extends JpaRepository<DBUserFile, String> {
+public interface UserFileRepository extends CrudRepository<DBUserFile, String> {
     DBUserFile findOneByDownloadId(String downloadId);
+    void deleteByDownloadId(String downloadId);
+    void deleteByReceiver_idAndFile_id(String receiverId, String fileId);
 }

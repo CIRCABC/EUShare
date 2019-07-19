@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
 
 import com.circabc.easyshare.configuration.EasyShareConfiguration;
 import com.circabc.easyshare.exceptions.CouldNotAllocateFileException;
@@ -181,15 +182,11 @@ public class FileService implements FileServiceInterface {
     }
 
     @Override
+    @Transactional
     public void removeShareOnFileOnBehalfOf(String fileId, String userId, String requesterId)
             throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            DBFile dbFile = findAvailableFile(fileId, false);
-            DBUser userToRemove = userService.getDbUser(userId);
-            Set<DBUserFile> sharedWith = dbFile.getSharedWith().stream()
-                    .filter(dbUserFile -> dbUserFile.getReceiver().equals(userToRemove)).collect(Collectors.toSet());
-            dbFile.setSharedWith(sharedWith);
-            fileRepository.save(dbFile);
+            userFileRepository.deleteByReceiver_idAndFile_id(userId, fileId);
         } else {
             throw new UserUnauthorizedException();
         }
@@ -201,22 +198,20 @@ public class FileService implements FileServiceInterface {
         return dbFile.getUploader().getId().equals(requesterId) || userService.isAdmin(requesterId);
     }
 
+    @Transactional
     @Override
     public void addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
             throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
             MessageTooLongException, UnknownFileException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
             DBFile dbFile = findAvailableFile(fileId, false);
-            Set<DBUserFile> dbUserSet = dbFile.getSharedWith();
             if (recipient.getMessage() != null && recipient.getMessage().length() >= 400) {
                 throw new MessageTooLongException();
             }
-            DBUserFile dbUserFile = new DBUserFile(fileId, userService.getUserOrCreateExternalUser(recipient), dbFile,
-                    recipient.getMessage());
-            if (dbUserSet.add(dbUserFile)) {
-                dbFile.setSharedWith(dbUserSet);
-                fileRepository.save(dbFile);
-            }
+            DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(),
+                    userService.getUserOrCreateExternalUser(recipient), dbFile, recipient.getMessage());
+            userFileRepository.save(dbUserFile);
+            // TODO: add notification
         } else {
             throw new UserUnauthorizedException();
         }
@@ -224,11 +219,12 @@ public class FileService implements FileServiceInterface {
 
     /**
      * Tries to allocate space on disk for file with given size. If the allocation
-     * fails, the
+     * fails, throws a corresponding Exception
      * 
      * @return File ID if allocation successful
      */
     @Override
+    @Transactional
     public String allocateFileOnBehalfOf(LocalDate expirationDate, String fileName, String password, String uploaderId,
             List<Recipient> recipientList, long filesize, String requesterId) throws DateLiesInPastException,
             IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException,
@@ -275,15 +271,14 @@ public class FileService implements FileServiceInterface {
         List<DBUserFile> recipientDBUserList = new LinkedList<>();
         DBFile dbFile = new DBFile(generatedFileId, uploader, new HashSet<DBUserFile>(recipientDBUserList), fileName,
                 filesize, expirationDate, path, password);
+        fileRepository.save(dbFile);
+
         for (Recipient recipient : recipientList) {
             DBUser recipientDBUser = userService.getUserOrCreateExternalUser(recipient);
             DBUserFile dbUserFile = new DBUserFile(this.generateNewFileId(), recipientDBUser, dbFile,
                     recipient.getMessage());
-            recipientDBUserList.add(dbUserFile);
+            userFileRepository.save(dbUserFile);
         }
-
-        dbFile.setSharedWith(new HashSet<DBUserFile>(recipientDBUserList));
-        fileRepository.save(dbFile);
         return generatedFileId;
     }
 
@@ -298,9 +293,9 @@ public class FileService implements FileServiceInterface {
     private DBFile findAvailableFile(String fileId, boolean isNotUploaderOrAdmin) throws UnknownFileException {
         DBFile f;
         if (!isNotUploaderOrAdmin) {
-            f = fileRepository.findByStatusAndId(DBFile.Status.AVAILABLE, fileId).orElse(null);
+            f = fileRepository.findByStatusAndId(DBFile.Status.AVAILABLE, fileId);
         } else {
-            f = fileRepository.findByStatusAndSharedWith_DownloadId(DBFile.Status.AVAILABLE, fileId).orElse(null);
+            f = fileRepository.findByStatusAndSharedWith_DownloadId(DBFile.Status.AVAILABLE, fileId);
         }
         if (f == null) {
             throw new UnknownFileException();
@@ -313,6 +308,7 @@ public class FileService implements FileServiceInterface {
      * null to {@code requesterId}
      */
     @Override
+    @Transactional
     public void deleteFileOnBehalfOf(String fileId, String reason, String requesterId)
             throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
         DBFile f = fileRepository.findById(fileId).orElse(null);
@@ -350,9 +346,12 @@ public class FileService implements FileServiceInterface {
 
         DBFile dbFile;
         DBUserFile dbUserFile = userFileRepository.findOneByDownloadId(fileId);
+
         if (dbUserFile == null) {
+            // File is downloaded by its uploader
             dbFile = findAvailableFile(fileId, true);
         } else {
+            // File is downloaded by a user it is shared with
             dbFile = dbUserFile.getFile();
             String userIdentifier = dbUserFile.getReceiver().getEmail();
             if (userIdentifier == null) {
@@ -375,30 +374,33 @@ public class FileService implements FileServiceInterface {
     }
 
     @Override
+    @Transactional
     public FileInfoRecipient getFileInfoRecipientOnBehalfOf(String fileId, String requesterId)
             throws UnknownFileException, UserUnauthorizedException {
         DBFile f = findAvailableFile(fileId, true);
         if (requesterId.equals(f.getUploader().getId())) {
-            return f.toFileInfoRecipient();
+            return f.toFileInfoRecipient(requesterId);
         } else {
             throw new UserUnauthorizedException();
         }
     }
 
     @Override
+    @Transactional
     public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(int pageSize, int pageNumber, String userId,
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             return fileRepository
                     .findByStatusAndSharedWith_Receiver_Id(DBFile.Status.AVAILABLE, userId,
                             PageRequest.of(pageNumber, pageSize))
-                    .stream().map(dbFile -> dbFile.toFileInfoRecipient()).collect(Collectors.toList());
+                    .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
         } else {
             throw new UserUnauthorizedException();
         }
     }
 
     @Override
+    @Transactional
     public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(int pageSize, int pageNumber, String userId,
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
@@ -411,6 +413,7 @@ public class FileService implements FileServiceInterface {
     }
 
     @Override
+    @Transactional
     public FileInfoUploader getFileInfoUploaderOnBehalfOf(String fileId, String requesterId)
             throws UnknownFileException, UserUnauthorizedException {
         DBFile f = findAvailableFile(fileId, false);
@@ -422,6 +425,7 @@ public class FileService implements FileServiceInterface {
     }
 
     @Override
+    @Transactional
     public void saveOnBehalfOf(String fileId, Resource resource, String requesterId)
             throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
             UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException {

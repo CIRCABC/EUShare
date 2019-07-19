@@ -27,7 +27,7 @@ import {
 } from '@angular/common/http';
 import { CustomHttpUrlEncodingCodec } from '../encoder';
 
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { Credentials } from '../model/credentials';
 import { Status } from '../model/status';
@@ -39,20 +39,26 @@ import { routerNgProbeToken } from '@angular/router/src/router_module';
 import { UserInfo } from '../model/userInfo';
 
 
+/**
+ * Stores the Credentials and the UserInfo
+ */
 @Injectable({
     providedIn: 'root'
 })
 export class SessionService {
 
+ 
     public logout() {
         localStorage.removeItem('ES_AUTH');
-        localStorage.removeItem('ES_USERID');
+        localStorage.removeItem('ES_USERINFO');
         this.router.navigateByUrl('');
     }
 
     protected basePath = 'https://api.example.com';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
+    public userInfoSubject: Subject<UserInfo> = new Subject<UserInfo>();
+    public userInfo$ = this.userInfoSubject.asObservable();
 
     private storedId!: string;
 
@@ -67,32 +73,43 @@ export class SessionService {
     public getStoredUserInfo(): UserInfo | null {
         let userInfoStringified = localStorage.getItem('ES_USERINFO');
         if (userInfoStringified) {
-            return JSON.parse(userInfoStringified);
+            const userInfo = JSON.parse(userInfoStringified);
+            this.userInfoSubject.next(userInfo);
+            return userInfo;
+        }
+        return null;
+    }
+
+    public getStoredIsAdmin(): boolean | null {
+        const userInfo = this.getStoredUserInfo();
+        if(userInfo) {
+            return userInfo.isAdmin;
         }
         return null;
     }
 
     public getStoredId(): string | null {
-        return localStorage.getItem('ES_USERID');
+        const userInfo = this.getStoredUserInfo();
+        if (userInfo) {
+            return userInfo.id;
+        }
+        return null;
     }
 
     public getStoredName(): string | null {
-        return localStorage.getItem('ES_USERNAME');
+        const userInfo = this.getStoredUserInfo();
+        if (userInfo) {
+            return userInfo.name;
+        }
+        return null;
     }
 
     public setStoredCredentials(credentials: Credentials) {
         localStorage.setItem('ES_AUTH', JSON.stringify(credentials));
     }
 
-    public setStoredId(id: string) {
-        localStorage.setItem('ES_USERID', id);
-    }
-
-    public setStoredName(name: string) {
-        localStorage.setItem('ES_USERNAME', name);
-    }
-
     public setStoredUserInfo(userInfo: UserInfo) {
+        this.userInfoSubject.next(userInfo);
         localStorage.setItem('ES_USERINFO', JSON.stringify(userInfo));
     }
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration, private router: Router) {

@@ -31,11 +31,11 @@ export interface UserInfo {
      */
     usedSpace: number;
     /**
-     * User ID (email address in case of external user)
+     * User ID
      */
     id: string;
     /**
-     * User name
+     * User name (email address in case of external user)
      */
     name: string;
     /**

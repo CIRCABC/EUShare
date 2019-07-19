@@ -33,11 +33,11 @@ export interface RecipientWithLink {
     /**
      * True to send an email with the download link
      */
-    sendEmail?: boolean;
+    sendEmail: boolean;
     /**
      * Id of the recipient
      */
-    recipientId?: string;
+    recipientId: string;
     /**
      * Download link to a specific file
      */

@@ -25,23 +25,19 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  login() {
+  async login() {
     let credentials: Credentials = {
       email: this.id,
       password: this.password
     }
-
-    this.api.postLogin(credentials).toPromise().then(identifier => {
+    try {
+      const identifier = await this.api.postLogin(credentials).toPromise();
       this.api.setStoredCredentials(credentials);
-      this.api.setStoredId(identifier);
-      this.userApi.getUserUserInfo(identifier).toPromise().then(userInfo => {
-        this.api.setStoredUserInfo(userInfo);
-      }).catch(error => {
-        this.notificationService.errorMessageToDisplay(error, 'downloading your user\'s information');
-      })
+      const userInfo = await this.userApi.getUserUserInfo(identifier).toPromise();
+      this.api.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('home');
-    }).catch(error => {
+    } catch (error) {
       this.notificationService.errorMessageToDisplay(error, 'logging in');
-    });
+    }
   }
 }

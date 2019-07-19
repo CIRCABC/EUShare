@@ -11,17 +11,18 @@
 package com.circabc.easyshare.model;
 
 import java.util.Objects;
-
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * Recipient
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-12T15:01:54.116+02:00[Europe/Paris]")
 
 public class Recipient   {
   @JsonProperty("emailOrName")
@@ -83,7 +84,8 @@ public class Recipient   {
    * True to send an email with the download link
    * @return sendEmail
   */
-  @ApiModelProperty(value = "True to send an email with the download link")
+  @ApiModelProperty(required = true, value = "True to send an email with the download link")
+  @NotNull
 
 
   public Boolean getSendEmail() {
