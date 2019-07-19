@@ -341,6 +341,7 @@ public class FileService implements FileServiceInterface {
      * @throws WrongPasswordException
      */
     @Override
+    @Transactional
     public DownloadReturn downloadFile(String fileId, String password)
             throws WrongPasswordException, UnknownFileException {
 
@@ -353,6 +354,9 @@ public class FileService implements FileServiceInterface {
         } else {
             // File is downloaded by a user it is shared with
             dbFile = dbUserFile.getFile();
+            if (!dbFile.getStatus().equals(DBFile.Status.AVAILABLE)) {
+                throw new UnknownFileException();
+            }
             String userIdentifier = dbUserFile.getReceiver().getEmail();
             if (userIdentifier == null) {
                 userIdentifier = dbUserFile.getReceiver().getName();
