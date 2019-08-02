@@ -48,7 +48,7 @@ jobs:
   build_frontend:
     # see https://circleci.com/docs/2.0/language-javascript/
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
-    working_directory: ~/EasyShare/client/angular 
+    working_directory: ~/EasyShare/client/angular
     docker: # run the steps with Docker
       - image: circleci/node:10.14.0  
     steps: 
