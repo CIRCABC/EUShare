@@ -1,0 +1,78 @@
+{
+  "name": "client",
+  "version": "0.0.0",
+  "license": "EUPL-1.1",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build -c=dev",
+    "buildprod": "ng build --prod",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e",
+    "licchkadd": "license-check-and-add"
+  },
+  "license-check-and-add-config": {
+    "folder": ".",
+    "license": "LICENSE_HEADER.txt",
+    "exact_paths_method": "INCLUDE",
+    "exact_paths": [
+      "src/app"
+    ],
+    "file_type_method": "EXCLUDE",
+    "file_types": [
+      ".html",
+      ".txt",
+      ".json",
+      ".sh",
+      ".md",
+      ".css"
+    ],
+    "insert_license": false
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "7.2.0",
+    "@angular/common": "7.2.0",
+    "@angular/compiler": "7.2.0",
+    "@angular/core": "7.2.0",
+    "@angular/forms": "7.2.0",
+    "@angular/http": "7.2.0",
+    "@angular/material": "7.2.1",
+    "@angular/platform-browser": "7.2.0",
+    "@angular/platform-browser-dynamic": "7.2.0",
+    "@angular/router": "7.2.0",
+    "@fortawesome/angular-fontawesome": "0.3.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.0-11",
+    "@fortawesome/free-solid-svg-icons": "^5.1.0-8",
+    "bulma": "^0.7.1",
+    "core-js": "^2.5.7",
+    "file-saver": "^2.0.0",
+    "license-check-and-add": "^2.3.6",
+    "primeng": "7.0.0",
+    "rxjs": "^6.3.3",
+    "zone.js": "^0.8.19"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "0.11.4",
+    "@angular/cli": "7.1.4",
+    "@angular/compiler-cli": "7.2.0",
+    "@angular/language-service": "7.2.0",
+    "@types/file-saver": "^2.0.0",
+    "@types/jasmine": "3.3.5",
+    "@types/jasminewd2": "2.0.6",
+    "@types/node": "10.12.18",
+    "codelyzer": "4.5.0",
+    "jasmine-core": "3.3.0",
+    "jasmine-spec-reporter": "4.2.1",
+    "karma": "3.1.4",
+    "karma-chrome-launcher": "2.2.0",
+    "karma-coverage-istanbul-reporter": "2.0.4",
+    "karma-jasmine": "2.0.1",
+    "karma-jasmine-html-reporter": "1.4.0",
+    "protractor": "5.4.2",
+    "ts-node": "7.0.1",
+    "tslint": "5.12.0",
+    "typescript": "3.2.2"
+  }
+}
