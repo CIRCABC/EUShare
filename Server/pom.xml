@@ -1,11 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.circabc</groupId>
-    <artifactId>easyshare</artifactId>
-    <packaging>jar</packaging>
-    <name>easyshare</name>
-    <version>0.0.1</version>
+    <artifactId>server</artifactId>
+    <packaging>war</packaging>
     <properties>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -14,16 +11,18 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.version>3.5.0.1254</sonar.version>
+        <war.final.name>easyshareserver</war.final.name>
     </properties>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.0.1.RELEASE</version>
+        <groupId>com.circabc</groupId>
+        <artifactId>easyshare-parent</artifactId>
+        <version>0.0.1</version>
     </parent>
     <build>
+        <finalName>${war.final.name}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
-            <plugin>
+            <!-- <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
@@ -33,7 +32,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <!-- TESTING PHASE 
              inspired from https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
             <plugin>
@@ -107,29 +106,54 @@
                     <execution>
                         <phase>validate</phase>
                         <goals>
-                        <!-- check, format, remove -->
+                            <!-- check, format, remove -->
                             <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.0</version>
+                <configuration>
+                    <username>${tomcat.admin}</username>
+                    <password>${tomcat.admin.password}</password>
+                    <warFile>${project.build.directory}/${war.final.name}.war</warFile>
+                    <url>${tomcat.deploy.url}</url>
+                    <path>/ROOT</path>
+                    <update>true</update>
+                    <fork>true</fork>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
         <dependency>
-			<groupId>org.sonarsource.scanner.maven</groupId>
-			<artifactId>sonar-maven-plugin</artifactId>
-			<version>${sonar.version}</version>
+            <groupId>com.circabc</groupId>
+            <artifactId>easyshare-parent</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.sonarsource.scanner.maven</groupId>
+            <artifactId>sonar-maven-plugin</artifactId>
+            <version>${sonar.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>2.9.8</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -142,12 +166,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.20</version>
-            <scope>provided</scope>
         </dependency>
         <!-- databases -->
         <dependency>
@@ -219,12 +237,12 @@
         </dependency>
     </dependencies>
     <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-report-plugin</artifactId>
-        <version>3.0.0-M3</version>
-      </plugin>
-    </plugins>
-  </reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>3.0.0-M3</version>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

@@ -1,7 +1,5 @@
 cors:
   origin: '*'
-server:
-  port: 8888
 easyshare:
   expirationdays: 7
   defaultuserspace: 5368709120

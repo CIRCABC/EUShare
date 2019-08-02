@@ -36,10 +36,10 @@ import { FileLinkModalComponent } from './common/modals/file-link-modal/file-lin
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
-    pathMatch: 'full'
   },
   {
     path: 'home',

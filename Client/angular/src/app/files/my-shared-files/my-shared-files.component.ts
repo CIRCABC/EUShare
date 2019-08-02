@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 import { NotificationService } from '../../common/notification/notification.service';
 import { faUserTimes, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 import { ModalsService } from '../../common/modals/modals.service';
-import { environment } from '../../../environments/environment.prod';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-my-shared-files',
@@ -77,7 +77,7 @@ export class MySharedFilesComponent implements OnInit {
   }
 
   public openFileLinkModal(downloadLink: string, fileName: string, isPasswordProtected: boolean) {
-    let fileLinkBuild = environment.frontend_url + '/filelink/' + downloadLink + '/' + encodeURIComponent(btoa(fileName)) + '/';
+    let fileLinkBuild = window.location.href.slice(0, window.location.href.lastIndexOf('/')) + '/filelink/' + downloadLink + '/' + encodeURIComponent(btoa(fileName)) + '/';
     if (isPasswordProtected) {
       fileLinkBuild = fileLinkBuild + '1';
     } else {
@@ -88,7 +88,7 @@ export class MySharedFilesComponent implements OnInit {
 
   public delete(i: number) {
     this.fileApi.deleteFile(this.fileInfoUploaderArray[i].fileId).toPromise().then(success => {
-      const deletedFileName:string = this.fileInfoUploaderArray[i].name;
+      const deletedFileName: string = this.fileInfoUploaderArray[i].name;
       this.fileInfoUploaderArray.splice(i, 1);
       this.notificationService.addSuccessMessage('Successfully deleted file named ' + deletedFileName);
     }).catch(error => {

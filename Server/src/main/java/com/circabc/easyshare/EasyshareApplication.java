@@ -14,22 +14,37 @@ import com.circabc.easyshare.services.UserService;
 import com.fasterxml.jackson.databind.Module;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import javax.annotation.PostConstruct;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootApplication
-public class EasyshareApplication implements CommandLineRunner {
+public class EasyshareApplication extends SpringBootServletInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        log.info("Starting EASYSHARE");
+        return builder.sources(EasyshareApplication.class);
+    }
+
     @Autowired
     UserService userService;
 
+    @PostConstruct
+    public void initUsers() {
+        userService.createDefaultUsers();
+    }
+
+    /*
     @Override
     public void run(String... arg0) throws Exception {
         log.info("Starting EASYSHARE");
@@ -41,7 +56,7 @@ public class EasyshareApplication implements CommandLineRunner {
 
     public static void main(String[] args) throws Exception {
         new SpringApplication(EasyshareApplication.class).run(args);
-    }
+    }*/
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;
@@ -51,20 +66,6 @@ public class EasyshareApplication implements CommandLineRunner {
             return 10;
         }
 
-    }
-
-    
-    @Bean
-    public WebMvcConfigurer webConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOrigins("*")
-                        .allowedMethods("*")
-                        .allowedHeaders("*");
-            }
-        };
     }
 
     @Bean

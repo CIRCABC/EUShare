@@ -7,7 +7,7 @@ Easyshare is a file exchange tool from the European Commission. Its source code 
 1. Tomcat 8
 1. Java 8
 1. MySQL 5.7
-1. Maven
+1. Maven 3.6.0
 
 ## Quick start
 
@@ -23,11 +23,6 @@ CREATE USER 'easyshare'@'localhost' IDENTIFIED BY 'easyshare';
 GRANT ALL PRIVILEGES ON easyshare.* TO 'easyshare'@'localhost';
 ```
 
-3. Set event-scheduler to ON.
-``` sql 
-SET GLOBAL event_scheduler = ON
-```
-
 ### Run the application
 Build the application's jar using the following command:
 ``` batch
@@ -39,14 +34,13 @@ Build the test report by running the following command:
 mvn surefire-report:report
 ```
 
-Run the application by running the following command:
+Upload the application to your running tomcat (after setting up a manager-script user in tomcat)
 ``` batch
-java -jar target\<applicationName>.jar
-```
-
-Run the application in debug mode by running the following command:
-``` batch
-java -jar target\<applicationName>.jar -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=8000
+# from client folder
+mvn clean tomcat7:deploy 
+-Dtomcat.admin=your_tomcat_username
+-Dtomcat.admin.password=your_tomcat_password
+-Dtomcat.deploy.url=your_tomcat_url/manager/text
 ```
 
 ## Repository conventions
@@ -54,4 +48,4 @@ java -jar target\<applicationName>.jar -agentlib:jdwp=transport=dt_socket,server
 We apply the [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow).
 
 ### Commits
-For each commit, we ask to add the number of the issue to which the commit is relevant. E.g.  Issue #1245 : Adding css for class .aClassName. 
+For each commit, we ask to add the number of the issue to which the commit is relevant. E.g.  Issue #1245 : Adding css for class .aClassName. For each branch, we ask it to be named by the issue name then its number. E.g. for an issue like named "Dockerize environment" numbered 1246, the branch name will be "dockerizeEnvironment#1246".

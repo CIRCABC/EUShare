@@ -350,7 +350,7 @@ public class FileService implements FileServiceInterface {
 
         if (dbUserFile == null) {
             // File is downloaded by its uploader
-            dbFile = findAvailableFile(fileId, true);
+            dbFile = findAvailableFile(fileId, false);
         } else {
             // File is downloaded by a user it is shared with
             dbFile = dbUserFile.getFile();

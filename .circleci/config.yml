@@ -2,7 +2,7 @@ version: 2.1 # use CircleCI 2.1
 jobs: 
   build_backend:
     # see https://circleci.com/docs/2.0/language-java/
-    working_directory: ~/EasyShare/Server # directory where steps will run
+    working_directory: ~/EasyShare/server # directory where steps will run
 
     docker:
       - image: circleci/openjdk:8-jdk-browsers 
@@ -33,7 +33,7 @@ jobs:
       - store_artifacts: 
       # store the uberjar as an artifact
       # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-          path: target/easyshare-0.0.1.jar
+          path: target/easyshareserver.war
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples 
       - run:
           name: Install Sonarqube scanner
@@ -48,7 +48,7 @@ jobs:
   build_frontend:
     # see https://circleci.com/docs/2.0/language-javascript/
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
-    working_directory: ~/EasyShare/Client 
+    working_directory: ~/EasyShare/client/angular 
     docker: # run the steps with Docker
       - image: circleci/node:10.14.0  
     steps: 
