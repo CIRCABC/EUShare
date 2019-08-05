@@ -35,7 +35,6 @@ import { Status } from '../model/status';
 import { BASE_PATH, COLLECTION_FORMATS } from '../variables';
 import { Configuration } from '../configuration';
 import { Router } from '@angular/router';
-import { routerNgProbeToken } from '@angular/router/src/router_module';
 import { UserInfo } from '../model/userInfo';
 
 

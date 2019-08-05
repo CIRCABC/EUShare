@@ -132,19 +132,17 @@
           <label class="label">Email:</label>
           <input class="input" type="text" formControlName="email">
           <label class="label error"
-            *ngIf="uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['email'].errors &&
-            uf['emailsWithMessages'].at(i).controls['email'].errors.pattern && uf['emailsWithMessages'].at(i).controls['email'].dirty && uf['emailsWithMessages'].at(i).controls['email'].touched">Invalid
-            email form ! {{uf['emailsWithMessages'].at(i).controls['email'].errors.value}}
+            *ngIf="isEmailError(i)">Invalid
+            email form ! {{getEmailsWithMessagecontrolErrors(i,'email').value}}
           </label>
           <label class="label">Text: (optional)</label>
           <textarea class="textarea" formControlName="message"
             placeholder="e.g. Please enter a message for the recipient of this file"></textarea>
 
           <label class="label error"
-            *ngIf=" uf['emailsWithMessages'].at(i) && uf['emailsWithMessages'].at(i).controls['message'].errors &&
-            uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength && uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value">Text
+            *ngIf="isLengthError(i)">Text
             length bigger than
-            {{uf['emailsWithMessages'].at(i).controls['message'].errors.forbiddenMessageLength.value}} characters !
+            {{ getEmailsWithMessagecontrolErrors(i,'message').forbiddenMessageLength.value}} characters !
           </label>
           <div class="level">
             <button class="button is-danger is-outlined level-left" type="button"
