@@ -10,11 +10,11 @@ services:
     volumes:
         - ./mysql:/docker-entrypoint-initdb.d/:ro
     command: --lower_case_table_names=1 --transaction-isolation=READ-COMMITTED
-  tomcat:
-    build: tomcat
+  server:
+    build: server
     image: tomcat-easyshare-server
     ports:
       - "8888:8080"
-    container_name: tomcat
+    container_name: tomcat_easyshare_server
     depends_on:
       - db
