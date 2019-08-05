@@ -11,7 +11,7 @@
     <artifactId>client</artifactId>
     <properties>
         <war.final.name>easyshareclient</war.final.name>
-        <environment></environment>
+        <spring.profiles.active></spring.profiles.active>
     </properties>
     <dependencies>
         <dependency>
@@ -97,7 +97,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
-                            <arguments>run build${environment}</arguments>
+                            <arguments>run build${spring.profiles.active}</arguments>
                         </configuration>
                     </execution>
                 </executions>

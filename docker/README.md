@@ -21,9 +21,10 @@
 ## Build the Docker images
 - Build the application from root folder
 ``` batch
-mvn clean install
+mvn clean install -Dspring.profiles.active=docker -Dmaven.test.skip=true
 ```
-- Go into ` docker/server ` and build the angular image with `docker build . -t tomcat-easyshare-server `
+- Go into `docker/server` and build the tomcat image with `docker build . -t tomcat-easyshare-server`
+- Go into `docker/client` and build the tomcat image with `docker build . -t tomcat-easyshare-client`
 
 ## Run the environment
 - Go into ` docker/ ` folder and run ` docker-compose -f docker-compose.yaml up ` 
