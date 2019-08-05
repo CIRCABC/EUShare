@@ -19,7 +19,7 @@ spring:
       WRITE_DATES_AS_TIMESTAMPS: false
   datasource:
     #jdbc:oracle:thin:@localhost:1521:testing
-    url: jdbc:mysql://localhost:3306/easyshare
+    url: jdbc:mysql://127.0.0.1:3306/easyshare
     username: easyshare
     password: easyshare
     driver:
