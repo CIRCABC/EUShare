@@ -5,7 +5,7 @@ easyshare:
   defaultuserspace: 5368709120
   # 4Gb
   maxSizeAllowedInBytes: 4294967296 
-  activateMailService: true
+  activateMailService: false
   disks:
     - /easyshare/
 logging:
