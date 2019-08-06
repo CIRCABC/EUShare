@@ -1,5 +1,3 @@
-server:
-  port: 8888
 cors:
   origin: '*'
 easyshare:
@@ -7,23 +5,21 @@ easyshare:
   defaultuserspace: 5368709120
   # 4Gb
   maxSizeAllowedInBytes: 4294967296 
-  activateMailService: true
+  activateMailService: false
   disks:
-    - C:\temp\easyshare
+    - /easyshare/
 logging:
   level:
     org.springframework: ERROR
     org.hibernate.SQL: DEBUG
 spring:
-  profiles:
-    active: @spring.profiles.active@
   jackson:
     date-format: com.circabc.easyshare.RFC3339DateFormat
     serialization: 
       WRITE_DATES_AS_TIMESTAMPS: false
   datasource:
     #jdbc:oracle:thin:@localhost:1521:testing
-    url: jdbc:mysql://localhost:3306/easyshare
+    url: jdbc:mysql://db/easyshare
     username: easyshare
     password: easyshare
     driver:

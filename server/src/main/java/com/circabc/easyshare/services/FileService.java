@@ -324,11 +324,13 @@ public class FileService implements FileServiceInterface {
         f.setStatus(DBFile.Status.DELETED);
         fileRepository.save(f);
 
-        if (reason != null && !userService.isAdmin(requesterId)) {
-            try {
-                emailService.sendFileDeletedNotification(f.getUploader().getId(), f.toFileBasics(), reason);
-            } catch (MessagingException ignored) {
-                log.warn("Error while sending file deleted mail", ignored);
+        if (this.esConfig.isActivateMailService()) {
+            if (reason != null && !userService.isAdmin(requesterId)) {
+                try {
+                    emailService.sendFileDeletedNotification(f.getUploader().getId(), f.toFileBasics(), reason);
+                } catch (MessagingException ignored) {
+                    log.warn("Error while sending file deleted mail", ignored);
+                }
             }
         }
     }
