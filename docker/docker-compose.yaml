@@ -26,3 +26,11 @@ services:
     container_name: tomcat_easyshare_client
     depends_on:
       - server
+  proxy: 
+    image: nginx:alpine
+    container_name: nginx_easyshare_proxy
+    volumes:
+      - ./proxy/conf:/etc/nginx
+    ports:
+      - 80:80
+      - 443:443

@@ -32,7 +32,6 @@ public class EasyshareApplication extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        log.info("Starting EASYSHARE");
         return builder.sources(EasyshareApplication.class);
     }
 
@@ -43,12 +42,9 @@ public class EasyshareApplication extends SpringBootServletInitializer {
     public void initUsers() {
         userService.createDefaultUsers();
     }
-
-    /*
-    @Override
+    
     public void run(String... arg0) throws Exception {
         log.info("Starting EASYSHARE");
-        userService.createDefaultUsers();
         if (arg0.length > 0 && arg0[0].equals("exitcode")) {
             throw new ExitException();
         }
@@ -56,7 +52,7 @@ public class EasyshareApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws Exception {
         new SpringApplication(EasyshareApplication.class).run(args);
-    }*/
+    }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;

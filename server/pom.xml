@@ -12,6 +12,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.version>3.5.0.1254</sonar.version>
         <war.final.name>easyshareserver</war.final.name>
+        <spring.profiles.active></spring.profiles.active>
     </properties>
     <parent>
         <groupId>com.circabc</groupId>
@@ -22,7 +23,7 @@
         <finalName>${war.final.name}</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
-            <!-- <plugin>
+            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
@@ -32,7 +33,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
             <!-- TESTING PHASE 
              inspired from https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
             <plugin>

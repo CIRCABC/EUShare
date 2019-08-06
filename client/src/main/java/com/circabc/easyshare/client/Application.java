@@ -28,6 +28,10 @@ public class Application extends SpringBootServletInitializer {
         return builder.sources(Application.class);
     }
 
+    public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;
 
