@@ -5,6 +5,7 @@ COPY ./lib/mysql-connector-java-8.0.16.jar /usr/local/tomcat/lib
 COPY ./dist/easyshareserver.war /usr/local/tomcat/webapps/ROOT.war
 COPY ./conf/context.xml /usr/local/tomcat/conf/context.xml
 COPY ./conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
+COPY ./conf/manager-context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
 COPY wait-for-it.sh /usr/local/tomcat/wait-for-it.sh
 RUN ["chmod", "+x", "/usr/local/tomcat/wait-for-it.sh"]
 CMD ["/usr/local/tomcat/wait-for-it.sh","db:3306","--timeout=0","--strict", "--","catalina.sh", "run"]
