@@ -29,3 +29,8 @@ mvn clean install -Dspring.profiles.active=docker -Dmaven.test.skip=true
 ## Run the environment
 - Go into ` docker/ ` folder and run ` docker-compose -f docker-compose.yaml up ` 
 
+
+## Update the environment
+In order to update the client and the server, you may use the tomcat7 maven plugin.
+- Go into `server` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=docker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the server with your latest changes.
+- Go into `client` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=docker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the client with your latest changes.
