@@ -7,8 +7,8 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import {InterestGroup} from './interest-group';
+import { InterestGroup } from './interest-group';
 
 export interface Membership {
-    interestGroups: InterestGroup[];
+  interestGroups: InterestGroup[];
 }

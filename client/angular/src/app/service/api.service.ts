@@ -10,12 +10,12 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
+import { environment } from '../../environments/environment';
 import { FileInfo } from '../interfaces/file-info';
 import { PutUserShares } from '../interfaces/put-user-shares';
 import { Recipient } from '../interfaces/recipient';
 import { UserInfo } from '../interfaces/user-info';
 import { LoginService } from './login.service';
-import { environment } from '../../environments/environment';
 
 @Injectable()
 export class ApiService {
@@ -37,7 +37,11 @@ export class ApiService {
 
   deleteFile(fileId: string): Promise<void> {
     return this.http
-      .post<void>(`${this.apiUrl}/files/${fileId}/delete`, undefined, this.options)
+      .post<void>(
+        `${this.apiUrl}/files/${fileId}/delete`,
+        undefined,
+        this.options
+      )
       .toPromise();
   }
 
@@ -45,11 +49,15 @@ export class ApiService {
     const postBody = password !== undefined ? btoa(password) : undefined;
 
     const response = await this.http
-      .post(`${this.apiUrl}/files/${encodeURIComponent(fileId)}/download`, postBody, {
-        headers: this.header,
-        observe: 'response',
-        responseType: 'blob'
-      })
+      .post(
+        `${this.apiUrl}/files/${encodeURIComponent(fileId)}/download`,
+        postBody,
+        {
+          headers: this.header,
+          observe: 'response',
+          responseType: 'blob'
+        }
+      )
       .toPromise();
 
     if (response.body == null) {
@@ -79,28 +87,42 @@ export class ApiService {
 
   getFile(fileId: string): Promise<FileInfo> {
     return this.http
-      .get<FileInfo>(`${this.apiUrl}/files/${encodeURIComponent(fileId)}`, this.options)
+      .get<FileInfo>(
+        `${this.apiUrl}/files/${encodeURIComponent(fileId)}`,
+        this.options
+      )
       .toPromise();
   }
 
   getFiles(): Promise<FileInfo[]> {
-    return this.http.get<FileInfo[]>(`${this.apiUrl}/files`, this.options).toPromise();
+    return this.http
+      .get<FileInfo[]>(`${this.apiUrl}/files`, this.options)
+      .toPromise();
   }
 
   getMe(): Promise<UserInfo> {
-    return this.http.get<UserInfo>(`${this.apiUrl}/me`, this.options).toPromise();
+    return this.http
+      .get<UserInfo>(`${this.apiUrl}/me`, this.options)
+      .toPromise();
   }
 
   getUser(userId: string): Promise<UserInfo> {
     return this.http
-      .get<UserInfo>(`${this.apiUrl}/users/${decodeURIComponent(userId)}`, this.options)
+      .get<UserInfo>(
+        `${this.apiUrl}/users/${decodeURIComponent(userId)}`,
+        this.options
+      )
       .toPromise();
   }
 
   // postFiles
-  private requestNewFile(size: number, expirationDate?: Date, password?: string): Promise<string> {
+  private requestNewFile(
+    size: number,
+    expirationDate?: Date,
+    password?: string
+  ): Promise<string> {
     const body = {
-      expirationDate: expirationDate,
+      expirationDate,
       filesize: size,
       password: password !== undefined ? btoa(password) : undefined
     };
@@ -113,10 +135,14 @@ export class ApiService {
       .toPromise();
   }
 
-  async postSharedWith(fileId: string, add: Recipient[], remove: string[]): Promise<void> {
+  async postSharedWith(
+    fileId: string,
+    add: Recipient[],
+    remove: string[]
+  ): Promise<void> {
     const shares: PutUserShares = {
-      add: add,
-      remove: remove
+      add,
+      remove
     };
 
     try {

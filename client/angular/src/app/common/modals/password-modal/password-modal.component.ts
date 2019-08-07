@@ -17,14 +17,17 @@ import { ModalsService } from '../modals.service';
   templateUrl: './password-modal.component.html'
 })
 export class PasswordModalComponent implements OnInit {
-
   public modalActive!: boolean;
-  public isWhat: string = 'is-info';
-  public isLoading: boolean = false;
+  public isWhat = 'is-info';
+  public isLoading = false;
   private modalFileId!: string;
   private modalFileName!: string;
 
-  constructor(private fileApi: FileService, private notificationService: NotificationService, private modalService: ModalsService) { }
+  constructor(
+    private fileApi: FileService,
+    private notificationService: NotificationService,
+    private modalService: ModalsService
+  ) {}
 
   ngOnInit() {
     this.modalActive = false;
@@ -41,18 +44,23 @@ export class PasswordModalComponent implements OnInit {
 
   public download(filePassword?: string) {
     this.isLoading = true;
-    this.fileApi.getFile(this.modalFileId, filePassword).toPromise().then(file => {
-      this.isWhat = 'is-success'
-      saveAs(file, this.modalFileName);
-      this.isLoading = false;
-    }).catch(error => {
-      if (error.status == 401) {
-        this.isWhat = 'is-danger';
-      }
-      this.notificationService.errorMessageToDisplay(error, 'downloading your file');
-      this.isLoading = false;
-    });
-
+    this.fileApi
+      .getFile(this.modalFileId, filePassword)
+      .toPromise()
+      .then(file => {
+        this.isWhat = 'is-success';
+        saveAs(file, this.modalFileName);
+        this.isLoading = false;
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.isWhat = 'is-danger';
+        }
+        this.notificationService.errorMessageToDisplay(
+          error,
+          'downloading your file'
+        );
+        this.isLoading = false;
+      });
   }
-
 }

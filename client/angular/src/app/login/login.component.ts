@@ -9,8 +9,13 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SessionService, Credentials, ApiModule, UsersService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
+import {
+  ApiModule,
+  Credentials,
+  SessionService,
+  UsersService
+} from '../openapi';
 
 @Component({
   selector: 'app-login',
@@ -19,21 +24,27 @@ import { NotificationService } from '../common/notification/notification.service
 })
 export class LoginComponent implements OnInit {
   id = '';
-  password: string = '';
-  constructor(private api: SessionService, private userApi: UsersService, private router: Router, private notificationService: NotificationService) { }
+  password = '';
+  constructor(
+    private api: SessionService,
+    private userApi: UsersService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   async login() {
-    let credentials: Credentials = {
+    const credentials: Credentials = {
       email: this.id,
       password: this.password
-    }
+    };
     try {
       const identifier = await this.api.postLogin(credentials).toPromise();
       this.api.setStoredCredentials(credentials);
-      const userInfo = await this.userApi.getUserUserInfo(identifier).toPromise();
+      const userInfo = await this.userApi
+        .getUserUserInfo(identifier)
+        .toPromise();
       this.api.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('home');
     } catch (error) {

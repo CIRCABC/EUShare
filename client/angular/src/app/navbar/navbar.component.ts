@@ -8,7 +8,13 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { faUpload, faUsers, faShare, faCloudDownloadAlt, faShareAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCloudDownloadAlt,
+  faShare,
+  faShareAlt,
+  faUpload,
+  faUsers
+} from '@fortawesome/free-solid-svg-icons';
 import { SessionService, UserInfo } from '../openapi';
 
 @Component({
@@ -25,7 +31,7 @@ export class NavbarComponent implements OnInit {
   public userName: string | null = null;
   public isAdmin: boolean | null = null;
 
-  constructor(private sessionService: SessionService) { }
+  constructor(private sessionService: SessionService) {}
 
   ngOnInit() {
     const userInfo = this.sessionService.getStoredUserInfo();
@@ -34,12 +40,13 @@ export class NavbarComponent implements OnInit {
       this.isAdmin = userInfo.isAdmin;
     }
 
-    this.sessionService.userInfo$.subscribe(userInfo => {
-      this.userName = userInfo.name;
-      this.isAdmin = userInfo.isAdmin;
-    }, error => {
-
-    });
+    this.sessionService.userInfo$.subscribe(
+      secondUserInfo => {
+        this.userName = secondUserInfo.name;
+        this.isAdmin = secondUserInfo.isAdmin;
+      },
+      error => {}
+    );
   }
 
   logout() {
@@ -47,6 +54,6 @@ export class NavbarComponent implements OnInit {
   }
 
   get loggedIn(): boolean {
-    return this.sessionService.getStoredCredentials() !== null
+    return this.sessionService.getStoredCredentials() !== null;
   }
 }
