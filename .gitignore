@@ -36,3 +36,5 @@
 
 # SonarQube
 .sonarlint/
+.angulardoc.json
+client/angular/documentation/
