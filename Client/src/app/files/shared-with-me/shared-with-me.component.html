@@ -22,8 +22,7 @@
       <td class="align-right">
         <a *ngIf="file.hasPassword" class="button is-link is-outlined"
           (click)="openPasswordModal(file.fileId, file.name)">Download</a>
-        <a *ngIf="!file.hasPassword" class="button is-link is-outlined"
-          (click)="download(file.fileId, file.name)">Download</a>
+          <app-download-button *ngIf="!file.hasPassword" [fileId]="file.fileId" [fileName]="file.name" [buttonIsOutlined]="true"></app-download-button>
       </td>
     </tr>
   </tbody>

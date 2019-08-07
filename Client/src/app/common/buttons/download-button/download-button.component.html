@@ -1,0 +1,7 @@
+<a class="button is-link" [class.is-loading]="isLoading" [class.is-large]="buttonIsLarge" [class.is-fullwidth]="buttonIsFullwidth"
+[class.is-outlined]="buttonIsOutlined" (click)="download()">
+<div *ngIf="isShowFileName">
+Download {{fileName}}</div>
+<div *ngIf="!isShowFileName">
+    Download</div>
+</a>

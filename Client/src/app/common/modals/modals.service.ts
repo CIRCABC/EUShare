@@ -21,7 +21,6 @@ export class ModalsService {
   private activatePasswordModalSubject = new Subject<PasswordModalValue>();
   public activatePasswordModal$: Observable<PasswordModalValue> = this.activatePasswordModalSubject.asObservable();
 
-
   private activateFileLinkModalSubject = new Subject<FileLinkModalValue>();
   public activateFileLinkModal$: Observable<FileLinkModalValue> = this.activateFileLinkModalSubject.asObservable();
 

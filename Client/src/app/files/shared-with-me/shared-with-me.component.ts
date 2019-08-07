@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { FileInfoUploader, SessionService, FileService, UsersService, UserInfo, FileInfoRecipient } from '../../openapi';
+import { SessionService, UsersService, FileInfoRecipient } from '../../openapi';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../common/notification/notification.service';
 import { faUserTimes, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
@@ -28,7 +28,7 @@ export class SharedWithMeComponent implements OnInit {
   private pageSize: number = 10;
   private pageNumber: number = 0;
 
-  constructor(private session: SessionService, private userApi: UsersService, private fileApi: FileService, private router: Router, private notificationService: NotificationService,
+  constructor(private session: SessionService, private userApi: UsersService, private notificationService: NotificationService,
     private modalService: ModalsService) { }
 
   ngOnInit() {
@@ -50,11 +50,4 @@ export class SharedWithMeComponent implements OnInit {
     this.modalService.activatePasswordModal(fileId, fileName);
   }
 
-  public download(fileId: string, fileName: string, filePassword?: string) {
-    this.fileApi.getFile(fileId, filePassword).toPromise().then((file: Blob) => {
-      saveAs(file, fileName);
-    }).catch((error: any) => {
-      this.notificationService.errorMessageToDisplay(error, 'downloading your file');
-    });
-  }
 }

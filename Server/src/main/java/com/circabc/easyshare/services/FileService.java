@@ -204,7 +204,7 @@ public class FileService implements FileServiceInterface {
             throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
             MessageTooLongException, UnknownFileException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            DBFile dbFile = findAvailableFile(fileId, false);
+            DBFile dbFile = findAvailableFile(fileId, true);
             if (recipient.getMessage() != null && recipient.getMessage().length() >= 400) {
                 throw new MessageTooLongException();
             }
@@ -290,9 +290,9 @@ public class FileService implements FileServiceInterface {
         return f;
     }
 
-    private DBFile findAvailableFile(String fileId, boolean isNotUploaderOrAdmin) throws UnknownFileException {
+    private DBFile findAvailableFile(String fileId, boolean isUploaderOrAdmin) throws UnknownFileException {
         DBFile f;
-        if (!isNotUploaderOrAdmin) {
+        if (isUploaderOrAdmin) {
             f = fileRepository.findByStatusAndId(DBFile.Status.AVAILABLE, fileId);
         } else {
             f = fileRepository.findByStatusAndSharedWith_DownloadId(DBFile.Status.AVAILABLE, fileId);
@@ -381,7 +381,7 @@ public class FileService implements FileServiceInterface {
     @Transactional
     public FileInfoRecipient getFileInfoRecipientOnBehalfOf(String fileId, String requesterId)
             throws UnknownFileException, UserUnauthorizedException {
-        DBFile f = findAvailableFile(fileId, true);
+        DBFile f = findAvailableFile(fileId, false);
         if (requesterId.equals(f.getUploader().getId())) {
             return f.toFileInfoRecipient(requesterId);
         } else {
@@ -420,7 +420,7 @@ public class FileService implements FileServiceInterface {
     @Transactional
     public FileInfoUploader getFileInfoUploaderOnBehalfOf(String fileId, String requesterId)
             throws UnknownFileException, UserUnauthorizedException {
-        DBFile f = findAvailableFile(fileId, false);
+        DBFile f = findAvailableFile(fileId, true);
         if (requesterId.equals(f.getUploader().getId())) {
             return f.toFileInfoUploader();
         } else {

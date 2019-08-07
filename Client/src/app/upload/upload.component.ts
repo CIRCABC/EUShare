@@ -7,18 +7,12 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { messageToRecipientValidator, sourceValidator, customFileValidator, globalValidator, customFileValidatorAsync } from './upload.validators';
-import { Component, OnInit, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { FormArray, ReactiveFormsModule, FormGroup, Validators, ValidatorFn, AbstractControl, FormBuilder, ValidationErrors, FormControl, NgForm } from '@angular/forms';
+import { messageToRecipientValidator, customFileValidator, globalValidator } from './upload.validators';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormGroup, Validators, AbstractControl, FormBuilder, ValidationErrors, FormControl } from '@angular/forms';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { CircabcService } from '../service/circabc.service';
-import { InterestGroup } from '../interfaces/interest-group';
-import { FolderInfo } from '../interfaces/folder-info';
 import { FileService, FileRequest, Recipient, UsersService, SessionService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
-import { environment } from '../../environments/environment'
-import { routerNgProbeToken } from '@angular/router/src/router_module';
-import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -29,21 +23,14 @@ export class UploadComponent implements OnInit {
 
   public faUpload = faUpload;
   public modalClass = 'modal';
-  public selectImportOptions: Array<NameAndValue> = [];
-  public selectIGoptions?: InterestGroup[];
-  public selectedIGFolders?: FolderInfo[];
   public moreOptions = false;
   public uploadInProgress = false;
   public uploadform!: FormGroup;
-  private formBuilder: FormBuilder;
   public shareWithUser = '';
-  public selectedFolder?: FolderInfo;
   private leftSpaceInBytes = 0;
   private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
-  private submited = false;
 
-  constructor(private fb: FormBuilder, private sessionApi: SessionService, private userApi: UsersService, private fileApi: FileService, private circabc: CircabcService, private notificationService: NotificationService) {
-    this.formBuilder = fb;
+  constructor(private fb: FormBuilder, private sessionApi: SessionService, private userApi: UsersService, private fileApi: FileService, private notificationService: NotificationService) {
     this.initializeFormGroup();
   }
 
@@ -63,19 +50,6 @@ export class UploadComponent implements OnInit {
     }
   }
 
-  async initializeAvailableIGs() {
-    const id = this.sessionApi.getStoredId();
-    if (id) {
-      try {
-        const me = await this.userApi.getUserUserInfo(id).toPromise();
-        const memberShip = await this.circabc.getUserMembership(me.id);
-        this.selectIGoptions = memberShip.interestGroups;
-      } catch (error){
-        this.notificationService.addErrorMessage('A problem occured while retrieving your interest groups\' memberships');
-      }
-    }
-  }
-
   initializeEventListeners() {
     window.addEventListener('dragover', e => {
       e.preventDefault();
@@ -85,25 +59,15 @@ export class UploadComponent implements OnInit {
     }, false);
   }
 
-  async initializeSelectImportOption() {
-    const selectNames: Array<string> = Object.values(SelectImportEnum);
-    const selectValues: Array<string> = Object.keys(SelectImportEnum);
-    this.selectImportOptions = new Array<NameAndValue>();
-    for (let i = 0; i < selectNames.length; i++) {
-      this.selectImportOptions.push(new NameAndValue(selectNames[i], selectValues[i]));
-    }
-  }
 
   initializeFormGroup() {
-    this.uploadform = this.formBuilder.group({
-      selectImport: ['DISK', Validators.compose([Validators.required, sourceValidator(Object.keys(SelectImportEnum))])],
+    this.uploadform = this.fb.group({
       fileFromDisk: [undefined, Validators.compose([customFileValidator(this.leftSpaceInBytes)])],
-      selectInterestGroupID: [undefined],
       emailOrLink: ['', Validators.required],
-      emailsWithMessages: this.formBuilder.array([
+      emailsWithMessages: this.fb.array([
         //this.initializedEmailsWithMessages()
       ]),
-      namesOnly: this.formBuilder.array([
+      namesOnly: this.fb.array([
         // this.initializeNamesOnly()
       ]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
@@ -112,7 +76,7 @@ export class UploadComponent implements OnInit {
   }
 
   initializedEmailsWithMessages(): FormGroup {
-    return this.formBuilder.group({
+    return this.fb.group({
       email: new FormControl('', Validators.compose([
         Validators.required,
         Validators.pattern(this.emailRegex)])),
@@ -121,32 +85,20 @@ export class UploadComponent implements OnInit {
   }
 
   initializeNamesOnly(): FormGroup {
-    return this.formBuilder.group({
+    return this.fb.group({
       name: new FormControl('', Validators.required)
     }, { updateOn: 'blur' });
   }
 
-
   async ngOnInit() {
     this.initializeEventListeners();
-    await this.initializeSelectImportOption();
     await this.initializeAvailableSpace();
-    await this.initializeAvailableIGs();
     this.initializeFormGroup();
   }
 
   // SELECT IMPORT
   getSelectImport(): string {
     return this.uploadform.controls['selectImport'].value;
-  }
-  selectImportIsDisk(): boolean {
-    if (this.getSelectImport() === 'DISK') {
-      this.resetSelectInterestGroupID();
-      return true;
-    } else {
-      this.resetFileFromDisk();
-      return false;
-    }
   }
 
   // DRAG AND DROP
@@ -164,27 +116,6 @@ export class UploadComponent implements OnInit {
     this.uploadform.controls['fileFromDisk'].reset();
   }
 
-  // SELECT INTEREST GROUP
-  getSelectInterestGroupID(): string {
-    return this.uploadform.controls['selectInterestGroupID'].value;
-  }
-  resetSelectInterestGroupID(): void {
-    this.uploadform.controls['selectInterestGroupID'].reset();
-  }
-  getIGFromID(igID: string): InterestGroup | undefined {
-    if (this.selectIGoptions) {
-      for (const ig of this.selectIGoptions) {
-        if (ig.id === igID) {
-          return ig;
-        }
-      }
-      return undefined;
-    }
-  }
-  getSelectInterestGroup(): InterestGroup | undefined {
-    return this.getIGFromID(this.getSelectInterestGroupID());
-  }
-
   // EMAIL OR LINK
   getEmailOrLink(): string {
     return this.uploadform.controls['emailOrLink'].value;
@@ -192,23 +123,8 @@ export class UploadComponent implements OnInit {
   emailOrLinkIsEmail(): boolean {
     return (this.getEmailOrLink() === 'Email');
   }
-
   emailOrLinkIsLink(): boolean {
     return (this.getEmailOrLink() === 'Link');
-  }
-
-  // FOLDERS AND FILES
-  updateSelectedIGFolders(): void {
-    const ig = this.getIGFromID(this.getSelectInterestGroupID());
-    if (ig) {
-      this.circabc.getInterestGroupFolders(ig).then(folders => {
-        this.selectedIGFolders = folders;
-      });
-    }
-  }
-
-  onClickFolder(fol: FolderInfo) {
-    this.selectedFolder = fol;
   }
 
   // EMAIL WITH MESSAGES
@@ -266,18 +182,15 @@ export class UploadComponent implements OnInit {
   addNamesOnly() {
     this.namesOnly.push(this.initializeNamesOnly());
   }
-
   deleteNamesOnly(i: number) {
     this.namesOnly.removeAt(i);
   }
-
   resetNamesOnly() {
     const formArray: FormArray = this.namesOnly;
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
   }
-
   getNamesOnlyFormgroupNumber(): number {
     const formArray: FormArray = <FormArray>this.uploadform.controls['namesOnly'];
     if (formArray) {
@@ -285,7 +198,6 @@ export class UploadComponent implements OnInit {
     }
     return 0;
   }
-
   getNamesOnlyFormgroup(i: number): FormGroup | null {
     const formArray: FormArray = <FormArray>this.uploadform.controls['namesOnly'];
     if (formArray) {
@@ -387,17 +299,6 @@ export class UploadComponent implements OnInit {
     this.notificationService.addSuccessMessage('Your upload was successful!', true);
   }
 
-  toggleModal() {
-    if (this.modalClass.endsWith(' is-active')) {
-      // deactivating
-      this.modalClass = this.modalClass.replace(' is-active', '');
-      this.selectedFolder = undefined;
-    } else {
-      // activating
-      this.modalClass = this.modalClass.concat(' is-active');
-      this.updateSelectedIGFolders();
-    }
-  }
   get uf() { return this.uploadform.controls; }
 
   getFormValidationErrors() {

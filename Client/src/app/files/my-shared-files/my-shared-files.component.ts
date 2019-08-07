@@ -63,15 +63,6 @@ export class MySharedFilesComponent implements OnInit {
     this.fileInfoUploaderArray = Array.from(this.nextFileInfoUploaderArray);
   }
 
-
-  public download(fileId: string, fileName: string, filePassword?: string) {
-    this.fileApi.getFile(fileId, filePassword).toPromise().then(file => {
-      saveAs(file, fileName);
-    }).catch(error => {
-      this.notificationService.errorMessageToDisplay(error, 'downloading your file');
-    });
-  }
-
   public openPasswordModal(fileId: string, fileName: string) {
     this.modalService.activatePasswordModal(fileId, fileName);
   }
