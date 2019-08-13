@@ -7,10 +7,10 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { NotificationLevel } from './notification-level';
 import { NotificationMessage } from './notification-message';
 import { NotificationService } from './notification.service';
-import { NotificationLevel } from './notification-level';
 
 @Component({
   selector: 'app-notification',
@@ -18,24 +18,22 @@ import { NotificationLevel } from './notification-level';
   styleUrls: ['./notification.component.css']
 })
 export class NotificationComponent implements OnInit {
-
   @Input()
   public message!: NotificationMessage;
   public animationClass = 'ui-message-show';
 
-  constructor(private notificationService: NotificationService) { }
+  constructor(private notificationService: NotificationService) {}
 
   ngOnInit(): void {
     if (this.message) {
       if (this.message.autoclose) {
         let timeOutIntrevalInMiliSeconds = 3000;
         if (this.message.displayTime !== undefined) {
-          timeOutIntrevalInMiliSeconds =
-            this.message.displayTime * 1000;
+          timeOutIntrevalInMiliSeconds = this.message.displayTime * 1000;
         }
         setTimeout(() => {
           this.animationClass = 'ui-message-destroy';
-        }, (timeOutIntrevalInMiliSeconds - 400));
+        }, timeOutIntrevalInMiliSeconds - 400);
 
         setTimeout(() => {
           this.notificationService.removeMessage(this.message);
@@ -64,5 +62,4 @@ export class NotificationComponent implements OnInit {
   public closeMessage(): void {
     this.notificationService.removeMessage(this.message);
   }
-
 }

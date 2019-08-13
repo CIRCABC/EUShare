@@ -7,39 +7,38 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+// tslint:disable-next-line:no-implicit-dependencies
+import { CalendarModule } from 'primeng/components/calendar/calendar';
+import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
+import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
+import { PasswordModalComponent } from './common/modals/password-modal/password-modal.component';
+import { NotificationSystemComponent } from './common/notification/notification-system.component';
+import { NotificationComponent } from './common/notification/notification.component';
+import { FilelinkComponent } from './filelink/filelink.component';
+import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
+import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
+import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
 import { LoginGuard } from './login.guard';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ApiService } from './service/api.service';
-import { ReactiveFormsModule } from '@angular/forms';
-import { UploadComponent } from './upload/upload.component';
-import { FileAccessorDirective } from './directives/file-accessor.directive';
-import { CalendarModule } from 'primeng/components/calendar/calendar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApiModule } from './openapi/api.module';
 import { BASE_PATH, Configuration, ConfigurationParameters } from './openapi';
-import { environment } from '../environments/environment';
-import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
-import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
-import { NotificationComponent } from './common/notification/notification.component';
-import { NotificationSystemComponent } from './common/notification/notification-system.component';
-import { FilelinkComponent } from './filelink/filelink.component';
-import { PasswordModalComponent } from './common/modals/password-modal/password-modal.component';
-import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
-import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
+import { ApiModule } from './openapi/api.module';
+import { ApiService } from './service/api.service';
+import { UploadComponent } from './upload/upload.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: 'home',
@@ -63,8 +62,19 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent,
-      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent, NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent, FileLinkModalComponent, SharedWithMeComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    LoginComponent,
+    UploadComponent,
+    MySharedFilesComponent,
+    NotificationComponent,
+    NotificationSystemComponent,
+    FilelinkComponent,
+    PasswordModalComponent,
+    FileLinkModalComponent,
+    SharedWithMeComponent
+  ],
   imports: [
     ApiModule,
     BrowserModule,
@@ -74,10 +84,17 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     FontAwesomeModule,
-    BrowserAnimationsModule],
-  providers: [ApiService, 
+    BrowserAnimationsModule
+  ],
+  providers: [
+    ApiService,
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
-    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthenticationInterceptor, multi: true },],
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: BasicAuthenticationInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

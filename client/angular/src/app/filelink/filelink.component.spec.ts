@@ -17,9 +17,8 @@ describe('FilelinkComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FilelinkComponent ]
-    })
-    .compileComponents();
+      declarations: [FilelinkComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

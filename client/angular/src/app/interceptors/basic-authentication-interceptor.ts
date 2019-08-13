@@ -7,31 +7,32 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit, Injector, Injectable } from '@angular/core';
 import {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
+import { Component, Injectable, Injector, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SessionService } from '../openapi';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root'
 })
 export class BasicAuthenticationInterceptor implements HttpInterceptor {
-  constructor(private inj: Injector, private sessionService: SessionService) {
-  }
+  constructor(private inj: Injector, private sessionService: SessionService) {}
   intercept(
     req: HttpRequest<{}>,
     next: HttpHandler
   ): Observable<HttpEvent<{}>> {
-    let storedCredentials = this.sessionService.getStoredCredentials();
+    const storedCredentials = this.sessionService.getStoredCredentials();
     if (storedCredentials) {
       req = req.clone({
         setHeaders: {
-          Authorization: `Basic ` + btoa(`${storedCredentials.email}:${storedCredentials.password}`)
+          Authorization:
+            `Basic ` +
+            btoa(`${storedCredentials.email}:${storedCredentials.password}`)
         }
       });
     }
