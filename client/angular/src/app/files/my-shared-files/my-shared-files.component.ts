@@ -164,14 +164,14 @@ export class MySharedFilesComponent implements OnInit {
         this.notificationService.addSuccessMessage(
           'Successfully removed file ' +
             fileName +
-            ' \'s share with ' +
+            " 's share with " +
             shareName
         );
       })
       .catch(error => {
         this.notificationService.errorMessageToDisplay(
           error,
-          'removing the file\'s share'
+          "removing the file's share"
         );
       });
   }

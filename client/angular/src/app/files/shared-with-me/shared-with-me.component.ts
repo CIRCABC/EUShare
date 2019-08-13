@@ -9,8 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  faLock} from '@fortawesome/free-solid-svg-icons';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
 import { ModalsService } from '../../common/modals/modals.service';
 import { NotificationService } from '../../common/notification/notification.service';
 import {

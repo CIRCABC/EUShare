@@ -33,6 +33,7 @@ import { BASE_PATH, Configuration, ConfigurationParameters } from './openapi';
 import { ApiModule } from './openapi/api.module';
 import { ApiService } from './service/api.service';
 import { UploadComponent } from './upload/upload.component';
+import { FileAccessorDirective } from './directives/file-accessor.directive';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -73,7 +74,8 @@ const routes: Routes = [
     FilelinkComponent,
     PasswordModalComponent,
     FileLinkModalComponent,
-    SharedWithMeComponent
+    SharedWithMeComponent,
+    FileAccessorDirective
   ],
   imports: [
     ApiModule,

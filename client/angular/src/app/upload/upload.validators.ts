@@ -38,9 +38,9 @@ export function customFileValidator(notMoreThanInBytes: number): ValidatorFn {
       if (forbidden) {
         console.log(
           'FORM ERROR :  forbiddenFileSize !' +
-            file.size +
-            '>' +
-            notMoreThanInBytes
+          file.size +
+          '>' +
+          notMoreThanInBytes
         );
       }
       return forbidden
@@ -60,8 +60,6 @@ export function customFileValidatorAsync(
     const file: File = control.value;
     return notMoreThanInBytes.pipe(
       map(notMoreThan => {
-        // tslint:disable-next-line:quotemark
-        console.log("I'm called !");
         return null;
       })
     );
