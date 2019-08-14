@@ -14,14 +14,12 @@ import {
   faLock,
   faUserTimes
 } from '@fortawesome/free-solid-svg-icons';
-import { environment } from '../../../environments/environment';
 import { ModalsService } from '../../common/modals/modals.service';
 import { NotificationService } from '../../common/notification/notification.service';
 import {
   FileInfoUploader,
   FileService,
   SessionService,
-  UserInfo,
   UsersService
 } from '../../openapi';
 
@@ -90,21 +88,6 @@ export class MySharedFilesComponent implements OnInit {
     this.fileInfoUploaderArray = Array.from(this.nextFileInfoUploaderArray);
   }
 
-  public download(fileId: string, fileName: string, filePassword?: string) {
-    this.fileApi
-      .getFile(fileId, filePassword)
-      .toPromise()
-      .then(file => {
-        saveAs(file, fileName);
-      })
-      .catch(error => {
-        this.notificationService.errorMessageToDisplay(
-          error,
-          'downloading your file'
-        );
-      });
-  }
-
   public openPasswordModal(fileId: string, fileName: string) {
     this.modalService.activatePasswordModal(fileId, fileName);
   }
@@ -128,24 +111,19 @@ export class MySharedFilesComponent implements OnInit {
     this.modalService.activateFileLinkModal(fileLinkBuild);
   }
 
+  public openAddRecipientsModal(fileName:string, fileId: string) {
+    this.modalService.activateAddRecipientsModal(fileName, fileId);
+  }
+
   public delete(i: number) {
-    this.fileApi
-      .deleteFile(this.fileInfoUploaderArray[i].fileId)
-      .toPromise()
-      .then(success => {
-        const deletedFileName: string = this.fileInfoUploaderArray[i].name;
-        this.fileInfoUploaderArray.splice(i, 1);
-        this.notificationService.addSuccessMessage(
-          'Successfully deleted file named ' + deletedFileName
-        );
-      })
-      .catch(error => {
-        console.log(error);
-        this.notificationService.errorMessageToDisplay(
-          error,
-          'deleting your file'
-        );
-      });
+    this.fileApi.deleteFile(this.fileInfoUploaderArray[i].fileId).toPromise().then(success => {
+      const deletedFileName:string = this.fileInfoUploaderArray[i].name;
+      this.fileInfoUploaderArray.splice(i, 1);
+      this.notificationService.addSuccessMessage('Successfully deleted file named ' + deletedFileName);
+    }).catch(error => {
+      console.log(error);
+      this.notificationService.errorMessageToDisplay(error, 'deleting your file');
+    });
   }
 
   public deleteShare(

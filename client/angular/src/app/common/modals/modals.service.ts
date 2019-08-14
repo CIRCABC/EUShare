@@ -14,20 +14,32 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ModalsService {
-  private possibleActiveModals: string[] = ['password', 'fileLink', ' '];
+
+  private possibleActiveModals: string[] = ['password', 'fileLink', 'addRecipients', ' '];
   private activeModal!: string;
 
   private activatePasswordModalSubject = new Subject<PasswordModalValue>();
-  public activatePasswordModal$: Observable<
-    PasswordModalValue
-  > = this.activatePasswordModalSubject.asObservable();
+  public activatePasswordModal$: Observable<PasswordModalValue> = this.activatePasswordModalSubject.asObservable();
 
   private activateFileLinkModalSubject = new Subject<FileLinkModalValue>();
-  public activateFileLinkModal$: Observable<
-    FileLinkModalValue
-  > = this.activateFileLinkModalSubject.asObservable();
+  public activateFileLinkModal$: Observable<FileLinkModalValue> = this.activateFileLinkModalSubject.asObservable();
+
+  private activateAddRecipientsModalSubject = new Subject<AddRecipientsModalValue>();
+  public activateAddRecipientsModal$: Observable<AddRecipientsModalValue> = this.activateAddRecipientsModalSubject.asObservable();
 
   constructor() {}
+
+  public activateAddRecipientsModal(modalFileName: string, modalFileId: string) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[2]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[2];
+    this.activateAddRecipientsModalSubject.next({
+      modalActive: true,
+      modalFileName: modalFileName,
+      modalFileId: modalFileId
+    });
+  }
 
   public activateFileLinkModal(link: string) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[1]) {
@@ -73,9 +85,21 @@ export class ModalsService {
     }
   }
 
+  public deactivateAddRecipientsModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[2]) {
+      this.activeModal = ' ';
+      this.activateAddRecipientsModalSubject.next({
+        modalActive: false,
+        modalFileName: '',
+        modalFileId: ''
+      });
+    }
+  }
+
   private deactivateAllModals() {
     this.deactivatePasswordModal();
     this.deactivateFileLinkModal();
+    this.deactivateAddRecipientsModal();
   }
 }
 export interface PasswordModalValue {
@@ -87,4 +111,10 @@ export interface PasswordModalValue {
 export interface FileLinkModalValue {
   modalActive: boolean;
   fileLink: string;
+}
+
+export interface AddRecipientsModalValue {
+  modalActive: boolean;
+  modalFileName: string;
+  modalFileId: string;
 }

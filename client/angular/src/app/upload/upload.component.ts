@@ -7,57 +7,13 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import {
-  Component,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild
-} from '@angular/core';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  NgForm,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators
-} from '@angular/forms';
+import { globalValidator } from './upload.validators';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormGroup, Validators, AbstractControl, FormBuilder, ValidationErrors, FormControl } from '@angular/forms';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { Observable, Subject } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { FileService, FileRequest, Recipient, UsersService, SessionService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
-import { FolderInfo } from '../interfaces/folder-info';
-import { InterestGroup } from '../interfaces/interest-group';
-import {
-  FileRequest,
-  FileService,
-  Recipient,
-  SessionService,
-  UsersService
-} from '../openapi';
-import { CircabcService } from '../service/circabc.service';
-import { NameAndValue } from './nameandvalue';
-import {
-  customFileValidator,
-  customFileValidatorAsync,
-  globalValidator,
-  messageToRecipientValidator,
-  sourceValidator
-} from './upload.validators';
-
-export enum SelectImportEnum {
-  DISK = 'Disk',
-  IG = 'Interest group'
-}
-
-export enum SelectSendOptionsEnum {
-  EMAIL = 'Email',
-  LINK = 'Link'
-}
+import { fileSizeValidator } from '../common/validators/file-validator';
 
 @Component({
   selector: 'app-upload',
@@ -65,30 +21,15 @@ export enum SelectSendOptionsEnum {
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
+
   public faUpload = faUpload;
-  public modalClass = 'modal';
-  public selectImportOptions: NameAndValue[] = [];
-  public selectIGoptions?: InterestGroup[];
-  public selectedIGFolders?: FolderInfo[];
   public moreOptions = false;
   public uploadInProgress = false;
   public uploadform!: FormGroup;
-  private formBuilder: FormBuilder;
   public shareWithUser = '';
-  public selectedFolder?: FolderInfo;
   private leftSpaceInBytes = 0;
-  private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
-  private submited = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private sessionApi: SessionService,
-    private userApi: UsersService,
-    private fileApi: FileService,
-    private circabc: CircabcService,
-    private notificationService: NotificationService
-  ) {
-    this.formBuilder = fb;
+  constructor(private fb: FormBuilder, private sessionApi: SessionService, private userApi: UsersService, private fileApi: FileService, private notificationService: NotificationService) {
     this.initializeFormGroup();
   }
 
@@ -102,130 +43,58 @@ export class UploadComponent implements OnInit {
             ? me.totalSpace - me.usedSpace
             : 0;
       } catch (error) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while retrieving your user informations'
-        );
-      }
-    }
-  }
-
-  async initializeAvailableIGs() {
-    const id = this.sessionApi.getStoredId();
-    if (id) {
-      try {
-        const me = await this.userApi.getUserUserInfo(id).toPromise();
-        const memberShip = await this.circabc.getUserMembership(me.id);
-        this.selectIGoptions = memberShip.interestGroups;
-      } catch (error) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while retrieving interest groups memberships'
-        );
+        this.notificationService.addErrorMessage('A problem occured while retrieving your user informations');
       }
     }
   }
 
   initializeEventListeners() {
-    window.addEventListener(
-      'dragover',
-      e => {
-        e.preventDefault();
-      },
-      false
-    );
-    window.addEventListener(
-      'drop',
-      e => {
-        e.preventDefault();
-      },
-      false
-    );
+    window.addEventListener('dragover', e => {
+      e.preventDefault();
+    }, false);
+    window.addEventListener('drop', e => {
+      e.preventDefault();
+    }, false);
   }
 
-  async initializeSelectImportOption() {
-    const selectNames: string[] = Object.values(SelectImportEnum);
-    const selectValues: string[] = Object.keys(SelectImportEnum);
-    this.selectImportOptions = new Array<NameAndValue>();
-    for (let i = 0; i < selectNames.length; i++) {
-      this.selectImportOptions.push(
-        new NameAndValue(selectNames[i], selectValues[i])
-      );
-    }
-  }
 
   initializeFormGroup() {
-    this.uploadform = this.formBuilder.group(
-      {
-        selectImport: [
-          'DISK',
-          Validators.compose([
-            Validators.required,
-            sourceValidator(Object.keys(SelectImportEnum))
-          ])
-        ],
-        fileFromDisk: [
-          undefined,
-          Validators.compose([customFileValidator(this.leftSpaceInBytes)])
-        ],
-        selectInterestGroupID: [undefined],
-        emailOrLink: ['', Validators.required],
-        emailsWithMessages: this.formBuilder.array([
-          // this.initializedEmailsWithMessages()
-        ]),
-        namesOnly: this.formBuilder.array([
-          // this.initializeNamesOnly()
-        ]),
-        expirationDate: [this.get7DaysAfterToday(), Validators.required],
-        password: [undefined]
-      },
-      { validators: globalValidator() }
-    );
+    this.uploadform = this.fb.group({
+      fileFromDisk: [undefined, Validators.compose([fileSizeValidator(this.leftSpaceInBytes)])],
+      emailOrLink: ['', Validators.required],
+      emailsWithMessages: this.fb.array([
+        //this.initializedEmailsWithMessages()
+      ]),
+      namesOnly: this.fb.array([
+        // this.initializeNamesOnly()
+      ]),
+      expirationDate: [this.get7DaysAfterToday(), Validators.required],
+      password: [undefined]
+    }, { validators: (globalValidator()) });
   }
 
   initializedEmailsWithMessages(): FormGroup {
-    return this.formBuilder.group(
-      {
-        email: new FormControl(
-          '',
-          Validators.compose([
-            Validators.required,
-            Validators.pattern(this.emailRegex)
-          ])
-        ),
-        message: ['', Validators.compose([messageToRecipientValidator(400)])]
-      },
-      { updateOn: 'blur' }
-    );
+    return this.fb.group({
+      email: new FormControl('', Validators.required),
+      message: ['']
+    }, { updateOn: 'blur' });
   }
 
   initializeNamesOnly(): FormGroup {
-    return this.formBuilder.group(
-      {
-        name: new FormControl('', Validators.required)
-      },
-      { updateOn: 'blur' }
-    );
+    return this.fb.group({
+      name: new FormControl('', Validators.required)
+    }, { updateOn: 'blur' });
   }
 
   async ngOnInit() {
     this.initializeEventListeners();
-    await this.initializeSelectImportOption();
     await this.initializeAvailableSpace();
-    await this.initializeAvailableIGs();
     this.initializeFormGroup();
   }
 
   // SELECT IMPORT
   getSelectImport(): string {
     return this.uploadform.controls['selectImport'].value;
-  }
-  selectImportIsDisk(): boolean {
-    if (this.getSelectImport() === 'DISK') {
-      this.resetSelectInterestGroupID();
-      return true;
-    } else {
-      this.resetFileFromDisk();
-      return false;
-    }
   }
 
   // DRAG AND DROP
@@ -243,92 +112,15 @@ export class UploadComponent implements OnInit {
     this.uploadform.controls['fileFromDisk'].reset();
   }
 
-  // SELECT INTEREST GROUP
-  getSelectInterestGroupID(): string {
-    return this.uploadform.controls['selectInterestGroupID'].value;
-  }
-  resetSelectInterestGroupID(): void {
-    this.uploadform.controls['selectInterestGroupID'].reset();
-  }
-  getIGFromID(igID: string): InterestGroup | undefined {
-    if (this.selectIGoptions) {
-      for (const ig of this.selectIGoptions) {
-        if (ig.id === igID) {
-          return ig;
-        }
-      }
-      return undefined;
-    }
-  }
-  getSelectInterestGroup(): InterestGroup | undefined {
-    return this.getIGFromID(this.getSelectInterestGroupID());
-  }
-
   // EMAIL OR LINK
   getEmailOrLink(): string {
     return this.uploadform.controls['emailOrLink'].value;
   }
   emailOrLinkIsEmail(): boolean {
-    return this.getEmailOrLink() === 'Email';
+    return (this.getEmailOrLink() === 'Email');
   }
-
   emailOrLinkIsLink(): boolean {
-    return this.getEmailOrLink() === 'Link';
-  }
-
-  // FOLDERS AND FILES
-  updateSelectedIGFolders(): void {
-    const ig = this.getIGFromID(this.getSelectInterestGroupID());
-    if (ig) {
-      this.circabc.getInterestGroupFolders(ig).then(folders => {
-        this.selectedIGFolders = folders;
-      });
-    }
-  }
-
-  isEmailError(index: number) {
-    const emailsWithMessages: FormArray = this.uploadform.controls
-      .emailsWithMessages as FormArray;
-    const emailsWithMessage: FormGroup = emailsWithMessages.at(
-      index
-    ) as FormGroup;
-
-    return (
-      emailsWithMessage &&
-      emailsWithMessage.controls['email'].errors &&
-      emailsWithMessage.controls['email'].errors.pattern &&
-      emailsWithMessage.controls['email'].dirty &&
-      emailsWithMessage.controls['email'].touched
-    );
-  }
-  isLengthError(index: number) {
-    const emailsWithMessages: FormArray = this.uploadform.controls
-      .emailsWithMessages as FormArray;
-    const emailsWithMessage: FormGroup = emailsWithMessages.at(
-      index
-    ) as FormGroup;
-    return (
-      emailsWithMessage &&
-      emailsWithMessage.controls['message'].errors &&
-      emailsWithMessage.controls['message'].errors.forbiddenMessageLength &&
-      emailsWithMessage.controls['message'].errors.forbiddenMessageLength.value
-    );
-  }
-
-  getEmailsWithMessagecontrolErrors(
-    index: number,
-    controlName: 'message' | 'email'
-  ): ValidationErrors {
-    const emailsWithMessages: FormArray = this.uploadform.controls
-      .emailsWithMessages as FormArray;
-    const emailsWithMessage: FormGroup = emailsWithMessages.at(
-      index
-    ) as FormGroup;
-    return emailsWithMessage.controls[controlName].errors as ValidationErrors;
-  }
-
-  onClickFolder(fol: FolderInfo) {
-    this.selectedFolder = fol;
+    return (this.getEmailOrLink() === 'Link');
   }
 
   // EMAIL WITH MESSAGES
@@ -349,20 +141,16 @@ export class UploadComponent implements OnInit {
   }
 
   getEmailsWithMessagesFormgroupNumber(): number {
-    const formArray: FormArray = this.uploadform.controls[
-      'emailsWithMessages'
-    ] as FormArray;
+    const formArray: FormArray = <FormArray>this.uploadform.controls["emailsWithMessages"];
     if (formArray) {
       return formArray.controls.length;
     }
     return 0;
   }
   getEmailsWithMessagesFormgroup(i: number): FormGroup | null {
-    const formArray: FormArray = this.uploadform.controls[
-      'emailsWithMessages'
-    ] as FormArray;
-    if (formArray) {
-      return formArray.controls[i] as FormGroup;
+    const formArrayOrNull: FormArray | null = <FormArray | null> this.uploadform.controls["emailsWithMessages"];
+    if (formArrayOrNull) {
+      return <FormGroup | null> formArrayOrNull.controls[i];
     }
     return null;
   }
@@ -390,18 +178,15 @@ export class UploadComponent implements OnInit {
   addNamesOnly() {
     this.namesOnly.push(this.initializeNamesOnly());
   }
-
   deleteNamesOnly(i: number) {
     this.namesOnly.removeAt(i);
   }
-
   resetNamesOnly() {
     const formArray: FormArray = this.namesOnly;
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
   }
-
   getNamesOnlyFormgroupNumber(): number {
     const formArray: FormArray = this.uploadform.controls[
       'namesOnly'
@@ -411,7 +196,6 @@ export class UploadComponent implements OnInit {
     }
     return 0;
   }
-
   getNamesOnlyFormgroup(i: number): FormGroup | null {
     const formArray: FormArray = this.uploadform.controls[
       'namesOnly'
@@ -439,9 +223,7 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['expirationDate'].value;
   }
   resetExpirationDate(): void {
-    this.uploadform.controls['expirationDate'].setValue(
-      this.get7DaysAfterToday()
-    );
+    this.uploadform.controls["expirationDate"].setValue(this.get7DaysAfterToday());
   }
   getTomorrow(): Date {
     const milliseconds = Date.now() + 1 * 24 * 60 * 60 * 1000;
@@ -466,18 +248,10 @@ export class UploadComponent implements OnInit {
       try {
         const recipientArray = new Array<Recipient>();
         if (this.emailOrLinkIsEmail()) {
-          for (
-            let i = 0;
-            i < this.getEmailsWithMessagesFormgroupNumber();
-            i++
-          ) {
-            // tslint:disable-next-line:no-non-null-assertion
-            const message: string = this.getEmailsWithMessagesFormgroup(i)!
-              .controls['message'].value;
-            // tslint:disable-next-line:no-non-null-assertion
-            const email: string = this.getEmailsWithMessagesFormgroup(i)!
-              .controls['email'].value;
-            const recipient: Recipient = {
+          for (let i = 0; i < this.getEmailsWithMessagesFormgroupNumber(); i++) {
+            const message: string = this.getEmailsWithMessagesFormgroup(i)!.controls["message"].value;
+            const email: string = this.getEmailsWithMessagesFormgroup(i)!.controls["email"].value;
+            let recipient: Recipient = {
               emailOrName: email,
               sendEmail: this.emailOrLinkIsEmail()
             };
@@ -488,21 +262,17 @@ export class UploadComponent implements OnInit {
           }
         } else {
           for (let i = 0; i < this.getNamesOnlyFormgroupNumber(); i++) {
-            // tslint:disable-next-line:no-non-null-assertion
-            const name: string = this.getNamesOnlyFormgroup(i)!.controls['name']
-              .value;
-            const recipient: Recipient = {
+            const name: string = this.getNamesOnlyFormgroup(i)!.controls["name"].value;
+            let recipient: Recipient = {
               emailOrName: name,
               sendEmail: this.emailOrLinkIsEmail()
             };
             recipientArray.push(recipient);
           }
         }
-        const myFileRequest: FileRequest = {
-          expirationDate: this.getExpirationDate()
-            .toISOString()
-            .substring(0, 10),
-          hasPassword: this.getPassword() != null && this.getPassword() !== '',
+        let myFileRequest: FileRequest = {
+          expirationDate: this.getExpirationDate().toISOString().substring(0, 10),
+          hasPassword: (this.getPassword() != null && this.getPassword() !== ""),
           name: this.getFileFromDisk().name,
           size: this.getFileFromDisk().size,
           sharedWith: recipientArray
@@ -510,69 +280,36 @@ export class UploadComponent implements OnInit {
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
         }
-        const fileId = await this.fileApi
-          .postFileFileRequest(myFileRequest)
-          .toPromise();
-        await this.fileApi
-          .postFileContent(fileId, this.getFileFromDisk())
-          .toPromise();
+        const fileId = await this.fileApi.postFileFileRequest(myFileRequest).toPromise();
+        await this.fileApi.postFileContent(fileId, this.getFileFromDisk()).toPromise();
         if (this.emailOrLinkIsEmail()) {
-          this.notificationService.addSuccessMessage(
-            'Your recipients have been notified by mail that they may download the shared file!',
-            false
-          );
+          this.notificationService.addSuccessMessage("Your recipients have been notified by mail that they may download the shared file!", false);
         } else {
-          this.notificationService.addSuccessMessage(
-            'Please find for each of your recipients, a personnal download link on the My Shared Files page',
-            false
-          );
+          this.notificationService.addSuccessMessage('Please find for each of your recipients, a personnal download link on the My Shared Files page', false);
         }
         await this.initializeAvailableSpace();
       } catch (e) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while uploading your file, please try again later or contact the support',
-          false
-        );
+        this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
         this.uploadInProgress = false;
         return;
       }
     }
     this.uploadInProgress = false;
     this.initializeFormGroup();
-    this.notificationService.addSuccessMessage(
-      'Your upload was successful!',
-      true
-    );
+    this.notificationService.addSuccessMessage('Your upload was successful!', true);
   }
 
-  toggleModal() {
-    if (this.modalClass.endsWith(' is-active')) {
-      // deactivating
-      this.modalClass = this.modalClass.replace(' is-active', '');
-      this.selectedFolder = undefined;
-    } else {
-      // activating
-      this.modalClass = this.modalClass.concat(' is-active');
-      this.updateSelectedIGFolders();
-    }
-  }
-  get uf() {
-    return this.uploadform.controls;
-  }
+  get uf() { return this.uploadform.controls; }
 
   getFormValidationErrors() {
     Object.keys(this.uploadform.controls).forEach(key => {
-      // tslint:disable-next-line:no-non-null-assertion
-      const controlErrors: ValidationErrors | null = this.uploadform.get(key)!
-        .errors;
+      const controlErrors: ValidationErrors | null = this.uploadform.get(key)!.errors;
       if (controlErrors != null) {
         Object.keys(controlErrors).forEach(keyError => {
-          console.log(
-            'Key control: ' + key + ', keyError: ' + keyError + ', err value: ',
-            controlErrors[keyError]
-          );
+          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
         });
       }
     });
   }
 }
+

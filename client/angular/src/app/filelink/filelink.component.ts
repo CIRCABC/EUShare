@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
 import { NotificationService } from '../common/notification/notification.service';
 import { FileService } from '../openapi';
@@ -20,34 +20,16 @@ import { FileService } from '../openapi';
 })
 export class FilelinkComponent implements OnInit {
   public fileName!: string;
-  private isFilePasswordProtected!: boolean;
-  private fileId!: string;
+  public isFilePasswordProtected!: boolean;
+  public fileId!: string;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
-    private fileService: FileService,
-    private notificationService: NotificationService,
-    private modalService: ModalsService
-  ) {}
+    private router: Router, private modalService: ModalsService) {
+  }
 
   download() {
-    if (this.isFilePasswordProtected) {
       this.modalService.activatePasswordModal(this.fileId, this.fileName);
-    } else {
-      this.fileService
-        .getFile(this.fileId)
-        .toPromise()
-        .then(blob => {
-          saveAs(blob, this.fileName);
-        })
-        .catch(error => {
-          this.notificationService.errorMessageToDisplay(
-            error,
-            'downloading your file'
-          );
-        });
-    }
   }
 
   ngOnInit() {
