@@ -1,0 +1,10 @@
+<label class="label">Email:</label>
+<input
+  #input
+  [disabled]="disabled"
+  (blur)="onTouched()"
+  (input)="onChange($event.target.value)"
+  class="input"
+  type="text"
+/>
+<label class="label error" *ngIf="errorMessage">{{errorMessage}}</label>

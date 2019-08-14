@@ -1,0 +1,58 @@
+<div class="modal" [class.is-active]="modalActive">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Add recipient to {{ modalFileName }}</p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <form [formGroup]="sharedWithFormGroup">
+        <div class="field">
+          <label class="label">How to share?</label>
+          <div class="field-body">
+            <div class="field is-narrow">
+              <div class="control">
+                <label class="radio">
+                  <input
+                    type="radio"
+                    required
+                    formControlName="sendEmail"
+                    value="True"
+                    (click)="resetRecipient()"
+                  />Email
+                </label>
+                <label class="radio">
+                  <input
+                    type="radio"
+                    required
+                    formControlName="sendEmail"
+                    value="False"
+                    (click)="resetRecipient()"
+                  />Link
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="sendEmailIsTrue">
+          <app-email-input formControlName="email"></app-email-input>
+          <app-message-text-area formControlName="message"></app-message-text-area>
+        </div>
+        <div *ngIf="!sendEmailIsTrue">
+          <app-link-input formControlName="name"></app-link-input>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button
+        class="button is-link"
+        (click)="onSubmit()"
+        [class.is-loading]="uploadInProgress"
+        type="submit"
+        [disabled]="!sharedWithFormGroup.valid"
+      >
+        Submit
+      </button>
+    </footer>
+  </div>
+</div>

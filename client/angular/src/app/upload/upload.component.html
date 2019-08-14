@@ -1,18 +1,6 @@
 <h1 class="title">Share a new file</h1>
 <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
-  <div class="field">
-    <label class="label">Source</label>
-    <div class="control">
-      <!-- SELECT IMPORT-->
-      <div class="select">
-        <select formControlName="selectImport">
-          <option *ngFor="let option of selectImportOptions" [value]="option.displayedValue">{{option.displayedName}}
-          </option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div *ngIf="selectImportIsDisk()">
+  <div>
     <!-- DRAG AND DROP-->
     <div class="field">
       <label class="label">File</label>
@@ -46,63 +34,6 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="!selectImportIsDisk()">
-    <div class="field">
-      <label class="label">Interest group</label>
-      <div class="select">
-        <!-- SELECT INTEREST GROUP -->
-        <select formControlName="selectInterestGroupID">
-          <option *ngFor="let igOption of selectIGoptions" [value]="igOption.id">{{igOption.name}}</option>
-        </select>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="getSelectInterestGroup()" class="field">
-    <label class="label">Select file from library</label>
-    <span class="file-cta">
-      <span class="file-label" (click)="toggleModal()" disabled>Browse {{getSelectInterestGroup()?.name}} library</span>
-    </span>
-    <div [class]="modalClass">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p *ngIf="!selectedFolder" class="modal-card-title">Browsing {{getSelectInterestGroup()?.name}} library</p>
-          <p *ngIf="selectedFolder" class="modal-card-title">Browsing {{selectedFolder?.name}} folder in
-            {{getSelectInterestGroup()?.name}}</p>
-          <button type="button" (click)="toggleModal()" class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-          <div class='field level'>
-            <div class="level-left">
-              <label class="label">Folders</label>
-            </div>
-            <div class="level-right">
-              <label class="label">Documents</label>
-            </div>
-          </div>
-          <div class='field level'>
-            <div *ngIf="!selectedFolder" class="foldersAndFiles">
-              <div class="level" *ngFor="let fol of selectedIGFolders" (click)="onClickFolder(fol)">{{fol.name}}
-                <div class="level-right" *ngFor="let doc of fol.subFiles">{{doc.name}}</div>
-              </div>
-            </div>
-            <div *ngIf="selectedFolder" class="foldersAndFiles">
-              <div class="level" *ngFor="let fol of selectedFolder?.subFolders" (click)="onClickFolder(fol)">
-                {{fol.name}}
-                <div class="level-right" *ngFor="let doc of fol.subFiles">{{doc.name}}</div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <footer class="modal-card-foot">
-          <button type="button" (click)="toggleModal()" class="button">Select</button>
-          <button type="button" (click)="toggleModal()" class="button">Cancel</button>
-        </footer>
-      </div>
-    </div>
-  </div>
   <br>
   <div class="field">
     <label class="label">How to share?</label>
@@ -113,8 +44,7 @@
             <input type="radio" required formControlName="emailOrLink" (click)="resetRecipients()" value='Email'>Email
           </label>
           <label class="radio">
-            <input type="radio" (click)="resetRecipients()" required formControlName="emailOrLink"
-              value='Link'>Link
+            <input type="radio" (click)="resetRecipients()" required formControlName="emailOrLink" value='Link'>Link
           </label>
         </div>
       </div>
@@ -125,31 +55,17 @@
     <label class="label">Recipients</label>
     <div *ngIf="emailOrLinkIsEmail()" formArrayName="emailsWithMessages">
       <div *ngFor="let emailAndText of emailsWithMessages.controls; let i=index" class="media">
-        <div class="media-left">
-          <div class="square"></div>
-        </div>
-        <div [formGroupName]="i" class="media-content">
-          <label class="label">Email:</label>
-          <input class="input" type="text" formControlName="email">
-          <label class="label error"
-            *ngIf="isEmailError(i)">Invalid
-            email form ! {{getEmailsWithMessagecontrolErrors(i,'email').value}}
-          </label>
-          <label class="label">Text: (optional)</label>
-          <textarea class="textarea" formControlName="message"
-            placeholder="e.g. Please enter a message for the recipient of this file"></textarea>
-
-          <label class="label error"
-            *ngIf="isLengthError(i)">Text
-            length bigger than
-            {{ getEmailsWithMessagecontrolErrors(i,'message').forbiddenMessageLength.value}} characters !
-          </label>
-          <div class="level">
-            <button class="button is-danger is-outlined level-left" type="button"
-              (click)="deleteEmailsWithMessages(i)">Delete
-              recipient</button>
+          <div class="media-left">
+              <div class="square"></div>
+            </div>
+          <div [formGroupName]="i" class="media-content">
+            <app-email-input formControlName="email"></app-email-input>
+            <app-message-text-area formControlName="message"></app-message-text-area>
+            <div class="level">
+                <button class="button is-danger is-outlined level-left" type="button" (click)="deleteEmailsWithMessages(i)">Delete
+                  recipient</button>
+              </div>
           </div>
-        </div>
       </div>
       <button class="button is-link is-outlined" type="button" (click)="addEmailsWithMessages()">Add more
         recipients...</button>
@@ -160,8 +76,7 @@
           <div class="square"></div>
         </div>
         <div [formGroupName]="i" class="media-content">
-          <label class="label">Name:</label>
-          <input class="input" type="text" formControlName="name">
+          <app-link-input formControlName="name"></app-link-input>
           <div class="level">
             <button class="button is-danger is-outlined level-left" type="button" (click)="deleteNamesOnly(i)">Delete
               recipient</button>

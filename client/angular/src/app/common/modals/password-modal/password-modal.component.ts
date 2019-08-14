@@ -8,8 +8,6 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { FileService } from '../../../openapi';
-import { NotificationService } from '../../notification/notification.service';
 import { ModalsService } from '../modals.service';
 
 @Component({
@@ -19,12 +17,10 @@ import { ModalsService } from '../modals.service';
 export class PasswordModalComponent implements OnInit {
 
   public modalActive!: boolean;
-  public isWhat: string = 'is-info';
-  public isLoading: boolean = false;
-  private modalFileId!: string;
-  private modalFileName!: string;
+  public modalFileId!: string;
+  public modalFileName!: string;
 
-  constructor(private fileApi: FileService, private notificationService: NotificationService, private modalService: ModalsService) { }
+  constructor(private modalService: ModalsService) { }
 
   ngOnInit() {
     this.modalActive = false;
@@ -37,22 +33,6 @@ export class PasswordModalComponent implements OnInit {
 
   public closeModal() {
     this.modalService.deactivatePasswordModal();
-  }
-
-  public download(filePassword?: string) {
-    this.isLoading = true;
-    this.fileApi.getFile(this.modalFileId, filePassword).toPromise().then(file => {
-      this.isWhat = 'is-success'
-      saveAs(file, this.modalFileName);
-      this.isLoading = false;
-    }).catch(error => {
-      if (error.status == 401) {
-        this.isWhat = 'is-danger';
-      }
-      this.notificationService.errorMessageToDisplay(error, 'downloading your file');
-      this.isLoading = false;
-    });
-
   }
 
 }

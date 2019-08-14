@@ -17,7 +17,6 @@ import { AppComponent } from './app.component';
 import { LoginGuard } from './login.guard';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { ApiService } from './service/api.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { UploadComponent } from './upload/upload.component';
 import { FileAccessorDirective } from './directives/file-accessor.directive';
@@ -34,6 +33,11 @@ import { FilelinkComponent } from './filelink/filelink.component';
 import { PasswordModalComponent } from './common/modals/password-modal/password-modal.component';
 import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
+import { DownloadButtonComponent } from './common/buttons/download-button/download-button.component';
+import { AddRecipientsModalComponent } from './common/modals/add-recipients-modal/add-recipients-modal.component';
+import { EmailInputComponent } from './common/formComponents/email-input/email-input.component';
+import { MessageTextAreaComponent } from './common/formComponents/message-text-area/message-text-area.component';
+import { LinkInputComponent } from './common/formComponents/link-input/link-input.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -64,7 +68,9 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [AppComponent, NavbarComponent,
-      LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent, NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent, FileLinkModalComponent, SharedWithMeComponent],
+    LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent,
+    NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent,
+    FileLinkModalComponent, SharedWithMeComponent, DownloadButtonComponent, AddRecipientsModalComponent, EmailInputComponent, MessageTextAreaComponent, LinkInputComponent],
   imports: [
     ApiModule,
     BrowserModule,
@@ -75,9 +81,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     FontAwesomeModule,
     BrowserAnimationsModule],
-  providers: [ApiService, 
+  providers: [
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthenticationInterceptor, multi: true },],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
