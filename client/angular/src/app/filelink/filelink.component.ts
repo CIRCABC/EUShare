@@ -10,6 +10,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
+import { NotificationService } from '../common/notification/notification.service';
+import { FileService } from '../openapi';
 
 @Component({
   selector: 'app-filelink',
@@ -32,12 +34,16 @@ export class FilelinkComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    const fileNameB64URIEncoded = this.route.snapshot.paramMap.get('filenameb64');
-    const isPasswordProtected = this.route.snapshot.paramMap.get('isPasswordProtected');
+    const fileNameB64URIEncoded = this.route.snapshot.paramMap.get(
+      'filenameb64'
+    );
+    const isPasswordProtected = this.route.snapshot.paramMap.get(
+      'isPasswordProtected'
+    );
     if (id && fileNameB64URIEncoded && isPasswordProtected) {
       this.fileId = id;
       this.fileName = atob(decodeURIComponent(fileNameB64URIEncoded));
-      this.isFilePasswordProtected = (isPasswordProtected === '1');
+      this.isFilePasswordProtected = isPasswordProtected === '1';
     } else {
       this.router.navigateByUrl('/home');
     }

@@ -7,20 +7,28 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { NotificationLevel } from './notification-level';
 import { NotificationMessage } from './notification-message';
-import { Subject, Observable } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  public messageSource: Subject<NotificationMessage> = new Subject<NotificationMessage>();
-  public messageDestroySource: Subject<NotificationMessage> = new Subject<NotificationMessage>();
-  public messageAnnounced$: Observable<NotificationMessage> = this.messageSource.asObservable();
-  public messageDestroyed$: Observable<NotificationMessage> = this.messageDestroySource.asObservable();
+  public messageSource: Subject<NotificationMessage> = new Subject<
+    NotificationMessage
+  >();
+  public messageDestroySource: Subject<NotificationMessage> = new Subject<
+    NotificationMessage
+  >();
+  public messageAnnounced$: Observable<
+    NotificationMessage
+  > = this.messageSource.asObservable();
+  public messageDestroyed$: Observable<
+    NotificationMessage
+  > = this.messageDestroySource.asObservable();
   private lastMessage = { message: '', time: new Date().getTime() };
 
   public addInfoMessage(
@@ -95,11 +103,19 @@ export class NotificationService {
     }
   }
 
-  public errorMessageToDisplay(httpErrorResponse: HttpErrorResponse, action: string) {
+  public errorMessageToDisplay(
+    httpErrorResponse: HttpErrorResponse,
+    action: string
+  ) {
     console.log(httpErrorResponse);
     switch (httpErrorResponse.status) {
       case 400: {
-        this.addErrorMessage('The server was unable to understand your request while ' + action + '. Please try again later or contact the support.', false);
+        this.addErrorMessage(
+          'The server was unable to understand your request while ' +
+            action +
+            '. Please try again later or contact the support.',
+          false
+        );
         break;
       }
       case 401: {
@@ -107,21 +123,37 @@ export class NotificationService {
         break;
       }
       case 403: {
-        this.addErrorMessage('You are not authorized to ' + action + '.', false);
+        this.addErrorMessage(
+          'You are not authorized to ' + action + '.',
+          false
+        );
         break;
       }
       case 404: {
-        this.addErrorMessage('The server was unable to find the resource while ' + action + '. Please try again later or contact the support', false);
+        this.addErrorMessage(
+          'The server was unable to find the resource while ' +
+            action +
+            '. Please try again later or contact the support',
+          false
+        );
         break;
       }
       case 500: {
-        this.addErrorMessage('An internal server error occured while ' + action + '. Please try again later or contact the support', false);
+        this.addErrorMessage(
+          'An internal server error occured while ' +
+            action +
+            '. Please try again later or contact the support',
+          false
+        );
         break;
       }
       default: {
-        this.addErrorMessage('An unexepected error occured while ' + action + '! Please contact the support.')
+        this.addErrorMessage(
+          'An unexepected error occured while ' +
+            action +
+            '! Please contact the support.'
+        );
       }
     }
   }
-
 }

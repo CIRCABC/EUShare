@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class ModalsService {
   private activateAddRecipientsModalSubject = new Subject<AddRecipientsModalValue>();
   public activateAddRecipientsModal$: Observable<AddRecipientsModalValue> = this.activateAddRecipientsModalSubject.asObservable();
 
-  constructor() { }
+  constructor() {}
 
   public activateAddRecipientsModal(modalFileName: string, modalFileId: string) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[2]) {
@@ -59,8 +59,8 @@ export class ModalsService {
     this.activeModal = this.possibleActiveModals[0];
     this.activatePasswordModalSubject.next({
       modalActive: true,
-      modalFileId: modalFileId,
-      modalFileName: modalFileName
+      modalFileId,
+      modalFileName
     });
   }
 
@@ -81,7 +81,7 @@ export class ModalsService {
       this.activateFileLinkModalSubject.next({
         modalActive: false,
         fileLink: ''
-      })
+      });
     }
   }
 
@@ -101,7 +101,6 @@ export class ModalsService {
     this.deactivateFileLinkModal();
     this.deactivateAddRecipientsModal();
   }
-
 }
 export interface PasswordModalValue {
   modalActive: boolean;

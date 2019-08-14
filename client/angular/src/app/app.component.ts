@@ -8,8 +8,8 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from './service/api.service';
 import { UserInfo } from './interfaces/user-info';
+import { ApiService } from './service/api.service';
 
 @Component({
   selector: 'app-root',

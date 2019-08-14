@@ -17,9 +17,8 @@ describe('PasswordModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PasswordModalComponent ]
-    })
-    .compileComponents();
+      declarations: [PasswordModalComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

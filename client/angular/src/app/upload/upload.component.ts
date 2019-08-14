@@ -38,11 +38,10 @@ export class UploadComponent implements OnInit {
     if (id) {
       try {
         const me = await this.userApi.getUserUserInfo(id).toPromise();
-        if (me && me.totalSpace - me.usedSpace > 0) {
-          this.leftSpaceInBytes = me.totalSpace - me.usedSpace;
-        } else {
-          this.leftSpaceInBytes = 0;
-        }
+        this.leftSpaceInBytes =
+          me && me.totalSpace - me.usedSpace > 0
+            ? me.totalSpace - me.usedSpace
+            : 0;
       } catch (error) {
         this.notificationService.addErrorMessage('A problem occured while retrieving your user informations');
       }
@@ -126,7 +125,7 @@ export class UploadComponent implements OnInit {
 
   // EMAIL WITH MESSAGES
   get emailsWithMessages() {
-    return this.uploadform.get("emailsWithMessages") as FormArray;
+    return this.uploadform.get('emailsWithMessages') as FormArray;
   }
   addEmailsWithMessages() {
     this.emailsWithMessages.push(this.initializedEmailsWithMessages());
@@ -157,11 +156,11 @@ export class UploadComponent implements OnInit {
   }
 
   getEmailsWithMessagesOnlyMessage(i: number): AbstractControl | null {
-    return this.getEmailsWithMessagesOnlyOne(i, "message");
+    return this.getEmailsWithMessagesOnlyOne(i, 'message');
   }
 
   getEmailsWithMessagesOnlyEmail(i: number): AbstractControl | null {
-    return this.getEmailsWithMessagesOnlyOne(i, "email");
+    return this.getEmailsWithMessagesOnlyOne(i, 'email');
   }
 
   getEmailsWithMessagesOnlyOne(i: number, emailOrMessage: string) {
@@ -174,7 +173,7 @@ export class UploadComponent implements OnInit {
 
   // NAMES ONLY
   get namesOnly() {
-    return this.uploadform.get("namesOnly") as FormArray;
+    return this.uploadform.get('namesOnly') as FormArray;
   }
   addNamesOnly() {
     this.namesOnly.push(this.initializeNamesOnly());
@@ -189,16 +188,20 @@ export class UploadComponent implements OnInit {
     }
   }
   getNamesOnlyFormgroupNumber(): number {
-    const formArray: FormArray = <FormArray>this.uploadform.controls["namesOnly"];
+    const formArray: FormArray = this.uploadform.controls[
+      'namesOnly'
+    ] as FormArray;
     if (formArray) {
       return formArray.controls.length;
     }
     return 0;
   }
   getNamesOnlyFormgroup(i: number): FormGroup | null {
-    const formArray: FormArray = <FormArray>this.uploadform.controls["namesOnly"];
+    const formArray: FormArray = this.uploadform.controls[
+      'namesOnly'
+    ] as FormArray;
     if (formArray) {
-      return <FormGroup>formArray.controls[i];
+      return formArray.controls[i] as FormGroup;
     }
     return null;
   }
@@ -217,7 +220,7 @@ export class UploadComponent implements OnInit {
 
   // EXPIRATION DATE
   getExpirationDate(): Date {
-    return this.uploadform.controls["expirationDate"].value;
+    return this.uploadform.controls['expirationDate'].value;
   }
   resetExpirationDate(): void {
     this.uploadform.controls["expirationDate"].setValue(this.get7DaysAfterToday());
@@ -233,17 +236,17 @@ export class UploadComponent implements OnInit {
 
   // PASSWORD
   getPassword(): string {
-    return this.uploadform.controls["password"].value;
+    return this.uploadform.controls['password'].value;
   }
   resetPassword(): void {
-    this.uploadform.controls["password"].reset();
+    this.uploadform.controls['password'].reset();
   }
 
   async submit() {
     this.uploadInProgress = true;
     if (this.getFileFromDisk()) {
       try {
-        let recipientArray = new Array<Recipient>();
+        const recipientArray = new Array<Recipient>();
         if (this.emailOrLinkIsEmail()) {
           for (let i = 0; i < this.getEmailsWithMessagesFormgroupNumber(); i++) {
             const message: string = this.getEmailsWithMessagesFormgroup(i)!.controls["message"].value;
@@ -252,7 +255,7 @@ export class UploadComponent implements OnInit {
               emailOrName: email,
               sendEmail: this.emailOrLinkIsEmail()
             };
-            if (message && message != "" && this.emailOrLinkIsEmail) {
+            if (message && message !== '' && this.emailOrLinkIsEmail) {
               recipient.message = message;
             }
             recipientArray.push(recipient);
@@ -274,7 +277,7 @@ export class UploadComponent implements OnInit {
           size: this.getFileFromDisk().size,
           sharedWith: recipientArray
         };
-        if (this.getPassword() !== "") {
+        if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
         }
         const fileId = await this.fileApi.postFileFileRequest(myFileRequest).toPromise();
@@ -310,14 +313,3 @@ export class UploadComponent implements OnInit {
   }
 }
 
-
-
-export class NameAndValue {
-  public displayedValue: string;
-  public displayedName: string;
-
-  constructor(displayedName: string, displayedValue: string) {
-    this.displayedName = displayedName;
-    this.displayedValue = displayedValue;
-  }
-}

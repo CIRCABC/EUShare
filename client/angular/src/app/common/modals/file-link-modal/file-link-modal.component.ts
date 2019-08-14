@@ -8,19 +8,22 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { ModalsService } from '../modals.service';
 import { NotificationService } from '../../notification/notification.service';
+import { ModalsService } from '../modals.service';
 
 @Component({
   selector: 'app-file-link-modal',
   templateUrl: './file-link-modal.component.html'
 })
 export class FileLinkModalComponent implements OnInit {
-  public modalActive: boolean = false;
+  public modalActive = false;
   public fileLink!: string;
-  public isLoading: boolean = false;
+  public isLoading = false;
 
-  constructor(private modalService: ModalsService, private notificationService: NotificationService) { }
+  constructor(
+    private modalService: ModalsService,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
     this.modalService.activateFileLinkModal$.subscribe(nextModalActiveValue => {
@@ -36,12 +39,11 @@ export class FileLinkModalComponent implements OnInit {
     inputElement.setSelectionRange(0, 0);
     this.notificationService.addSuccessMessage('Copied file link !', true);
     setTimeout(() => {
-      this.isLoading = false
+      this.isLoading = false;
     }, 300);
   }
 
   closeModal() {
     this.modalService.deactivateFileLinkModal();
   }
-
 }

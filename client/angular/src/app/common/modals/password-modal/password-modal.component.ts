@@ -15,7 +15,6 @@ import { ModalsService } from '../modals.service';
   templateUrl: './password-modal.component.html'
 })
 export class PasswordModalComponent implements OnInit {
-
   public modalActive!: boolean;
   public modalFileId!: string;
   public modalFileName!: string;

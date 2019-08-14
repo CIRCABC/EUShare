@@ -17,9 +17,8 @@ describe('MySharedFilesComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MySharedFilesComponent ]
-    })
-    .compileComponents();
+      declarations: [MySharedFilesComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

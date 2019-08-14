@@ -8,9 +8,9 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { NotificationMessage } from './notification-message';
 import { NotificationService } from './notification.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notification-system',
