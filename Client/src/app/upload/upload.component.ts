@@ -7,12 +7,13 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { messageToRecipientValidator, customFileValidator, globalValidator } from './upload.validators';
+import { globalValidator } from './upload.validators';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup, Validators, AbstractControl, FormBuilder, ValidationErrors, FormControl } from '@angular/forms';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import { FileService, FileRequest, Recipient, UsersService, SessionService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
+import { fileSizeValidator } from '../common/validators/file-validator';
 
 @Component({
   selector: 'app-upload',
@@ -22,13 +23,11 @@ import { NotificationService } from '../common/notification/notification.service
 export class UploadComponent implements OnInit {
 
   public faUpload = faUpload;
-  public modalClass = 'modal';
   public moreOptions = false;
   public uploadInProgress = false;
   public uploadform!: FormGroup;
   public shareWithUser = '';
   private leftSpaceInBytes = 0;
-  private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
 
   constructor(private fb: FormBuilder, private sessionApi: SessionService, private userApi: UsersService, private fileApi: FileService, private notificationService: NotificationService) {
     this.initializeFormGroup();
@@ -62,7 +61,7 @@ export class UploadComponent implements OnInit {
 
   initializeFormGroup() {
     this.uploadform = this.fb.group({
-      fileFromDisk: [undefined, Validators.compose([customFileValidator(this.leftSpaceInBytes)])],
+      fileFromDisk: [undefined, Validators.compose([fileSizeValidator(this.leftSpaceInBytes)])],
       emailOrLink: ['', Validators.required],
       emailsWithMessages: this.fb.array([
         //this.initializedEmailsWithMessages()
@@ -77,10 +76,8 @@ export class UploadComponent implements OnInit {
 
   initializedEmailsWithMessages(): FormGroup {
     return this.fb.group({
-      email: new FormControl('', Validators.compose([
-        Validators.required,
-        Validators.pattern(this.emailRegex)])),
-      message: ['', Validators.compose([messageToRecipientValidator(400)])]
+      email: new FormControl('', Validators.required),
+      message: ['']
     }, { updateOn: 'blur' });
   }
 
@@ -152,9 +149,9 @@ export class UploadComponent implements OnInit {
     return 0;
   }
   getEmailsWithMessagesFormgroup(i: number): FormGroup | null {
-    const formArray: FormArray = <FormArray>this.uploadform.controls['emailsWithMessages'];
-    if (formArray) {
-      return <FormGroup>formArray.controls[i];
+    const formArrayOrNull: FormArray | null = <FormArray | null> this.uploadform.controls['emailsWithMessages'];
+    if (formArrayOrNull) {
+      return <FormGroup | null> formArrayOrNull.controls[i];
     }
     return null;
   }

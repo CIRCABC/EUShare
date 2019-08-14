@@ -77,6 +77,10 @@ export class MySharedFilesComponent implements OnInit {
     this.modalService.activateFileLinkModal(fileLinkBuild);
   }
 
+  public openAddRecipientsModal(fileName:string, fileId: string) {
+    this.modalService.activateAddRecipientsModal(fileName, fileId);
+  }
+
   public delete(i: number) {
     this.fileApi.deleteFile(this.fileInfoUploaderArray[i].fileId).toPromise().then(success => {
       const deletedFileName:string = this.fileInfoUploaderArray[i].name;

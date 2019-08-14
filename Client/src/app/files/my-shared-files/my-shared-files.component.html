@@ -1,6 +1,7 @@
 <h1 class="title">Uploaded Files</h1>
 <app-password-modal></app-password-modal>
 <app-file-link-modal></app-file-link-modal>
+<app-add-recipients-modal (pullChanges)="ngOnInit()"></app-add-recipients-modal>
 <table class="table is-fullwidth is-hoverable">
   <thead>
     <tr>
@@ -35,6 +36,7 @@
         <a *ngIf="file.hasPassword" class="button is-link is-outlined"
           (click)="openPasswordModal(file.fileId, file.name)">Download</a>
         <app-download-button *ngIf="!file.hasPassword" [fileId]="file.fileId" [fileName]="file.name" [buttonIsOutlined]="true"></app-download-button>
+        <a class="button is-link is-outlined" (click)="openAddRecipientsModal(file.name, file.fileId)">Add a recipient</a>
       </td>
     </tr>
   </tbody>

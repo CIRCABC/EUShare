@@ -34,6 +34,10 @@ import { PasswordModalComponent } from './common/modals/password-modal/password-
 import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
 import { DownloadButtonComponent } from './common/buttons/download-button/download-button.component';
+import { AddRecipientsModalComponent } from './common/modals/add-recipients-modal/add-recipients-modal.component';
+import { EmailInputComponent } from './common/formComponents/email-input/email-input.component';
+import { MessageTextAreaComponent } from './common/formComponents/message-text-area/message-text-area.component';
+import { LinkInputComponent } from './common/formComponents/link-input/link-input.component';
 
 const routes: Routes = [
   {
@@ -65,8 +69,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [AppComponent, NavbarComponent,
     LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent,
-     NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent,
-      FileLinkModalComponent, SharedWithMeComponent, DownloadButtonComponent],
+    NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent,
+    FileLinkModalComponent, SharedWithMeComponent, DownloadButtonComponent, AddRecipientsModalComponent, EmailInputComponent, MessageTextAreaComponent, LinkInputComponent],
   imports: [
     ApiModule,
     BrowserModule,
