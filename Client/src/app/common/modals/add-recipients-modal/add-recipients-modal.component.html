@@ -35,9 +35,7 @@
           </div>
         </div>
         <div *ngIf="sendEmailIsTrue">
-          <app-email-input
-            formControlName="email"
-          ></app-email-input>
+          <app-email-input formControlName="email"></app-email-input>
           <app-message-text-area formControlName="message"></app-message-text-area>
         </div>
         <div *ngIf="!sendEmailIsTrue">

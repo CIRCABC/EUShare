@@ -7,8 +7,8 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, ViewChild, ElementRef, Self } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, Validators, AbstractControl } from '@angular/forms';
+import { Component, ViewChild, ElementRef, Self, Optional } from '@angular/core';
+import { ControlValueAccessor, NgControl, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
   selector: 'app-message-text-area',
@@ -16,12 +16,12 @@ import { ControlValueAccessor, NgControl, ValidatorFn, Validators, AbstractContr
   styleUrls: ['./message-text-area.component.css']
 })
 export class MessageTextAreaComponent implements ControlValueAccessor {
-  onChange!: () => void;
+  onChange!: (_:any) => void;
   onTouched!: () => void;
   @ViewChild("textarea") textarea!: ElementRef;
   disabled!: boolean;
 
-  constructor(@Self() public controlDirective: NgControl) {
+  constructor(@Optional() @Self() public controlDirective: NgControl) {
     controlDirective.valueAccessor = this;
   }
 
