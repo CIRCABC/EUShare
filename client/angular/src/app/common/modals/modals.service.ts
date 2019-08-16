@@ -14,22 +14,37 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ModalsService {
-
-  private possibleActiveModals: string[] = ['password', 'fileLink', 'addRecipients', ' '];
+  private possibleActiveModals: string[] = [
+    'password',
+    'fileLink',
+    'addRecipients',
+    ' '
+  ];
   private activeModal!: string;
 
   private activatePasswordModalSubject = new Subject<PasswordModalValue>();
-  public activatePasswordModal$: Observable<PasswordModalValue> = this.activatePasswordModalSubject.asObservable();
+  public activatePasswordModal$: Observable<
+    PasswordModalValue
+  > = this.activatePasswordModalSubject.asObservable();
 
   private activateFileLinkModalSubject = new Subject<FileLinkModalValue>();
-  public activateFileLinkModal$: Observable<FileLinkModalValue> = this.activateFileLinkModalSubject.asObservable();
+  public activateFileLinkModal$: Observable<
+    FileLinkModalValue
+  > = this.activateFileLinkModalSubject.asObservable();
 
-  private activateAddRecipientsModalSubject = new Subject<AddRecipientsModalValue>();
-  public activateAddRecipientsModal$: Observable<AddRecipientsModalValue> = this.activateAddRecipientsModalSubject.asObservable();
+  private activateAddRecipientsModalSubject = new Subject<
+    AddRecipientsModalValue
+  >();
+  public activateAddRecipientsModal$: Observable<
+    AddRecipientsModalValue
+  > = this.activateAddRecipientsModalSubject.asObservable();
 
   constructor() {}
 
-  public activateAddRecipientsModal(modalFileName: string, modalFileId: string) {
+  public activateAddRecipientsModal(
+    modalFileName: string,
+    modalFileId: string
+  ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[2]) {
       this.deactivateAllModals();
     }

@@ -111,19 +111,28 @@ export class MySharedFilesComponent implements OnInit {
     this.modalService.activateFileLinkModal(fileLinkBuild);
   }
 
-  public openAddRecipientsModal(fileName:string, fileId: string) {
+  public openAddRecipientsModal(fileName: string, fileId: string) {
     this.modalService.activateAddRecipientsModal(fileName, fileId);
   }
 
   public delete(i: number) {
-    this.fileApi.deleteFile(this.fileInfoUploaderArray[i].fileId).toPromise().then(success => {
-      const deletedFileName:string = this.fileInfoUploaderArray[i].name;
-      this.fileInfoUploaderArray.splice(i, 1);
-      this.notificationService.addSuccessMessage('Successfully deleted file named ' + deletedFileName);
-    }).catch(error => {
-      console.log(error);
-      this.notificationService.errorMessageToDisplay(error, 'deleting your file');
-    });
+    this.fileApi
+      .deleteFile(this.fileInfoUploaderArray[i].fileId)
+      .toPromise()
+      .then(success => {
+        const deletedFileName: string = this.fileInfoUploaderArray[i].name;
+        this.fileInfoUploaderArray.splice(i, 1);
+        this.notificationService.addSuccessMessage(
+          'Successfully deleted file named ' + deletedFileName
+        );
+      })
+      .catch(error => {
+        console.log(error);
+        this.notificationService.errorMessageToDisplay(
+          error,
+          'deleting your file'
+        );
+      });
   }
 
   public deleteShare(

@@ -17,9 +17,8 @@ describe('DownloadButtonComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ DownloadButtonComponent ]
-    })
-    .compileComponents();
+      declarations: [DownloadButtonComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

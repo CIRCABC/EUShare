@@ -17,9 +17,8 @@ describe('MessageTextAreaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MessageTextAreaComponent ]
-    })
-    .compileComponents();
+      declarations: [MessageTextAreaComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

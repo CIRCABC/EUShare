@@ -18,7 +18,6 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./download-button.component.css']
 })
 export class DownloadButtonComponent implements OnInit {
-
   // tslint:disable-next-line:no-input-rename
   @Input('fileId')
   fileId!: string;
@@ -49,20 +48,28 @@ export class DownloadButtonComponent implements OnInit {
 
   public isLoading = false;
 
-  constructor(private notificationService: NotificationService, private fileApi: FileService) { }
+  constructor(
+    private notificationService: NotificationService,
+    private fileApi: FileService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public download() {
     this.isLoading = true;
-    this.fileApi.getFile(this.fileId, this.filePassword).toPromise().then(file => {
-      saveAs(file, this.fileName);
-      this.isLoading = false;
-    }).catch(error => {
-      this.notificationService.errorMessageToDisplay(error, 'downloading your file');
-      this.isLoading = false;
-    });
+    this.fileApi
+      .getFile(this.fileId, this.filePassword)
+      .toPromise()
+      .then(file => {
+        saveAs(file, this.fileName);
+        this.isLoading = false;
+      })
+      .catch(error => {
+        this.notificationService.errorMessageToDisplay(
+          error,
+          'downloading your file'
+        );
+        this.isLoading = false;
+      });
   }
-
 }
