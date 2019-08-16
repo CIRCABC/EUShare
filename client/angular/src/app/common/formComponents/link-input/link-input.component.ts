@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, ViewChild, ElementRef, Self, Optional } from '@angular/core';
+import { Component, ViewChild, ElementRef, Self, Optional, OnInit } from '@angular/core';
 import { ControlValueAccessor, NgControl, ValidatorFn, AbstractControl } from '@angular/forms';
 
 @Component({
@@ -15,7 +15,7 @@ import { ControlValueAccessor, NgControl, ValidatorFn, AbstractControl } from '@
   templateUrl: './link-input.component.html',
   styleUrls: ['./link-input.component.css']
 })
-export class LinkInputComponent implements ControlValueAccessor {
+export class LinkInputComponent implements ControlValueAccessor, OnInit {
   onChange!: (_:any) => void;
   onTouched!: () => void;
 

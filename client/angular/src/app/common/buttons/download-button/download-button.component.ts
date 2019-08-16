@@ -19,28 +19,35 @@ import { saveAs } from 'file-saver';
 })
 export class DownloadButtonComponent implements OnInit {
 
+  // tslint:disable-next-line:no-input-rename
   @Input('fileId')
   fileId!: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('fileName')
   fileName!: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('filePassword')
   filePassword?: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsOutlined')
-  buttonIsOutlined?: boolean = false;
+  buttonIsOutlined = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsLarge')
-  buttonIsLarge?: boolean = false;
+  buttonIsLarge = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsFullwidth')
-  buttonIsFullwidth?: boolean = false;
+  buttonIsFullwidth = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('isShowFileName')
-  isShowFileName?: boolean = false;
+  isShowFileName = false;
 
-  public isLoading: boolean = false;
+  public isLoading = false;
 
   constructor(private notificationService: NotificationService, private fileApi: FileService) { }
 

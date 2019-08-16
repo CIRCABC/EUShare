@@ -21,13 +21,14 @@ import {recipientValidator } from '../../validators/recipient-validator'
 })
 export class AddRecipientsModalComponent implements OnInit {
 
+  // tslint:disable-next-line:no-output-rename
   @Output('pullChanges') 
   valueChange = new EventEmitter();
 
-  public modalActive: boolean = false;
-  public modalFileName: string = '';
-  private modalFileId: string = '';
-  public uploadInProgress: boolean = false;
+  public modalActive = false;
+  public modalFileName = '';
+  private modalFileId = '';
+  public uploadInProgress = false;
 
   public sharedWithFormGroup!: FormGroup;
 

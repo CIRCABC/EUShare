@@ -63,7 +63,7 @@ export class UploadComponent implements OnInit {
       fileFromDisk: [undefined, Validators.compose([fileSizeValidator(this.leftSpaceInBytes)])],
       emailOrLink: ['', Validators.required],
       emailsWithMessages: this.fb.array([
-        //this.initializedEmailsWithMessages()
+        // this.initializedEmailsWithMessages()
       ]),
       namesOnly: this.fb.array([
         // this.initializeNamesOnly()
@@ -148,9 +148,9 @@ export class UploadComponent implements OnInit {
     return 0;
   }
   getEmailsWithMessagesFormgroup(i: number): FormGroup | null {
-    const formArrayOrNull: FormArray | null = <FormArray | null> this.uploadform.controls["emailsWithMessages"];
+    const formArrayOrNull: FormArray | null = <FormArray | null>this.uploadform.controls["emailsWithMessages"];
     if (formArrayOrNull) {
-      return <FormGroup | null> formArrayOrNull.controls[i];
+      return <FormGroup | null>formArrayOrNull.controls[i];
     }
     return null;
   }
@@ -249,28 +249,40 @@ export class UploadComponent implements OnInit {
         const recipientArray = new Array<Recipient>();
         if (this.emailOrLinkIsEmail()) {
           for (let i = 0; i < this.getEmailsWithMessagesFormgroupNumber(); i++) {
-            const message: string = this.getEmailsWithMessagesFormgroup(i)!.controls["message"].value;
-            const email: string = this.getEmailsWithMessagesFormgroup(i)!.controls["email"].value;
-            let recipient: Recipient = {
-              emailOrName: email,
-              sendEmail: this.emailOrLinkIsEmail()
-            };
-            if (message && message !== '' && this.emailOrLinkIsEmail) {
-              recipient.message = message;
+            const formGroupOrNull: FormGroup | null = this.getEmailsWithMessagesFormgroup(i);
+            if (formGroupOrNull) {
+              const message: string = formGroupOrNull.controls["message"].value;
+              const email: string = formGroupOrNull.controls["email"].value;
+              const recipient: Recipient = {
+                emailOrName: email,
+                sendEmail: this.emailOrLinkIsEmail()
+              };
+              if (message && message !== '' && this.emailOrLinkIsEmail) {
+                recipient.message = message;
+              }
+              recipientArray.push(recipient);
+            } else {
+              this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
+              return;
             }
-            recipientArray.push(recipient);
           }
         } else {
           for (let i = 0; i < this.getNamesOnlyFormgroupNumber(); i++) {
-            const name: string = this.getNamesOnlyFormgroup(i)!.controls["name"].value;
-            let recipient: Recipient = {
-              emailOrName: name,
-              sendEmail: this.emailOrLinkIsEmail()
-            };
-            recipientArray.push(recipient);
+            const formGroupOrNull = this.getNamesOnlyFormgroup(i);
+            if (formGroupOrNull) {
+              const name: string = formGroupOrNull.controls["name"].value;
+              const recipient: Recipient = {
+                emailOrName: name,
+                sendEmail: this.emailOrLinkIsEmail()
+              };
+              recipientArray.push(recipient);
+            } else {
+              this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
+              return;
+            }
           }
         }
-        let myFileRequest: FileRequest = {
+        const myFileRequest: FileRequest = {
           expirationDate: this.getExpirationDate().toISOString().substring(0, 10),
           hasPassword: (this.getPassword() != null && this.getPassword() !== ""),
           name: this.getFileFromDisk().name,
@@ -300,16 +312,5 @@ export class UploadComponent implements OnInit {
   }
 
   get uf() { return this.uploadform.controls; }
-
-  getFormValidationErrors() {
-    Object.keys(this.uploadform.controls).forEach(key => {
-      const controlErrors: ValidationErrors | null = this.uploadform.get(key)!.errors;
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-        });
-      }
-    });
-  }
 }
 

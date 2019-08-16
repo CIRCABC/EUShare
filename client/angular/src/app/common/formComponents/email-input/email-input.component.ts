@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, ElementRef, ViewChild, Self, Optional } from '@angular/core';
+import { Component, ElementRef, ViewChild, Self, Optional, OnInit } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 
 @Component({
@@ -15,7 +15,7 @@ import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
   templateUrl: './email-input.component.html',
   styleUrls: ['./email-input.component.css'],
 })
-export class EmailInputComponent implements ControlValueAccessor {
+export class EmailInputComponent implements ControlValueAccessor, OnInit {
   private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
   onChange!: (_:any) => void;
   onTouched!: () => void;
