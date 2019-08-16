@@ -67,10 +67,25 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, NavbarComponent,
-    LoginComponent, UploadComponent, FileAccessorDirective, MySharedFilesComponent,
-    NotificationComponent, NotificationSystemComponent, FilelinkComponent, PasswordModalComponent,
-    FileLinkModalComponent, SharedWithMeComponent, DownloadButtonComponent, AddRecipientsModalComponent, EmailInputComponent, MessageTextAreaComponent, LinkInputComponent],
+  declarations: [
+    AppComponent,
+    NavbarComponent,
+    LoginComponent,
+    UploadComponent,
+    FileAccessorDirective,
+    MySharedFilesComponent,
+    NotificationComponent,
+    NotificationSystemComponent,
+    FilelinkComponent,
+    PasswordModalComponent,
+    FileLinkModalComponent,
+    SharedWithMeComponent,
+    DownloadButtonComponent,
+    AddRecipientsModalComponent,
+    EmailInputComponent,
+    MessageTextAreaComponent,
+    LinkInputComponent
+  ],
   imports: [
     ApiModule,
     BrowserModule,
@@ -80,7 +95,8 @@ const routes: Routes = [
     HttpClientModule,
     RouterModule.forRoot(routes),
     FontAwesomeModule,
-    BrowserAnimationsModule],
+    BrowserAnimationsModule
+  ],
   providers: [
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
     {
@@ -91,4 +107,4 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

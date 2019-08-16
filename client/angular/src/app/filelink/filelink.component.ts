@@ -25,11 +25,12 @@ export class FilelinkComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router, private modalService: ModalsService) {
-  }
+    private router: Router,
+    private modalService: ModalsService
+  ) {}
 
   download() {
-      this.modalService.activatePasswordModal(this.fileId, this.fileName);
+    this.modalService.activatePasswordModal(this.fileId, this.fileName);
   }
 
   ngOnInit() {

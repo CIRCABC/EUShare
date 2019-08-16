@@ -19,7 +19,7 @@ export class PasswordModalComponent implements OnInit {
   public modalFileId!: string;
   public modalFileName!: string;
 
-  constructor(private modalService: ModalsService) { }
+  constructor(private modalService: ModalsService) {}
 
   ngOnInit() {
     this.modalActive = false;
@@ -33,5 +33,4 @@ export class PasswordModalComponent implements OnInit {
   public closeModal() {
     this.modalService.deactivatePasswordModal();
   }
-
 }

@@ -39,20 +39,20 @@ public class DBUser {
         filesReceived.add(dbUserFile);
         dbFile.getSharedWith().add(dbUserFile);
     }
-    
+
     public void addFilesRecieved(DBFile dbFile, String downloadId, String message) {
         DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile, message);
         filesReceived.add(dbUserFile);
         dbFile.getSharedWith().add(dbUserFile);
-	}
+    }
 
-	public void removeFilesRecieved(DBFile dbFile, String downloadId) {
+    public void removeFilesRecieved(DBFile dbFile, String downloadId) {
         DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile);
         dbFile.getSharedWith().remove(dbUserFile);
         filesReceived.remove(dbUserFile);
         dbUserFile.setFile(null);
         dbUserFile.setReceiver(null);
-	}
+    }
 
     @Id
     @Getter
@@ -144,7 +144,11 @@ public class DBUser {
 
     @Transient
     private long getUsedSpace() {
-        return this.filesUploaded.stream().mapToLong(DBFile::getSize).sum();
+        return this.filesUploaded.stream()
+                .filter(dbFile -> dbFile.getStatus().equals(DBFile.Status.AVAILABLE)
+                        || dbFile.getStatus().equals(DBFile.Status.ALLOCATED)
+                        || dbFile.getStatus().equals(DBFile.Status.UPLOADING))
+                .mapToLong(DBFile::getSize).sum();
     }
 
     /**

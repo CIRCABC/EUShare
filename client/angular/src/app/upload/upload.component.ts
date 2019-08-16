@@ -9,9 +9,23 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { globalValidator } from './upload.validators';
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormGroup, Validators, AbstractControl, FormBuilder, ValidationErrors, FormControl } from '@angular/forms';
+import {
+  FormArray,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  FormBuilder,
+  ValidationErrors,
+  FormControl
+} from '@angular/forms';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
-import { FileService, FileRequest, Recipient, UsersService, SessionService } from '../openapi';
+import {
+  FileService,
+  FileRequest,
+  Recipient,
+  UsersService,
+  SessionService
+} from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { fileSizeValidator } from '../common/validators/file-validator';
 
@@ -21,7 +35,6 @@ import { fileSizeValidator } from '../common/validators/file-validator';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
-
   public faUpload = faUpload;
   public moreOptions = false;
   public uploadInProgress = false;
@@ -29,7 +42,13 @@ export class UploadComponent implements OnInit {
   public shareWithUser = '';
   private leftSpaceInBytes = 0;
 
-  constructor(private fb: FormBuilder, private sessionApi: SessionService, private userApi: UsersService, private fileApi: FileService, private notificationService: NotificationService) {
+  constructor(
+    private fb: FormBuilder,
+    private sessionApi: SessionService,
+    private userApi: UsersService,
+    private fileApi: FileService,
+    private notificationService: NotificationService
+  ) {
     this.initializeFormGroup();
   }
 
@@ -43,47 +62,68 @@ export class UploadComponent implements OnInit {
             ? me.totalSpace - me.usedSpace
             : 0;
       } catch (error) {
-        this.notificationService.addErrorMessage('A problem occured while retrieving your user informations');
+        this.notificationService.addErrorMessage(
+          'A problem occured while retrieving your user informations'
+        );
       }
     }
   }
 
   initializeEventListeners() {
-    window.addEventListener('dragover', e => {
-      e.preventDefault();
-    }, false);
-    window.addEventListener('drop', e => {
-      e.preventDefault();
-    }, false);
+    window.addEventListener(
+      'dragover',
+      e => {
+        e.preventDefault();
+      },
+      false
+    );
+    window.addEventListener(
+      'drop',
+      e => {
+        e.preventDefault();
+      },
+      false
+    );
   }
 
-
   initializeFormGroup() {
-    this.uploadform = this.fb.group({
-      fileFromDisk: [undefined, Validators.compose([fileSizeValidator(this.leftSpaceInBytes)])],
-      emailOrLink: ['', Validators.required],
-      emailsWithMessages: this.fb.array([
-        //this.initializedEmailsWithMessages()
-      ]),
-      namesOnly: this.fb.array([
-        // this.initializeNamesOnly()
-      ]),
-      expirationDate: [this.get7DaysAfterToday(), Validators.required],
-      password: [undefined]
-    }, { validators: (globalValidator()) });
+    this.uploadform = this.fb.group(
+      {
+        fileFromDisk: [
+          undefined,
+          Validators.compose([fileSizeValidator(this.leftSpaceInBytes)])
+        ],
+        emailOrLink: ['', Validators.required],
+        emailsWithMessages: this.fb.array([
+          // this.initializedEmailsWithMessages()
+        ]),
+        namesOnly: this.fb.array([
+          // this.initializeNamesOnly()
+        ]),
+        expirationDate: [this.get7DaysAfterToday(), Validators.required],
+        password: [undefined]
+      },
+      { validators: globalValidator() }
+    );
   }
 
   initializedEmailsWithMessages(): FormGroup {
-    return this.fb.group({
-      email: new FormControl('', Validators.required),
-      message: ['']
-    }, { updateOn: 'blur' });
+    return this.fb.group(
+      {
+        email: new FormControl('', Validators.required),
+        message: ['']
+      },
+      { updateOn: 'blur' }
+    );
   }
 
   initializeNamesOnly(): FormGroup {
-    return this.fb.group({
-      name: new FormControl('', Validators.required)
-    }, { updateOn: 'blur' });
+    return this.fb.group(
+      {
+        name: new FormControl('', Validators.required)
+      },
+      { updateOn: 'blur' }
+    );
   }
 
   async ngOnInit() {
@@ -117,10 +157,10 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['emailOrLink'].value;
   }
   emailOrLinkIsEmail(): boolean {
-    return (this.getEmailOrLink() === 'Email');
+    return this.getEmailOrLink() === 'Email';
   }
   emailOrLinkIsLink(): boolean {
-    return (this.getEmailOrLink() === 'Link');
+    return this.getEmailOrLink() === 'Link';
   }
 
   // EMAIL WITH MESSAGES
@@ -141,16 +181,20 @@ export class UploadComponent implements OnInit {
   }
 
   getEmailsWithMessagesFormgroupNumber(): number {
-    const formArray: FormArray = <FormArray>this.uploadform.controls["emailsWithMessages"];
+    const formArray: FormArray = <FormArray>(
+      this.uploadform.controls['emailsWithMessages']
+    );
     if (formArray) {
       return formArray.controls.length;
     }
     return 0;
   }
   getEmailsWithMessagesFormgroup(i: number): FormGroup | null {
-    const formArrayOrNull: FormArray | null = <FormArray | null> this.uploadform.controls["emailsWithMessages"];
+    const formArrayOrNull: FormArray | null = <FormArray | null>(
+      this.uploadform.controls['emailsWithMessages']
+    );
     if (formArrayOrNull) {
-      return <FormGroup | null> formArrayOrNull.controls[i];
+      return <FormGroup | null>formArrayOrNull.controls[i];
     }
     return null;
   }
@@ -223,7 +267,9 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['expirationDate'].value;
   }
   resetExpirationDate(): void {
-    this.uploadform.controls["expirationDate"].setValue(this.get7DaysAfterToday());
+    this.uploadform.controls['expirationDate'].setValue(
+      this.get7DaysAfterToday()
+    );
   }
   getTomorrow(): Date {
     const milliseconds = Date.now() + 1 * 24 * 60 * 60 * 1000;
@@ -248,31 +294,57 @@ export class UploadComponent implements OnInit {
       try {
         const recipientArray = new Array<Recipient>();
         if (this.emailOrLinkIsEmail()) {
-          for (let i = 0; i < this.getEmailsWithMessagesFormgroupNumber(); i++) {
-            const message: string = this.getEmailsWithMessagesFormgroup(i)!.controls["message"].value;
-            const email: string = this.getEmailsWithMessagesFormgroup(i)!.controls["email"].value;
-            let recipient: Recipient = {
-              emailOrName: email,
-              sendEmail: this.emailOrLinkIsEmail()
-            };
-            if (message && message !== '' && this.emailOrLinkIsEmail) {
-              recipient.message = message;
+          for (
+            let i = 0;
+            i < this.getEmailsWithMessagesFormgroupNumber();
+            i++
+          ) {
+            const formGroupOrNull: FormGroup | null = this.getEmailsWithMessagesFormgroup(
+              i
+            );
+            if (formGroupOrNull) {
+              const message: string = formGroupOrNull.controls['message'].value;
+              const email: string = formGroupOrNull.controls['email'].value;
+              const recipient: Recipient = {
+                emailOrName: email,
+                sendEmail: this.emailOrLinkIsEmail()
+              };
+              if (message && message !== '' && this.emailOrLinkIsEmail) {
+                recipient.message = message;
+              }
+              recipientArray.push(recipient);
+            } else {
+              this.notificationService.addErrorMessage(
+                'A problem occured while uploading your file, please try again later or contact the support',
+                false
+              );
+              return;
             }
-            recipientArray.push(recipient);
           }
         } else {
           for (let i = 0; i < this.getNamesOnlyFormgroupNumber(); i++) {
-            const name: string = this.getNamesOnlyFormgroup(i)!.controls["name"].value;
-            let recipient: Recipient = {
-              emailOrName: name,
-              sendEmail: this.emailOrLinkIsEmail()
-            };
-            recipientArray.push(recipient);
+            const formGroupOrNull = this.getNamesOnlyFormgroup(i);
+            if (formGroupOrNull) {
+              const name: string = formGroupOrNull.controls['name'].value;
+              const recipient: Recipient = {
+                emailOrName: name,
+                sendEmail: this.emailOrLinkIsEmail()
+              };
+              recipientArray.push(recipient);
+            } else {
+              this.notificationService.addErrorMessage(
+                'A problem occured while uploading your file, please try again later or contact the support',
+                false
+              );
+              return;
+            }
           }
         }
-        let myFileRequest: FileRequest = {
-          expirationDate: this.getExpirationDate().toISOString().substring(0, 10),
-          hasPassword: (this.getPassword() != null && this.getPassword() !== ""),
+        const myFileRequest: FileRequest = {
+          expirationDate: this.getExpirationDate()
+            .toISOString()
+            .substring(0, 10),
+          hasPassword: this.getPassword() != null && this.getPassword() !== '',
           name: this.getFileFromDisk().name,
           size: this.getFileFromDisk().size,
           sharedWith: recipientArray
@@ -280,36 +352,42 @@ export class UploadComponent implements OnInit {
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
         }
-        const fileId = await this.fileApi.postFileFileRequest(myFileRequest).toPromise();
-        await this.fileApi.postFileContent(fileId, this.getFileFromDisk()).toPromise();
+        const fileId = await this.fileApi
+          .postFileFileRequest(myFileRequest)
+          .toPromise();
+        await this.fileApi
+          .postFileContent(fileId, this.getFileFromDisk())
+          .toPromise();
         if (this.emailOrLinkIsEmail()) {
-          this.notificationService.addSuccessMessage("Your recipients have been notified by mail that they may download the shared file!", false);
+          this.notificationService.addSuccessMessage(
+            'Your recipients have been notified by mail that they may download the shared file!',
+            false
+          );
         } else {
-          this.notificationService.addSuccessMessage('Please find for each of your recipients, a personnal download link on the My Shared Files page', false);
+          this.notificationService.addSuccessMessage(
+            'Please find for each of your recipients, a personnal download link on the My Shared Files page',
+            false
+          );
         }
         await this.initializeAvailableSpace();
       } catch (e) {
-        this.notificationService.addErrorMessage('A problem occured while uploading your file, please try again later or contact the support', false);
+        this.notificationService.addErrorMessage(
+          'A problem occured while uploading your file, please try again later or contact the support',
+          false
+        );
         this.uploadInProgress = false;
         return;
       }
     }
     this.uploadInProgress = false;
     this.initializeFormGroup();
-    this.notificationService.addSuccessMessage('Your upload was successful!', true);
+    this.notificationService.addSuccessMessage(
+      'Your upload was successful!',
+      true
+    );
   }
 
-  get uf() { return this.uploadform.controls; }
-
-  getFormValidationErrors() {
-    Object.keys(this.uploadform.controls).forEach(key => {
-      const controlErrors: ValidationErrors | null = this.uploadform.get(key)!.errors;
-      if (controlErrors != null) {
-        Object.keys(controlErrors).forEach(keyError => {
-          console.log('Key control: ' + key + ', keyError: ' + keyError + ', err value: ', controlErrors[keyError]);
-        });
-      }
-    });
+  get uf() {
+    return this.uploadform.controls;
   }
 }
-

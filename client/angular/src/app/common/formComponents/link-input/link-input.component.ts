@@ -7,19 +7,31 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, ViewChild, ElementRef, Self, Optional } from '@angular/core';
-import { ControlValueAccessor, NgControl, ValidatorFn, AbstractControl } from '@angular/forms';
+import {
+  Component,
+  ViewChild,
+  ElementRef,
+  Self,
+  Optional,
+  OnInit
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NgControl,
+  ValidatorFn,
+  AbstractControl
+} from '@angular/forms';
 
 @Component({
   selector: 'app-link-input',
   templateUrl: './link-input.component.html',
   styleUrls: ['./link-input.component.css']
 })
-export class LinkInputComponent implements ControlValueAccessor {
-  onChange!: (_:any) => void;
+export class LinkInputComponent implements ControlValueAccessor, OnInit {
+  onChange!: (_: any) => void;
   onTouched!: () => void;
 
-  @ViewChild("input", {static: true}) input!: ElementRef;
+  @ViewChild('input', { static: true }) input!: ElementRef;
   disabled!: boolean;
 
   constructor(@Optional() @Self() public controlDirective: NgControl) {
@@ -52,8 +64,15 @@ export class LinkInputComponent implements ControlValueAccessor {
   }
 
   get errorMessage(): string | null {
-    if (this.controlDirective.control && this.controlDirective.control.errors && this.controlDirective.control.errors.forbiddenLinkLength) {
-      return "Link should be bigger than " + this.controlDirective.control.errors.forbiddenLinkLength.value;
+    if (
+      this.controlDirective.control &&
+      this.controlDirective.control.errors &&
+      this.controlDirective.control.errors.forbiddenLinkLength
+    ) {
+      return (
+        'Link should be bigger than ' +
+        this.controlDirective.control.errors.forbiddenLinkLength.value
+      );
     }
     return null;
   }
@@ -63,7 +82,9 @@ export class LinkInputComponent implements ControlValueAccessor {
       const message: string = control.value;
       if (message) {
         const forbidden = message.length < minCharacters;
-        return forbidden ? { 'forbiddenLinkLength': { value: minCharacters } } : null;
+        return forbidden
+          ? { forbiddenLinkLength: { value: minCharacters } }
+          : null;
       }
       return null;
     };
