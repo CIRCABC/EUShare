@@ -20,19 +20,19 @@ export class AdministrationComponent implements OnInit {
   public isAfterSelected = false;
   public searchString = '';
 
-  public pageSize: number = 10;
+  public pageSize = 10;
   public pageNumber = 0;
 
   public userInfoArray: Array<UserInfo> = new Array();
   public userInfoArrayNext: Array<UserInfo> = new Array();
   public userInfoArrayPrevious: Array<UserInfo> = new Array();
 
-  public selectedUserInfoIndex: number = 0;
+  public selectedUserInfoIndex = 0;
 
   public valuesInGigaBytes = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 100, 1024];
-  public selectedValueInGigaBytesIndex: number = 0;
+  public selectedValueInGigaBytesIndex = 0;
 
-  public selectedValueInGigaBytes: number = 0;
+  public selectedValueInGigaBytes = 0;
   public changeIsLoading = false;
 
   constructor(private usersApi: UsersService, private notificationService: NotificationService) { }

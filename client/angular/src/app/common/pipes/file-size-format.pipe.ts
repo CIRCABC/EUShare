@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FileSizeFormatPipe implements PipeTransform {
 
   transform(value: number): string {
-    if (isNaN(value)) return ' ERRORINTHEVALUE'
+    if (isNaN(value)) { return ' ERRORINTHEVALUE' }
     if (value >= 1024) {
       const valueInKb = Math.floor(value / 1024);
       if (valueInKb >= 1024) {
