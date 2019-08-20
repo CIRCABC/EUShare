@@ -38,6 +38,8 @@ import { AddRecipientsModalComponent } from './common/modals/add-recipients-moda
 import { EmailInputComponent } from './common/formComponents/email-input/email-input.component';
 import { MessageTextAreaComponent } from './common/formComponents/message-text-area/message-text-area.component';
 import { LinkInputComponent } from './common/formComponents/link-input/link-input.component';
+import { AdministrationComponent } from './administration/administration.component';
+import { FileSizeFormatPipe } from './common/pipes/file-size-format.pipe';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -63,6 +65,11 @@ const routes: Routes = [
   {
     path: 'filelink/:id/:filenameb64/:isPasswordProtected',
     component: FilelinkComponent
+  },
+  {
+    path: 'administration',
+    component: AdministrationComponent,
+    canActivate: [LoginGuard]
   }
 ];
 
@@ -84,7 +91,9 @@ const routes: Routes = [
     AddRecipientsModalComponent,
     EmailInputComponent,
     MessageTextAreaComponent,
-    LinkInputComponent
+    LinkInputComponent,
+    AdministrationComponent,
+    FileSizeFormatPipe
   ],
   imports: [
     ApiModule,
