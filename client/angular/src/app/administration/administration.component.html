@@ -1,0 +1,88 @@
+<h1 class="title">Administration</h1>
+<div class="columns">
+  <div class="column">
+    <label class="label">User search</label>
+    <input
+      [(ngModel)]="searchString"
+      class="input"
+      type="text"
+      placeholder="User's name OR email"
+    />
+    <a
+      class="button is-link is-outlined"
+      [class.is-loading]="searchIsLoading"
+      (click)="search()"
+      >Search</a
+    >
+    <div *ngIf="isAfterSearch">
+      <label class="label">Results</label>
+      <ul class="menu-list">
+        <li
+          *ngFor="let userInfo of userInfoArray; let i = index"
+          [attr.data-index]="i"
+          value="userInfo.id"
+          (click)="displayUserInfoNumber(i)"
+        >
+          <a> {{ userInfo.name }}</a>
+        </li>
+      </ul>
+      <nav
+        class="pagination is-centered"
+        role="navigation"
+        aria-label="pagination"
+      >
+        <a
+          *ngIf="pageNumber > 0"
+          class="pagination-previous button is-link is-outlined"
+          (click)="resultsPreviousPage()"
+          >Previous</a
+        >
+        <a
+          *ngIf="userInfoArrayNext.length > 0"
+          class="pagination-next button is-link is-outlined"
+          (click)="resultsNextPage()"
+          >Next page</a
+        >
+      </nav>
+    </div>
+  </div>
+  <div class="column">
+    <div *ngIf="isAfterSelected">
+      <label class="label">Adjust user rights</label>
+      <p *ngIf="!selectedUserInfo.isAdmin">
+        Internal user: {{ selectedUserInfo.name }}
+        <fa-icon [icon]="faUser"></fa-icon>
+      </p>
+      <p *ngIf="selectedUserInfo.isAdmin">
+        Admin user: {{ selectedUserInfo.name }}
+        <fa-icon [icon]="faUserTie"></fa-icon>
+      </p>
+      <div class="select">
+        <select [(ngModel)]="selectedValueInGigaBytes" #selectValue="ngModel">
+          <option
+            *ngFor="let valueInGig of valuesInGigaBytes; let i = index"
+            [attr.data-index]="i"
+            [selected]="i === selectedValueInGigaBytesIndex"
+            [ngValue]="valueInGig"
+            >Total Space: {{ valueInGig }} GB</option
+          >
+        </select>
+      </div>
+      <p>Used space: {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
+      <p>
+        Free space:
+        {{
+          selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
+            | fileSizeFormat
+        }}
+      </p>
+      <a
+        *ngIf="selectValue.dirty || selectValue.touched"
+        class="button is-link is-outlined"
+        [class.is-loading]="changeIsLoading"
+        (click)="change()"
+        >Change</a
+      >
+    </div>
+  </div>
+</div>

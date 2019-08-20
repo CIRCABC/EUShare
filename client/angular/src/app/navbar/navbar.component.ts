@@ -13,7 +13,8 @@ import {
   faShare,
   faShareAlt,
   faUpload,
-  faUsers
+  faUsers,
+  faUsersCog
 } from '@fortawesome/free-solid-svg-icons';
 import { SessionService, UserInfo } from '../openapi';
 
@@ -26,6 +27,7 @@ export class NavbarComponent implements OnInit {
   public faUpload = faUpload;
   public faUsers = faUsers;
   public faShare = faShare;
+  public faUsersCog = faUsersCog;
   public faCloudDownloadAlt = faCloudDownloadAlt;
   public faShareAlt = faShareAlt;
   public userName: string | null = null;

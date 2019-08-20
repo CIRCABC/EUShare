@@ -62,8 +62,8 @@ export class UploadComponent implements OnInit {
             ? me.totalSpace - me.usedSpace
             : 0;
       } catch (error) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while retrieving your user informations'
+        this.notificationService.errorMessageToDisplay(error,
+          'retrieving your user informations'
         );
       }
     }
@@ -371,9 +371,8 @@ export class UploadComponent implements OnInit {
         }
         await this.initializeAvailableSpace();
       } catch (e) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while uploading your file, please try again later or contact the support',
-          false
+        this.notificationService.errorMessageToDisplay(e,
+          'uploading your file'
         );
         this.uploadInProgress = false;
         return;

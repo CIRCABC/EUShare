@@ -14,6 +14,10 @@
           <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
           Shared with me
         </a>
+        <a *ngIf="isAdmin" class = "navbar-item" routerLink="administration">
+          <fa-icon [icon]="faUsersCog"></fa-icon>
+          Administration
+        </a>
       </div>
       <div *ngIf="!loggedIn" class="navbar-start">
           <h1 class="navbar-item">
