@@ -4,9 +4,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'fileSizeFormat'
 })
 export class FileSizeFormatPipe implements PipeTransform {
-
   transform(value: number): string {
-    if (isNaN(value)) { return ' ERRORINTHEVALUE' }
+    if (isNaN(value)) {
+      return ' ERRORINTHEVALUE';
+    }
     if (value >= 1024) {
       const valueInKb = Math.floor(value / 1024);
       if (valueInKb >= 1024) {
@@ -15,7 +16,7 @@ export class FileSizeFormatPipe implements PipeTransform {
           const valueInGb = Math.floor(valueInMb / 1024);
           return valueInGb + ' GigaBytes';
         } else {
-          return valueInMb + ' MegaBytes'
+          return valueInMb + ' MegaBytes';
         }
       } else {
         return valueInKb + ' KiloBytes';
@@ -24,5 +25,4 @@ export class FileSizeFormatPipe implements PipeTransform {
       return value + ' Bytes';
     }
   }
-
 }

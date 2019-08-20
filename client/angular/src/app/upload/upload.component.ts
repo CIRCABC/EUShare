@@ -62,7 +62,8 @@ export class UploadComponent implements OnInit {
             ? me.totalSpace - me.usedSpace
             : 0;
       } catch (error) {
-        this.notificationService.errorMessageToDisplay(error,
+        this.notificationService.errorMessageToDisplay(
+          error,
           'retrieving your user informations'
         );
       }
@@ -371,7 +372,8 @@ export class UploadComponent implements OnInit {
         }
         await this.initializeAvailableSpace();
       } catch (e) {
-        this.notificationService.errorMessageToDisplay(e,
+        this.notificationService.errorMessageToDisplay(
+          e,
           'uploading your file'
         );
         this.uploadInProgress = false;
