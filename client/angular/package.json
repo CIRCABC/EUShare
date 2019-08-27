@@ -20,7 +20,7 @@
     "ncu": "npx npm-check-updates",
     "build-stat": "ng build --prod --stats-json",
     "bundle-report": "npx webpack-bundle-analyzer dist/stats-es5.json",
-    "bundle-report-es2018": "npx webpack-bundle-analyzer dist/stats-es2015.json",
+    "bundle-report-es2015": "npx webpack-bundle-analyzer dist/stats-es2015.json",
     "doc-build-serve": "npx compodoc -p tsconfig.json -s -r 9090 -o"
   },
   "license-check-and-add-config": {

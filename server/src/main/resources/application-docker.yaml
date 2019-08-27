@@ -1,3 +1,5 @@
+server:
+  port: 8888
 cors:
   origin: '*'
 easyshare:
@@ -22,9 +24,7 @@ spring:
     url: jdbc:mysql://db/easyshare
     username: easyshare
     password: easyshare
-    driver:
-      #oracle.jdbc.driver.OracleDriver
-      class: com.mysql.jdbc.Driver
+    driverClassName: com.mysql.jdbc.Driver 
   jpa:
     #org.hibernate.dialect.Oracle10gDialect
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
