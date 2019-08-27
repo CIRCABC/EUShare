@@ -93,10 +93,12 @@
                 <configuration>
                     <header>LICENSE_HEADER.txt</header>
                     <excludes>
+                        <exclude>build.sh</exclude>
                         <exclude>.settings/**</exclude>
                         <exclude>.vscode</exclude>
                         <exclude>.openapi-generator-ignore/**</exclude>
                         <exclude>pom.xml</exclude>
+                        <exclude>pom_jib.xml</exclude>
                         <exclude>LICENSE.txt</exclude>
                         <exclude>**/README</exclude>
                         <exclude>src/test/resources/**</exclude>
