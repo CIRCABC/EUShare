@@ -3,7 +3,7 @@
   "angularCompilerOptions": {
     "preserveWhitespaces": true,
     "fullTemplateTypeCheck": true,
-    "enableIvy": false
+    "enableIvy": true
   },
   "compilerOptions": {
     "outDir": "../out-tsc/app",

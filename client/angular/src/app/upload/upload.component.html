@@ -7,7 +7,13 @@
       <div class="file" [class.has-name]="getFileFromDisk() !== undefined">
         <label class="file-label">
           <!-- INPUT -->
-          <input appEsFileInput id="fileFromDisk" class="file-input" type="file" formControlName="fileFromDisk">
+          <input
+            appEsFileInput
+            id="fileFromDisk"
+            class="file-input"
+            type="file"
+            formControlName="fileFromDisk"
+          />
           <span class="file-cta">
             <span class="file-label">
               Browse...
@@ -15,13 +21,18 @@
           </span>
           <!-- FILE SIZE AND NAME -->
           <span *ngIf="getFileFromDisk()" class="file-name">
-            {{getFileFromDisk()?.name}}
-            ({{getFileFromDisk()?.size}} Bytes)
+            {{ getFileFromDisk()?.name }}
+            ({{ getFileFromDisk()?.size }} Bytes)
           </span>
         </label>
-        <label class="label error" *ngIf="uf['fileFromDisk'].errors && uf['fileFromDisk'].errors.forbiddenFileSize">File
-          size bigger than
-          {{uf['fileFromDisk'].errors.forbiddenFileSize.value}} bytes
+        <label
+          class="label error"
+          *ngIf="
+            uf['fileFromDisk'].errors &&
+            uf['fileFromDisk'].errors.forbiddenFileSize
+          "
+          >File size bigger than
+          {{ uf["fileFromDisk"].errors.forbiddenFileSize.value }} bytes
         </label>
       </div>
     </div>
@@ -34,17 +45,29 @@
       </div>
     </div>
   </div>
-  <br>
+  <br />
   <div class="field">
     <label class="label">How to share?</label>
     <div class="field-body">
       <div class="field is-narrow">
         <div class="control">
           <label class="radio">
-            <input type="radio" required formControlName="emailOrLink" (click)="resetRecipients()" value='Email'>Email
+            <input
+              type="radio"
+              required
+              formControlName="emailOrLink"
+              (click)="resetRecipients()"
+              value="Email"
+            />Email
           </label>
           <label class="radio">
-            <input type="radio" (click)="resetRecipients()" required formControlName="emailOrLink" value='Link'>Link
+            <input
+              type="radio"
+              (click)="resetRecipients()"
+              required
+              formControlName="emailOrLink"
+              value="Link"
+            />Link
           </label>
         </div>
       </div>
@@ -54,58 +77,106 @@
   <div class="field">
     <label class="label">Recipients</label>
     <div *ngIf="emailOrLinkIsEmail()" formArrayName="emailsWithMessages">
-      <div *ngFor="let emailAndText of emailsWithMessages.controls; let i=index" class="media">
-          <div class="media-left">
-              <div class="square"></div>
-            </div>
-          <div [formGroupName]="i" class="media-content">
-            <app-email-input formControlName="email"></app-email-input>
-            <app-message-text-area formControlName="message"></app-message-text-area>
-            <div class="level">
-                <button class="button is-danger is-outlined level-left" type="button" (click)="deleteEmailsWithMessages(i)">Delete
-                  recipient</button>
-              </div>
-          </div>
-      </div>
-      <button class="button is-link is-outlined" type="button" (click)="addEmailsWithMessages()">Add more
-        recipients...</button>
-    </div>
-    <div *ngIf="emailOrLinkIsLink()" formArrayName="namesOnly">
-      <div *ngFor="let recipientName of namesOnly.controls; let i=index" class="media">
+      <div
+        *ngFor="let emailAndText of emailsWithMessages.controls; let i = index"
+        class="media"
+      >
         <div class="media-left">
           <div class="square"></div>
         </div>
-        <div [formGroupName]="i" class="media-content">
-          <app-link-input formControlName="name"></app-link-input>
+        <div [formGroupName]="i.toString()" class="media-content">
+          <app-email-input formControlName="email"></app-email-input>
+          <app-message-text-area
+            formControlName="message"
+          ></app-message-text-area>
           <div class="level">
-            <button class="button is-danger is-outlined level-left" type="button" (click)="deleteNamesOnly(i)">Delete
-              recipient</button>
+            <button
+              class="button is-danger is-outlined level-left"
+              type="button"
+              (click)="deleteEmailsWithMessages(i)"
+            >
+              Delete recipient
+            </button>
           </div>
         </div>
       </div>
-      <button class="button is-link is-outlined" type="button" (click)="addNamesOnly()">Add more
-        recipients...</button>
+      <button
+        class="button is-link is-outlined"
+        type="button"
+        (click)="addEmailsWithMessages()"
+      >
+        Add more recipients...
+      </button>
+    </div>
+    <div *ngIf="emailOrLinkIsLink()" formArrayName="namesOnly">
+      <div
+        *ngFor="let recipientName of namesOnly.controls; let i = index"
+        class="media"
+      >
+        <div class="media-left">
+          <div class="square"></div>
+        </div>
+        <div [formGroupName]="i.toString()" class="media-content">
+          <app-link-input formControlName="name"></app-link-input>
+          <div class="level">
+            <button
+              class="button is-danger is-outlined level-left"
+              type="button"
+              (click)="deleteNamesOnly(i)"
+            >
+              Delete recipient
+            </button>
+          </div>
+        </div>
+      </div>
+      <button
+        class="button is-link is-outlined"
+        type="button"
+        (click)="addNamesOnly()"
+      >
+        Add more recipients...
+      </button>
     </div>
   </div>
   <div class="field">
     <label class="checkbox">
-      <input type="checkbox" [checked]="moreOptions" (change)="moreOptionsChange()">
+      <input
+        type="checkbox"
+        [checked]="moreOptions"
+        (change)="moreOptionsChange()"
+      />
       More options...
     </label>
   </div>
   <div class="field" *ngIf="moreOptions">
     <label class="label">Expiration date (default is 7 days from now)</label>
-    <p-calendar [minDate]=getTomorrow() [maxDate]=get7DaysAfterToday() styleClass="control" inputStyleClass="input"
-      panelStyleClass="table" formControlName="expirationDate" dateFormat="dd/mm/yy" [placeholder]="'dd/mm/yyyy'">
-    </p-calendar>
+    <input
+      useValueAsDate
+      type="date"
+      min="getTomorrow()"
+      max="get7DaysAfterToday()"
+      class="input"
+      formControlName="expirationDate"
+    />
   </div>
   <div class="field" *ngIf="moreOptions">
     <label class="label">Password (optional)</label>
-    <input formControlName="password" class="input" type="password" placeholder="Password on file download">
+    <input
+      formControlName="password"
+      class="input"
+      type="password"
+      placeholder="Password on file download"
+    />
   </div>
-  <br>
+  <br />
   <div class="field">
-    <button class="button is-link" [class.is-loading]="uploadInProgress" type="submit"
-      [disabled]="!uploadform.valid">Submit</button>
+    <button
+      class="button is-link"
+      [class.is-loading]="uploadInProgress"
+      type="submit"
+      [disabled]="!uploadform.valid"
+    >
+      Submit
+    </button>
   </div>
 </form>

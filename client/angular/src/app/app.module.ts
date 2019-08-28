@@ -15,7 +15,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // tslint:disable-next-line:no-implicit-dependencies
-import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
@@ -30,6 +29,7 @@ import { LoginGuard } from './login.guard';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UploadComponent } from './upload/upload.component';
+import { DateValueAccessor  } from './directives/date-value-accessor';
 import { FileAccessorDirective } from './directives/file-accessor.directive';
 import { ApiModule } from './openapi/api.module';
 import { BASE_PATH, Configuration, ConfigurationParameters } from './openapi';
@@ -80,6 +80,7 @@ const routes: Routes = [
     LoginComponent,
     UploadComponent,
     FileAccessorDirective,
+    DateValueAccessor,
     MySharedFilesComponent,
     NotificationComponent,
     NotificationSystemComponent,
@@ -99,7 +100,6 @@ const routes: Routes = [
     ApiModule,
     BrowserModule,
     ReactiveFormsModule,
-    CalendarModule,
     FormsModule,
     HttpClientModule,
     RouterModule.forRoot(routes),
