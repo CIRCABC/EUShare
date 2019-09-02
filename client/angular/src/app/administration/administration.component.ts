@@ -76,9 +76,9 @@ export class AdministrationComponent implements OnInit {
     private router: Router,
     private usersApi: UsersService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public async resultsNextPage() {
     this.removeSelection();
@@ -113,7 +113,7 @@ export class AdministrationComponent implements OnInit {
       this.isAfterSearch = false;
 
       this.pageNumber = 0;
-      
+
       this.removeSelection();
 
       this.userInfoArrayNext = new Array();
@@ -186,6 +186,11 @@ export class AdministrationComponent implements OnInit {
   }
 
   public goToUserUploadedFiles() {
-    this.router.navigate(['/administration', this.selectedUserInfo.id, 'files', {userName: this.selectedUserInfo.name}]);
+    this.router.navigate([
+      '/administration',
+      this.selectedUserInfo.id,
+      'files',
+      { userName: this.selectedUserInfo.name }
+    ]);
   }
 }

@@ -48,9 +48,14 @@ export class ModalsService {
     ShareWithUsersModalValue
   > = this.activateShareWithUsersModalSubject.asObservable();
 
-  constructor() { }
+  constructor() {}
 
-  public activateShareWithUsersModal(modalFileName: string, modalFileId: string, recipientsWithLink: RecipientWithLink[], modalFileHasPassword: boolean) {
+  public activateShareWithUsersModal(
+    modalFileName: string,
+    modalFileId: string,
+    recipientsWithLink: RecipientWithLink[],
+    modalFileHasPassword: boolean
+  ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
       this.deactivateAllModals();
     }
@@ -90,7 +95,11 @@ export class ModalsService {
     });
   }
 
-  public activateDownloadModal(modalFileId: string, modalFileName: string, modalFileHasPassword: boolean) {
+  public activateDownloadModal(
+    modalFileId: string,
+    modalFileName: string,
+    modalFileHasPassword: boolean
+  ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[0]) {
       this.deactivateAllModals();
     }

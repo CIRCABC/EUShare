@@ -18,24 +18,31 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./download-button.component.css']
 })
 export class DownloadButtonComponent implements OnInit {
+  // tslint:disable-next-line:no-input-rename
   @Input('fileId')
   private fileId!: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('fileName')
   public fileName!: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('filePassword')
   private filePassword?: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsOutlined')
   public buttonIsOutlined = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsLarge')
   public buttonIsLarge = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsFullwidth')
   public buttonIsFullwidth = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('isShowFileName')
   public isShowFileName = false;
 

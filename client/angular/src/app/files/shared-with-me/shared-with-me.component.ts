@@ -59,8 +59,11 @@ export class SharedWithMeComponent implements OnInit {
     }
   }
 
-  public openDownloadModal(fileId: string, fileName: string, fileHasPassword: boolean) {
+  public openDownloadModal(
+    fileId: string,
+    fileName: string,
+    fileHasPassword: boolean
+  ) {
     this.modalService.activateDownloadModal(fileId, fileName, fileHasPassword);
   }
-
 }

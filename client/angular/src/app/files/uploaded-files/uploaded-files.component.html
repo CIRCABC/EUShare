@@ -12,6 +12,6 @@
     *ngFor="let fileInfoUploader of fileInfoUploaderArray"
     [displayAddRecipientsButton]="true"
     [fileToDisplay]="fileInfoUploader"
-    (onDestroy)="destroyOneFile($event)"
+    (destroyRow)="destroyOneFile($event)"
   ></app-file-row>
 </div>

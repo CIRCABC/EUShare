@@ -77,7 +77,8 @@ const routes: Routes = [
     path: 'administration/:userId/files',
     component: UploadedFilesComponent,
     data: { userName: 'dummyUserName' },
-    canActivate: [LoginGuard]}
+    canActivate: [LoginGuard]
+  }
 ];
 
 @NgModule({
@@ -126,4 +127,4 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

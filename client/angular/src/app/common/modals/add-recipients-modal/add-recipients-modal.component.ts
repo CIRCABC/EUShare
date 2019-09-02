@@ -20,6 +20,7 @@ import { recipientValidator } from '../../validators/recipient-validator';
   styleUrls: ['./add-recipients-modal.component.css']
 })
 export class AddRecipientsModalComponent implements OnInit {
+  // tslint:disable-next-line:no-output-rename
   @Output('pullChanges')
   public valueChange = new EventEmitter();
 
@@ -28,7 +29,7 @@ export class AddRecipientsModalComponent implements OnInit {
   private modalFileId = '';
   public uploadInProgress = false;
 
-  public addRecipientsByEmailOrByLink: boolean = true;
+  public addRecipientsByEmailOrByLink = true;
 
   public sharedWithFormGroup!: FormGroup;
 
@@ -62,7 +63,7 @@ export class AddRecipientsModalComponent implements OnInit {
     private notificationService: NotificationService,
     private fb: FormBuilder,
     private fileService: FileService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.sharedWithFormGroup = this.fb.group(
@@ -119,7 +120,8 @@ export class AddRecipientsModalComponent implements OnInit {
         .toPromise();
       this.valueChange.emit(true);
     } catch (e) {
-      this.notificationService.errorMessageToDisplay(e,
+      this.notificationService.errorMessageToDisplay(
+        e,
         'adding your recipient'
       );
       this.uploadInProgress = false;

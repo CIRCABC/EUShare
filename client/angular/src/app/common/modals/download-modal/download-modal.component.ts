@@ -20,7 +20,7 @@ export class DownloadModalComponent implements OnInit {
   public modalFileName!: string;
   public modalHasPassword!: boolean;
 
-  constructor(private modalService: ModalsService) { }
+  constructor(private modalService: ModalsService) {}
 
   ngOnInit() {
     this.modalActive = false;
