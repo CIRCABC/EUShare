@@ -33,7 +33,6 @@ export class SharedWithMeComponent implements OnInit {
   constructor(
     private session: SessionService,
     private userApi: UsersService,
-    private fileApi: FileService,
     private notificationService: NotificationService,
     private modalService: ModalsService
   ) {}
@@ -60,22 +59,8 @@ export class SharedWithMeComponent implements OnInit {
     }
   }
 
-  public openPasswordModal(fileId: string, fileName: string) {
-    this.modalService.activatePasswordModal(fileId, fileName);
+  public openDownloadModal(fileId: string, fileName: string, fileHasPassword: boolean) {
+    this.modalService.activateDownloadModal(fileId, fileName, fileHasPassword);
   }
 
-  public download(fileId: string, fileName: string, filePassword?: string) {
-    this.fileApi
-      .getFile(fileId, filePassword)
-      .toPromise()
-      .then((file: Blob) => {
-        saveAs(file, fileName);
-      })
-      .catch((error: any) => {
-        this.notificationService.errorMessageToDisplay(
-          error,
-          'downloading your file'
-        );
-      });
-  }
 }

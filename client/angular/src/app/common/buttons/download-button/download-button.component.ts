@@ -18,33 +18,26 @@ import { saveAs } from 'file-saver';
   styleUrls: ['./download-button.component.css']
 })
 export class DownloadButtonComponent implements OnInit {
-  // tslint:disable-next-line:no-input-rename
   @Input('fileId')
-  fileId!: string;
+  private fileId!: string;
 
-  // tslint:disable-next-line:no-input-rename
   @Input('fileName')
-  fileName!: string;
+  public fileName!: string;
 
-  // tslint:disable-next-line:no-input-rename
   @Input('filePassword')
-  filePassword?: string;
+  private filePassword?: string;
 
-  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsOutlined')
-  buttonIsOutlined = false;
+  public buttonIsOutlined = false;
 
-  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsLarge')
-  buttonIsLarge = false;
+  public buttonIsLarge = false;
 
-  // tslint:disable-next-line:no-input-rename
   @Input('buttonIsFullwidth')
-  buttonIsFullwidth = false;
+  public buttonIsFullwidth = false;
 
-  // tslint:disable-next-line:no-input-rename
   @Input('isShowFileName')
-  isShowFileName = false;
+  public isShowFileName = false;
 
   public isLoading = false;
 

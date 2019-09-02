@@ -2,7 +2,7 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Add recipient to {{ modalFileName }}</p>
+      <p class="modal-card-title">Add recipient to <br> <strong>{{ modalFileName }}</strong></p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
@@ -18,7 +18,7 @@
                     required
                     formControlName="sendEmail"
                     value="True"
-                    (click)="resetRecipient()"
+                    (click)="changeByEmailOrLink(true)"
                   />Email
                 </label>
                 <label class="radio">
@@ -27,18 +27,20 @@
                     required
                     formControlName="sendEmail"
                     value="False"
-                    (click)="resetRecipient()"
+                    (click)="changeByEmailOrLink(false)"
                   />Link
                 </label>
               </div>
             </div>
           </div>
         </div>
-        <div *ngIf="sendEmailIsTrue">
+        <div *ngIf="addRecipientsByEmailOrByLink">
           <app-email-input formControlName="email"></app-email-input>
-          <app-message-text-area formControlName="message"></app-message-text-area>
+          <app-message-text-area
+            formControlName="message"
+          ></app-message-text-area>
         </div>
-        <div *ngIf="!sendEmailIsTrue">
+        <div *ngIf="!addRecipientsByEmailOrByLink">
           <app-link-input formControlName="name"></app-link-input>
         </div>
       </form>

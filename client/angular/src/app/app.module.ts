@@ -14,12 +14,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-// tslint:disable-next-line:no-implicit-dependencies
 import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
-import { PasswordModalComponent } from './common/modals/password-modal/password-modal.component';
+import { DownloadModalComponent } from './common/modals/download-modal/download-modal.component';
 import { NotificationSystemComponent } from './common/notification/notification-system.component';
 import { NotificationComponent } from './common/notification/notification.component';
 import { FilelinkComponent } from './filelink/filelink.component';
@@ -40,6 +39,9 @@ import { MessageTextAreaComponent } from './common/formComponents/message-text-a
 import { LinkInputComponent } from './common/formComponents/link-input/link-input.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { FileSizeFormatPipe } from './common/pipes/file-size-format.pipe';
+import { FileRowComponent } from './common/file-row/file-row.component';
+import { UploadedFilesComponent } from './files/uploaded-files/uploaded-files.component';
+import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -70,7 +72,12 @@ const routes: Routes = [
     path: 'administration',
     component: AdministrationComponent,
     canActivate: [LoginGuard]
-  }
+  },
+  {
+    path: 'administration/:userId/files',
+    component: UploadedFilesComponent,
+    data: { userName: 'dummyUserName' },
+    canActivate: [LoginGuard]}
 ];
 
 @NgModule({
@@ -84,7 +91,7 @@ const routes: Routes = [
     NotificationComponent,
     NotificationSystemComponent,
     FilelinkComponent,
-    PasswordModalComponent,
+    DownloadModalComponent,
     FileLinkModalComponent,
     SharedWithMeComponent,
     DownloadButtonComponent,
@@ -93,7 +100,10 @@ const routes: Routes = [
     MessageTextAreaComponent,
     LinkInputComponent,
     AdministrationComponent,
-    FileSizeFormatPipe
+    FileSizeFormatPipe,
+    FileRowComponent,
+    UploadedFilesComponent,
+    ShareWithUsersModalComponent
   ],
   imports: [
     ApiModule,
@@ -116,4 +126,4 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

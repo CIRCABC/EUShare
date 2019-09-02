@@ -9,20 +9,20 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PasswordModalComponent } from './password-modal.component';
+import { DownloadModalComponent } from './download-modal.component';
 
-describe('PasswordModalComponent', () => {
-  let component: PasswordModalComponent;
-  let fixture: ComponentFixture<PasswordModalComponent>;
+describe('DownloadModalComponent', () => {
+  let component: DownloadModalComponent;
+  let fixture: ComponentFixture<DownloadModalComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PasswordModalComponent]
+      declarations: [DownloadModalComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PasswordModalComponent);
+    fixture = TestBed.createComponent(DownloadModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

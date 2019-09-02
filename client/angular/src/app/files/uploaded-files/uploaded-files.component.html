@@ -1,0 +1,17 @@
+<h1 class="title">{{ userName }}'s uploaded files</h1>
+<app-add-recipients-modal (pullChanges)="ngOnInit()"></app-add-recipients-modal>
+
+<div class="container">
+  <div
+    *ngIf="fileInfoUploaderArray && fileInfoUploaderArray.length === 0"
+    class="subtitle"
+  >
+    No uploaded files
+  </div>
+  <app-file-row
+    *ngFor="let fileInfoUploader of fileInfoUploaderArray"
+    [displayAddRecipientsButton]="true"
+    [fileToDisplay]="fileInfoUploader"
+    (onDestroy)="destroyOneFile($event)"
+  ></app-file-row>
+</div>

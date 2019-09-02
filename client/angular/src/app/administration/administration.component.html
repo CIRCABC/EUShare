@@ -1,6 +1,6 @@
 <h1 class="title">Administration</h1>
 <div class="columns">
-  <div class="column">
+  <div class="column is-one-half">
     <label class="label">User search</label>
     <input
       [(ngModel)]="searchString"
@@ -46,42 +46,65 @@
       </nav>
     </div>
   </div>
-  <div class="column">
-    <div *ngIf="isAfterSelected">
-      <label class="label">Adjust user rights</label>
-      <p *ngIf="!selectedUserInfo.isAdmin">
-        Internal user: {{ selectedUserInfo.name }}
-        <fa-icon [icon]="faUser"></fa-icon>
-      </p>
-      <p *ngIf="selectedUserInfo.isAdmin">
-        Admin user: {{ selectedUserInfo.name }}
-        <fa-icon [icon]="faUserTie"></fa-icon>
-      </p>
-      <div class="select">
-        <select [(ngModel)]="selectedValueInGigaBytes" #selectValue="ngModel">
-          <option
-            *ngFor="let valueInGig of valuesInGigaBytes; let i = index"
-            [attr.data-index]="i"
-            [selected]="i === selectedValueInGigaBytesIndex"
-            [ngValue]="valueInGig"
-            >Total Space: {{ valueInGig }} GB</option
-          >
-        </select>
+  <div class="column is-one-half">
+    <div *ngIf="isAfterSearch && isAfterSelected">
+      <div>
+        <label class="label">User info</label>
+        <p *ngIf="!selectedUserInfo.isAdmin">
+          Internal user: {{ selectedUserInfo.name }}
+          <fa-icon [icon]="faUser"></fa-icon>
+        </p>
+        <p *ngIf="selectedUserInfo.isAdmin">
+          Admin user: {{ selectedUserInfo.name }}
+          <fa-icon [icon]="faUserTie"></fa-icon>
+        </p>
+        <p *ngIf="!isChangePermissions">
+          Total Space: {{ selectedUserInfo.totalSpace | fileSizeFormat }}
+        </p>
+        <div class="select" *ngIf="isChangePermissions">
+          <select [(ngModel)]="selectedValueInGigaBytes" #selectValue="ngModel">
+            <option
+              *ngFor="let valueInGig of valuesInGigaBytes; let i = index"
+              [attr.data-index]="i"
+              [selected]="i === selectedValueInGigaBytesIndex"
+              [ngValue]="valueInGig"
+              >Total Space: {{ valueInGig }} GB</option
+            >
+          </select>
+        </div>
+        <p>Used space: {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
+        <p>
+          Free space:
+          {{
+            selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
+              | fileSizeFormat
+          }}
+        </p>
       </div>
-      <p>Used space: {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
-      <p>
-        Free space:
-        {{
-          selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
-            | fileSizeFormat
-        }}
-      </p>
       <a
-        *ngIf="selectValue.dirty || selectValue.touched"
+        *ngIf="isChangePermissions"
         class="button is-link is-outlined"
         [class.is-loading]="changeIsLoading"
-        (click)="change()"
-        >Change</a
+        (click)="changePermissions()"
+        >Done !</a
+      >
+      <a
+        *ngIf="isChangePermissions"
+        class="button is-danger is-outlined buttonMargin"
+        (click)="toggleChangePermissions()"
+        >Cancel</a
+      >
+      <a
+        *ngIf="!isChangePermissions"
+        class="button is-link is-outlined"
+        (click)="toggleChangePermissions()"
+        >Change permissions</a
+      >
+      <a
+        *ngIf="!isChangePermissions"
+        class="button is-link is-outlined buttonMargin"
+        (click)="goToUserUploadedFiles()"
+        >Display shared files</a
       >
     </div>
   </div>

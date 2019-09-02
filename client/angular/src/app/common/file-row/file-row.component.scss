@@ -1,0 +1,21 @@
+@import '../../../styles.scss';
+
+.filecontainer {
+    background-color: $table-striped-row-even-background-color;
+    padding: $table-cell-padding;
+    border-radius: $radius;
+    border: $table-cell-border;
+    margin: 2px;
+}
+
+.filecontainer:hover {
+    background-color: $table-striped-row-even-hover-background-color;
+}
+
+.filename {
+    margin-left: 5px;
+}
+
+#navMenu {
+    border-radius: $radius;
+}

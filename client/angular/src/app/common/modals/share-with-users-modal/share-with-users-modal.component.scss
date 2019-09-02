@@ -1,0 +1,16 @@
+@import '../../../../styles.scss';
+
+.share {
+    padding: 5px;
+    padding: $table-cell-padding;
+    border-bottom: $table-cell-border;
+    margin-bottom: 0px !important;
+}
+
+.button {
+    margin: 2px;
+}
+
+.share:hover {
+    background-color: $table-striped-row-even-hover-background-color;
+}

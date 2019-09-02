@@ -1,6 +1,4 @@
 <h1 class="title">Files shared with me</h1>
-<app-password-modal></app-password-modal>
-<app-file-link-modal></app-file-link-modal>
 <table class="table is-fullwidth is-hoverable">
   <thead>
     <tr>
@@ -20,10 +18,8 @@
           {{file.uploaderName}}
       </td>
       <td class="align-right">
-        <a *ngIf="file.hasPassword" class="button is-link is-outlined"
-          (click)="openPasswordModal(file.fileId, file.name)">Download</a>
-        <a *ngIf="!file.hasPassword" class="button is-link is-outlined"
-          (click)="download(file.fileId, file.name)">Download</a>
+        <a class="button is-link is-outlined"
+          (click)="openDownloadModal(file.fileId, file.name, file.hasPassword)">Download</a>
       </td>
     </tr>
   </tbody>

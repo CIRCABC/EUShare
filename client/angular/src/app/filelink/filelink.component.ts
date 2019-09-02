@@ -30,7 +30,7 @@ export class FilelinkComponent implements OnInit {
   ) {}
 
   download() {
-    this.modalService.activatePasswordModal(this.fileId, this.fileName);
+    this.modalService.activateDownloadModal(this.fileId, this.fileName, this.isFilePasswordProtected);
   }
 
   ngOnInit() {
