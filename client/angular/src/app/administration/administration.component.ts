@@ -11,10 +11,11 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService, UserInfo } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
-  styleUrls: ['./administration.component.css']
+  styleUrls: ['./administration.component.scss']
 })
 export class AdministrationComponent implements OnInit {
   public faUser = faUser;
@@ -23,16 +24,18 @@ export class AdministrationComponent implements OnInit {
   public searchIsLoading = false;
   public isAfterSearch = false;
   public isAfterSelected = false;
+  public isChangePermissions = false;
+
   public searchString = '';
 
-  public pageSize = 10;
+  private pageSize = 10;
   public pageNumber = 0;
 
   public userInfoArray: Array<UserInfo> = new Array();
   public userInfoArrayNext: Array<UserInfo> = new Array();
   public userInfoArrayPrevious: Array<UserInfo> = new Array();
 
-  public selectedUserInfoIndex = 0;
+  private selectedUserInfoIndex = 0;
 
   public valuesInGigaBytes = [
     0,
@@ -70,23 +73,15 @@ export class AdministrationComponent implements OnInit {
   public changeIsLoading = false;
 
   constructor(
+    private router: Router,
     private usersApi: UsersService,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit() {}
 
-  minSize(n1: number, n2: number) {
-    return n1 < n2 ? n1 : n2;
-  }
-
-  valueInGigCorresponds(valueInGig: number, valueInBytes: number): boolean {
-    const valueInBytesToGig = Math.floor((valueInBytes / 1024) * 1024 * 1024);
-    return valueInBytesToGig === valueInGig;
-  }
-
   public async resultsNextPage() {
-    this.isAfterSelected = false;
+    this.removeSelection();
     this.pageNumber++;
     this.userInfoArrayPrevious = this.userInfoArray;
     this.userInfoArray = this.userInfoArrayNext;
@@ -100,12 +95,12 @@ export class AdministrationComponent implements OnInit {
   }
 
   public async resultsPreviousPage() {
-    this.isAfterSelected = false;
+    this.removeSelection();
     this.pageNumber--;
     this.userInfoArrayNext = this.userInfoArray;
     this.userInfoArray = this.userInfoArrayPrevious;
 
-    if (this.pageNumber - 1 >= 0) {
+    if (this.pageNumber >= 1) {
       this.userInfoArrayPrevious = await this.usersApi
         .getUsersUserInfo(this.pageSize, this.pageNumber - 1, this.searchString)
         .toPromise();
@@ -115,9 +110,11 @@ export class AdministrationComponent implements OnInit {
   public async search() {
     try {
       this.searchIsLoading = true;
-      this.pageNumber = 0;
       this.isAfterSearch = false;
-      this.isAfterSelected = false;
+
+      this.pageNumber = 0;
+
+      this.removeSelection();
 
       this.userInfoArrayNext = new Array();
       this.userInfoArrayPrevious = new Array();
@@ -146,18 +143,22 @@ export class AdministrationComponent implements OnInit {
   }
 
   public displayUserInfoNumber(i: number) {
-    this.isAfterSelected = true;
     this.selectedUserInfoIndex = i;
     this.selectedValueInGigaBytes = Math.floor(
       this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
     );
+    this.isAfterSelected = true;
   }
 
   public get selectedUserInfo(): UserInfo {
     return this.userInfoArray[this.selectedUserInfoIndex];
   }
 
-  public async change() {
+  public removeSelection() {
+    this.isAfterSelected = false;
+  }
+
+  public async changePermissions() {
     try {
       this.changeIsLoading = true;
       this.selectedUserInfo.totalSpace =
@@ -176,6 +177,20 @@ export class AdministrationComponent implements OnInit {
       );
     } finally {
       this.changeIsLoading = false;
+      this.isChangePermissions = false;
     }
+  }
+
+  public toggleChangePermissions() {
+    this.isChangePermissions = !this.isChangePermissions;
+  }
+
+  public goToUserUploadedFiles() {
+    this.router.navigate([
+      '/administration',
+      this.selectedUserInfo.id,
+      'files',
+      { userName: this.selectedUserInfo.name }
+    ]);
   }
 }

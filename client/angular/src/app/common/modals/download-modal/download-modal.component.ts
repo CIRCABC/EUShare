@@ -11,26 +11,28 @@ import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
 
 @Component({
-  selector: 'app-password-modal',
-  templateUrl: './password-modal.component.html'
+  selector: 'app-download-modal',
+  templateUrl: './download-modal.component.html'
 })
-export class PasswordModalComponent implements OnInit {
+export class DownloadModalComponent implements OnInit {
   public modalActive!: boolean;
   public modalFileId!: string;
   public modalFileName!: string;
+  public modalHasPassword!: boolean;
 
   constructor(private modalService: ModalsService) {}
 
   ngOnInit() {
     this.modalActive = false;
-    this.modalService.activatePasswordModal$.subscribe(nextModalActiveValue => {
+    this.modalService.activateDownloadModal$.subscribe(nextModalActiveValue => {
       this.modalActive = nextModalActiveValue.modalActive;
       this.modalFileId = nextModalActiveValue.modalFileId;
       this.modalFileName = nextModalActiveValue.modalFileName;
+      this.modalHasPassword = nextModalActiveValue.modalFileHasPassword;
     });
   }
 
   public closeModal() {
-    this.modalService.deactivatePasswordModal();
+    this.modalService.deactivateDownloadModal();
   }
 }

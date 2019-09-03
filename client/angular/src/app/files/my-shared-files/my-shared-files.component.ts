@@ -88,8 +88,12 @@ export class MySharedFilesComponent implements OnInit {
     this.fileInfoUploaderArray = Array.from(this.nextFileInfoUploaderArray);
   }
 
-  public openPasswordModal(fileId: string, fileName: string) {
-    this.modalService.activatePasswordModal(fileId, fileName);
+  public openDownloadModal(
+    fileId: string,
+    fileName: string,
+    fileHasPassword: boolean
+  ) {
+    this.modalService.activateDownloadModal(fileId, fileName, fileHasPassword);
   }
 
   public openFileLinkModal(

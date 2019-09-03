@@ -7,7 +7,17 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-export interface DownloadRequest {
-  expires: string;
-  sessionId: string;
+.button {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left:10px;
+}
+
+p {
+  margin-left: 10px;
+}
+
+ul {
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

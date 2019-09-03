@@ -9,23 +9,25 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { RecipientWithLink } from '../../openapi';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModalsService {
   private possibleActiveModals: string[] = [
-    'password',
+    'download',
     'fileLink',
     'addRecipients',
+    'shareWithUsers',
     ' '
   ];
   private activeModal!: string;
 
-  private activatePasswordModalSubject = new Subject<PasswordModalValue>();
-  public activatePasswordModal$: Observable<
-    PasswordModalValue
-  > = this.activatePasswordModalSubject.asObservable();
+  private activateDownloadModalSubject = new Subject<DownloadModalValue>();
+  public activateDownloadModal$: Observable<
+    DownloadModalValue
+  > = this.activateDownloadModalSubject.asObservable();
 
   private activateFileLinkModalSubject = new Subject<FileLinkModalValue>();
   public activateFileLinkModal$: Observable<
@@ -39,7 +41,33 @@ export class ModalsService {
     AddRecipientsModalValue
   > = this.activateAddRecipientsModalSubject.asObservable();
 
+  private activateShareWithUsersModalSubject = new Subject<
+    ShareWithUsersModalValue
+  >();
+  public activateShareWithUsersModal$: Observable<
+    ShareWithUsersModalValue
+  > = this.activateShareWithUsersModalSubject.asObservable();
+
   constructor() {}
+
+  public activateShareWithUsersModal(
+    modalFileName: string,
+    modalFileId: string,
+    recipientsWithLink: RecipientWithLink[],
+    modalFileHasPassword: boolean
+  ) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[3];
+    this.activateShareWithUsersModalSubject.next({
+      modalActive: true,
+      modalFileName: modalFileName,
+      modalFileId: modalFileId,
+      modalFileHasPassword: modalFileHasPassword,
+      recipientsWithLink: recipientsWithLink
+    });
+  }
 
   public activateAddRecipientsModal(
     modalFileName: string,
@@ -67,25 +95,31 @@ export class ModalsService {
     });
   }
 
-  public activatePasswordModal(modalFileId: string, modalFileName: string) {
+  public activateDownloadModal(
+    modalFileId: string,
+    modalFileName: string,
+    modalFileHasPassword: boolean
+  ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[0]) {
       this.deactivateAllModals();
     }
     this.activeModal = this.possibleActiveModals[0];
-    this.activatePasswordModalSubject.next({
+    this.activateDownloadModalSubject.next({
       modalActive: true,
-      modalFileId,
-      modalFileName
+      modalFileId: modalFileId,
+      modalFileName: modalFileName,
+      modalFileHasPassword: modalFileHasPassword
     });
   }
 
-  public deactivatePasswordModal() {
+  public deactivateDownloadModal() {
     if (this.activeModal && this.activeModal === this.possibleActiveModals[0]) {
       this.activeModal = ' ';
-      this.activatePasswordModalSubject.next({
+      this.activateDownloadModalSubject.next({
         modalActive: false,
         modalFileId: '',
-        modalFileName: ''
+        modalFileName: '',
+        modalFileHasPassword: false
       });
     }
   }
@@ -111,16 +145,30 @@ export class ModalsService {
     }
   }
 
+  public deactivateShareWithUsersModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[3]) {
+      this.activeModal = ' ';
+      this.activateShareWithUsersModalSubject.next({
+        modalActive: false,
+        modalFileName: '',
+        modalFileId: '',
+        modalFileHasPassword: false,
+        recipientsWithLink: []
+      });
+    }
+  }
+
   private deactivateAllModals() {
-    this.deactivatePasswordModal();
+    this.deactivateDownloadModal();
     this.deactivateFileLinkModal();
     this.deactivateAddRecipientsModal();
   }
 }
-export interface PasswordModalValue {
+export interface DownloadModalValue {
   modalActive: boolean;
   modalFileId: string;
   modalFileName: string;
+  modalFileHasPassword: boolean;
 }
 
 export interface FileLinkModalValue {
@@ -132,4 +180,12 @@ export interface AddRecipientsModalValue {
   modalActive: boolean;
   modalFileName: string;
   modalFileId: string;
+}
+
+export interface ShareWithUsersModalValue {
+  modalActive: boolean;
+  modalFileName: string;
+  modalFileId: string;
+  modalFileHasPassword: boolean;
+  recipientsWithLink: RecipientWithLink[];
 }

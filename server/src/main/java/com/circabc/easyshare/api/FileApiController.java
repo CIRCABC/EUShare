@@ -10,21 +10,6 @@
 
 package com.circabc.easyshare.api;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.server.ResponseStatusException;
-
-import lombok.extern.slf4j.Slf4j;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -55,8 +40,24 @@ import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.validation.FileRequestValidator;
 import com.circabc.easyshare.model.validation.RecipientValidator;
 import com.circabc.easyshare.services.FileService;
-import com.circabc.easyshare.services.UserService;
 import com.circabc.easyshare.services.FileService.DownloadReturn;
+import com.circabc.easyshare.services.UserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.server.ResponseStatusException;
+
+import lombok.extern.slf4j.Slf4j;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
 
@@ -134,7 +135,10 @@ public class FileApiController extends AbstractController implements FileApi {
             File file = downloadReturn.getFile();
             InputStream stream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(stream);
-            return new ResponseEntity<>(inputStreamResource, HttpStatus.OK);
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.set(HttpHeaders.CONTENT_LENGTH, downloadReturn.getFileSizeInBytes().toString());
+            ResponseEntity<Resource> responseEntity = new ResponseEntity<>(inputStreamResource, responseHeaders, HttpStatus.OK);
+            return responseEntity;
         } catch (UnknownFileException exc3) {
             log.warn(exc3.getMessage(), exc3);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),

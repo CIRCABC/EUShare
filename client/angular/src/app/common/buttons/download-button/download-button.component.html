@@ -1,7 +1,26 @@
-<a class="button is-link" [class.is-loading]="isLoading" [class.is-large]="buttonIsLarge" [class.is-fullwidth]="buttonIsFullwidth"
-[class.is-outlined]="buttonIsOutlined" (click)="download()">
-<div *ngIf="isShowFileName">
-Download {{fileName}}</div>
-<div *ngIf="!isShowFileName">
-    Download</div>
-</a>
+<div class="field is-grouped" *ngIf="!isLoading">
+  <div class="control" [class.is-expanded]="isFileHasPassword">
+    <input
+      *ngIf="isFileHasPassword"
+      class="input is-info"
+      type="password"
+      placeholder="Type password here"
+      [(ngModel)]="inputPassword"
+    />
+  </div>
+  <div class="control">
+    <a class="button is-link" 
+    (click)="download()">
+      Download
+    </a>
+  </div>
+</div>
+<div *ngIf="isLoading">
+  {{ percentageDownloaded }}%
+  <progress
+    class="progress is-success"
+    value="{{ percentageDownloaded }}"
+    max="100"
+    >{{ percentageDownloaded }}%</progress
+  >
+</div>

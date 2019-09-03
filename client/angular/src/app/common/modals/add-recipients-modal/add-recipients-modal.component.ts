@@ -22,12 +22,14 @@ import { recipientValidator } from '../../validators/recipient-validator';
 export class AddRecipientsModalComponent implements OnInit {
   // tslint:disable-next-line:no-output-rename
   @Output('pullChanges')
-  valueChange = new EventEmitter();
+  public valueChange = new EventEmitter();
 
   public modalActive = false;
   public modalFileName = '';
   private modalFileId = '';
   public uploadInProgress = false;
+
+  public addRecipientsByEmailOrByLink = true;
 
   public sharedWithFormGroup!: FormGroup;
 
@@ -51,6 +53,11 @@ export class AddRecipientsModalComponent implements OnInit {
     return this.sharedWithFormGroup.controls['message'].value;
   }
 
+  public changeByEmailOrLink(emailOrLink: boolean): void {
+    this.addRecipientsByEmailOrByLink = emailOrLink;
+    this.resetRecipient();
+  }
+
   constructor(
     private modalService: ModalsService,
     private notificationService: NotificationService,
@@ -66,7 +73,7 @@ export class AddRecipientsModalComponent implements OnInit {
         email: [''],
         name: ['']
       },
-      { validators: recipientValidator(), updateOn: 'blur' }
+      { validators: recipientValidator(), updateOn: 'change' }
     );
     this.modalService.activateAddRecipientsModal$.subscribe(
       nextModalActiveValue => {
@@ -113,9 +120,9 @@ export class AddRecipientsModalComponent implements OnInit {
         .toPromise();
       this.valueChange.emit(true);
     } catch (e) {
-      this.notificationService.addErrorMessage(
-        'A problem occured while adding your recipient, please try again later or contact the support',
-        false
+      this.notificationService.errorMessageToDisplay(
+        e,
+        'adding your recipient'
       );
       this.uploadInProgress = false;
       return;

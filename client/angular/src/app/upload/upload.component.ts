@@ -15,7 +15,6 @@ import {
   Validators,
   AbstractControl,
   FormBuilder,
-  ValidationErrors,
   FormControl
 } from '@angular/forms';
 import { faUpload } from '@fortawesome/free-solid-svg-icons';
@@ -28,6 +27,12 @@ import {
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { fileSizeValidator } from '../common/validators/file-validator';
+import { map } from 'rxjs/operators';
+import {
+  HttpEvent,
+  HttpEventType,
+  HttpErrorResponse
+} from '@angular/common/http';
 
 @Component({
   selector: 'app-upload',
@@ -41,6 +46,7 @@ export class UploadComponent implements OnInit {
   public uploadform!: FormGroup;
   public shareWithUser = '';
   private leftSpaceInBytes = 0;
+  public percentageUploaded = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -123,7 +129,7 @@ export class UploadComponent implements OnInit {
       {
         name: new FormControl('', Validators.required)
       },
-      { updateOn: 'blur' }
+      { updateOn: 'change' }
     );
   }
 
@@ -357,7 +363,8 @@ export class UploadComponent implements OnInit {
           .postFileFileRequest(myFileRequest)
           .toPromise();
         await this.fileApi
-          .postFileContent(fileId, this.getFileFromDisk())
+          .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
+          .pipe(map(event => this.getEventMessage(event)))
           .toPromise();
         if (this.emailOrLinkIsEmail()) {
           this.notificationService.addSuccessMessage(
@@ -390,5 +397,80 @@ export class UploadComponent implements OnInit {
 
   get uf() {
     return this.uploadform.controls;
+  }
+
+  private getEventMessage(event: HttpEvent<any>) {
+    switch (event.type) {
+      case HttpEventType.Sent:
+        return;
+
+      case HttpEventType.UploadProgress:
+        let eventTotalOrUndefined = event.total;
+        if (eventTotalOrUndefined === undefined) {
+          eventTotalOrUndefined = 1;
+        }
+        const percentDone = Math.round(
+          (event.loaded * 100) / eventTotalOrUndefined
+        );
+        this.percentageUploaded = percentDone;
+        return;
+
+      case HttpEventType.Response:
+        if (event.status === 200) {
+          this.notificationService.addSuccessMessage(
+            `File was completely uploaded!`
+          );
+        } else {
+          this.notificationService.errorMessageToDisplay(
+            event.body as HttpErrorResponse,
+            'downloading the file'
+          );
+        }
+        this.uploadInProgress = false;
+        this.percentageUploaded = 0;
+        return;
+
+      case HttpEventType.ResponseHeader:
+        if (event.status === 400) {
+          this.notificationService.addErrorMessage(
+            'The server could not understand your request.'
+          );
+          this.uploadInProgress = false;
+          this.percentageUploaded = 0;
+          return;
+        }
+        if (event.status === 401 || event.status === 403) {
+          this.notificationService.addErrorMessage(
+            'You are not authorized to perform this action.'
+          );
+          this.uploadInProgress = false;
+          this.percentageUploaded = 0;
+          return;
+        }
+        if (event.status === 500) {
+          this.notificationService.addErrorMessage(
+            'An error occured while downloading the file. Please contact the support.'
+          );
+          this.uploadInProgress = false;
+          this.percentageUploaded = 0;
+          return;
+        }
+        return;
+
+      case HttpEventType.DownloadProgress:
+        return;
+
+      case HttpEventType.Response:
+        return;
+
+      default:
+        this.notificationService.addErrorMessage(
+          'An error occured while downloading the file. Please contact the support.' +
+            JSON.stringify(event)
+        );
+        this.uploadInProgress = false;
+        this.percentageUploaded = 0;
+        return;
+    }
   }
 }

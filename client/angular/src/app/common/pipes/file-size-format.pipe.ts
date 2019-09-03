@@ -17,6 +17,9 @@ export class FileSizeFormatPipe implements PipeTransform {
     if (isNaN(value)) {
       return ' ERRORINTHEVALUE';
     }
+    if (value < 0) {
+      return '0 Bytes';
+    }
     if (value >= 1024) {
       const valueInKb = Math.floor(value / 1024);
       if (valueInKb >= 1024) {
