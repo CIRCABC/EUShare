@@ -44,9 +44,9 @@ export class DownloadButtonComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private fileApi: FileService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public download() {
     this.isLoading = true;
@@ -59,6 +59,41 @@ export class DownloadButtonComponent implements OnInit {
   private getEventMessage(event: HttpEvent<any>) {
     switch (event.type) {
       case HttpEventType.Sent:
+        return;
+
+      case HttpEventType.UploadProgress:
+        return;
+
+      case HttpEventType.ResponseHeader:
+        if (event.status === 400) {
+          this.notificationService.addErrorMessage(
+            'The server could not find the file you are seeking to download. Please try again later or contact the support.'
+          );
+          this.isLoading = false;
+          this.percentageDownloaded = 0;
+        }
+        if (event.status === 401) {
+          this.notificationService.addErrorMessage(
+            'Wrong password, please try again.'
+          );
+          this.isLoading = false;
+          this.percentageDownloaded = 0;
+        }
+        if (event.status === 404) {
+          this.notificationService.addErrorMessage(
+            'File not found.'
+          );
+          this.isLoading = false;
+          this.percentageDownloaded = 0;
+        }
+
+        if (event.status === 500) {
+          this.notificationService.addErrorMessage(
+            'An error occured while downloading the file. Please contact the support.'
+          );
+          this.isLoading = false;
+          this.percentageDownloaded = 0;
+        }
         return;
 
       case HttpEventType.DownloadProgress:
@@ -77,7 +112,7 @@ export class DownloadButtonComponent implements OnInit {
           const file = event.body as Blob;
           saveAs(file, this.fileName);
           this.notificationService.addSuccessMessage(
-            `File was completely downloaded!`
+            'File was completely downloaded!'
           );
         } else {
           this.notificationService.errorMessageToDisplay(
@@ -87,30 +122,6 @@ export class DownloadButtonComponent implements OnInit {
         }
         this.isLoading = false;
         this.percentageDownloaded = 0;
-        return;
-
-      case HttpEventType.ResponseHeader:
-        if (event.status === 400) {
-          this.notificationService.addErrorMessage(
-            'The server could not find the file you are seeking to download. Please try again later or contact the support.'
-          );
-          this.isLoading = false;
-          this.percentageDownloaded = 0;
-        }
-        if (event.status === 401) {
-          this.notificationService.addErrorMessage(
-            'Wrong password, please try again.'
-          );
-          this.isLoading = false;
-          this.percentageDownloaded = 0;
-        }
-        if (event.status === 500) {
-          this.notificationService.addErrorMessage(
-            'An error occured while downloading the file. Please contact the support.'
-          );
-          this.isLoading = false;
-          this.percentageDownloaded = 0;
-        }
         return;
 
       default:

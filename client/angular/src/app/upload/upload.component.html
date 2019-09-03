@@ -108,4 +108,13 @@
     <button class="button is-link" [class.is-loading]="uploadInProgress" type="submit"
       [disabled]="!uploadform.valid">Submit</button>
   </div>
+  <div *ngIf="uploadInProgress">
+    {{ percentageUploaded }}%
+    <progress
+      class="progress is-success"
+      value="{{ percentageUploaded }}"
+      max="100"
+      >{{ percentageUploaded }}%</progress
+    >
+  </div>
 </form>
