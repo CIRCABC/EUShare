@@ -2,35 +2,13 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Download <b>{{ modalFileName }}</b></p>
+      <p class="modal-card-title">
+        Download <b>{{ modalFileName }}</b>
+      </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
-      <div class="field is-grouped" *ngIf="modalHasPassword">
-        <div class="control is-expanded">
-          <input
-            class="input is-info"
-            type="password"
-            placeholder="Type password here"
-            #passwordInput
-          />
-        </div>
-        <div class="control">
-          <app-download-button
-            [fileId]="modalFileId"
-            [fileName]="modalFileName"
-            [filePassword]="passwordInput.value"
-            [buttonIsOutlined]="false"
-          ></app-download-button>
-        </div>
-      </div>
-      <div class="control" *ngIf="!modalHasPassword">
-        <app-download-button
-          [fileId]="modalFileId"
-          [fileName]="modalFileName"
-          [buttonIsOutlined]="false"
-        ></app-download-button>
-      </div>
+      <app-download-button [fileName]="modalFileName" [fileId]="modalFileId" [isFileHasPassword]="modalHasPassword"></app-download-button>
     </section>
     <footer class="modal-card-foot">
       <button

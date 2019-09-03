@@ -11,6 +11,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FileService } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
 import { saveAs } from 'file-saver';
+import { HttpEvent, HttpEventType, HttpProgressEvent, HttpErrorResponse } from '@angular/common/http';
+import { map, last } from 'rxjs/operators';
 
 @Component({
   selector: 'app-download-button',
@@ -27,49 +29,77 @@ export class DownloadButtonComponent implements OnInit {
   public fileName!: string;
 
   // tslint:disable-next-line:no-input-rename
-  @Input('filePassword')
-  private filePassword?: string;
-
-  // tslint:disable-next-line:no-input-rename
-  @Input('buttonIsOutlined')
-  public buttonIsOutlined = false;
-
-  // tslint:disable-next-line:no-input-rename
-  @Input('buttonIsLarge')
-  public buttonIsLarge = false;
-
-  // tslint:disable-next-line:no-input-rename
-  @Input('buttonIsFullwidth')
-  public buttonIsFullwidth = false;
-
-  // tslint:disable-next-line:no-input-rename
-  @Input('isShowFileName')
-  public isShowFileName = false;
+  @Input('isFileHasPassword')
+  public isFileHasPassword = false;
 
   public isLoading = false;
+  public percentageDownloaded: number = 0;
+  public inputPassword = '';
 
   constructor(
     private notificationService: NotificationService,
     private fileApi: FileService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public download() {
     this.isLoading = true;
     this.fileApi
-      .getFile(this.fileId, this.filePassword)
-      .toPromise()
-      .then(file => {
-        saveAs(file, this.fileName);
+      .getFile(this.fileId, this.inputPassword, 'events', true).pipe(map(event => this.getEventMessage(event)
+      )).subscribe();
+  }
+
+  private getEventMessage(event: HttpEvent<any>) {
+    switch (event.type) {
+      case HttpEventType.Sent:
+        return;
+
+      case HttpEventType.DownloadProgress:
+        let eventTotalOrUndefined = event.total;
+        if (eventTotalOrUndefined === undefined) {
+          eventTotalOrUndefined = 1;
+        }
+        const percentDone = Math.round(event.loaded * 100 / eventTotalOrUndefined);
+        this.percentageDownloaded = percentDone;
+        return;
+
+      case HttpEventType.Response:
+        if (event.status === 200) {
+          const file = event.body as Blob;
+          saveAs(file, this.fileName);
+          this.notificationService.addSuccessMessage(`File was completely downloaded!`);
+        } else {
+          this.notificationService.errorMessageToDisplay(event.body as HttpErrorResponse, 'downloading the file');
+        }
         this.isLoading = false;
-      })
-      .catch(error => {
-        this.notificationService.errorMessageToDisplay(
-          error,
-          'downloading your file'
-        );
+        this.percentageDownloaded = 0;
+        return;
+
+      case HttpEventType.ResponseHeader:
+        if (event.status === 400) {
+          this.notificationService.addErrorMessage('The server could not find the file you are seeking to download. Please try again later or contact the support.');
+          this.isLoading = false;
+          this.percentageDownloaded = 0;
+        }
+        if (event.status === 401) {
+          this.notificationService.addErrorMessage('Wrong password, please try again.');
+          this.isLoading = false;
+          this.percentageDownloaded = 0;
+        }
+        if (event.status === 500) {
+          this.notificationService.addErrorMessage('An error occured while downloading the file. Please contact the support.');
+          this.isLoading = false;
+          this.percentageDownloaded = 0;
+        }
+        return;
+
+      default:
+        this.notificationService.addErrorMessage('An error occured while downloading the file. Please contact the support.');
         this.isLoading = false;
-      });
+        this.percentageDownloaded = 0;
+        return;
+    }
   }
 }
+

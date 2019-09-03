@@ -1,16 +1,2 @@
 <h1 class="title">File direct download link</h1>
-<a
-  *ngIf="isFilePasswordProtected"
-  class="button is-large is-fullwidth is-link is-outlined"
-  (click)="download()"
-  >Download {{ fileName }}</a
->
-<app-download-button
-  *ngIf="!isFilePasswordProtected"
-  [fileId]="fileId"
-  [fileName]="fileName"
-  [buttonIsOutlined]="true"
-  [buttonIsFullwidth]="true"
-  [buttonIsLarge]="true"
-  [isShowFileName]="true"
-></app-download-button>
+<app-download-button [fileId]="fileId" [isFileHasPassword]="isFilePasswordProtected" [fileName]="fileName"></app-download-button>

@@ -22,6 +22,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.File;
@@ -52,6 +53,7 @@ import com.circabc.easyshare.model.Status;
 import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.FileService.DownloadReturn;
 import com.google.common.io.Files;
+import com.google.common.net.HttpHeaders;
 import com.circabc.easyshare.services.UserService;
 
 import org.apache.commons.io.FileUtils;
@@ -291,14 +293,15 @@ public class FileApiControllerTest {
         @Test
         public void getFile200() throws Exception { // NOSONAR
                 File file = new File(getClass().getClassLoader().getResource("file.txt").getFile());
-                doReturn(new DownloadReturn(file, "filename")).when(fileService).downloadFile(anyString(), anyString());
+                doReturn(new DownloadReturn(file, "filename", 256L)).when(fileService).downloadFile(anyString(), anyString());
                 this.mockMvc.perform(MockMvcRequestBuilders.get("/file/" + fakeSearchedFileId)// NOSONAR
                                 .param("password", "fakePassword") // NOSONAR
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
                                                                 userCredentialsInAuthorizationHeader.getBytes()))
                                 .accept(MediaType.APPLICATION_OCTET_STREAM)).andDo(print()).andExpect(status().isOk())
-                                .andExpect(content().bytes(FileUtils.readFileToByteArray(file)));
+                                .andExpect(content().bytes(FileUtils.readFileToByteArray(file)))
+                                .andExpect(header().longValue(HttpHeaders.CONTENT_LENGTH, 256L));
         }
 
         @Test

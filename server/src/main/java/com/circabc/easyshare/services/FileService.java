@@ -376,7 +376,7 @@ public class FileService implements FileServiceInterface {
             throw new WrongPasswordException();
         }
         File file = Paths.get(dbFile.getPath()).toFile();
-        return new DownloadReturn(file, dbFile.getFilename());
+        return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
     }
 
     @Override
@@ -491,6 +491,7 @@ public class FileService implements FileServiceInterface {
     public static class DownloadReturn {
         private final File file;// NOSONAR
         private final String filename;// NOSONAR
+        private final Long fileSizeInBytes;// NOSONAR
     }
 
 }
