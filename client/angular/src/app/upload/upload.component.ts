@@ -455,6 +455,8 @@ export class UploadComponent implements OnInit {
           this.percentageUploaded = 0;
           return;
         }
+        return;
+
       case HttpEventType.DownloadProgress:
         return;
 
