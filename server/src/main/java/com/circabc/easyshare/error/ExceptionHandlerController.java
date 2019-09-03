@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,6 +36,11 @@ public class ExceptionHandlerController {
 
    @ExceptionHandler( value = MissingServletRequestParameterException.class)
    public ResponseEntity<Object> missingServletRequestParameterException(MissingServletRequestParameterException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),HttpStatus.BAD_REQUEST);
+   }
+
+   @ExceptionHandler (value = MethodArgumentNotValidException.class)
+   public ResponseEntity<Object> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
       return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),HttpStatus.BAD_REQUEST);
    }
   
