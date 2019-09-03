@@ -28,7 +28,11 @@ import {
 import { NotificationService } from '../common/notification/notification.service';
 import { fileSizeValidator } from '../common/validators/file-validator';
 import { map } from 'rxjs/operators';
-import { HttpEvent, HttpEventType, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpEventType,
+  HttpErrorResponse
+} from '@angular/common/http';
 
 @Component({
   selector: 'app-upload',
@@ -459,7 +463,8 @@ export class UploadComponent implements OnInit {
 
       default:
         this.notificationService.addErrorMessage(
-          'An error occured while downloading the file. Please contact the support.' + JSON.stringify(event)
+          'An error occured while downloading the file. Please contact the support.' +
+            JSON.stringify(event)
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

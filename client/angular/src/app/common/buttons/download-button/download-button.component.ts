@@ -44,9 +44,9 @@ export class DownloadButtonComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private fileApi: FileService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public download() {
     this.isLoading = true;
@@ -80,9 +80,7 @@ export class DownloadButtonComponent implements OnInit {
           this.percentageDownloaded = 0;
         }
         if (event.status === 404) {
-          this.notificationService.addErrorMessage(
-            'File not found.'
-          );
+          this.notificationService.addErrorMessage('File not found.');
           this.isLoading = false;
           this.percentageDownloaded = 0;
         }
