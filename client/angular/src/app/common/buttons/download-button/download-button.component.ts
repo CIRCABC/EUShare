@@ -11,7 +11,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FileService } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
 import { saveAs } from 'file-saver';
-import { HttpEvent, HttpEventType, HttpProgressEvent, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpEventType,
+  HttpProgressEvent,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { map, last } from 'rxjs/operators';
 
 @Component({
@@ -33,21 +38,22 @@ export class DownloadButtonComponent implements OnInit {
   public isFileHasPassword = false;
 
   public isLoading = false;
-  public percentageDownloaded: number = 0;
+  public percentageDownloaded = 0;
   public inputPassword = '';
 
   constructor(
     private notificationService: NotificationService,
     private fileApi: FileService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public download() {
     this.isLoading = true;
     this.fileApi
-      .getFile(this.fileId, this.inputPassword, 'events', true).pipe(map(event => this.getEventMessage(event)
-      )).subscribe();
+      .getFile(this.fileId, this.inputPassword, 'events', true)
+      .pipe(map(event => this.getEventMessage(event)))
+      .subscribe();
   }
 
   private getEventMessage(event: HttpEvent<any>) {
@@ -60,7 +66,9 @@ export class DownloadButtonComponent implements OnInit {
         if (eventTotalOrUndefined === undefined) {
           eventTotalOrUndefined = 1;
         }
-        const percentDone = Math.round(event.loaded * 100 / eventTotalOrUndefined);
+        const percentDone = Math.round(
+          (event.loaded * 100) / eventTotalOrUndefined
+        );
         this.percentageDownloaded = percentDone;
         return;
 
@@ -68,9 +76,14 @@ export class DownloadButtonComponent implements OnInit {
         if (event.status === 200) {
           const file = event.body as Blob;
           saveAs(file, this.fileName);
-          this.notificationService.addSuccessMessage(`File was completely downloaded!`);
+          this.notificationService.addSuccessMessage(
+            `File was completely downloaded!`
+          );
         } else {
-          this.notificationService.errorMessageToDisplay(event.body as HttpErrorResponse, 'downloading the file');
+          this.notificationService.errorMessageToDisplay(
+            event.body as HttpErrorResponse,
+            'downloading the file'
+          );
         }
         this.isLoading = false;
         this.percentageDownloaded = 0;
@@ -78,28 +91,35 @@ export class DownloadButtonComponent implements OnInit {
 
       case HttpEventType.ResponseHeader:
         if (event.status === 400) {
-          this.notificationService.addErrorMessage('The server could not find the file you are seeking to download. Please try again later or contact the support.');
+          this.notificationService.addErrorMessage(
+            'The server could not find the file you are seeking to download. Please try again later or contact the support.'
+          );
           this.isLoading = false;
           this.percentageDownloaded = 0;
         }
         if (event.status === 401) {
-          this.notificationService.addErrorMessage('Wrong password, please try again.');
+          this.notificationService.addErrorMessage(
+            'Wrong password, please try again.'
+          );
           this.isLoading = false;
           this.percentageDownloaded = 0;
         }
         if (event.status === 500) {
-          this.notificationService.addErrorMessage('An error occured while downloading the file. Please contact the support.');
+          this.notificationService.addErrorMessage(
+            'An error occured while downloading the file. Please contact the support.'
+          );
           this.isLoading = false;
           this.percentageDownloaded = 0;
         }
         return;
 
       default:
-        this.notificationService.addErrorMessage('An error occured while downloading the file. Please contact the support.');
+        this.notificationService.addErrorMessage(
+          'An error occured while downloading the file. Please contact the support.'
+        );
         this.isLoading = false;
         this.percentageDownloaded = 0;
         return;
     }
   }
 }
-
