@@ -14,7 +14,6 @@ import { saveAs } from 'file-saver';
 import {
   HttpEvent,
   HttpEventType,
-  HttpProgressEvent,
   HttpErrorResponse
 } from '@angular/common/http';
 import { map, last } from 'rxjs/operators';
@@ -22,7 +21,7 @@ import { map, last } from 'rxjs/operators';
 @Component({
   selector: 'app-download-button',
   templateUrl: './download-button.component.html',
-  styleUrls: ['./download-button.component.css']
+  styleUrls: ['./download-button.component.scss']
 })
 export class DownloadButtonComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename

@@ -16,7 +16,7 @@ import { FileService } from '../openapi';
 @Component({
   selector: 'app-filelink',
   templateUrl: './filelink.component.html',
-  styleUrls: ['./filelink.component.css']
+  styleUrls: ['./filelink.component.scss']
 })
 export class FilelinkComponent implements OnInit {
   public fileName!: string;

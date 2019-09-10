@@ -11,7 +11,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from '../common/notification/notification.service';
 import {
-  ApiModule,
   Credentials,
   SessionService,
   UsersService
@@ -20,7 +19,7 @@ import {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
   id = '';

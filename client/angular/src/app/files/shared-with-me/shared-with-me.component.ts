@@ -15,7 +15,7 @@ import {
 @Component({
   selector: 'app-shared-with-me',
   templateUrl: './shared-with-me.component.html',
-  styleUrls: ['./shared-with-me.component.css']
+  styleUrls: ['./shared-with-me.component.scss']
 })
 export class SharedWithMeComponent implements OnInit {
   public userId!: string;

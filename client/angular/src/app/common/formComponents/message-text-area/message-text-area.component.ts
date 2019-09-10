@@ -25,7 +25,7 @@ import {
 @Component({
   selector: 'app-message-text-area',
   templateUrl: './message-text-area.component.html',
-  styleUrls: ['./message-text-area.component.css']
+  styleUrls: ['./message-text-area.component.scss']
 })
 export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;

@@ -17,7 +17,6 @@ import { recipientValidator } from '../../validators/recipient-validator';
 @Component({
   selector: 'app-add-recipients-modal',
   templateUrl: './add-recipients-modal.component.html',
-  styleUrls: ['./add-recipients-modal.component.css']
 })
 export class AddRecipientsModalComponent implements OnInit {
   // tslint:disable-next-line:no-output-rename
