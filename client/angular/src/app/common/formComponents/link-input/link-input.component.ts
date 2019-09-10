@@ -25,7 +25,7 @@ import {
 @Component({
   selector: 'app-link-input',
   templateUrl: './link-input.component.html',
-  styleUrls: ['./link-input.component.css']
+  styleUrls: ['./link-input.component.scss']
 })
 export class LinkInputComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;

@@ -3,14 +3,8 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        <b>
-          {{
-            modalFileName.length > 25
-              ? (modalFileName | slice: 0:25) + ".."
-              : modalFileName
-          }}</b
-        >
-        shares
+        File shares <br />
+        <b> {{ modalFileName }}</b>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
@@ -61,6 +55,11 @@
       </div>
     </section>
     <footer class="modal-card-foot">
+        <button
+        class="modal-close is-large"
+        (click)="closeModal()"
+        aria-label="close"
+      ></button>
     </footer>
   </div>
 </div>

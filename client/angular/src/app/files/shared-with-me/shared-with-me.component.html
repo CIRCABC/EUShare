@@ -1,26 +1,2 @@
 <h1 class="title">Files shared with me</h1>
-<table class="table is-fullwidth is-hoverable">
-  <thead>
-    <tr>
-      <th>Filename</th>
-      <th>Expiration Date</th>
-      <th>Shared by</th>
-      <th class="align-right">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let file of fileInfoRecipientArray let i = index" [attr.data-index]="i">
-      <td>{{file.name}}
-        <fa-icon *ngIf="file.hasPassword" [icon]="faLock"></fa-icon>
-      </td>
-      <td>{{file.expirationDate}}</td>
-      <td>
-          {{file.uploaderName}}
-      </td>
-      <td class="align-right">
-        <a class="button is-link is-outlined"
-          (click)="openDownloadModal(file.fileId, file.name, file.hasPassword)">Download</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<app-download-file-row-container [userId]="userId"></app-download-file-row-container>

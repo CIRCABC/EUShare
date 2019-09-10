@@ -9,20 +9,20 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FileRowComponent } from './file-row.component';
+import { UploadedFileRowComponent } from './uploaded-file-row.component';
 
 describe('FileRowComponent', () => {
-  let component: FileRowComponent;
-  let fixture: ComponentFixture<FileRowComponent>;
+  let component: UploadedFileRowComponent;
+  let fixture: ComponentFixture<UploadedFileRowComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FileRowComponent]
+      declarations: [UploadedFileRowComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileRowComponent);
+    fixture = TestBed.createComponent(UploadedFileRowComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

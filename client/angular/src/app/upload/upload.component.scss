@@ -7,10 +7,15 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component } from '@angular/core';
+.error {
+  color: red;
+}
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html'
-})
-export class AppComponent {}
+.button {
+  margin-top: 0.5em;
+}
+
+.button.is-link.is-outlined {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}

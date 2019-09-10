@@ -85,22 +85,13 @@ export class ShareWithUsersModalComponent implements OnInit {
     this.notificationService.addSuccessMessage('Copied file link !', true);
   }
 
-  private formatLink(i: number) {
+  public formatLink(i: number) {
     const isPasswordProtected = this.modalFileIsPasswordProtected;
-    const fileLinkWithoutFiles = window.location.href.slice(
-      0,
-      window.location.href.lastIndexOf('/')
-    );
-    const fileLinkWithoutFileId = fileLinkWithoutFiles.slice(
-      0,
-      fileLinkWithoutFiles.lastIndexOf('/')
-    );
-    const fileLinkWithoutAdministration = fileLinkWithoutFileId.slice(
-      0,
-      fileLinkWithoutFileId.lastIndexOf('/')
-    );
+
     let fileLinkBuild =
-      fileLinkWithoutAdministration +
+      window.location.protocol +
+      '//' +
+      window.location.host +
       '/filelink/' +
       this.recipientsWithLink[i].downloadLink +
       '/' +
