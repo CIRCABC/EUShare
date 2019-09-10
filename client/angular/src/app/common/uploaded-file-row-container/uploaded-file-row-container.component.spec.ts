@@ -8,9 +8,8 @@ describe('FileRowContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FileRowContainerComponent ]
-    })
-    .compileComponents();
+      declarations: [FileRowContainerComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -36,5 +36,4 @@ export class OtherUserSharedFilesComponent implements OnInit {
       );
     }
   }
-
 }

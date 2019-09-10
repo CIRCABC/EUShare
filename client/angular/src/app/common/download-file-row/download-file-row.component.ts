@@ -9,7 +9,7 @@ import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./download-file-row.component.scss']
 })
 export class DownloadFileRowComponent implements OnInit {
-
+  // tslint:disable-next-line:no-input-rename
   @Input('fileToDisplay')
   fileToDisplay!: FileInfoRecipient;
 
@@ -17,10 +17,9 @@ export class DownloadFileRowComponent implements OnInit {
   public faFile = faFile;
   public faLock = faLock;
 
-  constructor(private modalService: ModalsService) { }
+  constructor(private modalService: ModalsService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public displayMore() {
     this.isMoreDisplayed = true;
@@ -30,9 +29,11 @@ export class DownloadFileRowComponent implements OnInit {
     this.isMoreDisplayed = false;
   }
 
-  public openDownloadModal(
-  ) {
-    this.modalService.activateDownloadModal(this.fileToDisplay.fileId, this.fileToDisplay.name, this.fileToDisplay.hasPassword);
+  public openDownloadModal() {
+    this.modalService.activateDownloadModal(
+      this.fileToDisplay.fileId,
+      this.fileToDisplay.name,
+      this.fileToDisplay.hasPassword
+    );
   }
-
 }

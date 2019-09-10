@@ -4,9 +4,10 @@ import { NotificationService } from '../notification/notification.service';
 
 @Component({
   selector: 'app-download-file-row-container',
-  templateUrl: './download-file-row-container.component.html',
+  templateUrl: './download-file-row-container.component.html'
 })
 export class DownloadFileRowContainerComponent implements OnInit {
+  // tslint:disable-next-line:no-input-rename
   @Input('userId')
   private userId!: string;
 
@@ -20,7 +21,7 @@ export class DownloadFileRowContainerComponent implements OnInit {
   constructor(
     private userService: UsersService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     if (this.userId) {

@@ -10,11 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationService } from '../common/notification/notification.service';
-import {
-  Credentials,
-  SessionService,
-  UsersService
-} from '../openapi';
+import { Credentials, SessionService, UsersService } from '../openapi';
 
 @Component({
   selector: 'app-login',

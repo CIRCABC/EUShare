@@ -44,11 +44,14 @@ export class UploadedFileRowComponent {
     private modalService: ModalsService,
     private fileApi: FileService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
-  public openDownloadModal(
-  ) {
-    this.modalService.activateDownloadModal(this.file.fileId, this.file.name, this.file.hasPassword);
+  public openDownloadModal() {
+    this.modalService.activateDownloadModal(
+      this.file.fileId,
+      this.file.name,
+      this.file.hasPassword
+    );
   }
 
   public openAddRecipientsModal(fileName: string, fileId: string) {

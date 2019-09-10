@@ -4,16 +4,18 @@ import { NotificationService } from '../notification/notification.service';
 
 @Component({
   selector: 'app-uploaded-file-row-container',
-  templateUrl: './uploaded-file-row-container.component.html',
+  templateUrl: './uploaded-file-row-container.component.html'
 })
 export class FileRowContainerComponent implements OnInit {
-
+  // tslint:disable-next-line:no-input-rename
   @Input('userId')
   private userId!: string;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('displayAsAdministrator')
   public displayAsAdministrator = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('displayAsUploader')
   public displayAsUploader = true;
 
@@ -27,7 +29,7 @@ export class FileRowContainerComponent implements OnInit {
   constructor(
     private userService: UsersService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     if (this.userId) {
@@ -46,6 +48,4 @@ export class FileRowContainerComponent implements OnInit {
       file => file.fileId !== fileId
     );
   }
-
-
 }

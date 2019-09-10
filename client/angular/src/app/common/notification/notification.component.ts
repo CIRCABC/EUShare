@@ -18,6 +18,7 @@ import { NotificationService } from './notification.service';
   styleUrls: ['./notification.component.scss']
 })
 export class NotificationComponent implements OnInit {
+  // tslint:disable-next-line:no-input-rename
   @Input()
   public message!: NotificationMessage;
   public animationClass = 'ui-message-show';
