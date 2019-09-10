@@ -1,6 +1,26 @@
-<nav class="navbar is-dark">
+<nav class="navbar is-dark" role="navigation">
   <div class="container">
-    <div class="navbar-menu">
+    <div class="navbar-brand">
+      <a class="navbar-item">
+        <fa-icon class="icon is-large" [icon]="faShareAlt" size="2x"></fa-icon>
+        <p *ngIf="!loggedIn">Welcome to EasyShare !</p>
+      </a>
+      <a
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        [class.is-active]="isBurgerActive"
+        (click)="toggleBurger()"
+        data-target="myMenu"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div class="navbar-menu" id="myMenu" [class.is-active]="isBurgerActive">
       <div *ngIf="loggedIn" class="navbar-start">
         <a class="navbar-item" routerLink="home">
           <fa-icon [icon]="faUsers"></fa-icon>
@@ -10,25 +30,17 @@
           <fa-icon [icon]="faShare"></fa-icon>
           Share a new file
         </a>
-        <a class = "navbar-item" routerLink="download">
+        <a class="navbar-item" routerLink="download">
           <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
           Shared with me
         </a>
-        <a *ngIf="isAdmin" class = "navbar-item" routerLink="administration">
+        <a *ngIf="isAdmin" class="navbar-item" routerLink="administration">
           <fa-icon [icon]="faUsersCog"></fa-icon>
           Administration
         </a>
       </div>
-      <div *ngIf="!loggedIn" class="navbar-start">
-          <h1 class="navbar-item">
-              <fa-icon [icon]="faShareAlt"></fa-icon>
-               Welcome to EasyShare !
-          </h1>
-      </div>
       <div class="navbar-end">
-        <div *ngIf="loggedIn" class="navbar-item">
-            Logged as {{userName}}
-        </div>
+        <div *ngIf="loggedIn" class="navbar-item">Logged as {{ userName }}</div>
         <div *ngIf="loggedIn" class="navbar-item">
           <button class="button is-danger" (click)="logout()">Logout</button>
         </div>

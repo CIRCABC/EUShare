@@ -1,0 +1,12 @@
+<div class="container">
+    <div
+      *ngIf="fileInfoRecipientArray && fileInfoRecipientArray.length === 0"
+      class="subtitle"
+    >
+      No files to download
+    </div>
+    <app-download-file-row
+      *ngFor="let fileInfoUploader of fileInfoRecipientArray"
+      [fileToDisplay]="fileInfoUploader"
+    ></app-download-file-row>
+  </div>

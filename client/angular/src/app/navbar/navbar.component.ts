@@ -12,19 +12,17 @@ import {
   faCloudDownloadAlt,
   faShare,
   faShareAlt,
-  faUpload,
   faUsers,
   faUsersCog
 } from '@fortawesome/free-solid-svg-icons';
-import { SessionService, UserInfo } from '../openapi';
+import { SessionService } from '../openapi';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit {
-  public faUpload = faUpload;
   public faUsers = faUsers;
   public faShare = faShare;
   public faUsersCog = faUsersCog;
@@ -32,6 +30,7 @@ export class NavbarComponent implements OnInit {
   public faShareAlt = faShareAlt;
   public userName: string | null = null;
   public isAdmin: boolean | null = null;
+  public isBurgerActive = false;
 
   constructor(private sessionService: SessionService) {}
 
@@ -57,5 +56,9 @@ export class NavbarComponent implements OnInit {
 
   get loggedIn(): boolean {
     return this.sessionService.getStoredCredentials() !== null;
+  }
+
+  public toggleBurger() {
+    this.isBurgerActive = !this.isBurgerActive;
   }
 }

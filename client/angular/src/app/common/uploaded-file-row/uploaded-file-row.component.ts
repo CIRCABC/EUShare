@@ -8,24 +8,28 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { faFile, faEllipsisH, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FileInfoUploader, FileService } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { NotificationService } from '../notification/notification.service';
 
 @Component({
-  selector: 'app-file-row',
-  templateUrl: './file-row.component.html',
-  styleUrls: ['./file-row.component.scss']
+  selector: 'app-uploaded-file-row',
+  templateUrl: './uploaded-file-row.component.html',
+  styleUrls: ['./uploaded-file-row.component.scss']
 })
-export class FileRowComponent {
+export class UploadedFileRowComponent {
   // tslint:disable-next-line:no-input-rename
   @Input('fileToDisplay')
   public file!: FileInfoUploader;
 
   // tslint:disable-next-line:no-input-rename
-  @Input('displayAddRecipientsButton')
-  public displayAddRecipients = false;
+  @Input('displayAsAdministrator')
+  public displayAsAdministrator = false;
+
+  // tslint:disable-next-line:no-input-rename
+  @Input('displayAsUploader')
+  public displayAsUploader = false;
 
   // tslint:disable-next-line:no-output-rename
   @Output('destroyRow')
@@ -34,21 +38,17 @@ export class FileRowComponent {
   public isMoreDisplayed = false;
 
   public faFile = faFile;
-  public faEllipsisH = faEllipsisH;
   public faLock = faLock;
 
   constructor(
     private modalService: ModalsService,
     private fileApi: FileService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   public openDownloadModal(
-    fileId: string,
-    fileName: string,
-    fileHasPassword: boolean
   ) {
-    this.modalService.activateDownloadModal(fileId, fileName, fileHasPassword);
+    this.modalService.activateDownloadModal(this.file.fileId, this.file.name, this.file.hasPassword);
   }
 
   public openAddRecipientsModal(fileName: string, fileId: string) {

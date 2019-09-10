@@ -39,9 +39,12 @@ import { MessageTextAreaComponent } from './common/formComponents/message-text-a
 import { LinkInputComponent } from './common/formComponents/link-input/link-input.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { FileSizeFormatPipe } from './common/pipes/file-size-format.pipe';
-import { FileRowComponent } from './common/file-row/file-row.component';
-import { UploadedFilesComponent } from './files/uploaded-files/uploaded-files.component';
+import { UploadedFileRowComponent } from './common/uploaded-file-row/uploaded-file-row.component';
+import { OtherUserSharedFilesComponent } from './files/other-user-shared-files/other-user-shared-files.component';
 import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
+import { FileRowContainerComponent } from './common/uploaded-file-row-container/uploaded-file-row-container.component';
+import { DownloadFileRowContainerComponent } from './common/download-file-row-container/download-file-row-container.component';
+import { DownloadFileRowComponent } from './common/download-file-row/download-file-row.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -75,7 +78,7 @@ const routes: Routes = [
   },
   {
     path: 'administration/:userId/files',
-    component: UploadedFilesComponent,
+    component: OtherUserSharedFilesComponent,
     data: { userName: 'dummyUserName' },
     canActivate: [LoginGuard]
   }
@@ -102,9 +105,12 @@ const routes: Routes = [
     LinkInputComponent,
     AdministrationComponent,
     FileSizeFormatPipe,
-    FileRowComponent,
-    UploadedFilesComponent,
-    ShareWithUsersModalComponent
+    UploadedFileRowComponent,
+    OtherUserSharedFilesComponent,
+    ShareWithUsersModalComponent,
+    FileRowContainerComponent,
+    DownloadFileRowContainerComponent,
+    DownloadFileRowComponent
   ],
   imports: [
     ApiModule,

@@ -1,4 +1,4 @@
-<nav class="level filecontainer">
+<div class="level filecontainer">
   <!-- Left side -->
   <div class="level-left">
     <div class="level-item has-text-centered">
@@ -31,7 +31,7 @@
   <!-- Right side -->
   <div class="level">
     <div class="level-item">
-      <a *ngIf="!isDisplayRecipients" (click)="displayRecipients()"
+      <a *ngIf="displayAsUploader" (click)="displayRecipients()"
         >Shared {{ file.sharedWith.length }} time(s)</a
       >
     </div>
@@ -50,20 +50,24 @@
           <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
             <a
               class="navbar-item"
-              *ngIf="displayAddRecipients"
+              *ngIf="displayAsUploader"
               (click)="openAddRecipientsModal(file.name, file.fileId)"
               >Add a recipient
             </a>
             <a
               class="navbar-item"
               (click)="
-                openDownloadModal(file.fileId, file.name, file.hasPassword)
+                openDownloadModal()
               "
             >
               Download
             </a>
             <hr class="navbar-divider" />
-            <a class="navbar-item" (click)="delete()">
+            <a
+              class="navbar-item"
+              *ngIf="displayAsAdministrator || displayAsUploader"
+              (click)="delete()"
+            >
               Delete
             </a>
           </div>
@@ -71,4 +75,4 @@
       </div>
     </div>
   </div>
-</nav>
+</div>
