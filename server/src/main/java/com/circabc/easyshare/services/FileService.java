@@ -49,6 +49,7 @@ import com.circabc.easyshare.exceptions.WrongPasswordException;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.RecipientWithLink;
 import com.circabc.easyshare.storage.DBFile;
 import com.circabc.easyshare.storage.DBUser;
 import com.circabc.easyshare.storage.DBUser.Role;
@@ -200,7 +201,7 @@ public class FileService implements FileServiceInterface {
 
     @Transactional
     @Override
-    public void addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
+    public RecipientWithLink addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
             throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
             MessageTooLongException, UnknownFileException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
@@ -211,6 +212,8 @@ public class FileService implements FileServiceInterface {
             DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(),
                     userService.getUserOrCreateExternalUser(recipient), dbFile, recipient.getMessage());
             userFileRepository.save(dbUserFile);
+
+            return dbUserFile.toRecipientWithLink();
             // TODO: add notification
         } else {
             throw new UserUnauthorizedException();
@@ -432,7 +435,7 @@ public class FileService implements FileServiceInterface {
 
     @Override
     @Transactional
-    public void saveOnBehalfOf(String fileId, Resource resource, String requesterId)
+    public FileInfoUploader saveOnBehalfOf(String fileId, Resource resource, String requesterId)
             throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
             UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException {
         DBFile f = findFile(fileId);
@@ -444,6 +447,7 @@ public class FileService implements FileServiceInterface {
                 ResourceMultipartFile resourceMultipartFile = new ResourceMultipartFile(resource,
                         resource.getFilename(), null, bytes.length);
                 this.save(f, resourceMultipartFile);
+                return f.toFileInfoUploader();
             } catch (IOException io) {
                 throw new CouldNotSaveFileException(io);
             }

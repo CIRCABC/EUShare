@@ -28,7 +28,7 @@ import javax.validation.constraints.*;
 /**
  * FileRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-12T15:01:54.116+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
 public class FileRequest   {
   @JsonProperty("expirationDate")

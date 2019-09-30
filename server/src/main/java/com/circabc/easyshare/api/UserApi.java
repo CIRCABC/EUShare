@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
 @Validated
 @Api(value = "user", description = "the user API")
@@ -83,7 +83,7 @@ public interface UserApi {
         @Authorization(value = "basicAuth")
     }, tags={ "Users", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber. For each RecipientWithLink, the id is required !", response = FileInfoUploader.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber.", response = FileInfoUploader.class, responseContainer = "List"),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
@@ -110,7 +110,7 @@ public interface UserApi {
     }, tags={ "Users", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS Returns the UserInfo of the selected user", response = UserInfo.class),
-        @ApiResponse(code = 401, message = "Unauthorized the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, will be sent before 404", response = Status.class),
         @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
@@ -137,7 +137,7 @@ public interface UserApi {
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "SUCCESS Returns the UserInfo of the selected user", response = UserInfo.class),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
-        @ApiResponse(code = 401, message = "Unauthorized the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, will be sent before 404", response = Status.class),
         @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })

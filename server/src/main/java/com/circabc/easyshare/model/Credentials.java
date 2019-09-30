@@ -8,7 +8,7 @@
  * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
  */
 
-package com.circabc.easyshare.model;
+ package com.circabc.easyshare.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +22,7 @@ import javax.validation.constraints.*;
 /**
  * Credentials
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-12T15:01:54.116+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
 public class Credentials   {
   @JsonProperty("email")

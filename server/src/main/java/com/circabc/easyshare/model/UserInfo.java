@@ -24,7 +24,7 @@ import javax.validation.constraints.*;
 /**
  * UserInfo
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-12T15:01:54.116+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
 public class UserInfo {
   @JsonProperty("totalSpace")
@@ -77,6 +77,7 @@ public class UserInfo {
    */
   @ApiModelProperty(required = true, value = "Space the user already used (Bytes)")
   @NotNull
+
   @Valid
   @DecimalMin("0")
   public BigDecimal getUsedSpace() {
@@ -159,9 +160,9 @@ public class UserInfo {
       return false;
     }
     UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.totalSpace, userInfo.totalSpace) && // NOSONAR
-        Objects.equals(this.usedSpace, userInfo.usedSpace) && Objects.equals(this.id, userInfo.id)
-        && Objects.equals(this.name, userInfo.name) && Objects.equals(this.isAdmin, userInfo.isAdmin);
+    return Objects.equals(this.totalSpace, userInfo.totalSpace) && Objects.equals(this.usedSpace, userInfo.usedSpace)// NOSONAR
+        && Objects.equals(this.id, userInfo.id) && Objects.equals(this.name, userInfo.name)
+        && Objects.equals(this.isAdmin, userInfo.isAdmin);
   }
 
   @Override

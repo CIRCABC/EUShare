@@ -47,8 +47,10 @@ import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
 import com.circabc.easyshare.model.Credentials;
+import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.RecipientWithLink;
 import com.circabc.easyshare.model.Status;
 import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.FileService.DownloadReturn;
@@ -68,6 +70,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import edu.emory.mathcs.backport.java.util.LinkedList;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(FileApiController.class)
@@ -535,8 +539,13 @@ public class FileApiControllerTest {
 
         @Test
         public void postFileSharedWith200() throws Exception {// NOSONAR
+                RecipientWithLink recipientWithLink = new RecipientWithLink();
+                recipientWithLink.setEmailOrName("email@email.com");
+                recipientWithLink.setMessage("message");
+                recipientWithLink.setSendEmail(true);
+                recipientWithLink.setRecipientId("recipientId");
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
-                doNothing().when(fileService).addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString());
+                when(fileService.addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString())).thenReturn(recipientWithLink);
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/sharedWith") // NOSONAR
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
@@ -550,8 +559,13 @@ public class FileApiControllerTest {
         public void postFileSharedWith400() throws Exception {// NOSONAR
                 Status status = new Status();
                 status.setCode(400);
+                RecipientWithLink recipientWithLink = new RecipientWithLink();
+                recipientWithLink.setEmailOrName("email@email.com");
+                recipientWithLink.setMessage("message");
+                recipientWithLink.setSendEmail(true);
+                recipientWithLink.setRecipientId("recipientId");
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
-                doNothing().when(fileService).addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString());
+                when(fileService.addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString())).thenReturn(recipientWithLink);
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/sharedWith") // NOSONAR
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
@@ -566,8 +580,13 @@ public class FileApiControllerTest {
         public void postFileSharedWith401ForNoAuthentication() throws Exception {// NOSONAR
                 Status status = new Status();
                 status.setCode(401);
+                RecipientWithLink recipientWithLink = new RecipientWithLink();
+                recipientWithLink.setEmailOrName("email@email.com");
+                recipientWithLink.setMessage("message");
+                recipientWithLink.setSendEmail(true);
+                recipientWithLink.setRecipientId("recipientId");
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
-                doNothing().when(fileService).addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString());
+                when(fileService.addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString())).thenReturn(recipientWithLink);
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/sharedWith") // NOSONAR
                                 .characterEncoding("utf-8")
                                 .content(validRecipient).contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
@@ -579,7 +598,13 @@ public class FileApiControllerTest {
         public void postFileSharedWith401ForWrongAuthentication() throws Exception {// NOSONAR
                 Status status = new Status();
                 status.setCode(401);
+                RecipientWithLink recipientWithLink = new RecipientWithLink();
+                recipientWithLink.setEmailOrName("email@email.com");
+                recipientWithLink.setMessage("message");
+                recipientWithLink.setSendEmail(true);
+                recipientWithLink.setRecipientId("recipientId");
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenThrow(new WrongAuthenticationException());
+                when(fileService.addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString())).thenReturn(recipientWithLink);
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/sharedWith") // NOSONAR
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
@@ -657,8 +682,15 @@ public class FileApiControllerTest {
 
         @Test
         public void postFileFileContent200() throws Exception {// NOSONAR
+                FileInfoUploader fileInfoUploader = new FileInfoUploader();
+                fileInfoUploader.setFileId("fileId");
+                fileInfoUploader.setExpirationDate(LocalDate.now());
+                fileInfoUploader.setHasPassword(false);
+                fileInfoUploader.setName("name");
+                fileInfoUploader.setSharedWith(new LinkedList());
+                fileInfoUploader.setSize(new BigDecimal(1024));
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
-                doNothing().when(fileService).saveOnBehalfOf(anyString(),any(Resource.class), anyString());
+                when(fileService.saveOnBehalfOf(anyString(),any(Resource.class), anyString())).thenReturn(fileInfoUploader);
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/fileContent") // NOSONAR
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
@@ -672,8 +704,15 @@ public class FileApiControllerTest {
         public void postFileFileContent400() throws Exception {// NOSONAR
                 Status status = new Status();
                 status.setCode(400);
+                FileInfoUploader fileInfoUploader = new FileInfoUploader();
+                fileInfoUploader.setFileId("fileId");
+                fileInfoUploader.setExpirationDate(LocalDate.now());
+                fileInfoUploader.setHasPassword(false);
+                fileInfoUploader.setName("name");
+                fileInfoUploader.setSharedWith(new LinkedList());
+                fileInfoUploader.setSize(new BigDecimal(1024));
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn(fakeAuthenticatedUserId);
-                doNothing().when(fileService).saveOnBehalfOf(anyString(),any(Resource.class), anyString());
+                when(fileService.saveOnBehalfOf(anyString(),any(Resource.class), anyString())).thenReturn(fileInfoUploader);
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/fileContent") // NOSONAR
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
@@ -700,8 +739,15 @@ public class FileApiControllerTest {
         public void postFileFileContent401ForWrongAuthentication() throws Exception {// NOSONAR
                 Status status = new Status();
                 status.setCode(401);
+                FileInfoUploader fileInfoUploader = new FileInfoUploader();
+                fileInfoUploader.setFileId("fileId");
+                fileInfoUploader.setExpirationDate(LocalDate.now());
+                fileInfoUploader.setHasPassword(false);
+                fileInfoUploader.setName("name");
+                fileInfoUploader.setSharedWith(new LinkedList());
+                fileInfoUploader.setSize(new BigDecimal(1024));
                 when(service.getAuthenticatedUserId(any(Credentials.class))).thenThrow(new WrongAuthenticationException());
-                doNothing().when(fileService).saveOnBehalfOf(anyString(),any(Resource.class), anyString());
+                when(fileService.saveOnBehalfOf(anyString(),any(Resource.class), anyString())).thenReturn(fileInfoUploader);
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/fileContent") // NOSONAR
                                 .header("Authorization",
                                                 "Basic " + Base64.getEncoder().encodeToString(
@@ -775,7 +821,7 @@ public class FileApiControllerTest {
                 doThrow(new UnknownFileException()).when(fileService).saveOnBehalfOf(anyString(),any(Resource.class), anyString());
                 this.mockMvc.perform(MockMvcRequestBuilders.post("/file/"+fakeSearchedFileId+"/fileRequest/fileContent") // NOSONAR
                                 .header("Authorization",
-                                                "Basic " + Base64.getEncoder().encodeToString(
+                                "Basic " + Base64.getEncoder().encodeToString(
                                                                 userCredentialsInAuthorizationHeader.getBytes()))
                                 .characterEncoding("utf-8")
                                 .content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
