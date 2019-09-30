@@ -50,19 +50,28 @@
     <div *ngIf="isAfterSearch && isAfterSelected">
       <div>
         <label class="label">User info</label>
-        <p *ngIf="!selectedUserInfo.isAdmin">
+        <p *ngIf="!isChangePermissions && !selectedUserInfo.isAdmin">
           Internal user: {{ selectedUserInfo.name }}
           <fa-icon [icon]="faUser"></fa-icon>
         </p>
-        <p *ngIf="selectedUserInfo.isAdmin">
+        <p *ngIf="!isChangePermissions && selectedUserInfo.isAdmin">
           Admin user: {{ selectedUserInfo.name }}
           <fa-icon [icon]="faUserTie"></fa-icon>
         </p>
+        <div class="select" *ngIf="isChangePermissions">
+          <select [(ngModel)]="selectedIsAdminValue">
+            <option [ngValue]="false"
+              >Internal user</option>
+            <option [ngValue]="true" selected
+              >Admin user</option>
+          </select>
+        </div>
+        <br *ngIf="isChangePermissions" />
         <p *ngIf="!isChangePermissions">
           Total Space: {{ selectedUserInfo.totalSpace | fileSizeFormat }}
         </p>
         <div class="select" *ngIf="isChangePermissions">
-          <select [(ngModel)]="selectedValueInGigaBytes" #selectValue="ngModel">
+          <select [(ngModel)]="selectedValueInGigaBytes">
             <option
               *ngFor="let valueInGig of valuesInGigaBytes; let i = index"
               [attr.data-index]="i"

@@ -70,15 +70,17 @@ export class AdministrationComponent implements OnInit {
   public selectedValueInGigaBytesIndex = 0;
 
   public selectedValueInGigaBytes = 0;
+
+  public selectedIsAdminValue = false;
   public changeIsLoading = false;
 
   constructor(
     private router: Router,
     private usersApi: UsersService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public async resultsNextPage() {
     this.removeSelection();
@@ -147,6 +149,7 @@ export class AdministrationComponent implements OnInit {
     this.selectedValueInGigaBytes = Math.floor(
       this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
     );
+    this.selectedIsAdminValue = this.userInfoArray[i].isAdmin;
     this.isAfterSelected = true;
   }
 
@@ -163,6 +166,8 @@ export class AdministrationComponent implements OnInit {
       this.changeIsLoading = true;
       this.selectedUserInfo.totalSpace =
         this.selectedValueInGigaBytes * 1024 * 1024 * 1024;
+      this.selectedUserInfo.isAdmin =
+        this.selectedIsAdminValue;
       await this.usersApi
         .putUserUserInfo(this.selectedUserInfo.id, this.selectedUserInfo)
         .toPromise();
