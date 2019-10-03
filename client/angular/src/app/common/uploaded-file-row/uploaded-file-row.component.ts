@@ -12,6 +12,7 @@ import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FileInfoUploader, FileService } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { NotificationService } from '../notification/notification.service';
+import { UploadedFilesService } from '../../services/uploaded-files.service';
 
 @Component({
   selector: 'app-uploaded-file-row',
@@ -31,10 +32,6 @@ export class UploadedFileRowComponent {
   @Input('displayAsUploader')
   public displayAsUploader = false;
 
-  // tslint:disable-next-line:no-output-rename
-  @Output('destroyRow')
-  public destroyRow: EventEmitter<string> = new EventEmitter<string>();
-
   public isMoreDisplayed = false;
 
   public faFile = faFile;
@@ -42,9 +39,8 @@ export class UploadedFileRowComponent {
 
   constructor(
     private modalService: ModalsService,
-    private fileApi: FileService,
-    private notificationService: NotificationService
-  ) {}
+    private uploadedFileService: UploadedFilesService
+  ) { }
 
   public openDownloadModal() {
     this.modalService.activateDownloadModal(
@@ -58,22 +54,8 @@ export class UploadedFileRowComponent {
     this.modalService.activateAddRecipientsModal(fileName, fileId);
   }
 
-  public delete() {
-    this.fileApi
-      .deleteFile(this.file.fileId)
-      .toPromise()
-      .then(success => {
-        this.notificationService.addSuccessMessage(
-          'Successfully deleted file named ' + this.file.name
-        );
-        this.destroyRow.next(this.file.fileId);
-      })
-      .catch(error => {
-        this.notificationService.errorMessageToDisplay(
-          error,
-          'deleting your file'
-        );
-      });
+  public async delete() {
+    await this.uploadedFileService.removeOneFile(this.file.fileId, this.file.name);
   }
 
   public displayRecipients() {

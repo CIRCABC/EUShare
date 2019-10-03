@@ -7,15 +7,19 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FileInfoUploader, UsersService } from '../../openapi';
 import { NotificationService } from '../notification/notification.service';
+import { UploadedFilesService } from '../../services/uploaded-files.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-uploaded-file-row-container',
-  templateUrl: './uploaded-file-row-container.component.html'
+  templateUrl: './uploaded-file-row-container.component.html',
+  styleUrls: ['./uploaded-file-row-container.component.scss']
 })
-export class FileRowContainerComponent implements OnInit {
+export class FileRowContainerComponent implements OnInit, OnDestroy {
+
   // tslint:disable-next-line:no-input-rename
   @Input('userId')
   private userId!: string;
@@ -28,33 +32,46 @@ export class FileRowContainerComponent implements OnInit {
   @Input('displayAsUploader')
   public displayAsUploader = true;
 
-  private pageSize = 10;
-  private pageNumber = 0;
+  public hasNextPage = false;
+  public hasPreviousPage = false;
+  public pageNumber = 1;
 
-  public fileInfoUploaderArray!: FileInfoUploader[];
-  private fileInfoUploaderArrayPrevious!: FileInfoUploader[];
-  private fileInfoUploaderArrayNext!: FileInfoUploader[];
+  private subscription!: Subscription;
 
-  constructor(
-    private userService: UsersService,
-    private notificationService: NotificationService
-  ) {}
+
+  public fileInfoUploaderArray: FileInfoUploader[] = [];
+
+  constructor(private fileInfoUploaderService: UploadedFilesService
+  ) { }
 
   async ngOnInit() {
+    console.log('init!')
     if (this.userId) {
-      this.fileInfoUploaderArray = await this.userService
-        .getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber)
-        .toPromise();
-    } else {
-      this.notificationService.addErrorMessage(
-        'A problem occured while downloading files information. Please contact the support.'
-      );
+      this.subscription = this.fileInfoUploaderService.fileInfoUploaderArrayAndMetaData$.subscribe(next => {
+        console.log(JSON.stringify(next));
+        this.fileInfoUploaderArray = next.fileInfoUploaderArray;
+        this.hasNextPage = next.hasNextPage;
+        this.hasPreviousPage = next.hasPreviousPage;
+        this.pageNumber = next.pageNumber + 1;
+      });
+      await this.fileInfoUploaderService.reinit(this.userId);
     }
   }
 
-  destroyOneFile(fileId: string) {
-    this.fileInfoUploaderArray = this.fileInfoUploaderArray.filter(
-      file => file.fileId !== fileId
-    );
+  public async nextPage() {
+    await this.fileInfoUploaderService.nextPage();
+  }
+
+  public async previousPage() {
+    await this.fileInfoUploaderService.previousPage();
+  }
+
+  ngOnDestroy(): void {
+    console.log('destroy!')
+
+    //this.fileInfoUploaderService.reinit(this.userId).then(() => {
+      this.subscription.unsubscribe();
+      this.fileInfoUploaderArray = [];
+    //});
   }
 }

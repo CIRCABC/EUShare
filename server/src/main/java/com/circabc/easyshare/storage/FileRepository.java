@@ -30,6 +30,12 @@ public interface FileRepository extends PagingAndSortingRepository<DBFile, Strin
     // get the files a receiver can retrieve
     List<DBFile> findByStatusAndSharedWith_Receiver_Id(DBFile.Status status, String id, Pageable page);
 
+    // get the files a receiver can retrieve with ordering by expiration date and file name
+    List<DBFile> findByStatusAndSharedWith_Receiver_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
+
     // get the files an uploader has uploaded
     List<DBFile> findByStatusAndUploader_Id(DBFile.Status status, String id, Pageable page);
+
+    // get the files an uploader has uploaded with ordering by expiration date and file name
+    List<DBFile> findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
 }

@@ -33,6 +33,7 @@ import {
   HttpEventType,
   HttpErrorResponse
 } from '@angular/common/http';
+import { UploadedFilesService } from '../services/uploaded-files.service';
 
 @Component({
   selector: 'app-upload',
@@ -53,11 +54,10 @@ export class UploadComponent implements OnInit {
     private sessionApi: SessionService,
     private userApi: UsersService,
     private fileApi: FileService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {
     this.initializeFormGroup();
   }
-
   async initializeAvailableSpace() {
     const id = this.sessionApi.getStoredId();
     if (id) {
@@ -423,7 +423,7 @@ export class UploadComponent implements OnInit {
         } else {
           this.notificationService.errorMessageToDisplay(
             event.body as HttpErrorResponse,
-            'downloading the file'
+            'uploading the file'
           );
         }
         this.uploadInProgress = false;

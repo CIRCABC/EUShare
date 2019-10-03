@@ -400,7 +400,7 @@ public class FileService implements FileServiceInterface {
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             return fileRepository
-                    .findByStatusAndSharedWith_Receiver_Id(DBFile.Status.AVAILABLE, userId,
+                    .findByStatusAndSharedWith_Receiver_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId,
                             PageRequest.of(pageNumber, pageSize))
                     .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
         } else {
@@ -414,7 +414,7 @@ public class FileService implements FileServiceInterface {
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             return fileRepository
-                    .findByStatusAndUploader_Id(DBFile.Status.AVAILABLE, userId, PageRequest.of(pageNumber, pageSize))
+                    .findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId, PageRequest.of(pageNumber, pageSize))
                     .stream().map(dbFile -> dbFile.toFileInfoUploader()).collect(Collectors.toList());
         } else {
             throw new UserUnauthorizedException();
