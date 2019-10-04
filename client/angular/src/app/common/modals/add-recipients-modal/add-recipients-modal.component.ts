@@ -90,11 +90,7 @@ export class AddRecipientsModalComponent implements OnInit {
 
   public async onSubmit() {
     this.uploadInProgress = true;
-    let recipient: Recipient = {
-      emailOrName: 'emailOrName',
-      sendEmail: false,
-      message: 'message'
-    };
+    let recipient: Recipient;
 
     if (this.sendEmailIsTrue) {
       recipient = {
