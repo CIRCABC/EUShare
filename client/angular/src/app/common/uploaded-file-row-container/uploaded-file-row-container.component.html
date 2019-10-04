@@ -1,4 +1,3 @@
-<app-add-recipients-modal (pullChanges)="ngOnInit()"></app-add-recipients-modal>
 <div class="container">
   <div
     *ngIf="fileInfoUploaderArray && fileInfoUploaderArray.length === 0"
@@ -11,6 +10,32 @@
     [displayAsUploader]="displayAsUploader"
     [displayAsAdministrator]="displayAsAdministrator"
     [fileToDisplay]="fileInfoUploader"
-    (destroyRow)="destroyOneFile($event)"
   ></app-uploaded-file-row>
+  <nav
+    class="pagination is-centered"
+    role="navigation"
+    aria-label="pagination"
+    *ngIf="hasNextPage || hasPreviousPage"
+  >
+    <a
+      [style.visibility]="hasPreviousPage ? 'visible' : 'hidden'"
+      class="pagination-previous button is-link is-outlined"
+      (click)="previousPage()"
+      >Previous</a
+    >
+    <ul class="pagination-list">
+      <a
+        class="pagination-link is-current"
+        aria-label="Page number"
+        aria-current="page"
+        >{{ pageNumber }}</a
+      >
+    </ul>
+    <a
+      [style.visibility]="hasNextPage ? 'visible' : 'hidden'"
+      class="pagination-next button is-link is-outlined"
+      (click)="nextPage()"
+      >Next page</a
+    >
+  </nav>
 </div>

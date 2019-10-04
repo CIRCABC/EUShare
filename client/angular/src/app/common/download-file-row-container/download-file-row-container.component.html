@@ -1,12 +1,41 @@
 <div class="container">
-    <div
-      *ngIf="fileInfoRecipientArray && fileInfoRecipientArray.length === 0"
-      class="subtitle"
-    >
-      No files to download
-    </div>
-    <app-download-file-row
-      *ngFor="let fileInfoUploader of fileInfoRecipientArray"
-      [fileToDisplay]="fileInfoUploader"
-    ></app-download-file-row>
+  <div
+    *ngIf="fileInfoRecipientArray && fileInfoRecipientArray.length === 0"
+    class="subtitle"
+  >
+    No files to download
   </div>
+  <app-download-file-row
+    *ngFor="let fileInfoUploader of fileInfoRecipientArray"
+    [fileToDisplay]="fileInfoUploader"
+  ></app-download-file-row>
+  <nav
+    class="pagination is-centered"
+    role="navigation"
+    aria-label="pagination"
+    *ngIf="fileInfoRecipientArrayNext.length > 0 || pageNumber > 0"
+  >
+    <a
+      [style.visibility]="pageNumber > 0 ? 'visible' : 'hidden'"
+      class="pagination-previous button is-link is-outlined"
+      (click)="previousPage()"
+      >Previous</a
+    >
+    <ul class="pagination-list">
+      <a
+        class="pagination-link is-current"
+        aria-label="Page number"
+        aria-current="page"
+        >{{ pageNumber + 1 }}</a
+      >
+    </ul>
+    <a
+      [style.visibility]="
+        fileInfoRecipientArrayNext.length > 0 ? 'visible' : 'hidden'
+      "
+      class="pagination-next button is-link is-outlined"
+      (click)="nextPage()"
+      >Next page</a
+    >
+  </nav>
+</div>

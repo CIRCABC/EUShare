@@ -23,19 +23,19 @@
     <div class="navbar-menu" id="myMenu" [class.is-active]="isBurgerActive">
       <div *ngIf="loggedIn" class="navbar-start">
         <a class="navbar-item" routerLink="home">
-          <fa-icon [icon]="faUsers"></fa-icon>
+          <fa-icon class="faIcon" [icon]="faUsers"></fa-icon>
           My shared files
         </a>
         <a class="navbar-item" routerLink="upload">
-          <fa-icon [icon]="faShare"></fa-icon>
+          <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
           Share a new file
         </a>
         <a class="navbar-item" routerLink="download">
-          <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
+          <fa-icon class="faIcon" [icon]="faCloudDownloadAlt"></fa-icon>
           Shared with me
         </a>
         <a *ngIf="isAdmin" class="navbar-item" routerLink="administration">
-          <fa-icon [icon]="faUsersCog"></fa-icon>
+          <fa-icon class="faIcon" [icon]="faUsersCog"></fa-icon>
           Administration
         </a>
       </div>

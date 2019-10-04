@@ -27,8 +27,10 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs';
 
+import { FileInfoUploader } from '../model/fileInfoUploader';
 import { FileRequest } from '../model/fileRequest';
 import { Recipient } from '../model/recipient';
+import { RecipientWithLink } from '../model/recipientWithLink';
 import { Status } from '../model/status';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -226,9 +228,9 @@ export class FileService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileContent(fileID: string, body?: Blob, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public postFileContent(fileID: string, body?: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public postFileContent(fileID: string, body?: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public postFileContent(fileID: string, body?: Blob, observe?: 'body', reportProgress?: boolean): Observable<FileInfoUploader>;
+    public postFileContent(fileID: string, body?: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileInfoUploader>>;
+    public postFileContent(fileID: string, body?: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileInfoUploader>>;
     public postFileContent(fileID: string, body?: Blob, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling postFileContent.');
@@ -258,7 +260,7 @@ export class FileService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/fileContent`,
+        return this.httpClient.post<FileInfoUploader>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/fileContent`,
             body,
             {
                 withCredentials: this.configuration.withCredentials,
@@ -310,7 +312,7 @@ export class FileService {
         }
 
         return this.httpClient.post(`${this.configuration.basePath}/file/fileRequest`,
-                    fileRequest,
+            fileRequest,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -329,9 +331,9 @@ export class FileService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'body', reportProgress?: boolean): Observable<RecipientWithLink>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RecipientWithLink>>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RecipientWithLink>>;
     public postFileSharedWith(fileID: string, recipient: Recipient, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling postFileSharedWith.');
@@ -364,7 +366,7 @@ export class FileService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith`,
+        return this.httpClient.post<RecipientWithLink>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith`,
             recipient,
             {
                 withCredentials: this.configuration.withCredentials,

@@ -10,21 +10,21 @@
 
 package com.circabc.easyshare.model;
 
-import java.util.Objects;
-import com.circabc.easyshare.model.UserSpace;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
-import org.openapitools.jackson.nullable.JsonNullable;
+import java.util.Objects;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * UserInfo
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-07-12T15:01:54.116+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
 public class UserInfo {
   @JsonProperty("totalSpace")
@@ -77,6 +77,7 @@ public class UserInfo {
    */
   @ApiModelProperty(required = true, value = "Space the user already used (Bytes)")
   @NotNull
+
   @Valid
   @DecimalMin("0")
   public BigDecimal getUsedSpace() {
@@ -159,9 +160,9 @@ public class UserInfo {
       return false;
     }
     UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.totalSpace, userInfo.totalSpace) && // NOSONAR
-        Objects.equals(this.usedSpace, userInfo.usedSpace) && Objects.equals(this.id, userInfo.id)
-        && Objects.equals(this.name, userInfo.name) && Objects.equals(this.isAdmin, userInfo.isAdmin);
+    return Objects.equals(this.totalSpace, userInfo.totalSpace) && Objects.equals(this.usedSpace, userInfo.usedSpace)// NOSONAR
+        && Objects.equals(this.id, userInfo.id) && Objects.equals(this.name, userInfo.name)
+        && Objects.equals(this.isAdmin, userInfo.isAdmin);
   }
 
   @Override

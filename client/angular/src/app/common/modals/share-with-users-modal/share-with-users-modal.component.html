@@ -4,7 +4,7 @@
     <header class="modal-card-head">
       <p class="modal-card-title">
         File shares <br />
-        <b> {{ modalFileName }}</b>
+        <strong> {{ modalFileName }}</strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
@@ -13,8 +13,8 @@
         <!-- Left side -->
         <div class="level-item has-text-centered">
           <p>
-            <b>{{ modalFileName }}</b> is shared
-            <b>{{ recipientsWithLink.length }}</b> time(s)
+            <strong>{{ modalFileName }}</strong> is shared
+            <strong>{{ recipientsWithLink.length }}</strong> time(s)
           </p>
         </div>
       </div>
@@ -25,10 +25,10 @@
       >
         <div class="level-left">
           <div *ngIf="recipient.sendEmail === true" class="level-item">
-            <p><b>Recipient</b> {{ recipient.emailOrName }}</p>
+            <p><strong>Recipient</strong> {{ recipient.emailOrName }}</p>
           </div>
           <div *ngIf="recipient.sendEmail === false" class="level-item">
-            <p><b>Link</b> {{ recipient.emailOrName }}</p>
+            <p><strong>Link</strong> {{ recipient.emailOrName }}</p>
           </div>
           <div class="level-item">
             <div class="field">

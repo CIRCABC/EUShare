@@ -9,27 +9,28 @@
  * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
  */
 package com.circabc.easyshare.model.validation;
+
 import com.circabc.easyshare.model.UserInfo;
 
 public class UserInfoValidator {
-    private UserInfoValidator(){
+    private UserInfoValidator() {
 
     }
 
     public static boolean validate(UserInfo userInfo) {
-        if(userInfo == null) {
+        if (userInfo == null) {
             return false;
         }
-        if (userInfo.getTotalSpace() == null) {
+        if (userInfo.getTotalSpace() == null) {// NOSONAR
             return false;
         }
-        if (userInfo.getUsedSpace() == null) {
+        if (userInfo.getUsedSpace() == null) {// NOSONAR
             return false;
         }
-        if (userInfo.getId() == null) {
+        if (userInfo.getId() == null) {// NOSONAR
             return false;
         }
-        if (userInfo.getName() == null) {
+        if (userInfo.getName() == null) {// NOSONAR
             return false;
         }
         if (userInfo.getIsAdmin() == null) {

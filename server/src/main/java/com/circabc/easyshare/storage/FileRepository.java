@@ -10,11 +10,11 @@
 
 package com.circabc.easyshare.storage;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.PagingAndSortingRepository;
-
 import java.time.LocalDate;
 import java.util.List;
+
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface FileRepository extends PagingAndSortingRepository<DBFile, String> {
     List<DBFile> findByExpirationDateBefore(LocalDate date);
@@ -30,6 +30,12 @@ public interface FileRepository extends PagingAndSortingRepository<DBFile, Strin
     // get the files a receiver can retrieve
     List<DBFile> findByStatusAndSharedWith_Receiver_Id(DBFile.Status status, String id, Pageable page);
 
+    // get the files a receiver can retrieve with ordering by expiration date and file name
+    List<DBFile> findByStatusAndSharedWith_Receiver_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
+
     // get the files an uploader has uploaded
     List<DBFile> findByStatusAndUploader_Id(DBFile.Status status, String id, Pageable page);
+
+    // get the files an uploader has uploaded with ordering by expiration date and file name
+    List<DBFile> findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
 }

@@ -7,22 +7,18 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
-import { NotificationService } from '../../notification/notification.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { FileService, Recipient } from '../../../openapi';
+import { Recipient } from '../../../openapi';
 import { recipientValidator } from '../../validators/recipient-validator';
+import { UploadedFilesService } from '../../../services/uploaded-files.service';
 
 @Component({
   selector: 'app-add-recipients-modal',
   templateUrl: './add-recipients-modal.component.html'
 })
 export class AddRecipientsModalComponent implements OnInit {
-  // tslint:disable-next-line:no-output-rename
-  @Output('pullChanges')
-  public valueChange = new EventEmitter();
-
   public modalActive = false;
   public modalFileName = '';
   private modalFileId = '';
@@ -59,9 +55,8 @@ export class AddRecipientsModalComponent implements OnInit {
 
   constructor(
     private modalService: ModalsService,
-    private notificationService: NotificationService,
     private fb: FormBuilder,
-    private fileService: FileService
+    private uploadedFileService: UploadedFilesService
   ) {}
 
   ngOnInit() {
@@ -94,40 +89,25 @@ export class AddRecipientsModalComponent implements OnInit {
   }
 
   public async onSubmit() {
-    try {
-      this.uploadInProgress = true;
-      let recipient: Recipient = {
-        emailOrName: 'emailOrName',
-        sendEmail: false,
-        message: 'message'
-      };
+    this.uploadInProgress = true;
+    let recipient: Recipient;
 
-      if (this.sendEmailIsTrue) {
-        recipient = {
-          emailOrName: this.email,
-          sendEmail: this.sendEmailIsTrue,
-          message: this.message
-        };
-      } else {
-        recipient = {
-          emailOrName: this.name,
-          sendEmail: this.sendEmailIsTrue
-        };
-      }
-      await this.fileService
-        .postFileSharedWith(this.modalFileId, recipient)
-        .toPromise();
-      this.valueChange.emit(true);
-    } catch (e) {
-      this.notificationService.errorMessageToDisplay(
-        e,
-        'adding your recipient'
-      );
-      this.uploadInProgress = false;
-      return;
+    if (this.sendEmailIsTrue) {
+      recipient = {
+        emailOrName: this.email,
+        sendEmail: this.sendEmailIsTrue,
+        message: this.message
+      };
+    } else {
+      recipient = {
+        emailOrName: this.name,
+        sendEmail: this.sendEmailIsTrue
+      };
     }
-    this.notificationService.addSuccessMessage(
-      'Succesfully added your recipient to ' + this.modalFileName
+    await this.uploadedFileService.addOneRecipient(
+      this.modalFileName,
+      this.modalFileId,
+      recipient
     );
     this.uploadInProgress = false;
   }

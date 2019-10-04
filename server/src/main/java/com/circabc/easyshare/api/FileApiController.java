@@ -35,8 +35,10 @@ import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
 import com.circabc.easyshare.model.Credentials;
+import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.RecipientWithLink;
 import com.circabc.easyshare.model.validation.FileRequestValidator;
 import com.circabc.easyshare.model.validation.RecipientValidator;
 import com.circabc.easyshare.services.FileService;
@@ -59,7 +61,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.slf4j.Slf4j;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
 @Slf4j
 @Controller
@@ -79,7 +81,7 @@ public class FileApiController extends AbstractController implements FileApi {
         this.request = request;
     }
 
-    @Override
+        @Override
     public ResponseEntity<Void> deleteFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "reason", required = false) String reason) {
         try {
@@ -196,7 +198,7 @@ public class FileApiController extends AbstractController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<Void> postFileContent(@PathVariable("fileID") String fileID,
+    public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID,
             @RequestBody(required = false) Resource body) {
         try {
             if ((body == null) || body.contentLength() == 0) {
@@ -213,8 +215,8 @@ public class FileApiController extends AbstractController implements FileApi {
         try {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
-            fileService.saveOnBehalfOf(fileID, body, requesterId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            FileInfoUploader fileInfoUploader = fileService.saveOnBehalfOf(fileID, body, requesterId);
+            return new ResponseEntity<>(fileInfoUploader, HttpStatus.OK);
         } catch (NoAuthenticationException | WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     HttpErrorAnswerBuilder.build401EmptyToString(), exc);
@@ -240,7 +242,7 @@ public class FileApiController extends AbstractController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<Void> postFileSharedWith(@PathVariable("fileID") String fileID, @RequestBody Recipient recipient) {
+    public ResponseEntity<RecipientWithLink> postFileSharedWith(@PathVariable("fileID") String fileID, @RequestBody Recipient recipient) {
         if (!RecipientValidator.validate(recipient)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     HttpErrorAnswerBuilder.build400EmptyToString());
@@ -248,8 +250,8 @@ public class FileApiController extends AbstractController implements FileApi {
         try {
             Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
             String requesterId = userService.getAuthenticatedUserId(credentials);
-            fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
-            return new ResponseEntity<>(HttpStatus.OK);
+            RecipientWithLink recipientWithLink = fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
+            return new ResponseEntity<>(recipientWithLink, HttpStatus.OK);
         } catch(NoAuthenticationException| WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
             HttpErrorAnswerBuilder.build401EmptyToString(), exc);

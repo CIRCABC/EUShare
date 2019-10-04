@@ -18,12 +18,15 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.RecipientWithLink;
 import com.circabc.easyshare.model.Status;
 
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,7 +42,7 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-06-11T15:56:18.878+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
 @Validated
 @Api(value = "file", description = "the file API")
@@ -100,11 +103,11 @@ public interface FileApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "postFileContent", notes = "Used by INTERNAL users in order to post the file content on the pre-reserved file space", authorizations = {
+    @ApiOperation(value = "", nickname = "postFileContent", notes = "Used by INTERNAL users in order to post the file content on the pre-reserved file space", response = FileInfoUploader.class, authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "File", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS"),
+        @ApiResponse(code = 200, message = "SUCCESS Returns the FileInfoUploader of the uploaded file", response = FileInfoUploader.class),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, FileLargerThanAllocation, IllegalFileSize", response = Status.class),
@@ -114,7 +117,15 @@ public interface FileApi {
         produces = { "application/json" }, 
         consumes = { "application/octet-stream" },
         method = RequestMethod.POST)
-    default ResponseEntity<Void> postFileContent(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The file bytes"  )  @Valid @RequestBody Resource body) {
+    default ResponseEntity<FileInfoUploader> postFileContent(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The file bytes"  )  @Valid @RequestBody Resource body) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -139,11 +150,11 @@ public interface FileApi {
     }
 
 
-    @ApiOperation(value = "", nickname = "postFileSharedWith", notes = "Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required", authorizations = {
+    @ApiOperation(value = "", nickname = "postFileSharedWith", notes = "Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required", response = RecipientWithLink.class, authorizations = {
         @Authorization(value = "basicAuth")
     }, tags={ "File", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS"),
+        @ApiResponse(code = 200, message = "SUCCESS Returns the RecipientWithLink for the added recipient", response = RecipientWithLink.class),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
@@ -153,7 +164,15 @@ public interface FileApi {
         produces = { "application/json" }, 
         consumes = { "application/json" },
         method = RequestMethod.POST)
-    default ResponseEntity<Void> postFileSharedWith(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The userID or email of user to share the file with" ,required=true )  @Valid @RequestBody Recipient recipient) {
+    default ResponseEntity<RecipientWithLink> postFileSharedWith(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The userID or email of user to share the file with" ,required=true )  @Valid @RequestBody Recipient recipient) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    ApiUtil.setExampleResponse(request, "application/json", "null");
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
