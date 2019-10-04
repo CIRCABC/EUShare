@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { FileInfoUploader, UsersService, FileService } from '../openapi';
+import { FileInfoUploader, UsersService, FileService, Recipient } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 
 @Injectable({
@@ -16,7 +16,7 @@ export class UploadedFilesService {
   private previousPageFileInfoUploader: FileInfoUploader[] = [];
   private nextPageFileInfoUploader: FileInfoUploader[] = [];
 
-  private pageSize: number = 3;
+  private pageSize: number = 10;
   private pageNumber: number = 0;
 
   private userId!: string;
@@ -64,7 +64,13 @@ export class UploadedFilesService {
     this.nextPageFileInfoUploader = [];
 
     if (this.fileInfoUploader.length === this.pageSize) {
-      await this.getNextFileInfoUploader();
+      try {
+        await this.getNextFileInfoUploader();
+      } catch (error) {
+        this.notificationService.addErrorMessage(
+          'A problem occured while downloading files information. Please contact the support.'
+        );
+      }
     }
     this.emitValueToObservable();
   }
@@ -74,8 +80,14 @@ export class UploadedFilesService {
     this.nextPageFileInfoUploader = this.fileInfoUploader;
     this.fileInfoUploader = this.previousPageFileInfoUploader;
     this.previousPageFileInfoUploader = [];
-    if (this.pageNumber > 0 ) {
-      await this.getPreviousFileInfoUploader();
+    if (this.pageNumber > 0) {
+      try {
+        await this.getPreviousFileInfoUploader();
+      } catch (error) {
+        this.notificationService.addErrorMessage(
+          'A problem occured while downloading files information. Please contact the support.'
+        );
+      }
     }
     this.emitValueToObservable();
   }
@@ -115,6 +127,32 @@ export class UploadedFilesService {
       this.fileInfoUploader.push(elementToAddOrNull);
     }
     this.emitValueToObservable();
+  }
+
+  public async addOneRecipient(fileName: string, fileId: string, recipient: Recipient) {
+    try {
+      const recipientWithLink = await this.fileService
+        .postFileSharedWith(fileId, recipient)
+        .toPromise();
+
+      this.notificationService.addSuccessMessage(
+        'Succesfully added your recipient to ' + fileName
+      );
+
+      this.fileInfoUploader.map(file => {
+        if (file.fileId === fileId) {
+          file.sharedWith.push(recipientWithLink);
+        }
+      });
+
+      this.emitValueToObservable();
+    } catch (error) {
+      this.notificationService.errorMessageToDisplay(
+        error,
+        'adding your recipient'
+      );
+    }
+
   }
 }
 

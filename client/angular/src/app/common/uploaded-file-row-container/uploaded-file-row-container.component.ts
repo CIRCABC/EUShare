@@ -45,10 +45,8 @@ export class FileRowContainerComponent implements OnInit, OnDestroy {
   ) { }
 
   async ngOnInit() {
-    console.log('init!')
     if (this.userId) {
       this.subscription = this.fileInfoUploaderService.fileInfoUploaderArrayAndMetaData$.subscribe(next => {
-        console.log(JSON.stringify(next));
         this.fileInfoUploaderArray = next.fileInfoUploaderArray;
         this.hasNextPage = next.hasNextPage;
         this.hasPreviousPage = next.hasPreviousPage;
@@ -67,11 +65,7 @@ export class FileRowContainerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log('destroy!')
-
-    //this.fileInfoUploaderService.reinit(this.userId).then(() => {
-      this.subscription.unsubscribe();
-      this.fileInfoUploaderArray = [];
-    //});
+    this.subscription.unsubscribe();
+    this.fileInfoUploaderArray = [];
   }
 }

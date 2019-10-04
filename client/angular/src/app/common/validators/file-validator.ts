@@ -15,14 +15,6 @@ export function fileSizeValidator(notMoreThanInBytes: number): ValidatorFn {
     const file: File = control.value;
     if (file) {
       const forbidden = file.size >= notMoreThanInBytes;
-      if (forbidden) {
-        console.log(
-          'FORM ERROR :  forbiddenFileSize !' +
-            file.size +
-            '>' +
-            notMoreThanInBytes
-        );
-      }
       return forbidden
         ? { forbiddenFileSize: { value: notMoreThanInBytes } }
         : null;
