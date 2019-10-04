@@ -460,9 +460,6 @@ export class UploadComponent implements OnInit {
       case HttpEventType.DownloadProgress:
         return;
 
-      case HttpEventType.Response:
-        return;
-
       default:
         this.notificationService.addErrorMessage(
           'An error occured while downloading the file. Please contact the support.' +

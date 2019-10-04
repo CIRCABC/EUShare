@@ -6,11 +6,11 @@
       <fa-icon *ngIf="file.hasPassword" [icon]="faLock"></fa-icon>
       <br />
       <p class="subtitle is-5 filename">
-        <b>
+        <strong>
           {{
             file.name.length > 25 ? (file.name | slice: 0:25) + ".." : file.name
           }}
-        </b>
+        </strong>
       </p>
     </div>
     <div class="level-item">

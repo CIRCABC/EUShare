@@ -170,7 +170,7 @@ export class UploadedFilesService {
         'Succesfully added your recipient to ' + fileName
       );
 
-      this.fileInfoUploader.map(file => {
+      this.fileInfoUploader.forEach(file => {
         if (file.fileId === fileId) {
           file.sharedWith.push(recipientWithLink);
         }
