@@ -54,7 +54,7 @@ export class UploadComponent implements OnInit {
     private sessionApi: SessionService,
     private userApi: UsersService,
     private fileApi: FileService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {
     this.initializeFormGroup();
   }

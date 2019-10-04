@@ -57,7 +57,7 @@ export class AddRecipientsModalComponent implements OnInit {
     private modalService: ModalsService,
     private fb: FormBuilder,
     private uploadedFileService: UploadedFilesService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.sharedWithFormGroup = this.fb.group(
@@ -108,7 +108,11 @@ export class AddRecipientsModalComponent implements OnInit {
         sendEmail: this.sendEmailIsTrue
       };
     }
-    await this.uploadedFileService.addOneRecipient(this.modalFileName, this.modalFileId, recipient);
+    await this.uploadedFileService.addOneRecipient(
+      this.modalFileName,
+      this.modalFileId,
+      recipient
+    );
     this.uploadInProgress = false;
   }
 }

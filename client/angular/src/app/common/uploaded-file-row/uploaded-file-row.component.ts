@@ -40,7 +40,7 @@ export class UploadedFileRowComponent {
   constructor(
     private modalService: ModalsService,
     private uploadedFileService: UploadedFilesService
-  ) { }
+  ) {}
 
   public openDownloadModal() {
     this.modalService.activateDownloadModal(
@@ -55,7 +55,10 @@ export class UploadedFileRowComponent {
   }
 
   public async delete() {
-    await this.uploadedFileService.removeOneFile(this.file.fileId, this.file.name);
+    await this.uploadedFileService.removeOneFile(
+      this.file.fileId,
+      this.file.name
+    );
   }
 
   public displayRecipients() {

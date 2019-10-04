@@ -9,28 +9,40 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
-import { FileInfoUploader, UsersService, FileService, Recipient } from '../openapi';
+import {
+  FileInfoUploader,
+  UsersService,
+  FileService,
+  Recipient
+} from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UploadedFilesService {
-
-  private fileInfoUploaderArrayAndMetaDataSubject: Subject<FileUploaderArrayAndMetaData> = new Subject<FileUploaderArrayAndMetaData>();
-  public fileInfoUploaderArrayAndMetaData$: Observable<FileUploaderArrayAndMetaData> = this.fileInfoUploaderArrayAndMetaDataSubject.asObservable();
+  private fileInfoUploaderArrayAndMetaDataSubject: Subject<
+    FileUploaderArrayAndMetaData
+  > = new Subject<FileUploaderArrayAndMetaData>();
+  public fileInfoUploaderArrayAndMetaData$: Observable<
+    FileUploaderArrayAndMetaData
+  > = this.fileInfoUploaderArrayAndMetaDataSubject.asObservable();
 
   private fileInfoUploader: FileInfoUploader[] = [];
 
   private previousPageFileInfoUploader: FileInfoUploader[] = [];
   private nextPageFileInfoUploader: FileInfoUploader[] = [];
 
-  private pageSize: number = 10;
-  private pageNumber: number = 0;
+  private pageSize = 10;
+  private pageNumber = 0;
 
   private userId!: string;
 
-  constructor(private userService: UsersService, private notificationService: NotificationService, private fileService: FileService) { }
+  constructor(
+    private userService: UsersService,
+    private notificationService: NotificationService,
+    private fileService: FileService
+  ) {}
 
   private emitValueToObservable() {
     const fileInfoUploaderArrayAndMetaData: FileUploaderArrayAndMetaData = {
@@ -38,8 +50,10 @@ export class UploadedFilesService {
       hasNextPage: this.nextPageFileInfoUploader.length > 0,
       hasPreviousPage: this.pageNumber > 0,
       pageNumber: this.pageNumber
-    }
-    this.fileInfoUploaderArrayAndMetaDataSubject.next(fileInfoUploaderArrayAndMetaData);
+    };
+    this.fileInfoUploaderArrayAndMetaDataSubject.next(
+      fileInfoUploaderArrayAndMetaData
+    );
   }
 
   public async reinit(userId: string) {
@@ -102,22 +116,26 @@ export class UploadedFilesService {
   }
 
   private async getCurrentFileInfoUploader() {
-    this.fileInfoUploader = await this.userService.getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber).toPromise();
+    this.fileInfoUploader = await this.userService
+      .getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber)
+      .toPromise();
   }
 
   private async getNextFileInfoUploader() {
-    this.nextPageFileInfoUploader = await this.userService.getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber + 1).toPromise();
+    this.nextPageFileInfoUploader = await this.userService
+      .getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber + 1)
+      .toPromise();
   }
 
   private async getPreviousFileInfoUploader() {
-    this.previousPageFileInfoUploader = await this.userService.getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber - 1).toPromise();
+    this.previousPageFileInfoUploader = await this.userService
+      .getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber - 1)
+      .toPromise();
   }
 
   public async removeOneFile(fileId: string, fileName: string) {
     try {
-      await this.fileService
-        .deleteFile(fileId)
-        .toPromise();
+      await this.fileService.deleteFile(fileId).toPromise();
       this.notificationService.addSuccessMessage(
         'Successfully deleted file named ' + fileName
       );
@@ -138,7 +156,11 @@ export class UploadedFilesService {
     this.emitValueToObservable();
   }
 
-  public async addOneRecipient(fileName: string, fileId: string, recipient: Recipient) {
+  public async addOneRecipient(
+    fileName: string,
+    fileId: string,
+    recipient: Recipient
+  ) {
     try {
       const recipientWithLink = await this.fileService
         .postFileSharedWith(fileId, recipient)
@@ -161,11 +183,8 @@ export class UploadedFilesService {
         'adding your recipient'
       );
     }
-
   }
 }
-
-
 
 export interface FileUploaderArrayAndMetaData {
   fileInfoUploaderArray: FileInfoUploader[];

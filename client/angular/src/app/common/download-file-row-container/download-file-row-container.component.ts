@@ -27,11 +27,10 @@ export class DownloadFileRowContainerComponent implements OnInit {
   public fileInfoRecipientArrayPrevious: FileInfoRecipient[] = [];
   public fileInfoRecipientArrayNext: FileInfoRecipient[] = [];
 
-
   constructor(
     private userService: UsersService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     if (this.userId) {
@@ -74,15 +73,29 @@ export class DownloadFileRowContainerComponent implements OnInit {
   }
 
   private async getCurrentFileInfoUploader() {
-    this.fileInfoRecipientArray = await this.userService.getFilesFileInfoRecipient(this.userId, this.pageSize, this.pageNumber).toPromise();
+    this.fileInfoRecipientArray = await this.userService
+      .getFilesFileInfoRecipient(this.userId, this.pageSize, this.pageNumber)
+      .toPromise();
   }
 
   private async getNextFileInfoUploader() {
-    this.fileInfoRecipientArrayNext = await this.userService.getFilesFileInfoRecipient(this.userId, this.pageSize, this.pageNumber + 1).toPromise();
+    this.fileInfoRecipientArrayNext = await this.userService
+      .getFilesFileInfoRecipient(
+        this.userId,
+        this.pageSize,
+        this.pageNumber + 1
+      )
+      .toPromise();
   }
 
   private async getPreviousFileInfoUploader() {
-    this.fileInfoRecipientArrayPrevious = await this.userService.getFilesFileInfoRecipient(this.userId, this.pageSize, this.pageNumber - 1).toPromise();
+    this.fileInfoRecipientArrayPrevious = await this.userService
+      .getFilesFileInfoRecipient(
+        this.userId,
+        this.pageSize,
+        this.pageNumber - 1
+      )
+      .toPromise();
   }
 
   public async update() {

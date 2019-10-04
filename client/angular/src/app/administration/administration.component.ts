@@ -78,9 +78,9 @@ export class AdministrationComponent implements OnInit {
     private router: Router,
     private usersApi: UsersService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public async resultsNextPage() {
     this.removeSelection();
@@ -166,8 +166,7 @@ export class AdministrationComponent implements OnInit {
       this.changeIsLoading = true;
       this.selectedUserInfo.totalSpace =
         this.selectedValueInGigaBytes * 1024 * 1024 * 1024;
-      this.selectedUserInfo.isAdmin =
-        this.selectedIsAdminValue;
+      this.selectedUserInfo.isAdmin = this.selectedIsAdminValue;
       await this.usersApi
         .putUserUserInfo(this.selectedUserInfo.id, this.selectedUserInfo)
         .toPromise();
