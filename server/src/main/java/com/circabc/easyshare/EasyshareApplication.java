@@ -10,19 +10,19 @@
 
 package com.circabc.easyshare;
 
+import javax.annotation.PostConstruct;
+
 import com.circabc.easyshare.services.UserService;
 import com.fasterxml.jackson.databind.Module;
+
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import javax.annotation.PostConstruct;
+import org.springframework.context.annotation.Bean;
 
 import lombok.extern.slf4j.Slf4j;
 

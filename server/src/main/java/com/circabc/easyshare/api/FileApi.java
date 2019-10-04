@@ -14,11 +14,11 @@
  */
 package com.circabc.easyshare.api;
 
-import com.circabc.easyshare.model.FileInfoUploader;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
+import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.RecipientWithLink;

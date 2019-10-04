@@ -10,10 +10,11 @@
 
 package com.circabc.easyshare.api;
 
-import org.springframework.web.context.request.NativeWebRequest;
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.springframework.web.context.request.NativeWebRequest;
 
 public class ApiUtil {
     private ApiUtil() {

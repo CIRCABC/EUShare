@@ -10,13 +10,6 @@
 
 package com.circabc.easyshare.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-
 import java.net.ConnectException;
 
 import javax.mail.MessagingException;
@@ -24,6 +17,13 @@ import javax.mail.internet.MimeMessage;
 
 import com.circabc.easyshare.model.FileBasics;
 import com.circabc.easyshare.model.FileInfoRecipient;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 /**
  * Service for sending emails from EasyShare
