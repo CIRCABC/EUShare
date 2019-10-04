@@ -13,37 +13,37 @@ import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
 
 public class FileRequestValidator {
-    private FileRequestValidator(){
+    private FileRequestValidator() {
 
     }
 
-    public static boolean validate(FileRequest fileRequest) { //NOSONAR
-        if (fileRequest == null) {
+    public static boolean validate(FileRequest fileRequest) { // NOSONAR
+        if (fileRequest == null) {// NOSONAR
             return false;
         }
-        if (fileRequest.getExpirationDate() == null) { 
+        if (fileRequest.getExpirationDate() == null) { // NOSONAR
             return false;
         }
-        if (fileRequest.getHasPassword() == null) {
-            return false;
-        } 
-        if (fileRequest.getHasPassword() && fileRequest.getPassword() == null) {
+        if (fileRequest.getHasPassword() == null) {// NOSONAR
             return false;
         }
-        if (fileRequest.getName() == null) {
+        if (fileRequest.getHasPassword() && fileRequest.getPassword() == null) {// NOSONAR
             return false;
         }
-        if (fileRequest.getSize() == null) { 
+        if (fileRequest.getName() == null) {// NOSONAR
             return false;
         }
-        if (fileRequest.getSharedWith() == null) {
+        if (fileRequest.getSize() == null) { // NOSONAR
             return false;
         }
-        if (fileRequest.getSharedWith().isEmpty()) { 
+        if (fileRequest.getSharedWith() == null) {// NOSONAR
             return false;
         }
-        for(Recipient recipient : fileRequest.getSharedWith()) {
-            if (!RecipientValidator.validate(recipient)) {
+        if (fileRequest.getSharedWith().isEmpty()) { // NOSONAR
+            return false;
+        }
+        for (Recipient recipient : fileRequest.getSharedWith()) { //NOSONAR
+            if (!RecipientValidator.validate(recipient)) { //NOSONAR
                 return false;
             }
         }
