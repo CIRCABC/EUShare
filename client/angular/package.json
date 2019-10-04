@@ -39,7 +39,7 @@
       ".md",
       ".css"
     ],
-    "insert_license": true
+    "insert_license": false
   },
   "private": true,
   "dependencies": {
