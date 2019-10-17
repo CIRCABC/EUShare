@@ -27,7 +27,8 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<{}>> {
     const storedCredentials = this.sessionService.getStoredCredentials();
-    if (storedCredentials) {
+    const isGetFile = req.url.includes('/file/') && req.method === 'GET';
+    if (storedCredentials && !isGetFile) {
       req = req.clone({
         setHeaders: {
           Authorization:

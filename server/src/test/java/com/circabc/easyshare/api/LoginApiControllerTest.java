@@ -12,11 +12,16 @@ package com.circabc.easyshare.api;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Base64;
+import java.util.Collections;
+
+import com.circabc.easyshare.TestHelper;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.Status;
@@ -28,6 +33,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -41,10 +48,16 @@ public class LoginApiControllerTest {
     @MockBean
     private UserService service;
 
+    @org.junit.Before
+    public void setupUserDetails() {
+        UserDetails userDetails = new User("username", "password", Collections.emptySet());
+        when(service.loadUserByUsername(anyString())).thenReturn(userDetails);
+    }
+
     @Test
-    public void postLoginResponse200() throws Exception {//NOSONAR
+    public void postLoginResponse200() throws Exception {// NOSONAR
         Credentials credentials = new Credentials();
-        credentials.setEmail("email");
+        credentials.setEmail("username");
         credentials.setPassword("password");
         when(service.getAuthenticatedUserId(any(Credentials.class))).thenReturn("testId");
         this.mockMvc
@@ -54,7 +67,7 @@ public class LoginApiControllerTest {
     }
 
     @Test
-    public void postLoginResponse400() throws Exception {//NOSONAR
+    public void postLoginResponse400() throws Exception {// NOSONAR
         Status status = new Status();
         status.setCode(400);
         this.mockMvc
@@ -65,7 +78,7 @@ public class LoginApiControllerTest {
     }
 
     @Test
-    public void postLoginResponse401() throws Exception {//NOSONAR
+    public void postLoginResponse401() throws Exception {// NOSONAR
         Status status = new Status();
         status.setCode(401);
         Credentials credentials = new Credentials();
@@ -80,11 +93,11 @@ public class LoginApiControllerTest {
     }
 
     @Test
-    public void postLoginResponse500() throws Exception {//NOSONAR
+    public void postLoginResponse500() throws Exception {// NOSONAR
         Status status = new Status();
         status.setCode(500);
         Credentials credentials = new Credentials();
-        credentials.setEmail("email");
+        credentials.setEmail("username");
         credentials.setPassword("password");
         when(service.getAuthenticatedUserId(any(Credentials.class))).thenThrow(new NullPointerException());
         this.mockMvc

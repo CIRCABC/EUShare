@@ -30,52 +30,56 @@ public class ExceptionHandlerController {
 
    @ExceptionHandler(value = ResponseStatusException.class)
    public ResponseEntity<Object> responseStatusException(ResponseStatusException exception) {
-      return new ResponseEntity<>(exception.getMessage(), exception.getStatus());
+      return new ResponseEntity<>(exception.getReason(), exception.getStatus());
    }
 
-   @ExceptionHandler( value = MissingServletRequestParameterException.class)
-   public ResponseEntity<Object> missingServletRequestParameterException(MissingServletRequestParameterException exception) {
-      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),HttpStatus.BAD_REQUEST);
+   @ExceptionHandler(value = MissingServletRequestParameterException.class)
+   public ResponseEntity<Object> missingServletRequestParameterException(
+         MissingServletRequestParameterException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
    }
 
-   @ExceptionHandler (value = MethodArgumentNotValidException.class)
+   @ExceptionHandler(value = MethodArgumentNotValidException.class)
    public ResponseEntity<Object> methodArgumentNotValidException(MethodArgumentNotValidException exception) {
-      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
    }
-  
+
    @ExceptionHandler(value = HttpMediaTypeNotSupportedException.class)
    public ResponseEntity<Object> httpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException exception) {
-      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),
-            HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
    }
 
-   @ExceptionHandler( value = HttpMediaTypeNotAcceptableException.class)
+   @ExceptionHandler(value = HttpMediaTypeNotAcceptableException.class)
    public ResponseEntity<Object> httpMediaTypeNotAcceptableException(HttpMediaTypeNotAcceptableException exception) {
-      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),
-            HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
+   }
+
+   @ExceptionHandler(value = IllegalArgumentException.class)
+   public ResponseEntity<Object> illegalArgumentException(IllegalArgumentException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
    }
 
    @ExceptionHandler(value = org.springframework.http.converter.HttpMessageNotReadableException.class)
-   public ResponseEntity<Object> httpMessageNotReadableException(org.springframework.http.converter.HttpMessageNotReadableException exception) {
-      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),
-            HttpStatus.BAD_REQUEST);
+   public ResponseEntity<Object> httpMessageNotReadableException(
+         org.springframework.http.converter.HttpMessageNotReadableException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
    }
 
    @ExceptionHandler(value = ConstraintViolationException.class)
-   public ResponseEntity<Object> httpMessageNotReadableException(ConstraintViolationException exception) {
-      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(),HttpStatus.BAD_REQUEST);
+   public ResponseEntity<Object> constraintViolationException(ConstraintViolationException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
    }
 
    @ExceptionHandler(value = RuntimeException.class)
    public ResponseEntity<Object> nullPointerException(RuntimeException exception) {
-      log.error(exception.getMessage(),exception);
+      log.error(exception.getMessage(), exception);
       return new ResponseEntity<>(HttpErrorAnswerBuilder.build500EmptyToString(), HttpStatus.INTERNAL_SERVER_ERROR);
    }
 
    @ExceptionHandler(value = Exception.class)
    public ResponseEntity<Object> handle(Exception ex) {
-      log.error(ex.getMessage(),ex);
+      log.error(ex.getMessage(), ex);
       return new ResponseEntity<>(HttpErrorAnswerBuilder.build500EmptyToString(), HttpStatus.INTERNAL_SERVER_ERROR);
    }
-   
+
 }

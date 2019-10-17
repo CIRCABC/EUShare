@@ -31,6 +31,9 @@ import com.circabc.easyshare.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,11 +74,11 @@ public class UserApiController extends AbstractController implements UserApi {
     @RequestParam(value = "pageSize", required = true) Integer pageSize,
     @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             List<FileInfoRecipient> fileInfoRecipientList = fileService.getFileInfoRecipientOnBehalfOf(pageSize, pageNumber, userID, requesterId);
             return new ResponseEntity<>(fileInfoRecipientList, HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+        } catch (WrongAuthenticationException exc) {
            log.debug("wrong authentication !");
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     HttpErrorAnswerBuilder.build401EmptyToString(), exc);
@@ -91,11 +94,11 @@ public class UserApiController extends AbstractController implements UserApi {
      @RequestParam(value = "pageSize", required = true) Integer pageSize,
      @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             List<FileInfoUploader> fileInfoUploaderList = fileService.getFileInfoUploaderOnBehalfOf(pageSize, pageNumber, userID, requesterId);
             return new ResponseEntity<>(fileInfoUploaderList, HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+        } catch (WrongAuthenticationException exc) {
            log.debug("wrong authentication !");
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     HttpErrorAnswerBuilder.build401EmptyToString(), exc);
@@ -115,11 +118,11 @@ public class UserApiController extends AbstractController implements UserApi {
                         HttpErrorAnswerBuilder.build400EmptyToString());
             }
             try {
-                Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-                String requesterId = userService.getAuthenticatedUserId(credentials);
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                String requesterId = userService.getAuthenticatedUserId(authentication);
                 UserInfo acceptedUserInfo = userService.setUserInfoOnBehalfOf(userInfo, requesterId);
                 return new ResponseEntity<>(acceptedUserInfo, HttpStatus.OK);
-            } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+            } catch (WrongAuthenticationException exc) {
                log.debug("wrong authentication !");
                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                         HttpErrorAnswerBuilder.build401EmptyToString(), exc);
@@ -133,13 +136,13 @@ public class UserApiController extends AbstractController implements UserApi {
     @Override
     public ResponseEntity<UserInfo> getUserUserInfo(@PathVariable("userID") String userID){
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String userId = userService.getAuthenticatedUserId(credentials);
-            UserInfo userInfo = userService.getUserInfoOnBehalfOf(userId, userId);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
+            UserInfo userInfo = userService.getUserInfoOnBehalfOf(userID, requesterId);
             return new ResponseEntity<>(userInfo, HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc2) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-            HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc2);
+        } catch (WrongAuthenticationException exc2) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+            HttpErrorAnswerBuilder.build401EmptyToString(), exc2);
         } catch (UserUnauthorizedException | UnknownUserException exc3) {
             log.error(exc3.getMessage(),exc3);
             // should never occur

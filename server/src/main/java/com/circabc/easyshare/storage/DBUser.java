@@ -199,6 +199,10 @@ public class DBUser {
         EXTERNAL, INTERNAL, ADMIN
     }
 
+    public String toSpringSecurityRole (Role role){
+        return role.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

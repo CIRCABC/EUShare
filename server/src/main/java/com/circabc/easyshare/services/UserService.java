@@ -25,6 +25,12 @@ import com.circabc.easyshare.model.UserSpace;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Service;
 
 import com.circabc.easyshare.storage.DBUser;
@@ -39,7 +45,7 @@ import javax.transaction.Transactional;
 
 @Slf4j
 @Service
-public class UserService implements UserServiceInterface {
+public class UserService implements UserServiceInterface, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -47,8 +53,22 @@ public class UserService implements UserServiceInterface {
     @Autowired
     private EasyShareConfiguration esConfig;
 
+    public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException {
+        if (authentication != null && authentication.isAuthenticated()) {
+            User user = (User) authentication.getPrincipal();
+            DBUser dbUser = userRepository.findOneByUsername(user.getUsername());
+            if (dbUser != null) {
+                return dbUser.getId();
+            }
+        }
+        throw new WrongAuthenticationException();
+    }
+
     public String getAuthenticatedUserId(Credentials credentials) throws WrongAuthenticationException {
-        DBUser dbUser = userRepository.findOneByUsername(credentials.getEmail());
+        DBUser dbUser = userRepository.findOneByEmail(credentials.getEmail());
+        if (dbUser == null) {
+            dbUser = userRepository.findOneByUsername(credentials.getEmail());
+        }
         if (dbUser != null && dbUser.getPassword().equals(credentials.getPassword())) {
             return dbUser.getId();
         }
@@ -70,8 +90,8 @@ public class UserService implements UserServiceInterface {
      * One of the arguments can be null
      */
     public DBUser createExternalUser(String email, String name) {
-            DBUser user = DBUser.createExternalUser(email, name);
-            return userRepository.save(user);
+        DBUser user = DBUser.createExternalUser(email, name);
+        return userRepository.save(user);
     }
 
     DBUser getDbUser(String userId) throws UnknownUserException {
@@ -102,12 +122,14 @@ public class UserService implements UserServiceInterface {
     }
 
     public void createDefaultUsers() {
-        if (userRepository.findOneByUsername("admin") == null && userRepository.findOneByEmail("admin@admin.admin") == null) {
+        if (userRepository.findOneByUsername("admin") == null
+                && userRepository.findOneByEmail("admin@admin.admin") == null) {
             this.createAdminUser("admin");
         } else {
             log.warn("Admin could not be created, already exists");
         }
-        if (userRepository.findOneByUsername("username") == null && userRepository.findOneByEmail("email@email.com") == null)  {
+        if (userRepository.findOneByUsername("username") == null
+                && userRepository.findOneByEmail("email@email.com") == null) {
             this.createInternalUser("email@email.com", "name", "password", "username");
         } else {
             log.warn("Internal user could not be created, already exists");
@@ -277,5 +299,16 @@ public class UserService implements UserServiceInterface {
         } else {
             throw new UserUnauthorizedException();
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        DBUser dbUser = this.userRepository.findOneByUsername(username);
+        if (dbUser == null) {
+            throw new UsernameNotFoundException("User not found!");
+        }
+        UserDetails userDetails = User.builder().username(username).password(dbUser.getPassword())
+                .roles(dbUser.getRole().toString()).build();
+        return userDetails;
     }
 }

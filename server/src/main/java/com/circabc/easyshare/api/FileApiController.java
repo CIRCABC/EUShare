@@ -51,6 +51,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -85,11 +87,11 @@ public class FileApiController extends AbstractController implements FileApi {
     public ResponseEntity<Void> deleteFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "reason", required = false) String reason) {
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             fileService.deleteFileOnBehalfOf(fileID, reason, requesterId);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+        } catch (WrongAuthenticationException exc) {
             log.debug("wrong authentication !");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
                     exc);
@@ -107,11 +109,11 @@ public class FileApiController extends AbstractController implements FileApi {
     public ResponseEntity<Void> deleteFileSharedWithUser(@PathVariable("fileID") String fileID,
             @PathVariable("userID") String userID) {
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             fileService.removeShareOnFileOnBehalfOf(fileID, userID, requesterId);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+        } catch (WrongAuthenticationException exc) {
             log.debug("wrong authentication !");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
                     exc);
@@ -162,13 +164,13 @@ public class FileApiController extends AbstractController implements FileApi {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             String fileId = fileService.allocateFileOnBehalfOf(fileRequest.getExpirationDate(), fileRequest.getName(),
                     fileRequest.getPassword(), requesterId, fileRequest.getSharedWith(),
                     fileRequest.getSize().longValue(), requesterId);
             return new ResponseEntity<>(fileId, HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+        } catch (WrongAuthenticationException exc) {
             log.debug("wrong authentication !");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
                     exc);
@@ -213,11 +215,11 @@ public class FileApiController extends AbstractController implements FileApi {
         }
 
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             FileInfoUploader fileInfoUploader = fileService.saveOnBehalfOf(fileID, body, requesterId);
             return new ResponseEntity<>(fileInfoUploader, HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+        } catch (WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
                     HttpErrorAnswerBuilder.build401EmptyToString(), exc);
         } catch (FileLargerThanAllocationException exc) {
@@ -248,11 +250,11 @@ public class FileApiController extends AbstractController implements FileApi {
                     HttpErrorAnswerBuilder.build400EmptyToString());
         }
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             RecipientWithLink recipientWithLink = fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
             return new ResponseEntity<>(recipientWithLink, HttpStatus.OK);
-        } catch(NoAuthenticationException| WrongAuthenticationException exc) {
+        } catch(WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
             HttpErrorAnswerBuilder.build401EmptyToString(), exc);
         } catch ( UserUnauthorizedException exc) {

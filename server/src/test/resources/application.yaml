@@ -10,6 +10,7 @@ easyshare:
 logging:
   level:
     org.hibernate.type: trace
+    org.springframework.security: DEBUG
 spring:
   h2:
     console:
