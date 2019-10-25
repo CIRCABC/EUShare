@@ -7,11 +7,10 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
-import { FileInfoUploader, FileService } from '../../openapi';
+import { FileInfoUploader } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
-import { NotificationService } from '../notification/notification.service';
 import { UploadedFilesService } from '../../services/uploaded-files.service';
 
 @Component({

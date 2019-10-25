@@ -1,19 +1,33 @@
-<div class="field">
-  <label class="label">Email address</label>
-  <div class="control">
-    <input class="input" type="email" placeholder="user@example.com" [(ngModel)]="id">
+<div class="centered">
+  <div class="field">
+    <label class="label">Email address</label>
+    <div class="control">
+      <input
+        class="input"
+        type="email"
+        placeholder="user@example.com"
+        [(ngModel)]="id"
+      />
+    </div>
   </div>
-</div>
 
-<div class="field">
-  <label class="label">Password</label>
-  <div class="control">
-    <input class="input" type="password" (keyup.enter)="login()" [(ngModel)]="password">
+  <div class="field">
+    <label class="label">Password</label>
+    <div class="control">
+      <input
+        class="input"
+        type="password"
+        (keyup.enter)="login()"
+        [(ngModel)]="password"
+      />
+    </div>
   </div>
-</div>
 
-<div class="field">
-  <div class="control">
-    <button class="button is-link" (click)="login()" [disabled]="id === ''">Login</button>
+  <div class="field">
+    <div class="control">
+      <button class="button is-link" (click)="login()" [disabled]="id === ''">
+        Login
+      </button>
+    </div>
   </div>
 </div>

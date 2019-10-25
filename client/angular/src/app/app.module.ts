@@ -45,6 +45,8 @@ import { ShareWithUsersModalComponent } from './common/modals/share-with-users-m
 import { FileRowContainerComponent } from './common/uploaded-file-row-container/uploaded-file-row-container.component';
 import { DownloadFileRowContainerComponent } from './common/download-file-row-container/download-file-row-container.component';
 import { DownloadFileRowComponent } from './common/download-file-row/download-file-row.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -110,7 +112,9 @@ const routes: Routes = [
     ShareWithUsersModalComponent,
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,
-    DownloadFileRowComponent
+    DownloadFileRowComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     ApiModule,
