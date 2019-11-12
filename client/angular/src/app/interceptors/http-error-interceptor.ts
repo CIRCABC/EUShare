@@ -13,16 +13,17 @@ import {
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
-import { Component, Injectable, Injector, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { SessionService } from '../openapi';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private sessionService: SessionService) {}
+  constructor(private oAuthService: OAuthService, private sessionService: SessionService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -32,8 +33,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       catchError(err => {
         if (err.status === 401) {
           // auto logout if 401 response returned from api
-          this.sessionService.logout();
-          location.reload();
+          try {
+            this.oAuthService.silentRefresh().then(() => location.reload());
+          } catch (e) {
+            this.sessionService.logout();
+            location.reload();
+          }
         }
 
         const error = err.error.message || err.statusText;

@@ -17,12 +17,13 @@ import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
 import com.circabc.easyshare.exceptions.IllegalSpaceException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.model.UserSpace;
 
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.stereotype.Service;
 
 import com.circabc.easyshare.storage.DBUser;
@@ -56,21 +56,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException {
         if (authentication != null && authentication.isAuthenticated()) {
             User user = (User) authentication.getPrincipal();
-            DBUser dbUser = userRepository.findOneByUsername(user.getUsername());
+            DBUser dbUser = userRepository.findOneByEmail(user.getUsername());
             if (dbUser != null) {
                 return dbUser.getId();
             }
-        }
-        throw new WrongAuthenticationException();
-    }
-
-    public String getAuthenticatedUserId(Credentials credentials) throws WrongAuthenticationException {
-        DBUser dbUser = userRepository.findOneByEmail(credentials.getEmail());
-        if (dbUser == null) {
-            dbUser = userRepository.findOneByUsername(credentials.getEmail());
-        }
-        if (dbUser != null && dbUser.getPassword().equals(credentials.getPassword())) {
-            return dbUser.getId();
         }
         throw new WrongAuthenticationException();
     }
@@ -301,14 +290,33 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         }
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        DBUser dbUser = this.userRepository.findOneByUsername(username);
-        if (dbUser == null) {
-            throw new UsernameNotFoundException("User not found!");
+    public UserDetails getOrCreateUserDetails(String email, String givenName) throws UsernameNotFoundException {
+        DBUser dbUser = null;
+        if (StringUtils.validateEmailAddress(email)) {
+            dbUser = this.userRepository.findOneByEmail(email);
+            if (dbUser == null) {
+                dbUser = this.createInternalUser(email, givenName, null, null);
+            }
+            UserDetails userDetails = User.builder().username(email)
+                    .password(ObjectUtils.defaultIfNull(dbUser.getPassword(), "n/a")).roles(dbUser.getRole().toString())
+                    .build();
+            return userDetails;
         }
-        UserDetails userDetails = User.builder().username(username).password(dbUser.getPassword())
-                .roles(dbUser.getRole().toString()).build();
+        throw new UsernameNotFoundException("Invalid email adress as username");
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        DBUser dbUser = null;
+        if (StringUtils.validateEmailAddress(email)) {
+            dbUser = this.userRepository.findOneByEmail(email);
+        }
+        if (dbUser == null) {
+            throw new UsernameNotFoundException("Invalid email adress as username");
+        }
+        UserDetails userDetails = User.builder().username(email)
+                .password(ObjectUtils.defaultIfNull(dbUser.getPassword(), "n/a")).roles(dbUser.getRole().toString())
+                .build();
         return userDetails;
     }
 }

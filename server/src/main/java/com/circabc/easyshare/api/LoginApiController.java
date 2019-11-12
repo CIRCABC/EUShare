@@ -13,14 +13,14 @@ import java.util.Optional;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
@@ -49,15 +49,11 @@ public class LoginApiController implements LoginApi {
     }
 
     @Override
-    public ResponseEntity<String> postLogin(@RequestBody(required = false) Credentials credentials) {
+    public ResponseEntity<String> postLogin() {
         log.info("recieved login request");
-        if (credentials == null) {
-            ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.BAD_REQUEST,
-            HttpErrorAnswerBuilder.build400EmptyToString());
-            throw responseStatusException;
-        }
         try {
-            return new ResponseEntity<String>(userService.getAuthenticatedUserId(credentials), HttpStatus.OK);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            return new ResponseEntity<String>(userService.getAuthenticatedUserId(authentication), HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
             log.debug("wrong authentication !");
             ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.UNAUTHORIZED,

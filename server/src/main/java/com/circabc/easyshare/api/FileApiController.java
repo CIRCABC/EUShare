@@ -26,7 +26,6 @@ import com.circabc.easyshare.exceptions.FileLargerThanAllocationException;
 import com.circabc.easyshare.exceptions.IllegalFileSizeException;
 import com.circabc.easyshare.exceptions.IllegalFileStateException;
 import com.circabc.easyshare.exceptions.MessageTooLongException;
-import com.circabc.easyshare.exceptions.NoAuthenticationException;
 import com.circabc.easyshare.exceptions.UnknownFileException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserHasInsufficientSpaceException;
@@ -34,7 +33,6 @@ import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
@@ -68,7 +66,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")
-public class FileApiController extends AbstractController implements FileApi {
+public class FileApiController implements FileApi {
 
     private final NativeWebRequest request;
 

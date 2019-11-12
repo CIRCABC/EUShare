@@ -15,6 +15,11 @@ logging:
     org.springframework: ERROR
     org.hibernate.SQL: DEBUG
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/auth/realms/implicit/protocol/openid-connect/certs
   profiles:
     active: @spring.profiles.active@
   jackson:

@@ -14,11 +14,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
-import com.circabc.easyshare.exceptions.NoAuthenticationException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.services.UserService;
 
@@ -37,7 +35,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")
-public class UsersApiController extends AbstractController implements UsersApi {
+public class UsersApiController implements UsersApi {
 
     private final NativeWebRequest request;
 

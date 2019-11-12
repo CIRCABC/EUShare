@@ -130,6 +130,15 @@ public class DBUser {
     }
 
     /**
+     * Create a new user with specified role {@code EXTERNAL}
+     */
+    public static DBUser createExternalUser(String mail, String name, String password) throws IllegalArgumentException {
+        DBUser dbUser = DBUser.createExternalUser(mail, name);
+        dbUser.setPassword(password);
+        return dbUser;
+    }
+
+    /**
      * Create a new user with specified role {@code INTERNAL}
      *
      * @throws IllegalArgumentException If {@code totalSpace < 0}

@@ -21,20 +21,15 @@ import { SessionService } from '../openapi';
   providedIn: 'root'
 })
 export class BasicAuthenticationInterceptor implements HttpInterceptor {
-  constructor(private inj: Injector, private sessionService: SessionService) {}
+  constructor(private inj: Injector, private sessionService: SessionService) { }
   intercept(
     req: HttpRequest<{}>,
     next: HttpHandler
   ): Observable<HttpEvent<{}>> {
-    const storedCredentials = this.sessionService.getStoredCredentials();
     const isGetFile = req.url.includes('/file/') && req.method === 'GET';
-    if (storedCredentials && !isGetFile) {
+    if (isGetFile) {
       req = req.clone({
-        setHeaders: {
-          Authorization:
-            `Basic ` +
-            btoa(`${storedCredentials.email}:${storedCredentials.password}`)
-        }
+        headers: req.headers.delete('Authorization')
       });
     }
     return next.handle(req);

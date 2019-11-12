@@ -11,9 +11,10 @@ package com.circabc.easyshare.integration;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Base64;
+
 import com.circabc.easyshare.TestHelper;
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.storage.UserRepository;
 
@@ -126,7 +127,6 @@ public class LoginApiControllerITest {
     assertEquals(HttpErrorAnswerBuilder.build403NotAuthorizedToString(), entity.getBody());
   }
 
-  
   @Test
   public void putUserInfo200ITest() throws Exception {
     UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
@@ -143,7 +143,6 @@ public class LoginApiControllerITest {
     assertEquals(TestHelper.asJsonString(expectedUserInfo), entity.getBody());
   }
 
-
   @Test
   public void getUserInfo200ITest() throws Exception {
     UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
@@ -151,6 +150,20 @@ public class LoginApiControllerITest {
         .getForEntity("/user/" + expectedUserInfo.getId() + "/userInfo", String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(TestHelper.asJsonString(expectedUserInfo), entity.getBody());
+  }
+
+  @Test
+  public void openIdConnect200() throws Exception {
+    String url = "http://localhost:" + port + "/openidConnectAuthorization";
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setBearerAuth(Base64.getEncoder().encodeToString(
+        "cced798a-c8f7-4c79-aced-de9402655dc3.bf232a1e-fd09-44b6-8e71-b20b876a79c2.211002bc-e649-47a2-9b3d-8b3fc5385e3e"
+            .getBytes()));
+    HttpEntity<String> httpEntity = new HttpEntity<>("expectedUserInfo", headers);
+
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class);
+    assertEquals(HttpStatus.OK, entity.getStatusCode());
   }
 
 }

@@ -25,6 +25,7 @@ import { FilelinkComponent } from './filelink/filelink.component';
 import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
 import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
+import {HttpErrorInterceptor} from './interceptors/http-error-interceptor';
 import { LoginGuard } from './login.guard';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -45,6 +46,8 @@ import { ShareWithUsersModalComponent } from './common/modals/share-with-users-m
 import { FileRowContainerComponent } from './common/uploaded-file-row-container/uploaded-file-row-container.component';
 import { DownloadFileRowContainerComponent } from './common/download-file-row-container/download-file-row-container.component';
 import { DownloadFileRowComponent } from './common/download-file-row/download-file-row.component';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { CallBackComponent } from './call-back/call-back.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -81,6 +84,10 @@ const routes: Routes = [
     component: OtherUserSharedFilesComponent,
     data: { userName: 'dummyUserName' },
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'callback',
+    component: CallBackComponent
   }
 ];
 
@@ -110,7 +117,8 @@ const routes: Routes = [
     ShareWithUsersModalComponent,
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,
-    DownloadFileRowComponent
+    DownloadFileRowComponent,
+    CallBackComponent
   ],
   imports: [
     ApiModule,
@@ -119,6 +127,13 @@ const routes: Routes = [
     CalendarModule,
     FormsModule,
     HttpClientModule,
+    OAuthModule.forRoot({
+      resourceServer: {
+        allowedUrls: ['http://localhost:8888'],
+        sendAccessToken: true
+      }
+    }
+    ),
     RouterModule.forRoot(routes),
     FontAwesomeModule,
     BrowserAnimationsModule
@@ -129,8 +144,13 @@ const routes: Routes = [
       provide: HTTP_INTERCEPTORS,
       useClass: BasicAuthenticationInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptor,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

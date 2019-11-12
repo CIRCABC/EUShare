@@ -44,7 +44,6 @@ import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
 import com.circabc.easyshare.model.Recipient;
@@ -123,7 +122,6 @@ public class FileApiControllerTest {
         UserDetails userDetails = new User("username", "password", Collections.emptySet());
         when(service.loadUserByUsername(anyString())).thenReturn(userDetails);
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
-
         doNothing().when(fileService).deleteFileOnBehalfOf(anyString(), anyString(), anyString());
         this.mockMvc.perform(MockMvcRequestBuilders.delete("/file/" + fakeSearchedFileId) // NOSONAR
                 .param("reason", "fakeReason") // NOSONAR

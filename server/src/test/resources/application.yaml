@@ -12,6 +12,11 @@ logging:
     org.hibernate.type: trace
     org.springframework.security: DEBUG
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/auth/realms/implicit/protocol/openid-connect/certs
   h2:
     console:
       enabled: true

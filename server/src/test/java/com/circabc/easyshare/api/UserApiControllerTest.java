@@ -29,7 +29,6 @@ import com.circabc.easyshare.TestHelper;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.RecipientWithLink;
@@ -47,8 +46,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -95,7 +92,7 @@ public class UserApiControllerTest {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
                         .header("Authorization",
-                                "Basic " + Base64.getEncoder()
+                                "Bearer " + Base64.getEncoder()
                                         .encodeToString(userCredentialsInAuthorizationHeader.getBytes()))
                         .param("pageSize", "10").param("pageNumber", "0").contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

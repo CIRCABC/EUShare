@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: 'https://api.example.com/'
+  - url: http://localhost:8080/auth/realms/dev/.well-known/openid-configuration
 info:
   title: EasyShare
   description: This is a API definition for the EasyShare service.
@@ -22,6 +22,9 @@ paths:
       operationId: postLogin
       tags:
       - Session
+      security:
+        - openId:
+          - email
       responses:
         200:
           description: Returns the user id to use in all other requests
@@ -47,12 +50,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'           
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-               $ref: '#/components/schemas/Credentials'
   '/users/userInfo':
     parameters:
       - name: pageSize
@@ -78,7 +75,8 @@ paths:
       tags:
       - Users
       security:
-        - basicAuth: []
+        - openId:
+          - email
       responses:
         200:
           description: SUCCESS Returns a pageSize number of UserInfos corresponding to the searchString and the pageNumber for internal users Users
@@ -126,7 +124,8 @@ paths:
       tags:
       - Users
       security:
-        - basicAuth: []
+        - openId:
+          - email
       requestBody:
         required: true
         content:
@@ -176,7 +175,8 @@ paths:
       tags:
       - Users
       security:
-        - basicAuth: []
+        - openId:
+          - email
       responses:
         200:
           description: SUCCESS Returns the UserInfo of the selected user
@@ -234,7 +234,8 @@ paths:
       tags:
         - Users
       security:
-        - basicAuth: []
+        - openId:
+          - email
       responses:
         200:
           description: SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber.
@@ -294,7 +295,8 @@ paths:
       tags:
         - Users
       security:
-        - basicAuth: []
+        - openId:
+          - email
       responses:
         200:
           description: SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber
@@ -389,7 +391,8 @@ paths:
       tags:
       - File
       security:
-        - basicAuth: []
+        - openId:
+          - email
       responses:
         200:
           description: SUCCESS Deletes the file content and its meta data, also sends an email to original uploader with the reason of deletion if the reason is given
@@ -424,7 +427,8 @@ paths:
       tags:
       - File
       security:
-        - basicAuth: []
+        - openId:
+          - email
       requestBody:
         required: true
         content:
@@ -476,7 +480,8 @@ paths:
       tags:
       - File
       security:
-        - basicAuth: []
+        - openId:
+          - email
       requestBody:
         required: true
         description: The userID or email of user to share the file with
@@ -535,7 +540,8 @@ paths:
       tags:
       - File
       security:
-        - basicAuth: []
+        - openId:
+          - email
       requestBody:
         description: The file bytes
         content:
@@ -600,7 +606,8 @@ paths:
       tags:
       - File
       security:
-        - basicAuth: []
+        - openId:
+          - email
       responses:
         200:
           description: SUCCESS
@@ -630,9 +637,9 @@ paths:
                 $ref: '#/components/schemas/Status'
 components:
   securitySchemes:
-    basicAuth:
-      type: http
-      scheme: basic
+    openId:   # <--- Arbitrary name for the security scheme. Used to refer to it from elsewhere.
+      type: openIdConnect
+      openIdConnectUrl: https://localhost:8080/realms/dev/.well-known/openid-configuration
   parameters:
     pageSize:
       name: pageSize
@@ -680,20 +687,6 @@ components:
           description: Additional message
       required:
         - code
-    Credentials:
-      type: object
-      properties:
-        email:
-          description: User Email
-          type: string
-          format: email
-        password:
-          description: User password
-          type: string
-          format: base64
-      required:
-      - email
-      - password
     FileInfoUploader:
       allOf:
         - $ref: '#/components/schemas/FileBasics'

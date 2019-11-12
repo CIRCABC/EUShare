@@ -16,11 +16,9 @@ import java.util.Optional;
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
 import com.circabc.easyshare.exceptions.IllegalSpaceException;
-import com.circabc.easyshare.exceptions.NoAuthenticationException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.UserInfo;
@@ -32,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")
-public class UserApiController extends AbstractController implements UserApi {
+public class UserApiController implements UserApi {
 
     private final NativeWebRequest request;
 
