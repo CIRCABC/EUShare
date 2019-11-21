@@ -8,7 +8,11 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component } from '@angular/core';
-import { AuthConfig, NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
+import {
+  AuthConfig,
+  NullValidationHandler,
+  OAuthService
+} from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
 
 export const authCodeFlowConfig: AuthConfig = {
@@ -23,12 +27,11 @@ export const authCodeFlowConfig: AuthConfig = {
   responseType: 'id_token',
 
   scope: 'openid email',
-  //disableAtHashCheck: true,
+  // disableAtHashCheck: true,
   showDebugInformation: false,
   sessionChecksEnabled: false,
   tokenEndpoint: environment.OIDC_TOKENENDPOINT
 };
-
 
 @Component({
   selector: 'app-root',
@@ -44,6 +47,4 @@ export class AppComponent {
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
-
-
 }

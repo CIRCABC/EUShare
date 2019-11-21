@@ -1,5 +1,14 @@
-import {Injectable} from '@angular/core';
-import {KEYUTIL, KJUR, stob64u} from 'jsrsasign';
+/*
+EasyShare - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "EasyShare" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
+import { Injectable } from '@angular/core';
+import { KEYUTIL, KJUR, stob64u } from 'jsrsasign';
 
 /**
  * We want this class to be a singleton.
@@ -16,18 +25,24 @@ export class KeyStoreService {
   private readonly _PUBKEY = 'pubKey';
 
   constructor() {
-    console.debug('Creating new instance of Keystore service');
-
     this.load();
   }
 
   private load = () => {
-    const available = (sessionStorage.getItem(this._PRVKEY) != null && sessionStorage.getItem(this._PUBKEY) != null);
+    const available =
+      sessionStorage.getItem(this._PRVKEY) != null &&
+      sessionStorage.getItem(this._PUBKEY) != null;
 
     if (!available) {
       const keystore = KEYUTIL.generateKeypair('EC', 'secp256r1');
-      sessionStorage.setItem(this._PRVKEY, JSON.stringify(KEYUTIL.getJWKFromKey(keystore['prvKeyObj'])));
-      sessionStorage.setItem(this._PUBKEY, JSON.stringify(KEYUTIL.getJWKFromKey(keystore['pubKeyObj'])));
+      sessionStorage.setItem(
+        this._PRVKEY,
+        JSON.stringify(KEYUTIL.getJWKFromKey(keystore['prvKeyObj']))
+      );
+      sessionStorage.setItem(
+        this._PUBKEY,
+        JSON.stringify(KEYUTIL.getJWKFromKey(keystore['pubKeyObj']))
+      );
     }
   };
 
@@ -36,24 +51,28 @@ export class KeyStoreService {
    */
   private publicKey = () => {
     const pubKey = sessionStorage.getItem(this._PUBKEY);
-    if ( pubKey != null) {
+    if (pubKey != null) {
       return KEYUTIL.getKey(JSON.parse(pubKey));
     }
 
-    throw Error('Keystore service not correctly initialized, cannot obtain public key');
+    throw Error(
+      'Keystore service not correctly initialized, cannot obtain public key'
+    );
   };
 
   /**
    * Returns the private key instance from the generate key pair
    */
   private privateKey() {
-    const privKey = sessionStorage.getItem(this._PRVKEY)
-    if ( privKey != null) {
+    const privKey = sessionStorage.getItem(this._PRVKEY);
+    if (privKey != null) {
       return KEYUTIL.getKey(JSON.parse(privKey));
     }
 
-    throw Error('Keystore service not correctly initialized, cannot obtain private key');
-  };
+    throw Error(
+      'Keystore service not correctly initialized, cannot obtain private key'
+    );
+  }
 
   /**
    * Returns the public key instance in JWK format
@@ -63,7 +82,8 @@ export class KeyStoreService {
   /**
    * Returns the JWK public key instances in a Ba64URL encoded format
    */
-  publicJWKBase64UrlEncoded = () => stob64u(JSON.stringify(this.publicKeyAsJWK()));
+  publicJWKBase64UrlEncoded = () =>
+    stob64u(JSON.stringify(this.publicKeyAsJWK()));
 
   /**
    * Returns a random hex-string of <code>n</code> bytes
@@ -77,8 +97,8 @@ export class KeyStoreService {
    * @param jwtPayload
    */
   signJWT = (jwtPayload: object) => {
-    const privateKey : any = this.privateKey();
-    const jwtHeader = {alg: 'ES256', cty: 'JWT'};
+    const privateKey: any = this.privateKey();
+    const jwtHeader = { alg: 'ES256', cty: 'JWT' };
     return KJUR.jws.JWS.sign('ES256', jwtHeader, jwtPayload, privateKey);
   };
 
@@ -90,7 +110,7 @@ export class KeyStoreService {
   verifyJws = (payload: string) => {
     const publicKey: any = this.publicKey();
     return KJUR.jws.JWS.verify(payload, publicKey);
-  }
+  };
 
   /**
    * Remove all entries from the temp storage
@@ -107,5 +127,4 @@ export class KeyStoreService {
     this.clear();
     this.load();
   };
-
 }

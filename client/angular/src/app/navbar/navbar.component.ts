@@ -33,7 +33,10 @@ export class NavbarComponent implements OnInit {
   public isAdmin: boolean | null = null;
   public isBurgerActive = false;
 
-  constructor(private sessionService: SessionService, private oAuthService: OAuthService) { }
+  constructor(
+    private sessionService: SessionService,
+    private oAuthService: OAuthService
+  ) {}
 
   ngOnInit() {
     const userInfo = this.sessionService.getStoredUserInfo();
@@ -47,7 +50,7 @@ export class NavbarComponent implements OnInit {
         this.userName = secondUserInfo.name;
         this.isAdmin = secondUserInfo.isAdmin;
       },
-      error => { }
+      error => {}
     );
   }
 

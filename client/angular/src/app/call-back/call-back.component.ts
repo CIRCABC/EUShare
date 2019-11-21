@@ -1,3 +1,12 @@
+/*
+EasyShare - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "EasyShare" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -10,36 +19,40 @@ import { NotificationService } from '../common/notification/notification.service
   styleUrls: ['./call-back.component.scss']
 })
 export class CallBackComponent implements OnInit {
-
-  constructor(private userService: UsersService, private notificationService: NotificationService, private api: SessionService, private oAuthService: OAuthService, private router: Router) { }
+  constructor(
+    private userService: UsersService,
+    private notificationService: NotificationService,
+    private api: SessionService,
+    private oAuthService: OAuthService,
+    private router: Router
+  ) {}
 
   async ngOnInit() {
     this.oAuthService.events.subscribe(next => {
       const nextType: string = next.type;
       switch (nextType) {
-        case 'token_expires':
-          {
-            this.notificationService.addSuccessMessage('Your session expired');
-            this.api.logout();
-            break;
-          }
+        case 'token_expires': {
+          this.notificationService.addSuccessMessage('Your session expired');
+          this.api.logout();
+          break;
+        }
         case 'token_received':
         case 'token_refreshed':
-        case 'silently_refreshed':
-          {
-            this.notificationService.addSuccessMessage('Received valid token');
-            this.loginAndRedirect();
-            break;
-          }
+        case 'silently_refreshed': {
+          this.notificationService.addSuccessMessage('Received valid token');
+          this.loginAndRedirect();
+          break;
+        }
         case 'silent_refresh_timeout':
         case 'discovery_document_loaded':
-        case 'logout':
-          {
-            // nothing
-            break;
-          }
+        case 'logout': {
+          // nothing
+          break;
+        }
         default: {
-          this.notificationService.addErrorMessage('Encountered an OIDC error of type ' + next.type);
+          this.notificationService.addErrorMessage(
+            'Encountered an OIDC error of type ' + next.type
+          );
           break;
         }
       }
@@ -49,7 +62,9 @@ export class CallBackComponent implements OnInit {
   public async loginAndRedirect() {
     try {
       const identifier = await this.api.postLogin().toPromise();
-      const userInfo = await this.userService.getUserUserInfo(identifier).toPromise();
+      const userInfo = await this.userService
+        .getUserUserInfo(identifier)
+        .toPromise();
       this.api.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('home');
     } catch (e) {
@@ -59,5 +74,4 @@ export class CallBackComponent implements OnInit {
       );
     }
   }
-
 }

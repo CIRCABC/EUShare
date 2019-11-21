@@ -20,16 +20,16 @@ export class LoginComponent implements OnInit {
   constructor(
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
-  ) {
-  }
+  ) {}
 
-  ngOnInit() { 
-  }
+  ngOnInit() {}
 
   async login() {
     this.keyStoreService.prepareKeyStore();
-    const customQueryParams: {[key: string]: any} = {};
-    customQueryParams['req_cnf'] = this.keyStoreService.publicJWKBase64UrlEncoded();
+    const customQueryParams: { [key: string]: any } = {};
+    customQueryParams[
+      'req_cnf'
+    ] = this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;
     await this.oauthService.initImplicitFlow();
   }

@@ -79,7 +79,9 @@ export class DownloadButtonComponent implements OnInit {
           this.percentageDownloaded = 0;
         }
         if (event.status === 403) {
-          this.notificationService.addErrorMessage('It seems like you don\'t have the rights to access this file');
+          this.notificationService.addErrorMessage(
+            "It seems like you don't have the rights to access this file"
+          );
           this.isLoading = false;
           this.percentageDownloaded = 0;
         }

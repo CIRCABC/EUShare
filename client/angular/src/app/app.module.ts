@@ -25,7 +25,7 @@ import { FilelinkComponent } from './filelink/filelink.component';
 import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
 import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
-import {HttpErrorInterceptor} from './interceptors/http-error-interceptor';
+import { HttpErrorInterceptor } from './interceptors/http-error-interceptor';
 import { LoginGuard } from './login.guard';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -133,8 +133,7 @@ const routes: Routes = [
         allowedUrls: ['http://localhost:8888'],
         sendAccessToken: true
       }
-    }
-    ),
+    }),
     RouterModule.forRoot(routes),
     FontAwesomeModule,
     BrowserAnimationsModule
@@ -155,4 +154,4 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
