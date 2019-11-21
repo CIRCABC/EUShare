@@ -8,8 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { FileInfoUploader, UsersService } from '../../openapi';
-import { NotificationService } from '../notification/notification.service';
+import { FileInfoUploader } from '../../openapi';
 import { UploadedFilesService } from '../../services/uploaded-files.service';
 import { Subscription } from 'rxjs';
 

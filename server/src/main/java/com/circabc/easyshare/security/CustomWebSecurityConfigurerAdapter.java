@@ -10,7 +10,7 @@
 
 package com.circabc.easyshare.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,17 +21,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-import com.circabc.easyshare.services.UserService;
-import com.circabc.easyshare.security.CustomAuthenticationEntryPoint;
-import com.circabc.easyshare.security.CustomAccessDeniedHandler;
-
 @Configuration
 @EnableWebSecurity(debug = true)
 public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private UserService userService;
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -42,31 +34,27 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         .authorizeRequests()
         .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()                      // Authorizing login by anyone, after authentication or not
         .antMatchers(HttpMethod.GET,"/file/{.+}").anonymous()                   // If an Authorization Header is present, will return 403
-        .antMatchers(HttpMethod.GET,"/users/userInfo").hasAuthority("ROLE_ADMIN")
-        .antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
-        .anyRequest().authenticated()                               // Forces successful authentication for the rest of the mapping
+        //.antMatchers(HttpMethod.GET,"/users/userInfo").hasAuthority("ROLE_ADMIN") // For later use, when opaqueToken will support authentication converter
+        //.antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
+        .anyRequest().authenticated()     
+        .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())                          // Forces successful authentication for the rest of the mapping
         .and()
-            .oauth2ResourceServer()                                         // Set up of a OAuth Resource server
+            .oauth2ResourceServer()                                 // Set up of a OAuth Resource server
             .authenticationEntryPoint(authenticationEntryPoint())
-            .jwt().jwtAuthenticationConverter(jwtAuthenticationConverter()) // Conversion of the token to a DB user
-            .and()
-        .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+            .opaqueToken();
+            //.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())// Conversion of the token to a DB user
+            //.and()
         //@formatter:on
     }
 
+    
     @Bean
     AuthenticationEntryPoint authenticationEntryPoint() {
         return new CustomAuthenticationEntryPoint();
     }
 
     @Bean
-    OIDCJwtAuthenticationConverter jwtAuthenticationConverter() {
-        return new OIDCJwtAuthenticationConverter(userService);
-    }
-
-    @Bean
     AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
-
 }

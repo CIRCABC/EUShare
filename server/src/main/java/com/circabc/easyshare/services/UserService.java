@@ -10,18 +10,25 @@
 
 package com.circabc.easyshare.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
 import com.circabc.easyshare.configuration.EasyShareConfiguration;
-import com.circabc.easyshare.exceptions.WrongAuthenticationException;
-import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
 import com.circabc.easyshare.exceptions.IllegalSpaceException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
+import com.circabc.easyshare.exceptions.WrongAuthenticationException;
+import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.model.UserSpace;
-
-import lombok.extern.slf4j.Slf4j;
+import com.circabc.easyshare.storage.DBUser;
+import com.circabc.easyshare.storage.DBUser.Role;
+import com.circabc.easyshare.storage.UserRepository;
+import com.circabc.easyshare.utils.StringUtils;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,17 +38,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
 
-import com.circabc.easyshare.storage.DBUser;
-import com.circabc.easyshare.storage.UserRepository;
-import com.circabc.easyshare.storage.DBUser.Role;
-import com.circabc.easyshare.utils.StringUtils;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -54,9 +55,25 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     private EasyShareConfiguration esConfig;
 
     public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException {
-        if (authentication != null && authentication.isAuthenticated()) {
-            User user = (User) authentication.getPrincipal();
-            DBUser dbUser = userRepository.findOneByEmail(user.getUsername());
+        if (authentication != null && authentication.isAuthenticated()
+                && (authentication instanceof BearerTokenAuthentication)
+                && (authentication.getPrincipal() instanceof DefaultOAuth2AuthenticatedPrincipal)) {
+            BearerTokenAuthentication bearerTokenAuthentication = (BearerTokenAuthentication) authentication;
+            DefaultOAuth2AuthenticatedPrincipal principal = (DefaultOAuth2AuthenticatedPrincipal) bearerTokenAuthentication
+                    .getPrincipal();
+            String email = principal.getAttribute("email");
+            String username = principal.getAttribute("username");
+
+            if (email == null || username == null) {
+                throw new WrongAuthenticationException("Wrong token, cannot find email or username claim");
+            }
+
+            DBUser dbUser = null;
+            try {
+                dbUser = this.getOrCreateDbInternalUser(email, username);
+            } catch (WrongEmailStructureException e) {
+                throw new WrongAuthenticationException(e);
+            }
             if (dbUser != null) {
                 return dbUser.getId();
             }
@@ -70,7 +87,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     }
 
     public DBUser createAdminUser(String password) {
-        DBUser user = this.createInternalUser("admin@admin.admin", "admin", password, "admin"); // NOSONAR
+        DBUser user = this.createInternalUser("admin@admin.com", "admin", password, "admin"); // NOSONAR
         user.setRole(Role.ADMIN);
         return userRepository.save(user);
     }
@@ -112,7 +129,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
     public void createDefaultUsers() {
         if (userRepository.findOneByUsername("admin") == null
-                && userRepository.findOneByEmail("admin@admin.admin") == null) {
+                && userRepository.findOneByEmail("admin@admin.com") == null) {
             this.createAdminUser("admin");
         } else {
             log.warn("Admin could not be created, already exists");
@@ -303,6 +320,34 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             return userDetails;
         }
         throw new UsernameNotFoundException("Invalid email adress as username");
+    }
+
+    /**
+     * Creates an internal user with {@code email} and {@code givenName}
+     * 
+     * @param email
+     * @param givenName
+     * @throws WrongEmailStructureException if {@code email} has a wrong structure
+     */
+    public DBUser getOrCreateDbInternalUser(String email, String givenName) throws WrongEmailStructureException {
+        DBUser dbUser = null;
+        if (StringUtils.validateEmailAddress(email)) {
+            dbUser = this.userRepository.findOneByEmail(email);
+            if (dbUser == null) {
+                dbUser = this.createInternalUser(email, givenName, null, null);
+            } else {
+                if (dbUser.getName() == null) {
+                    dbUser.setName(givenName);
+                    userRepository.save(dbUser);
+                }
+                if (dbUser.getRole().equals(DBUser.Role.EXTERNAL)) {
+                    dbUser.setRole(DBUser.Role.INTERNAL);
+                    userRepository.save(dbUser);
+                }
+            }
+            return dbUser;
+        }
+        throw new WrongEmailStructureException();
     }
 
     @Override

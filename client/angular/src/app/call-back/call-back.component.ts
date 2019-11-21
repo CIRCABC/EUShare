@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { SessionService, UsersService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
-import { delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-call-back',
@@ -20,12 +19,8 @@ export class CallBackComponent implements OnInit {
       switch (nextType) {
         case 'token_expires':
           {
-            this.notificationService.addErrorMessage('Encountered an OIDC error of type ' + next.type);
-            this.oAuthService.silentRefresh().then(()=> {
-              this.notificationService.addSuccessMessage('Refreshed authentication token');
-            }).catch(() => {
-              this.notificationService.addErrorMessage('Authentication token could not be refreshed');
-            });
+            this.notificationService.addSuccessMessage('Your session expired');
+            this.api.logout();
             break;
           }
         case 'token_received':
@@ -36,6 +31,7 @@ export class CallBackComponent implements OnInit {
             this.loginAndRedirect();
             break;
           }
+        case 'silent_refresh_timeout':
         case 'discovery_document_loaded':
         case 'logout':
           {
@@ -57,7 +53,6 @@ export class CallBackComponent implements OnInit {
       this.api.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('home');
     } catch (e) {
-      console.log(e);
       this.notificationService.errorMessageToDisplay(
         e,
         'loading your user information'

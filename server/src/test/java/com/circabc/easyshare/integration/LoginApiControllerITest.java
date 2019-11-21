@@ -10,26 +10,42 @@
 package com.circabc.easyshare.integration;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 import java.util.Base64;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 
-import com.circabc.easyshare.TestHelper;
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.storage.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import lombok.extern.slf4j.Slf4j;
@@ -45,60 +61,77 @@ public class LoginApiControllerITest {
   @Autowired
   private UserRepository userRepository;
 
+  @MockBean
+  private OpaqueTokenIntrospector opaqueTokenIntrospector;
+
   @LocalServerPort
   private int port;
 
   @Test
   public void postLogin200ITest() throws Exception {
-    Credentials credentials = new Credentials();
-    credentials.setEmail("email@email.com");
-    credentials.setPassword("password");
-    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", credentials, String.class);
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    httpHeaders.setOrigin("http://localhost:8080");
+    httpHeaders.setBearerAuth("token");
+    HttpEntity httpEntity = new HttpEntity<String>("", httpHeaders);
+
+    Map<String, Object> attributes = new HashMap<>();
+    attributes.put("email", "email@email.com");
+    attributes.put("username", "username");
+    SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
+    Collection<GrantedAuthority> collection = new LinkedList();
+
+    collection.add(grantedAuthority);
+    OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal("username",
+        attributes, collection);
+    when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
+
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(userRepository.findOneByEmail("email@email.com").getId(), entity.getBody());
   }
 
   @Test
-  public void postLogin400ITest() throws Exception {
-    Credentials credentials = new Credentials();
-    credentials.setEmail("email@email.com");
-    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", credentials, String.class);
-    assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
-    assertEquals(HttpErrorAnswerBuilder.build400EmptyToString(), entity.getBody());
-  }
-
-  @Test
   public void postLogin401ITest() throws Exception {
-    Credentials credentials = new Credentials();
-    credentials.setEmail("email@email.com");
-    credentials.setPassword("wrongPassword");
-    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", credentials, String.class);
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    httpHeaders.setOrigin("http://localhost:8080");
+    httpHeaders.setBearerAuth("token");
+    HttpEntity httpEntity = new HttpEntity<String>("", httpHeaders);
+
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(HttpErrorAnswerBuilder.build401EmptyToString(), entity.getBody());
   }
 
   @Test
   public void getUsersInfo200ITest() throws Exception {
+    HttpEntity httpEntity = authenticateAsAdmin("");
     int pageSize = 1;
     int pageNumber = 0;
     String searchString = "email@email.com";
     UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
     UserInfo[] expectedUserInfos = { expectedUserInfo };
-    ResponseEntity<String> entity = this.testRestTemplate.withBasicAuth("admin", "admin").getForEntity(
-        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}", String.class,
-        pageSize, pageNumber, searchString);
+
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}", HttpMethod.GET,
+        httpEntity, String.class, pageSize, pageNumber, searchString);
+
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(TestHelper.asJsonString(expectedUserInfos), entity.getBody());
+    assertEquals(LoginApiControllerITest.asJsonString(expectedUserInfos), entity.getBody());
   }
 
   @Test
   public void getUsersInfo400ITest() throws Exception {
+    HttpEntity httpEntity = authenticateAsAdmin("");
+
     int pageSize = 0;
     int pageNumber = 0;
     String searchString = "email@email.com";
-    ResponseEntity<String> entity = this.testRestTemplate.withBasicAuth("admin", "admin").getForEntity(
-        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}", String.class,
-        pageSize, pageNumber, searchString);
+
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}", HttpMethod.GET,
+        httpEntity, String.class, pageSize, pageNumber, searchString);
     assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     assertEquals(HttpErrorAnswerBuilder.build400EmptyToString(), entity.getBody());
   }
@@ -120,9 +153,12 @@ public class LoginApiControllerITest {
     int pageSize = 1;
     int pageNumber = 0;
     String searchString = "email@email.com";
-    ResponseEntity<String> entity = this.testRestTemplate.withBasicAuth("username", "password").getForEntity(
-        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}", String.class,
-        pageSize, pageNumber, searchString);
+
+    HttpEntity<String> httpEntity = this.authenticateAsInternalUser(searchString);
+
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}", HttpMethod.GET,
+        httpEntity, String.class, pageSize, pageNumber, searchString);
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(HttpErrorAnswerBuilder.build403NotAuthorizedToString(), entity.getBody());
   }
@@ -131,39 +167,75 @@ public class LoginApiControllerITest {
   public void putUserInfo200ITest() throws Exception {
     UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
     expectedUserInfo.setIsAdmin(true);
-
-    String url = "http://localhost:" + port + "/user/" + expectedUserInfo.getId() + "/userInfo";
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setBasicAuth("admin", "admin");
-    HttpEntity<UserInfo> httpEntity = new HttpEntity<>(expectedUserInfo, headers);
-
-    ResponseEntity<String> entity = this.testRestTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class);
+    HttpEntity<String> httpEntity = this.authenticateAsAdmin(LoginApiControllerITest.asJsonString(expectedUserInfo));
+    ResponseEntity<String> entity = this.testRestTemplate.exchange("/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.PUT, httpEntity, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(TestHelper.asJsonString(expectedUserInfo), entity.getBody());
+    assertEquals(LoginApiControllerITest.asJsonString(expectedUserInfo), entity.getBody());
   }
 
   @Test
   public void getUserInfo200ITest() throws Exception {
     UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
-    ResponseEntity<String> entity = this.testRestTemplate.withBasicAuth("admin", "admin")
-        .getForEntity("/user/" + expectedUserInfo.getId() + "/userInfo", String.class);
+    HttpEntity<String> httpEntity = this.authenticateAsAdmin(LoginApiControllerITest.asJsonString(expectedUserInfo));
+
+    ResponseEntity<String> entity = this.testRestTemplate.exchange("/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.GET, httpEntity, String.class);
+
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(TestHelper.asJsonString(expectedUserInfo), entity.getBody());
+    assertEquals(LoginApiControllerITest.asJsonString(expectedUserInfo), entity.getBody());
   }
 
-  @Test
-  public void openIdConnect200() throws Exception {
-    String url = "http://localhost:" + port + "/openidConnectAuthorization";
+  public static String asJsonString(final Object obj) {
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.registerModule(new JavaTimeModule());
+      mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+      final String jsonContent = mapper.writeValueAsString(obj);
+      return jsonContent;
+    } catch (Exception e) {
+      throw new RuntimeException(e);// NOSONAR
+    }
+  }
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setBearerAuth(Base64.getEncoder().encodeToString(
-        "cced798a-c8f7-4c79-aced-de9402655dc3.bf232a1e-fd09-44b6-8e71-b20b876a79c2.211002bc-e649-47a2-9b3d-8b3fc5385e3e"
-            .getBytes()));
-    HttpEntity<String> httpEntity = new HttpEntity<>("expectedUserInfo", headers);
+  public HttpEntity<String> authenticateAsAdmin(String body) {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    httpHeaders.setOrigin("http://localhost:8080");
+    httpHeaders.setBearerAuth("token");
+    HttpEntity<String> httpEntity = new HttpEntity<String>(body, httpHeaders);
 
-    ResponseEntity<String> entity = this.testRestTemplate.exchange(url, HttpMethod.PUT, httpEntity, String.class);
-    assertEquals(HttpStatus.OK, entity.getStatusCode());
+    Map<String, Object> attributes = new HashMap<>();
+    attributes.put("email", "admin@admin.com");
+    attributes.put("username", "admin");
+    SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ADMIN");
+    Collection<GrantedAuthority> collection = new LinkedList();
+
+    collection.add(grantedAuthority);
+    OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal("admin",
+        attributes, collection);
+    when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
+    return httpEntity;
+  }
+
+  public HttpEntity<String> authenticateAsInternalUser(String body) {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    httpHeaders.setOrigin("http://localhost:8080");
+    httpHeaders.setBearerAuth("token");
+    HttpEntity httpEntity = new HttpEntity<String>(body, httpHeaders);
+
+    Map<String, Object> attributes = new HashMap<>();
+    attributes.put("email", "email@email.com");
+    attributes.put("username", "username");
+    SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
+    Collection<GrantedAuthority> collection = new LinkedList();
+
+    collection.add(grantedAuthority);
+    OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal("username",
+        attributes, collection);
+    when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
+    return httpEntity;
   }
 
 }

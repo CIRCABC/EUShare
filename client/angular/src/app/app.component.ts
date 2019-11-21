@@ -8,35 +8,25 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthConfig, NullValidationHandler, OAuthService } from 'angular-oauth2-oidc';
+import { environment } from '../environments/environment';
 
 export const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
-  issuer: 'http://localhost:8080/auth/realms/implicit',
+  issuer: environment.OIDC_ISSUER,
   // URL of the SPA to redirect the user to after login
-  redirectUri: window.location.origin + '/callback',
-  // The SPA's id. The SPA is registerd with this id at the auth-server
-  // clientId: 'server.code',
-  clientId: 'implicit-client',
-  // Just needed if your auth server demands a secret. In general, this
-  // is a sign that the auth server is not configured with SPAs in mind
-  // and it might not enforce further best practices vital for security
-  // such applications.
-  // dummyClientSecret: 'secret',
-  responseType: 'id_token',
-  // set the scope for the permissions the client should request
-  // The first four are defined by OIDC. 
-  // Important: Request offline_access to get a refresh token
-  // The api scope is a usecase specific one,
+  redirectUri: environment.OIDC_REDIRECTURI,
   silentRefreshRedirectUri: window.location.origin + '/tokenRefresh.html',
+  clientId: environment.OIDC_CLIENTID,
+  requestAccessToken: false,
 
-  //scope: 'openid profile email offline_access',
+  responseType: 'id_token',
+
   scope: 'openid email',
   //disableAtHashCheck: true,
-  showDebugInformation: true,
-  // Not recommented:
-  //disablePKCE: true
+  showDebugInformation: false,
+  sessionChecksEnabled: false,
+  tokenEndpoint: environment.OIDC_TOKENENDPOINT
 };
 
 
@@ -45,7 +35,7 @@ export const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  constructor(private oauthService: OAuthService, private router: Router) {
+  constructor(private oauthService: OAuthService) {
     this.configure();
   }
 

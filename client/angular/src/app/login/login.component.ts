@@ -9,6 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { KeyStoreService } from '../services/key-store.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ import { OAuthService } from 'angular-oauth2-oidc';
 })
 export class LoginComponent implements OnInit {
   constructor(
-    private oauthService: OAuthService
+    private oauthService: OAuthService,
+    private keyStoreService: KeyStoreService
   ) {
   }
 
@@ -25,6 +27,10 @@ export class LoginComponent implements OnInit {
   }
 
   async login() {
+    this.keyStoreService.prepareKeyStore();
+    const customQueryParams: {[key: string]: any} = {};
+    customQueryParams['req_cnf'] = this.keyStoreService.publicJWKBase64UrlEncoded();
+    this.oauthService.customQueryParams = customQueryParams;
     await this.oauthService.initImplicitFlow();
   }
 }

@@ -50,7 +50,6 @@ public class LoginApiController implements LoginApi {
 
     @Override
     public ResponseEntity<String> postLogin() {
-        log.info("recieved login request");
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             return new ResponseEntity<String>(userService.getAuthenticatedUserId(authentication), HttpStatus.OK);

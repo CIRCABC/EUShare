@@ -48,6 +48,7 @@ import { DownloadFileRowContainerComponent } from './common/download-file-row-co
 import { DownloadFileRowComponent } from './common/download-file-row/download-file-row.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { CallBackComponent } from './call-back/call-back.component';
+import { KeyStoreService } from './services/key-store.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -139,6 +140,7 @@ const routes: Routes = [
     BrowserAnimationsModule
   ],
   providers: [
+    KeyStoreService,
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
     {
       provide: HTTP_INTERCEPTORS,

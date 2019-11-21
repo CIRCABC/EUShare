@@ -67,84 +67,92 @@ public class UserApiController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<List<FileInfoRecipient>> getFilesFileInfoRecipient(@PathVariable("userID") String userID, 
-    @RequestParam(value = "pageSize", required = true) Integer pageSize,
-    @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
+    public ResponseEntity<List<FileInfoRecipient>> getFilesFileInfoRecipient(@PathVariable("userID") String userID,
+            @RequestParam(value = "pageSize", required = true) Integer pageSize,
+            @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
-            List<FileInfoRecipient> fileInfoRecipientList = fileService.getFileInfoRecipientOnBehalfOf(pageSize, pageNumber, userID, requesterId);
+            List<FileInfoRecipient> fileInfoRecipientList = fileService.getFileInfoRecipientOnBehalfOf(pageSize,
+                    pageNumber, userID, requesterId);
             return new ResponseEntity<>(fileInfoRecipientList, HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
-           log.debug("wrong authentication !");
-           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    HttpErrorAnswerBuilder.build401EmptyToString(), exc);
+            log.debug("wrong authentication !");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
         } catch (UserUnauthorizedException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
         } catch (UnknownUserException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString(), e);
         }
     }
 
     @Override
     public ResponseEntity<List<FileInfoUploader>> getFilesFileInfoUploader(@PathVariable("userID") String userID,
-     @RequestParam(value = "pageSize", required = true) Integer pageSize,
-     @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
+            @RequestParam(value = "pageSize", required = true) Integer pageSize,
+            @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
-            List<FileInfoUploader> fileInfoUploaderList = fileService.getFileInfoUploaderOnBehalfOf(pageSize, pageNumber, userID, requesterId);
+            List<FileInfoUploader> fileInfoUploaderList = fileService.getFileInfoUploaderOnBehalfOf(pageSize,
+                    pageNumber, userID, requesterId);
             return new ResponseEntity<>(fileInfoUploaderList, HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
-           log.debug("wrong authentication !");
-           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    HttpErrorAnswerBuilder.build401EmptyToString(), exc);
+            log.debug("wrong authentication !");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
         } catch (UserUnauthorizedException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
         } catch (UnknownUserException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString(), e);
         }
     }
 
     @Override
-    public ResponseEntity<UserInfo> putUserUserInfo(
-        @PathVariable("userID") String userID,
-        @RequestBody UserInfo userInfo) {
-            if (!UserInfoValidator.validate(userInfo)) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        HttpErrorAnswerBuilder.build400EmptyToString());
-            }
-            try {
-                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                String requesterId = userService.getAuthenticatedUserId(authentication);
-                UserInfo acceptedUserInfo = userService.setUserInfoOnBehalfOf(userInfo, requesterId);
-                return new ResponseEntity<>(acceptedUserInfo, HttpStatus.OK);
-            } catch (WrongAuthenticationException exc) {
-               log.debug("wrong authentication !");
-               throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                        HttpErrorAnswerBuilder.build401EmptyToString(), exc);
-            } catch (UserUnauthorizedException | ExternalUserCannotBeAdminException | IllegalSpaceException e) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN, HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
-            } catch (UnknownUserException e) {
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(), e);
-            }
+    public ResponseEntity<UserInfo> putUserUserInfo(@PathVariable("userID") String userID,
+            @RequestBody UserInfo userInfo) {
+        if (!UserInfoValidator.validate(userInfo)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
+        }
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
+            UserInfo acceptedUserInfo = userService.setUserInfoOnBehalfOf(userInfo, requesterId);
+            return new ResponseEntity<>(acceptedUserInfo, HttpStatus.OK);
+        } catch (WrongAuthenticationException exc) {
+            log.debug("wrong authentication !");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
+        } catch (UserUnauthorizedException | ExternalUserCannotBeAdminException | IllegalSpaceException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
+        } catch (UnknownUserException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(), e);
+        }
     }
 
     @Override
-    public ResponseEntity<UserInfo> getUserUserInfo(@PathVariable("userID") String userID){
+    public ResponseEntity<UserInfo> getUserUserInfo(@PathVariable("userID") String userID) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
             UserInfo userInfo = userService.getUserInfoOnBehalfOf(userID, requesterId);
             return new ResponseEntity<>(userInfo, HttpStatus.OK);
         } catch (WrongAuthenticationException exc2) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-            HttpErrorAnswerBuilder.build401EmptyToString(), exc2);
-        } catch (UserUnauthorizedException | UnknownUserException exc3) {
-            log.error(exc3.getMessage(),exc3);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc2);
+        } catch (UserUnauthorizedException ec) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), ec);
+        } catch (UnknownUserException exc3) {
+            log.error(exc3.getMessage(), exc3);
             // should never occur
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-            HttpErrorAnswerBuilder.build500EmptyToString());
+                    HttpErrorAnswerBuilder.build500EmptyToString());
         }
     }
 

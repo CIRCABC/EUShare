@@ -7,23 +7,17 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import {
-  HttpEvent,
-  HttpHandler,
-  HttpInterceptor,
-  HttpRequest
-} from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SessionService } from '../openapi';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { NotificationService } from '../common/notification/notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private oAuthService: OAuthService, private sessionService: SessionService) {}
+  constructor(private notificationService: NotificationService) { }
 
   intercept(
     req: HttpRequest<any>,
@@ -32,15 +26,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError(err => {
         if (err.status === 401) {
-          // auto logout if 401 response returned from api
-          try {
-            this.oAuthService.silentRefresh().then(() => location.reload());
-          } catch (e) {
-            this.sessionService.logout();
-            location.reload();
+          const isGetFile = req.url.includes('/file/') && req.method === 'GET';
+          if (!isGetFile) {
+            this.notificationService.addErrorMessage('Invalid ECAS token, please logout and login again');
           }
         }
-
         const error = err.error.message || err.statusText;
         return throwError(error);
       })

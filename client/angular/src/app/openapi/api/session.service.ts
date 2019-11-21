@@ -20,22 +20,37 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  */
 /* tslint:disable:no-unused-variable member-ordering */
 
-import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams,
-         HttpResponse, HttpEvent, HttpParameterCodec }       from '@angular/common/http';
-import { CustomHttpParameterCodec }                          from '../encoder';
+export class BearerToken {
+    access_token!: string;
+    token_type!: string;
+    expires_in!: number;
+    scope!: string;
+    actor!: Actor;
+}
+
+export class Actor {
+    azp!: string;
+}
+
+import { Inject, Injectable, Optional } from '@angular/core';
+import {
+    HttpClient, HttpHeaders, HttpParams,
+    HttpResponse, HttpEvent, HttpParameterCodec
+} from '@angular/common/http';
+import { CustomHttpParameterCodec } from '../encoder';
 import { Observable, Subject } from 'rxjs';
 
-import { Status } from '../model/status';
-
-import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
-import { Configuration }                                     from '../configuration';
+import { environment } from '../../../environments/environment';
+import { BASE_PATH } from '../variables';
+import { Configuration } from '../configuration';
 import { Router } from '@angular/router';
 import { UserInfo } from '../model/userInfo';
+import { KeyStoreService } from '../../services/key-store.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class SessionService {
 
@@ -65,7 +80,7 @@ export class SessionService {
 
     public getStoredIsAdmin(): boolean | null {
         const userInfo = this.getStoredUserInfo();
-        if(userInfo) {
+        if (userInfo) {
             return userInfo.isAdmin;
         }
         return null;
@@ -92,7 +107,42 @@ export class SessionService {
         sessionStorage.setItem('ES_USERINFO', JSON.stringify(userInfo));
     }
 
-    constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration, private router: Router) {
+    public getAccessToken(): Observable<BearerToken> {
+        let headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
+        headers = headers.set('Accept', 'application/json');
+
+        const now = Date.now();
+        const assertionData = {
+            'iss': environment.OIDC_CLIENTID, // iss must be equal to sub and must be the ClientID of the SPA
+            'sub': environment.OIDC_CLIENTID,
+            'aud': environment.OIDC_TOKENENDPOINT,   // aud must be the URI of the EU Login end-point + '/token'
+            'jti': this.keystoreService.randomHex(64), // a unique, random and unguessable value
+            'exp': now + (5 * 60 * 1000), // expiration time, e.g. now + 5 minutes
+            'iat': now, // the issuing time
+            'id_token': this.oAuthService.getIdToken() // the token acquired during the authentication
+        };
+        const assertionJws = this.keystoreService.signJWT(assertionData);
+
+        const params = new HttpParams()
+            .set('grant_type', 'urn:ietf:params:oauth:grant-type:jwt-bearer')
+            .set('client_id', environment.OIDC_CLIENTID)
+            .set('assertion', assertionJws)
+            .set('scope', 'openid email')
+            .set('audience', environment.OIDC_BACKEND_CLIENTID);
+
+        // com.nimbusds.oauth2.sdk.ParseException: The HTTP Content-Type header must be application/x-www-form-urlencoded; charset=UTF-8
+        return this.httpClient
+            .post<BearerToken>(
+                environment.OIDC_TOKENENDPOINT,
+                null,
+                {
+                    headers: headers,
+                    params: params,
+                    withCredentials: true
+                });
+    }
+
+    constructor(private oAuthService: OAuthService, private keystoreService: KeyStoreService, protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string, @Optional() configuration: Configuration, private router: Router) {
 
         if (configuration) {
             this.configuration = configuration;
@@ -116,7 +166,7 @@ export class SessionService {
     public postLogin(observe?: 'body', reportProgress?: boolean): Observable<string>;
     public postLogin(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
     public postLogin(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
-    public postLogin(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public postLogin(observe: any = 'body', reportProgress: boolean = false): Observable<any> {
 
         let headers = this.defaultHeaders;
 
