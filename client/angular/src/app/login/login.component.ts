@@ -8,9 +8,8 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NotificationService } from '../common/notification/notification.service';
-import { Credentials, SessionService, UsersService } from '../openapi';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { KeyStoreService } from '../services/key-store.service';
 
 @Component({
   selector: 'app-login',
@@ -18,32 +17,20 @@ import { Credentials, SessionService, UsersService } from '../openapi';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  id = '';
-  password = '';
   constructor(
-    private api: SessionService,
-    private userApi: UsersService,
-    private router: Router,
-    private notificationService: NotificationService
+    private oauthService: OAuthService,
+    private keyStoreService: KeyStoreService
   ) {}
 
   ngOnInit() {}
 
   async login() {
-    const credentials: Credentials = {
-      email: this.id,
-      password: this.password
-    };
-    try {
-      const identifier = await this.api.postLogin(credentials).toPromise();
-      this.api.setStoredCredentials(credentials);
-      const userInfo = await this.userApi
-        .getUserUserInfo(identifier)
-        .toPromise();
-      this.api.setStoredUserInfo(userInfo);
-      this.router.navigateByUrl('home');
-    } catch (error) {
-      this.notificationService.errorMessageToDisplay(error, 'logging in');
-    }
+    this.keyStoreService.prepareKeyStore();
+    const customQueryParams: { [key: string]: any } = {};
+    customQueryParams[
+      'req_cnf'
+    ] = this.keyStoreService.publicJWKBase64UrlEncoded();
+    this.oauthService.customQueryParams = customQueryParams;
+    await this.oauthService.initImplicitFlow();
   }
 }

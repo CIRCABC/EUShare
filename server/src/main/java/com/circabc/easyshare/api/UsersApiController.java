@@ -14,17 +14,17 @@ import java.util.List;
 import java.util.Optional;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
-import com.circabc.easyshare.exceptions.NoAuthenticationException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
-import com.circabc.easyshare.model.Credentials;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.services.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +35,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")
-public class UsersApiController extends AbstractController implements UsersApi {
+public class UsersApiController implements UsersApi {
 
     private final NativeWebRequest request;
 
@@ -53,12 +53,12 @@ public class UsersApiController extends AbstractController implements UsersApi {
             @RequestParam(value = "pageNumber") Integer pageNumber,
             @RequestParam(value = "searchString") String searchString) {
         try {
-            Credentials credentials = this.getAuthenticationUsernameAndPassword(this.getRequest());
-            String requesterId = userService.getAuthenticatedUserId(credentials);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
             return new ResponseEntity<>(
                     userService.getUsersUserInfoOnBehalfOf(pageSize, pageNumber, searchString, requesterId),
                     HttpStatus.OK);
-        } catch (NoAuthenticationException | WrongAuthenticationException exc) {
+        } catch (WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
             HttpErrorAnswerBuilder.build401EmptyToString(), exc);
         } catch (UserUnauthorizedException exc) {

@@ -13,16 +13,16 @@ import {
   HttpInterceptor,
   HttpRequest
 } from '@angular/common/http';
-import { Component, Injectable, Injector, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { SessionService } from '../openapi';
+import { NotificationService } from '../common/notification/notification.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private sessionService: SessionService) {}
+  constructor(private notificationService: NotificationService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -31,11 +31,13 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError(err => {
         if (err.status === 401) {
-          // auto logout if 401 response returned from api
-          this.sessionService.logout();
-          location.reload();
+          const isGetFile = req.url.includes('/file/') && req.method === 'GET';
+          if (!isGetFile) {
+            this.notificationService.addErrorMessage(
+              'Invalid ECAS token, please logout and login again'
+            );
+          }
         }
-
         const error = err.error.message || err.statusText;
         return throwError(error);
       })

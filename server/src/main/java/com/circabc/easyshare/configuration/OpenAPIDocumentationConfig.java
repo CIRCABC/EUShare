@@ -10,13 +10,11 @@
 
 package com.circabc.easyshare.configuration;
 
-import javax.servlet.ServletContext;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import org.springframework.web.util.UriComponentsBuilder;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -27,7 +25,9 @@ import springfox.documentation.spring.web.paths.RelativePathProvider;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
+import javax.servlet.ServletContext;
+
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
 
 @Configuration
 @EnableSwagger2
@@ -46,7 +46,7 @@ public class OpenAPIDocumentationConfig {
     }
 
     @Bean
-    public Docket customImplementation(ServletContext servletContext, @Value("${openapi.easyShare.base-path:}") String basePath) {
+    public Docket customImplementation(ServletContext servletContext, @Value("${openapi.easyShare.base-path:/auth/realms/dev/.well-known/openid-configuration}") String basePath) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                     .apis(RequestHandlerSelectors.basePackage("com.circabc.easyshare.api"))
@@ -76,6 +76,6 @@ public class OpenAPIDocumentationConfig {
             return Paths.removeAdjacentForwardSlashes(
                     uriComponentsBuilder.path(operationPath.replaceFirst("^" + basePath, "")).build().toString());
         }
-    }  
+    }
 
 }
