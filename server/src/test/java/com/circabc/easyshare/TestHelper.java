@@ -8,7 +8,7 @@
  * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
  */
 
-package com.circabc.easyshare.api;
+package com.circabc.easyshare;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

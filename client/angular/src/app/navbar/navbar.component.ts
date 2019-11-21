@@ -16,6 +16,7 @@ import {
   faUsersCog
 } from '@fortawesome/free-solid-svg-icons';
 import { SessionService } from '../openapi';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-navbar',
@@ -32,7 +33,10 @@ export class NavbarComponent implements OnInit {
   public isAdmin: boolean | null = null;
   public isBurgerActive = false;
 
-  constructor(private sessionService: SessionService) {}
+  constructor(
+    private sessionService: SessionService,
+    private oAuthService: OAuthService
+  ) {}
 
   ngOnInit() {
     const userInfo = this.sessionService.getStoredUserInfo();
@@ -51,11 +55,12 @@ export class NavbarComponent implements OnInit {
   }
 
   logout() {
+    this.oAuthService.logOut(true);
     this.sessionService.logout();
   }
 
   get loggedIn(): boolean {
-    return this.sessionService.getStoredCredentials() !== null;
+    return this.sessionService.getStoredUserInfo() !== null;
   }
 
   public toggleBurger() {

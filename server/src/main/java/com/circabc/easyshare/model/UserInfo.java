@@ -10,23 +10,19 @@
 
 package com.circabc.easyshare.model;
 
-import java.math.BigDecimal;
 import java.util.Objects;
-
-import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 
 /**
  * UserInfo
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
 
-public class UserInfo {
+public class UserInfo   {
   @JsonProperty("totalSpace")
   private BigDecimal totalSpace;
 
@@ -48,15 +44,15 @@ public class UserInfo {
   }
 
   /**
-   * Total space the user has (Bytes) minimum: 0
-   * 
+   * Total space the user has (Bytes)
+   * minimum: 0
    * @return totalSpace
-   */
+  */
   @ApiModelProperty(required = true, value = "Total space the user has (Bytes)")
   @NotNull
 
   @Valid
-  @DecimalMin("0")
+@DecimalMin("0")
   public BigDecimal getTotalSpace() {
     return totalSpace;
   }
@@ -71,15 +67,15 @@ public class UserInfo {
   }
 
   /**
-   * Space the user already used (Bytes) minimum: 0
-   * 
+   * Space the user already used (Bytes)
+   * minimum: 0
    * @return usedSpace
-   */
+  */
   @ApiModelProperty(required = true, value = "Space the user already used (Bytes)")
   @NotNull
 
   @Valid
-  @DecimalMin("0")
+@DecimalMin("0")
   public BigDecimal getUsedSpace() {
     return usedSpace;
   }
@@ -95,11 +91,11 @@ public class UserInfo {
 
   /**
    * User ID
-   * 
    * @return id
-   */
+  */
   @ApiModelProperty(required = true, value = "User ID")
   @NotNull
+
 
   public String getId() {
     return id;
@@ -116,11 +112,11 @@ public class UserInfo {
 
   /**
    * User name (email address in case of external user)
-   * 
    * @return name
-   */
+  */
   @ApiModelProperty(required = true, value = "User name (email address in case of external user)")
   @NotNull
+
 
   public String getName() {
     return name;
@@ -137,11 +133,11 @@ public class UserInfo {
 
   /**
    * True if the user is admin
-   * 
    * @return isAdmin
-   */
+  */
   @ApiModelProperty(required = true, value = "True if the user is admin")
   @NotNull
+
 
   public Boolean getIsAdmin() {
     return isAdmin;
@@ -150,6 +146,7 @@ public class UserInfo {
   public void setIsAdmin(Boolean isAdmin) {
     this.isAdmin = isAdmin;
   }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -160,9 +157,11 @@ public class UserInfo {
       return false;
     }
     UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.totalSpace, userInfo.totalSpace) && Objects.equals(this.usedSpace, userInfo.usedSpace)// NOSONAR
-        && Objects.equals(this.id, userInfo.id) && Objects.equals(this.name, userInfo.name)
-        && Objects.equals(this.isAdmin, userInfo.isAdmin);
+    return Objects.equals(this.totalSpace, userInfo.totalSpace) &&// NOSONAR
+        Objects.equals(this.usedSpace, userInfo.usedSpace) &&
+        Objects.equals(this.id, userInfo.id) &&
+        Objects.equals(this.name, userInfo.name) &&
+        Objects.equals(this.isAdmin, userInfo.isAdmin);
   }
 
   @Override
@@ -174,7 +173,7 @@ public class UserInfo {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class UserInfo {\n");
-
+    
     sb.append("    totalSpace: ").append(toIndentedString(totalSpace)).append("\n");
     sb.append("    usedSpace: ").append(toIndentedString(usedSpace)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
@@ -195,3 +194,4 @@ public class UserInfo {
     return o.toString().replace("\n", "\n    ");
   }
 }
+

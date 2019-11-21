@@ -14,9 +14,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
 
-import com.circabc.easyshare.api.TestHelper;
-import com.circabc.easyshare.model.Credentials;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +21,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -39,13 +34,11 @@ public class CORSEnabledTest {
 
     @Test
     public void corsWithAnnotationTest() throws Exception {
-        Credentials credentials = new Credentials();
-        credentials.setEmail("admin");
-        credentials.setPassword("admin");
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON);
         httpHeaders.setOrigin("http://localhost:8080");
-        HttpEntity httpEntity = new HttpEntity<String>(TestHelper.asJsonString(credentials), httpHeaders);
+        httpHeaders.setBearerAuth("token");
+        HttpEntity httpEntity = new HttpEntity<String>("", httpHeaders);
         ResponseEntity<String> response = restTemplate.postForEntity(uri("/login"), httpEntity, String.class);
         assertEquals("http://localhost:8080", response.getHeaders().getAccessControlAllowOrigin());
         String responseBody = response.getBody();

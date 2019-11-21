@@ -10,22 +10,21 @@
 
 package com.circabc.easyshare.model;
 
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Objects;
-
+import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.*;
 
 /**
  * FileBasics
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
 
 public class FileBasics   {
   @JsonProperty("expirationDate")
@@ -137,7 +136,7 @@ public class FileBasics   {
       return false;
     }
     FileBasics fileBasics = (FileBasics) o;
-    return Objects.equals(this.expirationDate, fileBasics.expirationDate) &&//NOSONAR
+    return Objects.equals(this.expirationDate, fileBasics.expirationDate) &&
         Objects.equals(this.hasPassword, fileBasics.hasPassword) &&
         Objects.equals(this.name, fileBasics.name) &&
         Objects.equals(this.size, fileBasics.size);

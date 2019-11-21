@@ -15,6 +15,13 @@ logging:
     org.springframework: ERROR
     org.hibernate.SQL: DEBUG
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://localhost:7002/cas/oauth2/token/introspect
+          client-id: 9IAcWq6ZHKtOqk83xfOzg8nWPlwNnPB5Uf4wnE48IUiulvUMeKdQLhs5PzHQG1Lp3Swlye7PsZli654ZmzhRoJ0-N2w0EKzVFJFzN9F09Pl7GG
+          client-secret: D9rFLtYRZCa_PQ10qEyhZcyWlMAPjsSnvnk-C8mZE2NllNiZvy4jZbEUx1I_lw_VsBJiVV_bLmsOMpUuFBPajCI6QXksCTnOrw9Znq7KLnzHysvyCqkTWfDzIXFZvQXNGslnncb8NNaZzy5NfAbdEtenXbA8CGYsZBnYroIKzu8
   profiles:
     active: @spring.profiles.active@
   jackson:

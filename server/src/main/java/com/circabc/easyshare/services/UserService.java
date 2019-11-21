@@ -10,36 +10,43 @@
 
 package com.circabc.easyshare.services;
 
-import com.circabc.easyshare.configuration.EasyShareConfiguration;
-import com.circabc.easyshare.exceptions.WrongAuthenticationException;
-import com.circabc.easyshare.exceptions.WrongEmailStructureException;
-import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
-import com.circabc.easyshare.exceptions.IllegalSpaceException;
-import com.circabc.easyshare.exceptions.UnknownUserException;
-import com.circabc.easyshare.exceptions.UserUnauthorizedException;
-import com.circabc.easyshare.model.Credentials;
-import com.circabc.easyshare.model.Recipient;
-import com.circabc.easyshare.model.UserInfo;
-import com.circabc.easyshare.model.UserSpace;
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
-
-import com.circabc.easyshare.storage.DBUser;
-import com.circabc.easyshare.storage.UserRepository;
-import com.circabc.easyshare.storage.DBUser.Role;
-import com.circabc.easyshare.utils.StringUtils;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.circabc.easyshare.configuration.EasyShareConfiguration;
+import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
+import com.circabc.easyshare.exceptions.IllegalSpaceException;
+import com.circabc.easyshare.exceptions.UnknownUserException;
+import com.circabc.easyshare.exceptions.UserUnauthorizedException;
+import com.circabc.easyshare.exceptions.WrongAuthenticationException;
+import com.circabc.easyshare.exceptions.WrongEmailStructureException;
+import com.circabc.easyshare.model.Recipient;
+import com.circabc.easyshare.model.UserInfo;
+import com.circabc.easyshare.model.UserSpace;
+import com.circabc.easyshare.storage.DBUser;
+import com.circabc.easyshare.storage.DBUser.Role;
+import com.circabc.easyshare.storage.UserRepository;
+import com.circabc.easyshare.utils.StringUtils;
+
+import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
+import org.springframework.stereotype.Service;
+
+import lombok.extern.slf4j.Slf4j;
+
 @Slf4j
 @Service
-public class UserService implements UserServiceInterface {
+public class UserService implements UserServiceInterface, UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
@@ -47,10 +54,29 @@ public class UserService implements UserServiceInterface {
     @Autowired
     private EasyShareConfiguration esConfig;
 
-    public String getAuthenticatedUserId(Credentials credentials) throws WrongAuthenticationException {
-        DBUser dbUser = userRepository.findOneByUsername(credentials.getEmail());
-        if (dbUser != null && dbUser.getPassword().equals(credentials.getPassword())) {
-            return dbUser.getId();
+    public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException {
+        if (authentication != null && authentication.isAuthenticated()
+                && (authentication instanceof BearerTokenAuthentication)
+                && (authentication.getPrincipal() instanceof DefaultOAuth2AuthenticatedPrincipal)) {
+            BearerTokenAuthentication bearerTokenAuthentication = (BearerTokenAuthentication) authentication;
+            DefaultOAuth2AuthenticatedPrincipal principal = (DefaultOAuth2AuthenticatedPrincipal) bearerTokenAuthentication
+                    .getPrincipal();
+            String email = principal.getAttribute("email");
+            String username = principal.getAttribute("username");
+
+            if (email == null || username == null) {
+                throw new WrongAuthenticationException("Wrong token, cannot find email or username claim");
+            }
+
+            DBUser dbUser = null;
+            try {
+                dbUser = this.getOrCreateDbInternalUser(email, username);
+            } catch (WrongEmailStructureException e) {
+                throw new WrongAuthenticationException(e);
+            }
+            if (dbUser != null) {
+                return dbUser.getId();
+            }
         }
         throw new WrongAuthenticationException();
     }
@@ -61,7 +87,7 @@ public class UserService implements UserServiceInterface {
     }
 
     public DBUser createAdminUser(String password) {
-        DBUser user = this.createInternalUser("admin@admin.admin", "admin", password, "admin"); // NOSONAR
+        DBUser user = this.createInternalUser("admin@admin.com", "admin", password, "admin"); // NOSONAR
         user.setRole(Role.ADMIN);
         return userRepository.save(user);
     }
@@ -70,8 +96,8 @@ public class UserService implements UserServiceInterface {
      * One of the arguments can be null
      */
     public DBUser createExternalUser(String email, String name) {
-            DBUser user = DBUser.createExternalUser(email, name);
-            return userRepository.save(user);
+        DBUser user = DBUser.createExternalUser(email, name);
+        return userRepository.save(user);
     }
 
     DBUser getDbUser(String userId) throws UnknownUserException {
@@ -102,12 +128,14 @@ public class UserService implements UserServiceInterface {
     }
 
     public void createDefaultUsers() {
-        if (userRepository.findOneByUsername("admin") == null && userRepository.findOneByEmail("admin@admin.admin") == null) {
+        if (userRepository.findOneByUsername("admin") == null
+                && userRepository.findOneByEmail("admin@admin.com") == null) {
             this.createAdminUser("admin");
         } else {
             log.warn("Admin could not be created, already exists");
         }
-        if (userRepository.findOneByUsername("username") == null && userRepository.findOneByEmail("email@email.com") == null)  {
+        if (userRepository.findOneByUsername("username") == null
+                && userRepository.findOneByEmail("email@email.com") == null) {
             this.createInternalUser("email@email.com", "name", "password", "username");
         } else {
             log.warn("Internal user could not be created, already exists");
@@ -277,5 +305,63 @@ public class UserService implements UserServiceInterface {
         } else {
             throw new UserUnauthorizedException();
         }
+    }
+
+    public UserDetails getOrCreateUserDetails(String email, String givenName) throws UsernameNotFoundException {
+        DBUser dbUser = null;
+        if (StringUtils.validateEmailAddress(email)) {
+            dbUser = this.userRepository.findOneByEmail(email);
+            if (dbUser == null) {
+                dbUser = this.createInternalUser(email, givenName, null, null);
+            }
+            UserDetails userDetails = User.builder().username(email)
+                    .password(ObjectUtils.defaultIfNull(dbUser.getPassword(), "n/a")).roles(dbUser.getRole().toString())
+                    .build();
+            return userDetails;
+        }
+        throw new UsernameNotFoundException("Invalid email adress as username");
+    }
+
+    /**
+     * Creates an internal user with {@code email} and {@code givenName}
+     * 
+     * @param email
+     * @param givenName
+     * @throws WrongEmailStructureException if {@code email} has a wrong structure
+     */
+    public DBUser getOrCreateDbInternalUser(String email, String givenName) throws WrongEmailStructureException {
+        DBUser dbUser = null;
+        if (StringUtils.validateEmailAddress(email)) {
+            dbUser = this.userRepository.findOneByEmail(email);
+            if (dbUser == null) {
+                dbUser = this.createInternalUser(email, givenName, null, null);
+            } else {
+                if (dbUser.getName() == null) {
+                    dbUser.setName(givenName);
+                    userRepository.save(dbUser);
+                }
+                if (dbUser.getRole().equals(DBUser.Role.EXTERNAL)) {
+                    dbUser.setRole(DBUser.Role.INTERNAL);
+                    userRepository.save(dbUser);
+                }
+            }
+            return dbUser;
+        }
+        throw new WrongEmailStructureException();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        DBUser dbUser = null;
+        if (StringUtils.validateEmailAddress(email)) {
+            dbUser = this.userRepository.findOneByEmail(email);
+        }
+        if (dbUser == null) {
+            throw new UsernameNotFoundException("Invalid email adress as username");
+        }
+        UserDetails userDetails = User.builder().username(email)
+                .password(ObjectUtils.defaultIfNull(dbUser.getPassword(), "n/a")).roles(dbUser.getRole().toString())
+                .build();
+        return userDetails;
     }
 }

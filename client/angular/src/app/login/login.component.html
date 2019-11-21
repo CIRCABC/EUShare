@@ -1,19 +1,8 @@
 <div class="field">
-  <label class="label">Email address</label>
+  <label class="label">Please login with single sign-on solution</label>
   <div class="control">
-    <input class="input" type="email" placeholder="user@example.com" [(ngModel)]="id">
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Password</label>
-  <div class="control">
-    <input class="input" type="password" (keyup.enter)="login()" [(ngModel)]="password">
-  </div>
-</div>
-
-<div class="field">
-  <div class="control">
-    <button class="button is-link" (click)="login()" [disabled]="id === ''">Login</button>
+    <button class="button is-link is-large" (click)="login()">
+      Login
+    </button>
   </div>
 </div>

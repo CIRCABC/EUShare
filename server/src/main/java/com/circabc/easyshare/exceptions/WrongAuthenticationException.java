@@ -13,4 +13,20 @@ package com.circabc.easyshare.exceptions;
 public class WrongAuthenticationException extends Exception {
 
     private static final long serialVersionUID = 1L;
+
+    public WrongAuthenticationException() {
+        super();
+    }
+
+    public WrongAuthenticationException(String message) {
+        super(message);
+    }
+
+    public WrongAuthenticationException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public WrongAuthenticationException(Throwable cause) {
+        super(cause);
+    }
 }

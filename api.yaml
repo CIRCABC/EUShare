@@ -1,0 +1,825 @@
+openapi: 3.0.0
+servers:
+  - url: http://localhost:8080/auth/realms/dev/.well-known/openid-configuration
+info:
+  title: EasyShare
+  description: This is a API definition for the EasyShare service.
+  license:
+    name: 'EUPL V1.2'
+    url: 'https://joinup.ec.europa.eu/sites/default/files/inline-files/EUPL%20v1_2%20EN(1).txt'
+  version: '0.1'
+tags:
+  - name: Session
+    description: All the operations related to session management
+  - name: Users
+    description: All actions related to users
+  - name: File
+    description: All actions related to file management
+paths:
+  '/login':
+    post:
+      description: Used to login by internal users
+      operationId: postLogin
+      tags:
+      - Session
+      security:
+        - openId:
+          - email
+      responses:
+        200:
+          description: Returns the user id to use in all other requests
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'           
+  '/users/userInfo':
+    parameters:
+      - name: pageSize
+        in: query
+        description: Number of persons returned
+        required: true
+        schema:
+          type: integer
+      - name: pageNumber
+        in: query
+        description: Page number
+        required: true
+        schema:
+          type: integer
+      - name: searchString
+        in: query
+        required: true
+        schema:
+          type: string
+    get:
+      description: Used by the administrators in order to search for INTERNAL users' UserInfo
+      operationId: getUsersUserInfo
+      tags:
+      - Users
+      security:
+        - openId:
+          - email
+      responses:
+        200:
+          description: SUCCESS Returns a pageSize number of UserInfos corresponding to the searchString and the pageNumber for internal users Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserInfo'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'                
+  '/user/{userID}/userInfo':
+    parameters:
+      - name: userID
+        in: path
+        description: The id of the user
+        required: true
+        schema:
+          type: string 
+    put:
+      description: Used by the administrators in order to update a specific INTERNAL user total space or admin status
+      operationId: putUserUserInfo
+      tags:
+      - Users
+      security:
+        - openId:
+          - email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfo'
+      responses:
+        200:
+          description: SUCCESS Returns the UserInfo of the selected user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized, will be sent before 404
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+    get:
+      description: Used by the users in order to fetch their personnal information
+      operationId: getUserUserInfo
+      tags:
+      - Users
+      security:
+        - openId:
+          - email
+      responses:
+        200:
+          description: SUCCESS Returns the UserInfo of the selected user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfo'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized, will be sent before 404
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  '/user/{userID}/files/fileInfoUploader':
+    parameters:
+      - name: userID
+        in: path
+        description: The id of the user
+        required: true
+        schema:
+          type: string 
+      - name: pageSize
+        in: query
+        description: Number of files returned
+        required: true
+        schema:
+          type: integer
+      - name: pageNumber
+        in: query
+        description: Page number
+        required: true
+        schema:
+          type: integer
+    get:
+      description: Used by the INTERNAL users in order to search their own files' FileInfoUploader
+      operationId: getFilesFileInfoUploader
+      tags:
+        - Users
+      security:
+        - openId:
+          - email
+      responses:
+        200:
+          description: SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileInfoUploader'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  '/user/{userID}/files/fileInfoRecipient':
+    parameters:
+      - name: userID
+        in: path
+        description: The id of the user
+        required: true
+        schema:
+          type: string 
+      - name: pageSize
+        in: query
+        description: Number of files returned
+        required: true
+        schema:
+          type: integer
+      - name: pageNumber
+        in: query
+        description: Page number
+        required: true
+        schema:
+          type: integer
+    get:
+      description: Used by the INTERNAL users in order to search the files they have recieved
+      operationId: getFilesFileInfoRecipient
+      tags:
+        - Users
+      security:
+        - openId:
+          - email
+      responses:
+        200:
+          description: SUCCESS Returns the files shared with the authenticated user by pageSize and pageNumber
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileInfoRecipient'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  
+  '/file/{fileID}':
+    parameters:
+    - name: fileID
+      in: path
+      description: The id of the file
+      required: true
+      schema:
+        type: string
+    get:
+      description: Used by INTERNAL and EXTERNAL users to download a shared file
+      operationId: getFile
+      parameters:
+        - name: password
+          in: query
+          description: 'Password of the file'
+          required: false
+          schema:
+            type: string
+            format: base64
+      tags:
+      - File
+      responses:
+        200:
+          description: SUCCESS Returns the file and sends a mail to original uploader to inform him of the download
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+    delete:
+      description: Used by INTERNAL users and ADMIN in order to delete a file
+      operationId: deleteFile
+      parameters:
+        - name: reason
+          in: query
+          description: 'Reason for deletion of the file'
+          required: false
+          schema:
+            type: string
+      tags:
+      - File
+      security:
+        - openId:
+          - email
+      responses:
+        200:
+          description: SUCCESS Deletes the file content and its meta data, also sends an email to original uploader with the reason of deletion if the reason is given
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'   
+  '/file/fileRequest':
+    post:
+      description: Used by INTERNAL users in order to request the reservation of space for a file
+      operationId: postFileFileRequest
+      tags:
+      - File
+      security:
+        - openId:
+          - email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileRequest'
+      responses:
+        200:
+          description: SUCCESS Returns the File ID of the newly-created file
+          content:
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  '/file/{fileID}/fileRequest/sharedWith':
+    parameters:
+      - name: fileID
+        in: path
+        description: The id of the file
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: postFileSharedWith
+      description: Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required
+      tags:
+      - File
+      security:
+        - openId:
+          - email
+      requestBody:
+        required: true
+        description: The userID or email of user to share the file with
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/Recipient'
+      responses:
+        200:
+          description: SUCCESS Returns the RecipientWithLink for the added recipient
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipientWithLink'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  '/file/{fileID}/fileRequest/fileContent':
+    parameters:
+      - name: fileID
+        in: path
+        description: The id of the file
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: postFileContent
+      description: Used by INTERNAL users in order to post the file content on the pre-reserved file space
+      tags:
+      - File
+      security:
+        - openId:
+          - email
+      requestBody:
+        description: The file bytes
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+      responses:
+        200:
+          description: SUCCESS Returns the FileInfoUploader of the uploaded file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileInfoUploader'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized, FileLargerThanAllocation, IllegalFileSize 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  '/file/{fileID}/fileRequest/sharedWith/{userID}':
+    parameters:
+      - name: fileID
+        in: path
+        description: The id of the file
+        required: true
+        schema:
+          type: string
+      - name: userID
+        in: path
+        description: The id of the user
+        required: true
+        schema:
+          type: string        
+    delete:
+      description: Used by INTERNAL users in order to delete a share link for one of the shared users
+      operationId: deleteFileSharedWithUser
+      tags:
+      - File
+      security:
+        - openId:
+          - email
+      responses:
+        200:
+          description: SUCCESS
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be either FileNotFound or UserNotFound 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+components:
+  securitySchemes:
+    openId:   # <--- Arbitrary name for the security scheme. Used to refer to it from elsewhere.
+      type: openIdConnect
+      openIdConnectUrl: https://localhost:8080/realms/dev/.well-known/openid-configuration
+  parameters:
+    pageSize:
+      name: pageSize
+      in: query
+      description: Number of persons returned
+      required: true
+      schema:
+        type: integer
+    pageNumber:
+      name: pageNumber
+      in: query
+      description: Page number
+      required: true
+      schema:
+        type: integer
+    fileID:
+      name: fileID
+      in: path
+      description: The id of the file
+      required: true
+      schema:
+        type: string
+    userID:
+      name: userID
+      in: path
+      description: The id of the user
+      required: true
+      schema:
+        type: string 
+    searchString:
+      name: searchString
+      in: query
+      required: true
+      schema:
+        type: string        
+  schemas:
+    Status:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Status code
+        message:
+          type: string
+          description: Additional message
+      required:
+        - code
+    FileInfoUploader:
+      allOf:
+        - $ref: '#/components/schemas/FileBasics'
+        - type: object
+          properties:
+            fileId:
+              description: file id
+              type: string
+            sharedWith:
+              description: User IDs this file is shared with
+              type: array
+              items:
+                $ref: '#/components/schemas/RecipientWithLink'
+              minItems: 1
+              maxItems: 10
+          required:
+            - sharedWith
+            - fileId
+    FileInfoRecipient:
+      allOf:
+        - $ref: '#/components/schemas/FileBasics'
+        - type: object
+          properties:
+            uploaderName:
+              description: name of the uploader
+              type: string
+            fileId:
+              description: download file id
+              type: string
+          required:
+            - uploaderName
+            - fileId
+    FileBasics:
+      type: object
+      properties:
+        expirationDate:
+          description: Expiration date of file
+          type: string
+          format: date
+        hasPassword:
+          description: File is password-protected
+          type: boolean
+        name:
+          description: Filename
+          type: string
+        size:
+          description: Size of file (Bytes)
+          type: number
+          minimum: 0
+      required:
+      - expirationDate
+      - hasPassword
+      - name
+      - size
+    FileRequest:
+      allOf:
+        - $ref: '#/components/schemas/FileBasics'
+        - type: object
+          properties:
+            password:
+              description: Password protecting the file
+              type: string
+              format: base64
+            sharedWith:
+              description: User IDs this file is shared with
+              type: array
+              items:
+                $ref: '#/components/schemas/Recipient'
+              minItems: 1
+              maxItems: 10
+          required:
+            - sharedWith
+            - fileBytes
+    Recipient:
+      properties:
+        emailOrName:
+          description: Email or name of the recipient
+          type: string
+        message: 
+          description: Optional message to send
+          type: string
+        sendEmail:
+          description: True to send an email with the download link
+          type: boolean
+      required:
+        - emailOrName
+        - sendEmail
+    RecipientWithLink:
+      allOf:
+        - $ref: '#/components/schemas/Recipient'
+        - type: object
+          properties:
+            recipientId:
+              description: Id of the recipient
+              type: string
+            downloadLink:
+              description: Download link to a specific file
+              type: string
+          required:
+          - downloadLink
+          - recipientId
+    UserInfo:
+      allOf:
+        - $ref: '#/components/schemas/UserSpace'
+        - type: object
+          properties:
+            id: 
+              description: User ID 
+              type: string
+            name:
+              description: User name (email address in case of external user)
+              type: string
+            isAdmin:
+              description: True if the user is admin
+              type: boolean
+          required:
+          - id
+          - loginUsername
+          - name
+          - uploadedFiles
+          - sharedFiles
+          - isAdmin
+    UserSpace:
+      type: object
+      properties:
+        totalSpace:
+          description: Total space the user has (Bytes)
+          type: number
+          minimum: 0
+        usedSpace:
+          description: Space the user already used (Bytes)
+          type: number
+          minimum: 0
+      required:
+      - totalSpace
+      - usedSpace

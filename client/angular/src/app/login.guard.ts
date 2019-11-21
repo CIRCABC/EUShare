@@ -14,21 +14,32 @@ import {
   Router,
   RouterStateSnapshot
 } from '@angular/router';
+import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
+import { SessionService } from './openapi';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginGuard implements CanActivate {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private oAuthService: OAuthService,
+    private sessionService: SessionService
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    if (sessionStorage.getItem('ES_AUTH')) {
+    if (
+      this.oAuthService.getIdToken() !== null &&
+      this.oAuthService.hasValidIdToken() &&
+      this.sessionService.getStoredUserInfo() !== null
+    ) {
       return true;
+    } else {
+      return this.router.navigate(['/login']);
     }
-    return this.router.navigate(['/login']);
   }
 }

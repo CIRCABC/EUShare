@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import com.circabc.easyshare.api.TestHelper;
 import com.circabc.easyshare.storage.DBFile;
 import com.circabc.easyshare.storage.DBUser;
 import com.circabc.easyshare.storage.DBUserFile;
