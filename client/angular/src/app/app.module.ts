@@ -49,6 +49,8 @@ import { DownloadFileRowComponent } from './common/download-file-row/download-fi
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { CallBackComponent } from './call-back/call-back.component';
 import { KeyStoreService } from './services/key-store.service';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -119,7 +121,9 @@ const routes: Routes = [
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,
     DownloadFileRowComponent,
-    CallBackComponent
+    CallBackComponent,
+    HeaderComponent,
+    FooterComponent
   ],
   imports: [
     ApiModule,

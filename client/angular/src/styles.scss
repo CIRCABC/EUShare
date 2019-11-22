@@ -1,6 +1,28 @@
-/* You can add global styles to this file, and also import other style files */
+@import './style.ec.scss';
+
+/** ------------------------------------------ BULMA TEMPLATE  ------------------------------------------ **/
+/** --------------------- COLOURS  --------------------- **/
+/** COLOURS **/
+$scheme-main: $ec-background-color;
+$blue: $ec-blue;
+$red: $ec-red;
+$yellow: $ec-yellow;
+$green: $ec-green;
+
+
+/** --------------------- TYPOGRAPHY  --------------------- **/
+$family-sans-serif: Arial, sans-serif;
+$font-color: $ec-font-color;
+
+/** MENU **/ 
 $menu-item-radius: 3px;
-$navbar-item-hover-background-color: transparent;
+
+.centered {
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+    min-height: 28rem;
+}
+
 @import '../node_modules/bulma/bulma.sass';
 
 .filecontainer {
