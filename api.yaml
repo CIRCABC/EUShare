@@ -32,12 +32,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        400:
-          description: BAD REQUEST the Error Message will be empty
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
         401:
           description: UNAUTHORIZED the Error message will be empty
           content:

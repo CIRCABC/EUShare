@@ -149,10 +149,9 @@ public class UserApiController implements UserApi {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), ec);
         } catch (UnknownUserException exc3) {
-            log.error(exc3.getMessage(), exc3);
-            // should never occur
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    HttpErrorAnswerBuilder.build500EmptyToString());
+            log.error("Search on non existing userId, might be a security attack");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    HttpErrorAnswerBuilder.build404EmptyToString());
         }
     }
 

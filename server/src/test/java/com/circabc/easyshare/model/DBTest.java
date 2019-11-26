@@ -17,8 +17,6 @@ import static org.junit.Assert.assertNotNull;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import com.circabc.easyshare.storage.DBFile;
 import com.circabc.easyshare.storage.DBUser;
 import com.circabc.easyshare.storage.DBUserFile;
@@ -33,11 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DBTest {
