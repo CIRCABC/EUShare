@@ -1,5 +1,5 @@
-# EASYSHARE
-Easyshare is a file exchange tool from the European Commission. Its source code is published as open source software under the terms of the EUPL public license. 
+# EUSHARE SERVER
+EUShare is a file exchange tool from the European Commission. Its source code is published as open source software under the terms of the EUPL public license. 
 
 * [Latest Sonar Cloud analysis](https://sonarcloud.io/dashboard?id=CIRCABC_EasyShare) ![Bugs](https://sonarcloud.io/api/project_badges/measure?project=CIRCABC_EasyShare&metric=bugs) ![Code smells](https://sonarcloud.io/api/project_badges/measure?project=CIRCABC_EasyShare&metric=code_smells) ![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CIRCABC_EasyShare&metric=coverage)
 
