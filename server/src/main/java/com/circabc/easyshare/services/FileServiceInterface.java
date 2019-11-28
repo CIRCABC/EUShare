@@ -45,15 +45,9 @@ public interface FileServiceInterface {
     public DownloadReturn downloadFile(String fileId, String password)
                 throws UnknownFileException, WrongPasswordException, UserUnauthorizedException, UnknownUserException;
 
-    public FileInfoRecipient getFileInfoRecipientOnBehalfOf(String fileId, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException;
-
     public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(int pageSize, int pageNumber, String userId, String requesterId)
     throws UserUnauthorizedException, UnknownUserException;
     
-    public FileInfoUploader getFileInfoUploaderOnBehalfOf(String fileId, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException;
-
     public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(int pageSize, int pageNumber, String userId, String requesterId)
      throws UserUnauthorizedException, UnknownUserException;
 

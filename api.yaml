@@ -32,12 +32,6 @@ paths:
             text/plain:
               schema:
                 type: string
-        400:
-          description: BAD REQUEST the Error Message will be empty
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
         401:
           description: UNAUTHORIZED the Error message will be empty
           content:
@@ -263,6 +257,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
         500:
           description: INTERNAL SERVER ERROR the Error Message will be empty
           content:
@@ -320,6 +320,12 @@ paths:
                 $ref: '#/components/schemas/Status'
         403:
           description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
           content:
             application/json:
               schema:

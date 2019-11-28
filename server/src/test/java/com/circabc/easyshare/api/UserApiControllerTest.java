@@ -198,6 +198,35 @@ public class UserApiControllerTest {
     }
 
     @Test
+    public void getFilesFileInfoRecipient404() throws Exception {// NOSONAR
+        Status status = new Status();
+        status.setCode(404);
+
+        String token = "StupidToken";
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("email", "email@email.com");
+        attributes.put("username", "username");
+        SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
+        Collection<GrantedAuthority> collection = new LinkedList();
+
+        collection.add(grantedAuthority);
+        OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal("username",
+                attributes, collection);
+        when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
+        when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
+
+        when(fileService.getFileInfoRecipientOnBehalfOf(anyInt(), anyInt(), anyString(), anyString()))
+                .thenThrow(new UnknownUserException());
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+                        .header("Authorization", "Bearer " + token).param("pageSize", "10").param("pageNumber", "0")
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isNotFound())
+                .andExpect(content().string(containsString(UserApiControllerTest.asJsonString(status))));
+    }
+
+    @Test
     public void getFilesFileInfoRecipient500() throws Exception {// NOSONAR
         Status status = new Status();
         status.setCode(500);
@@ -352,6 +381,35 @@ public class UserApiControllerTest {
                         .header("Authorization", "Bearer " + token).param("pageSize", "10").param("pageNumber", "0")
                         .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
+                .andExpect(content().string(containsString(UserApiControllerTest.asJsonString(status))));
+    }
+
+    @Test
+    public void getFilesFileInfoUploader404() throws Exception {// NOSONAR
+        Status status = new Status();
+        status.setCode(404);
+
+        String token = "StupidToken";
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("email", "email@email.com");
+        attributes.put("username", "username");
+        SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
+        Collection<GrantedAuthority> collection = new LinkedList();
+
+        collection.add(grantedAuthority);
+        OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal("username",
+                attributes, collection);
+        when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
+        when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
+
+        when(fileService.getFileInfoUploaderOnBehalfOf(anyInt(), anyInt(), anyString(), anyString()))
+                .thenThrow(new UnknownUserException());
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+                        .header("Authorization", "Bearer " + token).param("pageSize", "10").param("pageNumber", "0")
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isNotFound())
                 .andExpect(content().string(containsString(UserApiControllerTest.asJsonString(status))));
     }
 
@@ -688,6 +746,33 @@ public class UserApiControllerTest {
                         .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
+                .andExpect(content().string(containsString(UserApiControllerTest.asJsonString(status))));
+    }
+
+    @Test
+    public void getUserInfo404() throws Exception {// NOSONAR
+        Status status = new Status();
+        status.setCode(404);
+        String token = "StupidToken";
+
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("email", "email@email.com");
+        attributes.put("username", "username");
+        SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
+        Collection<GrantedAuthority> collection = new LinkedList();
+
+        collection.add(grantedAuthority);
+        OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal("username",
+                attributes, collection);
+        when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
+        when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
+        when(service.getUserInfoOnBehalfOf(anyString(), anyString())).thenThrow(new UnknownUserException());
+
+        this.mockMvc
+                .perform(MockMvcRequestBuilders.get("/user/" + fakeSearchedUserId + "/userInfo")
+                        .header("Authorization", "Bearer " + token).contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isNotFound())
                 .andExpect(content().string(containsString(UserApiControllerTest.asJsonString(status))));
     }
 

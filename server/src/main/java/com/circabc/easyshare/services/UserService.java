@@ -24,13 +24,11 @@ import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
 import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.UserInfo;
-import com.circabc.easyshare.model.UserSpace;
 import com.circabc.easyshare.storage.DBUser;
 import com.circabc.easyshare.storage.DBUser.Role;
 import com.circabc.easyshare.storage.UserRepository;
 import com.circabc.easyshare.utils.StringUtils;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -54,6 +52,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Autowired
     private EasyShareConfiguration esConfig;
 
+    @Override
     public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException {
         if (authentication != null && authentication.isAuthenticated()
                 && (authentication instanceof BearerTokenAuthentication)
@@ -81,12 +80,12 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         throw new WrongAuthenticationException();
     }
 
-    public DBUser createInternalUser(String email, String name, String password, String username) {
+    private DBUser createInternalUser(String email, String name, String password, String username) {
         DBUser user = DBUser.createInternalUser(email, name, password, esConfig.getDefaultUserSpace(), username);
         return userRepository.save(user);
     }
 
-    public DBUser createAdminUser(String password) {
+    private DBUser createAdminUser(String password) {
         DBUser user = this.createInternalUser("admin@admin.com", "admin", password, "admin"); // NOSONAR
         user.setRole(Role.ADMIN);
         return userRepository.save(user);
@@ -95,7 +94,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     /**
      * One of the arguments can be null
      */
-    public DBUser createExternalUser(String email, String name) {
+    private DBUser createExternalUser(String email, String name) {
         DBUser user = DBUser.createExternalUser(email, name);
         return userRepository.save(user);
     }
@@ -104,7 +103,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         return userRepository.findById(userId).orElseThrow(() -> new UnknownUserException());
     }
 
-    public DBUser getUserOrCreateExternalUser(Recipient recipient) throws WrongEmailStructureException {
+    DBUser getUserOrCreateExternalUser(Recipient recipient) throws WrongEmailStructureException {
         final String emailOrName = recipient.getEmailOrName();
         DBUser dbUser = userRepository.findOneByNameAndRole(emailOrName, DBUser.Role.EXTERNAL);
         if (dbUser == null) {
@@ -123,10 +122,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         }
     }
 
-    public List<DBUser> getDbUsersByIds(Iterable<String> ids) {
-        return (List<DBUser>) userRepository.findAllById(ids);
-    }
-
+    @Override
     public void createDefaultUsers() {
         if (userRepository.findOneByUsername("admin") == null
                 && userRepository.findOneByEmail("admin@admin.com") == null) {
@@ -143,24 +139,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     }
 
     /**
-     * Returns the {@code userId}'s Role if the corresponding user exists.
-     */
-    public DBUser.Role getRole(String userId) throws UnknownUserException {
-        return this.getDbUser(userId).getRole();
-    }
-
-    /**
      * Returns the {@code userId}'s UserInfo if the corresponding user exists.
      */
-    public UserInfo getUserInfo(String userId) throws UnknownUserException {
+    private UserInfo getUserInfo(String userId) throws UnknownUserException {
         return this.getDbUser(userId).toUserInfo();
-    }
-
-    /**
-     * Returns the {@code userId}'s UserInfo if the corresponding user exists.
-     */
-    public UserSpace getUserSpace(String userId) throws UnknownUserException {
-        return this.getDbUser(userId).toUserSpace();
     }
 
     @Override
@@ -180,7 +162,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             UserUnauthorizedException, ExternalUserCannotBeAdminException, IllegalSpaceException {
         String userId = userInfo.getId();
         if (this.isAdmin(requesterId)) {
-            UserInfo oldUserInfo = this.getUserInfo(userId);
+        UserInfo oldUserInfo = this.getUserInfo(userId);
             // Id, Name, UsedSpace
             if (!oldUserInfo.getId().equals(userId) || !oldUserInfo.getName().equals(userInfo.getName())
                     || !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
@@ -219,17 +201,6 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
     @Override
     @Transactional
-    public UserSpace getUserSpaceOnBehalfOf(String userId, String requesterId)
-            throws UserUnauthorizedException, UnknownUserException {
-        if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
-            return getUserSpace(userId);
-        } else {
-            throw new UserUnauthorizedException();
-        }
-    }
-
-    @Override
-    @Transactional
     public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
             throws UnknownUserException, ExternalUserCannotBeAdminException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
@@ -241,6 +212,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
     boolean isRequesterIdEqualsToUserIdOrIsAnAdmin(String userId, String requesterId) throws UnknownUserException {
         return ((requesterId.equals(userId)) || (this.getDbUser(requesterId).getRole().equals(Role.ADMIN)));
+    }
+
+    boolean isUserExists(String requesterId) {
+        return this.userRepository.findById(requesterId).isPresent();
     }
 
     /**
@@ -257,9 +232,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         userRepository.save(user);
     }
 
-    public boolean isAdmin(String userId) throws UnknownUserException {
+    boolean isAdmin(String userId) throws UnknownUserException {
         DBUser dbUser = this.getDbUser(userId);
         return dbUser.getRole().equals(DBUser.Role.ADMIN);
+    }
+
+    boolean isAdmin(UserInfo userInfo) {
+        return userInfo.getIsAdmin();
     }
 
     /**
@@ -307,21 +286,6 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         }
     }
 
-    public UserDetails getOrCreateUserDetails(String email, String givenName) throws UsernameNotFoundException {
-        DBUser dbUser = null;
-        if (StringUtils.validateEmailAddress(email)) {
-            dbUser = this.userRepository.findOneByEmail(email);
-            if (dbUser == null) {
-                dbUser = this.createInternalUser(email, givenName, null, null);
-            }
-            UserDetails userDetails = User.builder().username(email)
-                    .password(ObjectUtils.defaultIfNull(dbUser.getPassword(), "n/a")).roles(dbUser.getRole().toString())
-                    .build();
-            return userDetails;
-        }
-        throw new UsernameNotFoundException("Invalid email adress as username");
-    }
-
     /**
      * Creates an internal user with {@code email} and {@code givenName}
      * 
@@ -329,7 +293,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
      * @param givenName
      * @throws WrongEmailStructureException if {@code email} has a wrong structure
      */
-    public DBUser getOrCreateDbInternalUser(String email, String givenName) throws WrongEmailStructureException {
+    private DBUser getOrCreateDbInternalUser(String email, String givenName) throws WrongEmailStructureException {
         DBUser dbUser = null;
         if (StringUtils.validateEmailAddress(email)) {
             dbUser = this.userRepository.findOneByEmail(email);
@@ -359,8 +323,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         if (dbUser == null) {
             throw new UsernameNotFoundException("Invalid email adress as username");
         }
-        UserDetails userDetails = User.builder().username(email)
-                .password(ObjectUtils.defaultIfNull(dbUser.getPassword(), "n/a")).roles(dbUser.getRole().toString())
+        UserDetails userDetails = User.builder().username(email).password("n/a").roles(dbUser.getRole().toString())
                 .build();
         return userDetails;
     }

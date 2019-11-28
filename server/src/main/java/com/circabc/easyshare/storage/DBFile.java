@@ -68,26 +68,6 @@ public class DBFile {
     private Set<DBUserFile> sharedWith;
 
 
-    public void addUsersSharedWith(DBUser dbUser, String downloadId, String message) {
-        DBUserFile dbUserFile = new DBUserFile(downloadId, dbUser, this, message);
-        sharedWith.add(dbUserFile);
-        dbUser.getFilesReceived().add(dbUserFile);
-    }
-    
-    public void addUsersSharedWith(DBUser dbUser, String downloadId) {
-        DBUserFile dbUserFile = new DBUserFile(downloadId, dbUser, this);
-        sharedWith.add(dbUserFile);
-        dbUser.getFilesReceived().add(dbUserFile);
-	}
-
-	public void removeUsersSharedWith(DBUser dbUser, String downloadId) {
-        DBUserFile dbUserFile = new DBUserFile(downloadId, dbUser, this);
-        dbUser.getFilesReceived().remove(dbUserFile);
-        sharedWith.remove(dbUserFile);
-        dbUserFile.setFile(null);
-        dbUserFile.setReceiver(null);
-	}
-
     @Column(name = "fileSize", nullable = false)
     private long size;
 

@@ -5,6 +5,9 @@ server:
 easyshare:
   expirationdays: 7
   defaultuserspace: 5368709120
+  # 4Gb
+  maxSizeAllowedInBytes: 4294967296 
+  activateMailService: false
   disks:
     - C:\temp\easyshare
 logging:
@@ -35,7 +38,7 @@ spring:
         format_sql: true
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   mail:
     host: localhost
     port: 25
