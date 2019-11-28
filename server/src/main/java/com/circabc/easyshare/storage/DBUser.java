@@ -44,26 +44,6 @@ public class DBUser {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     private Set<DBUserFile> filesReceived = new HashSet<>();
 
-    public void addFilesRecieved(DBFile dbFile, String downloadId) {
-        DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile);
-        filesReceived.add(dbUserFile);
-        dbFile.getSharedWith().add(dbUserFile);
-    }
-
-    public void addFilesRecieved(DBFile dbFile, String downloadId, String message) {
-        DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile, message);
-        filesReceived.add(dbUserFile);
-        dbFile.getSharedWith().add(dbUserFile);
-    }
-
-    public void removeFilesRecieved(DBFile dbFile, String downloadId) {
-        DBUserFile dbUserFile = new DBUserFile(downloadId, this, dbFile);
-        dbFile.getSharedWith().remove(dbUserFile);
-        filesReceived.remove(dbUserFile);
-        dbUserFile.setFile(null);
-        dbUserFile.setReceiver(null);
-    }
-
     @Id
     @Getter
     @Setter
@@ -92,10 +72,6 @@ public class DBUser {
     @Setter
     @Column(nullable = true, unique = true)
     private String username;
-
-    @Getter
-    @Setter
-    private String password;
 
     @Getter
     @Setter
@@ -130,15 +106,6 @@ public class DBUser {
     }
 
     /**
-     * Create a new user with specified role {@code EXTERNAL}
-     */
-    public static DBUser createExternalUser(String mail, String name, String password) throws IllegalArgumentException {
-        DBUser dbUser = DBUser.createExternalUser(mail, name);
-        dbUser.setPassword(password);
-        return dbUser;
-    }
-
-    /**
      * Create a new user with specified role {@code INTERNAL}
      *
      * @throws IllegalArgumentException If {@code totalSpace < 0}
@@ -151,7 +118,6 @@ public class DBUser {
         DBUser dbUser = new DBUser(totalSpace, Role.INTERNAL);
         dbUser.setEmail(email);
         dbUser.setName(name);
-        dbUser.setPassword(password);
         dbUser.setTotalSpace(totalSpace);
         dbUser.setUsername(username);
         return dbUser;

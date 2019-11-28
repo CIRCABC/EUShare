@@ -84,8 +84,8 @@ public class UserApiController implements UserApi {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
         } catch (UnknownUserException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    HttpErrorAnswerBuilder.build500EmptyToString(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    HttpErrorAnswerBuilder.build404EmptyToString(), e);
         }
     }
 
@@ -107,8 +107,8 @@ public class UserApiController implements UserApi {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
         } catch (UnknownUserException e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    HttpErrorAnswerBuilder.build500EmptyToString(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    HttpErrorAnswerBuilder.build404EmptyToString(), e);
         }
     }
 

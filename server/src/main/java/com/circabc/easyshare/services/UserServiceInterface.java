@@ -16,10 +16,14 @@ import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
 import com.circabc.easyshare.exceptions.IllegalSpaceException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
+import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.model.UserInfo;
-import com.circabc.easyshare.model.UserSpace;
+
+import org.springframework.security.core.Authentication;
 
 public interface UserServiceInterface {
+
+    public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException;
 
     public UserInfo getUserInfoOnBehalfOf(String userId, String requesterId)
             throws UnknownUserException, UserUnauthorizedException;
@@ -30,9 +34,6 @@ public interface UserServiceInterface {
     public List<UserInfo> getUsersUserInfoOnBehalfOf(int pageSize, int pageNumber, String searchString,
             String requesterId) throws UnknownUserException, UserUnauthorizedException;
 
-    public UserSpace getUserSpaceOnBehalfOf(String userId, String requesterId)
-            throws UserUnauthorizedException, UnknownUserException;
-
     public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
             throws UnknownUserException, ExternalUserCannotBeAdminException, UserUnauthorizedException;
 
@@ -41,5 +42,7 @@ public interface UserServiceInterface {
 
     public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
             throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException;
+
+    public void createDefaultUsers();
 
 }

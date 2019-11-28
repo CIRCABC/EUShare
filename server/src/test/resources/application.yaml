@@ -5,6 +5,9 @@ server:
 easyshare:
   expirationdays: 7
   defaultuserspace: 5368709120
+  # 4Gb
+  maxSizeAllowedInBytes: 4294967296 
+  activateMailService: false
   disks:
     - C:\temp\easyshare
 logging:

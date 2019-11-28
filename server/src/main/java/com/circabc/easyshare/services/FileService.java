@@ -111,10 +111,10 @@ public class FileService implements FileServiceInterface {
      * Retrieve all files that are marked as deleted and physically removes them
      * from the file system.
      */
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 5000) // Every 5 seconds
     private void cleanupFiles() {
         for (DBFile DBFile : fileRepository.findByStatus(DBFile.Status.DELETED, PageRequest.of(0, Integer.MAX_VALUE))) {
-            log.info(String.format("Trying to delete %s", DBFile.getId()));
+            log.info(String.format("Launching deletion of file id %s", DBFile.getId()));
             boolean fileDeletion = false;
             Path path = Paths.get(DBFile.getPath());
             try {
@@ -133,7 +133,7 @@ public class FileService implements FileServiceInterface {
     /**
      * Marks all expired files as deleted in the database.
      */
-    @Scheduled(fixedRate = 10_000)
+    @Scheduled(fixedRate = 10_000) // Every 10 seconds
     private void markExpiredFiles() {
         for (DBFile DBFile : fileRepository.findByExpirationDateBefore(LocalDate.now())) {
             log.info(String.format("DBFile %s expired", DBFile.getId()));
@@ -192,7 +192,7 @@ public class FileService implements FileServiceInterface {
         }
     }
 
-    public boolean isRequesterTheOwnerOfTheFileOrIsAnAdmin(String fileId, String requesterId)
+    private boolean isRequesterTheOwnerOfTheFileOrIsAnAdmin(String fileId, String requesterId)
             throws UnknownFileException, UnknownUserException {
         DBFile dbFile = findFile(fileId);
         return dbFile.getUploader().getId().equals(requesterId) || userService.isAdmin(requesterId);
@@ -383,25 +383,17 @@ public class FileService implements FileServiceInterface {
 
     @Override
     @Transactional
-    public FileInfoRecipient getFileInfoRecipientOnBehalfOf(String fileId, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException {
-        DBFile f = findAvailableFile(fileId, true);
-        if (requesterId.equals(f.getUploader().getId())) {
-            return f.toFileInfoRecipient(requesterId);
-        } else {
-            throw new UserUnauthorizedException();
-        }
-    }
-
-    @Override
-    @Transactional
     public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(int pageSize, int pageNumber, String userId,
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
-            return fileRepository
-                    .findByStatusAndSharedWith_Receiver_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId,
-                            PageRequest.of(pageNumber, pageSize))
-                    .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
+            if (userService.isUserExists(userId)) {
+                return fileRepository
+                        .findByStatusAndSharedWith_Receiver_IdOrderByExpirationDateAscFilenameAsc(
+                                DBFile.Status.AVAILABLE, userId, PageRequest.of(pageNumber, pageSize))
+                        .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
+            } else {
+                throw new UnknownUserException();
+            }
         } else {
             throw new UserUnauthorizedException();
         }
@@ -412,21 +404,14 @@ public class FileService implements FileServiceInterface {
     public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(int pageSize, int pageNumber, String userId,
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
-            return fileRepository
-                    .findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId, PageRequest.of(pageNumber, pageSize))
-                    .stream().map(dbFile -> dbFile.toFileInfoUploader()).collect(Collectors.toList());
-        } else {
-            throw new UserUnauthorizedException();
-        }
-    }
-
-    @Override
-    @Transactional
-    public FileInfoUploader getFileInfoUploaderOnBehalfOf(String fileId, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException {
-        DBFile f = findAvailableFile(fileId, false);
-        if (requesterId.equals(f.getUploader().getId())) {
-            return f.toFileInfoUploader();
+            if (userService.isUserExists(userId)) {
+                return fileRepository
+                        .findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId,
+                                PageRequest.of(pageNumber, pageSize))
+                        .stream().map(dbFile -> dbFile.toFileInfoUploader()).collect(Collectors.toList());
+            } else {
+                throw new UnknownUserException();
+            }
         } else {
             throw new UserUnauthorizedException();
         }
