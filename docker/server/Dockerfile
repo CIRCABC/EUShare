@@ -1,5 +1,8 @@
 FROM tomcat:8.5.41-jdk8
 
+COPY ./conf/eulogin.crt eulogin.crt
+RUN echo yes | keytool -importcert -import -v -alias euloginCertAlias -file eulogin.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
+
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
 COPY ./lib/mysql-connector-java-8.0.16.jar /usr/local/tomcat/lib
 COPY ./dist/easyshareserver.war /usr/local/tomcat/webapps/ROOT.war
