@@ -75,7 +75,7 @@ public class DBUser {
 
     @Getter
     @Setter
-    @Column(nullable = true, unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Getter
@@ -100,7 +100,8 @@ public class DBUser {
             throw new IllegalArgumentException();
         }
         DBUser dbUser = new DBUser(0, Role.EXTERNAL);
-        dbUser.setEmail(mail);
+        String upperCaseEmail = mail.toUpperCase();
+        dbUser.setEmail(upperCaseEmail);
         dbUser.setName(name);
         return dbUser;
     }
@@ -116,7 +117,8 @@ public class DBUser {
             throw new IllegalArgumentException();
         }
         DBUser dbUser = new DBUser(totalSpace, Role.INTERNAL);
-        dbUser.setEmail(email);
+        String upperCaseEmail = email.toUpperCase();
+        dbUser.setEmail(upperCaseEmail);
         dbUser.setName(name);
         dbUser.setTotalSpace(totalSpace);
         dbUser.setUsername(username);
