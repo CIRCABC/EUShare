@@ -95,7 +95,7 @@ public class ApiControllerITest {
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
     ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(userRepository.findOneByEmail("email@email.com").getId(), entity.getBody());
+    assertEquals(userRepository.findOneByEmailIgnoreCase("email@email.com").getId(), entity.getBody());
   }
 
   @Test
@@ -117,7 +117,7 @@ public class ApiControllerITest {
     int pageSize = 1;
     int pageNumber = 0;
     String searchString = "email@email.com";
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
     UserInfo[] expectedUserInfos = { expectedUserInfo };
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange(
@@ -172,7 +172,7 @@ public class ApiControllerITest {
 
   @Test
   public void putUserInfo200() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
     expectedUserInfo.setIsAdmin(true);
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin(ApiControllerITest.asJsonString(expectedUserInfo));
     ResponseEntity<String> entity = this.testRestTemplate.exchange("/user/" + expectedUserInfo.getId() + "/userInfo",
@@ -183,7 +183,7 @@ public class ApiControllerITest {
 
   @Test
   public void putUserInfo401() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
     expectedUserInfo.setIsAdmin(true);
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -200,7 +200,7 @@ public class ApiControllerITest {
 
   @Test
   public void putUserInfo403() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
     expectedUserInfo.setIsAdmin(true);
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(expectedUserInfo));
     ResponseEntity<String> entity = this.testRestTemplate.exchange("/user/" + expectedUserInfo.getId() + "/userInfo",
@@ -211,7 +211,7 @@ public class ApiControllerITest {
 
   @Test
   public void putUserInfo404() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
     expectedUserInfo.setIsAdmin(true);
     expectedUserInfo.setId("wrongId");
 
@@ -224,7 +224,7 @@ public class ApiControllerITest {
 
   @Test
   public void getUserInfo200() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin("");
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange("/user/" + expectedUserInfo.getId() + "/userInfo",
@@ -236,7 +236,7 @@ public class ApiControllerITest {
 
   @Test
   public void getUserInfo401() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
     httpHeaders.setOrigin("http://localhost:8080");
@@ -252,7 +252,7 @@ public class ApiControllerITest {
 
   @Test
   public void getUserInfo403() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmail("admin@admin.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("admin@admin.com").toUserInfo();
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange("/user/" + expectedUserInfo.getId() + "/userInfo",
@@ -279,7 +279,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -309,7 +309,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -342,7 +342,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -381,7 +381,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -415,7 +415,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -452,7 +452,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -501,7 +501,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -530,7 +530,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -575,7 +575,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -601,7 +601,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -631,7 +631,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -767,7 +767,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -802,7 +802,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -835,7 +835,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -870,7 +870,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -921,7 +921,7 @@ public class ApiControllerITest {
     Resource resource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -951,7 +951,7 @@ public class ApiControllerITest {
 
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -980,7 +980,7 @@ public class ApiControllerITest {
     Resource resource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -1009,7 +1009,7 @@ public class ApiControllerITest {
     Resource resource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
@@ -1047,7 +1047,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -1076,7 +1076,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
@@ -1106,7 +1106,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
-    DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+    DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,

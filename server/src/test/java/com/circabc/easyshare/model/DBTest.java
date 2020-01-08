@@ -53,7 +53,7 @@ public class DBTest {
     public void creationOfaUserTest() {
         DBUser dbUser = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername"); // NOSONAR
         userRepository.save(dbUser);
-        assertEquals(dbUser, userRepository.findOneByEmail("emailA@email.com"));
+        assertEquals(dbUser, userRepository.findOneByEmailIgnoreCase("emailA@email.com"));
         assertEquals(dbUser, userRepository.findOneByName("uniqueName"));
         assertEquals(dbUser, userRepository.findOneByUsername("uniqueUsername"));
     }
@@ -63,7 +63,7 @@ public class DBTest {
     public void creationOfanExternalUserTest() {
         DBUser dbUser = DBUser.createExternalUser("emailA@email.com", null);
         dbUser = userRepository.save(dbUser);
-        assertEquals(dbUser, userRepository.findOneByEmail("emailA@email.com"));
+        assertEquals(dbUser, userRepository.findOneByEmailIgnoreCase("emailA@email.com"));
         assertEquals(dbUser, userRepository.findOneByName(null));
         assertEquals(dbUser, userRepository.findOneByUsername(null));
     }
@@ -86,7 +86,7 @@ public class DBTest {
         userRepository.save(uploader);
 
         // Verify insertion
-        DBUser uploaderSaved = userRepository.findOneByEmail("emailA@email.com");
+        DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
         assertEquals(uploader, uploaderSaved);
 
         DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
@@ -101,7 +101,7 @@ public class DBTest {
         userRepository.save(shareUser);
 
         // Verify insertion
-        DBUser shareUserSaved = userRepository.findOneByEmail("emailExternal@email.com");
+        DBUser shareUserSaved = userRepository.findOneByEmailIgnoreCase("emailExternal@email.com");
         assertEquals(shareUser, shareUserSaved);
 
         DBUserFile dbUserFile = new DBUserFile("downloadId", shareUser, dbFile);
@@ -117,7 +117,7 @@ public class DBTest {
         DBUserFile dbUserFileDeleted = userFileRepository.findOneByDownloadId("downloadId");
         assertEquals(null, dbUserFileDeleted);
 
-        DBUser shareUserSavedWithSharedFileDeleted = userRepository.findOneByEmail("emailExternal@email.com");
+        DBUser shareUserSavedWithSharedFileDeleted = userRepository.findOneByEmailIgnoreCase("emailExternal@email.com");
         assertEquals(0, shareUserSavedWithSharedFileDeleted.getFilesReceived().size());
     }
 
@@ -186,7 +186,7 @@ public class DBTest {
                 "uniqueUsername");
         userRepository.save(uploader);
 
-        List<DBUser> foundUsers = userRepository.findByEmailStartsWith("emailA", PageRequest.of(0, 10));
+        List<DBUser> foundUsers = userRepository.findByEmailIgnoreCaseStartsWith("emailA", PageRequest.of(0, 10));
         assertEquals(1, foundUsers.size());
         assertEquals(uploader, foundUsers.get(0));
     }

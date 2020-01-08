@@ -18,8 +18,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface UserRepository extends PagingAndSortingRepository<DBUser, String> {
     public List<DBUser> findAllById(String id);
     public DBUser findOneByUsername(String username);
-    public DBUser findOneByEmail(String email);
+    public DBUser findOneByEmailIgnoreCase(String email);
     public DBUser findOneByName(String name);
     public DBUser findOneByNameAndRole(String name, DBUser.Role role);
-    public List<DBUser> findByEmailStartsWith(String start, Pageable page);
+    public List<DBUser> findByEmailIgnoreCaseStartsWith(String start, Pageable page);
 }
