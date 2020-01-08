@@ -107,7 +107,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         final String emailOrName = recipient.getEmailOrName();
         DBUser dbUser = userRepository.findOneByNameAndRole(emailOrName, DBUser.Role.EXTERNAL);
         if (dbUser == null) {
-            dbUser = userRepository.findOneByEmail(emailOrName);
+            dbUser = userRepository.findOneByEmailIgnoreCase(emailOrName);
         }
         if (dbUser != null) {
             return dbUser;
@@ -125,13 +125,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Override
     public void createDefaultUsers() {
         if (userRepository.findOneByUsername("admin") == null
-                && userRepository.findOneByEmail("admin@admin.com") == null) {
+                && userRepository.findOneByEmailIgnoreCase("admin@admin.com") == null) {
             this.createAdminUser("admin");
         } else {
             log.warn("Admin could not be created, already exists");
         }
         if (userRepository.findOneByUsername("username") == null
-                && userRepository.findOneByEmail("email@email.com") == null) {
+                && userRepository.findOneByEmailIgnoreCase("email@email.com") == null) {
             this.createInternalUser("email@email.com", "name", "password", "username");
         } else {
             log.warn("Internal user could not be created, already exists");
@@ -192,7 +192,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public List<UserInfo> getUsersUserInfoOnBehalfOf(int pageSize, int pageNumber, String searchString,
             String requesterId) throws UnknownUserException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
-            return userRepository.findByEmailStartsWith(searchString, PageRequest.of(pageNumber, pageSize)).stream()
+            return userRepository.findByEmailIgnoreCaseStartsWith(searchString, PageRequest.of(pageNumber, pageSize)).stream()
                     .map(dbUser -> dbUser.toUserInfo()).collect(Collectors.toList());
         } else {
             throw new UserUnauthorizedException();
@@ -296,7 +296,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     private DBUser getOrCreateDbInternalUser(String email, String givenName) throws WrongEmailStructureException {
         DBUser dbUser = null;
         if (StringUtils.validateEmailAddress(email)) {
-            dbUser = this.userRepository.findOneByEmail(email);
+            dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
             if (dbUser == null) {
                 dbUser = this.createInternalUser(email, givenName, null, null);
             } else {
@@ -318,7 +318,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         DBUser dbUser = null;
         if (StringUtils.validateEmailAddress(email)) {
-            dbUser = this.userRepository.findOneByEmail(email);
+            dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
         }
         if (dbUser == null) {
             throw new UsernameNotFoundException("Invalid email adress as username");

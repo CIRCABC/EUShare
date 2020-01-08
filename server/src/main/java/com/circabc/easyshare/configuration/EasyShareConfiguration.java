@@ -54,7 +54,7 @@ public class EasyShareConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8080", "http://localhost:4200", "http://client:8080", "http://proxy")
+                        .allowedOrigins("*")
                         .allowedMethods("*").allowedHeaders("*").allowCredentials(true);
             }
         };
