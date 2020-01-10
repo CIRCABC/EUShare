@@ -194,7 +194,7 @@ export class AdministrationComponent implements OnInit {
       '/administration',
       this.selectedUserInfo.id,
       'files',
-      { userName: this.selectedUserInfo.name }
+      { userName: this.selectedUserInfo.givenName }
     ]);
   }
 }

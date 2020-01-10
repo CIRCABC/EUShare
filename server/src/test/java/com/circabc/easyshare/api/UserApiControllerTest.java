@@ -83,6 +83,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -120,6 +121,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -177,6 +179,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -206,6 +209,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -235,6 +239,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -261,6 +266,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -308,6 +314,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -364,6 +371,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -393,6 +401,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -422,6 +431,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -448,7 +458,8 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
-        attributes.put("username", "username");
+        attributes.put("name", "name SURNAME");
+        attributes.put("username", "loginUsername");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
 
@@ -461,7 +472,9 @@ public class UserApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
         userInfo.setTotalSpace(new BigDecimal(1024));
         userInfo.setUsedSpace(new BigDecimal(0));
 
@@ -484,6 +497,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -497,7 +511,10 @@ public class UserApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
+        
         // missing total space
         userInfo.setUsedSpace(new BigDecimal(0));
 
@@ -519,7 +536,9 @@ public class UserApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
         userInfo.setTotalSpace(new BigDecimal(1024));
         userInfo.setUsedSpace(new BigDecimal(0));
         this.mockMvc
@@ -541,7 +560,9 @@ public class UserApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
         userInfo.setTotalSpace(new BigDecimal(1024));
         userInfo.setUsedSpace(new BigDecimal(0));
 
@@ -565,6 +586,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -578,7 +600,9 @@ public class UserApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
         userInfo.setTotalSpace(new BigDecimal(1024));
         userInfo.setUsedSpace(new BigDecimal(0));
 
@@ -603,6 +627,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -616,7 +641,9 @@ public class UserApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
         userInfo.setTotalSpace(new BigDecimal(1024));
         userInfo.setUsedSpace(new BigDecimal(0));
 
@@ -638,7 +665,9 @@ public class UserApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
         userInfo.setTotalSpace(new BigDecimal(1024));
         userInfo.setUsedSpace(new BigDecimal(0));
 
@@ -646,6 +675,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -672,6 +702,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -730,6 +761,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -757,6 +789,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -784,6 +817,7 @@ public class UserApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();

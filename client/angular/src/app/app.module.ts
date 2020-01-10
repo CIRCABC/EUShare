@@ -51,6 +51,9 @@ import { CallBackComponent } from './call-back/call-back.component';
 import { KeyStoreService } from './services/key-store.service';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
+import { MyUserComponent } from './my-user/my-user.component';
+import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
+import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -91,6 +94,18 @@ const routes: Routes = [
   {
     path: 'callback',
     component: CallBackComponent
+  },
+  {
+    path: 'myUser',
+    component: MyUserComponent
+  },
+  {
+    path: 'privacyStatement',
+    component: PrivacyStatementComponent
+  },
+  {
+    path: 'termsOfService',
+    component: TermsOfServiceComponent
   }
 ];
 
@@ -123,7 +138,10 @@ const routes: Routes = [
     DownloadFileRowComponent,
     CallBackComponent,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    MyUserComponent,
+    PrivacyStatementComponent,
+    TermsOfServiceComponent
   ],
   imports: [
     ApiModule,
@@ -158,4 +176,4 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

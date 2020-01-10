@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-@import '../../styles.scss';
+@import "../../styles.scss";
 
 .faIcon {
   margin-right: 10px;
@@ -15,4 +15,23 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 .navbar-item {
   text-align: right;
+}
+
+.avatar {
+  display: inline-block;
+  vertical-align: middle;
+  background: white;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  overflow: hidden;
+  height: 36px;
+  width: 36px;
+  text-align: center;
+  line-height: 59px;
+  margin-left: 1em;
+}
+
+a:hover {
+  color: white;
+  text-decoration: underline;
 }

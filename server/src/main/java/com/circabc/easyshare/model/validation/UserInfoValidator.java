@@ -30,7 +30,10 @@ public class UserInfoValidator {
         if (userInfo.getId() == null) {// NOSONAR
             return false;
         }
-        if (userInfo.getName() == null) {// NOSONAR
+        if (userInfo.getLoginUsername() == null) {// NOSONAR
+            return false;
+        }
+        if (userInfo.getGivenName() == null) {// NOSONAR
             return false;
         }
         if (userInfo.getIsAdmin() == null) {

@@ -1,5 +1,8 @@
 <div class="centered">
   <h1 class="title">Share a new file</h1>
+  <h2 class="subtitle">
+  You can upload up to {{ leftSpaceInBytes | fileSizeFormat }} ({{totalSpaceInBytes | fileSizeFormat }} quota)
+  </h2>
   <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
     <div>
       <!-- DRAG AND DROP-->
@@ -153,6 +156,16 @@
       </label>
     </div>
     <div class="field" *ngIf="moreOptions">
+      <label class="label">Password (optional)</label>
+      <input
+        formControlName="password"
+        class="input"
+        type="password"
+        placeholder="Password on file download"
+        value=""
+      />
+    </div>
+    <div class="field" *ngIf="moreOptions">
       <label class="label">Expiration date (default is 7 days from now)</label>
       <p-calendar
         [minDate]="getTomorrow()"
@@ -165,15 +178,6 @@
         [placeholder]="'dd/mm/yyyy'"
       >
       </p-calendar>
-    </div>
-    <div class="field" *ngIf="moreOptions">
-      <label class="label">Password (optional)</label>
-      <input
-        formControlName="password"
-        class="input"
-        type="password"
-        placeholder="Password on file download"
-      />
     </div>
     <br />
     <div class="field">

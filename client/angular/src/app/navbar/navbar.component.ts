@@ -41,13 +41,13 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {
     const userInfo = this.sessionService.getStoredUserInfo();
     if (userInfo) {
-      this.userName = userInfo.name;
+      this.userName = userInfo.givenName;
       this.isAdmin = userInfo.isAdmin;
     }
 
     this.sessionService.userInfo$.subscribe(
       secondUserInfo => {
-        this.userName = secondUserInfo.name;
+        this.userName = secondUserInfo.givenName;
         this.isAdmin = secondUserInfo.isAdmin;
       },
       error => {}

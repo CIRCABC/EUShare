@@ -32,8 +32,14 @@ public class UserInfo   {
   @JsonProperty("id")
   private String id;
 
-  @JsonProperty("name")
-  private String name;
+  @JsonProperty("loginUsername")
+  private String loginUsername;
+
+  @JsonProperty("givenName")
+  private String givenName;
+
+  @JsonProperty("email")
+  private String email;
 
   @JsonProperty("isAdmin")
   private Boolean isAdmin;
@@ -105,25 +111,66 @@ public class UserInfo   {
     this.id = id;
   }
 
-  public UserInfo name(String name) {
-    this.name = name;
+  public UserInfo loginUsername(String loginUsername) {
+    this.loginUsername = loginUsername;
     return this;
   }
 
   /**
-   * User name (email address in case of external user)
-   * @return name
+   * Abreviated user name used for login
+   * @return loginUsername
   */
-  @ApiModelProperty(required = true, value = "User name (email address in case of external user)")
+  @ApiModelProperty(required = true, value = "Abreviated user name used for login")
   @NotNull
 
 
-  public String getName() {
-    return name;
+  public String getLoginUsername() {
+    return loginUsername;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setLoginUsername(String loginUsername) {
+    this.loginUsername = loginUsername;
+  }
+
+  public UserInfo givenName(String givenName) {
+    this.givenName = givenName;
+    return this;
+  }
+
+  /**
+   * Full name of the user
+   * @return givenName
+  */
+  @ApiModelProperty(value = "Full name of the user")
+
+
+  public String getGivenName() {
+    return givenName;
+  }
+
+  public void setGivenName(String givenName) {
+    this.givenName = givenName;
+  }
+
+  public UserInfo email(String email) {
+    this.email = email;
+    return this;
+  }
+
+  /**
+   * Email adress
+   * @return email
+  */
+  @ApiModelProperty(required = true, value = "Email adress")
+  @NotNull
+
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public UserInfo isAdmin(Boolean isAdmin) {
@@ -160,13 +207,15 @@ public class UserInfo   {
     return Objects.equals(this.totalSpace, userInfo.totalSpace) &&// NOSONAR
         Objects.equals(this.usedSpace, userInfo.usedSpace) &&
         Objects.equals(this.id, userInfo.id) &&
-        Objects.equals(this.name, userInfo.name) &&
+        Objects.equals(this.loginUsername, userInfo.loginUsername) &&
+        Objects.equals(this.givenName, userInfo.givenName) &&
+        Objects.equals(this.email, userInfo.email) &&
         Objects.equals(this.isAdmin, userInfo.isAdmin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalSpace, usedSpace, id, name, isAdmin);
+    return Objects.hash(totalSpace, usedSpace, id, loginUsername, givenName, email, isAdmin);
   }
 
   @Override
@@ -177,7 +226,9 @@ public class UserInfo   {
     sb.append("    totalSpace: ").append(toIndentedString(totalSpace)).append("\n");
     sb.append("    usedSpace: ").append(toIndentedString(usedSpace)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    loginUsername: ").append(toIndentedString(loginUsername)).append("\n");
+    sb.append("    givenName: ").append(toIndentedString(givenName)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    isAdmin: ").append(toIndentedString(isAdmin)).append("\n");
     sb.append("}");
     return sb.toString();

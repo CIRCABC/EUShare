@@ -117,7 +117,7 @@ export class DownloadButtonComponent implements OnInit {
           const file = event.body as Blob;
           saveAs(file, this.fileName);
           this.notificationService.addSuccessMessage(
-            'File was completely downloaded!'
+            'File succesfully downloaded!', true, 5
           );
         } else {
           this.notificationService.errorMessageToDisplay(

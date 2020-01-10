@@ -24,7 +24,7 @@
             value="userInfo.id"
             (click)="displayUserInfoNumber(i)"
           >
-            <a> {{ userInfo.name }}</a>
+            <a> {{ userInfo.givenName }}</a>
           </li>
         </ul>
         <nav
@@ -52,11 +52,11 @@
         <div>
           <label class="label">User info</label>
           <p *ngIf="!isChangePermissions && !selectedUserInfo.isAdmin">
-            Internal user: {{ selectedUserInfo.name }}
+            Internal user: {{ selectedUserInfo.givenName }}
             <fa-icon [icon]="faUser"></fa-icon>
           </p>
           <p *ngIf="!isChangePermissions && selectedUserInfo.isAdmin">
-            Admin user: {{ selectedUserInfo.name }}
+            Admin user: {{ selectedUserInfo.givenName }}
             <fa-icon [icon]="faUserTie"></fa-icon>
           </p>
           <div class="select" *ngIf="isChangePermissions">
@@ -94,7 +94,7 @@
           class="button is-link is-outlined"
           [class.is-loading]="changeIsLoading"
           (click)="changePermissions()"
-          >Done !</a
+          >Done</a
         >
         <a
           *ngIf="isChangePermissions"

@@ -39,7 +39,7 @@ export class CallBackComponent implements OnInit {
         case 'token_received':
         case 'token_refreshed':
         case 'silently_refreshed': {
-          this.notificationService.addSuccessMessage('Received valid token');
+          console.log('silently_refreshed');
           this.loginAndRedirect();
           break;
         }

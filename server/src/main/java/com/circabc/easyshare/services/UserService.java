@@ -61,6 +61,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             DefaultOAuth2AuthenticatedPrincipal principal = (DefaultOAuth2AuthenticatedPrincipal) bearerTokenAuthentication
                     .getPrincipal();
             String email = principal.getAttribute("email");
+            String givenName = principal.getAttribute("name");
             String username = principal.getAttribute("username");
 
             if (email == null || username == null) {
@@ -69,7 +70,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
             DBUser dbUser = null;
             try {
-                dbUser = this.getOrCreateDbInternalUser(email, username);
+                dbUser = this.getOrCreateDbInternalUser(email, givenName, username);
             } catch (WrongEmailStructureException e) {
                 throw new WrongAuthenticationException(e);
             }
@@ -80,8 +81,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         throw new WrongAuthenticationException();
     }
 
-    private DBUser createInternalUser(String email, String name, String password, String username) {
-        DBUser user = DBUser.createInternalUser(email, name, password, esConfig.getDefaultUserSpace(), username);
+    private DBUser createInternalUser(String email, String givenName, String password, String username) {
+        DBUser user = DBUser.createInternalUser(email, givenName, password, esConfig.getDefaultUserSpace(), username);
         return userRepository.save(user);
     }
 
@@ -164,8 +165,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         if (this.isAdmin(requesterId)) {
         UserInfo oldUserInfo = this.getUserInfo(userId);
             // Id, Name, UsedSpace
-            if (!oldUserInfo.getId().equals(userId) || !oldUserInfo.getName().equals(userInfo.getName())
-                    || !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
+            if (!oldUserInfo.getId().equals(userId) 
+            || !oldUserInfo.getGivenName().equals(userInfo.getGivenName())
+            || !oldUserInfo.getLoginUsername().equals(userInfo.getLoginUsername())
+            || !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
                 throw new UserUnauthorizedException();
             }
             // isAdmin
@@ -293,15 +296,19 @@ public class UserService implements UserServiceInterface, UserDetailsService {
      * @param givenName
      * @throws WrongEmailStructureException if {@code email} has a wrong structure
      */
-    private DBUser getOrCreateDbInternalUser(String email, String givenName) throws WrongEmailStructureException {
+    private DBUser getOrCreateDbInternalUser(String email, String givenName, String username) throws WrongEmailStructureException {
         DBUser dbUser = null;
         if (StringUtils.validateEmailAddress(email)) {
             dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
             if (dbUser == null) {
-                dbUser = this.createInternalUser(email, givenName, null, null);
+                dbUser = this.createInternalUser(email, givenName, null, username);
             } else {
                 if (dbUser.getName() == null) {
                     dbUser.setName(givenName);
+                    userRepository.save(dbUser);
+                }
+                if (dbUser.getUsername() == null) {
+                    dbUser.setUsername(username);
                     userRepository.save(dbUser);
                 }
                 if (dbUser.getRole().equals(DBUser.Role.EXTERNAL)) {

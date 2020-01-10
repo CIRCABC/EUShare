@@ -35,9 +35,17 @@ export interface UserInfo {
      */
     id: string;
     /**
-     * User name (email address in case of external user)
+     * Abreviated user name used for login
      */
-    name: string;
+    loginUsername: string;
+    /**
+     * Full name of the user
+     */
+    givenName: string;
+    /**
+     * Email adress
+     */
+    email: string;
     /**
      * True if the user is admin
      */
