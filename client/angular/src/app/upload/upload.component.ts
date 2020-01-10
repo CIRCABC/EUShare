@@ -46,7 +46,8 @@ export class UploadComponent implements OnInit {
   public uploadInProgress = false;
   public uploadform!: FormGroup;
   public shareWithUser = '';
-  private leftSpaceInBytes = 0;
+  public leftSpaceInBytes = 0;
+  public totalSpaceInBytes = 0;
   public percentageUploaded = 0;
 
   constructor(
@@ -60,6 +61,12 @@ export class UploadComponent implements OnInit {
   }
   async initializeAvailableSpace() {
     const id = this.sessionApi.getStoredId();
+    const userInfoStored = this.sessionApi.getStoredUserInfo();
+    if (userInfoStored) {
+      this.totalSpaceInBytes = userInfoStored.totalSpace;
+      this.leftSpaceInBytes = userInfoStored.totalSpace - userInfoStored.usedSpace;
+    }
+
     if (id) {
       try {
         const me = await this.userApi.getUserUserInfo(id).toPromise();
@@ -67,6 +74,8 @@ export class UploadComponent implements OnInit {
           me && me.totalSpace - me.usedSpace > 0
             ? me.totalSpace - me.usedSpace
             : 0;
+        this.totalSpaceInBytes = me.totalSpace;
+        this.sessionApi.setStoredUserInfo(me);
       } catch (error) {
         this.notificationService.errorMessageToDisplay(
           error,
@@ -418,7 +427,7 @@ export class UploadComponent implements OnInit {
       case HttpEventType.Response:
         if (event.status === 200) {
           this.notificationService.addSuccessMessage(
-            `File was completely uploaded!`
+            `File successfully shared!`, true, 5
           );
         } else {
           this.notificationService.errorMessageToDisplay(
@@ -463,7 +472,7 @@ export class UploadComponent implements OnInit {
       default:
         this.notificationService.addErrorMessage(
           'An error occured while downloading the file. Please contact the support.' +
-            JSON.stringify(event)
+          JSON.stringify(event)
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

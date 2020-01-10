@@ -72,16 +72,19 @@ public class DBUser {
     @Setter
     @Column(nullable = true, unique = true)
     private String username;
+    // Is the username used for login
 
     @Getter
     @Setter
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String email;
+    // Is the email used for login is nullable because a user can represent a link recipient
 
     @Getter
     @Setter
     @Column(nullable = true)
     private String name;
+    // Is the GivenName of the user !!OR!! the name an uploader gives to his recipient
 
     private DBUser() {
 
@@ -100,8 +103,10 @@ public class DBUser {
             throw new IllegalArgumentException();
         }
         DBUser dbUser = new DBUser(0, Role.EXTERNAL);
-        String upperCaseEmail = mail.toUpperCase();
-        dbUser.setEmail(upperCaseEmail);
+        if (mail != null) {
+            String upperCaseEmail = mail.toUpperCase();
+            dbUser.setEmail(upperCaseEmail);
+        }
         dbUser.setName(name);
         return dbUser;
     }
@@ -154,8 +159,10 @@ public class DBUser {
         }
         userInfo.setUsedSpace(new BigDecimal(totalSize));
         userInfo.setId(this.getId());
-        userInfo.setName(this.getName());
+        userInfo.setGivenName(this.getName());
+        userInfo.setLoginUsername(this.getUsername());
         userInfo.isAdmin(this.role.equals(Role.ADMIN));
+        userInfo.setEmail(this.email);
         return userInfo;
     }
 
@@ -176,7 +183,7 @@ public class DBUser {
         EXTERNAL, INTERNAL, ADMIN
     }
 
-    public String toSpringSecurityRole (Role role){
+    public String toSpringSecurityRole(Role role) {
         return role.toString();
     }
 

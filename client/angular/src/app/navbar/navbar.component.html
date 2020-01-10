@@ -1,7 +1,7 @@
 <nav class="navbar is-link" role="navigation">
   <div class="container">
     <div class="navbar-brand">
-      <a class="navbar-item" href="/">
+      <a class="navbar-item" routerLink="home">
         <fa-icon class="icon is-large" [icon]="faShareAlt" size="2x"></fa-icon>
         <p *ngIf="!loggedIn">EUShare</p>
       </a>
@@ -20,7 +20,12 @@
       </a>
     </div>
 
-    <div id="menu" class="navbar-menu" id="myMenu" [class.is-active]="isBurgerActive">
+    <div
+      id="menu"
+      class="navbar-menu"
+      id="myMenu"
+      [class.is-active]="isBurgerActive"
+    >
       <div *ngIf="loggedIn" class="navbar-start">
         <a class="navbar-item" routerLink="home">
           <fa-icon class="faIcon" [icon]="faUsers"></fa-icon>
@@ -40,7 +45,10 @@
         </a>
       </div>
       <div class="navbar-end">
-        <div *ngIf="loggedIn" class="navbar-item">Logged as {{ userName }}</div>
+        <a routerLink="myUser" *ngIf="loggedIn" class="navbar-item">
+          Logged as {{ userName }}
+          <div class="avatar"><img src="assets/avatar.png" /></div>
+        </a>
         <div *ngIf="loggedIn" class="navbar-item">
           <button class="button is-danger" (click)="logout()">Logout</button>
         </div>

@@ -97,7 +97,7 @@ export class SessionService {
     public getStoredName(): string | null {
         const userInfo = this.getStoredUserInfo();
         if (userInfo) {
-            return userInfo.name;
+            return userInfo.givenName;
         }
         return null;
     }

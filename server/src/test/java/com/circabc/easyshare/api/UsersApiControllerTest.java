@@ -77,6 +77,7 @@ public class UsersApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -90,7 +91,9 @@ public class UsersApiControllerTest {
         UserInfo userInfo = new UserInfo();
         userInfo.setId("id");
         userInfo.setIsAdmin(true);
-        userInfo.setName("name");
+        userInfo.setGivenName("name SURNAME");
+        userInfo.setLoginUsername("loginUsername");
+        userInfo.setEmail("email@email.com");
         userInfo.setTotalSpace(new BigDecimal(1024));
         userInfo.setUsedSpace(new BigDecimal(512));
         List<UserInfo> userInfoList = Arrays.asList(userInfo);
@@ -120,6 +123,7 @@ public class UsersApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -180,6 +184,7 @@ public class UsersApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
@@ -212,6 +217,7 @@ public class UsersApiControllerTest {
 
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
+        attributes.put("name", "name SURNAME");
         attributes.put("username", "username");
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();

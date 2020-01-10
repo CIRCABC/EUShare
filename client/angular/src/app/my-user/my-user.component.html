@@ -1,0 +1,57 @@
+<div class="centered">
+  <h1 class="title">My informations</h1>
+  <h2 class="subtitle"></h2>
+  <div class="columns">
+    <div class="column is-one-half">
+      <div class="field">
+        <label class="label">Name</label>
+        <div class="control">
+          <input
+            readonly="readonly"
+            class="input"
+            type="text"
+            placeholder="Text input"
+            value="{{ userInfo.givenName }}"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control">
+          <input
+            readonly="readonly"
+            class="input"
+            type="text"
+            placeholder="Text input"
+            value="{{ userInfo.email | lowercase }}"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Used space</label>
+        <div class="control">
+          <input
+            readonly="readonly"
+            class="input"
+            type="text"
+            placeholder="Text input"
+            value="{{ userInfo.usedSpace | fileSizeFormat }}"
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Total space</label>
+        <div class="control">
+          <input
+            readonly="readonly"
+            class="input"
+            type="text"
+            placeholder="Text input"
+            value="{{ userInfo.totalSpace | fileSizeFormat }}"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="column is-one-half"></div>
+  </div>
+</div>
