@@ -85,6 +85,8 @@ jobs:
           name: Run Sonarqube scanner
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
+            echo ${CIRCLE_PR_NUMBER}
+            echo ${CIRCLE_BRANCH}
             eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=EASYSHARE_FRONT -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=**/assets/**,**/sonar-scanner-3.2.0.1227-linux/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_FRONTEND_TOKEN} -Dsonar.pullrequest.branch=${CIRCLE_BRANCH} -Dsonar.pullrequest.key=${CIRCLE_PR_NUMBER}
 workflows:
   version: 2.1
