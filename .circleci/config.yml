@@ -44,7 +44,7 @@ jobs:
           name: Run Sonarqube scanner
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
-            eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -X -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.modules=client,server -Dserver.sonar.sources=server/src -Dclient.sonar.sources=client/ -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=server/**/resources/**,**/*.pdf,**/*.css,**/*.svg,**/*.png,**/*.gif,**/dist/*,**/.vscode/*,**/assets/**,**/sonar-scanner-3.2.0.1227-linux/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dsonar.java.binaries=server/target/classes/ -Dsonar.jacoco.reportPaths=server/target/coverage-reports/jacoco-ut.exec
+            eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -X -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.modules=client,server -Dserver.sonar.projectBaseDir=server -Dserver.sonar.sources=src -Dclient.sonar.projectBaseDir=client -Dclient.sonar.sources=angular/src -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=server/**/resources/**,**/*.pdf,**/*.css,**/*.svg,**/*.png,**/*.gif,**/dist/*,**/.vscode/*,**/assets/**,**/sonar-scanner-3.2.0.1227-linux/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dsonar.java.binaries=server/target/classes/ -Dsonar.jacoco.reportPaths=server/target/coverage-reports/jacoco-ut.exec
   build_frontend:
     # see https://circleci.com/docs/2.0/language-javascript/
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
