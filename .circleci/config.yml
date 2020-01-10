@@ -41,6 +41,14 @@ jobs:
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
             unzip sonar-scanner-cli-3.2.0.1227-linux.zip
       - run:
+          name: "Update Node.js and npm"
+          command: |
+            curl -sSL "https://nodejs.org/dist/v10.14.1/node-v10.14.1-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v10.14.1-linux-x64/bin/node
+            curl https://www.npmjs.com/install.sh | sudo bash
+      - run:
+          name: Check current version of node
+          command: node -v
+      - run:
           name: Run Sonarqube scanner
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
@@ -50,7 +58,7 @@ jobs:
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
     working_directory: ~/EasyShare/client/angular
     docker: # run the steps with Docker
-      - image: circleci/node:10.14.0  
+      - image: circleci/node:10.14.1  
     steps: 
       - checkout: 
           path: ~/EasyShare # check out source code to working directory    
