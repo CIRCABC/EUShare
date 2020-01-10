@@ -69,7 +69,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
       this.controlDirective.control.errors &&
       this.controlDirective.control.errors.pattern
     ) {
-      return 'Invalid email form !';
+      return 'Invalid email form';
     }
     return null;
   }
