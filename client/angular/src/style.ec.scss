@@ -1,0 +1,61 @@
+/** ------------------------------------------ EC TEMPLATE  ------------------------------------------ **/
+/** --------------------- COLOURS  --------------------- **/
+/** PRIMARY COLOURS **/
+$ec-blue: #004494;
+$ec-light-blue: #034da1; // flag colour
+$ec-yellow: #FFD617;
+$ec-green: #467A39;
+$ec-grey: #404040;
+$ec-red: #DA2131;
+$ec-light-grey: #F5F5F5;
+
+
+
+/** NOTIFICATION COLOURS **/
+$ec-notification-blue: #006FB4;
+$ec-notification-yellow: #F29527;
+$ec-notification-green: #467A39;
+$ec-notification-red: #DA2131;
+
+/** BACKGROUND COLOUR **/
+$ec-background-color: #FFFFFF;
+
+/** --------------------- TYPOGRAPHY  --------------------- **/
+$ec-font-family: Arial, sans-serif;
+$ec-font-size: 0.75rem; //12px
+$ec-font-weight: 400;
+$ec-bold-font-weight: 600;
+$ec-font-color: #404040;
+// line long 75-85 characters
+
+/** HEADING 1 **/
+$ec-font-size-h1-desktop: 2rem;
+$ec-font-size-h1-mobile: 1.75rem;
+
+/** HEADING 2 **/
+$ec-font-size-h2-desktop: 1.75rem;
+$ec-font-size-h2-mobile: 1.5rem;
+
+/** HEADING 3 **/
+$ec-font-size-h3-desktop: 1.5rem;
+$ec-font-size-h3-mobile: 1.25rem;
+
+/** HEADING 4 **/
+$ec-font-size-h4-desktop: 1.25rem;
+$ec-font-size-h4-mobile: 1.125rem;
+
+/** HEADING 5 **/
+$ec-font-size-h5-desktop: 1rem;
+$ec-font-size-h5-mobile: 1rem;
+
+/** PARAGRAPH **/
+$ec-p-font-weight: 400;
+
+
+/** --------------------- ELEMENTS  --------------------- **/
+/** NAVBAR **/
+$ec-navbar-item-hover-background-color: $ec-light-blue;
+$ec-navbar-background-color: $ec-blue;
+$ec-navbar-item-color: $ec-light-grey;
+$ec-navbar-item-hover-color: $ec-light-grey;
+

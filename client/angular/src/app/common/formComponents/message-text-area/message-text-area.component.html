@@ -1,0 +1,10 @@
+<label class="label">Text: (optional)</label>
+<textarea
+  #textarea
+  [disabled]="disabled"
+  (blur)="onTouched()"
+  (input)="onChange($event.target.value)"
+  class="textarea"
+  placeholder="e.g. Please enter a message for the recipient of this file"
+></textarea>
+<label class="label error" *ngIf="errorMessage">{{errorMessage}}</label>

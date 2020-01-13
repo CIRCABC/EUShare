@@ -1,0 +1,34 @@
+version: "3"
+services:
+  db:
+    container_name: db
+    image: mysql:5.6
+    ports:
+      - "3306:3306"  
+    environment:
+        - MYSQL_ROOT_PASSWORD=password
+    volumes:
+        - ./mysql:/docker-entrypoint-initdb.d/:ro
+    command: --lower_case_table_names=1 --transaction-isolation=READ-COMMITTED
+  server:
+    image: server
+    ports:
+      - "8888:8888"
+    container_name: tomcat_easyshare_server
+    depends_on:
+      - db
+  client:
+    image: client
+    ports:
+      - "8080:8080"
+    container_name: tomcat_easyshare_client
+    depends_on:
+      - server
+  proxy: 
+    image: nginx:alpine
+    container_name: nginx_easyshare_proxy
+    volumes:
+      - ./proxy/conf:/etc/nginx
+    ports:
+      - 80:80
+      - 443:443

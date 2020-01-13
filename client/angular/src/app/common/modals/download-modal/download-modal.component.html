@@ -1,0 +1,22 @@
+<div class="modal" [class.is-active]="modalActive">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        Download <br> <strong>{{ modalFileName }}
+        </strong>
+      </p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <app-download-button [fileName]="modalFileName" [fileId]="modalFileId" [isFileHasPassword]="modalHasPassword"></app-download-button>
+    </section>
+    <footer class="modal-card-foot">
+      <button
+        class="modal-close is-large"
+        (click)="closeModal()"
+        aria-label="close"
+      ></button>
+    </footer>
+  </div>
+</div>

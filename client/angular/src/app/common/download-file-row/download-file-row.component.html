@@ -1,0 +1,65 @@
+<div class="level filecontainer">
+    <!-- Left side -->
+    <div class="level-left">
+      <div class="level-item has-text-centered">
+        <fa-icon *ngIf="!fileToDisplay.hasPassword" [icon]="faFile"></fa-icon>
+        <fa-icon *ngIf="fileToDisplay.hasPassword" [icon]="faLock"></fa-icon>
+        <br />
+        <p class="subtitle is-5 filename">
+          <strong>
+            {{
+                fileToDisplay.name.length > 25 ? (fileToDisplay.name | slice: 0:25) + ".." : fileToDisplay.name
+            }}
+          </strong>
+        </p>
+      </div>
+      <div class="level-item">
+        <div class="level is-mobile">
+          <div class="level-item">
+            <div class="level-left">
+              <p class="subtitle is-6">({{ fileToDisplay.size | fileSizeFormat }})</p>
+            </div>
+          </div>
+          <div class="level-item">
+            <div class="level-right">
+              <p class="subtitle is-6">Expires on {{ fileToDisplay.expirationDate }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Right side -->
+    <div class="level">
+        <div class="level-item">
+            <a
+              >Shared by <strong>{{ fileToDisplay.uploaderName }}</strong></a
+            >
+          </div>
+      <div class="level-item">
+        <div class="navbar-menu is-active" id="navMenu">
+          <div
+            class="navbar-item has-dropdown is-hoverable"
+            (mouseenter)="displayMore()"
+            (tap)="displayMore()"
+            (mouseleave)="displayLess()"
+          >
+            <a class="navbar-link">
+              Actions
+            </a>
+  
+            <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
+              <a
+                class="navbar-item"
+                (click)="
+                  openDownloadModal()
+                "
+              >
+                Download
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

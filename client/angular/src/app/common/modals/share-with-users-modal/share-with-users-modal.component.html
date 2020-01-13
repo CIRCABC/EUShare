@@ -1,0 +1,65 @@
+<div class="modal" [class.is-active]="modalActive">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        File shares <br />
+        <strong> {{ modalFileName }}</strong>
+      </p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="level">
+        <!-- Left side -->
+        <div class="level-item has-text-centered">
+          <p>
+            <strong>{{ modalFileName }}</strong> is shared
+            <strong>{{ recipientsWithLink.length }}</strong> time(s)
+          </p>
+        </div>
+      </div>
+      <div
+        class="level share"
+        *ngFor="let recipient of recipientsWithLink; let i = index"
+        [attr.data-index]="i"
+      >
+        <div class="level-left">
+          <div *ngIf="recipient.sendEmail === true" class="level-item">
+            <p><strong>Recipient</strong> {{ recipient.emailOrName | lowercase }}</p>
+          </div>
+          <div *ngIf="recipient.sendEmail === false" class="level-item">
+            <p><strong>Link</strong> {{ recipient.emailOrName | lowercase }}</p>
+          </div>
+          <div class="level-item">
+            <div class="field">
+              <input
+                class="input is-info"
+                type="text"
+                value="{{ formatLink(i) }}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <a class="button is-link is-outlined" (click)="copyLink(i)">Copy</a>
+            <a
+              class="button is-danger is-outlined"
+              (click)="
+                deleteShare(recipient.recipientId, recipient.emailOrName, i)
+              "
+              >Remove</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="modal-card-foot">
+        <button
+        class="modal-close is-large"
+        (click)="closeModal()"
+        aria-label="close"
+      ></button>
+    </footer>
+  </div>
+</div>

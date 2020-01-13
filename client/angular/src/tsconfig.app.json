@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "angularCompilerOptions": {
+    "preserveWhitespaces": true,
+    "fullTemplateTypeCheck": true,
+    "enableIvy": false
+  },
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "./",
+    "types": []
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

@@ -1,0 +1,49 @@
+/*
+EasyShare - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "EasyShare" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
+@keyframes ui-message-shown {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+.ui-message-show {
+  opacity: 0;
+  animation-name: ui-message-shown;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+@keyframes ui-message-destroyed {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.ui-message-destroy {
+  opacity: 0;
+  animation-name: ui-message-destroyed;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+}
+
+.notification {
+  margin-top: 0.2em;
+  z-index: 45;
+}

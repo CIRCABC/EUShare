@@ -1,0 +1,14 @@
+<div class="modal" [class.is-active]="modalActive">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <div class="field is-grouped">
+      <div class="control is-expanded">
+        <input class="input is-info" type="text" value="{{fileLink}}" #userinput>
+      </div>
+      <div class="control">
+        <button class="button is-info" (click)="copyLink(userinput)" [class.is-loading]="isLoading">Copy</button>
+      </div>
+    </div>
+  </div>
+  <button class="modal-close is-large" (click)="closeModal()" aria-label="close"></button>
+</div>

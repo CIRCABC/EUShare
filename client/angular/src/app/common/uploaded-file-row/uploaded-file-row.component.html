@@ -1,0 +1,79 @@
+<div class="level filecontainer">
+  <!-- Left side -->
+  <div class="level-left">
+    <div class="level-item has-text-centered">
+      <fa-icon *ngIf="!file.hasPassword" [icon]="faFile"></fa-icon>
+      <fa-icon *ngIf="file.hasPassword" [icon]="faLock"></fa-icon>
+      <br />
+      <p class="subtitle is-5 filename">
+        <strong>
+          {{
+            file.name.length > 25 ? (file.name | slice: 0:25) + ".." : file.name
+          }}
+        </strong>
+      </p>
+    </div>
+    <div class="level-item">
+      <div class="level is-mobile">
+        <div class="level-item">
+          <div class="level-left">
+            <p class="subtitle is-6">({{ file.size | fileSizeFormat }})</p>
+          </div>
+        </div>
+        <div class="level-item">
+          <div class="level-right">
+            <p class="subtitle is-6">Expires on {{ file.expirationDate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Right side -->
+  <div class="level">
+    <div class="level-item">
+      <a *ngIf="displayAsUploader" (click)="displayRecipients()"
+        >Shared {{ file.sharedWith.length }} time(s)</a
+      >
+    </div>
+
+    <div class="level-item">
+      <div class="navbar-menu is-active" id="navMenu">
+        <div
+          class="navbar-item has-dropdown is-hoverable"
+          (mouseenter)="displayMore()"
+          (tap)="displayMore()"
+          (mouseleave)="displayLess()"
+        >
+          <a class="navbar-link">
+            Actions
+          </a>
+
+          <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
+            <a
+              class="navbar-item"
+              *ngIf="displayAsUploader"
+              (click)="openAddRecipientsModal(file.name, file.fileId)"
+              >Add a recipient
+            </a>
+            <a
+              class="navbar-item"
+              (click)="
+                openDownloadModal()
+              "
+            >
+              Download
+            </a>
+            <hr class="navbar-divider" />
+            <a
+              class="navbar-item"
+              *ngIf="displayAsAdministrator || displayAsUploader"
+              (click)="delete()"
+            >
+              Delete
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

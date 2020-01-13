@@ -1,0 +1,50 @@
+cors:
+  origin: '*'
+server:
+  port: 8888
+easyshare:
+  expirationdays: 7
+  defaultuserspace: 5368709120
+  # 4Gb
+  maxSizeAllowedInBytes: 4294967296 
+  activateMailService: false
+  disks:
+    - C:\temp\easyshare
+logging:
+  level:
+    org.hibernate.type: trace
+    org.springframework.security: DEBUG
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://localhost:7002/cas/oauth2/token/introspect
+          client-id: 9IAcWq6ZHKtOqk83xfOzg8nWPlwNnPB5Uf4wnE48IUiulvUMeKdQLhs5PzHQG1Lp3Swlye7PsZli654ZmzhRoJ0-N2w0EKzVFJFzN9F09Pl7GG
+          client-secret: D9rFLtYRZCa_PQ10qEyhZcyWlMAPjsSnvnk-C8mZE2NllNiZvy4jZbEUx1I_lw_VsBJiVV_bLmsOMpUuFBPajCI6QXksCTnOrw9Znq7KLnzHysvyCqkTWfDzIXFZvQXNGslnncb8NNaZzy5NfAbdEtenXbA8CGYsZBnYroIKzu8
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: easyshare
+    password: easyshare
+    driverClassName: org.h2.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+  mail:
+    host: localhost
+    port: 25
+    username: username
+    password: password
+  servlet:
+    multipart:
+      max-file-size: 256MB
+      max-request-size: 256MB

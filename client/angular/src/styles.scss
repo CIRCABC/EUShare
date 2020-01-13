@@ -1,0 +1,46 @@
+@import './style.ec.scss';
+
+/** ------------------------------------------ BULMA TEMPLATE  ------------------------------------------ **/
+/** --------------------- COLOURS  --------------------- **/
+/** COLOURS **/
+$scheme-main: $ec-background-color;
+$blue: $ec-blue;
+$red: $ec-red;
+$yellow: $ec-yellow;
+$green: #40AA24;
+
+
+/** --------------------- TYPOGRAPHY  --------------------- **/
+$family-sans-serif: Arial, sans-serif;
+$font-color: $ec-font-color;
+
+/** MENU **/ 
+$menu-item-radius: 3px;
+
+.centered {
+    margin-top: 1rem;
+    margin-bottom: 4rem;
+    min-height: 28rem;
+}
+
+@import '../node_modules/bulma/bulma.sass';
+
+.filecontainer {
+    background-color: $table-striped-row-even-background-color;
+    padding: $table-cell-padding;
+    border-radius: $radius;
+    border: $table-cell-border;
+    margin: 2px;
+}
+
+.filecontainer:hover {
+    background-color: $table-striped-row-even-hover-background-color;
+}
+
+.filename {
+    margin-left: 5px;
+}
+
+#navMenu {
+    border-radius: $radius;
+}
