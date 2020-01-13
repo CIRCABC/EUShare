@@ -41,24 +41,16 @@ jobs:
             wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
             unzip sonar-scanner-cli-3.2.0.1227-linux.zip
       - run:
-          name: "Update Node.js and npm"
-          command: |
-            curl -sSL "https://nodejs.org/dist/v10.14.1/node-v10.14.1-linux-x64.tar.xz" | sudo tar --strip-components=2 -xJ -C /usr/local/bin/ node-v10.14.1-linux-x64/bin/node
-            curl https://www.npmjs.com/install.sh | sudo bash
-      - run:
-          name: Check current version of node
-          command: node -v
-      - run:
           name: Run Sonarqube scanner
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
-            eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -X -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.modules=client,server -Dserver.sonar.projectBaseDir=server -Dserver.sonar.sources=src -Dclient.sonar.projectBaseDir=client -Dclient.sonar.sources=angular/src -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=server/**/resources/**,**/*.pdf,**/*.css,**/*.svg,**/*.png,**/*.gif,**/dist/*,**/.vscode/*,**/assets/**,**/sonar-scanner-3.2.0.1227-linux/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dserver.sonar.java.binaries=target/classes/ -Dserver.sonar.jacoco.reportPaths=target/coverage-reports/jacoco-ut.exec
+            eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.sources=server/src -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=server/**/resources/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dsonar.java.binaries=server/target/classes/ -Dsonar.jacoco.reportPaths=server/target/coverage-reports/jacoco-ut.exec
   build_frontend:
     # see https://circleci.com/docs/2.0/language-javascript/
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
     working_directory: ~/EasyShare/client/angular
     docker: # run the steps with Docker
-      - image: circleci/node:10.14.1  
+      - image: circleci/node:10.14.0  
     steps: 
       - checkout: 
           path: ~/EasyShare # check out source code to working directory    
@@ -84,6 +76,16 @@ jobs:
       - run:
           name: check-style
           command: npm run lint
+      - run:
+          name: Install Sonarqube scanner
+          command: |
+            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
+            unzip sonar-scanner-cli-3.2.0.1227-linux.zip
+      - run:
+          name: Run Sonarqube scanner
+          command: |
+            export SONAR_SCANNER_OPTS="-Xmx2048m"
+            eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=EASYSHARE_FRONT -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=**/assets/**,**/sonar-scanner-3.2.0.1227-linux/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_FRONTEND_TOKEN}
 workflows:
   version: 2.1
   build_backend_and_frontend:
