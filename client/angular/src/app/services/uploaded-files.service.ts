@@ -16,6 +16,7 @@ import {
   Recipient
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
+import { ModalsService } from '../common/modals/modals.service';
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +42,8 @@ export class UploadedFilesService {
   constructor(
     private userService: UsersService,
     private notificationService: NotificationService,
-    private fileService: FileService
+    private fileService: FileService,
+    private modalService: ModalsService
   ) {}
 
   private emitValueToObservable() {
@@ -177,6 +179,7 @@ export class UploadedFilesService {
       });
 
       this.emitValueToObservable();
+      this.modalService.deactivateAddRecipientsModal();
     } catch (error) {
       this.notificationService.errorMessageToDisplay(
         error,
@@ -184,6 +187,7 @@ export class UploadedFilesService {
       );
     }
   }
+
 }
 
 export interface FileUploaderArrayAndMetaData {
