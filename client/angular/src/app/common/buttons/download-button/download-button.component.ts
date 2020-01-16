@@ -17,6 +17,7 @@ import {
   HttpErrorResponse
 } from '@angular/common/http';
 import { map, last } from 'rxjs/operators';
+import { ModalsService } from '../../modals/modals.service';
 
 @Component({
   selector: 'app-download-button',
@@ -42,7 +43,8 @@ export class DownloadButtonComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private fileApi: FileService
+    private fileApi: FileService,
+    private modalService: ModalsService
   ) {}
 
   ngOnInit() {}
@@ -119,6 +121,8 @@ export class DownloadButtonComponent implements OnInit {
           this.notificationService.addSuccessMessage(
             'File succesfully downloaded!', true, 5
           );
+          this.modalService.deactivateDownloadModal();
+
         } else {
           this.notificationService.errorMessageToDisplay(
             event.body as HttpErrorResponse,
