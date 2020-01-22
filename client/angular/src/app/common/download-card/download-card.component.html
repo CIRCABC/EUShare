@@ -1,0 +1,65 @@
+<div class="columns">
+  <div
+    *ngIf="showDownloadArrow"
+    class="column is-1-desktop is-1-tablet is-2-mobile doesntMove"
+  >
+    <a (click)="display()">
+      <figure class="icon is-large ">
+        <fa-icon [icon]="faChevronLeft" class="fas fa-3x"></fa-icon>
+      </figure>
+    </a>
+  </div>
+  <div
+    class="column is-one-quarter-desktop is-half-tablet is-9-mobile doesntMove {{
+      enterScreenOrLeaveScreen
+    }}"
+  >
+    <div class="box">
+      <a class="delete" (click)="hide()"></a>
+      <article class="media">
+        <div class="media-content">
+          <div class="content">
+            <strong>Downloads</strong>
+            <div
+              *ngFor="
+                let nameAndPercentage of downloadsInProgress;
+                let i = index
+              "
+            >
+              <div class="level">
+                <div class="level-item has-text-left">
+                  <div>
+                    <p class="heading">
+                      <fa-icon
+                        *ngIf="getHasError(i)"
+                        [icon]="faTimes"
+                        class="fas fa-1x faError"
+                      ></fa-icon>
+                      {{ nameAndPercentage.fileName }}
+                    </p>
+                    <p class="title">
+                      <progress
+                        class="progress {{ getIsSucessOrIsError(i) }} is-small"
+                        value="{{ getDownloadProgress(i) }}"
+                        max="100"
+                        >nameAndPercentage.percentage</progress
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="level">
+              <progress
+                class="progress is-success is-small"
+                value="{{ getDownloadProgress(i) }}"
+                max="100"
+                >nameAndPercentage.percentage</progress
+              >
+            </div> -->
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</div>

@@ -17,7 +17,6 @@ import {
   FormBuilder,
   FormControl
 } from '@angular/forms';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import {
   FileService,
   FileRequest,
@@ -33,7 +32,6 @@ import {
   HttpEventType,
   HttpErrorResponse
 } from '@angular/common/http';
-import { UploadedFilesService } from '../services/uploaded-files.service';
 
 @Component({
   selector: 'app-upload',
@@ -41,7 +39,6 @@ import { UploadedFilesService } from '../services/uploaded-files.service';
   styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
-  public faUpload = faUpload;
   public moreOptions = false;
   public uploadInProgress = false;
   public uploadform!: FormGroup;

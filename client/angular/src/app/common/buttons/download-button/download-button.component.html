@@ -1,4 +1,4 @@
-<div class="field is-grouped" *ngIf="!isLoading">
+<div class="field is-grouped" *ngIf="!isLoading || !isShowProgress">
   <div class="control" [class.is-expanded]="isFileHasPassword">
     <input
       *ngIf="isFileHasPassword"
@@ -15,7 +15,7 @@
     </a>
   </div>
 </div>
-<div *ngIf="isLoading">
+<div *ngIf="isLoading && isShowProgress">
   {{ percentageDownloaded }}%
   <progress
     class="progress is-success"
