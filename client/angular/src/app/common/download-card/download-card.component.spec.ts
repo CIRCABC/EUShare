@@ -9,20 +9,20 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PrivacyStatementComponent } from './privacy-statement.component';
+import { DownloadCardComponent } from './download-card.component';
 
-describe('PrivacyStatementComponent', () => {
-  let component: PrivacyStatementComponent;
-  let fixture: ComponentFixture<PrivacyStatementComponent>;
+describe('DownloadCardComponent', () => {
+  let component: DownloadCardComponent;
+  let fixture: ComponentFixture<DownloadCardComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [PrivacyStatementComponent]
+      declarations: [DownloadCardComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PrivacyStatementComponent);
+    fixture = TestBed.createComponent(DownloadCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

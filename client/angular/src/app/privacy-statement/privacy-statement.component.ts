@@ -15,10 +15,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./privacy-statement.component.scss']
 })
 export class PrivacyStatementComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

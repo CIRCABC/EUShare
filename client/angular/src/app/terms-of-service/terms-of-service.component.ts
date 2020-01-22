@@ -15,10 +15,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./terms-of-service.component.scss']
 })
 export class TermsOfServiceComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

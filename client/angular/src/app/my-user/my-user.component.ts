@@ -8,7 +8,12 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { SessionService, UsersService, FileService, UserInfo } from '../openapi';
+import {
+  SessionService,
+  UsersService,
+  FileService,
+  UserInfo
+} from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 
 @Component({
@@ -17,14 +22,13 @@ import { NotificationService } from '../common/notification/notification.service
   styleUrls: ['./my-user.component.scss']
 })
 export class MyUserComponent implements OnInit {
-
   public userInfo!: UserInfo;
 
   constructor(
     private sessionApi: SessionService,
     private userApi: UsersService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     await this.initializeUserInfo();
@@ -48,8 +52,4 @@ export class MyUserComponent implements OnInit {
       }
     }
   }
-
-
-
-
 }

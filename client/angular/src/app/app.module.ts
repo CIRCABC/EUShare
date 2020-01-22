@@ -54,6 +54,7 @@ import { FooterComponent } from './footer/footer.component';
 import { MyUserComponent } from './my-user/my-user.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { DownloadCardComponent } from './common/download-card/download-card.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -141,7 +142,8 @@ const routes: Routes = [
     FooterComponent,
     MyUserComponent,
     PrivacyStatementComponent,
-    TermsOfServiceComponent
+    TermsOfServiceComponent,
+    DownloadCardComponent
   ],
   imports: [
     ApiModule,
@@ -176,4 +178,4 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

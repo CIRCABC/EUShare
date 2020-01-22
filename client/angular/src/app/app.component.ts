@@ -14,6 +14,9 @@ import {
   OAuthService
 } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
+import { DownloadsService } from './services/downloads.service';
 
 export const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -38,13 +41,42 @@ export const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  constructor(private oauthService: OAuthService) {
-    this.configure();
+  constructor(
+    private oauthService: OAuthService,
+    private router: Router,
+    private downloadsService: DownloadsService
+  ) {
+    this.routerHelpForDownloadsBox();
+    this.configureOAuth();
   }
 
-  private async configure() {
+  private async configureOAuth() {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+  }
+
+  private routerHelpForDownloadsBox() {
+    this.router.events
+      .pipe(
+        filter(event => {
+          return event instanceof NavigationEnd;
+        })
+      )
+      .subscribe(nextEvent => {
+        const nextEventNavigationEnd: NavigationEnd = <NavigationEnd>nextEvent;
+        const urlAfterRedirect = nextEventNavigationEnd.urlAfterRedirects;
+
+        if (
+          urlAfterRedirect === '/login' ||
+          urlAfterRedirect.startsWith('/filelink')
+        ) {
+          this.downloadsService.showDownloadArrow(false);
+        }
+
+        if (urlAfterRedirect === '/home') {
+          this.downloadsService.showDownloadArrow(true);
+        }
+      });
   }
 }

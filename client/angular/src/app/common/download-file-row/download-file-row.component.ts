@@ -11,6 +11,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FileInfoRecipient } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
+import { DownloadsService } from '../../services/downloads.service';
 
 @Component({
   selector: 'app-download-file-row',
@@ -26,7 +27,10 @@ export class DownloadFileRowComponent implements OnInit {
   public faFile = faFile;
   public faLock = faLock;
 
-  constructor(private modalService: ModalsService) {}
+  constructor(
+    private modalService: ModalsService,
+    private downloadsService: DownloadsService
+  ) {}
 
   ngOnInit() {}
 
@@ -38,11 +42,19 @@ export class DownloadFileRowComponent implements OnInit {
     this.isMoreDisplayed = false;
   }
 
-  public openDownloadModal() {
-    this.modalService.activateDownloadModal(
-      this.fileToDisplay.fileId,
-      this.fileToDisplay.name,
-      this.fileToDisplay.hasPassword
-    );
+  public tryDownload() {
+    if (this.fileToDisplay.hasPassword) {
+      this.modalService.activateDownloadModal(
+        this.fileToDisplay.fileId,
+        this.fileToDisplay.name,
+        this.fileToDisplay.hasPassword
+      );
+    } else {
+      this.downloadsService.displayDownloadsBox();
+      this.downloadsService.downloadAFile(
+        this.fileToDisplay.fileId,
+        this.fileToDisplay.name
+      );
+    }
   }
 }

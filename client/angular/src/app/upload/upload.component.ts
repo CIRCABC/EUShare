@@ -17,7 +17,6 @@ import {
   FormBuilder,
   FormControl
 } from '@angular/forms';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
 import {
   FileService,
   FileRequest,
@@ -33,7 +32,6 @@ import {
   HttpEventType,
   HttpErrorResponse
 } from '@angular/common/http';
-import { UploadedFilesService } from '../services/uploaded-files.service';
 
 @Component({
   selector: 'app-upload',
@@ -41,7 +39,6 @@ import { UploadedFilesService } from '../services/uploaded-files.service';
   styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnInit {
-  public faUpload = faUpload;
   public moreOptions = false;
   public uploadInProgress = false;
   public uploadform!: FormGroup;
@@ -64,7 +61,8 @@ export class UploadComponent implements OnInit {
     const userInfoStored = this.sessionApi.getStoredUserInfo();
     if (userInfoStored) {
       this.totalSpaceInBytes = userInfoStored.totalSpace;
-      this.leftSpaceInBytes = userInfoStored.totalSpace - userInfoStored.usedSpace;
+      this.leftSpaceInBytes =
+        userInfoStored.totalSpace - userInfoStored.usedSpace;
     }
 
     if (id) {
@@ -427,7 +425,9 @@ export class UploadComponent implements OnInit {
       case HttpEventType.Response:
         if (event.status === 200) {
           this.notificationService.addSuccessMessage(
-            `File successfully shared!`, true, 5
+            `File successfully shared!`,
+            true,
+            5
           );
         } else {
           this.notificationService.errorMessageToDisplay(
@@ -472,7 +472,7 @@ export class UploadComponent implements OnInit {
       default:
         this.notificationService.addErrorMessage(
           'An error occured while downloading the file. Please contact the support.' +
-          JSON.stringify(event)
+            JSON.stringify(event)
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;
