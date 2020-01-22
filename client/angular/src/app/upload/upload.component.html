@@ -1,7 +1,10 @@
 <div class="centered">
   <h1 class="title">Share a new file</h1>
   <h2 class="subtitle">
-  You can upload up to {{ leftSpaceInBytes | fileSizeFormat }} ({{totalSpaceInBytes | fileSizeFormat }} quota)
+    You can upload up to {{ leftSpaceInBytes | fileSizeFormat }} ({{
+      totalSpaceInBytes | fileSizeFormat
+    }}
+    quota)
   </h2>
   <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
     <div>
@@ -51,7 +54,7 @@
     </div>
     <br />
     <div class="field">
-      <label class="label">How to share?</label>
+      <label class="label">How do you want to share your file?</label>
       <div class="field-body">
         <div class="field is-narrow">
           <div class="control">
@@ -62,7 +65,8 @@
                 formControlName="emailOrLink"
                 (click)="resetRecipients()"
                 value="Email"
-              />Email
+              />
+              Email
             </label>
             <label class="radio">
               <input
@@ -71,7 +75,8 @@
                 required
                 formControlName="emailOrLink"
                 value="Link"
-              />Link
+              />
+              Link
             </label>
           </div>
         </div>
@@ -79,40 +84,74 @@
     </div>
     <!-- EMAILS AND USER NAMES -->
     <div class="field">
-      <label class="label">Recipients</label>
-      <div *ngIf="emailOrLinkIsEmail()" formArrayName="emailsWithMessages">
+      <!-- EMAIL AND MESSAGES -->
+      <div *ngIf="emailOrLinkIsEmail()" formArrayName="emailMessageArray">
         <div
+          [formGroupName]="i"
           *ngFor="
-            let emailAndText of emailsWithMessages.controls;
+            let emailAndMessageFg of emailMessageArray.controls;
             let i = index
           "
           class="media"
         >
+          <!-- <div class= media -->
           <div class="media-left">
             <div class="square"></div>
           </div>
-          <div [formGroupName]="i" class="media-content">
-            <app-email-input formControlName="email"></app-email-input>
-            <app-message-text-area
-              formControlName="message"
-            ></app-message-text-area>
-            <div class="level">
-              <button
-                class="button is-danger is-outlined level-left"
-                type="button"
-                (click)="deleteEmailsWithMessages(i)"
-              >
-                Delete recipient
-              </button>
+          <!-- EMAIL ARRAY -->
+          <div formArrayName="emailArray" class="column is-half-desktop">
+            <div
+              class="content"
+              [formGroupName]="j"
+              *ngFor="
+                let emailIndexed of getEmailArrayOnForm(emailAndMessageFg);
+                let j = index
+              "
+            >
+              <div class="displayedEmails">
+                <div
+                  class="displayedEmail"
+                  *ngIf="j < getEmailArrayLength(i) - 1"
+                >
+                  {{ getEmailControlValue(i, j) }}
+                  <a (click)="deleteEmailFormGroup(i, j)">
+                    <fa-icon
+                      class="icon is-small"
+                      [icon]="faUserSlash"
+                    ></fa-icon>
+                  </a>
+                </div>
+              </div>
+              <div *ngIf="j === getEmailArrayLength(i) - 1">
+                <app-email-input
+                  formControlName="email"
+                  (keyup.enter)="addEmailFormGroup(i)"
+                ></app-email-input>
+                <button
+                  class="button is-link is-outlined"
+                  type="button"
+                  (click)="addEmailFormGroup(i)"
+                  [disabled]="
+                    getEmailControl(i, j) && getEmailControl(i, j)!.errors
+                  "
+                >
+                  Add Recipient
+                </button>
+                <app-message-text-area
+                  formControlName="message"
+                  class="media-content"
+                  id="message-text-area"
+                ></app-message-text-area>
+              </div>
             </div>
           </div>
         </div>
         <button
           class="button is-link is-outlined"
           type="button"
-          (click)="addEmailsWithMessages()"
+          (click)="addEmailMessageFormGroup()"
         >
-          Add more recipients...
+          Add mail
         </button>
       </div>
       <div *ngIf="emailOrLinkIsLink()" formArrayName="namesOnly">
@@ -120,9 +159,9 @@
           *ngFor="let recipientName of namesOnly.controls; let i = index"
           class="media"
         >
-          <div class="media-left">
+          <!-- <div class="media-left">
             <div class="square"></div>
-          </div>
+          </div> -->
           <div [formGroupName]="i" class="media-content">
             <app-link-input formControlName="name"></app-link-input>
             <div class="level">
@@ -201,3 +240,4 @@
     </div>
   </form>
 </div>
+<pre> {{ uploadform.value | json }} </pre>
