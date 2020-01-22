@@ -11,7 +11,11 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { FileService } from '../openapi';
-import { HttpEvent, HttpEventType, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpEvent,
+  HttpEventType,
+  HttpErrorResponse
+} from '@angular/common/http';
 import { NotificationService } from '../common/notification/notification.service';
 import { Observable, Subject } from 'rxjs';
 import { saveAs } from 'file-saver';
@@ -20,9 +24,13 @@ import { saveAs } from 'file-saver';
   providedIn: 'root'
 })
 export class DownloadsService {
-
-  private currentDownloadSubjects = new Map<string, Subject<DownloadInProgress>>();
-  private nextDownloadsSubjectsSubject = new Subject<Subject<DownloadInProgress>>();
+  private currentDownloadSubjects = new Map<
+    string,
+    Subject<DownloadInProgress>
+  >();
+  private nextDownloadsSubjectsSubject = new Subject<
+    Subject<DownloadInProgress>
+  >();
   public nextDownloadSubjects$ = this.nextDownloadsSubjectsSubject.asObservable();
 
   private displayDownloadsSubject = new Subject<boolean>();
@@ -31,13 +39,18 @@ export class DownloadsService {
   private displayArrowSubject = new Subject<boolean>();
   public displayArrow$ = this.displayArrowSubject.asObservable();
 
-  constructor(private fileApi: FileService, private notificationService: NotificationService) { }
+  constructor(
+    private fileApi: FileService,
+    private notificationService: NotificationService
+  ) {}
 
   public getCurrentObservables(): Observable<DownloadInProgress>[] {
-    let observablesArray: Observable<DownloadInProgress>[] = [];
-    this.currentDownloadSubjects.forEach((subject: Subject<DownloadInProgress>, fileId: string) => {
-      observablesArray.push(subject.asObservable());
-    });
+    const observablesArray: Observable<DownloadInProgress>[] = [];
+    this.currentDownloadSubjects.forEach(
+      (subject: Subject<DownloadInProgress>, fileId: string) => {
+        observablesArray.push(subject.asObservable());
+      }
+    );
     return observablesArray;
   }
 
@@ -49,8 +62,14 @@ export class DownloadsService {
     this.displayArrowSubject.next(show);
   }
 
-  public downloadAFile(fileId: string, fileName: string, inputPassword?: string): Observable<DownloadInProgress> {
-    const currentDownloadSubjectOrUndefined = this.currentDownloadSubjects.get(fileId);
+  public downloadAFile(
+    fileId: string,
+    fileName: string,
+    inputPassword?: string
+  ): Observable<DownloadInProgress> {
+    const currentDownloadSubjectOrUndefined = this.currentDownloadSubjects.get(
+      fileId
+    );
 
     if (currentDownloadSubjectOrUndefined) {
       return currentDownloadSubjectOrUndefined;
@@ -62,8 +81,8 @@ export class DownloadsService {
       const firstDownloadValue: DownloadInProgress = {
         name: fileName,
         fileId: fileId,
-        percentage: 0,
-      }
+        percentage: 0
+      };
       newDownloadSubject.next(firstDownloadValue);
 
       this.fileApi
@@ -79,9 +98,7 @@ export class DownloadsService {
     if (fileSubjectOrUndefined) {
       fileSubjectOrUndefined.error(fileId);
     }
-    this.notificationService.addErrorMessage(
-      message
-    );
+    this.notificationService.addErrorMessage(message);
     this.currentDownloadSubjects.delete(fileId);
   }
 
@@ -95,9 +112,12 @@ export class DownloadsService {
     }
   }
 
-
-  private manageEventMessage(event: HttpEvent<any>, fileName: string, fileId: string) {
-    let downloadValueToReturn: DownloadInProgress = {
+  private manageEventMessage(
+    event: HttpEvent<any>,
+    fileName: string,
+    fileId: string
+  ) {
+    const downloadValueToReturn: DownloadInProgress = {
       name: fileName,
       fileId: fileId,
       percentage: 0
@@ -112,19 +132,28 @@ export class DownloadsService {
 
       case HttpEventType.ResponseHeader:
         if (event.status === 400) {
-          return this.error(fileId, 'The server could not find the file you are seeking to download. Please try again later or contact the support.');
+          return this.error(
+            fileId,
+            'The server could not find the file you are seeking to download. Please try again later or contact the support.'
+          );
         }
         if (event.status === 401) {
           return this.error(fileId, 'Wrong password, please try again.');
         }
         if (event.status === 403) {
-          return this.error(fileId, 'It seems like you don\'t have the rights to access this file');
+          return this.error(
+            fileId,
+            "It seems like you don't have the rights to access this file"
+          );
         }
         if (event.status === 404) {
           return this.error(fileId, 'File not found.');
         }
         if (event.status === 500) {
-          return this.error(fileId, 'An error occured while downloading the file. Please contact the support.');
+          return this.error(
+            fileId,
+            'An error occured while downloading the file. Please contact the support.'
+          );
         }
         return;
 
@@ -142,11 +171,13 @@ export class DownloadsService {
       case HttpEventType.Response:
         if (event.status === 200) {
           const file = event.body as Blob;
-          console.log('saving file!')
+          console.log('saving file!');
           saveAs(file, fileName);
           downloadValueToReturn.percentage = 100;
           this.notificationService.addSuccessMessage(
-            'File succesfully downloaded!', true, 5
+            'File succesfully downloaded!',
+            true,
+            5
           );
           return this.next(fileId, downloadValueToReturn);
         } else {
@@ -158,7 +189,10 @@ export class DownloadsService {
         }
 
       default:
-        return this.error(fileId, 'An error occured while downloading the file. Please contact the support.');
+        return this.error(
+          fileId,
+          'An error occured while downloading the file. Please contact the support.'
+        );
     }
   }
 }
@@ -172,4 +206,3 @@ export interface DownloadInProgress {
   fileId: string;
   percentage: number;
 }
-

@@ -8,7 +8,11 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
-import { faDownload, faChevronLeft, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faDownload,
+  faChevronLeft,
+  faExclamationTriangle
+} from '@fortawesome/free-solid-svg-icons';
 import { DownloadsService } from '../../services/downloads.service';
 
 @Component({
@@ -26,7 +30,7 @@ export class DownloadCardComponent implements OnInit {
 
   public downloadsInProgress: DownloadToDisplay[] = [];
 
-  constructor(private downloadsService: DownloadsService) { }
+  constructor(private downloadsService: DownloadsService) {}
 
   getDownloadProgress(i: number) {
     return this.downloadsInProgress[i].percentage;
@@ -45,7 +49,10 @@ export class DownloadCardComponent implements OnInit {
   }
 
   isNotDisplayed(): boolean {
-    return this.enterScreenOrLeaveScreen === 'stayScreen' || this.enterScreenOrLeaveScreen === 'leaveScreen';
+    return (
+      this.enterScreenOrLeaveScreen === 'stayScreen' ||
+      this.enterScreenOrLeaveScreen === 'leaveScreen'
+    );
   }
 
   display() {
@@ -72,34 +79,36 @@ export class DownloadCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.downloadsService.displayArrow$.subscribe(
-      next => {
-        this.showDownloadArrow = next;
-      }
-    )
+    this.downloadsService.displayArrow$.subscribe(next => {
+      this.showDownloadArrow = next;
+    });
 
-    this.downloadsService.displayDownloads$.subscribe(
-      next => {
-        if (next) {
-          this.display();
-        } else {
-          this.hide();
-        }
+    this.downloadsService.displayDownloads$.subscribe(next => {
+      if (next) {
+        this.display();
+      } else {
+        this.hide();
       }
-    )
+    });
     this.downloadsService.nextDownloadSubjects$.subscribe(
-      next => {
-        next.subscribe(
-          next => {
-            const index = this.downloadsInProgress.findIndex(element => element.fileId === next.fileId);
+      nextDownloadInProgressSubject => {
+        nextDownloadInProgressSubject.subscribe(
+          nextDownloadInProgress => {
+            const index = this.downloadsInProgress.findIndex(
+              element => element.fileId === nextDownloadInProgress.fileId
+            );
             const nextDownloadToDisplay = {
-              fileName: next.name,
+              fileName: nextDownloadInProgress.name,
               hasError: false,
-              fileId: next.fileId,
-              percentage: next.percentage
-            }
-            if (index != -1) {
-              if (next.percentage < this.downloadsInProgress[index].percentage && !this.downloadsInProgress[index].hasError) {
+              fileId: nextDownloadInProgress.fileId,
+              percentage: nextDownloadInProgress.percentage
+            };
+            if (index !== -1) {
+              if (
+                nextDownloadInProgress.percentage <
+                  this.downloadsInProgress[index].percentage &&
+                !this.downloadsInProgress[index].hasError
+              ) {
                 // Already existing but re-download
                 this.downloadsInProgress.splice(index, 1);
                 this.downloadsInProgress.unshift(nextDownloadToDisplay);
@@ -114,14 +123,15 @@ export class DownloadCardComponent implements OnInit {
           },
           error => {
             const id: string = error;
-            const index = this.downloadsInProgress.findIndex(element => element.fileId === id);
+            const index = this.downloadsInProgress.findIndex(
+              element => element.fileId === id
+            );
             this.downloadsInProgress[index].hasError = true;
           }
         );
       }
-    )
+    );
   }
-
 }
 
 export interface DownloadToDisplay {

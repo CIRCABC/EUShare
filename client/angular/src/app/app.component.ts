@@ -41,7 +41,11 @@ export const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-  constructor(private oauthService: OAuthService, private router: Router, private downloadsService: DownloadsService) {
+  constructor(
+    private oauthService: OAuthService,
+    private router: Router,
+    private downloadsService: DownloadsService
+  ) {
     this.routerHelpForDownloadsBox();
     this.configureOAuth();
   }
@@ -53,20 +57,26 @@ export class AppComponent {
   }
 
   private routerHelpForDownloadsBox() {
-    this.router.events.pipe(filter(event => {
-      return event instanceof NavigationEnd
-    })).subscribe((nextEvent => {
-      const nextEventNavigationEnd: NavigationEnd = <NavigationEnd>nextEvent;
-      const urlAfterRedirect = nextEventNavigationEnd.urlAfterRedirects;
+    this.router.events
+      .pipe(
+        filter(event => {
+          return event instanceof NavigationEnd;
+        })
+      )
+      .subscribe(nextEvent => {
+        const nextEventNavigationEnd: NavigationEnd = <NavigationEnd>nextEvent;
+        const urlAfterRedirect = nextEventNavigationEnd.urlAfterRedirects;
 
-      if (urlAfterRedirect === '/login' || urlAfterRedirect.startsWith('/filelink')) {
-        this.downloadsService.showDownloadArrow(false);
-      }
+        if (
+          urlAfterRedirect === '/login' ||
+          urlAfterRedirect.startsWith('/filelink')
+        ) {
+          this.downloadsService.showDownloadArrow(false);
+        }
 
-      if (urlAfterRedirect === '/home') {
-        this.downloadsService.showDownloadArrow(true);
-      }
-
-    }));
+        if (urlAfterRedirect === '/home') {
+          this.downloadsService.showDownloadArrow(true);
+        }
+      });
   }
 }

@@ -41,7 +41,7 @@ export class UploadedFileRowComponent {
     private modalService: ModalsService,
     private uploadedFileService: UploadedFilesService,
     private downloadsService: DownloadsService
-  ) { }
+  ) {}
 
   public tryDownload() {
     if (this.file.hasPassword) {

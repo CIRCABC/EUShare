@@ -27,9 +27,12 @@ export class DownloadFileRowComponent implements OnInit {
   public faFile = faFile;
   public faLock = faLock;
 
-  constructor(private modalService: ModalsService, private downloadsService: DownloadsService) { }
+  constructor(
+    private modalService: ModalsService,
+    private downloadsService: DownloadsService
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public displayMore() {
     this.isMoreDisplayed = true;
@@ -48,7 +51,10 @@ export class DownloadFileRowComponent implements OnInit {
       );
     } else {
       this.downloadsService.displayDownloadsBox();
-      this.downloadsService.downloadAFile(this.fileToDisplay.fileId, this.fileToDisplay.name);
+      this.downloadsService.downloadAFile(
+        this.fileToDisplay.fileId,
+        this.fileToDisplay.name
+      );
     }
   }
 }

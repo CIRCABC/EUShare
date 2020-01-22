@@ -17,9 +17,8 @@ describe('PrivacyStatementComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PrivacyStatementComponent ]
-    })
-    .compileComponents();
+      declarations: [PrivacyStatementComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -17,9 +17,8 @@ describe('FooterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FooterComponent ]
-    })
-    .compileComponents();
+      declarations: [FooterComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

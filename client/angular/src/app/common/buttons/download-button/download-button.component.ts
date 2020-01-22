@@ -28,6 +28,7 @@ export class DownloadButtonComponent implements OnInit {
   @Input('isFileHasPassword')
   public isFileHasPassword = false;
 
+  // tslint:disable-next-line:no-input-rename
   @Input('isShowProgress')
   public isShowProgress = false;
 
@@ -35,11 +36,9 @@ export class DownloadButtonComponent implements OnInit {
   public percentageDownloaded = 0;
   public inputPassword = '';
 
-  constructor(
-    private downloadsService: DownloadsService
-  ) { }
+  constructor(private downloadsService: DownloadsService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public download() {
     this.isLoading = true;
@@ -48,17 +47,18 @@ export class DownloadButtonComponent implements OnInit {
       this.downloadsService.displayDownloadsBox();
     }
 
-    this.downloadsService.downloadAFile(this.fileId, this.fileName, this.inputPassword).subscribe(
-      next => {
-        this.percentageDownloaded = next.percentage;
-        if (next.percentage === 100) {
+    this.downloadsService
+      .downloadAFile(this.fileId, this.fileName, this.inputPassword)
+      .subscribe(
+        next => {
+          this.percentageDownloaded = next.percentage;
+          if (next.percentage === 100) {
+            this.isLoading = false;
+          }
+        },
+        error => {
           this.isLoading = false;
         }
-      },
-      error => {
-        this.isLoading = false;
-      }
-    );
-
+      );
   }
 }
