@@ -7,13 +7,11 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { globalValidator } from './upload.validators';
 import { Component, OnInit } from '@angular/core';
 import {
   FormArray,
   FormGroup,
   Validators,
-  AbstractControl,
   FormBuilder,
   FormControl
 } from '@angular/forms';
@@ -50,6 +48,8 @@ export class UploadComponent implements OnInit {
   public totalSpaceInBytes = 0;
   public percentageUploaded = 0;
 
+  public emailControl!: FormControl;
+
   constructor(
     private fb: FormBuilder,
     private sessionApi: SessionService,
@@ -57,7 +57,7 @@ export class UploadComponent implements OnInit {
     private fileApi: FileService,
     private notificationService: NotificationService
   ) {
-    this.initializeFormGroup();
+    this.initializeForm();
   }
   async initializeAvailableSpace() {
     const id = this.sessionApi.getStoredId();
@@ -103,30 +103,27 @@ export class UploadComponent implements OnInit {
     );
   }
 
-  initializeFormGroup() {
+  initializeForm() {
+    this.emailControl = this.fb.control('');
     this.uploadform = this.fb.group(
       {
         fileFromDisk: [
           undefined,
-          Validators.compose([fileSizeValidator(this.leftSpaceInBytes)])
+          Validators.compose([Validators.required, fileSizeValidator(this.leftSpaceInBytes)])
         ],
         emailOrLink: ['', Validators.required],
         emailMessageArray: this.fb.array([
           // this.initializeEmailMessageFormGroup()
         ]),
-        namesOnly: this.fb.array([
-          // this.initializeNamesOnly()
+        linkArray: this.fb.array([
+          // this.initializeLinkFormGroup()
         ]),
         expirationDate: [this.get7DaysAfterToday(), Validators.required],
         password: [undefined]
-      },
-      { validators: globalValidator() }
+      }
     );
   }
 
-  getEmailMessageArray(): FormArray {
-    return <FormArray>this.uploadform.controls['emailMessageArray'].value;
-  }
 
   getEmailMessageFormGroup(i: number): FormGroup {
     const emailMessageArray: FormArray = this.emailMessageArray;
@@ -140,7 +137,7 @@ export class UploadComponent implements OnInit {
   initializeEmailMessageFormGroup(): FormGroup {
     const initializedFg = this.fb.group(
       {
-        emailArray: this.fb.array([this.initializedEmailFormGroup()]),
+        emailArray: this.fb.array([], Validators.required),
         message: ['']
       });
 
@@ -157,7 +154,17 @@ export class UploadComponent implements OnInit {
     return emailGroup;
   }
 
-  initializeNamesOnly(): FormGroup {
+  initializedEmailFormGroupValue(value: any): FormGroup {
+    const emailGroup = this.fb.group(
+      {
+        email: new FormControl(value, Validators.required)
+      },
+      { updateOn: 'change' }
+    );
+    return emailGroup;
+  }
+
+  initializeLinkFormGroup(): FormGroup {
     return this.fb.group(
       {
         name: new FormControl('', Validators.required)
@@ -169,7 +176,7 @@ export class UploadComponent implements OnInit {
   async ngOnInit() {
     this.initializeEventListeners();
     await this.initializeAvailableSpace();
-    this.initializeFormGroup();
+    this.initializeForm();
   }
 
   // SELECT IMPORT
@@ -211,13 +218,14 @@ export class UploadComponent implements OnInit {
   getEmailArrayOnForm(form: any) {
     return form.controls.emailArray.controls;
   }
+
   addEmailFormGroup(emailMessageFormArrayIndex: number) {
-    // Get the emailMessageGroup
     const formGroupOrNull = <FormGroup | null>this.emailMessageArray.controls[emailMessageFormArrayIndex];
     if (formGroupOrNull) {
       const emailArray = <FormArray | null>formGroupOrNull.controls['emailArray'];
       if (emailArray) {
-        emailArray.push(this.initializedEmailFormGroup());
+        emailArray.push(this.initializedEmailFormGroupValue(this.emailControl.value));
+        this.emailControl = this.fb.control('');
       }
     }
   }
@@ -253,12 +261,14 @@ export class UploadComponent implements OnInit {
     return 0;
   }
 
-  getEmailControlValue(emailMessageArrayIndex: number, emailArrayIndex: number) {
+  getEmailControlValue(emailMessageArrayIndex: number, emailArrayIndex: number): string | null {
     const emailControl = this.getEmailControl(emailMessageArrayIndex, emailArrayIndex);
     if (emailControl) {
-      return emailControl.value;
+      return <string | null>emailControl.value;
     }
+    return null;
   }
+
   getEmailControl(emailMessageArrayIndex: number, emailArrayIndex: number): FormControl | null {
     const emailFormGroup = this.getEmailFormGroup(emailMessageArrayIndex, emailArrayIndex);
     if (emailFormGroup) {
@@ -266,6 +276,23 @@ export class UploadComponent implements OnInit {
     }
     return null;
   }
+
+  getMessageControl(emailMessageArrayIndex: number): FormControl | null {
+    const formGroupOrNull = <FormGroup | null>this.emailMessageArray.controls[emailMessageArrayIndex];
+    if (formGroupOrNull) {
+      return <FormControl | null>formGroupOrNull.controls['message'];
+    }
+    return null;
+  }
+
+  getMessageControlValue(emailMessageArrayIndex: number): string | null {
+    const messageControl = this.getMessageControl(emailMessageArrayIndex);
+    if (messageControl) {
+      return <string | null>messageControl.value;
+    }
+    return null;
+  }
+
   addEmailMessageFormGroup() {
     this.emailMessageArray.push(this.initializeEmailMessageFormGroup());
   }
@@ -277,72 +304,42 @@ export class UploadComponent implements OnInit {
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
+    this.emailControl = this.fb.control('');
   }
 
-  getEmailsWithMessagesFormgroupNumber(): number {
-    const formArray: FormArray = <FormArray>(
-      this.uploadform.controls['emailsWithMessages']
-    );
+  getEmailMessageArrayLength(): number {
+    const formArray: FormArray = <FormArray>this.emailMessageArray;
     if (formArray) {
       return formArray.controls.length;
     }
     return 0;
   }
-  getEmailsWithMessagesFormgroup(i: number): FormGroup | null {
-    const formArrayOrNull: FormArray | null = <FormArray | null>(
-      this.uploadform.controls['emailsWithMessages']
-    );
-    if (formArrayOrNull) {
-      return <FormGroup | null>formArrayOrNull.controls[i];
-    }
-    return null;
-  }
 
-  getEmailsWithMessagesOnlyMessage(i: number): AbstractControl | null {
-    return this.getEmailsWithMessagesOnlyOne(i, 'message');
+  // LINKS
+  get linkArray() {
+    return this.uploadform.get('linkArray') as FormArray;
   }
-
-  getEmailsWithMessagesOnlyEmail(i: number): AbstractControl | null {
-    return this.getEmailsWithMessagesOnlyOne(i, 'email');
+  addLinkFormGroup() {
+    this.linkArray.push(this.initializeLinkFormGroup());
   }
-
-  getEmailsWithMessagesOnlyOne(i: number, emailOrMessage: string) {
-    const formGroup = this.getEmailsWithMessagesFormgroup(i);
-    if (formGroup) {
-      return formGroup.controls[emailOrMessage];
-    }
-    return null;
+  deleteLinkFormGroup(i: number) {
+    this.linkArray.removeAt(i);
   }
-
-  // NAMES ONLY
-  get namesOnly() {
-    return this.uploadform.get('namesOnly') as FormArray;
-  }
-  addNamesOnly() {
-    this.namesOnly.push(this.initializeNamesOnly());
-  }
-  deleteNamesOnly(i: number) {
-    this.namesOnly.removeAt(i);
-  }
-  resetNamesOnly() {
-    const formArray: FormArray = this.namesOnly;
+  resetLinkArray() {
+    const formArray: FormArray = this.linkArray;
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
   }
-  getNamesOnlyFormgroupNumber(): number {
-    const formArray: FormArray = this.uploadform.controls[
-      'namesOnly'
-    ] as FormArray;
+  getLinkArrayLength(): number {
+    const formArray: FormArray = this.linkArray
     if (formArray) {
       return formArray.controls.length;
     }
     return 0;
   }
-  getNamesOnlyFormgroup(i: number): FormGroup | null {
-    const formArray: FormArray = this.uploadform.controls[
-      'namesOnly'
-    ] as FormArray;
+  getLinkFormGroup(i: number): FormGroup | null {
+    const formArray: FormArray = this.linkArray
     if (formArray) {
       return formArray.controls[i] as FormGroup;
     }
@@ -351,7 +348,17 @@ export class UploadComponent implements OnInit {
 
   resetRecipients() {
     this.resetEmailMessageArray();
-    this.resetNamesOnly();
+    this.resetLinkArray();
+  }
+
+  resetRecipientsEmail() {
+    this.resetRecipients();
+    this.addEmailMessageFormGroup();
+  }
+
+  resetRecipientsLink() {
+    this.resetRecipients();
+    this.addLinkFormGroup();
   }
 
   // MORE OPTIONS
@@ -395,23 +402,27 @@ export class UploadComponent implements OnInit {
         if (this.emailOrLinkIsEmail()) {
           for (
             let i = 0;
-            i < this.getEmailsWithMessagesFormgroupNumber();
+            i < this.getEmailMessageArrayLength();
             i++
           ) {
-            const formGroupOrNull: FormGroup | null = this.getEmailsWithMessagesFormgroup(
+            const formGroupOrNull: FormGroup | null = this.getEmailMessageFormGroup(
               i
             );
             if (formGroupOrNull) {
-              const message: string = formGroupOrNull.controls['message'].value;
-              const email: string = formGroupOrNull.controls['email'].value;
-              const recipient: Recipient = {
-                emailOrName: email,
-                sendEmail: this.emailOrLinkIsEmail()
-              };
-              if (message && message !== '' && this.emailOrLinkIsEmail) {
-                recipient.message = message;
+              const messageOrNull: string | null = this.getMessageControlValue(i);
+              for (let j = 0; j < this.getEmailArrayLength(i); j++) {
+                const emailOrNull: string | null = this.getEmailControlValue(i, j);
+                if (emailOrNull && emailOrNull !== '') {
+                  const recipient: Recipient = {
+                    emailOrName: emailOrNull,
+                    sendEmail: this.emailOrLinkIsEmail()
+                  };
+                  if (messageOrNull && messageOrNull !== '' && this.emailOrLinkIsEmail) {
+                    recipient.message = messageOrNull;
+                  }
+                  recipientArray.push(recipient);
+                }
               }
-              recipientArray.push(recipient);
             } else {
               this.notificationService.addErrorMessage(
                 'A problem occured while uploading your file, please try again later or contact the support',
@@ -420,9 +431,9 @@ export class UploadComponent implements OnInit {
               return;
             }
           }
-        } else {
-          for (let i = 0; i < this.getNamesOnlyFormgroupNumber(); i++) {
-            const formGroupOrNull = this.getNamesOnlyFormgroup(i);
+        } else { // IS LINK
+          for (let i = 0; i < this.getLinkArrayLength(); i++) {
+            const formGroupOrNull = this.getLinkFormGroup(i);
             if (formGroupOrNull) {
               const name: string = formGroupOrNull.controls['name'].value;
               const recipient: Recipient = {
@@ -480,7 +491,7 @@ export class UploadComponent implements OnInit {
       }
     }
     this.uploadInProgress = false;
-    this.initializeFormGroup();
+    this.initializeForm();
     this.notificationService.addSuccessMessage(
       'Your upload was successful!',
       true

@@ -13,6 +13,7 @@
         [class.is-active]="isBurgerActive"
         (click)="toggleBurger()"
         data-target="myMenu"
+        *ngIf="loggedIn"
       >
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -31,10 +32,6 @@
           <fa-icon class="faIcon" [icon]="faUsers"></fa-icon>
           My shared files
         </a>
-        <a class="navbar-item" routerLink="upload">
-          <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
-          Share a new file
-        </a>
         <a class="navbar-item" routerLink="download">
           <fa-icon class="faIcon" [icon]="faCloudDownloadAlt"></fa-icon>
           Shared with me
@@ -45,13 +42,26 @@
         </a>
       </div>
       <div class="navbar-end">
+        <div *ngIf="loggedIn" class="navbar-item">
+          <button class="button is-info" routerLink="upload">
+            <span class="icon is-small">
+              <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
+            </span>
+            Share a new file
+          </button>
+        </div>
+        <div *ngIf="loggedIn" class="navbar-item">
+          <button class="button is-danger" (click)="logout()">
+            <span class="icon is-small">
+              <fa-icon class="faIcon" [icon]="faSignOutAlt"></fa-icon>
+            </span>
+            Logout
+          </button>
+        </div>
         <a routerLink="myUser" *ngIf="loggedIn" class="navbar-item">
           Logged as {{ userName }}
           <div class="avatar"><img src="assets/avatar.png" /></div>
         </a>
-        <div *ngIf="loggedIn" class="navbar-item">
-          <button class="button is-danger" (click)="logout()">Logout</button>
-        </div>
       </div>
     </div>
   </div>

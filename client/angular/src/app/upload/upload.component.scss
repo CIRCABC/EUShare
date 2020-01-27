@@ -21,18 +21,23 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
   margin-bottom: 1rem;
 }
 
-.displayedEmails {
-  display: block;
-  margin-left: 0.5rem;
-}
-
 .displayedEmail {
   border-bottom-style: dotted;
   border-bottom-width: 2px;
   border-bottom-color: whitesmoke;
-  width:80%;
+  width: 80%;
 }
 
-#message-text-area {
-  margin-right: 0.5rem;
+.emailContainer {
+  margin-bottom: 0.6em;
+}
+
+#radioEmail,
+#radioLink {
+  margin-right: 0.1em;
+}
+
+.emailColumn {
+  padding-top: 0;
+  padding-bottom: 0;
 }

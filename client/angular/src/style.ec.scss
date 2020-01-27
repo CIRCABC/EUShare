@@ -59,3 +59,9 @@ $ec-navbar-background-color: $ec-blue;
 $ec-navbar-item-color: $ec-light-grey;
 $ec-navbar-item-hover-color: $ec-light-grey;
 
+/** COOKIE CONSENT KIT **/
+.cookie-consent-banner {
+    position: absolute;
+    top: 25%;
+    left: 25%;
+}

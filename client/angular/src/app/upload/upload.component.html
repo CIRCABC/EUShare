@@ -61,17 +61,19 @@
             <label class="radio">
               <input
                 type="radio"
+                id="radioEmail"
                 required
                 formControlName="emailOrLink"
-                (click)="resetRecipients()"
+                (click)="resetRecipientsEmail()"
                 value="Email"
               />
               Email
             </label>
             <label class="radio">
               <input
+                id="radioLink"
                 type="radio"
-                (click)="resetRecipients()"
+                (click)="resetRecipientsLink()"
                 required
                 formControlName="emailOrLink"
                 value="Link"
@@ -85,7 +87,11 @@
     <!-- EMAILS AND USER NAMES -->
     <div class="field">
       <!-- EMAIL AND MESSAGES -->
-      <div *ngIf="emailOrLinkIsEmail()" formArrayName="emailMessageArray">
+      <div
+        *ngIf="emailOrLinkIsEmail()"
+        formArrayName="emailMessageArray"
+        class="column is-half-desktop emailColumn"
+      >
         <div
           [formGroupName]="i"
           *ngFor="
@@ -94,25 +100,18 @@
           "
           class="media"
         >
-          <!-- <div class= media -->
-          <div class="media-left">
-            <div class="square"></div>
-          </div>
-          <!-- EMAIL ARRAY -->
-          <div formArrayName="emailArray" class="column is-half-desktop">
-            <div
-              class="content"
-              [formGroupName]="j"
-              *ngFor="
-                let emailIndexed of getEmailArrayOnForm(emailAndMessageFg);
-                let j = index
-              "
-            >
-              <div class="displayedEmails">
-                <div
-                  class="displayedEmail"
-                  *ngIf="j < getEmailArrayLength(i) - 1"
-                >
+          <div class="media-content">
+            <!-- EMAIL ARRAY -->
+            <div formArrayName="emailArray">
+              <div
+                [formGroupName]="j"
+                *ngFor="
+                  let emailIndexed of getEmailArrayOnForm(emailAndMessageFg);
+                  let j = index
+                "
+              >
+                <!-- DISPLAYED EMAILS -->
+                <div class="displayedEmail">
                   {{ getEmailControlValue(i, j) }}
                   <a (click)="deleteEmailFormGroup(i, j)">
                     <fa-icon
@@ -121,81 +120,40 @@
                     ></fa-icon>
                   </a>
                 </div>
-              </div>
-              <div *ngIf="j === getEmailArrayLength(i) - 1">
-                <app-email-input
-                  formControlName="email"
-                  (keyup.enter)="addEmailFormGroup(i)"
-                ></app-email-input>
-                <button
-                  class="button is-link is-outlined"
-                  type="button"
-                  (click)="addEmailFormGroup(i)"
-                  [disabled]="
-                    getEmailControl(i, j) && getEmailControl(i, j)!.errors
-                  "
-                >
-                  Add Recipient
-                </button>
-                <app-message-text-area
-                  formControlName="message"
-                  class="media-content"
-                  id="message-text-area"
-                ></app-message-text-area>
+                <div
+                  class="emailContainer"
+                  *ngIf="j === getEmailArrayLength(i) - 1"
+                ></div>
               </div>
             </div>
+            <app-email-input
+              (downClick)="addEmailFormGroup(i)"
+              [formControl]="emailControl"
+              (keyup.enter)="addEmailFormGroup(i)"
+            ></app-email-input>
+            <app-message-text-area
+              formControlName="message"
+            ></app-message-text-area>
           </div>
         </div>
-        <button
-          class="button is-link is-outlined"
-          type="button"
-          (click)="addEmailMessageFormGroup()"
-        >
-          Add mail
-        </button>
       </div>
-      <div *ngIf="emailOrLinkIsLink()" formArrayName="namesOnly">
+      <div
+        *ngIf="emailOrLinkIsLink()"
+        formArrayName="linkArray"
+        class="column is-half-desktop emailColumn"
+      >
         <div
-          *ngFor="let recipientName of namesOnly.controls; let i = index"
+          *ngFor="let recipientName of linkArray.controls; let i = index"
           class="media"
         >
-          <!-- <div class="media-left">
-            <div class="square"></div>
-          </div> -->
           <div [formGroupName]="i" class="media-content">
             <app-link-input formControlName="name"></app-link-input>
-            <div class="level">
-              <button
-                class="button is-danger is-outlined level-left"
-                type="button"
-                (click)="deleteNamesOnly(i)"
-              >
-                Delete recipient
-              </button>
-            </div>
           </div>
         </div>
-        <button
-          class="button is-link is-outlined"
-          type="button"
-          (click)="addNamesOnly()"
-        >
-          Add more recipients...
-        </button>
       </div>
     </div>
     <div class="field">
-      <label class="checkbox">
-        <input
-          type="checkbox"
-          [checked]="moreOptions"
-          (change)="moreOptionsChange()"
-        />
-        More options...
-      </label>
-    </div>
-    <div class="field" *ngIf="moreOptions">
-      <label class="label">Password (optional)</label>
+      <label class="label">File password (optional)</label>
       <input
         formControlName="password"
         class="input"
@@ -204,7 +162,7 @@
         value=""
       />
     </div>
-    <div class="field" *ngIf="moreOptions">
+    <!-- <div class="field">
       <label class="label">Expiration date (default is 7 days from now)</label>
       <p-calendar
         [minDate]="getTomorrow()"
@@ -217,7 +175,7 @@
         [placeholder]="'dd/mm/yyyy'"
       >
       </p-calendar>
-    </div>
+    </div> -->
     <br />
     <div class="field">
       <button

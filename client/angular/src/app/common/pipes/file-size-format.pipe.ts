@@ -26,12 +26,12 @@ export class FileSizeFormatPipe implements PipeTransform {
         const valueInMb = Math.floor(valueInKb / 1024);
         if (valueInMb >= 1024) {
           const valueInGb = Math.floor(valueInMb / 1024);
-          return valueInGb + ' GigaBytes';
+          return valueInGb + ' GB';
         } else {
-          return valueInMb + ' MegaBytes';
+          return valueInMb + ' MB';
         }
       } else {
-        return valueInKb + ' KiloBytes';
+        return valueInKb + ' KB';
       }
     } else {
       return value + ' Bytes';

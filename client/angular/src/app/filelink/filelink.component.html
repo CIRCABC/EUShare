@@ -1,9 +1,14 @@
-<div class="centered">
-  <h1 class="title">File direct download link</h1>
-  <app-download-button
-    [fileId]="fileId"
-    [isFileHasPassword]="isFilePasswordProtected"
-    [fileName]="fileName"
-    [isShowProgress]="true"
-  ></app-download-button>
+<div class="centered imageBackground">
+  <div class="centeredText">
+    <h1 class="title">Download a shared file</h1>
+    <h2 class="subtitle">
+      Download
+      {{ fileName.length > 25 ? (fileName | slice: 0:25) + ".." : fileName }}.
+    </h2>
+    <app-download-button
+      [fileId]="fileId"
+      [isFileHasPassword]="isFilePasswordProtected"
+      [fileName]="fileName"
+    ></app-download-button>
+  </div>
 </div>

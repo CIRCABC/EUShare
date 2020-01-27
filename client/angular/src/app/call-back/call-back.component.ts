@@ -66,7 +66,7 @@ export class CallBackComponent implements OnInit {
         .getUserUserInfo(identifier)
         .toPromise();
       this.api.setStoredUserInfo(userInfo);
-      this.router.navigateByUrl('home');
+      this.router.navigateByUrl('upload');
     } catch (e) {
       this.notificationService.errorMessageToDisplay(
         e,
