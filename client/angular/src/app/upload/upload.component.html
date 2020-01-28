@@ -58,7 +58,11 @@
       <div class="field-body">
         <div class="field is-narrow">
           <div class="control">
-            <label class="radio">
+            <label
+              class="radio tooltip"
+              data-tooltip="Send a link to your
+               file in an email"
+            >
               <input
                 type="radio"
                 id="radioEmail"
@@ -69,7 +73,11 @@
               />
               Email
             </label>
-            <label class="radio">
+            <label
+              class="radio tooltip"
+              data-tooltip="Generate a link to your file
+               and share it however you prefer"
+            >
               <input
                 id="radioLink"
                 type="radio"
@@ -198,4 +206,3 @@
     </div>
   </form>
 </div>
-<pre> {{ uploadform.value | json }} </pre>

@@ -1,0 +1,79 @@
+<div class="centered">
+  <div class="column is-three-fifths">
+    <div class="card">
+      <div class="card-image">
+        <figure class="is-128x128">
+          <img src="assets/success.png" alt="Placeholder image" />
+        </figure>
+      </div>
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4">
+              {{
+                fileInfoUploader.name.length > 25
+                  ? (fileInfoUploader.name | slice: 0:25) + ".."
+                  : fileInfoUploader.name
+              }}
+              succesfully uploaded
+            </p>
+            <p class="subtitle is-6">
+              The file will expire on the {{ fileInfoUploader.expirationDate }}
+            </p>
+          </div>
+        </div>
+
+        <div class="content">
+          <div
+            class="media"
+            *ngFor="let recipient of fileInfoUploader.sharedWith; let i = index"
+            [attr.data-index]="i"
+          >
+            <div class="media-content">
+              <p *ngIf="!recipient.sendEmail" class="subtitle is-6">
+                You may now share the following link to your file.
+              </p>
+              <p *ngIf="recipient.sendEmail" class="subtitle is-6">
+                The following link has been sent to your recipient.
+              </p>
+              <div class="level-left">
+                <div
+                  *ngIf="recipient.sendEmail === true"
+                  class="level-item has-text-centered"
+                >
+                  <p>
+                    <strong>Recipient</strong>
+                    {{ recipient.emailOrName | lowercase }}
+                  </p>
+                </div>
+                <div
+                  *ngIf="recipient.sendEmail === false"
+                  class="level-item has-text-centered"
+                >
+                  <p>
+                    <strong>Link</strong>
+                    {{ recipient.emailOrName | lowercase }}
+                  </p>
+                </div>
+                <div class="level-item has-text-centered">
+                  <div class="field">
+                    <input
+                      class="input is-info"
+                      type="text"
+                      value="{{ formatLink(i) }}"
+                    />
+                  </div>
+                </div>
+                <div class="level-item has-text-centered">
+                  <a class="button is-link is-outlined" (click)="copyLink(i)"
+                    >Copy</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -32,6 +32,7 @@ $menu-item-radius: 3px;
 }
 
 @import '../node_modules/bulma/bulma.sass';
+@import '../node_modules/bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.sass';
 
 .filecontainer {
     background-color: $table-striped-row-even-background-color;

@@ -55,6 +55,8 @@ import { MyUserComponent } from './my-user/my-user.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { DownloadCardComponent } from './common/download-card/download-card.component';
+import { UploadSucessComponent } from './upload-sucess/upload-sucess.component';
+import { UploadSuccessGuard } from './upload-success.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -71,6 +73,11 @@ const routes: Routes = [
     path: 'upload',
     component: UploadComponent,
     canActivate: [LoginGuard]
+  },
+  {
+    path: 'uploadSuccess',
+    component: UploadSucessComponent,
+    canActivate: [LoginGuard, UploadSuccessGuard]
   },
   {
     path: 'download',
@@ -143,7 +150,8 @@ const routes: Routes = [
     MyUserComponent,
     PrivacyStatementComponent,
     TermsOfServiceComponent,
-    DownloadCardComponent
+    DownloadCardComponent,
+    UploadSucessComponent
   ],
   imports: [
     ApiModule,
@@ -178,4 +186,4 @@ const routes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

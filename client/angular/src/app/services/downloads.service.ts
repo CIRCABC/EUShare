@@ -171,14 +171,8 @@ export class DownloadsService {
       case HttpEventType.Response:
         if (event.status === 200) {
           const file = event.body as Blob;
-          console.log('saving file!');
           saveAs(file, fileName);
           downloadValueToReturn.percentage = 100;
-          this.notificationService.addSuccessMessage(
-            'File succesfully downloaded!',
-            true,
-            5
-          );
           return this.next(fileId, downloadValueToReturn);
         } else {
           this.notificationService.errorMessageToDisplay(

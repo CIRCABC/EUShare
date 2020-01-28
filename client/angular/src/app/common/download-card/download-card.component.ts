@@ -64,7 +64,6 @@ export class DownloadCardComponent implements OnInit {
 
   hide() {
     if (this.isDisplayed()) {
-      console.log('hide!');
       this.displayArrow();
       this.enterScreenOrLeaveScreen = 'leaveScreen';
     }

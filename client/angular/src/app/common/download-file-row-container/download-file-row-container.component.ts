@@ -13,7 +13,8 @@ import { NotificationService } from '../notification/notification.service';
 
 @Component({
   selector: 'app-download-file-row-container',
-  templateUrl: './download-file-row-container.component.html'
+  templateUrl: './download-file-row-container.component.html',
+  styleUrls: ['./download-file-row-container.component.scss']
 })
 export class DownloadFileRowContainerComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename

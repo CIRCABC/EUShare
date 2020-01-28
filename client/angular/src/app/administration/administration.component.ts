@@ -171,7 +171,7 @@ export class AdministrationComponent implements OnInit {
         .putUserUserInfo(this.selectedUserInfo.id, this.selectedUserInfo)
         .toPromise();
       this.notificationService.addSuccessMessage(
-        'Your change was applied!',
+        'Your change was applied',
         true
       );
     } catch (error) {

@@ -21,7 +21,8 @@ import {
   FileRequest,
   Recipient,
   UsersService,
-  SessionService
+  SessionService,
+  FileInfoUploader
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { fileSizeValidator } from '../common/validators/file-validator';
@@ -31,6 +32,7 @@ import {
   HttpEventType,
   HttpErrorResponse
 } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload',
@@ -51,6 +53,7 @@ export class UploadComponent implements OnInit {
   public emailControl!: FormControl;
 
   constructor(
+    private router: Router,
     private fb: FormBuilder,
     private sessionApi: SessionService,
     private userApi: UsersService,
@@ -465,20 +468,13 @@ export class UploadComponent implements OnInit {
         const fileId = await this.fileApi
           .postFileFileRequest(myFileRequest)
           .toPromise();
-        await this.fileApi
+        const fileInfoUploader = await this.fileApi
           .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
           .pipe(map(event => this.getEventMessage(event)))
           .toPromise();
-        if (this.emailOrLinkIsEmail()) {
-          this.notificationService.addSuccessMessage(
-            'Your recipients have been notified by mail that they may download the shared file!',
-            false
-          );
-        } else {
-          this.notificationService.addSuccessMessage(
-            'Please find for each of your recipients, a personnal download link on the My Shared Files page',
-            false
-          );
+
+        if (fileInfoUploader) {
+          this.router.navigateByUrl('uploadSuccess', { state: {data: fileInfoUploader }});
         }
         await this.initializeAvailableSpace();
       } catch (e) {
@@ -492,10 +488,6 @@ export class UploadComponent implements OnInit {
     }
     this.uploadInProgress = false;
     this.initializeForm();
-    this.notificationService.addSuccessMessage(
-      'Your upload was successful!',
-      true
-    );
   }
 
   get uf() {
@@ -520,9 +512,9 @@ export class UploadComponent implements OnInit {
 
       case HttpEventType.Response:
         if (event.status === 200) {
-          this.notificationService.addSuccessMessage(
-            `File successfully shared`, true, 5
-          );
+          this.uploadInProgress = false;
+          this.percentageUploaded = 0;
+          return event.body as FileInfoUploader;
         } else {
           this.notificationService.errorMessageToDisplay(
             event.body as HttpErrorResponse,
@@ -566,7 +558,7 @@ export class UploadComponent implements OnInit {
       default:
         this.notificationService.addErrorMessage(
           'An error occured while downloading the file. Please contact the support.' +
-            JSON.stringify(event)
+          JSON.stringify(event)
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

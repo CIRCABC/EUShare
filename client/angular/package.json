@@ -58,11 +58,12 @@
     "@types/jsrsasign": "^8.0.1",
     "angular-oauth2-oidc": "^8.0.4",
     "bulma": "0.7.5",
+    "bulma-extensions": "^6.2.7",
     "classlist.js": "1.1.20150312",
     "core-js": "2.6.9",
     "file-saver": "2.0.2",
-    "jsrsasign": "^8.0.12",
     "hammerjs": "^2.0.8",
+    "jsrsasign": "^8.0.12",
     "license-check-and-add": "2.3.6",
     "rxjs": "6.5.2",
     "zone.js": "0.10.0"

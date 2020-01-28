@@ -5,10 +5,12 @@
       Download
       {{ fileName.length > 25 ? (fileName | slice: 0:25) + ".." : fileName }}.
     </h2>
+    <p *ngIf="isFilePasswordProtected">The file is protected by a password.</p>
     <app-download-button
       [fileId]="fileId"
       [isFileHasPassword]="isFilePasswordProtected"
       [fileName]="fileName"
+      [isShowProgress]="true"
     ></app-download-button>
   </div>
 </div>
