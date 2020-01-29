@@ -24,14 +24,12 @@ import { saveAs } from 'file-saver';
   providedIn: 'root'
 })
 export class DownloadsService {
-  private currentDownloadSubjects = new Map<
-    string,
-    Subject<DownloadInProgress>
+
+  private currentDownloadsInProgress = new Map<string, Observable<DownloadInProgress>>();
+  private nextDownloadsInProgressSubject = new Subject<
+  DownloadInProgressObservableWithMeta
   >();
-  private nextDownloadsSubjectsSubject = new Subject<
-    Subject<DownloadInProgress>
-  >();
-  public nextDownloadSubjects$ = this.nextDownloadsSubjectsSubject.asObservable();
+  public nextDownloadsInProgress$: Observable<DownloadInProgressObservableWithMeta> = this.nextDownloadsInProgressSubject.asObservable();
 
   private displayDownloadsSubject = new Subject<boolean>();
   public displayDownloads$ = this.displayDownloadsSubject.asObservable();
@@ -46,9 +44,9 @@ export class DownloadsService {
 
   public getCurrentObservables(): Observable<DownloadInProgress>[] {
     const observablesArray: Observable<DownloadInProgress>[] = [];
-    this.currentDownloadSubjects.forEach(
-      (subject: Subject<DownloadInProgress>, fileId: string) => {
-        observablesArray.push(subject.asObservable());
+    this.currentDownloadsInProgress.forEach(
+      (observale: Observable<DownloadInProgress>, fileId: string) => {
+        observablesArray.push(observale);
       }
     );
     return observablesArray;
@@ -67,95 +65,70 @@ export class DownloadsService {
     fileName: string,
     inputPassword?: string
   ): Observable<DownloadInProgress> {
-    const currentDownloadSubjectOrUndefined = this.currentDownloadSubjects.get(
+    const currentDownloadInProgressOrUndefined = this.currentDownloadsInProgress.get(
       fileId
     );
 
-    if (currentDownloadSubjectOrUndefined) {
-      return currentDownloadSubjectOrUndefined;
+    if (currentDownloadInProgressOrUndefined) {
+      return currentDownloadInProgressOrUndefined;
     } else {
-      const newDownloadSubject = new Subject<DownloadInProgress>();
-      this.currentDownloadSubjects.set(fileId, newDownloadSubject);
-      this.nextDownloadsSubjectsSubject.next(newDownloadSubject);
-
-      const firstDownloadValue: DownloadInProgress = {
-        name: fileName,
-        fileId: fileId,
-        percentage: 0
-      };
-      newDownloadSubject.next(firstDownloadValue);
-
-      this.fileApi
-        .getFile(fileId, inputPassword, 'events', true)
-        .pipe(map(event => this.manageEventMessage(event, fileName, fileId)))
-        .subscribe();
-      return newDownloadSubject.asObservable();
+      const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
+      .getFile(fileId, inputPassword, 'events', true)
+      .pipe(map(event => this.manageEventMessage(event, fileName, fileId)));
+      this.currentDownloadsInProgress.set(fileId, newDownloadObservable);
+      const downloadInProgressObservableWithMeta: DownloadInProgressObservableWithMeta = {
+        downloadInProgressObservable: newDownloadObservable,
+        fileId: fileId
+      }
+      this.nextDownloadsInProgressSubject.next(downloadInProgressObservableWithMeta);
+      return newDownloadObservable;
     }
   }
 
-  private error(fileId: string, message: string) {
-    const fileSubjectOrUndefined = this.currentDownloadSubjects.get(fileId);
-    if (fileSubjectOrUndefined) {
-      fileSubjectOrUndefined.error(fileId);
+  private error(fileId: string, message?: string) : Error {
+    if (message === undefined) {
+      message = 'An unknown error occured while downloading the file. Please contact the support.';
     }
     this.notificationService.addErrorMessage(message);
-    this.currentDownloadSubjects.delete(fileId);
-  }
-
-  private next(fileId: string, downloadInProgress: DownloadInProgress) {
-    const fileSubjectOrUndefined = this.currentDownloadSubjects.get(fileId);
-    if (fileSubjectOrUndefined) {
-      fileSubjectOrUndefined.next(downloadInProgress);
-    }
-    if (downloadInProgress.percentage === 100) {
-      this.currentDownloadSubjects.delete(fileId);
-    }
+    this.currentDownloadsInProgress.delete(fileId);
+    return new Error(fileId);
   }
 
   private manageEventMessage(
     event: HttpEvent<any>,
     fileName: string,
     fileId: string
-  ) {
-    const downloadValueToReturn: DownloadInProgress = {
+  ): DownloadInProgress {
+    let downloadValueToReturn: DownloadInProgress = {
       name: fileName,
       fileId: fileId,
-      percentage: 0
+      percentage: 0,
     };
 
     switch (event.type) {
-      case HttpEventType.Sent:
-        return;
-
       case HttpEventType.UploadProgress:
-        return;
-
+      case HttpEventType.Sent:
+        return downloadValueToReturn;
       case HttpEventType.ResponseHeader:
+        if (event.status === 200) {
+          return downloadValueToReturn;
+        }
         if (event.status === 400) {
-          return this.error(
-            fileId,
-            'The server could not find the file you are seeking to download. Please try again later or contact the support.'
-          );
+          throw this.error(fileId,'The server could not find the file you are seeking to download. Please try again later or contact the support.');
         }
         if (event.status === 401) {
-          return this.error(fileId, 'Wrong password, please try again.');
+          throw this.error(fileId,'Wrong password, please try again.');
         }
         if (event.status === 403) {
-          return this.error(
-            fileId,
-            "It seems like you don't have the rights to access this file"
-          );
+          throw this.error(fileId,"It seems like you don't have the rights to access this file");
         }
         if (event.status === 404) {
-          return this.error(fileId, 'File not found.');
+          throw this.error(fileId,'File not found.');
         }
         if (event.status === 500) {
-          return this.error(
-            fileId,
-            'An error occured while downloading the file. Please contact the support.'
-          );
+          throw this.error(fileId,'An error occured while downloading the file. Please contact the support.');
         }
-        return;
+        throw this.error(fileId);
 
       case HttpEventType.DownloadProgress:
         let eventTotalOrUndefined = event.total;
@@ -166,33 +139,36 @@ export class DownloadsService {
           (event.loaded * 100) / eventTotalOrUndefined
         );
         downloadValueToReturn.percentage = percentDone;
-        return this.next(fileId, downloadValueToReturn);
+        if (percentDone === 70) {
+          throw this.error(fileId);
+        }
+        return downloadValueToReturn;
 
       case HttpEventType.Response:
         if (event.status === 200) {
           const file = event.body as Blob;
           saveAs(file, fileName);
           downloadValueToReturn.percentage = 100;
-          return this.next(fileId, downloadValueToReturn);
+          this.currentDownloadsInProgress.delete(fileId);
+          return downloadValueToReturn;
         } else {
           this.notificationService.errorMessageToDisplay(
             event.body as HttpErrorResponse,
             'downloading the file'
           );
-          return this.error(fileId, 'downloading the file');
+          throw new Error(fileId);
         }
 
-      default:
-        return this.error(
-          fileId,
-          'An error occured while downloading the file. Please contact the support.'
-        );
+      default: {
+          throw this.error(fileId);
+      }
     }
   }
 }
 
-export interface DownloadArrayAndMetaData {
-  fileInfoUploaderArray: DownloadInProgress[];
+export interface DownloadInProgressObservableWithMeta {
+  downloadInProgressObservable: Observable<DownloadInProgress>;
+  fileId: string;
 }
 
 export interface DownloadInProgress {
