@@ -139,9 +139,6 @@ export class DownloadsService {
           (event.loaded * 100) / eventTotalOrUndefined
         );
         downloadValueToReturn.percentage = percentDone;
-        if (percentDone === 70) {
-          throw this.error(fileId);
-        }
         return downloadValueToReturn;
 
       case HttpEventType.Response:

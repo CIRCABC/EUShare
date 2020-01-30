@@ -73,6 +73,6 @@ public class StringUtils {
     }
 
     public static boolean validateMessage(String message) {
-        return (message != null && message.length() < 401);
+        return (message == null || (message != null && message.length() < 401));
     }
 }
