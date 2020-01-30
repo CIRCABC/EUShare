@@ -78,9 +78,9 @@ export class AdministrationComponent implements OnInit {
     private router: Router,
     private usersApi: UsersService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public async resultsNextPage() {
     this.removeSelection();
@@ -135,10 +135,7 @@ export class AdministrationComponent implements OnInit {
       }
       this.isAfterSearch = true;
     } catch (error) {
-      this.notificationService.errorMessageToDisplay(
-        error,
-        'searching for the users'
-      );
+      // managed in interceptor
     } finally {
       this.searchIsLoading = false;
     }
@@ -175,10 +172,7 @@ export class AdministrationComponent implements OnInit {
         true
       );
     } catch (error) {
-      this.notificationService.errorMessageToDisplay(
-        error,
-        'updating the user information'
-      );
+      // managed in the interceptor
     } finally {
       this.changeIsLoading = false;
       this.isChangePermissions = false;

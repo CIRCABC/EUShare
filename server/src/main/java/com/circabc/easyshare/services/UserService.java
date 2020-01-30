@@ -22,6 +22,7 @@ import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
+import com.circabc.easyshare.exceptions.WrongNameStructureException;
 import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.UserInfo;
 import com.circabc.easyshare.storage.DBUser;
@@ -104,7 +105,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         return userRepository.findById(userId).orElseThrow(() -> new UnknownUserException());
     }
 
-    DBUser getUserOrCreateExternalUser(Recipient recipient) throws WrongEmailStructureException {
+    DBUser getUserOrCreateExternalUser(Recipient recipient)
+            throws WrongEmailStructureException, WrongNameStructureException {
         final String emailOrName = recipient.getEmailOrName();
         DBUser dbUser = userRepository.findOneByNameAndRole(emailOrName, DBUser.Role.EXTERNAL);
         if (dbUser == null) {
@@ -113,14 +115,20 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         if (dbUser != null) {
             return dbUser;
         } else {
-            if (StringUtils.validateEmailAddress(emailOrName)) {
-                return this.createExternalUser(emailOrName, null);
+            if (recipient.getSendEmail()) {
+                if (StringUtils.validateEmailAddress(emailOrName)) {
+                    return this.createExternalUser(emailOrName, null);
+                } else {
+                    throw new WrongEmailStructureException();
+                }
+            } else {
+                if(StringUtils.validateUsername(emailOrName)) {
+                    return this.createExternalUser(null, emailOrName);
+                } else {
+                    throw new WrongNameStructureException();
             }
-            if (StringUtils.validateUsername(emailOrName)) {
-                return this.createExternalUser(null, emailOrName);
-            }
-            throw new WrongEmailStructureException();
         }
+    }
     }
 
     @Override
@@ -163,12 +171,11 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             UserUnauthorizedException, ExternalUserCannotBeAdminException, IllegalSpaceException {
         String userId = userInfo.getId();
         if (this.isAdmin(requesterId)) {
-        UserInfo oldUserInfo = this.getUserInfo(userId);
+            UserInfo oldUserInfo = this.getUserInfo(userId);
             // Id, Name, UsedSpace
-            if (!oldUserInfo.getId().equals(userId) 
-            || !oldUserInfo.getGivenName().equals(userInfo.getGivenName())
-            || !oldUserInfo.getLoginUsername().equals(userInfo.getLoginUsername())
-            || !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
+            if (!oldUserInfo.getId().equals(userId) || !oldUserInfo.getGivenName().equals(userInfo.getGivenName())
+                    || !oldUserInfo.getLoginUsername().equals(userInfo.getLoginUsername())
+                    || !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
                 throw new UserUnauthorizedException();
             }
             // isAdmin
@@ -195,8 +202,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public List<UserInfo> getUsersUserInfoOnBehalfOf(int pageSize, int pageNumber, String searchString,
             String requesterId) throws UnknownUserException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
-            return userRepository.findByEmailIgnoreCaseStartsWith(searchString, PageRequest.of(pageNumber, pageSize)).stream()
-                    .map(dbUser -> dbUser.toUserInfo()).collect(Collectors.toList());
+            return userRepository.findByEmailIgnoreCaseStartsWith(searchString, PageRequest.of(pageNumber, pageSize))
+                    .stream().map(dbUser -> dbUser.toUserInfo()).collect(Collectors.toList());
         } else {
             throw new UserUnauthorizedException();
         }
@@ -296,7 +303,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
      * @param givenName
      * @throws WrongEmailStructureException if {@code email} has a wrong structure
      */
-    private DBUser getOrCreateDbInternalUser(String email, String givenName, String username) throws WrongEmailStructureException {
+    private DBUser getOrCreateDbInternalUser(String email, String givenName, String username)
+            throws WrongEmailStructureException {
         DBUser dbUser = null;
         if (StringUtils.validateEmailAddress(email)) {
             dbUser = this.userRepository.findOneByEmailIgnoreCase(email);

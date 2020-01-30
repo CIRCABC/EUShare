@@ -50,9 +50,7 @@ export class DownloadFileRowContainerComponent implements OnInit {
       try {
         await this.getNextFileInfoUploader();
       } catch (error) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while downloading files information. Please contact the support.'
-        );
+        // notification sent in interceptor
       }
     }
   }
@@ -66,9 +64,7 @@ export class DownloadFileRowContainerComponent implements OnInit {
       try {
         await this.getPreviousFileInfoUploader();
       } catch (error) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while downloading files information. Please contact the support.'
-        );
+        // notification sent in interceptor
       }
     }
   }
@@ -110,9 +106,7 @@ export class DownloadFileRowContainerComponent implements OnInit {
         await this.getPreviousFileInfoUploader();
       }
     } catch (error) {
-      this.notificationService.addErrorMessage(
-        'A problem occured while downloading files information. Please contact the support.'
-      );
+      // notification sent in interceptor
     }
   }
 }

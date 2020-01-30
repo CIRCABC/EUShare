@@ -41,11 +41,11 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
     const control = this.controlDirective.control;
     if (control) {
       if (!control.validator) {
-        control.setValidators([this.messageToRecipientValidator(200)]);
+        control.setValidators([this.messageToRecipientValidator(401)]);
       } else {
         control.setValidators([
           control.validator,
-          this.messageToRecipientValidator(200)
+          this.messageToRecipientValidator(401)
         ]);
       }
       setTimeout(() => control.updateValueAndValidity({ emitEvent: true }));

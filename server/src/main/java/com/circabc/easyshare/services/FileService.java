@@ -44,6 +44,7 @@ import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserHasInsufficientSpaceException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
+import com.circabc.easyshare.exceptions.WrongNameStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
@@ -202,12 +203,12 @@ public class FileService implements FileServiceInterface {
     @Override
     public RecipientWithLink addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
             throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
-            MessageTooLongException, UnknownFileException {
+            WrongNameStructureException, MessageTooLongException, UnknownFileException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            DBFile dbFile = findAvailableFile(fileId, false);
-            if (recipient.getMessage() != null && recipient.getMessage().length() >= 400) {
+            if (!StringUtils.validateMessage(recipient.getMessage())) {
                 throw new MessageTooLongException();
             }
+            DBFile dbFile = findAvailableFile(fileId, false);
             DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(),
                     userService.getUserOrCreateExternalUser(recipient), dbFile, recipient.getMessage());
             userFileRepository.save(dbUserFile);
@@ -224,13 +225,15 @@ public class FileService implements FileServiceInterface {
      * fails, throws a corresponding Exception
      * 
      * @return File ID if allocation successful
+     * @throws WrongNameStructureException
      */
     @Override
     @Transactional
     public String allocateFileOnBehalfOf(LocalDate expirationDate, String fileName, String password, String uploaderId,
-            List<Recipient> recipientList, long filesize, String requesterId) throws DateLiesInPastException,
-            IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException,
-            CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, WrongEmailStructureException {
+            List<Recipient> recipientList, long filesize, String requesterId)
+            throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
+            UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException,
+            EmptyFilenameException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException {
 
         // Validate uploader rights
         if (!uploaderId.equals(requesterId)) {
@@ -277,6 +280,9 @@ public class FileService implements FileServiceInterface {
 
         for (Recipient recipient : recipientList) {
             DBUser recipientDBUser = userService.getUserOrCreateExternalUser(recipient);
+            if (!StringUtils.validateMessage(recipient.getMessage())) {
+                throw new MessageTooLongException();
+            }
             DBUserFile dbUserFile = new DBUserFile(this.generateNewFileId(), recipientDBUser, dbFile,
                     recipient.getMessage());
             userFileRepository.save(dbUserFile);

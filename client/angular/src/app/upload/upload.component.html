@@ -134,10 +134,9 @@
                 ></div>
               </div>
             </div>
-            <app-email-input
+            <app-email-input *ngIf="isShowEmailControl"
               (downClick)="addEmailFormGroup(i)"
               [formControl]="emailControl"
-              (keyup.enter)="addEmailFormGroup(i)"
             ></app-email-input>
             <app-message-text-area
               formControlName="message"
@@ -206,3 +205,4 @@
     </div>
   </form>
 </div>
+<pre> {{ uploadform.value | json }} </pre>

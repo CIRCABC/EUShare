@@ -51,6 +51,7 @@ export class UploadComponent implements OnInit {
   public percentageUploaded = 0;
 
   public emailControl!: FormControl;
+  public isShowEmailControl = true;
 
   constructor(
     private router: Router,
@@ -81,10 +82,7 @@ export class UploadComponent implements OnInit {
         this.totalSpaceInBytes = me.totalSpace;
         this.sessionApi.setStoredUserInfo(me);
       } catch (error) {
-        this.notificationService.errorMessageToDisplay(
-          error,
-          'retrieving your user informations'
-        );
+        // notification in interceptor
       }
     }
   }
@@ -228,7 +226,9 @@ export class UploadComponent implements OnInit {
       const emailArray = <FormArray | null>formGroupOrNull.controls['emailArray'];
       if (emailArray) {
         emailArray.push(this.initializedEmailFormGroupValue(this.emailControl.value));
+        this.isShowEmailControl = false;
         this.emailControl = this.fb.control('');
+        setTimeout(() => this.isShowEmailControl = true);
       }
     }
   }
@@ -426,12 +426,6 @@ export class UploadComponent implements OnInit {
                   recipientArray.push(recipient);
                 }
               }
-            } else {
-              this.notificationService.addErrorMessage(
-                'A problem occured while uploading your file, please try again later or contact the support',
-                false
-              );
-              return;
             }
           }
         } else { // IS LINK
@@ -444,13 +438,7 @@ export class UploadComponent implements OnInit {
                 sendEmail: this.emailOrLinkIsEmail()
               };
               recipientArray.push(recipient);
-            } else {
-              this.notificationService.addErrorMessage(
-                'A problem occured while uploading your file, please try again later or contact the support',
-                false
-              );
-              return;
-            }
+            } 
           }
         }
         const myFileRequest: FileRequest = {
@@ -474,16 +462,11 @@ export class UploadComponent implements OnInit {
           .toPromise();
 
         if (fileInfoUploader) {
-          this.router.navigateByUrl('uploadSuccess', { state: {data: fileInfoUploader }});
+          this.router.navigateByUrl('uploadSuccess', { state: { data: fileInfoUploader } });
         }
         await this.initializeAvailableSpace();
       } catch (e) {
-        this.notificationService.errorMessageToDisplay(
-          e,
-          'uploading your file'
-        );
-        this.uploadInProgress = false;
-        return;
+        // notification in interceptor
       }
     }
     this.uploadInProgress = false;
@@ -515,42 +498,19 @@ export class UploadComponent implements OnInit {
           this.uploadInProgress = false;
           this.percentageUploaded = 0;
           return event.body as FileInfoUploader;
-        } else {
-          this.notificationService.errorMessageToDisplay(
-            event.body as HttpErrorResponse,
-            'uploading the file'
-          );
+        }
+        else {
+          // notification sent in interceptor
         }
         this.uploadInProgress = false;
         this.percentageUploaded = 0;
         return;
 
       case HttpEventType.ResponseHeader:
-        if (event.status === 400) {
-          this.notificationService.addErrorMessage(
-            'The server could not understand your request.'
-          );
           this.uploadInProgress = false;
           this.percentageUploaded = 0;
+          // notification sent in interceptor
           return;
-        }
-        if (event.status === 401 || event.status === 403) {
-          this.notificationService.addErrorMessage(
-            'You are not authorized to perform this action.'
-          );
-          this.uploadInProgress = false;
-          this.percentageUploaded = 0;
-          return;
-        }
-        if (event.status === 500) {
-          this.notificationService.addErrorMessage(
-            'An error occured while downloading the file. Please contact the support.'
-          );
-          this.uploadInProgress = false;
-          this.percentageUploaded = 0;
-          return;
-        }
-        return;
 
       case HttpEventType.DownloadProgress:
         return;

@@ -172,7 +172,7 @@ public class ApiControllerITest {
 
   @Test
   public void putUserInfo200() throws Exception {
-    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("email@email.com").toUserInfo();
+    UserInfo expectedUserInfo = userRepository.findOneByEmailIgnoreCase("admin@admin.com").toUserInfo();
     expectedUserInfo.setIsAdmin(true);
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin(ApiControllerITest.asJsonString(expectedUserInfo));
     ResponseEntity<String> entity = this.testRestTemplate.exchange("/user/" + expectedUserInfo.getId() + "/userInfo",
@@ -778,7 +778,7 @@ public class ApiControllerITest {
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmailOrName("EMAIL@EMAIL.COM");
     recipient.setMessage("message");
     recipient.setSendEmail(true);
 

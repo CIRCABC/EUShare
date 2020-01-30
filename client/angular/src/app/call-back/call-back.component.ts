@@ -68,10 +68,7 @@ export class CallBackComponent implements OnInit {
       this.api.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('upload');
     } catch (e) {
-      this.notificationService.errorMessageToDisplay(
-        e,
-        'loading your user information'
-      );
+      // managed in the interceptor
     }
   }
 }

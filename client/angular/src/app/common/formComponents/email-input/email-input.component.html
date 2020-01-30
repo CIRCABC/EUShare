@@ -6,6 +6,7 @@
       [disabled]="disabled"
       (blur)="onTouched()"
       (input)="onChange($event.target.value)"
+      (keyup.enter)="sendClick()"
       class="input"
       type="text"
       placeholder="Name.SURNAME@email.com"

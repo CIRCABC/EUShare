@@ -23,52 +23,74 @@
           </div>
         </div>
 
-        <div class="content">
-          <div
-            class="media"
-            *ngFor="let recipient of fileInfoUploader.sharedWith; let i = index"
-            [attr.data-index]="i"
-          >
-            <div class="media-content">
-              <p *ngIf="!recipient.sendEmail" class="subtitle is-6">
-                You may now share the following link to your file.
-              </p>
-              <p *ngIf="recipient.sendEmail" class="subtitle is-6">
-                The following link has been sent to your recipient.
-              </p>
-              <div class="level-left">
-                <div
-                  *ngIf="recipient.sendEmail === true"
-                  class="level-item has-text-centered"
-                >
-                  <p>
-                    <strong>Recipient</strong>
-                    {{ recipient.emailOrName | lowercase }}
-                  </p>
-                </div>
-                <div
-                  *ngIf="recipient.sendEmail === false"
-                  class="level-item has-text-centered"
-                >
-                  <p>
-                    <strong>Link</strong>
-                    {{ recipient.emailOrName | lowercase }}
-                  </p>
+        <div
+          class="media"
+          *ngFor="let recipient of fileInfoUploader.sharedWith; let i = index"
+          [attr.data-index]="i"
+        >
+          <div class="media-content">
+            <p *ngIf="!recipient.sendEmail" class="subtitle is-6">
+              You may now share the following link to your file.
+            </p>
+            <p *ngIf="recipient.sendEmail" class="subtitle is-6">
+              The following link has been sent to your recipient.
+            </p>
+            <div class="level">
+              <div class="level-left" *ngIf="recipient.sendEmail === true">
+                <div class="level-item has-text-centered">
+                  <div class="field">
+                    <strong>Email:</strong>
+                  </div>
                 </div>
                 <div class="level-item has-text-centered">
                   <div class="field">
                     <input
                       class="input is-info"
                       type="text"
-                      value="{{ formatLink(i) }}"
+                      value="{{ recipient.emailOrName | lowercase }}"
+                      readonly
                     />
                   </div>
                 </div>
+              </div>
+              <div class="level-left" *ngIf="recipient.sendEmail === false">
                 <div class="level-item has-text-centered">
-                  <a class="button is-link is-outlined" (click)="copyLink(i)"
-                    >Copy</a
-                  >
+                  <div class="field">
+                    <strong>Link name:</strong>
+                  </div>
                 </div>
+                <div class="level-item has-text-centered">
+                  <div class="field">
+                    <input
+                      class="input is-info"
+                      type="text"
+                      value="{{ recipient.emailOrName | lowercase }}"
+                      readonly
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="level-left">
+              <div class="level-item has-text-centered">
+                <div class="field">
+                  <strong>Link:</strong>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div class="field">
+                  <input
+                    class="input is-info"
+                    type="text"
+                    value="{{ formatLink(i) }}"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <a class="button is-link is-outlined" (click)="copyLink(i)"
+                  >Copy</a
+                >
               </div>
             </div>
           </div>

@@ -89,7 +89,7 @@ export class DownloadsService {
     if (message === undefined) {
       message = 'An unknown error occured while downloading the file. Please contact the support.';
     }
-    this.notificationService.addErrorMessage(message);
+    // notification sent in the interceptor
     this.currentDownloadsInProgress.delete(fileId);
     return new Error(fileId);
   }
@@ -152,10 +152,7 @@ export class DownloadsService {
           this.currentDownloadsInProgress.delete(fileId);
           return downloadValueToReturn;
         } else {
-          this.notificationService.errorMessageToDisplay(
-            event.body as HttpErrorResponse,
-            'downloading the file'
-          );
+          // notification sent in error interceptor
           throw new Error(fileId);
         }
 
