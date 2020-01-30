@@ -32,10 +32,10 @@ export class UploadSuccessGuard implements CanActivate {
       this.router.getCurrentNavigation()!.extras.state && // tslint:disable-next-line:no-non-null-assertion
       this.router.getCurrentNavigation()!.extras.state!.data && // tslint:disable-next-line:no-non-null-assertion
       this.isFileInfoUploader(
+        // tslint:disable-next-line:no-non-null-assertion
         this.router.getCurrentNavigation()!.extras.state!.data
       )
     ) {
-      // tslint:disable-next-line:no-non-null-assertion
       return true;
     } else {
       return this.router.navigateByUrl('/upload');
