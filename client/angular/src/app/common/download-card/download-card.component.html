@@ -10,52 +10,40 @@
     </a>
   </div>
   <div
-    class="column is-one-quarter-desktop is-half-tablet is-9-mobile doesntMove {{
+    class="column is-one-fifth-desktop is-one-third-tablet is-9-mobile doesntMove {{
       enterScreenOrLeaveScreen
     }}"
   >
     <div class="box">
-      <a class="delete" (click)="hide()"></a>
       <article class="media">
+        <a class="delete" (click)="hide()"></a>
         <div class="media-content">
-          <div class="content">
-            <strong>Downloads</strong>
-            <div
-              *ngFor="
-                let nameAndPercentage of downloadsInProgress;
-                let i = index
-              "
-            >
-              <div class="level">
-                <div class="level-item has-text-left">
-                  <div>
-                    <p class="heading">
-                      <fa-icon
-                        *ngIf="getHasError(i)"
-                        [icon]="faTimes"
-                        class="fas fa-1x faError"
-                      ></fa-icon>
-                      {{ nameAndPercentage.fileName }}
-                    </p>
-                    <p class="title">
-                      <progress
-                        class="progress {{ getIsSucessOrIsError(i) }} is-small"
-                        value="{{ getDownloadProgress(i) }}"
-                        max="100"
-                        >nameAndPercentage.percentage</progress
-                      >
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="level">
-              <progress
-                class="progress is-success is-small"
-                value="{{ getDownloadProgress(i) }}"
-                max="100"
-                >nameAndPercentage.percentage</progress
-              >
-            </div> -->
+          <u><b class="downloads">Downloads</b></u>
+          <div
+            class="downloadsContainer"
+            *ngFor="let nameAndPercentage of downloadsToDisplay; let i = index"
+          >
+            <div>
+              <p class="heading">
+                <fa-icon
+                  *ngIf="getHasError(i)"
+                  [icon]="faTimes"
+                  class="fas fa-1x faError"
+                ></fa-icon>
+                {{
+                  nameAndPercentage.fileName.length > 25
+                    ? (nameAndPercentage.fileName | slice: 0:25) + ".."
+                    : nameAndPercentage.fileName
+                }}
+              </p>
+              <p class="title">
+                <progress
+                  class="progress {{ getIsSucessOrIsError(i) }} is-small"
+                  value="{{ getDownloadProgress(i) }}"
+                  max="100"
+                  >nameAndPercentage.percentage</progress
+                >
+              </p>
             </div>
           </div>
         </div>

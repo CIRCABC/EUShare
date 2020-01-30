@@ -84,7 +84,7 @@ public class DBUser {
     @Setter
     @Column(nullable = true)
     private String name;
-    // Is the GivenName of the user !!OR!! the name an uploader gives to his recipient
+    // Is the GivenName of the INTERNAL user !!OR!! the link name of the EXTERNAL user
 
     private DBUser() {
 

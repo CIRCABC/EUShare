@@ -5,14 +5,21 @@
 /** COLOURS **/
 $scheme-main: $ec-background-color;
 $blue: $ec-blue;
-$red: $ec-red;
-$yellow: $ec-yellow;
-$green: #40AA24;
+$red: $pastel-red;
+$yellow: $pastel-yellow;
+$green: $pastel-green;
 
 
 /** --------------------- TYPOGRAPHY  --------------------- **/
 $family-sans-serif: Arial, sans-serif;
 $font-color: $ec-font-color;
+$size-1: 2.5rem;
+$size-2: 2rem;
+$size-3: 1.5rem;
+$size-4: 1.25rem;
+$size-5: 1rem;
+$size-6: 1rem;
+$size-7: 0.75rem;
 
 /** MENU **/ 
 $menu-item-radius: 3px;
@@ -21,9 +28,11 @@ $menu-item-radius: 3px;
     margin-top: 1rem;
     margin-bottom: 4rem;
     min-height: 28rem;
+    padding: 2px;
 }
 
 @import '../node_modules/bulma/bulma.sass';
+@import '../node_modules/bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.sass';
 
 .filecontainer {
     background-color: $table-striped-row-even-background-color;
@@ -43,4 +52,25 @@ $menu-item-radius: 3px;
 
 #navMenu {
     border-radius: $radius;
+}
+
+.imageBackground {
+    background-image: url("assets/eushareBackground.jpg");
+    padding-top: 1em;
+    padding-left: 22%;
+    margin-left: -22%;
+    padding-right: 22%;
+    margin-right: -22%;
+}
+
+.centeredText {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2em;
+    width: 18em;
+    background-color: white;
+    border-radius: 0.2em;
+    padding: 1em;
+    min-width: 33%;
 }

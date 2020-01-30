@@ -56,19 +56,23 @@ public class StringUtils {
 
         return sb.toString();
     }
-    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = 
-    Pattern.compile("^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$", Pattern.CASE_INSENSITIVE);
+
+    public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
+            .compile("^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$", Pattern.CASE_INSENSITIVE);
 
     public static boolean validateEmailAddress(String emailStr) {
-            Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
-            return matcher.find();
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
+        return matcher.find();
     }
 
-    public static final Pattern VALID_USERNAME_REGEX = 
-    Pattern.compile("^[A-Za-z0-9]{2,25}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_USERNAME_REGEX = Pattern.compile("^[A-Za-z0-9]{2,25}$", Pattern.CASE_INSENSITIVE);
 
     public static boolean validateUsername(String username) {
-        Matcher matcher = VALID_USERNAME_REGEX .matcher(username);
+        Matcher matcher = VALID_USERNAME_REGEX.matcher(username);
         return matcher.find();
+    }
+
+    public static boolean validateMessage(String message) {
+        return (message == null || (message != null && message.length() < 401));
     }
 }

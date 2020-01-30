@@ -63,10 +63,7 @@ export class ShareWithUsersModalComponent implements OnInit {
         );
       })
       .catch(error => {
-        this.notificationService.errorMessageToDisplay(
-          error,
-          "removing the file's share"
-        );
+        // managed in the interceptor
       });
   }
 
@@ -82,7 +79,7 @@ export class ShareWithUsersModalComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    this.notificationService.addSuccessMessage('Copied file link !', true);
+    this.notificationService.addSuccessMessage('Copied file link', true);
   }
 
   public formatLink(i: number) {

@@ -60,6 +60,14 @@ public class HttpErrorAnswerBuilder {
         return buildWithMessage(403, "WrongEmailStructure");
     }
 
+    private static Status build403WrongNameStructure() {
+        return buildWithMessage(403, "WrongNameStructure");
+    }
+
+    private static Status build403MessageTooLong() {
+        return buildWithMessage(403, "MessageTooLong");
+    }
+
     private static Status build404Empty() {
         return buildEmpty(404);
     }
@@ -123,6 +131,14 @@ public class HttpErrorAnswerBuilder {
 
     public static String build403WrongEmailStructureToString() {
         return mapAStatus(build403WrongEmailStructure());
+    }
+
+    public static String build403WrongNameStructureToString() {
+        return mapAStatus(build403WrongNameStructure());
+    }
+
+    public static String build403MessageTooLongToString() {
+        return mapAStatus(build403MessageTooLong());
     }
 
     public static String build403FileLargerThanAllocationToString() {

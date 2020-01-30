@@ -32,6 +32,7 @@ import com.circabc.easyshare.exceptions.UserHasInsufficientSpaceException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
 import com.circabc.easyshare.exceptions.WrongEmailStructureException;
+import com.circabc.easyshare.exceptions.WrongNameStructureException;
 import com.circabc.easyshare.exceptions.WrongPasswordException;
 import com.circabc.easyshare.model.FileInfoUploader;
 import com.circabc.easyshare.model.FileRequest;
@@ -81,7 +82,7 @@ public class FileApiController implements FileApi {
         this.request = request;
     }
 
-        @Override
+    @Override
     public ResponseEntity<Void> deleteFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "reason", required = false) String reason) {
         try {
@@ -139,7 +140,8 @@ public class FileApiController implements FileApi {
             InputStreamResource inputStreamResource = new InputStreamResource(stream);
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(HttpHeaders.CONTENT_LENGTH, downloadReturn.getFileSizeInBytes().toString());
-            ResponseEntity<Resource> responseEntity = new ResponseEntity<>(inputStreamResource, responseHeaders, HttpStatus.OK);
+            ResponseEntity<Resource> responseEntity = new ResponseEntity<>(inputStreamResource, responseHeaders,
+                    HttpStatus.OK);
             return responseEntity;
         } catch (UnknownFileException exc3) {
             log.warn(exc3.getMessage(), exc3);
@@ -190,7 +192,15 @@ public class FileApiController implements FileApi {
         } catch (WrongEmailStructureException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403WrongEmailStructureToString(), e);
-        } catch (CouldNotAllocateFileException | UnknownUserException exc3) {
+        } catch (WrongNameStructureException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403WrongNameStructureToString(), e);
+        } catch (MessageTooLongException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403MessageTooLongToString(), e);
+        }
+
+        catch (CouldNotAllocateFileException | UnknownUserException exc3) {
             log.error(exc3.getMessage(), exc3);
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     HttpErrorAnswerBuilder.build500EmptyToString());
@@ -208,8 +218,8 @@ public class FileApiController implements FileApi {
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             // should never occur
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString());
         }
 
         try {
@@ -218,57 +228,63 @@ public class FileApiController implements FileApi {
             FileInfoUploader fileInfoUploader = fileService.saveOnBehalfOf(fileID, body, requesterId);
             return new ResponseEntity<>(fileInfoUploader, HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    HttpErrorAnswerBuilder.build401EmptyToString(), exc);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
         } catch (FileLargerThanAllocationException exc) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-            HttpErrorAnswerBuilder.build403FileLargerThanAllocationToString(), exc);
-        } catch (IllegalFileSizeException exc ){
+                    HttpErrorAnswerBuilder.build403FileLargerThanAllocationToString(), exc);
+        } catch (IllegalFileSizeException exc) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-            HttpErrorAnswerBuilder.build403IllegalFileSizeToString(), exc);
+                    HttpErrorAnswerBuilder.build403IllegalFileSizeToString(), exc);
         } catch (UserUnauthorizedException exc) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
         } catch (UnknownFileException exc2) {
             log.warn(exc2.getMessage(), exc2);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc2);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc2);
         } catch (IllegalFileStateException | CouldNotSaveFileException exc3) {
             log.error(exc3.getMessage(), exc3);
             // should never occur
-            throw new ResponseStatusException(
-                    HttpStatus.INTERNAL_SERVER_ERROR, HttpErrorAnswerBuilder.build500EmptyToString());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString());
         }
     }
 
     @Override
-    public ResponseEntity<RecipientWithLink> postFileSharedWith(@PathVariable("fileID") String fileID, @RequestBody Recipient recipient) {
+    public ResponseEntity<RecipientWithLink> postFileSharedWith(@PathVariable("fileID") String fileID,
+            @RequestBody Recipient recipient) {
         if (!RecipientValidator.validate(recipient)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    HttpErrorAnswerBuilder.build400EmptyToString());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
             RecipientWithLink recipientWithLink = fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
             return new ResponseEntity<>(recipientWithLink, HttpStatus.OK);
-        } catch(WrongAuthenticationException exc) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-            HttpErrorAnswerBuilder.build401EmptyToString(), exc);
-        } catch ( UserUnauthorizedException exc) {
+        } catch (WrongAuthenticationException exc) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
+        } catch (UserUnauthorizedException exc) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
         } catch (UnknownFileException exc2) {
             log.warn(exc2.getMessage(), exc2);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc2);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc2);
         } catch (UnknownUserException exc3) {
             log.warn(exc3.getMessage(), exc3);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    HttpErrorAnswerBuilder.build404EmptyToString(), exc3);
-        } catch (MessageTooLongException | WrongEmailStructureException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    HttpErrorAnswerBuilder.build400EmptyToString(), e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc3);
+        } catch (MessageTooLongException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403MessageTooLongToString(), e);
+        } catch (WrongNameStructureException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403WrongNameStructureToString(), e);
+        } catch (WrongEmailStructureException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403WrongEmailStructureToString(), e);
         }
     }
 

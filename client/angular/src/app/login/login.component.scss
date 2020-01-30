@@ -7,23 +7,8 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+@import "../../styles.scss";
 
-.imageBackground {
-    background-image: url("assets/eushareBackground.jpg");
-    padding-top: 1em;
-    padding-left: 22%;
-    margin-left: -22%;
-    padding-right: 22%;
-    margin-right: -22%;
-}
-
-.centeredText {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 2em;
-    width: 18em;
-    background-color: white;
-    border-radius: 0.2em;
-    padding: 1em;
+.subtitle {
+  color: $grey;
 }

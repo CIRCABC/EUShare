@@ -6,6 +6,7 @@
       type="password"
       placeholder="Type password here"
       [(ngModel)]="inputPassword"
+      (keyup.enter)="download()"
     />
   </div>
   <div class="control">

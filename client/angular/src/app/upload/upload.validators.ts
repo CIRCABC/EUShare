@@ -19,13 +19,13 @@ export function globalValidator(): ValidatorFn {
     }
     const emailOrLink = control.get('emailOrLink');
     if (emailOrLink && emailOrLink.value === 'Email') {
-      const emailsWithMessages = <FormArray>control.get('emailsWithMessages');
+      const emailsWithMessages = <FormArray>control.get('emailMessageArray');
       if (emailsWithMessages.length === 0) {
         return { emptyRecipientList: { value: true } };
       }
     }
     if (emailOrLink && emailOrLink.value === 'Link') {
-      const namesOnly = <FormArray>control.get('namesOnly');
+      const namesOnly = <FormArray>control.get('linkArray');
       if (namesOnly.length === 0) {
         return { emptyRecipientList: { value: true } };
       }

@@ -51,6 +51,7 @@ strong {
   height: 100%;
   width: 100%;
   float: left;
+  padding: 0;
 }
 
 @keyframes enterScreen {
@@ -81,4 +82,22 @@ strong {
 
 .faError {
   color: yellow;
+}
+
+.downloads {
+  margin-left: 0.2em;
+  margin-bottom: 0.2em;
+}
+
+.level-left {
+  width: 100%;
+}
+
+.progress {
+  margin-bottom: 5px;
+  width: 90%;
+}
+
+.heading {
+  margin-bottom: 2px;
 }

@@ -135,10 +135,7 @@ export class AdministrationComponent implements OnInit {
       }
       this.isAfterSearch = true;
     } catch (error) {
-      this.notificationService.errorMessageToDisplay(
-        error,
-        'searching for the users'
-      );
+      // managed in interceptor
     } finally {
       this.searchIsLoading = false;
     }
@@ -171,14 +168,11 @@ export class AdministrationComponent implements OnInit {
         .putUserUserInfo(this.selectedUserInfo.id, this.selectedUserInfo)
         .toPromise();
       this.notificationService.addSuccessMessage(
-        'Your change was applied!',
+        'Your change was applied',
         true
       );
     } catch (error) {
-      this.notificationService.errorMessageToDisplay(
-        error,
-        'updating the user information'
-      );
+      // managed in the interceptor
     } finally {
       this.changeIsLoading = false;
       this.isChangePermissions = false;

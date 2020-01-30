@@ -37,7 +37,7 @@ export class FileLinkModalComponent implements OnInit {
     inputElement.select();
     document.execCommand('copy');
     inputElement.setSelectionRange(0, 0);
-    this.notificationService.addSuccessMessage('Copied file link !', true);
+    this.notificationService.addSuccessMessage('Copied file link', true);
     setTimeout(() => {
       this.isLoading = false;
     }, 300);

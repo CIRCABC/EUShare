@@ -76,9 +76,7 @@ export class UploadedFilesService {
       }
       this.emitValueToObservable();
     } catch (error) {
-      this.notificationService.addErrorMessage(
-        'A problem occured while downloading files information. Please contact the support.'
-      );
+      // notification sent in interceptor
     }
   }
 
@@ -92,9 +90,7 @@ export class UploadedFilesService {
       try {
         await this.getNextFileInfoUploader();
       } catch (error) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while downloading files information. Please contact the support.'
-        );
+        // notification sent in file interceptor
       }
     }
     this.emitValueToObservable();
@@ -109,9 +105,7 @@ export class UploadedFilesService {
       try {
         await this.getPreviousFileInfoUploader();
       } catch (error) {
-        this.notificationService.addErrorMessage(
-          'A problem occured while downloading files information. Please contact the support.'
-        );
+        // notification sent in interceptor
       }
     }
     this.emitValueToObservable();
@@ -142,10 +136,7 @@ export class UploadedFilesService {
         'Successfully deleted file named ' + fileName
       );
     } catch (error) {
-      this.notificationService.errorMessageToDisplay(
-        error,
-        'deleting your file'
-      );
+      // error managed in error interceptor
     }
 
     this.fileInfoUploader = this.fileInfoUploader.filter(
@@ -181,13 +172,9 @@ export class UploadedFilesService {
       this.emitValueToObservable();
       this.modalService.deactivateAddRecipientsModal();
     } catch (error) {
-      this.notificationService.errorMessageToDisplay(
-        error,
-        'adding your recipient'
-      );
+      // notification sent in error interceptor
     }
   }
-
 }
 
 export interface FileUploaderArrayAndMetaData {

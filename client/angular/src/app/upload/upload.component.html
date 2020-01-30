@@ -1,7 +1,10 @@
 <div class="centered">
   <h1 class="title">Share a new file</h1>
   <h2 class="subtitle">
-  You can upload up to {{ leftSpaceInBytes | fileSizeFormat }} ({{totalSpaceInBytes | fileSizeFormat }} quota)
+    You can upload up to {{ leftSpaceInBytes | fileSizeFormat }} ({{
+      totalSpaceInBytes | fileSizeFormat
+    }}
+    quota)
   </h2>
   <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
     <div>
@@ -51,27 +54,39 @@
     </div>
     <br />
     <div class="field">
-      <label class="label">How to share?</label>
+      <label class="label">How do you want to share your file?</label>
       <div class="field-body">
         <div class="field is-narrow">
           <div class="control">
-            <label class="radio">
+            <label
+              class="radio tooltip"
+              data-tooltip="Send a link to your
+               file in an email"
+            >
               <input
                 type="radio"
+                id="radioEmail"
                 required
                 formControlName="emailOrLink"
-                (click)="resetRecipients()"
+                (click)="resetRecipientsEmail()"
                 value="Email"
-              />Email
+              />
+              Email
             </label>
-            <label class="radio">
+            <label
+              class="radio tooltip"
+              data-tooltip="Generate a link to your file
+               and share it however you prefer"
+            >
               <input
+                id="radioLink"
                 type="radio"
-                (click)="resetRecipients()"
+                (click)="resetRecipientsLink()"
                 required
                 formControlName="emailOrLink"
                 value="Link"
-              />Link
+              />
+              Link
             </label>
           </div>
         </div>
@@ -79,84 +94,73 @@
     </div>
     <!-- EMAILS AND USER NAMES -->
     <div class="field">
-      <label class="label">Recipients</label>
-      <div *ngIf="emailOrLinkIsEmail()" formArrayName="emailsWithMessages">
+      <!-- EMAIL AND MESSAGES -->
+      <div
+        *ngIf="emailOrLinkIsEmail()"
+        formArrayName="emailMessageArray"
+        class="column is-half-desktop emailColumn"
+      >
         <div
+          [formGroupName]="i"
           *ngFor="
-            let emailAndText of emailsWithMessages.controls;
+            let emailAndMessageFg of emailMessageArray.controls;
             let i = index
           "
           class="media"
         >
-          <div class="media-left">
-            <div class="square"></div>
-          </div>
-          <div [formGroupName]="i" class="media-content">
-            <app-email-input formControlName="email"></app-email-input>
+          <div class="media-content">
+            <!-- EMAIL ARRAY -->
+            <div formArrayName="emailArray">
+              <div
+                [formGroupName]="j"
+                *ngFor="
+                  let emailIndexed of getEmailArrayOnForm(emailAndMessageFg);
+                  let j = index
+                "
+              >
+                <!-- DISPLAYED EMAILS -->
+                <div class="displayedEmail">
+                  {{ getEmailControlValue(i, j) }}
+                  <a (click)="deleteEmailFormGroup(i, j)">
+                    <fa-icon
+                      class="icon is-small"
+                      [icon]="faUserSlash"
+                    ></fa-icon>
+                  </a>
+                </div>
+                <div
+                  class="emailContainer"
+                  *ngIf="j === getEmailArrayLength(i) - 1"
+                ></div>
+              </div>
+            </div>
+            <app-email-input *ngIf="isShowEmailControl"
+              (downClick)="addEmailFormGroup(i)"
+              [formControl]="emailControl"
+            ></app-email-input>
             <app-message-text-area
               formControlName="message"
             ></app-message-text-area>
-            <div class="level">
-              <button
-                class="button is-danger is-outlined level-left"
-                type="button"
-                (click)="deleteEmailsWithMessages(i)"
-              >
-                Delete recipient
-              </button>
-            </div>
           </div>
         </div>
-        <button
-          class="button is-link is-outlined"
-          type="button"
-          (click)="addEmailsWithMessages()"
-        >
-          Add more recipients...
-        </button>
       </div>
-      <div *ngIf="emailOrLinkIsLink()" formArrayName="namesOnly">
+      <div
+        *ngIf="emailOrLinkIsLink()"
+        formArrayName="linkArray"
+        class="column is-half-desktop emailColumn"
+      >
         <div
-          *ngFor="let recipientName of namesOnly.controls; let i = index"
+          *ngFor="let recipientName of linkArray.controls; let i = index"
           class="media"
         >
-          <div class="media-left">
-            <div class="square"></div>
-          </div>
           <div [formGroupName]="i" class="media-content">
             <app-link-input formControlName="name"></app-link-input>
-            <div class="level">
-              <button
-                class="button is-danger is-outlined level-left"
-                type="button"
-                (click)="deleteNamesOnly(i)"
-              >
-                Delete recipient
-              </button>
-            </div>
           </div>
         </div>
-        <button
-          class="button is-link is-outlined"
-          type="button"
-          (click)="addNamesOnly()"
-        >
-          Add more recipients...
-        </button>
       </div>
     </div>
     <div class="field">
-      <label class="checkbox">
-        <input
-          type="checkbox"
-          [checked]="moreOptions"
-          (change)="moreOptionsChange()"
-        />
-        More options...
-      </label>
-    </div>
-    <div class="field" *ngIf="moreOptions">
-      <label class="label">Password (optional)</label>
+      <label class="label">File password (optional)</label>
       <input
         formControlName="password"
         class="input"
@@ -165,7 +169,7 @@
         value=""
       />
     </div>
-    <div class="field" *ngIf="moreOptions">
+    <!-- <div class="field">
       <label class="label">Expiration date (default is 7 days from now)</label>
       <p-calendar
         [minDate]="getTomorrow()"
@@ -178,7 +182,7 @@
         [placeholder]="'dd/mm/yyyy'"
       >
       </p-calendar>
-    </div>
+    </div> -->
     <br />
     <div class="field">
       <button

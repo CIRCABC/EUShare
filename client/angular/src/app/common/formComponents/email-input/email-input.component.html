@@ -1,10 +1,26 @@
 <label class="label">Email:</label>
-<input
-  #input
-  [disabled]="disabled"
-  (blur)="onTouched()"
-  (input)="onChange($event.target.value)"
-  class="input"
-  type="text"
-/>
-<label class="label error" *ngIf="errorMessage">{{errorMessage}}</label>
+<div class="field is-grouped">
+  <div class="control is-expanded">
+    <input
+      #input
+      [disabled]="disabled"
+      (blur)="onTouched()"
+      (input)="onChange($event.target.value)"
+      (keyup.enter)="sendClick()"
+      class="input"
+      type="text"
+      placeholder="Name.SURNAME@email.com"
+    />
+    <p class="help is-danger" [hidden]="!errorMessage">{{ errorMessage }}</p>
+  </div>
+  <p class="control">
+    <button
+      [disabled]="errorMessage || input.value === ''"
+      (click)="sendClick()"
+      type="button"
+      class="button is-link is-outlined"
+    >
+      Add Recipient
+    </button>
+  </p>
+</div>

@@ -13,7 +13,9 @@ import {
   ViewChild,
   Self,
   Optional,
-  OnInit
+  OnInit,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 
@@ -28,6 +30,10 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   onTouched!: () => void;
 
   @ViewChild('input', { static: true }) input!: ElementRef;
+
+  // tslint:disable-next-line:no-output-rename
+  @Output('downClick')
+  clicked = new EventEmitter<boolean>();
 
   disabled!: boolean;
 
@@ -72,5 +78,11 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
       return 'Invalid email form';
     }
     return null;
+  }
+
+  sendClick() {
+    if (this.errorMessage === null && this.input.nativeElement !== '') {
+      this.clicked.emit(true);
+    }
   }
 }

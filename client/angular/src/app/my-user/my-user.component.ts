@@ -45,10 +45,7 @@ export class MyUserComponent implements OnInit {
       try {
         this.userInfo = await this.userApi.getUserUserInfo(id).toPromise();
       } catch (error) {
-        this.notificationService.errorMessageToDisplay(
-          error,
-          'retrieving your user informations'
-        );
+        // managed in the interceptor
       }
     }
   }

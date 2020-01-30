@@ -107,7 +107,8 @@ export class NotificationService {
     httpErrorResponse: HttpErrorResponse,
     action: string
   ) {
-    console.log(httpErrorResponse);
+    console.log(JSON.stringify(httpErrorResponse));
+    console.log(httpErrorResponse.status);
     switch (httpErrorResponse.status) {
       case 400: {
         this.addErrorMessage(

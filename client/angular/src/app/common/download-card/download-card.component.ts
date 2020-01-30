@@ -13,7 +13,11 @@ import {
   faChevronLeft,
   faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons';
-import { DownloadsService } from '../../services/downloads.service';
+import {
+  DownloadsService,
+  DownloadInProgress
+} from '../../services/downloads.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-download-card',
@@ -28,20 +32,25 @@ export class DownloadCardComponent implements OnInit {
   public enterScreenOrLeaveScreen = 'stayScreen';
   public showDownloadArrow = true;
 
-  public downloadsInProgress: DownloadToDisplay[] = [];
+  public downloadsToDisplay: DownloadToDisplay[] = [];
+
+  private downloadInProgressMap = new Map<
+    string,
+    Observable<DownloadInProgress>
+  >();
 
   constructor(private downloadsService: DownloadsService) {}
 
   getDownloadProgress(i: number) {
-    return this.downloadsInProgress[i].percentage;
+    return this.downloadsToDisplay[i].percentage;
   }
 
   getIsSucessOrIsError(i: number) {
-    return this.downloadsInProgress[i].hasError ? 'is-danger' : 'is-success';
+    return this.downloadsToDisplay[i].hasError ? 'is-danger' : 'is-success';
   }
 
   getHasError(i: number) {
-    return this.downloadsInProgress[i].hasError;
+    return this.downloadsToDisplay[i].hasError;
   }
 
   isDisplayed(): boolean {
@@ -64,7 +73,6 @@ export class DownloadCardComponent implements OnInit {
 
   hide() {
     if (this.isDisplayed()) {
-      console.log('hide!');
       this.displayArrow();
       this.enterScreenOrLeaveScreen = 'leaveScreen';
     }
@@ -90,43 +98,50 @@ export class DownloadCardComponent implements OnInit {
         this.hide();
       }
     });
-    this.downloadsService.nextDownloadSubjects$.subscribe(
-      nextDownloadInProgressSubject => {
-        nextDownloadInProgressSubject.subscribe(
-          nextDownloadInProgress => {
-            const index = this.downloadsInProgress.findIndex(
-              element => element.fileId === nextDownloadInProgress.fileId
+    this.downloadsService.nextDownloadsInProgress$.subscribe(
+      downloadInProgress$ => {
+        this.downloadInProgressMap.set(
+          downloadInProgress$.fileId,
+          downloadInProgress$.downloadInProgressObservable
+        );
+        downloadInProgress$.downloadInProgressObservable.subscribe(
+          downloadInProgress => {
+            const index = this.downloadsToDisplay.findIndex(
+              element => element.fileId === downloadInProgress.fileId
             );
             const nextDownloadToDisplay = {
-              fileName: nextDownloadInProgress.name,
+              fileName: downloadInProgress.name,
               hasError: false,
-              fileId: nextDownloadInProgress.fileId,
-              percentage: nextDownloadInProgress.percentage
+              fileId: downloadInProgress.fileId,
+              percentage: downloadInProgress.percentage
             };
             if (index !== -1) {
+              // Already existing
               if (
-                nextDownloadInProgress.percentage <
-                  this.downloadsInProgress[index].percentage &&
-                !this.downloadsInProgress[index].hasError
+                downloadInProgress.percentage <
+                  this.downloadsToDisplay[index].percentage &&
+                !this.downloadsToDisplay[index].hasError
               ) {
                 // Already existing but re-download
-                this.downloadsInProgress.splice(index, 1);
-                this.downloadsInProgress.unshift(nextDownloadToDisplay);
+                this.downloadsToDisplay.splice(index, 1);
+                this.downloadsToDisplay.unshift(nextDownloadToDisplay);
               } else {
                 // Already existing and download
-                this.downloadsInProgress[index] = nextDownloadToDisplay;
+                this.downloadsToDisplay[index] = nextDownloadToDisplay;
               }
             } else {
               // Brand new download
-              this.downloadsInProgress.unshift(nextDownloadToDisplay);
+              this.downloadsToDisplay.unshift(nextDownloadToDisplay);
             }
           },
           error => {
-            const id: string = error;
-            const index = this.downloadsInProgress.findIndex(
+            const id: string = error.message;
+            const index = this.downloadsToDisplay.findIndex(
               element => element.fileId === id
             );
-            this.downloadsInProgress[index].hasError = true;
+            if (index >= 0) {
+              this.downloadsToDisplay[index].hasError = true;
+            }
           }
         );
       }

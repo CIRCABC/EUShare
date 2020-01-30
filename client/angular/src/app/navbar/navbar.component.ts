@@ -13,7 +13,8 @@ import {
   faShare,
   faShareAlt,
   faUsers,
-  faUsersCog
+  faUsersCog,
+  faSignOutAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { SessionService } from '../openapi';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -28,6 +29,7 @@ export class NavbarComponent implements OnInit {
   public faShare = faShare;
   public faUsersCog = faUsersCog;
   public faCloudDownloadAlt = faCloudDownloadAlt;
+  public faSignOutAlt = faSignOutAlt;
   public faShareAlt = faShareAlt;
   public userName: string | null = null;
   public isAdmin: boolean | null = null;
