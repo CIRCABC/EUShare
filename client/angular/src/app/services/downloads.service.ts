@@ -99,7 +99,7 @@ export class DownloadsService {
     fileName: string,
     fileId: string
   ): DownloadInProgress {
-    let downloadValueToReturn: DownloadInProgress = {
+    const downloadValueToReturn: DownloadInProgress = {
       name: fileName,
       fileId: fileId,
       percentage: 0,

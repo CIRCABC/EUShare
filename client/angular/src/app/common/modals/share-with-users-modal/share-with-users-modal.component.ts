@@ -63,7 +63,7 @@ export class ShareWithUsersModalComponent implements OnInit {
         );
       })
       .catch(error => {
-        //managed in the interceptor
+        // managed in the interceptor
       });
   }
 

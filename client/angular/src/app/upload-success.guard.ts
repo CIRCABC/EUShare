@@ -24,11 +24,12 @@ export class UploadSuccessGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (
-      this.router.getCurrentNavigation()
-      && this.router.getCurrentNavigation()!.extras
-      && this.router.getCurrentNavigation()!.extras.state
-      && this.router.getCurrentNavigation()!.extras.state!.data
-      && this.isFileInfoUploader(this.router.getCurrentNavigation()!.extras.state!.data)) {
+      
+      this.router.getCurrentNavigation()// tslint:disable-next-line:no-non-null-assertion
+      && this.router.getCurrentNavigation()!.extras // tslint:disable-next-line:no-non-null-assertion
+      && this.router.getCurrentNavigation()!.extras.state  // tslint:disable-next-line:no-non-null-assertion
+      && this.router.getCurrentNavigation()!.extras.state!.data // tslint:disable-next-line:no-non-null-assertion
+      && this.isFileInfoUploader(this.router.getCurrentNavigation()!.extras.state!.data)) { // tslint:disable-next-line:no-non-null-assertion
       return true;
     } else {
       return this.router.navigateByUrl('/upload');

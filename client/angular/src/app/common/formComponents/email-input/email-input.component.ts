@@ -31,6 +31,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
 
   @ViewChild('input', { static: true }) input!: ElementRef;
 
+  // tslint:disable-next-line:no-output-rename
   @Output('downClick')
   clicked = new EventEmitter<boolean>();
 

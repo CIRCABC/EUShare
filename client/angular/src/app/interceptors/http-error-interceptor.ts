@@ -207,7 +207,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
       .add('X')
       .add('Y')
       .add('Z');
-    for (var i = 0; i < message.length; i++) {
+    for (let i = 0; i < message.length; i++) {
       if (i > 1 && bigLetters.has(message.charAt(i))) {
         returnString += ' ' + message.charAt(i).toLowerCase();
       } else {
