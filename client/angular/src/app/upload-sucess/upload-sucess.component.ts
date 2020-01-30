@@ -18,14 +18,11 @@ import { faUpload, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
   styleUrls: ['./upload-sucess.component.scss']
 })
 export class UploadSucessComponent implements OnInit {
-
-  public fileInfoUploader !: FileInfoUploader;
+  public fileInfoUploader!: FileInfoUploader;
 
   public faCheckCircle = faCheckCircle;
 
-  constructor(
-    private notificationService: NotificationService
-  ) { }
+  constructor(private notificationService: NotificationService) {}
 
   async ngOnInit() {
     const passedData = history.state.data;
@@ -54,12 +51,14 @@ export class UploadSucessComponent implements OnInit {
   }
 
   isFileInfoUploader(object: any): boolean {
-    return ('expirationDate' in object)
-      && ('hasPassword' in object)
-      && ('name' in object)
-      && ('size' in object)
-      && ('fileId' in object)
-      && ('sharedWith' in object);
+    return (
+      'expirationDate' in object &&
+      'hasPassword' in object &&
+      'name' in object &&
+      'size' in object &&
+      'fileId' in object &&
+      'sharedWith' in object
+    );
   }
 
   public formatLink(i: number) {

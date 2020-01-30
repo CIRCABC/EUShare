@@ -175,7 +175,6 @@ export class UploadedFilesService {
       // notification sent in error interceptor
     }
   }
-
 }
 
 export interface FileUploaderArrayAndMetaData {

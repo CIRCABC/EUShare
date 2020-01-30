@@ -24,12 +24,16 @@ import { saveAs } from 'file-saver';
   providedIn: 'root'
 })
 export class DownloadsService {
-
-  private currentDownloadsInProgress = new Map<string, Observable<DownloadInProgress>>();
-  private nextDownloadsInProgressSubject = new Subject<
-  DownloadInProgressObservableWithMeta
+  private currentDownloadsInProgress = new Map<
+    string,
+    Observable<DownloadInProgress>
   >();
-  public nextDownloadsInProgress$: Observable<DownloadInProgressObservableWithMeta> = this.nextDownloadsInProgressSubject.asObservable();
+  private nextDownloadsInProgressSubject = new Subject<
+    DownloadInProgressObservableWithMeta
+  >();
+  public nextDownloadsInProgress$: Observable<
+    DownloadInProgressObservableWithMeta
+  > = this.nextDownloadsInProgressSubject.asObservable();
 
   private displayDownloadsSubject = new Subject<boolean>();
   public displayDownloads$ = this.displayDownloadsSubject.asObservable();
@@ -72,22 +76,27 @@ export class DownloadsService {
     if (currentDownloadInProgressOrUndefined) {
       return currentDownloadInProgressOrUndefined;
     } else {
-      const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
-      .getFile(fileId, inputPassword, 'events', true)
-      .pipe(map(event => this.manageEventMessage(event, fileName, fileId)));
+      const newDownloadObservable: Observable<
+        DownloadInProgress
+      > = this.fileApi
+        .getFile(fileId, inputPassword, 'events', true)
+        .pipe(map(event => this.manageEventMessage(event, fileName, fileId)));
       this.currentDownloadsInProgress.set(fileId, newDownloadObservable);
       const downloadInProgressObservableWithMeta: DownloadInProgressObservableWithMeta = {
         downloadInProgressObservable: newDownloadObservable,
         fileId: fileId
-      }
-      this.nextDownloadsInProgressSubject.next(downloadInProgressObservableWithMeta);
+      };
+      this.nextDownloadsInProgressSubject.next(
+        downloadInProgressObservableWithMeta
+      );
       return newDownloadObservable;
     }
   }
 
-  private error(fileId: string, message?: string) : Error {
+  private error(fileId: string, message?: string): Error {
     if (message === undefined) {
-      message = 'An unknown error occured while downloading the file. Please contact the support.';
+      message =
+        'An unknown error occured while downloading the file. Please contact the support.';
     }
     // notification sent in the interceptor
     this.currentDownloadsInProgress.delete(fileId);
@@ -102,7 +111,7 @@ export class DownloadsService {
     const downloadValueToReturn: DownloadInProgress = {
       name: fileName,
       fileId: fileId,
-      percentage: 0,
+      percentage: 0
     };
 
     switch (event.type) {
@@ -114,19 +123,28 @@ export class DownloadsService {
           return downloadValueToReturn;
         }
         if (event.status === 400) {
-          throw this.error(fileId,'The server could not find the file you are seeking to download. Please try again later or contact the support.');
+          throw this.error(
+            fileId,
+            'The server could not find the file you are seeking to download. Please try again later or contact the support.'
+          );
         }
         if (event.status === 401) {
-          throw this.error(fileId,'Wrong password, please try again.');
+          throw this.error(fileId, 'Wrong password, please try again.');
         }
         if (event.status === 403) {
-          throw this.error(fileId,"It seems like you don't have the rights to access this file");
+          throw this.error(
+            fileId,
+            "It seems like you don't have the rights to access this file"
+          );
         }
         if (event.status === 404) {
-          throw this.error(fileId,'File not found.');
+          throw this.error(fileId, 'File not found.');
         }
         if (event.status === 500) {
-          throw this.error(fileId,'An error occured while downloading the file. Please contact the support.');
+          throw this.error(
+            fileId,
+            'An error occured while downloading the file. Please contact the support.'
+          );
         }
         throw this.error(fileId);
 
@@ -154,7 +172,7 @@ export class DownloadsService {
         }
 
       default: {
-          throw this.error(fileId);
+        throw this.error(fileId);
       }
     }
   }

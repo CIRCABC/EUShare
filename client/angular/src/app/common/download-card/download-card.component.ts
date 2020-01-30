@@ -13,7 +13,10 @@ import {
   faChevronLeft,
   faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons';
-import { DownloadsService, DownloadInProgress } from '../../services/downloads.service';
+import {
+  DownloadsService,
+  DownloadInProgress
+} from '../../services/downloads.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -31,9 +34,12 @@ export class DownloadCardComponent implements OnInit {
 
   public downloadsToDisplay: DownloadToDisplay[] = [];
 
-  private downloadInProgressMap = new Map<string, Observable<DownloadInProgress>>()
+  private downloadInProgressMap = new Map<
+    string,
+    Observable<DownloadInProgress>
+  >();
 
-  constructor(private downloadsService: DownloadsService) { }
+  constructor(private downloadsService: DownloadsService) {}
 
   getDownloadProgress(i: number) {
     return this.downloadsToDisplay[i].percentage;
@@ -94,7 +100,10 @@ export class DownloadCardComponent implements OnInit {
     });
     this.downloadsService.nextDownloadsInProgress$.subscribe(
       downloadInProgress$ => {
-        this.downloadInProgressMap.set(downloadInProgress$.fileId, downloadInProgress$.downloadInProgressObservable);
+        this.downloadInProgressMap.set(
+          downloadInProgress$.fileId,
+          downloadInProgress$.downloadInProgressObservable
+        );
         downloadInProgress$.downloadInProgressObservable.subscribe(
           downloadInProgress => {
             const index = this.downloadsToDisplay.findIndex(
@@ -106,10 +115,11 @@ export class DownloadCardComponent implements OnInit {
               fileId: downloadInProgress.fileId,
               percentage: downloadInProgress.percentage
             };
-            if (index !== -1) { // Already existing
+            if (index !== -1) {
+              // Already existing
               if (
                 downloadInProgress.percentage <
-                this.downloadsToDisplay[index].percentage &&
+                  this.downloadsToDisplay[index].percentage &&
                 !this.downloadsToDisplay[index].hasError
               ) {
                 // Already existing but re-download

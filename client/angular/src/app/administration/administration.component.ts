@@ -78,9 +78,9 @@ export class AdministrationComponent implements OnInit {
     private router: Router,
     private usersApi: UsersService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public async resultsNextPage() {
     this.removeSelection();

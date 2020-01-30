@@ -29,7 +29,7 @@ export class ShareWithUsersModalComponent implements OnInit {
     private modalService: ModalsService,
     private fileApi: FileService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   public closeModal() {
     this.modalService.deactivateShareWithUsersModal();
@@ -57,9 +57,9 @@ export class ShareWithUsersModalComponent implements OnInit {
         this.recipientsWithLink.splice(shareIndex, 1);
         this.notificationService.addSuccessMessage(
           'Successfully removed file ' +
-          this.modalFileName +
-          " 's share with " +
-          shareName
+            this.modalFileName +
+            " 's share with " +
+            shareName
         );
       })
       .catch(error => {

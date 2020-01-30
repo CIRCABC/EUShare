@@ -24,7 +24,7 @@ import { Status } from '../openapi';
   providedIn: 'root'
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private notificationService: NotificationService) { }
+  constructor(private notificationService: NotificationService) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -33,32 +33,57 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return next.handle(req).pipe(
       catchError(err => {
         if (err instanceof HttpErrorResponse) {
-          const isPostLogin = req.url.includes('/login') && req.method === 'POST';
-          const isGetUsersUserInfo = req.url.includes('/users/userInfo') && req.method === 'GET';
-          const isPutUserUserInfo = req.url.includes('/user') && req.url.includes('/userInfo') && req.method === 'PUT';
-          const isGetUserUserInfo = req.url.includes('/user') && !req.url.includes('/users') && req.url.includes('/userInfo') && req.method === 'GET';
-          const isGetFilesFileInfoUploader = req.url.includes('/user') && req.url.includes('/files/fileInfoUploader') && req.method === 'GET';
-          const isGetFilesFileInfoRecipient = req.url.includes('/user') && req.url.includes('/files/fileInfoRecipient') && req.method === 'GET';
+          const isPostLogin =
+            req.url.includes('/login') && req.method === 'POST';
+          const isGetUsersUserInfo =
+            req.url.includes('/users/userInfo') && req.method === 'GET';
+          const isPutUserUserInfo =
+            req.url.includes('/user') &&
+            req.url.includes('/userInfo') &&
+            req.method === 'PUT';
+          const isGetUserUserInfo =
+            req.url.includes('/user') &&
+            !req.url.includes('/users') &&
+            req.url.includes('/userInfo') &&
+            req.method === 'GET';
+          const isGetFilesFileInfoUploader =
+            req.url.includes('/user') &&
+            req.url.includes('/files/fileInfoUploader') &&
+            req.method === 'GET';
+          const isGetFilesFileInfoRecipient =
+            req.url.includes('/user') &&
+            req.url.includes('/files/fileInfoRecipient') &&
+            req.method === 'GET';
           const isGetFile = req.url.includes('/file/') && req.method === 'GET';
-          const isDeleteFile = req.url.includes('/file/') && !req.url.includes('/fileRequest/sharedWith') && req.method === 'DELETE';
-          const isPostFileFileRequest = req.url.includes('/file/fileRequest') && req.method === 'POST';
-          const isPostFileSharedWith = req.url.includes('/fileRequest/sharedWith') && req.method === 'POST';
-          const isPostFileContent = req.url.includes('/fileRequest/fileContent') && req.method === 'POST';
-          const isDeleteFileSharedWithUser = req.url.includes('/fileRequest/sharedWith') && req.method === 'DELETE';
+          const isDeleteFile =
+            req.url.includes('/file/') &&
+            !req.url.includes('/fileRequest/sharedWith') &&
+            req.method === 'DELETE';
+          const isPostFileFileRequest =
+            req.url.includes('/file/fileRequest') && req.method === 'POST';
+          const isPostFileSharedWith =
+            req.url.includes('/fileRequest/sharedWith') &&
+            req.method === 'POST';
+          const isPostFileContent =
+            req.url.includes('/fileRequest/fileContent') &&
+            req.method === 'POST';
+          const isDeleteFileSharedWithUser =
+            req.url.includes('/fileRequest/sharedWith') &&
+            req.method === 'DELETE';
 
           let action = ' to ?';
 
           if (isPostLogin) {
-            action = ' to login.'
+            action = ' to login.';
           }
           if (isGetUsersUserInfo) {
-            action = ' to retrieve several users information.'
+            action = ' to retrieve several users information.';
           }
           if (isPutUserUserInfo) {
-            action = ' to modify this user\'s rights.';
+            action = " to modify this user's rights.";
           }
           if (isGetUserUserInfo) {
-            action = ' to retrieve the user\'s information.';
+            action = " to retrieve the user's information.";
           }
           if (isGetFilesFileInfoUploader) {
             action = ' to access the uploaded files.';
@@ -76,25 +101,29 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             action = ' to upload this file.';
           }
           if (isPostFileSharedWith) {
-            action = ' to add this recipient to the shared file.'
+            action = ' to add this recipient to the shared file.';
           }
           if (isPostFileContent) {
-            action = ' to post this file content.'
+            action = ' to post this file content.';
           }
           if (isDeleteFileSharedWithUser) {
-            action = ' to delete this recipient from the shared file.'
+            action = ' to delete this recipient from the shared file.';
           }
 
           switch (err.status) {
             case 0: {
               this.notificationService.addErrorMessage(
-                'Server is not reachable while trying' + action + ' Please contact the support.'
+                'Server is not reachable while trying' +
+                  action +
+                  ' Please contact the support.'
               );
               break;
             }
             case 400: {
               this.notificationService.addErrorMessage(
-                'Bad request while trying' + action + ' Please contact the support.'
+                'Bad request while trying' +
+                  action +
+                  ' Please contact the support.'
               );
               break;
             }
@@ -104,9 +133,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                   'Invalid ECAS token, please logout and login again.'
                 );
               } else {
-                this.notificationService.addErrorMessage(
-                  'Wrong password.'
-                );
+                this.notificationService.addErrorMessage('Wrong password.');
               }
               break;
             }
@@ -115,7 +142,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               if (err.error) {
                 const status: Status = JSON.parse(err.error);
                 if (status.message) {
-                  errorMessage += ' Reason: ' + this.separateStatusMessage(status.message);
+                  errorMessage +=
+                    ' Reason: ' + this.separateStatusMessage(status.message);
                 }
               }
               this.notificationService.addErrorMessage(errorMessage);
@@ -123,10 +151,20 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             }
             case 404: {
               let errorMessage = '';
-              if (isPutUserUserInfo || isGetUserUserInfo || isGetFilesFileInfoUploader || isGetFilesFileInfoRecipient) {
+              if (
+                isPutUserUserInfo ||
+                isGetUserUserInfo ||
+                isGetFilesFileInfoUploader ||
+                isGetFilesFileInfoRecipient
+              ) {
                 errorMessage += 'User not found';
               }
-              if (isGetFile || isDeleteFile || isPostFileSharedWith || isPostFileContent) {
+              if (
+                isGetFile ||
+                isDeleteFile ||
+                isPostFileSharedWith ||
+                isPostFileContent
+              ) {
                 errorMessage += 'File not found';
               }
               if (isDeleteFileSharedWithUser) {
@@ -141,47 +179,48 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               this.notificationService.addErrorMessage(errorMessage);
               break;
             }
-            case 500:
-              {
-                this.notificationService.addErrorMessage('An unexpected error occured on server side while trying' + action + ' Please contact the support.');
-                break;
-              }
-            default:
-              {
-                this.notificationService.addErrorMessage('An unexpected error occured on server side while trying' + action + ' Please contact the support. Error code ' + err.status);
-                break;
-              }
+            case 500: {
+              this.notificationService.addErrorMessage(
+                'An unexpected error occured on server side while trying' +
+                  action +
+                  ' Please contact the support.'
+              );
+              break;
+            }
+            default: {
+              this.notificationService.addErrorMessage(
+                'An unexpected error occured on server side while trying' +
+                  action +
+                  ' Please contact the support. Error code ' +
+                  err.status
+              );
+              break;
+            }
           }
 
           if (err.status === 0) {
-
           }
           if (err.status === 400) {
-
           }
           if (err.status === 401) {
-
           }
           if (err.status === 403) {
-
           }
 
           if (err.status === 404) {
-
           }
         }
         const error = err.error.message || err.statusText;
         return throwError(error);
       })
-
-
     );
   }
 
   public separateStatusMessage(message: string): string {
     let returnString = '';
     const bigLetters = new Set();
-    bigLetters.add('A')
+    bigLetters
+      .add('A')
       .add('B')
       .add('C')
       .add('D')
