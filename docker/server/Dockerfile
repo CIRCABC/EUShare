@@ -23,4 +23,4 @@ COPY ./conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 COPY ./conf/manager-context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
 COPY wait-for-it.sh /usr/local/tomcat/wait-for-it.sh
 RUN ["chmod", "+x", "/usr/local/tomcat/wait-for-it.sh"]
-CMD ["/usr/local/tomcat/wait-for-it.sh",${dbhostandport},"--timeout=0","--strict", "--","catalina.sh", "run"]
+CMD ["/usr/local/tomcat/wait-for-it.sh",${dbhostandport},"--timeout=30","--strict", "--","catalina.sh", "run"]
