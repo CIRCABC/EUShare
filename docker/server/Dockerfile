@@ -1,5 +1,9 @@
 FROM tomcat:8.5.41-jdk8
 
+
+ARG db_host_and_port=db:3306
+ENV dbhostandport=$db_host_and_port
+
 # arguments
 # ./conf/eulogin.crt is a trusted certificate for SSO integration
 # ./conf/context.xml is the context configuration for tomcat
@@ -19,4 +23,4 @@ COPY ./conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
 COPY ./conf/manager-context.xml /usr/local/tomcat/webapps/manager/META-INF/context.xml
 COPY wait-for-it.sh /usr/local/tomcat/wait-for-it.sh
 RUN ["chmod", "+x", "/usr/local/tomcat/wait-for-it.sh"]
-CMD ["/usr/local/tomcat/wait-for-it.sh","db:3306","--timeout=0","--strict", "--","catalina.sh", "run"]
+CMD ["/usr/local/tomcat/wait-for-it.sh",${dbhostandport},"--timeout=0","--strict", "--","catalina.sh", "run"]
