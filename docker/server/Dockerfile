@@ -1,7 +1,7 @@
 FROM tomcat:8.5.41-jdk8
 
 
-ARG db_host_and_port=db:3306
+ARG db_host_and_port="db:3306"
 ENV dbhostandport=$db_host_and_port
 
 # arguments
