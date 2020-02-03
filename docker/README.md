@@ -21,7 +21,7 @@
 ## Build the Docker images
 - Build the application from root folder
 ``` batch
-mvn clean install -Dspring.profiles.active=docker -Dmaven.test.skip=true
+mvn clean install -Dspring.profiles.active=devdocker -Dmaven.test.skip=true
 ```
 - Go into `docker/server` and build the tomcat image with `docker build . -t tomcat-easyshare-server`
 - Go into `docker/client` and build the tomcat image with `docker build . -t tomcat-easyshare-client`
@@ -32,5 +32,5 @@ mvn clean install -Dspring.profiles.active=docker -Dmaven.test.skip=true
 
 ## Update the environment
 In order to update the client and the server, you may use the tomcat7 maven plugin.
-- Go into `server` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=docker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the server with your latest changes.
-- Go into `client` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=docker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the client with your latest changes.
+- Go into `server` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=devdocker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the server with your latest changes.
+- Go into `client` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=devdocker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the client with your latest changes.

@@ -18,6 +18,9 @@
 <!-- The contents of this file will be loaded for each web application -->
 <Context>
 
+    <!-- REWRITE VALVE -->
+    <Valve className="org.apache.catalina.valves.rewrite.RewriteValve" />
+
     <!-- Default set of monitored resources. If one of these changes, the    -->
     <!-- web application will be reloaded.                                   -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
