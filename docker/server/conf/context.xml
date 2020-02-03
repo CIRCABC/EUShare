@@ -20,7 +20,7 @@
 
     <!-- REWRITE VALVE -->
     <Valve className="org.apache.catalina.valves.rewrite.RewriteValve" />
-    
+
     <!-- Default set of monitored resources. If one of these changes, the    -->
     <!-- web application will be reloaded.                                   -->
     <WatchedResource>WEB-INF/web.xml</WatchedResource>
@@ -31,9 +31,4 @@
     <!--
     <Manager pathname="" />
     -->
-    <Resource name="jdbc/easyshare" auth="Container" type="javax.sql.DataSource"
-                                    url="jdbc:mysql://db:3306/easyshare?allowMultiQueries=true&amp;useUnicode=yes&amp;characterEncoding=UTF-8" driverClassName="com.mysql.jdbc.Driver"
-                                    username="easyshare" password="easyshare" maxActive="20" maxIdle="3" maxWait="10000"
-                                    poolPreparedStatements="true" maxOpenPreparedStatements="100" 
-                                    validationQuery="SELECT 1" factory="org.apache.tomcat.jdbc.pool.DataSourceFactory" />
 </Context>
