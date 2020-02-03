@@ -22,7 +22,7 @@ jobs:
           paths:
             - ~/.m2
           key: Server-{{ checksum "pom.xml" }}
-      - run: cd server && mvn clean install -Dskip.unit.tests=true -Dskip.integration.tests=false
+      - run: mvn clean install -Dskip.unit.tests=true -Dskip.integration.tests=false -X
       - run: mvn clean install 
       
       - store_test_results: 
