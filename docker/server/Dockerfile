@@ -11,7 +11,7 @@ COPY ./conf/eulogin.crt eulogin.crt
 RUN echo yes | keytool -importcert -alias euloginCertAlias -storepass changeit -file eulogin.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
 
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
-COPY ./dist/easyshareserver.war /usr/local/tomcat/webapps/ROOT.war
+COPY ./dist/easyshareserver.war /usr/local/tomcat/webapps/webservice.war
 COPY ./conf/setenv.sh /usr/local/tomcat/bin/setenv.sh
 COPY ./conf/context.xml /usr/local/tomcat/conf/context.xml
 COPY ./conf/tomcat-users.xml /usr/local/tomcat/conf/tomcat-users.xml
