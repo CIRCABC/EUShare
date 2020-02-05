@@ -8,6 +8,7 @@
     "build": "ng build -c=dev",
     "builddevdocker": "ng build -c=devdocker",
     "buildproddocker": "ng build --prod -c=proddocker",
+    "buildproddockerdb": "ng build --prod -c=proddockerdb",
     "test": "ng test",
     "lint": "ng lint client",
     "lint-fix": "ng lint client --fix --force --format msbuild",
