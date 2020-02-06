@@ -20,6 +20,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,18 @@ public class ExceptionHandlerController {
    @ExceptionHandler(value = ResponseStatusException.class)
    public ResponseEntity<Object> responseStatusException(ResponseStatusException exception) {
       return new ResponseEntity<>(exception.getReason(), exception.getStatus());
+   }
+
+   @ExceptionHandler(value = MissingServletRequestPartException.class)
+   public ResponseEntity<Object> missingServletRequestPartException(
+      MissingServletRequestPartException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
+   }
+
+   @ExceptionHandler(value = MultipartException.class)
+   public ResponseEntity<Object> multipartException(
+      MultipartException exception) {
+      return new ResponseEntity<>(HttpErrorAnswerBuilder.build400EmptyToString(), HttpStatus.BAD_REQUEST);
    }
 
    @ExceptionHandler(value = MissingServletRequestParameterException.class)

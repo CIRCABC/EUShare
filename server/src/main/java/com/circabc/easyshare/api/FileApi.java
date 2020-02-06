@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -107,9 +108,9 @@ public interface FileApi {
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/{fileID}/fileRequest/fileContent",
         produces = { "application/json" }, 
-        consumes = { "application/octet-stream" },
+        consumes = { "multipart/form-data" },
         method = RequestMethod.POST)
-    default ResponseEntity<FileInfoUploader> postFileContent(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The file bytes"  )  @Valid @RequestBody Resource body) {
+    default ResponseEntity<FileInfoUploader> postFileContent(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The file bytes"  )  @Valid @RequestParam(value = "file", required = false) MultipartFile body) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

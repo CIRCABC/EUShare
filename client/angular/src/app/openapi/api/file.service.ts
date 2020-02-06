@@ -59,6 +59,19 @@ export class FileService {
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
     }
 
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        for (const consume of consumes) {
+            if (form === consume) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
     /**
@@ -194,14 +207,14 @@ export class FileService {
     /**
      * Used by INTERNAL users in order to post the file content on the pre-reserved file space
      * @param fileID The id of the file
-     * @param body The file bytes
+     * @param file 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileContent(fileID: string, body?: Blob, observe?: 'body', reportProgress?: boolean): Observable<FileInfoUploader>;
-    public postFileContent(fileID: string, body?: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileInfoUploader>>;
-    public postFileContent(fileID: string, body?: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileInfoUploader>>;
-    public postFileContent(fileID: string, body?: Blob, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public postFileContent(fileID: string, file?: Blob, observe?: 'body', reportProgress?: boolean): Observable<FileInfoUploader>;
+    public postFileContent(fileID: string, file?: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileInfoUploader>>;
+    public postFileContent(fileID: string, file?: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileInfoUploader>>;
+    public postFileContent(fileID: string, file?: Blob, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling postFileContent.');
         }
@@ -221,15 +234,29 @@ export class FileService {
 
         // to determine the Content-Type header
         const consumes: string[] = [
-            'application/octet-stream'
+            'multipart/form-data'
         ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
+
+        const canConsumeForm = this.canConsumeForm(consumes);
+
+        let formParams: { append(param: string, value: any): any; };
+        let useForm = false;
+        let convertFormParamsToString = false;
+        // use FormData to transmit files using content-type "multipart/form-data"
+        // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
+        useForm = canConsumeForm;
+        if (useForm) {
+            formParams = new FormData();
+        } else {
+            formParams = new HttpParams({encoder: this.encoder});
+        }
+
+        if (file !== undefined) {
+            formParams = formParams.append('file', <any>file) as any || formParams;
         }
 
         return this.httpClient.post<FileInfoUploader>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/fileContent`,
-            body,
+            convertFormParamsToString ? formParams.toString() : formParams,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

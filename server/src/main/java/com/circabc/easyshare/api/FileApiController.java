@@ -58,6 +58,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -209,17 +210,9 @@ public class FileApiController implements FileApi {
 
     @Override
     public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID,
-            @RequestBody(required = false) Resource body) {
-        try {
-            if ((body == null) || body.contentLength() == 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        HttpErrorAnswerBuilder.build400EmptyToString());
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            // should never occur
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    HttpErrorAnswerBuilder.build500EmptyToString());
+    @RequestParam(value = "file", required = false) MultipartFile body) {
+        if ((body == null) || body.getSize() == 0L) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
 
         try {
