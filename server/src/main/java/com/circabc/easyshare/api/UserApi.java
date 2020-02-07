@@ -35,7 +35,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2020-02-07T11:07:17.544+01:00[Europe/Paris]")
 
 @Validated
 @Api(value = "user", description = "the user API")
@@ -53,6 +53,7 @@ public interface UserApi {
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/user/{userID}/files/fileInfoRecipient",
         produces = { "application/json" }, 
@@ -79,6 +80,7 @@ public interface UserApi {
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/user/{userID}/files/fileInfoUploader",
         produces = { "application/json" }, 

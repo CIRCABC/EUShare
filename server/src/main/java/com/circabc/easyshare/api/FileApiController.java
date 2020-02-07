@@ -23,6 +23,7 @@ import com.circabc.easyshare.exceptions.CouldNotSaveFileException;
 import com.circabc.easyshare.exceptions.DateLiesInPastException;
 import com.circabc.easyshare.exceptions.EmptyFilenameException;
 import com.circabc.easyshare.exceptions.FileLargerThanAllocationException;
+import org.springframework.web.bind.annotation.RequestPart;
 import com.circabc.easyshare.exceptions.IllegalFileSizeException;
 import com.circabc.easyshare.exceptions.IllegalFileStateException;
 import com.circabc.easyshare.exceptions.MessageTooLongException;
@@ -209,8 +210,7 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID,
-    @RequestParam(value = "file", required = false) MultipartFile body) {
+    public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID, @RequestPart("file") MultipartFile body){
         if ((body == null) || body.getSize() == 0L) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
