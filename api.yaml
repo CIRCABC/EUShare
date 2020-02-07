@@ -551,10 +551,13 @@ paths:
       requestBody:
         description: The file bytes
         content:
-          application/octet-stream:
+          multipart/form-data:
             schema:
-              type: string
-              format: binary
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
       responses:
         200:
           description: SUCCESS Returns the FileInfoUploader of the uploaded file
@@ -802,8 +805,14 @@ components:
             id: 
               description: User ID 
               type: string
-            name:
-              description: User name (email address in case of external user)
+            loginUsername:
+              description: Abreviated user name used for login
+              type: string
+            givenName:
+              description: Full name of the user
+              type: string
+            email:
+              description: Email adress 
               type: string
             isAdmin:
               description: True if the user is admin
@@ -811,9 +820,7 @@ components:
           required:
           - id
           - loginUsername
-          - name
-          - uploadedFiles
-          - sharedFiles
+          - email
           - isAdmin
     UserSpace:
       type: object

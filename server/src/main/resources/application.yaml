@@ -24,10 +24,6 @@ spring:
           client-secret: D9rFLtYRZCa_PQ10qEyhZcyWlMAPjsSnvnk-C8mZE2NllNiZvy4jZbEUx1I_lw_VsBJiVV_bLmsOMpUuFBPajCI6QXksCTnOrw9Znq7KLnzHysvyCqkTWfDzIXFZvQXNGslnncb8NNaZzy5NfAbdEtenXbA8CGYsZBnYroIKzu8
   profiles:
     active: @spring.profiles.active@
-  jackson:
-    date-format: com.circabc.easyshare.RFC3339DateFormat
-    serialization: 
-      WRITE_DATES_AS_TIMESTAMPS: false
   datasource:
     #jdbc:oracle:thin:@localhost:1521:testing
     url: jdbc:mysql://localhost:3306/easyshare
@@ -48,6 +44,7 @@ spring:
     password: password
   servlet:
     multipart:
+      enabled: false
       max-file-size: 256MB
       max-request-size: 256MB
 springfox:

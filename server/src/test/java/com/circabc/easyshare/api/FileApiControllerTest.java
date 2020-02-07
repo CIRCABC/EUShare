@@ -65,8 +65,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -79,6 +79,7 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
 import edu.emory.mathcs.backport.java.util.Collections;
 import edu.emory.mathcs.backport.java.util.LinkedList;
@@ -966,6 +967,7 @@ public class FileApiControllerTest {
         fileInfoUploader.setName("name");
         fileInfoUploader.setSharedWith(new LinkedList());
         fileInfoUploader.setSize(new BigDecimal(1024));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", validFileContent);
 
         String token = "StupidToken";
 
@@ -981,11 +983,11 @@ public class FileApiControllerTest {
         when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
 
-        when(fileService.saveOnBehalfOf(anyString(), any(Resource.class), anyString())).thenReturn(fileInfoUploader);
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+        when(fileService.saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString())).thenReturn(fileInfoUploader);
+        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8").contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isOk());
     }
 
@@ -1015,16 +1017,17 @@ public class FileApiControllerTest {
         fileInfoUploader.setName("name");
         fileInfoUploader.setSharedWith(new LinkedList());
         fileInfoUploader.setSize(new BigDecimal(1024));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", "".getBytes());
 
         UserDetails userDetails = new User("username", "password", Collections.emptySet());
         when(service.loadUserByUsername(anyString())).thenReturn(userDetails);
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
 
-        when(fileService.saveOnBehalfOf(anyString(), any(Resource.class), anyString())).thenReturn(fileInfoUploader);
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+        when(fileService.saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString())).thenReturn(fileInfoUploader);
+        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content("").contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8").contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -1054,14 +1057,15 @@ public class FileApiControllerTest {
         fileInfoUploader.setName("name");
         fileInfoUploader.setSharedWith(new LinkedList());
         fileInfoUploader.setSize(new BigDecimal(1024));
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", validFileContent);
 
         when(opaqueTokenIntrospector.introspect(anyString())).thenThrow(new OAuth2IntrospectionException(""));
 
-        when(fileService.saveOnBehalfOf(anyString(), any(Resource.class), anyString())).thenReturn(fileInfoUploader);
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+        when(fileService.saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString())).thenReturn(fileInfoUploader);
+        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8").contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isUnauthorized())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -1080,18 +1084,20 @@ public class FileApiControllerTest {
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
 
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", validFileContent);
+
         collection.add(grantedAuthority);
         OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
                         "username", attributes, collection);
         when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
 
-        doThrow(new UserUnauthorizedException()).when(fileService).saveOnBehalfOf(anyString(), any(Resource.class),
+        doThrow(new UserUnauthorizedException()).when(fileService).saveOnBehalfOf(anyString(), any(MultipartFile.class),
                 anyString());
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+                this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8").contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -1110,6 +1116,8 @@ public class FileApiControllerTest {
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
 
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", validFileContent);
+
         collection.add(grantedAuthority);
         OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
                         "username", attributes, collection);
@@ -1117,11 +1125,12 @@ public class FileApiControllerTest {
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
 
         doThrow(new FileLargerThanAllocationException()).when(fileService).saveOnBehalfOf(anyString(),
-                any(Resource.class), anyString());
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+                any(MultipartFile.class), anyString());
+                this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -1143,18 +1152,21 @@ public class FileApiControllerTest {
         SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority("INTERNAL");
         Collection<GrantedAuthority> collection = new LinkedList();
 
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", validFileContent);
+
         collection.add(grantedAuthority);
         OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
                         "username", attributes, collection);
         when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
 
-        doThrow(new IllegalFileSizeException()).when(fileService).saveOnBehalfOf(anyString(), any(Resource.class),
+        doThrow(new IllegalFileSizeException()).when(fileService).saveOnBehalfOf(anyString(), any(MultipartFile.class),
                 anyString());
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+                this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -1166,6 +1178,8 @@ public class FileApiControllerTest {
 
         String token = "StupidToken";
 
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", validFileContent);
+
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
         attributes.put("username", "username");
@@ -1178,12 +1192,13 @@ public class FileApiControllerTest {
         when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
 
-        doThrow(new UnknownFileException()).when(fileService).saveOnBehalfOf(anyString(), any(Resource.class),
+        doThrow(new UnknownFileException()).when(fileService).saveOnBehalfOf(anyString(), any(MultipartFile.class),
                 anyString());
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+                this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isNotFound())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -1195,6 +1210,8 @@ public class FileApiControllerTest {
 
         String token = "StupidToken";
 
+        MockMultipartFile mockMultipartFile = new MockMultipartFile("file", "name","multipart/form-data", validFileContent);
+
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", "email@email.com");
         attributes.put("username", "username");
@@ -1207,12 +1224,13 @@ public class FileApiControllerTest {
         when(opaqueTokenIntrospector.introspect(anyString())).thenReturn(oAuth2AuthenticatedPrincipal);
         when(service.getAuthenticatedUserId(any(Authentication.class))).thenReturn(fakeAuthenticatedUserId);
 
-        doThrow(new NullPointerException()).when(fileService).saveOnBehalfOf(anyString(), any(Resource.class),
+        doThrow(new NullPointerException()).when(fileService).saveOnBehalfOf(anyString(), any(MultipartFile.class),
                 anyString());
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+                this.mockMvc.perform(MockMvcRequestBuilders.multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent").file(mockMultipartFile) // NOSONAR
                 .header("Authorization",
                         "Bearer " + token)
-                .characterEncoding("utf-8").content(validFileContent).contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .characterEncoding("utf-8")
+                .contentType(MediaType.MULTIPART_FORM_DATA)
                 .accept(MediaType.APPLICATION_JSON)).andDo(print()).andExpect(status().isInternalServerError())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }

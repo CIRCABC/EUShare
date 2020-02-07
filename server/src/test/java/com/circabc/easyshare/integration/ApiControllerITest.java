@@ -36,11 +36,12 @@ import com.circabc.easyshare.storage.DBUserFile;
 import com.circabc.easyshare.storage.FileRepository;
 import com.circabc.easyshare.storage.UserFileRepository;
 import com.circabc.easyshare.storage.UserRepository;
+import com.circabc.easyshare.utils.ResourceMultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +50,12 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -65,8 +69,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.multipart.MultipartFile;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -913,12 +918,14 @@ public class ApiControllerITest {
 
   @Test
   @DirtiesContext
-  public void postFileFileContent200() {
+  public void postFileFileContent200() throws Exception {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
+    Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
+    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", fileSystemResource);
 
-    Resource resource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
@@ -933,11 +940,11 @@ public class ApiControllerITest {
 
     FileInfoUploader fileInfoUploader = dbFile.toFileInfoUploader();
 
-    HttpEntity<Resource> httpEntity = this.httpEntityAsInternalUser(resource, "emailA@email.com", "stupidUsername");
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body, "emailA@email.com",
+        "stupidUsername");
 
-    ResponseEntity<FileInfoUploader> entity = this.testRestTemplate.exchange(
-        "/file/" + dbFile.getId() + "/fileRequest/fileContent", HttpMethod.POST, httpEntity, FileInfoUploader.class);
-
+    ResponseEntity<FileInfoUploader> entity = this.testRestTemplate
+        .postForEntity("/file/" + dbFile.getId() + "/fileRequest/fileContent", httpEntity, FileInfoUploader.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(fileInfoUploader, entity.getBody());
   }
@@ -947,21 +954,24 @@ public class ApiControllerITest {
   public void postFileFileContent400() {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
-    String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
+    String path = resourcesDirectory.getAbsolutePath() + "/emptyfile.txt";
+    Resource fileSystemResource = new ClassPathResource("emptyfile.txt", this.getClass().getClassLoader());
+    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", fileSystemResource);
 
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "emptyfile.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
     // Done
 
-    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("resource", "emailA@email.com", "stupidUsername");
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body, "emailA@email.com", "stupidUsername");
 
     ResponseEntity<String> entity = this.testRestTemplate
         .exchange("/file/" + dbFile.getId() + "/fileRequest/fileContent", HttpMethod.POST, httpEntity, String.class);
@@ -976,8 +986,10 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
+    Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
+    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", fileSystemResource);
 
-    Resource resource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
@@ -990,7 +1002,7 @@ public class ApiControllerITest {
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
     // Done
 
-    HttpEntity<Resource> httpEntity = this.httpEntityAsAnonymousUser(resource);
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsAnonymousUser(body);
 
     ResponseEntity<String> entity = this.testRestTemplate
         .exchange("/file/" + dbFile.getId() + "/fileRequest/fileContent", HttpMethod.POST, httpEntity, String.class);
@@ -1005,8 +1017,10 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
+    Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
+    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", fileSystemResource);
 
-    Resource resource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
@@ -1019,7 +1033,7 @@ public class ApiControllerITest {
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
     // Done
 
-    HttpEntity<Resource> httpEntity = this.httpEntityAsInternalUser(resource);
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body);
 
     ResponseEntity<String> entity = this.testRestTemplate
         .exchange("/file/" + dbFile.getId() + "/fileRequest/fileContent", HttpMethod.POST, httpEntity, String.class);
@@ -1031,8 +1045,12 @@ public class ApiControllerITest {
   @Test
   @DirtiesContext
   public void postFileFileContent404() {
-    Resource resource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
-    HttpEntity<Resource> httpEntity = this.httpEntityAsInternalUser(resource);
+    // Creating the uploaded file
+    File resourcesDirectory = new File("src/test/resources");
+    Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
+    MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", fileSystemResource);
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body);
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange("/file/" + "dummyId" + "/fileRequest/fileContent",
         HttpMethod.POST, httpEntity, String.class);
@@ -1133,11 +1151,10 @@ public class ApiControllerITest {
   @Test
   @DirtiesContext
   public void deleteFileSharedWithUser404() throws Exception {
-  HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity = this.testRestTemplate.exchange(
-        "/file/dummyId/fileRequest/sharedWith/dummyId", HttpMethod.DELETE, httpEntity,
-        String.class);
+    ResponseEntity<String> entity = this.testRestTemplate.exchange("/file/dummyId/fileRequest/sharedWith/dummyId",
+        HttpMethod.DELETE, httpEntity, String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(HttpErrorAnswerBuilder.build404FileNotFoundToString(), entity.getBody());
@@ -1171,6 +1188,9 @@ public class ApiControllerITest {
     if (body instanceof String) {
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
     }
+    if (body instanceof MultiValueMap) {
+      httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
+    }
     httpHeaders.setOrigin("http://localhost:8080");
     httpHeaders.setBearerAuth("token");
     HttpEntity httpEntity = new HttpEntity<T>(body, httpHeaders);
@@ -1185,6 +1205,9 @@ public class ApiControllerITest {
     }
     if (body instanceof String) {
       httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    }
+    if (body instanceof MultiValueMap) {
+      httpHeaders.setContentType(MediaType.MULTIPART_FORM_DATA);
     }
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity httpEntity = new HttpEntity<T>(body, httpHeaders);

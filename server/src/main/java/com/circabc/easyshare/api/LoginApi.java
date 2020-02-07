@@ -40,7 +40,6 @@ public interface LoginApi {
     }, tags={ "Session", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Returns the user id to use in all other requests", response = String.class),
-        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/login",

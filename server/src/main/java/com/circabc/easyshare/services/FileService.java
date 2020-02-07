@@ -425,22 +425,14 @@ public class FileService implements FileServiceInterface {
 
     @Override
     @Transactional
-    public FileInfoUploader saveOnBehalfOf(String fileId, Resource resource, String requesterId)
+    public FileInfoUploader saveOnBehalfOf(String fileId, MultipartFile resource, String requesterId)
             throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
             UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException {
         DBFile f = findFile(fileId);
 
         if (requesterId.equals(f.getUploader().getId())) {
-            try {
-                InputStream inputStream = resource.getInputStream();
-                byte[] bytes = IOUtils.toByteArray(inputStream);
-                ResourceMultipartFile resourceMultipartFile = new ResourceMultipartFile(resource,
-                        resource.getFilename(), null, bytes.length);
-                this.save(f, resourceMultipartFile);
-                return f.toFileInfoUploader();
-            } catch (IOException io) {
-                throw new CouldNotSaveFileException(io);
-            }
+            this.save(f, resource);
+            return f.toFileInfoUploader();
         } else {
             throw new UserUnauthorizedException();
         }

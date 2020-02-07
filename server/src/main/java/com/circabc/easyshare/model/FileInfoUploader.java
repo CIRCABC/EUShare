@@ -12,6 +12,7 @@ package com.circabc.easyshare.model;
 
 import java.util.Objects;
 import com.circabc.easyshare.model.RecipientWithLink;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
@@ -28,6 +29,7 @@ import javax.validation.constraints.*;
 
 public class FileInfoUploader   {
   @JsonProperty("expirationDate")
+  @JsonFormat(pattern="yyyy-MM-dd")
   private LocalDate expirationDate;
 
   @JsonProperty("hasPassword")

@@ -23,6 +23,7 @@ import com.circabc.easyshare.exceptions.CouldNotSaveFileException;
 import com.circabc.easyshare.exceptions.DateLiesInPastException;
 import com.circabc.easyshare.exceptions.EmptyFilenameException;
 import com.circabc.easyshare.exceptions.FileLargerThanAllocationException;
+import org.springframework.web.bind.annotation.RequestPart;
 import com.circabc.easyshare.exceptions.IllegalFileSizeException;
 import com.circabc.easyshare.exceptions.IllegalFileStateException;
 import com.circabc.easyshare.exceptions.MessageTooLongException;
@@ -58,6 +59,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.extern.slf4j.Slf4j;
@@ -208,18 +210,9 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID,
-            @RequestBody(required = false) Resource body) {
-        try {
-            if ((body == null) || body.contentLength() == 0) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                        HttpErrorAnswerBuilder.build400EmptyToString());
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            // should never occur
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    HttpErrorAnswerBuilder.build500EmptyToString());
+    public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID, @RequestPart("file") MultipartFile body){
+        if ((body == null) || body.getSize() == 0L) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
 
         try {

@@ -34,7 +34,7 @@ import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.RecipientWithLink;
 import com.circabc.easyshare.services.FileService.DownloadReturn;
 
-import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileServiceInterface {
         public void removeShareOnFileOnBehalfOf(String fileId, String userId, String requesterId)
@@ -59,7 +59,7 @@ public interface FileServiceInterface {
                         UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException,
                         EmptyFilenameException, WrongNameStructureException, WrongEmailStructureException, MessageTooLongException;
 
-        public FileInfoUploader saveOnBehalfOf(String fileId, Resource resource, String requesterId)
+        public FileInfoUploader saveOnBehalfOf(String fileId, MultipartFile multipartFile, String requesterId)
                         throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
                         UserUnauthorizedException, CouldNotSaveFileException, EmptyFilenameException,
                         IllegalFileSizeException;

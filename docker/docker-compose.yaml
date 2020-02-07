@@ -1,10 +1,10 @@
-version: "3"
+version: "3.7"
 services:
   db:
     container_name: db
     image: mysql:5.6
     ports:
-      - "3306:3306"  
+      - "3306:3306"
     environment:
         - MYSQL_ROOT_PASSWORD=password
     volumes:
@@ -13,6 +13,10 @@ services:
   server:
     build: server
     image: tomcat-easyshare-server
+    volumes:
+      - type: bind
+        source: ~/eushare
+        target: /easyshare/
     ports:
       - "8888:8080"
       - "8886:8886"
@@ -27,7 +31,7 @@ services:
     container_name: tomcat_easyshare_client
     depends_on:
       - server
-  proxy: 
+  proxy:
     image: nginx:alpine
     container_name: nginx_easyshare_proxy
     volumes:

@@ -44,7 +44,7 @@ public class EasyshareApplication extends SpringBootServletInitializer {
     }
     
     public void run(String... arg0) throws Exception {
-        log.info("Starting EASYSHARE");
+        log.info("Starting EUSHARE");
         if (arg0.length > 0 && arg0[0].equals("exitcode")) {
             throw new ExitException();
         }

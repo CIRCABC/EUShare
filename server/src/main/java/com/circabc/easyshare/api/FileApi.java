@@ -31,10 +31,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
-
+import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
+import org.springframework.web.bind.annotation.RequestPart;
+import java.util.Optional;
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2020-02-07T11:07:17.544+01:00[Europe/Paris]")
 
 @Validated
 @Api(value = "file", description = "the file API")
@@ -107,9 +109,9 @@ public interface FileApi {
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/{fileID}/fileRequest/fileContent",
         produces = { "application/json" }, 
-        consumes = { "application/octet-stream" },
+        consumes = { "multipart/form-data" },
         method = RequestMethod.POST)
-    default ResponseEntity<FileInfoUploader> postFileContent(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The file bytes"  )  @Valid @RequestBody Resource body) {
+    default ResponseEntity<FileInfoUploader> postFileContent(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -130,7 +132,7 @@ public interface FileApi {
         @ApiResponse(code = 200, message = "SUCCESS Returns the File ID of the newly-created file", response = String.class),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/fileRequest",
         produces = { "text/plain", "application/json" }, 
@@ -149,7 +151,7 @@ public interface FileApi {
         @ApiResponse(code = 200, message = "SUCCESS Returns the RecipientWithLink for the added recipient", response = RecipientWithLink.class),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, WrongEmailStructure, WrongNameStructure, MessageTooLong", response = Status.class),
         @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @RequestMapping(value = "/file/{fileID}/fileRequest/sharedWith",
