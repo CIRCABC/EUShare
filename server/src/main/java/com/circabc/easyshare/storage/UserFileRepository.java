@@ -10,10 +10,13 @@
 
 package com.circabc.easyshare.storage;
 
+import java.util.List;
+
 import org.springframework.data.repository.CrudRepository;
 
 public interface UserFileRepository extends CrudRepository<DBUserFile, String> {
     DBUserFile findOneByDownloadId(String downloadId);
+    List<DBUserFile> findByFile_id(String fileId);
     void deleteByDownloadId(String downloadId);
     void deleteByReceiver_idAndFile_id(String receiverId, String fileId);
 }

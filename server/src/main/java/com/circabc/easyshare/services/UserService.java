@@ -312,6 +312,9 @@ public class UserService implements UserServiceInterface, UserDetailsService {
                 dbUser = this.createInternalUser(email, givenName, null, username);
             } else {
                 if (dbUser.getName() == null) {
+                    if (givenName == null ||  givenName.isEmpty()) {
+                        givenName = StringUtils.emailToGivenName(email);
+                    } 
                     dbUser.setName(givenName);
                     userRepository.save(dbUser);
                 }
@@ -321,6 +324,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
                 }
                 if (dbUser.getRole().equals(DBUser.Role.EXTERNAL)) {
                     dbUser.setRole(DBUser.Role.INTERNAL);
+                    dbUser.setTotalSpace(esConfig.getDefaultUserSpace());
                     userRepository.save(dbUser);
                 }
             }

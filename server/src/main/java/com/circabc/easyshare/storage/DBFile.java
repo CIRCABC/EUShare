@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -64,9 +65,8 @@ public class DBFile {
     @Column(nullable = false)
     private String path;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file") //, cascade = CascadeType.ALL, orphanRemoval=true
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
     private Set<DBUserFile> sharedWith;
-
 
     @Column(name = "fileSize", nullable = false)
     private long size;

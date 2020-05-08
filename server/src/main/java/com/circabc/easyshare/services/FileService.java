@@ -12,7 +12,6 @@ package com.circabc.easyshare.services;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ConnectException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,12 +56,10 @@ import com.circabc.easyshare.storage.DBUserFile;
 import com.circabc.easyshare.storage.FileRepository;
 import com.circabc.easyshare.storage.MountPoint;
 import com.circabc.easyshare.storage.UserFileRepository;
-import com.circabc.easyshare.utils.ResourceMultipartFile;
+import com.circabc.easyshare.storage.UserRepository;
 import com.circabc.easyshare.utils.StringUtils;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -95,6 +92,9 @@ public class FileService implements FileServiceInterface {
     private UserFileRepository userFileRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private UserService userService;
 
     /**
@@ -113,14 +113,24 @@ public class FileService implements FileServiceInterface {
      * from the file system.
      */
     @Scheduled(fixedDelay = 5000) // Every 5 seconds
-    private void cleanupFiles() {
-        for (DBFile DBFile : fileRepository.findByStatus(DBFile.Status.DELETED, PageRequest.of(0, Integer.MAX_VALUE))) {
-            log.info(String.format("Launching deletion of file id %s", DBFile.getId()));
+    @Transactional
+    void cleanupFiles() {
+        for (DBFile file : fileRepository.findByStatus(DBFile.Status.DELETED, PageRequest.of(0, Integer.MAX_VALUE))) {
+            log.info(String.format("Launching deletion of file id %s", file.getId()));
             boolean fileDeletion = false;
-            Path path = Paths.get(DBFile.getPath());
+            Path path = Paths.get(file.getPath());
             try {
                 fileDeletion = Files.deleteIfExists(path);
-                fileRepository.delete(DBFile);
+                if (fileDeletion) {
+                    for (DBUserFile dbUserFile : userFileRepository.findByFile_id(file.getId())) {
+                        DBUser receiver = dbUserFile.getReceiver();
+                        userFileRepository.delete(dbUserFile);
+                        if (receiver.getRole().equals(Role.EXTERNAL)) {
+                            userRepository.delete(receiver);
+                        }
+                    }
+                    fileRepository.delete(file);
+                }
             } catch (IOException e) {
                 log.error("Could not delete DBFile, try again in next run", e);
             } finally {
@@ -134,12 +144,13 @@ public class FileService implements FileServiceInterface {
     /**
      * Marks all expired files as deleted in the database.
      */
-    @Scheduled(fixedRate = 10_000) // Every 10 seconds
-    private void markExpiredFiles() {
-        for (DBFile DBFile : fileRepository.findByExpirationDateBefore(LocalDate.now())) {
-            log.info(String.format("DBFile %s expired", DBFile.getId()));
-            DBFile.setStatus(com.circabc.easyshare.storage.DBFile.Status.DELETED);
-            fileRepository.save(DBFile);
+    @Scheduled(fixedDelay = 10000) // Every 10 seconds
+    @Transactional
+    void markExpiredFiles() {
+        for (DBFile file : fileRepository.findByExpirationDateBefore(LocalDate.now())) {
+            log.info(String.format("DBFile %s expired", file.getId()));
+            file.setStatus(com.circabc.easyshare.storage.DBFile.Status.DELETED);
+            fileRepository.save(file);
         }
     }
 
@@ -321,7 +332,7 @@ public class FileService implements FileServiceInterface {
             throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
         DBFile f = fileRepository.findById(fileId).orElse(null);
 
-        if (f == null || f.getStatus() == DBFile.Status.DELETED) {
+        if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
             throw new UnknownFileException();
         }
 

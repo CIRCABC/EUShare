@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -65,7 +64,7 @@ public class DBUser {
 
     @Getter
     @Setter
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "uploader", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "uploader")
     private Set<DBFile> filesUploaded = new HashSet<>();
 
     @Getter
@@ -124,6 +123,10 @@ public class DBUser {
         DBUser dbUser = new DBUser(totalSpace, Role.INTERNAL);
         String upperCaseEmail = email.toUpperCase();
         dbUser.setEmail(upperCaseEmail);
+
+        if (name == null || name.isEmpty()) {
+            name = com.circabc.easyshare.utils.StringUtils.emailToGivenName(email);
+        }
         dbUser.setName(name);
         dbUser.setTotalSpace(totalSpace);
         dbUser.setUsername(username);
