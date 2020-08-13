@@ -214,18 +214,21 @@ public class FileService implements FileServiceInterface {
     @Override
     public RecipientWithLink addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
             throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
-            WrongNameStructureException, MessageTooLongException, UnknownFileException {
+            WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
             if (!StringUtils.validateMessage(recipient.getMessage())) {
                 throw new MessageTooLongException();
             }
             DBFile dbFile = findAvailableFile(fileId, false);
+            DBUser dbRecipient = userService.getUserOrCreateExternalUser(recipient);
             DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(),
-                    userService.getUserOrCreateExternalUser(recipient), dbFile, recipient.getMessage());
+                    dbRecipient, dbFile, recipient.getMessage());
             userFileRepository.save(dbUserFile);
+            if (recipient.getSendEmail()) {
+                emailService.sendShareNotification(recipient.getEmailOrName(), dbFile.toFileInfoRecipient(dbRecipient.getId()), recipient.getMessage());
+            }
 
             return dbUserFile.toRecipientWithLink();
-            // TODO: add notification
         } else {
             throw new UserUnauthorizedException();
         }
@@ -343,13 +346,11 @@ public class FileService implements FileServiceInterface {
         f.setStatus(DBFile.Status.DELETED);
         fileRepository.save(f);
 
-        if (this.esConfig.isActivateMailService()) {
-            if (reason != null && !userService.isAdmin(requesterId)) {
-                try {
-                    emailService.sendFileDeletedNotification(f.getUploader().getId(), f.toFileBasics(), reason);
-                } catch (MessagingException ignored) {
-                    log.warn("Error while sending file deleted mail", ignored);
-                }
+        if (reason != null) {
+            try {
+                emailService.sendFileDeletedNotification(f.getUploader().getEmail(), f.toFileBasics(), reason);
+            } catch (MessagingException ignored) {
+                log.warn("Error while sending file deleted mail", ignored);
             }
         }
     }
@@ -382,13 +383,11 @@ public class FileService implements FileServiceInterface {
             if (userIdentifier == null) {
                 userIdentifier = dbUserFile.getReceiver().getName();
             }
-            if (this.esConfig.isActivateMailService()) {
-                try {
-                    this.emailService.sendDownloadNotification(dbFile.getUploader().getEmail(), userIdentifier,
-                            dbFile.toFileBasics());
-                } catch (MessagingException | ConnectException e) {
-                    log.error("Error happened when sending download notification for file " + fileId, e);
-                }
+            try {
+                this.emailService.sendDownloadNotification(dbFile.getUploader().getEmail(), userIdentifier,
+                        dbFile.toFileBasics());
+            } catch (MessagingException | ConnectException e) {
+                log.error("Error happened when sending download notification for file " + fileId, e);
             }
         }
         if (dbFile.getPassword() != null && !BCrypt.checkpw(password, dbFile.getPassword())) {
@@ -438,7 +437,7 @@ public class FileService implements FileServiceInterface {
     @Transactional
     public FileInfoUploader saveOnBehalfOf(String fileId, MultipartFile resource, String requesterId)
             throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
-            UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException {
+            UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
         DBFile f = findFile(fileId);
 
         if (requesterId.equals(f.getUploader().getId())) {
@@ -454,7 +453,7 @@ public class FileService implements FileServiceInterface {
      */
     private void save(@NonNull DBFile dbFile, @NonNull MultipartFile file)
             throws IllegalFileStateException, UnknownFileException, FileLargerThanAllocationException,
-            UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException {
+            UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
         if (dbFile.getStatus() != DBFile.Status.ALLOCATED) {
             throw new IllegalFileStateException();
         }
@@ -482,6 +481,15 @@ public class FileService implements FileServiceInterface {
         }
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
+        for (DBUserFile recipient : dbFile.getSharedWith()) {
+            DBUser dbRecipient = recipient.getReceiver();
+            if (dbRecipient != null && dbRecipient.getEmail() != null && StringUtils.validateEmailAddress(dbRecipient.getEmail())) {
+                FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(dbRecipient.getId());
+                this.emailService.sendShareNotification(dbRecipient.getEmail(), fileInfoRecipient,
+                        recipient.getMessage());
+            }
+        }
+
     }
 
     @Data

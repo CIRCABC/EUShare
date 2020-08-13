@@ -3,6 +3,7 @@ server:
 cors:
   origin: '*'
 easyshare:
+  clientHttpAddress: http://localhost:4200
   expirationdays: 7
   defaultuserspace: 5368709120
   # 4Gb
@@ -39,7 +40,7 @@ spring:
       ddl-auto: create
   mail:
     host: localhost
-    port: 25
+    port: 1025
     username: username
     password: password
   servlet:

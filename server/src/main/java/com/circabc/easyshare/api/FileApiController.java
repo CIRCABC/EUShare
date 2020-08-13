@@ -13,9 +13,10 @@ package com.circabc.easyshare.api;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
+
+import javax.mail.MessagingException;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.exceptions.CouldNotAllocateFileException;
@@ -210,7 +211,8 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID, @RequestPart("file") MultipartFile body){
+    public ResponseEntity<FileInfoUploader> postFileContent(@PathVariable("fileID") String fileID,
+            @RequestPart("file") MultipartFile body) {
         if ((body == null) || body.getSize() == 0L) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
@@ -236,7 +238,7 @@ public class FileApiController implements FileApi {
             log.warn(exc2.getMessage(), exc2);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
                     exc2);
-        } catch (IllegalFileStateException | CouldNotSaveFileException exc3) {
+        } catch (IllegalFileStateException | CouldNotSaveFileException | MessagingException exc3) {
             log.error(exc3.getMessage(), exc3);
             // should never occur
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
@@ -278,6 +280,9 @@ public class FileApiController implements FileApi {
         } catch (WrongEmailStructureException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403WrongEmailStructureToString(), e);
+        } catch (MessagingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString(), e);
         }
     }
 

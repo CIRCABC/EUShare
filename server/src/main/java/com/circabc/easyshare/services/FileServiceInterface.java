@@ -13,6 +13,8 @@ package com.circabc.easyshare.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.mail.MessagingException;
+
 import com.circabc.easyshare.exceptions.CouldNotAllocateFileException;
 import com.circabc.easyshare.exceptions.CouldNotSaveFileException;
 import com.circabc.easyshare.exceptions.DateLiesInPastException;
@@ -42,7 +44,7 @@ public interface FileServiceInterface {
 
         public RecipientWithLink addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
                         throws UnknownFileException, UserUnauthorizedException, UnknownUserException,
-                        WrongNameStructureException, WrongEmailStructureException, MessageTooLongException;
+                        WrongNameStructureException, WrongEmailStructureException, MessageTooLongException, MessagingException;
 
         public DownloadReturn downloadFile(String fileId, String password) throws UnknownFileException,
                         WrongPasswordException, UserUnauthorizedException, UnknownUserException;
@@ -62,7 +64,7 @@ public interface FileServiceInterface {
         public FileInfoUploader saveOnBehalfOf(String fileId, MultipartFile multipartFile, String requesterId)
                         throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
                         UserUnauthorizedException, CouldNotSaveFileException, EmptyFilenameException,
-                        IllegalFileSizeException;
+                        IllegalFileSizeException, MessagingException;
 
         public void deleteFileOnBehalfOf(String fileId, String reason, String requesterId)
                         throws UnknownFileException, UserUnauthorizedException, UnknownUserException;

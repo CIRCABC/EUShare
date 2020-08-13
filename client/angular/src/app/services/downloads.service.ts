@@ -67,7 +67,8 @@ export class DownloadsService {
   public downloadAFile(
     fileId: string,
     fileName: string,
-    inputPassword?: string
+    inputPassword?: string,
+    withSubcription?: boolean
   ): Observable<DownloadInProgress> {
     const currentDownloadInProgressOrUndefined = this.currentDownloadsInProgress.get(
       fileId
@@ -86,9 +87,12 @@ export class DownloadsService {
         downloadInProgressObservable: newDownloadObservable,
         fileId: fileId
       };
-      this.nextDownloadsInProgressSubject.next(
-        downloadInProgressObservableWithMeta
-      );
+      if (!withSubcription) {
+        this.nextDownloadsInProgressSubject.next(
+          downloadInProgressObservableWithMeta
+        );
+      }
+      
       return newDownloadObservable;
     }
   }

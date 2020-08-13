@@ -3,6 +3,7 @@ cors:
 server:
   port: 8888
 easyshare:
+  clientHttpAddress: http://localhost:4200
   expirationdays: 7
   defaultuserspace: 5368709120
   # 4Gb

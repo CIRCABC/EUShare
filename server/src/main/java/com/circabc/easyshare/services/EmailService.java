@@ -11,10 +11,14 @@
 package com.circabc.easyshare.services;
 
 import java.net.ConnectException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Base64;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import com.circabc.easyshare.configuration.EasyShareConfiguration;
 import com.circabc.easyshare.model.FileBasics;
 import com.circabc.easyshare.model.FileInfoRecipient;
 
@@ -25,14 +29,20 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Service for sending emails from EasyShare
  */
+@Slf4j
 @Service
 public class EmailService implements EmailServiceInterface {
     private static final String DOWNLOADER = "downloader";
     private static final String FILENAME = "filename";
     private static final String UPLOADER = "uploader";
+    private static final String REASON = "reason";
+    private static final String MESSAGE = "message";
+    private static final String LINK = "link";
 
     @Autowired
     private JavaMailSender sender;
@@ -40,14 +50,19 @@ public class EmailService implements EmailServiceInterface {
     @Autowired
     private TemplateEngine templateEngine;
 
-    private void sendMessage(String recipient, String content) throws MessagingException {
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
-        helper.setTo(recipient);
-        helper.setText(content, true);
-        helper.setSubject("Easy share download !");
+    @Autowired
+    private EasyShareConfiguration esConfig;
 
-        sender.send(message);
+    private void sendMessage(String recipient, String content) throws MessagingException {
+        if (esConfig.isActivateMailService()) {
+            MimeMessage message = sender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+            helper.setTo(recipient);
+            helper.setText(content, true);
+            helper.setSubject("EUShare notification");
+
+            sender.send(message);
+        }
     }
 
     /**
@@ -61,7 +76,7 @@ public class EmailService implements EmailServiceInterface {
         ctx.setVariable(DOWNLOADER, downloaderId);
         ctx.setVariable(FILENAME, fileInfo.getName());
         String content = this.templateEngine.process("mail/html/download-notification", ctx);
-        sendMessage(recipient, content);
+        this.sendMessage(recipient, content);
     }
 
     /**
@@ -72,10 +87,10 @@ public class EmailService implements EmailServiceInterface {
             throws MessagingException {
         Context ctx = new Context();
         ctx.setVariable(FILENAME, fileInfo.getName());
-        ctx.setVariable("reason", reason);
+        ctx.setVariable(REASON, reason);
         String content = this.templateEngine.process("mail/html/delete-notification", ctx);
 
-        sendMessage(recipient, content);
+        this.sendMessage(recipient, content);
     }
 
     /**
@@ -87,8 +102,28 @@ public class EmailService implements EmailServiceInterface {
         Context ctx = new Context();
         ctx.setVariable(FILENAME, fileInfo.getName());
         ctx.setVariable(UPLOADER, fileInfo.getUploaderName());
-        ctx.setVariable("message", message);
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.esConfig.getClientHttpAddress());
+        sb.append("/filelink/");
+        sb.append(fileInfo.getFileId());
+        sb.append("/");
+        sb.append(Base64.getUrlEncoder().withoutPadding().encodeToString(fileInfo.getName().getBytes()));
+        sb.append("/");
+        if (fileInfo.getHasPassword()) {
+            sb.append("1");
+        } else {
+            sb.append("0");
+        }
+
+        try {
+            URI linkUri = new URI(sb.toString());
+            ctx.setVariable(LINK, linkUri.toASCIIString());
+        } catch (URISyntaxException e) {
+            log.error(e.getReason(), e);
+        }
+        
+        ctx.setVariable(MESSAGE, message);
         String content = this.templateEngine.process("mail/html/share-notification", ctx);
-        sendMessage(recipient, content);
+        this.sendMessage(recipient, content);
     }
 }

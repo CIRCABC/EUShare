@@ -46,6 +46,9 @@ public class EasyShareConfiguration {
     @NotNull
     private long maxSizeAllowedInBytes;
 
+    @NotNull
+    private String clientHttpAddress;
+
     public LocalDate defaultExpirationDate() {
         return LocalDate.now().plusDays(expirationDays);
     }

@@ -8,6 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
+import { VERSION } from '../../environments/version';
 
 @Component({
   selector: 'app-footer',
@@ -15,6 +16,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
+  public version = VERSION;
+  public hash = this.version.hash;
+  
   constructor() {}
 
   ngOnInit() {}
