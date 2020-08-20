@@ -87,10 +87,6 @@ export class DownloadCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.downloadsService.displayArrow$.subscribe(next => {
-      this.showDownloadArrow = next;
-    });
-
     this.downloadsService.displayDownloads$.subscribe(next => {
       if (next) {
         this.display();

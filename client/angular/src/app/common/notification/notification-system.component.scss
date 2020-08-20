@@ -7,3 +7,22 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
+.box--messages {
+  position: fixed;
+  z-index: 99999;
+  top: 20px;
+  left: 0;
+  right: 0;
+  width: 800px;
+  padding: 0 15px;
+  margin-left: auto;
+  margin-right: auto;
+  max-height: 800px;
+  overflow-y: auto;
+
+  @media screen and (max-width: 800px) {
+    width: 100%;
+  }
+}
+

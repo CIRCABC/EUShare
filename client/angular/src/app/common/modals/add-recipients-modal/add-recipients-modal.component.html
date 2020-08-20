@@ -2,7 +2,11 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Add recipient to <br> <strong>{{ modalFileName }}</strong></p>
+      <p class="modal-card-title">Add recipient to <br> <strong>
+        {{ modalFileName.length > 25
+          ? (modalFileName | slice: 0:25) + "..."
+          : modalFileName }}
+      </strong></p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
@@ -35,7 +39,7 @@
           </div>
         </div>
         <div *ngIf="addRecipientsByEmailOrByLink">
-          <app-email-input formControlName="email"></app-email-input>
+          <app-email-input formControlName="email" [showAddRecipient]=false></app-email-input>
           <app-message-text-area
             formControlName="message"
           ></app-message-text-area>
@@ -47,7 +51,7 @@
     </section>
     <footer class="modal-card-foot">
       <button
-        class="button is-link"
+        class="button"
         (click)="onSubmit()"
         [class.is-loading]="uploadInProgress"
         type="submit"

@@ -1,0 +1,29 @@
+@import '../../../styles.scss';
+
+.wrap-header {
+  padding: 0 50px;
+  display: flex;
+  height: 65px;
+
+  @media screen and (max-width: 600px) {
+    padding: 0 25px;
+  }
+
+  .home-link {
+    display: inline-block;
+  }
+}
+
+.right-side {
+  flex: 1;
+  text-align: right;
+}
+
+@media screen and (max-width: 600px) {
+  .home-link {
+    display: none;
+  }
+  .responsive-hidden {
+    display: none;
+  }
+}

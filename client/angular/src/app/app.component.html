@@ -1,5 +1,5 @@
 
-<app-header></app-header>
+<app-cbc-header></app-cbc-header>
 <app-navbar></app-navbar>
 <app-share-with-users-modal></app-share-with-users-modal>
 <app-download-modal></app-download-modal>
@@ -9,5 +9,5 @@
     <app-notification-system></app-notification-system>
     <router-outlet></router-outlet>
 </div>
-<app-download-card></app-download-card>
-<app-footer></app-footer>
+<app-download-card *ngIf="showRightDownload"></app-download-card>
+<!-- <app-footer></app-footer> -->

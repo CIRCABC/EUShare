@@ -62,6 +62,8 @@
     "@fortawesome/angular-fontawesome": "^0.7.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.29",
     "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@ngx-translate/core": "^13.0.0",
+    "@ngx-translate/http-loader": "^6.0.0",
     "@schematics/angular": "^10.0.1",
     "@schematics/update": "^0.1000.1",
     "@types/jsrsasign": "^8.0.3",
@@ -82,7 +84,8 @@
     "rxjs": "^6.5.3",
     "sass-loader": "^9.0.2",
     "utf-8-validate": "^5.0.2",
-    "zone.js": "^0.10.3"
+    "zone.js": "^0.10.3",
+    "ubuntu-fontface": "0.1.13"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1000.1",

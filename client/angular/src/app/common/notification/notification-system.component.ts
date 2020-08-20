@@ -26,6 +26,7 @@ export class NotificationSystemComponent implements OnDestroy {
     this.messageAnnouncedSubscription$ = this.notificationService.messageAnnounced$.subscribe(
       (message: NotificationMessage) => {
         this.messages.push(message);
+        window.scroll(0,0);
       }
     );
 

@@ -11,6 +11,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NotificationLevel } from './notification-level';
 import { NotificationMessage } from './notification-message';
 import { NotificationService } from './notification.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-notification',
@@ -23,7 +24,8 @@ export class NotificationComponent implements OnInit {
   public message!: NotificationMessage;
   public animationClass = 'ui-message-show';
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService,
+    private translateService: TranslateService) {}
 
   ngOnInit(): void {
     if (this.message) {
@@ -46,21 +48,38 @@ export class NotificationComponent implements OnInit {
   public getClassPerLevel(notificationLevel: NotificationLevel) {
     switch (notificationLevel) {
       case NotificationLevel.SUCCESS: {
-        return 'notification is-success';
+        return 'notification box--message--success';
       }
       case NotificationLevel.INFO: {
-        return 'notification is-info';
+        return 'notification box--message--information';
       }
       case NotificationLevel.WARNING: {
-        return 'notification is-warning';
+        return 'notification box--message--warning';
       }
       case NotificationLevel.ERROR: {
-        return 'notification is-danger';
+        return 'notification box--message--error';
       }
     }
   }
 
+
   public closeMessage(): void {
     this.notificationService.removeMessage(this.message);
+  }
+
+  get imageInfoLink(): string {
+    return 'assets/img/info-signs.png';
+  }
+
+  get imageExclamationLink(): string {
+    return 'assets/img/exclamation.png';
+  }
+
+  get imageErrorLink(): string {
+    return 'assets/img/error-sign.png';
+  }
+
+  get imageCheckMarkLink(): string {
+    return 'assets/img/check-mark.png';
   }
 }

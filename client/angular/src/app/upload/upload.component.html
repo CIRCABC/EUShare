@@ -1,175 +1,177 @@
 <div class="centered">
   <h1 class="title">Share a new file</h1>
-  <h2 class="subtitle">
+  <h2 class="subtitle is-family-secondary is-uppercase">
     You can upload up to {{ leftSpaceInBytes | fileSizeFormat }} ({{
       totalSpaceInBytes | fileSizeFormat
     }}
     quota)
   </h2>
-  <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
-    <div>
-      <!-- DRAG AND DROP-->
-      <div class="field">
-        <label class="label">File</label>
-        <div class="file" [class.has-name]="getFileFromDisk() !== undefined">
-          <label class="file-label">
-            <!-- INPUT -->
-            <input
-              appEsFileInput
-              id="fileFromDisk"
-              class="file-input"
-              type="file"
-              formControlName="fileFromDisk"
-            />
-            <span class="file-cta">
-              <span class="file-label">
-                Browse...
+  <div class="formContainer">
+    <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
+      <div>
+        <!-- DRAG AND DROP-->
+        <div class="field">
+          <label class="label">File</label>
+          <div class="file has-name is-boxed " [class.has-name]="getFileFromDisk() !== undefined">
+            <label class="file-label">
+              <!-- INPUT -->
+              <input
+                appEsFileInput
+                id="fileFromDisk"
+                class="file-input"
+                type="file"
+                formControlName="fileFromDisk"
+              />
+              <span class="button cta--plus is-bigger">
+                <span class="file-label">
+                  Add File
+                </span>
               </span>
-            </span>
-            <!-- FILE SIZE AND NAME -->
-            <span *ngIf="getFileFromDisk()" class="file-name">
-              {{ getFileFromDisk()?.name }}
-              ({{ getFileFromDisk()?.size }} Bytes)
-            </span>
-          </label>
-          <label
-            class="label error"
-            *ngIf="
-              uf['fileFromDisk'].errors &&
-              uf['fileFromDisk'].errors.forbiddenFileSize
+              <!-- FILE SIZE AND NAME -->
+              <span *ngIf="getFileFromDisk()" class="file-name">
+                {{ getFileFromDisk()?.name }}
+                ({{ getFileFromDisk()?.size }} Bytes)
+              </span>
+            </label>
+            <label
+              class="label error"
+              *ngIf="
+                uf['fileFromDisk'].errors &&
+                uf['fileFromDisk'].errors.forbiddenFileSize
+              "
+              >File size bigger than
+              {{ uf["fileFromDisk"].errors.forbiddenFileSize.value }} bytes
+            </label>
+          </div>
+        </div>
+        <div class="field">
+          <!-- DRAG AND DROP BOX -->
+          <div (drop)="drop($event)" class="container">
+            <div class="notification dragAndDrop">
+              Or simply drag and drop one file here
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="field">
+        <label class="label">How do you want to share your file?</label>
+        <div class="field-body">
+          <div class="field is-narrow">
+            <div class="control">
+              <label
+                class="radio tooltip"
+                data-tooltip="Send a link to your
+               file in an email"
+              >
+                <input
+                  type="radio"
+                  id="radioEmail"
+                  required
+                  formControlName="emailOrLink"
+                  (click)="resetRecipientsEmail()"
+                  value="Email"
+                />
+                Email
+              </label>
+              <label
+                class="radio tooltip"
+                data-tooltip="Generate a link to your file
+               and share it however you prefer"
+              >
+                <input
+                  id="radioLink"
+                  type="radio"
+                  (click)="resetRecipientsLink()"
+                  required
+                  formControlName="emailOrLink"
+                  value="Link"
+                />
+                Link
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- EMAILS AND USER NAMES -->
+      <div class="field">
+        <!-- EMAIL AND MESSAGES -->
+        <div
+          *ngIf="emailOrLinkIsEmail()"
+          formArrayName="emailMessageArray"
+          class="column is-half-desktop emailColumn"
+        >
+          <div
+            [formGroupName]="i"
+            *ngFor="
+              let emailAndMessageFg of emailMessageArray.controls;
+              let i = index
             "
-            >File size bigger than
-            {{ uf["fileFromDisk"].errors.forbiddenFileSize.value }} bytes
-          </label>
+            class="media"
+          >
+            <div class="media-content">
+              <!-- EMAIL ARRAY -->
+              <div formArrayName="emailArray">
+                <div
+                  [formGroupName]="j"
+                  *ngFor="
+                    let emailIndexed of getEmailArrayOnForm(emailAndMessageFg);
+                    let j = index
+                  "
+                >
+                  <!-- DISPLAYED EMAILS -->
+                  <div class="displayedEmail">
+                    {{ getEmailControlValue(i, j) }}
+                    <a (click)="deleteEmailFormGroup(i, j)">
+                      <fa-icon
+                        class="icon is-small"
+                        [icon]="faUserSlash"
+                      ></fa-icon>
+                    </a>
+                  </div>
+                  <div
+                    class="emailContainer"
+                    *ngIf="j === getEmailArrayLength(i) - 1"
+                  ></div>
+                </div>
+              </div>
+              <app-email-input
+                *ngIf="isShowEmailControl"
+                (downClick)="addEmailFormGroup(i)"
+                [formControl]="emailControl"
+              ></app-email-input>
+              <app-message-text-area
+                formControlName="message"
+              ></app-message-text-area>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="emailOrLinkIsLink()"
+          formArrayName="linkArray"
+          class="column is-half-desktop emailColumn"
+        >
+          <div
+            *ngFor="let recipientName of linkArray.controls; let i = index"
+            class="media"
+          >
+            <div [formGroupName]="i" class="media-content">
+              <app-link-input formControlName="name"></app-link-input>
+            </div>
+          </div>
         </div>
       </div>
       <div class="field">
-        <!-- DRAG AND DROP BOX -->
-        <div (drop)="drop($event)" class="container">
-          <div class="notification dragAndDrop">
-            Or simply drag and drop one file here
-          </div>
-        </div>
+        <label class="label">File password (optional)</label>
+        <input
+          formControlName="password"
+          class="input"
+          type="password"
+          placeholder="Password on file download"
+          value=""
+        />
       </div>
-    </div>
-    <br />
-    <div class="field">
-      <label class="label">How do you want to share your file?</label>
-      <div class="field-body">
-        <div class="field is-narrow">
-          <div class="control">
-            <label
-              class="radio tooltip"
-              data-tooltip="Send a link to your
-               file in an email"
-            >
-              <input
-                type="radio"
-                id="radioEmail"
-                required
-                formControlName="emailOrLink"
-                (click)="resetRecipientsEmail()"
-                value="Email"
-              />
-              Email
-            </label>
-            <label
-              class="radio tooltip"
-              data-tooltip="Generate a link to your file
-               and share it however you prefer"
-            >
-              <input
-                id="radioLink"
-                type="radio"
-                (click)="resetRecipientsLink()"
-                required
-                formControlName="emailOrLink"
-                value="Link"
-              />
-              Link
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- EMAILS AND USER NAMES -->
-    <div class="field">
-      <!-- EMAIL AND MESSAGES -->
-      <div
-        *ngIf="emailOrLinkIsEmail()"
-        formArrayName="emailMessageArray"
-        class="column is-half-desktop emailColumn"
-      >
-        <div
-          [formGroupName]="i"
-          *ngFor="
-            let emailAndMessageFg of emailMessageArray.controls;
-            let i = index
-          "
-          class="media"
-        >
-          <div class="media-content">
-            <!-- EMAIL ARRAY -->
-            <div formArrayName="emailArray">
-              <div
-                [formGroupName]="j"
-                *ngFor="
-                  let emailIndexed of getEmailArrayOnForm(emailAndMessageFg);
-                  let j = index
-                "
-              >
-                <!-- DISPLAYED EMAILS -->
-                <div class="displayedEmail">
-                  {{ getEmailControlValue(i, j) }}
-                  <a (click)="deleteEmailFormGroup(i, j)">
-                    <fa-icon
-                      class="icon is-small"
-                      [icon]="faUserSlash"
-                    ></fa-icon>
-                  </a>
-                </div>
-                <div
-                  class="emailContainer"
-                  *ngIf="j === getEmailArrayLength(i) - 1"
-                ></div>
-              </div>
-            </div>
-            <app-email-input *ngIf="isShowEmailControl"
-              (downClick)="addEmailFormGroup(i)"
-              [formControl]="emailControl"
-            ></app-email-input>
-            <app-message-text-area
-              formControlName="message"
-            ></app-message-text-area>
-          </div>
-        </div>
-      </div>
-      <div
-        *ngIf="emailOrLinkIsLink()"
-        formArrayName="linkArray"
-        class="column is-half-desktop emailColumn"
-      >
-        <div
-          *ngFor="let recipientName of linkArray.controls; let i = index"
-          class="media"
-        >
-          <div [formGroupName]="i" class="media-content">
-            <app-link-input formControlName="name"></app-link-input>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="field">
-      <label class="label">File password (optional)</label>
-      <input
-        formControlName="password"
-        class="input"
-        type="password"
-        placeholder="Password on file download"
-        value=""
-      />
-    </div>
-    <!-- <div class="field">
+      <!-- <div class="field">
       <label class="label">Expiration date (default is 7 days from now)</label>
       <p-calendar
         [minDate]="getTomorrow()"
@@ -183,25 +185,26 @@
       >
       </p-calendar>
     </div> -->
-    <br />
-    <div class="field">
-      <button
-        class="button is-link"
-        [class.is-loading]="uploadInProgress"
-        type="submit"
-        [disabled]="!uploadform.valid"
-      >
-        Submit
-      </button>
-    </div>
-    <div *ngIf="uploadInProgress">
-      {{ percentageUploaded }}%
-      <progress
-        class="progress is-success"
-        value="{{ percentageUploaded }}"
-        max="100"
-        >{{ percentageUploaded }}%</progress
-      >
-    </div>
-  </form>
+      <br />
+      <div class="field">
+        <button
+          class="button"
+          [class.is-loading]="uploadInProgress"
+          type="submit"
+          [disabled]="!uploadform.valid"
+        >
+          Submit
+        </button>
+      </div>
+      <div *ngIf="uploadInProgress">
+        {{ percentageUploaded }}%
+        <progress
+          class="progress is-success"
+          value="{{ percentageUploaded }}"
+          max="100"
+          >{{ percentageUploaded }}%</progress
+        >
+      </div>
+    </form>
+  </div>
 </div>

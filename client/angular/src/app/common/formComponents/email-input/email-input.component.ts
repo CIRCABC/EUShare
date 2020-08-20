@@ -15,7 +15,8 @@ import {
   Optional,
   OnInit,
   Output,
-  EventEmitter
+  EventEmitter,
+  Input
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 
@@ -28,6 +29,9 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
   onChange!: (_: any) => void;
   onTouched!: () => void;
+
+  @Input("showAddRecipient")
+  public showAddRecipient = true;
 
   @ViewChild('input', { static: true }) input!: ElementRef;
 

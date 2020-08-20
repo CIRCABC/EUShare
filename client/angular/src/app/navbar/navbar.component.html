@@ -1,4 +1,4 @@
-<nav class="navbar is-link" role="navigation">
+<nav class="navbar" role="navigation">
   <div class="container">
     <div class="navbar-brand">
       <a class="navbar-item" routerLink="home">
@@ -28,39 +28,35 @@
       [class.is-active]="isBurgerActive"
     >
       <div *ngIf="loggedIn" class="navbar-start">
-        <a class="navbar-item" routerLink="home">
-          <fa-icon class="faIcon" [icon]="faUsers"></fa-icon>
-          My shared files
+        <a (click)="toggleBurger()" routerLinkActive="tab--current" class="navbar-item is-family-secondary my-shared-files" routerLink="home">
+          <span class="spanlabel">My shared files</span>
         </a>
-        <a class="navbar-item" routerLink="download">
-          <fa-icon class="faIcon" [icon]="faCloudDownloadAlt"></fa-icon>
-          Shared with me
+        <a (click)="toggleBurger()" routerLinkActive="tab--current" class="navbar-item is-family-secondary shared-with-me" routerLink="download">
+          <span class="spanlabel">Shared with me</span>
         </a>
-        <a *ngIf="isAdmin" class="navbar-item" routerLink="administration">
-          <fa-icon class="faIcon" [icon]="faUsersCog"></fa-icon>
-          Administration
+        <a (click)="toggleBurger()" routerLinkActive="tab--current" *ngIf="isAdmin" class="navbar-item is-family-secondary administration" routerLink="administration">
+          <span class="spanlabel">Administration</span>
         </a>
       </div>
       <div class="navbar-end">
-        <div *ngIf="loggedIn" class="navbar-item">
-          <button class="button is-info" routerLink="upload">
+        <div *ngIf="loggedIn" class="navbar-item is-family-secondary">
+          <button (click)="toggleBurger()" class="button is-info" routerLink="upload">
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
             </span>
             Share a new file
           </button>
         </div>
-        <div *ngIf="loggedIn" class="navbar-item">
-          <button class="button is-danger" (click)="logout()">
+        <div (click)="toggleBurger()" *ngIf="loggedIn" class="navbar-item">
+          <button class="button is-danger is-family-secondary" (click)="logout()">
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faSignOutAlt"></fa-icon>
             </span>
             Logout
           </button>
         </div>
-        <a routerLink="myUser" *ngIf="loggedIn" class="navbar-item">
+        <a routerLink="myUser" *ngIf="loggedIn" class="navbar-item is-family-secondary">
           Logged as {{ userName }}
-          <div class="avatar"><img src="assets/avatar.png" /></div>
         </a>
       </div>
     </div>

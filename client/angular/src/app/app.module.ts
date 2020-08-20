@@ -7,8 +7,10 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, HttpClient} from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -57,6 +59,20 @@ import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.com
 import { DownloadCardComponent } from './common/download-card/download-card.component';
 import { UploadSucessComponent } from './upload-sucess/upload-sucess.component';
 import { UploadSuccessGuard } from './upload-success.guard';
+import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
+import { CbcEcLogoAppComponent } from './header/cbc-ec-logo-app/cbc-ec-logo-app.component';
+import { CbcPersonalMenuComponent } from './header/cbc-personal-menu/cbc-personal-menu.component';
+import { CbcLangSelectorComponent } from './header/cbc-lang-selector/cbc-lang-selector.component';
+import { PersonalMenuComponent } from './header/personal-menu/personal-menu.component';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -151,10 +167,21 @@ const routes: Routes = [
     PrivacyStatementComponent,
     TermsOfServiceComponent,
     DownloadCardComponent,
-    UploadSucessComponent
+    UploadSucessComponent,
+    CbcHeaderComponent,
+    CbcEcLogoAppComponent,
+    CbcPersonalMenuComponent,
+    CbcLangSelectorComponent,
+    PersonalMenuComponent
   ],
   imports: [
     ApiModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: (createTranslateLoader),
+          deps: [HttpClient]
+      }}),
     BrowserModule,
     ReactiveFormsModule,
     CalendarModule,
