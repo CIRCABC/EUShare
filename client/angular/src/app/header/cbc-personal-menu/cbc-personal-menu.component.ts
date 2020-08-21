@@ -25,12 +25,18 @@ export class CbcPersonalMenuComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  euLogin() {}
-  isGuest() {}
+  euLogin() {
+    return true;
+  }
+  isGuest() {
+    return true;
+  }
 
   isUser() {
     return true;
   }
 
-  isAppAdmin() {}
+  isAppAdmin() {
+    return true;
+  }
 }
