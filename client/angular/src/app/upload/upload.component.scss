@@ -8,6 +8,30 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 @import "../../styles.scss";
+
+.formContainer {
+  background-color: $background;
+  padding: 1.5rem;
+  border-radius: 4px;
+}
+
+h2 {
+  // font-weight: 300 !important;
+  // font-size: 13px !important;
+  text-transform: uppercase;
+  // margin-bottom: 8px;
+}
+
+.is-bigger {
+  width: 16rem;
+  padding-right: calc(0.70rem + 35px) !important;
+}
+
+.container {
+  border: 2px dashed #999;
+}
+
+
 .error {
   color: red;
 }

@@ -1,4 +1,38 @@
-<div class="{{getClassPerLevel(message.level)}} {{animationClass}}">
-  <button class="delete" type="button" (click)="closeMessage()" ></button>
-  {{message.body}}
-</div>
+<section class="{{getClassPerLevel(message.level)}} {{animationClass}}">
+  <header class="header" style="background-color: rgba(255, 255, 255, 0.3);">
+    <span class="title" [ngSwitch]="message.level">
+      <ng-template [ngSwitchCase]="0">
+        {{ 'label.information' | translate }}
+      </ng-template>
+      <ng-template [ngSwitchCase]="1">
+        {{ 'label.warning' | translate }}
+      </ng-template>
+      <ng-template [ngSwitchCase]="2">
+        {{ 'label.error' | translate }}
+      </ng-template>
+      <ng-template [ngSwitchCase]="3">
+        {{ 'label.success' | translate }}
+      </ng-template>
+    </span>
+    <span style="float: right;">
+      <a (click)="closeMessage()">{{ 'label.close' | translate }}</a>
+    </span>
+  </header>
+  <div class="box--message--icon" [ngSwitch]="message.level">
+    <ng-template [ngSwitchCase]="0">
+      <img src="{{ imageInfoLink }}" />
+    </ng-template>
+    <ng-template [ngSwitchCase]="1">
+      <img src="{{ imageExclamationLink }}" />
+    </ng-template>
+    <ng-template [ngSwitchCase]="2">
+      <img src="{{ imageErrorLink }}" />
+    </ng-template>
+    <ng-template [ngSwitchCase]="3">
+      <img src="{{ imageCheckMarkLink }}" />
+    </ng-template>
+  </div>
+  <div class="box--message--content">
+    {{message.body}}
+  </div>
+</section>

@@ -1,0 +1,71 @@
+<div class="personal-menu">
+    <span class="personal-menu__name">
+      <a
+        [routerLink]="['/login']"
+        style="color: #fff;"
+        *ngIf="isGuest()"
+        >{{ 'label.login' | translate }}</a
+      >
+      <span style="color: #fff;" *ngIf="isUser()">{{
+        user.firstname + ' ' + user.lastname
+      }}</span>
+    </span>
+    <span *ngIf="isGuest()" class="ctn-img">
+      <img src="assets/img/thumbnail-profile.png" alt="Guest" class="img-default" />
+      <a (click)="euLogin()" style="color: #fff;" *ngIf="isGuest() && useEULogin"
+        ><img src="assets/img/thumbnail-profile.png" alt="Guest"
+      /></a>
+      <a
+        [routerLink]="['/login']"
+        style="color: #fff;"
+        *ngIf="isGuest() && !useEULogin"
+        ><img src="assets/img/thumbnail-profile.png" alt="Guest"
+      /></a>
+    </span>
+    <span *ngIf="isUser()" class="ctn-img">
+      <img
+        *ngIf="user.lastname"
+        [attr.src]="user.avatar"
+        alt="Guest"
+      />
+    </span>
+    <!-- DEMO DROPDOWN MENU -->
+    <div class="dropdown dropdown--personal-menu" *ngIf="!isGuest()">
+      <section class="dropdown--personal-menu__sidebar">
+        <nav>
+          <div class="links-group">
+            <a [routerLink]="['/me']">{{ 'label.dashboard' | translate }}</a>
+            <a [routerLink]="['/me/calendar']">{{
+              'personal-menu.calendar' | translate
+            }}</a>
+            <a [routerLink]="['/me/roles']">{{ 'label.my.roles' | translate }}</a>
+          </div>
+          <div class="links-group">
+            <a [routerLink]="['/me/account']">{{
+              'personal-menu.account' | translate
+            }}</a>
+          </div>
+          <div class="links-group">
+            <a [routerLink]="['/login/logout']">{{
+              'label.logout' | translate
+            }}</a>
+          </div>
+          <div class="links-group" *ngIf="isAppAdmin()">
+            <a [routerLink]="['/support']">{{
+              'label.support.area' | translate
+            }}</a>
+          </div>
+          <div class="links-group">
+            <a [routerLink]="['/help']">{{ 'label.help' | translate }}</a>
+            <a [routerLink]="['/help/contact']">{{
+              'welcome.contact' | translate
+            }}</a>
+            <a [routerLink]="['/help/legal-notice']">{{
+              'label.legal.notice' | translate
+            }}</a>
+          </div>
+        </nav>
+      </section>
+    </div>
+  </div>
+  

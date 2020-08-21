@@ -8,12 +8,14 @@ $ec-green: #467A39;
 $ec-grey: #404040;
 $ec-red: #DA2131;
 $ec-light-grey: #F5F5F5;
+$ec-white: #fff;
 
 $pastel-light-red: #ed8e89;
 $pastel-light-orange: #f7b685;
 $pastel-light-yellow: #f3eba5;
 $pastel-light-green: #94c691;
 $pastel-light-blue: #9bd6d9;
+$pastel-light-light-blue: #9bd6d973;
 
 $pastel-green: #8bc90b;
 $pastel-yellow: #f4e02b;
@@ -35,7 +37,7 @@ $ec-font-family: Arial, sans-serif;
 $ec-font-size: 0.75rem; //12px
 $ec-font-weight: 400;
 $ec-bold-font-weight: 600;
-$ec-font-color: #404040;
+$ec-font-color: #5b5b5b;
 // line long 75-85 characters
 
 /** HEADING 1 **/
@@ -65,9 +67,22 @@ $ec-p-font-weight: 400;
 /** --------------------- ELEMENTS  --------------------- **/
 /** NAVBAR **/
 $ec-navbar-item-hover-background-color: $ec-light-blue;
-$ec-navbar-background-color: $ec-blue;
+$ec-navbar-background-color: $ec-white;
 $ec-navbar-item-color: $ec-light-grey;
 $ec-navbar-item-hover-color: $ec-light-grey;
+$ec-navbar-height: 3.5rem;
+$ec-navbar-box-shadow-size: 2px;
+$ec-navbar-box-shadow-color: rgba(0,0,0,.3);
+
+/** TITLE **/
+$ec-title-color: #035;
+$ec-title-size: 24px;
+
+$ec-subtitle-weight: 300;
+
+/** MENU **/
+$ec-menu-item-hover-background-color: $pastel-light-light-blue;
+$ec-menu-item-active-background-color: $pastel-light-light-blue;
 
 /** COOKIE CONSENT KIT **/
 .cookie-consent-banner {

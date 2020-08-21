@@ -10,7 +10,7 @@
         placeholder="User's name OR email"
       />
       <a
-        class="button is-link is-outlined"
+        class="button"
         [class.is-loading]="searchIsLoading"
         (click)="search()"
         >Search</a
@@ -34,13 +34,13 @@
         >
           <a
             *ngIf="pageNumber > 0"
-            class="pagination-previous button is-link is-outlined"
+            class="pagination-previous button"
             (click)="resultsPreviousPage()"
             >Previous</a
           >
           <a
             *ngIf="userInfoArrayNext.length > 0"
-            class="pagination-next button is-link is-outlined"
+            class="pagination-next button"
             (click)="resultsNextPage()"
             >Next page</a
           >
@@ -91,26 +91,26 @@
         </div>
         <a
           *ngIf="isChangePermissions"
-          class="button is-link is-outlined"
+          class="button"
           [class.is-loading]="changeIsLoading"
           (click)="changePermissions()"
           >Done</a
         >
         <a
           *ngIf="isChangePermissions"
-          class="button is-danger is-outlined buttonMargin"
+          class="button buttonMargin"
           (click)="toggleChangePermissions()"
           >Cancel</a
         >
         <a
           *ngIf="!isChangePermissions"
-          class="button is-link is-outlined"
+          class="button"
           (click)="toggleChangePermissions()"
           >Change permissions</a
         >
         <a
           *ngIf="!isChangePermissions"
-          class="button is-link is-outlined buttonMargin"
+          class="button buttonMargin"
           (click)="goToUserUploadedFiles()"
           >Display shared files</a
         >

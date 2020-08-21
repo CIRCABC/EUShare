@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-@import '../../../styles.scss';
+@import "../../../styles.scss";
 
 @keyframes ui-message-shown {
   0% {
@@ -48,4 +48,58 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 .notification {
   margin-top: 0.2em;
   z-index: 45;
+}
+
+.box--message {
+  color: #757575;
+  font-size: 14px;
+  background-color: #f3fafa;
+  border-radius: 5px;
+  box-shadow: 0 0 15px #5b5b5b;
+}
+
+.box--message--information {
+  border-bottom: 3px solid #035;
+  border-top: 3px solid #035;
+}
+
+.box--message--error {
+  border-bottom: 3px solid #7a0000;
+  border-top: 3px solid #7a0000;
+}
+
+.box--message--success {
+  border-bottom: 3px solid #58c37e;
+  border-top: 3px solid #58c37e;
+}
+
+.box--message--warning {
+  border-bottom: 3px solid #ffc133;
+  border-top: 3px solid #ffc133;
+}
+
+.box--message--content {
+  padding: 25px;
+  padding-left: 128px;
+  box-shadow: unset;
+
+  ::ng-deep ol {
+    margin-left: 30px;
+    list-style-type: decimal;
+  }
+
+  ::ng-deep ul {
+    margin-left: 30px;
+    list-style-type: circle;
+  }
+}
+
+.box--message--icon {
+  width: 64px;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  padding-left: 1vw;
+  padding-right: 1vw ;
+  text-align: center;
+  float: left;
 }

@@ -38,9 +38,6 @@ export class DownloadsService {
   private displayDownloadsSubject = new Subject<boolean>();
   public displayDownloads$ = this.displayDownloadsSubject.asObservable();
 
-  private displayArrowSubject = new Subject<boolean>();
-  public displayArrow$ = this.displayArrowSubject.asObservable();
-
   constructor(
     private fileApi: FileService,
     private notificationService: NotificationService
@@ -58,10 +55,6 @@ export class DownloadsService {
 
   public displayDownloadsBox() {
     this.displayDownloadsSubject.next(true);
-  }
-
-  public showDownloadArrow(show: boolean) {
-    this.displayArrowSubject.next(show);
   }
 
   public downloadAFile(
@@ -92,7 +85,7 @@ export class DownloadsService {
           downloadInProgressObservableWithMeta
         );
       }
-      
+
       return newDownloadObservable;
     }
   }
@@ -133,6 +126,10 @@ export class DownloadsService {
           );
         }
         if (event.status === 401) {
+          this.notificationService.addErrorMessage(
+            'Wrong password, please try again.',
+            true
+          );
           throw this.error(fileId, 'Wrong password, please try again.');
         }
         if (event.status === 403) {

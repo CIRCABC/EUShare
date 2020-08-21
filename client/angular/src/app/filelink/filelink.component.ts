@@ -10,8 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
-import { NotificationService } from '../common/notification/notification.service';
-import { FileService } from '../openapi';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-filelink',
@@ -26,8 +25,11 @@ export class FilelinkComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private modalService: ModalsService
-  ) {}
+    private modalService: ModalsService,
+    private translateService: TranslateService
+  ) {
+    this.configureI18n();
+  }
 
   download() {
     this.modalService.activateDownloadModal(
@@ -35,6 +37,11 @@ export class FilelinkComponent implements OnInit {
       this.fileName,
       this.isFilePasswordProtected
     );
+  }
+
+  private configureI18n() {
+    this.translateService.setDefaultLang('en');
+    this.translateService.use('en');
   }
 
   ngOnInit() {

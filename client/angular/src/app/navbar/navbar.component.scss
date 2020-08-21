@@ -14,7 +14,45 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 }
 
 .navbar-item {
-  text-align: right;
+  text-align: center;
+  font-size: 13px;
+  line-height: $navbar-height;
+}
+
+.my-shared-files::before {
+  background: url("../../img/mySharedFiles.svg") no-repeat;
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+}
+
+.shared-with-me::before {
+  background: url("../../img/sharedWithMe.svg") no-repeat;
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+}
+
+.administration::before {
+  background: url("../../img/administration.svg") no-repeat;
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+}
+
+.shared-with-me,
+.my-shared-files,
+.administration {
+  position: relative;
+  &::before {
+    position: absolute;
+    left: calc(50% - 9px);
+    top: 0.75rem;
+    content: "";
+    display: block;
+    width: 20px;
+    height: 20px;
+    color: #5b5b5b;
+  }
+
+  .spanlabel {
+    position: relative;
+    top: 0.75rem;
+  }
 }
 
 .avatar {
@@ -31,7 +69,40 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
   margin-left: 1em;
 }
 
-a:hover {
-  color: white;
-  text-decoration: underline;
+
+.tab--current
+{
+  color: $link;
+  position: relative;
+
+  &::after {
+    content: "";
+    height: 5px;
+    position: absolute;
+    left: 18px;
+    right: 18px;
+    bottom: 0;
+    background: #8dcb6c;
+    background: -moz-linear-gradient(right, $light-green 0%, $dark-green 100%);
+    background: -webkit-gradient(
+      linear,
+      right,
+      left,
+      color-stop(0%, $light-green),
+      color-stop(100%, $dark-green)
+    );
+    background: -webkit-linear-gradient(
+      right,
+      $light-green 0%,
+      $dark-green 100%
+    );
+    background: -o-linear-gradient(right, $light-green 0%, $dark-green 100%);
+    background: -ms-linear-gradient(right, $light-green 0%, $dark-green 100%);
+    background: linear-gradient(to left, $light-green 0%, $dark-green 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(
+      startColorstr='#8dcb6c',
+      endColorstr='#58c37e',
+      GradientType=0
+    );
+  }
 }

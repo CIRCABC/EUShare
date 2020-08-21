@@ -16,7 +16,7 @@ import {
 import { environment } from '../environments/environment';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { DownloadsService } from './services/downloads.service';
+import { TranslateService } from '@ngx-translate/core';
 
 export const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -41,13 +41,21 @@ export const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+  public showRightDownload = false;
+
   constructor(
     private oauthService: OAuthService,
     private router: Router,
-    private downloadsService: DownloadsService
+    private translateService: TranslateService
   ) {
     this.routerHelpForDownloadsBox();
     this.configureOAuth();
+    this.configureI18n();
+  }
+
+  private configureI18n() {
+    this.translateService.setDefaultLang('en');
+    this.translateService.use('en');
   }
 
   private async configureOAuth() {
@@ -71,11 +79,11 @@ export class AppComponent {
           urlAfterRedirect === '/login' ||
           urlAfterRedirect.startsWith('/filelink')
         ) {
-          this.downloadsService.showDownloadArrow(false);
+          this.showRightDownload = false;
         }
 
         if (urlAfterRedirect === '/home') {
-          this.downloadsService.showDownloadArrow(true);
+          this.showRightDownload = true;
         }
       });
   }

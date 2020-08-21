@@ -21,7 +21,9 @@
               "src/favicon.ico",
               "src/tokenRefresh.html"
             ],
-            "styles": ["src/styles.scss"],
+            "styles": [
+              "./node_modules/ubuntu-fontface/ubuntu.min.css",
+              "src/styles.scss"],
             "scripts": []
           },
           "configurations": {

@@ -1,0 +1,27 @@
+{
+    "label.contact": "Contact",
+    "label.connect": "Connexion",
+    "label.help": "Aide",
+    "label.headers": "En-têtes",
+    "label.categories": "Catégories",
+    "label.groups": "Groupes",
+    "label.nothing.to.display": "Rien à afficher",
+    "label.browse-groups": "Parcourir les groupes",
+
+    "text.browse.page.title.1": "Explorez les différentes catégories",
+    "text.browse.page.title.2": "et trouvez le bon groupe d'intérêt",
+
+    "text.welcome.title": "La manière la plus simple de partager vos documents dans la Commission Européenne",
+    "text.welcome.description": "CIRCABC fournit un environnement de travail sécurisé à plus de 135 000 utilisateurs par le biais de ",
+    "text.welcome.description.link": "3200 groupes d'intérêt",
+    "text.welcome.features.information": "Partagez tous types d'informations",
+    "text.welcome.features.groups": "Collaborez avec vos collègues",
+    "text.welcome.features.security": "Gérez le niveau de sécurité",
+    "text.welcome.features.agenda": "Créez et partagez vos évènements",
+    "text.welcome.features.invite": "Invitez d'autres personnes à vos conversations",
+    "text.welcome.features.forums": "Partagez votre opinion dans un forum",
+
+  "members": {
+      "application.submit.form.explanation": "Veuillez présenter brièvement votre demande:<br/>Cette demande sera transmise aux administrateurs du groupe d'intérêt."
+    }
+}
