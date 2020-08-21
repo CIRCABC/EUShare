@@ -30,7 +30,8 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;
   onTouched!: () => void;
 
-  @Input("showAddRecipient")
+  // tslint:disable-next-line:no-input-rename
+  @Input('showAddRecipient')
   public showAddRecipient = true;
 
   @ViewChild('input', { static: true }) input!: ElementRef;

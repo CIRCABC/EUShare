@@ -15,31 +15,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cbc-personal-menu.component.scss']
 })
 export class CbcPersonalMenuComponent implements OnInit {
-
   public useEULogin = true;
   public user = {
     firstname: 'hello',
     lastname: 'world',
     avatar: 'doesntmatter'
-  }
-  constructor() { }
+  };
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  euLogin() {
-
-  }
-  isGuest() {
-
-  }
+  euLogin() {}
+  isGuest() {}
 
   isUser() {
     return true;
   }
 
-  isAppAdmin() {
-
-  }
-
+  isAppAdmin() {}
 }

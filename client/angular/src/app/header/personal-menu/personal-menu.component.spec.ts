@@ -17,9 +17,8 @@ describe('PersonalMenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PersonalMenuComponent ]
-    })
-    .compileComponents();
+      declarations: [PersonalMenuComponent]
+    }).compileComponents();
   }));
 
   beforeEach(() => {

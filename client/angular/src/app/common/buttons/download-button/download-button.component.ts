@@ -36,20 +36,25 @@ export class DownloadButtonComponent implements OnInit {
   public percentageDownloaded = 0;
   public inputPassword = '';
 
-  constructor(private downloadsService: DownloadsService) { }
+  constructor(private downloadsService: DownloadsService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   public download() {
     this.isLoading = true;
 
     if (!this.isShowProgress) {
       this.downloadsService.displayDownloadsBox();
-      this.downloadsService
-        .downloadAFile(this.fileId, this.fileName, this.inputPassword, false);
+      this.downloadsService.downloadAFile(
+        this.fileId,
+        this.fileName,
+        this.inputPassword,
+        false
+      );
     } else {
       this.downloadsService
-        .downloadAFile(this.fileId, this.fileName, this.inputPassword, true).subscribe(
+        .downloadAFile(this.fileId, this.fileName, this.inputPassword, true)
+        .subscribe(
           next => {
             console.log(next.percentage);
             this.percentageDownloaded = next.percentage;

@@ -15,16 +15,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./personal-menu.component.scss']
 })
 export class PersonalMenuComponent implements OnInit {
-
   public dropdownActive = false;
 
-  constructor() { }
+  constructor() {}
 
   click() {
     this.dropdownActive = !this.dropdownActive;
   }
-  
-  ngOnInit(): void {
-  }
 
+  ngOnInit(): void {}
 }

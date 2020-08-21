@@ -18,7 +18,7 @@ import { VERSION } from '../../environments/version';
 export class FooterComponent implements OnInit {
   public version = VERSION;
   public hash = this.version.hash;
-  
+
   constructor() {}
 
   ngOnInit() {}

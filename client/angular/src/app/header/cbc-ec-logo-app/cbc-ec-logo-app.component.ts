@@ -15,10 +15,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cbc-ec-logo-app.component.scss']
 })
 export class CbcEcLogoAppComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

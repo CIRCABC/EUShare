@@ -15,7 +15,7 @@ describe('KeyStoreService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: KeyStoreService = TestBed.get(KeyStoreService);
+    const service: KeyStoreService = TestBed.inject(KeyStoreService);
     expect(service).toBeTruthy();
   });
 });

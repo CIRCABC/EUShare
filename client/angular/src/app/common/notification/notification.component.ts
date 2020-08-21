@@ -24,8 +24,10 @@ export class NotificationComponent implements OnInit {
   public message!: NotificationMessage;
   public animationClass = 'ui-message-show';
 
-  constructor(private notificationService: NotificationService,
-    private translateService: TranslateService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private translateService: TranslateService
+  ) {}
 
   ngOnInit(): void {
     if (this.message) {
@@ -61,7 +63,6 @@ export class NotificationComponent implements OnInit {
       }
     }
   }
-
 
   public closeMessage(): void {
     this.notificationService.removeMessage(this.message);

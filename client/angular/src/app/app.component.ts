@@ -16,7 +16,7 @@ import {
 import { environment } from '../environments/environment';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 
 export const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -41,8 +41,7 @@ export const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html'
 })
 export class AppComponent {
-
-  public showRightDownload =  false;
+  public showRightDownload = false;
 
   constructor(
     private oauthService: OAuthService,
@@ -58,7 +57,7 @@ export class AppComponent {
     this.translateService.setDefaultLang('en');
     this.translateService.use('en');
   }
-  
+
   private async configureOAuth() {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
@@ -88,5 +87,4 @@ export class AppComponent {
         }
       });
   }
-
 }

@@ -85,7 +85,7 @@ export class DownloadsService {
           downloadInProgressObservableWithMeta
         );
       }
-      
+
       return newDownloadObservable;
     }
   }
@@ -126,7 +126,10 @@ export class DownloadsService {
           );
         }
         if (event.status === 401) {
-          this.notificationService.addErrorMessage('Wrong password, please try again.',true);
+          this.notificationService.addErrorMessage(
+            'Wrong password, please try again.',
+            true
+          );
           throw this.error(fileId, 'Wrong password, please try again.');
         }
         if (event.status === 403) {

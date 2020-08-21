@@ -15,13 +15,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./cbc-lang-selector.component.css']
 })
 export class CbcLangSelectorComponent implements OnInit {
-
   @Input()
   public compactMode = false;
-  
-  constructor() { }
 
-  ngOnInit(): void {
-  }
+  constructor() {}
 
+  ngOnInit(): void {}
 }

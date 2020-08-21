@@ -15,14 +15,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./cbc-header.component.scss']
 })
 export class CbcHeaderComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   isGuest() {
     return true;
   }
-
 }

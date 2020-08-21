@@ -15,7 +15,7 @@ describe('DownloadsService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: DownloadsService = TestBed.get(DownloadsService);
+    const service: DownloadsService = TestBed.inject(DownloadsService);
     expect(service).toBeTruthy();
   });
 });
