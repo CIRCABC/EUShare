@@ -51,6 +51,10 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
       });
       return next.handle(req);
     }
+    // If there is no ID token, no need to try getting an Access Token, it will simply not work
+    if (!this.oAuthService.getIdToken()) {
+      return next.handle(req);
+    }
     return this.sessionService.getAccessToken().pipe(
       switchMap(token => {
         if (token) {
