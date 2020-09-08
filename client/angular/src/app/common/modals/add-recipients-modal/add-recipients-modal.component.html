@@ -41,7 +41,8 @@
         <div *ngIf="addRecipientsByEmailOrByLink">
           <app-email-input formControlName="email" [showAddRecipient]=false></app-email-input>
           <app-message-text-area
-            formControlName="message"
+          [isOptional]=false
+          formControlName="message"
           ></app-message-text-area>
         </div>
         <div *ngIf="!addRecipientsByEmailOrByLink">
