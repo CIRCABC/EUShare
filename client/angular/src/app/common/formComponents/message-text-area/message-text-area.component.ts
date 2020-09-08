@@ -13,7 +13,8 @@ import {
   ElementRef,
   Self,
   Optional,
-  OnInit
+  OnInit,
+  Input
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -32,6 +33,10 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   onTouched!: () => void;
   @ViewChild('textarea', { static: true }) textarea!: ElementRef;
   disabled!: boolean;
+
+  // tslint:disable-next-line:no-input-rename
+  @Input('isOptional')
+  public isOptional = true;
 
   constructor(@Optional() @Self() public controlDirective: NgControl) {
     controlDirective.valueAccessor = this;

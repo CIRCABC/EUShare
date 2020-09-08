@@ -1,4 +1,5 @@
-<label class="label">Text: (optional)</label>
+<label class="label" *ngIf="isOptional">{{ 'label.text.optional' | translate }}</label>
+<label class="label" *ngIf="!isOptional">{{ 'label.text' | translate }}</label>
 <textarea
   #textarea
   [disabled]="disabled"
