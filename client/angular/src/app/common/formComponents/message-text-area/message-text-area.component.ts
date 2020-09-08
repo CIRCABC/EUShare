@@ -35,8 +35,8 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   disabled!: boolean;
 
   // tslint:disable-next-line:no-input-rename
-  @Input("isOptional")
-  public isOptional: boolean = true;
+  @Input('isOptional')
+  public isOptional = true;
 
   constructor(@Optional() @Self() public controlDirective: NgControl) {
     controlDirective.valueAccessor = this;
