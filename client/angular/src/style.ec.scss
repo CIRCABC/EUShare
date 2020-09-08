@@ -86,7 +86,8 @@ $ec-menu-item-active-background-color: $pastel-light-light-blue;
 
 /** COOKIE CONSENT KIT **/
 .cookie-consent-banner {
-    position: absolute;
-    top: 25%;
-    left: 25%;
+    position: fixed !important;
+    bottom: 1px;
+    max-width: 100% !important;
+    width: 100% !important;
 }
