@@ -61,7 +61,10 @@ export class UploadedFileRowComponent {
   }
 
   public async delete() {
-    this.modalService.activateDeleteConfirmModal(this.file.name, this.file.fileId);
+    this.modalService.activateDeleteConfirmModal(
+      this.file.name,
+      this.file.fileId
+    );
   }
 
   public displayRecipients() {

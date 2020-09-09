@@ -20,19 +20,20 @@ export class DeleteConfirmModalComponent implements OnInit {
   public modalFileId!: string;
   public modalFileName!: string;
 
-  constructor(private modalService: ModalsService) { }
+  constructor(private modalService: ModalsService) {}
 
   ngOnInit() {
     this.modalActive = false;
-    this.modalService.activateDeleteConfirmModal$.subscribe(nextModalActiveValue => {
-      this.modalActive = nextModalActiveValue.modalActive;
-      this.modalFileId = nextModalActiveValue.modalFileId;
-      this.modalFileName = nextModalActiveValue.modalFileName;
-    });
+    this.modalService.activateDeleteConfirmModal$.subscribe(
+      nextModalActiveValue => {
+        this.modalActive = nextModalActiveValue.modalActive;
+        this.modalFileId = nextModalActiveValue.modalFileId;
+        this.modalFileName = nextModalActiveValue.modalFileName;
+      }
+    );
   }
 
   public closeModal() {
     this.modalService.deactivateDeleteConfirmModal();
   }
-
 }

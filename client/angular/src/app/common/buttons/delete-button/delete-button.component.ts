@@ -24,19 +24,20 @@ export class DeleteButtonComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
   @Input('fileName')
   public fileName!: string;
-  
+
   public isLoading = false;
 
-  constructor(private uploadedFileService: UploadedFilesService, private modalService: ModalsService) { }
+  constructor(
+    private uploadedFileService: UploadedFilesService,
+    private modalService: ModalsService
+  ) {}
 
   public async delete() {
     this.isLoading = true;
     await this.uploadedFileService.removeOneFile(this.fileId, this.fileName);
     this.isLoading = false;
-    this.modalService.deactivateDeleteConfirmModal()
+    this.modalService.deactivateDeleteConfirmModal();
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

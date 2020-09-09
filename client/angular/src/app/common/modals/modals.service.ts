@@ -56,12 +56,11 @@ export class ModalsService {
     DeleteConfirmModalValue
   > = this.activateDeleteConfirmModalSubject.asObservable();
 
-  constructor() { }
-
+  constructor() {}
 
   public activateDeleteConfirmModal(
     modalFileName: string,
-    modalFileId: string,
+    modalFileId: string
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
       this.deactivateAllModals();
@@ -70,7 +69,7 @@ export class ModalsService {
     this.activateDeleteConfirmModalSubject.next({
       modalActive: true,
       modalFileName: modalFileName,
-      modalFileId: modalFileId,
+      modalFileId: modalFileId
     });
   }
 
@@ -188,7 +187,7 @@ export class ModalsService {
       this.activateDeleteConfirmModalSubject.next({
         modalActive: false,
         modalFileName: '',
-        modalFileId: '',
+        modalFileId: ''
       });
     }
   }
