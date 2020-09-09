@@ -282,7 +282,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void getFilesFileInfoUploader200() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -312,7 +312,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void getFilesFileInfoUploader401() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -345,7 +345,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void getFilesFileInfoUploader403() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -384,7 +384,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void getFilesFileInfoRecipient200() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -418,7 +418,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void getFilesFileInfoRecipient401() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -455,7 +455,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void getFilesFileInfoRecipient403() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -504,7 +504,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -533,7 +533,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -578,7 +578,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -604,7 +604,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -634,7 +634,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -770,7 +770,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -805,7 +805,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -838,7 +838,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -873,7 +873,7 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -926,7 +926,7 @@ public class ApiControllerITest {
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -959,7 +959,7 @@ public class ApiControllerITest {
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -990,7 +990,7 @@ public class ApiControllerITest {
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -1021,7 +1021,7 @@ public class ApiControllerITest {
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -1063,7 +1063,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void deleteFileSharedWithUser200() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -1092,7 +1092,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void deleteFileSharedWithUser401() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
@@ -1122,7 +1122,7 @@ public class ApiControllerITest {
   @DirtiesContext
   public void deleteFileSharedWithUser403() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", "password", 1024, "uniqueUsername");
+    DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);

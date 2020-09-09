@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 
 import com.circabc.easyshare.configuration.EasyShareConfiguration;
-import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
+import com.circabc.easyshare.exceptions.NonInternalUsersCannotBecomeAdminException;
 import com.circabc.easyshare.exceptions.IllegalSpaceException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
@@ -71,7 +71,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
             DBUser dbUser = null;
             try {
-                dbUser = this.getOrCreateDbInternalUser(email, givenName, username);
+                dbUser = this.getOrCreateInternalUser(email, givenName, username);
             } catch (WrongEmailStructureException e) {
                 throw new WrongAuthenticationException(e);
             }
@@ -82,13 +82,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         throw new WrongAuthenticationException();
     }
 
-    private DBUser createInternalUser(String email, String givenName, String password, String username) {
-        DBUser user = DBUser.createInternalUser(email, givenName, password, esConfig.getDefaultUserSpace(), username);
+    private DBUser createInternalUser(String email, String givenName, String username) {
+        DBUser user = DBUser.createInternalUser(email, givenName, esConfig.getDefaultUserSpace(), username);
         return userRepository.save(user);
     }
 
-    private DBUser createAdminUser(String password) {
-        DBUser user = this.createInternalUser("admin@admin.com", "admin", password, "admin"); // NOSONAR
+    private DBUser createAdminUser(String email, String givenName, String username) {
+        DBUser user = this.createInternalUser(email, givenName, username);
         user.setRole(Role.ADMIN);
         return userRepository.save(user);
     }
@@ -101,14 +101,19 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         return userRepository.save(user);
     }
 
+    private DBUser createLinkUser(String name) {
+        DBUser user = DBUser.createLinkUser(name);
+        return userRepository.save(user);
+    }
+
     DBUser getDbUser(String userId) throws UnknownUserException {
         return userRepository.findById(userId).orElseThrow(() -> new UnknownUserException());
     }
 
-    DBUser getUserOrCreateExternalUser(Recipient recipient)
+    DBUser getUserOrCreateExternalOrLinkUser(Recipient recipient)
             throws WrongEmailStructureException, WrongNameStructureException {
         final String emailOrName = recipient.getEmailOrName();
-        DBUser dbUser = userRepository.findOneByNameAndRole(emailOrName, DBUser.Role.EXTERNAL);
+        DBUser dbUser = userRepository.findOneByNameAndRole(emailOrName, DBUser.Role.LINK);
         if (dbUser == null) {
             dbUser = userRepository.findOneByEmailIgnoreCase(emailOrName);
         }
@@ -122,8 +127,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
                     throw new WrongEmailStructureException();
                 }
             } else {
-                if(StringUtils.validateUsername(emailOrName)) {
-                    return this.createExternalUser(null, emailOrName);
+                if (StringUtils.validateLinkName(emailOrName)) {
+                    return this.createLinkUser(emailOrName);
                 } else {
                     throw new WrongNameStructureException();
             }
@@ -135,13 +140,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public void createDefaultUsers() {
         if (userRepository.findOneByUsername("admin") == null
                 && userRepository.findOneByEmailIgnoreCase("admin@admin.com") == null) {
-            this.createAdminUser("admin");
+            this.createAdminUser("admin@admin.com", "admin", "admin");
         } else {
             log.warn("Admin could not be created, already exists");
         }
         if (userRepository.findOneByUsername("username") == null
                 && userRepository.findOneByEmailIgnoreCase("email@email.com") == null) {
-            this.createInternalUser("email@email.com", "name", "password", "username");
+            this.createInternalUser("email@email.com", "name", "username");
         } else {
             log.warn("Internal user could not be created, already exists");
         }
@@ -168,7 +173,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Override
     @Transactional
     public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId) throws UnknownUserException,
-            UserUnauthorizedException, ExternalUserCannotBeAdminException, IllegalSpaceException {
+            UserUnauthorizedException, NonInternalUsersCannotBecomeAdminException, IllegalSpaceException {
         String userId = userInfo.getId();
         if (this.isAdmin(requesterId)) {
             UserInfo oldUserInfo = this.getUserInfo(userId);
@@ -202,7 +207,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public List<UserInfo> getUsersUserInfoOnBehalfOf(int pageSize, int pageNumber, String searchString,
             String requesterId) throws UnknownUserException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
-            return userRepository.findByEmailIgnoreCaseStartsWith(searchString, PageRequest.of(pageNumber, pageSize))
+            return userRepository.findByEmailRoleInternalOrAdmin(searchString, PageRequest.of(pageNumber, pageSize))
                     .stream().map(dbUser -> dbUser.toUserInfo()).collect(Collectors.toList());
         } else {
             throw new UserUnauthorizedException();
@@ -212,7 +217,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     @Override
     @Transactional
     public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
-            throws UnknownUserException, ExternalUserCannotBeAdminException, UserUnauthorizedException {
+            throws UnknownUserException, NonInternalUsersCannotBecomeAdminException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
             grantAdminRights(userId);
         } else {
@@ -231,11 +236,11 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     /**
      * Grant admin rights to the specified user.
      */
-    private void grantAdminRights(String userId) throws UnknownUserException, ExternalUserCannotBeAdminException {
+    private void grantAdminRights(String userId) throws UnknownUserException, NonInternalUsersCannotBecomeAdminException {
         DBUser user = this.getDbUser(userId);
 
-        if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
-            throw new ExternalUserCannotBeAdminException();
+        if (!user.getRole().equals(DBUser.Role.INTERNAL)) {
+            throw new NonInternalUsersCannotBecomeAdminException();
         }
 
         user.setRole(DBUser.Role.ADMIN);
@@ -303,14 +308,16 @@ public class UserService implements UserServiceInterface, UserDetailsService {
      * @param givenName
      * @throws WrongEmailStructureException if {@code email} has a wrong structure
      */
-    private DBUser getOrCreateDbInternalUser(String email, String givenName, String username)
+    private DBUser getOrCreateInternalUser(String email, String givenName, String username)
             throws WrongEmailStructureException {
         DBUser dbUser = null;
         if (StringUtils.validateEmailAddress(email)) {
             dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
             if (dbUser == null) {
-                dbUser = this.createInternalUser(email, givenName, null, username);
+                // Not found in the database
+                dbUser = this.createInternalUser(email, givenName, username);
             } else {
+                // Found in the database, probably an external
                 if (dbUser.getName() == null) {
                     if (givenName == null ||  givenName.isEmpty()) {
                         givenName = StringUtils.emailToGivenName(email);

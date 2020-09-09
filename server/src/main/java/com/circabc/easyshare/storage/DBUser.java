@@ -55,7 +55,7 @@ public class DBUser {
     @Setter
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private Role role = Role.INTERNAL;
+    private Role role = com.circabc.easyshare.storage.DBUser.Role.INTERNAL;
 
     @Getter
     @Setter
@@ -94,6 +94,18 @@ public class DBUser {
         this.role = role;
     }
 
+     /**
+     * Create a new user with specified role {@code LINK}
+     */
+    public static DBUser createLinkUser(String name) throws IllegalArgumentException {
+        if (name == null) {
+            throw new IllegalArgumentException();
+        }
+        DBUser dbUser = new DBUser(0, Role.LINK);
+        dbUser.setName(name);
+        return dbUser;
+    }
+
     /**
      * Create a new user with specified role {@code EXTERNAL}
      */
@@ -115,7 +127,7 @@ public class DBUser {
      *
      * @throws IllegalArgumentException If {@code totalSpace < 0}
      */
-    public static DBUser createInternalUser(String email, String name, String password, long totalSpace,
+    public static DBUser createInternalUser(String email, String name, long totalSpace,
             String username) {
         if (totalSpace < 0) {
             throw new IllegalArgumentException();
@@ -183,7 +195,10 @@ public class DBUser {
     }
 
     public enum Role {
-        EXTERNAL, INTERNAL, ADMIN
+        LINK, // A user representing a share by link
+        EXTERNAL, // A user added by another, non active yet. Has an email address and nothing else.
+        INTERNAL, // An active user. Has an email, a name and a username.
+        ADMIN, // An internal user with extra advantage
     }
 
     public String toSpringSecurityRole(Role role) {

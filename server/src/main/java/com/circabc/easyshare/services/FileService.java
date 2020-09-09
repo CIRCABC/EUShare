@@ -220,7 +220,7 @@ public class FileService implements FileServiceInterface {
                 throw new MessageTooLongException();
             }
             DBFile dbFile = findAvailableFile(fileId, false);
-            DBUser dbRecipient = userService.getUserOrCreateExternalUser(recipient);
+            DBUser dbRecipient = userService.getUserOrCreateExternalOrLinkUser(recipient);
             DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(),
                     dbRecipient, dbFile, recipient.getMessage());
             userFileRepository.save(dbUserFile);
@@ -293,7 +293,7 @@ public class FileService implements FileServiceInterface {
         fileRepository.save(dbFile);
 
         for (Recipient recipient : recipientList) {
-            DBUser recipientDBUser = userService.getUserOrCreateExternalUser(recipient);
+            DBUser recipientDBUser = userService.getUserOrCreateExternalOrLinkUser(recipient);
             if (!StringUtils.validateMessage(recipient.getMessage())) {
                 throw new MessageTooLongException();
             }

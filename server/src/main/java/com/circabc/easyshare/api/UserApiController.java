@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
-import com.circabc.easyshare.exceptions.ExternalUserCannotBeAdminException;
+import com.circabc.easyshare.exceptions.NonInternalUsersCannotBecomeAdminException;
 import com.circabc.easyshare.exceptions.IllegalSpaceException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
@@ -127,7 +127,7 @@ public class UserApiController implements UserApi {
             log.debug("wrong authentication !");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
                     exc);
-        } catch (UserUnauthorizedException | ExternalUserCannotBeAdminException | IllegalSpaceException e) {
+        } catch (UserUnauthorizedException | NonInternalUsersCannotBecomeAdminException | IllegalSpaceException e) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), e);
         } catch (UnknownUserException e) {
