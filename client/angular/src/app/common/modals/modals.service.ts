@@ -20,6 +20,7 @@ export class ModalsService {
     'fileLink',
     'addRecipients',
     'shareWithUsers',
+    'deleteConfirm',
     ' '
   ];
   private activeModal!: string;
@@ -48,7 +49,29 @@ export class ModalsService {
     ShareWithUsersModalValue
   > = this.activateShareWithUsersModalSubject.asObservable();
 
+  private activateDeleteConfirmModalSubject = new Subject<
+    DeleteConfirmModalValue
+  >();
+  public activateDeleteConfirmModal$: Observable<
+    DeleteConfirmModalValue
+  > = this.activateDeleteConfirmModalSubject.asObservable();
+
   constructor() {}
+
+  public activateDeleteConfirmModal(
+    modalFileName: string,
+    modalFileId: string
+  ) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[4];
+    this.activateDeleteConfirmModalSubject.next({
+      modalActive: true,
+      modalFileName: modalFileName,
+      modalFileId: modalFileId
+    });
+  }
 
   public activateShareWithUsersModal(
     modalFileName: string,
@@ -56,7 +79,7 @@ export class ModalsService {
     recipientsWithLink: RecipientWithLink[],
     modalFileHasPassword: boolean
   ) {
-    if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[3]) {
       this.deactivateAllModals();
     }
     this.activeModal = this.possibleActiveModals[3];
@@ -158,10 +181,22 @@ export class ModalsService {
     }
   }
 
+  public deactivateDeleteConfirmModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[4]) {
+      this.activeModal = ' ';
+      this.activateDeleteConfirmModalSubject.next({
+        modalActive: false,
+        modalFileName: '',
+        modalFileId: ''
+      });
+    }
+  }
+
   private deactivateAllModals() {
     this.deactivateDownloadModal();
     this.deactivateFileLinkModal();
     this.deactivateAddRecipientsModal();
+    this.deactivateDeleteConfirmModal();
   }
 }
 export interface DownloadModalValue {
@@ -188,4 +223,10 @@ export interface ShareWithUsersModalValue {
   modalFileId: string;
   modalFileHasPassword: boolean;
   recipientsWithLink: RecipientWithLink[];
+}
+
+export interface DeleteConfirmModalValue {
+  modalActive: boolean;
+  modalFileName: string;
+  modalFileId: string;
 }

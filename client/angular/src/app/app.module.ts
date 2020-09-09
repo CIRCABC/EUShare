@@ -68,6 +68,8 @@ import { CbcEcLogoAppComponent } from './header/cbc-ec-logo-app/cbc-ec-logo-app.
 import { CbcPersonalMenuComponent } from './header/cbc-personal-menu/cbc-personal-menu.component';
 import { CbcLangSelectorComponent } from './header/cbc-lang-selector/cbc-lang-selector.component';
 import { PersonalMenuComponent } from './header/personal-menu/personal-menu.component';
+import { DeleteButtonComponent } from './common/buttons/delete-button/delete-button.component';
+import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -161,6 +163,7 @@ const routes: Routes = [
     UploadedFileRowComponent,
     OtherUserSharedFilesComponent,
     ShareWithUsersModalComponent,
+    DeleteConfirmModalComponent,
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,
     DownloadFileRowComponent,
@@ -176,7 +179,8 @@ const routes: Routes = [
     CbcEcLogoAppComponent,
     CbcPersonalMenuComponent,
     CbcLangSelectorComponent,
-    PersonalMenuComponent
+    PersonalMenuComponent,
+    DeleteButtonComponent
   ],
   imports: [
     ApiModule,
