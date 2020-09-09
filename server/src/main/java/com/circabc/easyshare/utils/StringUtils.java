@@ -67,7 +67,7 @@ public class StringUtils {
 
     public static final Pattern VALID_USERNAME_REGEX = Pattern.compile("^[A-Za-z0-9]{2,25}$", Pattern.CASE_INSENSITIVE);
 
-    public static boolean validateUsername(String username) {
+    public static boolean validateLinkName(String username) {
         Matcher matcher = VALID_USERNAME_REGEX.matcher(username);
         return matcher.find();
     }

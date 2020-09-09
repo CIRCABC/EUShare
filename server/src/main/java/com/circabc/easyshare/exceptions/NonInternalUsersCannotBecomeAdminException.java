@@ -10,7 +10,7 @@
 
 package com.circabc.easyshare.exceptions;
 
-public class ExternalUserCannotBeAdminException extends Exception {
+public class NonInternalUsersCannotBecomeAdminException extends Exception {
 
     private static final long serialVersionUID = 1L;
 }
