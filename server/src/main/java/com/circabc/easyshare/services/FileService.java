@@ -125,7 +125,7 @@ public class FileService implements FileServiceInterface {
                     for (DBUserFile dbUserFile : userFileRepository.findByFile_id(file.getId())) {
                         DBUser receiver = dbUserFile.getReceiver();
                         userFileRepository.delete(dbUserFile);
-                        if (receiver.getRole().equals(Role.EXTERNAL)) {
+                        if (receiver.getRole().equals(Role.EXTERNAL) || receiver.getRole().equals(Role.LINK)) {
                             userRepository.delete(receiver);
                         }
                     }

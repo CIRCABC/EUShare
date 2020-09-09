@@ -61,10 +61,7 @@ export class UploadedFileRowComponent {
   }
 
   public async delete() {
-    await this.uploadedFileService.removeOneFile(
-      this.file.fileId,
-      this.file.name
-    );
+    this.modalService.activateDeleteConfirmModal(this.file.name, this.file.fileId);
   }
 
   public displayRecipients() {
