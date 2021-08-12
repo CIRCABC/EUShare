@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
 import {
   AuthConfig,
   NullValidationHandler,
-  OAuthService
+  OAuthService,
 } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
 import { Router, NavigationEnd } from '@angular/router';
@@ -33,12 +33,12 @@ export const authCodeFlowConfig: AuthConfig = {
   // disableAtHashCheck: true,
   showDebugInformation: false,
   sessionChecksEnabled: false,
-  tokenEndpoint: environment.OIDC_TOKENENDPOINT
+  tokenEndpoint: environment.OIDC_TOKENENDPOINT,
 };
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
 })
 export class AppComponent {
   public showRightDownload = false;
@@ -67,11 +67,11 @@ export class AppComponent {
   private routerHelpForDownloadsBox() {
     this.router.events
       .pipe(
-        filter(event => {
+        filter((event) => {
           return event instanceof NavigationEnd;
         })
       )
-      .subscribe(nextEvent => {
+      .subscribe((nextEvent) => {
         const nextEventNavigationEnd: NavigationEnd = <NavigationEnd>nextEvent;
         const urlAfterRedirect = nextEventNavigationEnd.urlAfterRedirects;
 

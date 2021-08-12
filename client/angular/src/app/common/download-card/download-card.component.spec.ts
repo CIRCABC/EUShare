@@ -17,7 +17,7 @@ describe('DownloadCardComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DownloadCardComponent]
+      declarations: [DownloadCardComponent],
     }).compileComponents();
   }));
 

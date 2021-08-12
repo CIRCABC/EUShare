@@ -13,7 +13,7 @@ import { NotificationService } from '../../common/notification/notification.serv
 
 @Component({
   selector: 'app-other-user-shared-files',
-  templateUrl: './other-user-shared-files.component.html'
+  templateUrl: './other-user-shared-files.component.html',
 })
 export class OtherUserSharedFilesComponent implements OnInit {
   public userId!: string;

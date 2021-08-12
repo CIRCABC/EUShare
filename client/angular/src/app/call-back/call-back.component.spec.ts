@@ -17,7 +17,7 @@ describe('CallBackComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CallBackComponent]
+      declarations: [CallBackComponent],
     }).compileComponents();
   }));
 

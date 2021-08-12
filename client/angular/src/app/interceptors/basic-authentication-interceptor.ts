@@ -12,7 +12,7 @@ import {
   HttpEvent,
   HttpHandler,
   HttpInterceptor,
-  HttpRequest
+  HttpRequest,
 } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -23,7 +23,7 @@ import { SessionService } from '../openapi';
 import { KeyStoreService } from '../services/key-store.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BasicAuthenticationInterceptor implements HttpInterceptor {
   constructor(
@@ -47,7 +47,7 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
     const isGetFile = req.url.includes('/file/') && req.method === 'GET';
     if (isGetFile) {
       req = req.clone({
-        headers: req.headers.delete('Authorization')
+        headers: req.headers.delete('Authorization'),
       });
       return next.handle(req);
     }
@@ -56,12 +56,12 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     return this.sessionService.getAccessToken().pipe(
-      switchMap(token => {
+      switchMap((token) => {
         if (token) {
           req = req.clone({
             setHeaders: {
-              Authorization: `Bearer ` + token.access_token
-            }
+              Authorization: `Bearer ` + token.access_token,
+            },
           });
         }
         return next.handle(req);

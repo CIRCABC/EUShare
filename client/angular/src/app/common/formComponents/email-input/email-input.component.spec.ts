@@ -17,7 +17,7 @@ describe('EmailInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [EmailInputComponent]
+      declarations: [EmailInputComponent],
     }).compileComponents();
   }));
 

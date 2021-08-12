@@ -15,7 +15,7 @@ import { faUpload, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-upload-sucess',
   templateUrl: './upload-sucess.component.html',
-  styleUrls: ['./upload-sucess.component.scss']
+  styleUrls: ['./upload-sucess.component.scss'],
 })
 export class UploadSucessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;

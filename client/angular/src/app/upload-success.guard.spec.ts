@@ -14,7 +14,7 @@ import { UploadSuccessGuard } from './upload-success.guard';
 describe('UploadSuccessGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UploadSuccessGuard]
+      providers: [UploadSuccessGuard],
     });
   });
 

@@ -15,7 +15,7 @@ import { NotificationService } from './notification.service';
 @Component({
   selector: 'app-notification-system',
   templateUrl: './notification-system.component.html',
-  styleUrls: ['./notification-system.component.scss']
+  styleUrls: ['./notification-system.component.scss'],
 })
 export class NotificationSystemComponent implements OnDestroy {
   public messages: NotificationMessage[] = [];
@@ -23,19 +23,21 @@ export class NotificationSystemComponent implements OnDestroy {
   private messageDestroyedSubscription$: Subscription;
 
   public constructor(private notificationService: NotificationService) {
-    this.messageAnnouncedSubscription$ = this.notificationService.messageAnnounced$.subscribe(
-      (message: NotificationMessage) => {
-        this.messages.push(message);
-        window.scroll(0, 0);
-      }
-    );
+    this.messageAnnouncedSubscription$ =
+      this.notificationService.messageAnnounced$.subscribe(
+        (message: NotificationMessage) => {
+          this.messages.push(message);
+          window.scroll(0, 0);
+        }
+      );
 
-    this.messageDestroyedSubscription$ = this.notificationService.messageDestroyed$.subscribe(
-      (message: NotificationMessage) => {
-        const i = this.messages.indexOf(message);
-        this.messages.splice(i, 1);
-      }
-    );
+    this.messageDestroyedSubscription$ =
+      this.notificationService.messageDestroyed$.subscribe(
+        (message: NotificationMessage) => {
+          const i = this.messages.indexOf(message);
+          this.messages.splice(i, 1);
+        }
+      );
   }
   public ngOnDestroy(): void {
     this.messageAnnouncedSubscription$.unsubscribe();

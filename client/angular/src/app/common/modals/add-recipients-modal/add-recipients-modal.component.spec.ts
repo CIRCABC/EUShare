@@ -17,7 +17,7 @@ describe('AddRecipientsModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AddRecipientsModalComponent]
+      declarations: [AddRecipientsModalComponent],
     }).compileComponents();
   }));
 

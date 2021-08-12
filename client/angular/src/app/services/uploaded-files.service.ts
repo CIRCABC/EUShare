@@ -13,21 +13,19 @@ import {
   FileInfoUploader,
   UsersService,
   FileService,
-  Recipient
+  Recipient,
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { ModalsService } from '../common/modals/modals.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UploadedFilesService {
-  private fileInfoUploaderArrayAndMetaDataSubject: Subject<
-    FileUploaderArrayAndMetaData
-  > = new Subject<FileUploaderArrayAndMetaData>();
-  public fileInfoUploaderArrayAndMetaData$: Observable<
-    FileUploaderArrayAndMetaData
-  > = this.fileInfoUploaderArrayAndMetaDataSubject.asObservable();
+  private fileInfoUploaderArrayAndMetaDataSubject: Subject<FileUploaderArrayAndMetaData> =
+    new Subject<FileUploaderArrayAndMetaData>();
+  public fileInfoUploaderArrayAndMetaData$: Observable<FileUploaderArrayAndMetaData> =
+    this.fileInfoUploaderArrayAndMetaDataSubject.asObservable();
 
   private fileInfoUploader: FileInfoUploader[] = [];
 
@@ -51,7 +49,7 @@ export class UploadedFilesService {
       fileInfoUploaderArray: this.fileInfoUploader,
       hasNextPage: this.nextPageFileInfoUploader.length > 0,
       hasPreviousPage: this.pageNumber > 0,
-      pageNumber: this.pageNumber
+      pageNumber: this.pageNumber,
     };
     this.fileInfoUploaderArrayAndMetaDataSubject.next(
       fileInfoUploaderArrayAndMetaData
@@ -140,7 +138,7 @@ export class UploadedFilesService {
     }
 
     this.fileInfoUploader = this.fileInfoUploader.filter(
-      file => file.fileId !== fileId
+      (file) => file.fileId !== fileId
     );
     const elementToAddOrNull = this.nextPageFileInfoUploader.shift();
     if (elementToAddOrNull) {
@@ -163,7 +161,7 @@ export class UploadedFilesService {
         'Succesfully added your recipient to ' + fileName
       );
 
-      this.fileInfoUploader.forEach(file => {
+      this.fileInfoUploader.forEach((file) => {
         if (file.fileId === fileId) {
           file.sharedWith.push(recipientWithLink);
         }

@@ -17,7 +17,7 @@ describe('CbcLangSelectorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CbcLangSelectorComponent]
+      declarations: [CbcLangSelectorComponent],
     }).compileComponents();
   }));
 

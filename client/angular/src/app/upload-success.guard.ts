@@ -12,12 +12,12 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   Router,
-  CanActivate
+  CanActivate,
 } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UploadSuccessGuard implements CanActivate {
   constructor(private router: Router) {}

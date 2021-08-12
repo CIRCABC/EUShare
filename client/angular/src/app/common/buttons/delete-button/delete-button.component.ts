@@ -14,7 +14,7 @@ import { ModalsService } from '../../modals/modals.service';
 @Component({
   selector: 'app-delete-button',
   templateUrl: './delete-button.component.html',
-  styleUrls: ['./delete-button.component.scss']
+  styleUrls: ['./delete-button.component.scss'],
 })
 export class DeleteButtonComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename

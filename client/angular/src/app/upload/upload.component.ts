@@ -13,7 +13,7 @@ import {
   FormGroup,
   Validators,
   FormBuilder,
-  FormControl
+  FormControl,
 } from '@angular/forms';
 import { faUpload, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -22,7 +22,7 @@ import {
   Recipient,
   UsersService,
   SessionService,
-  FileInfoUploader
+  FileInfoUploader,
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { fileSizeValidator } from '../common/validators/file-validator';
@@ -30,14 +30,14 @@ import { map } from 'rxjs/operators';
 import {
   HttpEvent,
   HttpEventType,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-upload',
   templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss']
+  styleUrls: ['./upload.component.scss'],
 })
 export class UploadComponent implements OnInit {
   public faUserSlash = faUserSlash;
@@ -90,14 +90,14 @@ export class UploadComponent implements OnInit {
   initializeEventListeners() {
     window.addEventListener(
       'dragover',
-      e => {
+      (e) => {
         e.preventDefault();
       },
       false
     );
     window.addEventListener(
       'drop',
-      e => {
+      (e) => {
         e.preventDefault();
       },
       false
@@ -111,8 +111,8 @@ export class UploadComponent implements OnInit {
         undefined,
         Validators.compose([
           Validators.required,
-          fileSizeValidator(this.leftSpaceInBytes)
-        ])
+          fileSizeValidator(this.leftSpaceInBytes),
+        ]),
       ],
       emailOrLink: ['', Validators.required],
       emailMessageArray: this.fb.array([
@@ -122,7 +122,7 @@ export class UploadComponent implements OnInit {
         // this.initializeLinkFormGroup()
       ]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
-      password: [undefined]
+      password: [undefined],
     });
   }
 
@@ -138,7 +138,7 @@ export class UploadComponent implements OnInit {
   initializeEmailMessageFormGroup(): FormGroup {
     const initializedFg = this.fb.group({
       emailArray: this.fb.array([], Validators.required),
-      message: ['']
+      message: [''],
     });
 
     return initializedFg;
@@ -147,7 +147,7 @@ export class UploadComponent implements OnInit {
   initializedEmailFormGroup(): FormGroup {
     const emailGroup = this.fb.group(
       {
-        email: new FormControl('', Validators.required)
+        email: new FormControl('', Validators.required),
       },
       { updateOn: 'change' }
     );
@@ -157,7 +157,7 @@ export class UploadComponent implements OnInit {
   initializedEmailFormGroupValue(value: any): FormGroup {
     const emailGroup = this.fb.group(
       {
-        email: new FormControl(value, Validators.required)
+        email: new FormControl(value, Validators.required),
       },
       { updateOn: 'change' }
     );
@@ -167,7 +167,7 @@ export class UploadComponent implements OnInit {
   initializeLinkFormGroup(): FormGroup {
     return this.fb.group(
       {
-        name: new FormControl('', Validators.required)
+        name: new FormControl('', Validators.required),
       },
       { updateOn: 'change' }
     );
@@ -431,13 +431,11 @@ export class UploadComponent implements OnInit {
         const recipientArray = new Array<Recipient>();
         if (this.emailOrLinkIsEmail()) {
           for (let i = 0; i < this.getEmailMessageArrayLength(); i++) {
-            const formGroupOrNull: FormGroup | null = this.getEmailMessageFormGroup(
-              i
-            );
+            const formGroupOrNull: FormGroup | null =
+              this.getEmailMessageFormGroup(i);
             if (formGroupOrNull) {
-              const messageOrNull: string | null = this.getMessageControlValue(
-                i
-              );
+              const messageOrNull: string | null =
+                this.getMessageControlValue(i);
               for (let j = 0; j < this.getEmailArrayLength(i); j++) {
                 const emailOrNull: string | null = this.getEmailControlValue(
                   i,
@@ -446,7 +444,7 @@ export class UploadComponent implements OnInit {
                 if (emailOrNull && emailOrNull !== '') {
                   const recipient: Recipient = {
                     emailOrName: emailOrNull,
-                    sendEmail: this.emailOrLinkIsEmail()
+                    sendEmail: this.emailOrLinkIsEmail(),
                   };
                   if (
                     messageOrNull &&
@@ -468,7 +466,7 @@ export class UploadComponent implements OnInit {
               const name: string = formGroupOrNull.controls['name'].value;
               const recipient: Recipient = {
                 emailOrName: name,
-                sendEmail: this.emailOrLinkIsEmail()
+                sendEmail: this.emailOrLinkIsEmail(),
               };
               recipientArray.push(recipient);
             }
@@ -481,7 +479,7 @@ export class UploadComponent implements OnInit {
           hasPassword: this.getPassword() != null && this.getPassword() !== '',
           name: this.getFileFromDisk().name,
           size: this.getFileFromDisk().size,
-          sharedWith: recipientArray
+          sharedWith: recipientArray,
         };
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
@@ -491,12 +489,12 @@ export class UploadComponent implements OnInit {
           .toPromise();
         const fileInfoUploader = await this.fileApi
           .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
-          .pipe(map(event => this.getEventMessage(event)))
+          .pipe(map((event) => this.getEventMessage(event)))
           .toPromise();
 
         if (fileInfoUploader) {
           this.router.navigateByUrl('uploadSuccess', {
-            state: { data: fileInfoUploader }
+            state: { data: fileInfoUploader },
           });
         }
         await this.initializeAvailableSpace();

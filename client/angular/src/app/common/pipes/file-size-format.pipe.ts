@@ -10,7 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'fileSizeFormat'
+  name: 'fileSizeFormat',
 })
 export class FileSizeFormatPipe implements PipeTransform {
   transform(value: number): string {

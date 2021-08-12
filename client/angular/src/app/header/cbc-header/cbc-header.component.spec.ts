@@ -17,7 +17,7 @@ describe('CbcHeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CbcHeaderComponent]
+      declarations: [CbcHeaderComponent],
     }).compileComponents();
   }));
 

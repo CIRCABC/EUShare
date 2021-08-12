@@ -13,7 +13,7 @@ import { DownloadsService } from '../../../services/downloads.service';
 @Component({
   selector: 'app-download-button',
   templateUrl: './download-button.component.html',
-  styleUrls: ['./download-button.component.scss']
+  styleUrls: ['./download-button.component.scss'],
 })
 export class DownloadButtonComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
@@ -55,14 +55,14 @@ export class DownloadButtonComponent implements OnInit {
       this.downloadsService
         .downloadAFile(this.fileId, this.fileName, this.inputPassword, true)
         .subscribe(
-          next => {
+          (next) => {
             console.log(next.percentage);
             this.percentageDownloaded = next.percentage;
             if (next.percentage === 100) {
               this.isLoading = false;
             }
           },
-          error => {
+          (error) => {
             this.isLoading = false;
           }
         );

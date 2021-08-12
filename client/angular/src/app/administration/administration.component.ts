@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
-  styleUrls: ['./administration.component.scss']
+  styleUrls: ['./administration.component.scss'],
 })
 export class AdministrationComponent implements OnInit {
   public faUser = faUser;
@@ -38,34 +38,8 @@ export class AdministrationComponent implements OnInit {
   private selectedUserInfoIndex = 0;
 
   public valuesInGigaBytes = [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    20,
-    25,
-    30,
-    35,
-    40,
-    45,
-    50,
-    60,
-    70,
-    80,
-    100,
-    1024
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 20, 25, 30, 35, 40,
+    45, 50, 60, 70, 80, 100, 1024,
   ];
   public selectedValueInGigaBytesIndex = 0;
 
@@ -188,7 +162,7 @@ export class AdministrationComponent implements OnInit {
       '/administration',
       this.selectedUserInfo.id,
       'files',
-      { userName: this.selectedUserInfo.givenName }
+      { userName: this.selectedUserInfo.givenName },
     ]);
   }
 }

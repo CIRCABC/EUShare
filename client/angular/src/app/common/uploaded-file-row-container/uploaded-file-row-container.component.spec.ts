@@ -17,7 +17,7 @@ describe('FileRowContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FileRowContainerComponent]
+      declarations: [FileRowContainerComponent],
     }).compileComponents();
   }));
 

@@ -12,14 +12,14 @@ import {
   SessionService,
   UsersService,
   FileService,
-  UserInfo
+  UserInfo,
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 
 @Component({
   selector: 'app-my-user',
   templateUrl: './my-user.component.html',
-  styleUrls: ['./my-user.component.scss']
+  styleUrls: ['./my-user.component.scss'],
 })
 export class MyUserComponent implements OnInit {
   public userInfo!: UserInfo;

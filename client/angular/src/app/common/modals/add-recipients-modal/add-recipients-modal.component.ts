@@ -16,7 +16,7 @@ import { UploadedFilesService } from '../../../services/uploaded-files.service';
 
 @Component({
   selector: 'app-add-recipients-modal',
-  templateUrl: './add-recipients-modal.component.html'
+  templateUrl: './add-recipients-modal.component.html',
 })
 export class AddRecipientsModalComponent implements OnInit {
   public modalActive = false;
@@ -65,12 +65,12 @@ export class AddRecipientsModalComponent implements OnInit {
         sendEmail: ['True', Validators.required],
         message: [''],
         email: [''],
-        name: ['']
+        name: [''],
       },
       { validators: recipientValidator(), updateOn: 'change' }
     );
     this.modalService.activateAddRecipientsModal$.subscribe(
-      nextModalActiveValue => {
+      (nextModalActiveValue) => {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.modalFileId = nextModalActiveValue.modalFileId;
@@ -96,12 +96,12 @@ export class AddRecipientsModalComponent implements OnInit {
       recipient = {
         emailOrName: this.email,
         sendEmail: this.sendEmailIsTrue,
-        message: this.message
+        message: this.message,
       };
     } else {
       recipient = {
         emailOrName: this.name,
-        sendEmail: this.sendEmailIsTrue
+        sendEmail: this.sendEmailIsTrue,
       };
     }
     await this.uploadedFileService.addOneRecipient(

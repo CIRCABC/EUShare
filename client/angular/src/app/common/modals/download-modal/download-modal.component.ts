@@ -12,7 +12,7 @@ import { ModalsService } from '../modals.service';
 
 @Component({
   selector: 'app-download-modal',
-  templateUrl: './download-modal.component.html'
+  templateUrl: './download-modal.component.html',
 })
 export class DownloadModalComponent implements OnInit {
   public modalActive!: boolean;
@@ -24,12 +24,14 @@ export class DownloadModalComponent implements OnInit {
 
   ngOnInit() {
     this.modalActive = false;
-    this.modalService.activateDownloadModal$.subscribe(nextModalActiveValue => {
-      this.modalActive = nextModalActiveValue.modalActive;
-      this.modalFileId = nextModalActiveValue.modalFileId;
-      this.modalFileName = nextModalActiveValue.modalFileName;
-      this.modalHasPassword = nextModalActiveValue.modalFileHasPassword;
-    });
+    this.modalService.activateDownloadModal$.subscribe(
+      (nextModalActiveValue) => {
+        this.modalActive = nextModalActiveValue.modalActive;
+        this.modalFileId = nextModalActiveValue.modalFileId;
+        this.modalFileName = nextModalActiveValue.modalFileName;
+        this.modalHasPassword = nextModalActiveValue.modalFileHasPassword;
+      }
+    );
   }
 
   public closeModal() {

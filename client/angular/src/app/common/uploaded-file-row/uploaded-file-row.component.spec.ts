@@ -17,7 +17,7 @@ describe('FileRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UploadedFileRowComponent]
+      declarations: [UploadedFileRowComponent],
     }).compileComponents();
   }));
 

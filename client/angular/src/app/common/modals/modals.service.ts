@@ -12,7 +12,7 @@ import { Observable, Subject } from 'rxjs';
 import { RecipientWithLink } from '../../openapi';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ModalsService {
   private possibleActiveModals: string[] = [
@@ -21,40 +21,32 @@ export class ModalsService {
     'addRecipients',
     'shareWithUsers',
     'deleteConfirm',
-    ' '
+    ' ',
   ];
   private activeModal!: string;
 
   private activateDownloadModalSubject = new Subject<DownloadModalValue>();
-  public activateDownloadModal$: Observable<
-    DownloadModalValue
-  > = this.activateDownloadModalSubject.asObservable();
+  public activateDownloadModal$: Observable<DownloadModalValue> =
+    this.activateDownloadModalSubject.asObservable();
 
   private activateFileLinkModalSubject = new Subject<FileLinkModalValue>();
-  public activateFileLinkModal$: Observable<
-    FileLinkModalValue
-  > = this.activateFileLinkModalSubject.asObservable();
+  public activateFileLinkModal$: Observable<FileLinkModalValue> =
+    this.activateFileLinkModalSubject.asObservable();
 
-  private activateAddRecipientsModalSubject = new Subject<
-    AddRecipientsModalValue
-  >();
-  public activateAddRecipientsModal$: Observable<
-    AddRecipientsModalValue
-  > = this.activateAddRecipientsModalSubject.asObservable();
+  private activateAddRecipientsModalSubject =
+    new Subject<AddRecipientsModalValue>();
+  public activateAddRecipientsModal$: Observable<AddRecipientsModalValue> =
+    this.activateAddRecipientsModalSubject.asObservable();
 
-  private activateShareWithUsersModalSubject = new Subject<
-    ShareWithUsersModalValue
-  >();
-  public activateShareWithUsersModal$: Observable<
-    ShareWithUsersModalValue
-  > = this.activateShareWithUsersModalSubject.asObservable();
+  private activateShareWithUsersModalSubject =
+    new Subject<ShareWithUsersModalValue>();
+  public activateShareWithUsersModal$: Observable<ShareWithUsersModalValue> =
+    this.activateShareWithUsersModalSubject.asObservable();
 
-  private activateDeleteConfirmModalSubject = new Subject<
-    DeleteConfirmModalValue
-  >();
-  public activateDeleteConfirmModal$: Observable<
-    DeleteConfirmModalValue
-  > = this.activateDeleteConfirmModalSubject.asObservable();
+  private activateDeleteConfirmModalSubject =
+    new Subject<DeleteConfirmModalValue>();
+  public activateDeleteConfirmModal$: Observable<DeleteConfirmModalValue> =
+    this.activateDeleteConfirmModalSubject.asObservable();
 
   constructor() {}
 
@@ -69,7 +61,7 @@ export class ModalsService {
     this.activateDeleteConfirmModalSubject.next({
       modalActive: true,
       modalFileName: modalFileName,
-      modalFileId: modalFileId
+      modalFileId: modalFileId,
     });
   }
 
@@ -88,7 +80,7 @@ export class ModalsService {
       modalFileName: modalFileName,
       modalFileId: modalFileId,
       modalFileHasPassword: modalFileHasPassword,
-      recipientsWithLink: recipientsWithLink
+      recipientsWithLink: recipientsWithLink,
     });
   }
 
@@ -103,7 +95,7 @@ export class ModalsService {
     this.activateAddRecipientsModalSubject.next({
       modalActive: true,
       modalFileName: modalFileName,
-      modalFileId: modalFileId
+      modalFileId: modalFileId,
     });
   }
 
@@ -114,7 +106,7 @@ export class ModalsService {
     this.activeModal = this.possibleActiveModals[1];
     this.activateFileLinkModalSubject.next({
       modalActive: true,
-      fileLink: link
+      fileLink: link,
     });
   }
 
@@ -131,7 +123,7 @@ export class ModalsService {
       modalActive: true,
       modalFileId: modalFileId,
       modalFileName: modalFileName,
-      modalFileHasPassword: modalFileHasPassword
+      modalFileHasPassword: modalFileHasPassword,
     });
   }
 
@@ -142,7 +134,7 @@ export class ModalsService {
         modalActive: false,
         modalFileId: '',
         modalFileName: '',
-        modalFileHasPassword: false
+        modalFileHasPassword: false,
       });
     }
   }
@@ -152,7 +144,7 @@ export class ModalsService {
       this.activeModal = ' ';
       this.activateFileLinkModalSubject.next({
         modalActive: false,
-        fileLink: ''
+        fileLink: '',
       });
     }
   }
@@ -163,7 +155,7 @@ export class ModalsService {
       this.activateAddRecipientsModalSubject.next({
         modalActive: false,
         modalFileName: '',
-        modalFileId: ''
+        modalFileId: '',
       });
     }
   }
@@ -176,7 +168,7 @@ export class ModalsService {
         modalFileName: '',
         modalFileId: '',
         modalFileHasPassword: false,
-        recipientsWithLink: []
+        recipientsWithLink: [],
       });
     }
   }
@@ -187,7 +179,7 @@ export class ModalsService {
       this.activateDeleteConfirmModalSubject.next({
         modalActive: false,
         modalFileName: '',
-        modalFileId: ''
+        modalFileId: '',
       });
     }
   }

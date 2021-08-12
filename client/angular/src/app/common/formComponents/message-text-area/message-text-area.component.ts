@@ -14,19 +14,19 @@ import {
   Self,
   Optional,
   OnInit,
-  Input
+  Input,
 } from '@angular/core';
 import {
   ControlValueAccessor,
   NgControl,
   ValidatorFn,
-  AbstractControl
+  AbstractControl,
 } from '@angular/forms';
 
 @Component({
   selector: 'app-message-text-area',
   templateUrl: './message-text-area.component.html',
-  styleUrls: ['./message-text-area.component.scss']
+  styleUrls: ['./message-text-area.component.scss'],
 })
 export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;
@@ -50,7 +50,7 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
       } else {
         control.setValidators([
           control.validator,
-          this.messageToRecipientValidator(401)
+          this.messageToRecipientValidator(401),
         ]);
       }
       setTimeout(() => control.updateValueAndValidity({ emitEvent: true }));

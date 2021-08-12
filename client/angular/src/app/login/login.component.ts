@@ -14,7 +14,7 @@ import { KeyStoreService } from '../services/key-store.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   constructor(
@@ -27,9 +27,8 @@ export class LoginComponent implements OnInit {
   async login() {
     this.keyStoreService.prepareKeyStore();
     const customQueryParams: { [key: string]: any } = {};
-    customQueryParams[
-      'req_cnf'
-    ] = this.keyStoreService.publicJWKBase64UrlEncoded();
+    customQueryParams['req_cnf'] =
+      this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;
     await this.oauthService.initImplicitFlow();
   }

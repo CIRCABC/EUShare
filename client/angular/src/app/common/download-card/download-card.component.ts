@@ -11,18 +11,18 @@ import { Component, OnInit } from '@angular/core';
 import {
   faDownload,
   faChevronLeft,
-  faExclamationTriangle
+  faExclamationTriangle,
 } from '@fortawesome/free-solid-svg-icons';
 import {
   DownloadsService,
-  DownloadInProgress
+  DownloadInProgress,
 } from '../../services/downloads.service';
 import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-download-card',
   templateUrl: './download-card.component.html',
-  styleUrls: ['./download-card.component.scss']
+  styleUrls: ['./download-card.component.scss'],
 })
 export class DownloadCardComponent implements OnInit {
   public faDownload = faDownload;
@@ -87,7 +87,7 @@ export class DownloadCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.downloadsService.displayDownloads$.subscribe(next => {
+    this.downloadsService.displayDownloads$.subscribe((next) => {
       if (next) {
         this.display();
       } else {
@@ -95,21 +95,21 @@ export class DownloadCardComponent implements OnInit {
       }
     });
     this.downloadsService.nextDownloadsInProgress$.subscribe(
-      downloadInProgress$ => {
+      (downloadInProgress$) => {
         this.downloadInProgressMap.set(
           downloadInProgress$.fileId,
           downloadInProgress$.downloadInProgressObservable
         );
         downloadInProgress$.downloadInProgressObservable.subscribe(
-          downloadInProgress => {
+          (downloadInProgress) => {
             const index = this.downloadsToDisplay.findIndex(
-              element => element.fileId === downloadInProgress.fileId
+              (element) => element.fileId === downloadInProgress.fileId
             );
             const nextDownloadToDisplay = {
               fileName: downloadInProgress.name,
               hasError: false,
               fileId: downloadInProgress.fileId,
-              percentage: downloadInProgress.percentage
+              percentage: downloadInProgress.percentage,
             };
             if (index !== -1) {
               // Already existing
@@ -130,10 +130,10 @@ export class DownloadCardComponent implements OnInit {
               this.downloadsToDisplay.unshift(nextDownloadToDisplay);
             }
           },
-          error => {
+          (error) => {
             const id: string = error.message;
             const index = this.downloadsToDisplay.findIndex(
-              element => element.fileId === id
+              (element) => element.fileId === id
             );
             if (index >= 0) {
               this.downloadsToDisplay[index].hasError = true;

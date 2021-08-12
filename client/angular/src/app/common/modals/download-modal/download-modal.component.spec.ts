@@ -17,7 +17,7 @@ describe('DownloadModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DownloadModalComponent]
+      declarations: [DownloadModalComponent],
     }).compileComponents();
   }));
 

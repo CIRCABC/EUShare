@@ -14,26 +14,24 @@ import { FileService } from '../openapi';
 import {
   HttpEvent,
   HttpEventType,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { NotificationService } from '../common/notification/notification.service';
 import { Observable, Subject } from 'rxjs';
 import { saveAs } from 'file-saver';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DownloadsService {
   private currentDownloadsInProgress = new Map<
     string,
     Observable<DownloadInProgress>
   >();
-  private nextDownloadsInProgressSubject = new Subject<
-    DownloadInProgressObservableWithMeta
-  >();
-  public nextDownloadsInProgress$: Observable<
-    DownloadInProgressObservableWithMeta
-  > = this.nextDownloadsInProgressSubject.asObservable();
+  private nextDownloadsInProgressSubject =
+    new Subject<DownloadInProgressObservableWithMeta>();
+  public nextDownloadsInProgress$: Observable<DownloadInProgressObservableWithMeta> =
+    this.nextDownloadsInProgressSubject.asObservable();
 
   private displayDownloadsSubject = new Subject<boolean>();
   public displayDownloads$ = this.displayDownloadsSubject.asObservable();
@@ -63,23 +61,21 @@ export class DownloadsService {
     inputPassword?: string,
     withSubcription?: boolean
   ): Observable<DownloadInProgress> {
-    const currentDownloadInProgressOrUndefined = this.currentDownloadsInProgress.get(
-      fileId
-    );
+    const currentDownloadInProgressOrUndefined =
+      this.currentDownloadsInProgress.get(fileId);
 
     if (currentDownloadInProgressOrUndefined) {
       return currentDownloadInProgressOrUndefined;
     } else {
-      const newDownloadObservable: Observable<
-        DownloadInProgress
-      > = this.fileApi
+      const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
         .getFile(fileId, inputPassword, 'events', true)
-        .pipe(map(event => this.manageEventMessage(event, fileName, fileId)));
+        .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
       this.currentDownloadsInProgress.set(fileId, newDownloadObservable);
-      const downloadInProgressObservableWithMeta: DownloadInProgressObservableWithMeta = {
-        downloadInProgressObservable: newDownloadObservable,
-        fileId: fileId
-      };
+      const downloadInProgressObservableWithMeta: DownloadInProgressObservableWithMeta =
+        {
+          downloadInProgressObservable: newDownloadObservable,
+          fileId: fileId,
+        };
       if (!withSubcription) {
         this.nextDownloadsInProgressSubject.next(
           downloadInProgressObservableWithMeta
@@ -108,7 +104,7 @@ export class DownloadsService {
     const downloadValueToReturn: DownloadInProgress = {
       name: fileName,
       fileId: fileId,
-      percentage: 0
+      percentage: 0,
     };
 
     switch (event.type) {

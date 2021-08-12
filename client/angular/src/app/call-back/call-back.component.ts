@@ -16,7 +16,7 @@ import { NotificationService } from '../common/notification/notification.service
 @Component({
   selector: 'app-call-back',
   templateUrl: './call-back.component.html',
-  styleUrls: ['./call-back.component.scss']
+  styleUrls: ['./call-back.component.scss'],
 })
 export class CallBackComponent implements OnInit {
   constructor(
@@ -28,7 +28,7 @@ export class CallBackComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.oAuthService.events.subscribe(next => {
+    this.oAuthService.events.subscribe((next) => {
       const nextType: string = next.type;
       switch (nextType) {
         case 'token_expires': {

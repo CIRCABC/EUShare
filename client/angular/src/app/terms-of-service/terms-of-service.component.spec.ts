@@ -17,7 +17,7 @@ describe('TermsOfServiceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [TermsOfServiceComponent]
+      declarations: [TermsOfServiceComponent],
     }).compileComponents();
   }));
 

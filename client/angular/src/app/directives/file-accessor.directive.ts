@@ -16,9 +16,9 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: FileAccessorDirective,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class FileAccessorDirective implements ControlValueAccessor {
   value: any;

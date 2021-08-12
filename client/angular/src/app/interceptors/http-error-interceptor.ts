@@ -12,7 +12,7 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
@@ -21,7 +21,7 @@ import { NotificationService } from '../common/notification/notification.service
 import { Status } from '../openapi';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(private notificationService: NotificationService) {}
@@ -31,7 +31,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      catchError(err => {
+      catchError((err) => {
         if (err instanceof HttpErrorResponse) {
           const isPostLogin =
             req.url.includes('/login') && req.method === 'POST';

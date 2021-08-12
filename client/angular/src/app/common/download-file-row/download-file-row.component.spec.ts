@@ -17,7 +17,7 @@ describe('DownloadFileRowComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [DownloadFileRowComponent]
+      declarations: [DownloadFileRowComponent],
     }).compileComponents();
   }));
 

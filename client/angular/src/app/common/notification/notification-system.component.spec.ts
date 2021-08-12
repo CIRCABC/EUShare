@@ -17,7 +17,7 @@ describe('NotificationSystemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [NotificationSystemComponent]
+      declarations: [NotificationSystemComponent],
     }).compileComponents();
   }));
 

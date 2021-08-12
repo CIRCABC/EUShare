@@ -14,7 +14,7 @@ import {
   faShareAlt,
   faUsers,
   faUsersCog,
-  faSignOutAlt
+  faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { SessionService } from '../openapi';
 import { OAuthService } from 'angular-oauth2-oidc';
@@ -22,7 +22,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
   public faUsers = faUsers;
@@ -48,11 +48,11 @@ export class NavbarComponent implements OnInit {
     }
 
     this.sessionService.userInfo$.subscribe(
-      secondUserInfo => {
+      (secondUserInfo) => {
         this.userName = secondUserInfo.givenName;
         this.isAdmin = secondUserInfo.isAdmin;
       },
-      error => {}
+      (error) => {}
     );
   }
 

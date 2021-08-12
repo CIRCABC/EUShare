@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-uploaded-file-row-container',
   templateUrl: './uploaded-file-row-container.component.html',
-  styleUrls: ['./uploaded-file-row-container.component.scss']
+  styleUrls: ['./uploaded-file-row-container.component.scss'],
 })
 export class FileRowContainerComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:no-input-rename
@@ -42,14 +42,15 @@ export class FileRowContainerComponent implements OnInit, OnDestroy {
 
   async ngOnInit() {
     if (this.userId) {
-      this.subscription = this.fileInfoUploaderService.fileInfoUploaderArrayAndMetaData$.subscribe(
-        next => {
-          this.fileInfoUploaderArray = next.fileInfoUploaderArray;
-          this.hasNextPage = next.hasNextPage;
-          this.hasPreviousPage = next.hasPreviousPage;
-          this.pageNumber = next.pageNumber + 1;
-        }
-      );
+      this.subscription =
+        this.fileInfoUploaderService.fileInfoUploaderArrayAndMetaData$.subscribe(
+          (next) => {
+            this.fileInfoUploaderArray = next.fileInfoUploaderArray;
+            this.hasNextPage = next.hasNextPage;
+            this.hasPreviousPage = next.hasPreviousPage;
+            this.pageNumber = next.pageNumber + 1;
+          }
+        );
       await this.fileInfoUploaderService.reinit(this.userId);
     }
   }

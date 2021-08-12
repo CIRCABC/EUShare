@@ -64,4 +64,4 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
  */
 
 // tslint:disable-next-line:no-import-side-effect
-import 'core-js/es7/array';
+import 'core-js/modules/es.array.includes';

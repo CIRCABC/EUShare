@@ -14,21 +14,17 @@ import { NotificationLevel } from './notification-level';
 import { NotificationMessage } from './notification-message';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NotificationService {
-  public messageSource: Subject<NotificationMessage> = new Subject<
-    NotificationMessage
-  >();
-  public messageDestroySource: Subject<NotificationMessage> = new Subject<
-    NotificationMessage
-  >();
-  public messageAnnounced$: Observable<
-    NotificationMessage
-  > = this.messageSource.asObservable();
-  public messageDestroyed$: Observable<
-    NotificationMessage
-  > = this.messageDestroySource.asObservable();
+  public messageSource: Subject<NotificationMessage> =
+    new Subject<NotificationMessage>();
+  public messageDestroySource: Subject<NotificationMessage> =
+    new Subject<NotificationMessage>();
+  public messageAnnounced$: Observable<NotificationMessage> =
+    this.messageSource.asObservable();
+  public messageDestroyed$: Observable<NotificationMessage> =
+    this.messageDestroySource.asObservable();
   private lastMessage = { message: '', time: new Date().getTime() };
 
   public addInfoMessage(

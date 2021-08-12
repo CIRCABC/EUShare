@@ -17,7 +17,7 @@ describe('CbcPersonalMenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [CbcPersonalMenuComponent]
+      declarations: [CbcPersonalMenuComponent],
     }).compileComponents();
   }));
 

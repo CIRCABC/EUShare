@@ -16,14 +16,14 @@ import {
   OnInit,
   Output,
   EventEmitter,
-  Input
+  Input,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-email-input',
   templateUrl: './email-input.component.html',
-  styleUrls: ['./email-input.component.scss']
+  styleUrls: ['./email-input.component.scss'],
 })
 export class EmailInputComponent implements ControlValueAccessor, OnInit {
   private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
@@ -54,7 +54,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
       } else {
         control.setValidators([
           control.validator,
-          Validators.pattern(this.emailRegex)
+          Validators.pattern(this.emailRegex),
         ]);
       }
       setTimeout(() => control.updateValueAndValidity({ emitEvent: true }));

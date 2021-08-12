@@ -17,7 +17,7 @@ describe('LinkInputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LinkInputComponent]
+      declarations: [LinkInputComponent],
     }).compileComponents();
   }));
 

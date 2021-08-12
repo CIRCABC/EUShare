@@ -16,7 +16,7 @@ import { DownloadsService } from '../../services/downloads.service';
 @Component({
   selector: 'app-download-file-row',
   templateUrl: './download-file-row.component.html',
-  styleUrls: ['./download-file-row.component.scss']
+  styleUrls: ['./download-file-row.component.scss'],
 })
 export class DownloadFileRowComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename

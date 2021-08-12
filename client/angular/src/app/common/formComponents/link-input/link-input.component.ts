@@ -13,19 +13,19 @@ import {
   ElementRef,
   Self,
   Optional,
-  OnInit
+  OnInit,
 } from '@angular/core';
 import {
   ControlValueAccessor,
   NgControl,
   ValidatorFn,
-  AbstractControl
+  AbstractControl,
 } from '@angular/forms';
 
 @Component({
   selector: 'app-link-input',
   templateUrl: './link-input.component.html',
-  styleUrls: ['./link-input.component.scss']
+  styleUrls: ['./link-input.component.scss'],
 })
 export class LinkInputComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;

@@ -15,7 +15,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-filelink',
   templateUrl: './filelink.component.html',
-  styleUrls: ['./filelink.component.scss']
+  styleUrls: ['./filelink.component.scss'],
 })
 export class FilelinkComponent implements OnInit {
   public fileName!: string;
@@ -46,9 +46,8 @@ export class FilelinkComponent implements OnInit {
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    const fileNameB64URIEncoded = this.route.snapshot.paramMap.get(
-      'filenameb64'
-    );
+    const fileNameB64URIEncoded =
+      this.route.snapshot.paramMap.get('filenameb64');
     const isPasswordProtected = this.route.snapshot.paramMap.get(
       'isPasswordProtected'
     );

@@ -17,7 +17,7 @@ describe('SharedWithMeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SharedWithMeComponent]
+      declarations: [SharedWithMeComponent],
     }).compileComponents();
   }));
 

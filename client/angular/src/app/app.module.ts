@@ -10,17 +10,16 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule,
-  HttpClient
+  HttpClient,
 } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CalendarModule } from 'primeng/components/calendar/calendar';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
@@ -38,7 +37,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { UploadComponent } from './upload/upload.component';
 import { FileAccessorDirective } from './directives/file-accessor.directive';
 import { ApiModule } from './openapi/api.module';
-import { BASE_PATH, Configuration, ConfigurationParameters } from './openapi';
+import { BASE_PATH } from './openapi';
 import { DownloadButtonComponent } from './common/buttons/download-button/download-button.component';
 import { AddRecipientsModalComponent } from './common/modals/add-recipients-modal/add-recipients-modal.component';
 import { EmailInputComponent } from './common/formComponents/email-input/email-input.component';
@@ -84,59 +83,59 @@ const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'home',
     component: MySharedFilesComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'upload',
     component: UploadComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'uploadSuccess',
     component: UploadSucessComponent,
-    canActivate: [LoginGuard, UploadSuccessGuard]
+    canActivate: [LoginGuard, UploadSuccessGuard],
   },
   {
     path: 'download',
     component: SharedWithMeComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'filelink/:id/:filenameb64/:isPasswordProtected',
-    component: FilelinkComponent
+    component: FilelinkComponent,
   },
   {
     path: 'administration',
     component: AdministrationComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'administration/:userId/files',
     component: OtherUserSharedFilesComponent,
     data: { userName: 'dummyUserName' },
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'callback',
-    component: CallBackComponent
+    component: CallBackComponent,
   },
   {
     path: 'myUser',
-    component: MyUserComponent
+    component: MyUserComponent,
   },
   {
     path: 'privacyStatement',
-    component: PrivacyStatementComponent
+    component: PrivacyStatementComponent,
   },
   {
     path: 'termsOfService',
-    component: TermsOfServiceComponent
-  }
+    component: TermsOfServiceComponent,
+  },
 ];
 
 @NgModule({
@@ -180,31 +179,31 @@ const routes: Routes = [
     CbcPersonalMenuComponent,
     CbcLangSelectorComponent,
     PersonalMenuComponent,
-    DeleteButtonComponent
+    DeleteButtonComponent,
   ],
   imports: [
     ApiModule,
+    HammerModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
         useFactory: createTranslateLoader,
-        deps: [HttpClient]
-      }
+        deps: [HttpClient],
+      },
     }),
     BrowserModule,
     ReactiveFormsModule,
-    CalendarModule,
     FormsModule,
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
         allowedUrls: ['https://localhost:8888'],
-        sendAccessToken: true
-      }
+        sendAccessToken: true,
+      },
     }),
     RouterModule.forRoot(routes),
     FontAwesomeModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     KeyStoreService,
@@ -212,14 +211,14 @@ const routes: Routes = [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: BasicAuthenticationInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpErrorInterceptor,
-      multi: true
-    }
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

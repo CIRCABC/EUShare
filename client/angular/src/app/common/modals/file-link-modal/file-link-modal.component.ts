@@ -13,7 +13,7 @@ import { ModalsService } from '../modals.service';
 
 @Component({
   selector: 'app-file-link-modal',
-  templateUrl: './file-link-modal.component.html'
+  templateUrl: './file-link-modal.component.html',
 })
 export class FileLinkModalComponent implements OnInit {
   public modalActive = false;
@@ -26,10 +26,12 @@ export class FileLinkModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.modalService.activateFileLinkModal$.subscribe(nextModalActiveValue => {
-      this.modalActive = nextModalActiveValue.modalActive;
-      this.fileLink = nextModalActiveValue.fileLink;
-    });
+    this.modalService.activateFileLinkModal$.subscribe(
+      (nextModalActiveValue) => {
+        this.modalActive = nextModalActiveValue.modalActive;
+        this.fileLink = nextModalActiveValue.fileLink;
+      }
+    );
   }
 
   copyLink(inputElement: any) {

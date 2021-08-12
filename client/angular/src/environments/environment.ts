@@ -13,6 +13,6 @@ export const environment: Environment = {
   OIDC_CLIENTID:
     'SUaZzHzotYc0aWZwRNH8DsNdVF0RdzvszanVEMzVlUuQSpy8WEylWDiKTrspJtg7fnbizPObS5HObgpIVDNWL0rG-PnCd3ypAN98azctE7ydwH9',
   OIDC_BACKEND_CLIENTID:
-  'jJFw8RBTrvm8LFdWe6nINhPPOg7ygzcfihddYGsWM3EbE391A9R3iezpeUzygoQUwEUDoLBcERD86CWx5WNKZaW-PnCd3ypAN98azctE7ydwH9',
-  OIDC_TOKENENDPOINT: 'https://localhost:7002/cas/oauth2/token'
+    'jJFw8RBTrvm8LFdWe6nINhPPOg7ygzcfihddYGsWM3EbE391A9R3iezpeUzygoQUwEUDoLBcERD86CWx5WNKZaW-PnCd3ypAN98azctE7ydwH9',
+  OIDC_TOKENENDPOINT: 'https://localhost:7002/cas/oauth2/token',
 };

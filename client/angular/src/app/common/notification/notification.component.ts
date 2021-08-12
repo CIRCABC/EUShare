@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.scss']
+  styleUrls: ['./notification.component.scss'],
 })
 export class NotificationComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename

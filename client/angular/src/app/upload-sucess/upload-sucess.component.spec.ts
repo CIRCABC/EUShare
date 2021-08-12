@@ -17,7 +17,7 @@ describe('UploadSucessComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [UploadSucessComponent]
+      declarations: [UploadSucessComponent],
     }).compileComponents();
   }));
 

@@ -16,7 +16,7 @@ import { NotificationService } from '../../notification/notification.service';
   selector: 'app-share-with-users-modal',
   templateUrl: './share-with-users-modal.component.html',
   styleUrls: ['./share-with-users-modal.component.scss'],
-  preserveWhitespaces: true
+  preserveWhitespaces: true,
 })
 export class ShareWithUsersModalComponent implements OnInit {
   public modalActive = false;
@@ -38,7 +38,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   ngOnInit() {
     this.modalActive = false;
     this.modalService.activateShareWithUsersModal$.subscribe(
-      nextModalActiveValue => {
+      (nextModalActiveValue) => {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
@@ -53,7 +53,7 @@ export class ShareWithUsersModalComponent implements OnInit {
     this.fileApi
       .deleteFileSharedWithUser(this.modalFileId, shareId)
       .toPromise()
-      .then(success => {
+      .then((success) => {
         this.recipientsWithLink.splice(shareIndex, 1);
         this.notificationService.addSuccessMessage(
           'Successfully removed file ' +
@@ -62,7 +62,7 @@ export class ShareWithUsersModalComponent implements OnInit {
             shareName
         );
       })
-      .catch(error => {
+      .catch((error) => {
         // managed in the interceptor
       });
   }
