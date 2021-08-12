@@ -31,7 +31,9 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Collections;
 
 import com.circabc.easyshare.exceptions.CouldNotAllocateFileException;
 import com.circabc.easyshare.exceptions.DateLiesInPastException;
@@ -80,9 +82,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
-
-import edu.emory.mathcs.backport.java.util.Collections;
-import edu.emory.mathcs.backport.java.util.LinkedList;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(FileApiController.class)

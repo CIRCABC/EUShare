@@ -33,7 +33,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import edu.emory.mathcs.backport.java.util.Collections;
+import java.util.Collections;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
