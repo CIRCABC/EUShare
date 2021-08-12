@@ -6,13 +6,13 @@ import { Environment } from './interface';
 export const environment: Environment = {
   production: false,
   backend_url: 'http://localhost:8888',
-  frontend_url: 'http://localhost:4200',
+  frontend_url: 'http://localhost:8080',
   API_BASE_PATH: 'http://localhost:8888',
   OIDC_ISSUER: 'https://localhost:7002/cas/oauth2',
   OIDC_REDIRECTURI: window.location.origin + '/callback',
   OIDC_CLIENTID:
-    '1b4w8K03ZI2xPOMZF1ZVT0Dobx9FJTRFO8hYaDMH03owPhyI3qFIW0lJHqzSvlx7kPzqXh9gTYcm3So724O9zZG-oyxudg2gCn0K2sQ4lm4EJC',
+    'SUaZzHzotYc0aWZwRNH8DsNdVF0RdzvszanVEMzVlUuQSpy8WEylWDiKTrspJtg7fnbizPObS5HObgpIVDNWL0rG-PnCd3ypAN98azctE7ydwH9',
   OIDC_BACKEND_CLIENTID:
-    '9IAcWq6ZHKtOqk83xfOzg8nWPlwNnPB5Uf4wnE48IUiulvUMeKdQLhs5PzHQG1Lp3Swlye7PsZli654ZmzhRoJ0-N2w0EKzVFJFzN9F09Pl7GG',
+  'jJFw8RBTrvm8LFdWe6nINhPPOg7ygzcfihddYGsWM3EbE391A9R3iezpeUzygoQUwEUDoLBcERD86CWx5WNKZaW-PnCd3ypAN98azctE7ydwH9',
   OIDC_TOKENENDPOINT: 'https://localhost:7002/cas/oauth2/token'
 };

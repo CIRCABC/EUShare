@@ -3,7 +3,7 @@ server:
 cors:
   origin: '*'
 easyshare:
-  clientHttpAddress: http://localhost:4200
+  clientHttpAddress: http://localhost:8080
   expirationdays: 7
   defaultuserspace: 5368709120
   # 4Gb
@@ -13,16 +13,16 @@ easyshare:
     - C:\temp\easyshare
 logging:
   level:
-    org.springframework: ERROR
-    org.hibernate.SQL: DEBUG
+    org.springframework: DEBUG
+    org.hibernate.SQL: ERROR
 spring:
   security:
     oauth2:
       resourceserver:
         opaquetoken:
           introspection-uri: https://localhost:7002/cas/oauth2/token/introspect
-          client-id: 9IAcWq6ZHKtOqk83xfOzg8nWPlwNnPB5Uf4wnE48IUiulvUMeKdQLhs5PzHQG1Lp3Swlye7PsZli654ZmzhRoJ0-N2w0EKzVFJFzN9F09Pl7GG
-          client-secret: D9rFLtYRZCa_PQ10qEyhZcyWlMAPjsSnvnk-C8mZE2NllNiZvy4jZbEUx1I_lw_VsBJiVV_bLmsOMpUuFBPajCI6QXksCTnOrw9Znq7KLnzHysvyCqkTWfDzIXFZvQXNGslnncb8NNaZzy5NfAbdEtenXbA8CGYsZBnYroIKzu8
+          client-id: jJFw8RBTrvm8LFdWe6nINhPPOg7ygzcfihddYGsWM3EbE391A9R3iezpeUzygoQUwEUDoLBcERD86CWx5WNKZaW-PnCd3ypAN98azctE7ydwH9
+          client-secret: 8eGhQCJ-wC4zWpPHbHWVslDqZr4zYst0dQRskqZpWQ8xru6fsrhxXTy3BqiVVjhtlV9F61wJfH7gaGpD71EEA28VBsKI5ClAfk_FlEU3I4VXUhpBa9wxT5UYY2m8h10kidsaj0PF-5TuNVzNWXkDh82RxGTW03dE_IivcPcARO8
   profiles:
     active: @spring.profiles.active@
   datasource:

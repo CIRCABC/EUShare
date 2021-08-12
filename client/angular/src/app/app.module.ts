@@ -198,7 +198,7 @@ const routes: Routes = [
     HttpClientModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: ['http://localhost:8888'],
+        allowedUrls: ['https://localhost:8888'],
         sendAccessToken: true
       }
     }),
