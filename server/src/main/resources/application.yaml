@@ -37,7 +37,7 @@ spring:
     #org.hibernate.dialect.Oracle10gDialect
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   mail:
     host: localhost
     port: 1025
