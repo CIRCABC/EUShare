@@ -13,8 +13,7 @@ import { map } from 'rxjs/operators';
 import { FileService } from '../openapi';
 import {
   HttpEvent,
-  HttpEventType,
-  HttpErrorResponse,
+  HttpEventType
 } from '@angular/common/http';
 import { NotificationService } from '../common/notification/notification.service';
 import { Observable, Subject } from 'rxjs';
@@ -44,7 +43,7 @@ export class DownloadsService {
   public getCurrentObservables(): Observable<DownloadInProgress>[] {
     const observablesArray: Observable<DownloadInProgress>[] = [];
     this.currentDownloadsInProgress.forEach(
-      (observale: Observable<DownloadInProgress>, fileId: string) => {
+      (observale: Observable<DownloadInProgress>, _fileId: string) => {
         observablesArray.push(observale);
       }
     );

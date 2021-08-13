@@ -11,7 +11,6 @@ import { Component, Input } from '@angular/core';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FileInfoUploader } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
-import { UploadedFilesService } from '../../services/uploaded-files.service';
 import { DownloadsService } from '../../services/downloads.service';
 
 @Component({
@@ -39,7 +38,6 @@ export class UploadedFileRowComponent {
 
   constructor(
     private modalService: ModalsService,
-    private uploadedFileService: UploadedFilesService,
     private downloadsService: DownloadsService
   ) {}
 

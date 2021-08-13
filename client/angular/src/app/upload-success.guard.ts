@@ -23,8 +23,8 @@ export class UploadSuccessGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    _next: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (
       this.router.getCurrentNavigation() && // tslint:disable-next-line:no-non-null-assertion

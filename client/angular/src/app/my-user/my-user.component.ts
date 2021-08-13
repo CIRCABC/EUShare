@@ -11,10 +11,8 @@ import { Component, OnInit } from '@angular/core';
 import {
   SessionService,
   UsersService,
-  FileService,
   UserInfo,
 } from '../openapi';
-import { NotificationService } from '../common/notification/notification.service';
 
 @Component({
   selector: 'app-my-user',
@@ -26,8 +24,7 @@ export class MyUserComponent implements OnInit {
 
   constructor(
     private sessionApi: SessionService,
-    private userApi: UsersService,
-    private notificationService: NotificationService
+    private userApi: UsersService
   ) {}
 
   async ngOnInit() {

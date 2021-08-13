@@ -13,24 +13,21 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-} from '@angular/common/http';
-import { Injectable, Injector } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
-import { SessionService } from '../openapi';
-import { KeyStoreService } from '../services/key-store.service';
+} from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { OAuthService } from "angular-oauth2-oidc";
+import { Observable } from "rxjs";
+import { switchMap } from "rxjs/operators";
+import { environment } from "../../environments/environment";
+import { SessionService } from "../openapi";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class BasicAuthenticationInterceptor implements HttpInterceptor {
   constructor(
     protected http: HttpClient,
-    private inj: Injector,
     private sessionService: SessionService,
-    private keystoreService: KeyStoreService,
     private oAuthService: OAuthService
   ) {}
 
@@ -39,15 +36,15 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<{}>> {
     const isSSOUrl = req.url.includes(environment.OIDC_ISSUER);
-    const isOptions = req.method.includes('OPTIONS');
+    const isOptions = req.method.includes("OPTIONS");
     if (isSSOUrl || isOptions) {
       return next.handle(req);
     }
 
-    const isGetFile = req.url.includes('/file/') && req.method === 'GET';
+    const isGetFile = req.url.includes("/file/") && req.method === "GET";
     if (isGetFile) {
       req = req.clone({
-        headers: req.headers.delete('Authorization'),
+        headers: req.headers.delete("Authorization"),
       });
       return next.handle(req);
     }

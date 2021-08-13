@@ -29,8 +29,7 @@ import { fileSizeValidator } from '../common/validators/file-validator';
 import { map } from 'rxjs/operators';
 import {
   HttpEvent,
-  HttpEventType,
-  HttpErrorResponse,
+  HttpEventType
 } from '@angular/common/http';
 import { Router } from '@angular/router';
 

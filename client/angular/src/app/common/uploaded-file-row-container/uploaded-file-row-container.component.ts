@@ -65,5 +65,6 @@ export class FileRowContainerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.fileInfoUploaderArray = [];
+    this.subscription.unsubscribe();
   }
 }

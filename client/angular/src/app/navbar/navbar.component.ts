@@ -52,7 +52,7 @@ export class NavbarComponent implements OnInit {
         this.userName = secondUserInfo.givenName;
         this.isAdmin = secondUserInfo.isAdmin;
       },
-      (error) => {}
+      (_error) => {}
     );
   }
 

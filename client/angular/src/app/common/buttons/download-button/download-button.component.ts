@@ -62,7 +62,7 @@ export class DownloadButtonComponent implements OnInit {
               this.isLoading = false;
             }
           },
-          (error) => {
+          (_error) => {
             this.isLoading = false;
           }
         );

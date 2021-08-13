@@ -53,7 +53,7 @@ export class ShareWithUsersModalComponent implements OnInit {
     this.fileApi
       .deleteFileSharedWithUser(this.modalFileId, shareId)
       .toPromise()
-      .then((success) => {
+      .then((_success) => {
         this.recipientsWithLink.splice(shareIndex, 1);
         this.notificationService.addSuccessMessage(
           'Successfully removed file ' +
@@ -62,7 +62,7 @@ export class ShareWithUsersModalComponent implements OnInit {
             shareName
         );
       })
-      .catch((error) => {
+      .catch((_error) => {
         // managed in the interceptor
       });
   }

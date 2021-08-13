@@ -4,7 +4,8 @@
     "preserveWhitespaces": true,
     "fullTemplateTypeCheck": true,
     "strictTemplateParams": true,
-    "strictTemplate": true,
+    "strictTemplates": true,
+    "strictDomEventTypes": false,
     "enableIvy": true
   },
   "compilerOptions": {
