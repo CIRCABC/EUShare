@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "node ./src/version.js",
     "ng": "ng",
-    "start": "ng serve -o",
+    "start": "ng serve -o --port=8080",
     "build": "ng build -c=dev",
     "builddevdocker": "ng build -c=devdocker",
     "buildproddocker": "ng build -c=proddocker",
