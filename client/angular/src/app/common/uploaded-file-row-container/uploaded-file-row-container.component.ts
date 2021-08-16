@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs';
 export class FileRowContainerComponent implements OnInit, OnDestroy {
   // tslint:disable-next-line:no-input-rename
   @Input('userId')
-  private userId!: string;
+  public userId!: string;
 
   // tslint:disable-next-line:no-input-rename
   @Input('displayAsAdministrator')

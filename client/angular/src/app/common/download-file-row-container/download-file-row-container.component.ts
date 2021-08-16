@@ -18,7 +18,7 @@ import { FileInfoRecipient, UsersService } from "../../openapi";
 export class DownloadFileRowContainerComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
   @Input("userId")
-  private userId!: string;
+  public userId!: string;
 
   private pageSize = 10;
   public pageNumber = 0;

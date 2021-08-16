@@ -18,7 +18,7 @@ import { DownloadsService } from '../../../services/downloads.service';
 export class DownloadButtonComponent implements OnInit {
   // tslint:disable-next-line:no-input-rename
   @Input('fileId')
-  private fileId!: string;
+  public fileId!: string;
 
   // tslint:disable-next-line:no-input-rename
   @Input('fileName')
