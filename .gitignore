@@ -38,3 +38,4 @@
 .sonarlint/
 .angulardoc.json
 client/angular/documentation/
+client/angular/src/environments/version.ts
