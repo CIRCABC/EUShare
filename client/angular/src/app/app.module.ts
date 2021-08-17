@@ -63,9 +63,6 @@ import { DownloadCardComponent } from "./common/download-card/download-card.comp
 import { UploadSucessComponent } from "./upload-sucess/upload-sucess.component";
 import { CbcHeaderComponent } from "./header/cbc-header/cbc-header.component";
 import { CbcEcLogoAppComponent } from "./header/cbc-ec-logo-app/cbc-ec-logo-app.component";
-import { CbcPersonalMenuComponent } from "./header/cbc-personal-menu/cbc-personal-menu.component";
-import { CbcLangSelectorComponent } from "./header/cbc-lang-selector/cbc-lang-selector.component";
-import { PersonalMenuComponent } from "./header/personal-menu/personal-menu.component";
 import { DeleteButtonComponent } from "./common/buttons/delete-button/delete-button.component";
 import { DeleteConfirmModalComponent } from "./common/modals/delete-confirm-modal/delete-confirm-modal.component";
 import { AppRoutingModule } from "./app-routing.module";
@@ -108,9 +105,6 @@ import { AppRoutingModule } from "./app-routing.module";
     UploadSucessComponent,
     CbcHeaderComponent,
     CbcEcLogoAppComponent,
-    CbcPersonalMenuComponent,
-    CbcLangSelectorComponent,
-    PersonalMenuComponent,
     DeleteButtonComponent,
   ],
   imports: [

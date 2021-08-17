@@ -1,18 +1,22 @@
 <div class="centered">
-  <h1 class="title">Share a new file</h1>
+  <h1 class="title">{{ "label.share.a.new.file" | transloco }}</h1>
   <h2 class="subtitle is-family-secondary is-uppercase">
-    You can upload up to {{ leftSpaceInBytes | fileSizeFormat }} ({{
+    {{ "label.you.can.upload.up.to" | transloco }}
+    {{ leftSpaceInBytes | fileSizeFormat }} ({{
       totalSpaceInBytes | fileSizeFormat
     }}
-    quota)
+    {{ "label.quota" | transloco }})
   </h2>
   <div class="formContainer">
     <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
       <div>
         <!-- DRAG AND DROP-->
         <div class="field">
-          <label class="label">File</label>
-          <div class="file has-name is-boxed " [class.has-name]="getFileFromDisk() !== undefined">
+          <label class="label">{{ "label.file" | transloco }}</label>
+          <div
+            class="file has-name is-boxed"
+            [class.has-name]="getFileFromDisk() !== undefined"
+          >
             <label class="file-label">
               <!-- INPUT -->
               <input
@@ -24,7 +28,7 @@
               />
               <span class="button cta--plus is-bigger">
                 <span class="file-label">
-                  Add File
+                  {{ "label.add.file" | transloco }}
                 </span>
               </span>
               <!-- FILE SIZE AND NAME -->
@@ -170,20 +174,6 @@
           value=""
         />
       </div>
-      <!-- <div class="field">
-      <label class="label">Expiration date (default is 7 days from now)</label>
-      <p-calendar
-        [minDate]="getTomorrow()"
-        [maxDate]="get7DaysAfterToday()"
-        styleClass="control"
-        inputStyleClass="input"
-        panelStyleClass="table"
-        formControlName="expirationDate"
-        dateFormat="dd/mm/yy"
-        [placeholder]="'dd/mm/yyyy'"
-      >
-      </p-calendar>
-    </div> -->
       <br />
       <div class="field">
         <button
@@ -201,8 +191,9 @@
           class="progress is-success"
           value="{{ percentageUploaded }}"
           max="100"
-          >{{ percentageUploaded }}%</progress
         >
+          {{ percentageUploaded }}%
+        </progress>
       </div>
     </form>
   </div>

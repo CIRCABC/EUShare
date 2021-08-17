@@ -30,7 +30,9 @@
     "gen-eu-share-client": "rimraf src/app/openapi && openapi-generator-cli generate -i ./../../api.yaml -g typescript-angular -o src/app/openapi --additional-properties ngVersion=9.0.0,providedInRoot=true && npm run prettier",
     "gen-eu-share-server": "rimraf ./../../server/src/main/java/com/circabc/easyshare/api && openapi-generator-cli generate -i ./../../api.yaml -g spring -o ./../../server/src/main/java/com/circabc/easyshare/api",
     "build-sm": "ng build --prod",
-    "source-map-explorer": "source-map-explorer dist/**/*.js"
+    "source-map-explorer": "source-map-explorer dist/**/*.js",
+    "i18n:extract": "transloco-keys-manager extract",
+    "i18n:find": "transloco-keys-manager find"
   },
   "license-check-and-add-config": {
     "folder": ".",
@@ -92,6 +94,7 @@
     "@angular/compiler-cli": "12.2.1",
     "@angular/language-service": "12.2.1",
     "@openapitools/openapi-generator-cli": "2.3.10",
+    "@ngneat/transloco-keys-manager": "2.7.4",
     "@types/file-saver": "2.0.3",
     "@types/jasmine": "3.8.2",
     "@types/jasminewd2": "2.0.10",

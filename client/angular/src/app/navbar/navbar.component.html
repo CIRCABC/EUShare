@@ -28,35 +28,68 @@
       [class.is-active]="isBurgerActive"
     >
       <div *ngIf="loggedIn" class="navbar-start">
-        <a (click)="toggleBurger()" routerLinkActive="tab--current" class="navbar-item is-family-secondary my-shared-files" routerLink="home">
-          <span class="spanlabel">My shared files</span>
+        <a
+          (click)="toggleBurger()"
+          routerLinkActive="tab--current"
+          class="navbar-item is-family-secondary my-shared-files"
+          routerLink="home"
+        >
+          <span class="spanlabel">{{
+            "label.my.shared.files" | transloco
+          }}</span>
         </a>
-        <a (click)="toggleBurger()" routerLinkActive="tab--current" class="navbar-item is-family-secondary shared-with-me" routerLink="download">
-          <span class="spanlabel">Shared with me</span>
+        <a
+          (click)="toggleBurger()"
+          routerLinkActive="tab--current"
+          class="navbar-item is-family-secondary shared-with-me"
+          routerLink="download"
+        >
+          <span class="spanlabel"
+            >{{ "label.shared.with.me" | transloco }}
+          </span>
         </a>
-        <a (click)="toggleBurger()" routerLinkActive="tab--current" *ngIf="isAdmin" class="navbar-item is-family-secondary administration" routerLink="administration">
-          <span class="spanlabel">Administration</span>
+        <a
+          (click)="toggleBurger()"
+          routerLinkActive="tab--current"
+          *ngIf="isAdmin"
+          class="navbar-item is-family-secondary administration"
+          routerLink="administration"
+        >
+          <span class="spanlabel"
+            >{{ "label.administration" | transloco }}
+          </span>
         </a>
       </div>
       <div class="navbar-end">
         <div *ngIf="loggedIn" class="navbar-item is-family-secondary">
-          <button (click)="toggleBurger()" class="button is-info" routerLink="upload">
+          <button
+            (click)="toggleBurger()"
+            class="button is-info"
+            routerLink="upload"
+          >
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
             </span>
-            Share a new file
+            {{ "label.share.a.new.file" | transloco }}
           </button>
         </div>
         <div (click)="toggleBurger()" *ngIf="loggedIn" class="navbar-item">
-          <button class="button is-danger is-family-secondary" (click)="logout()">
+          <button
+            class="button is-danger is-family-secondary"
+            (click)="logout()"
+          >
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faSignOutAlt"></fa-icon>
             </span>
-            Logout
+            {{ "label.logout" | transloco }}
           </button>
         </div>
-        <a routerLink="myUser" *ngIf="loggedIn" class="navbar-item is-family-secondary">
-          Logged as {{ userName }}
+        <a
+          routerLink="myUser"
+          *ngIf="loggedIn"
+          class="navbar-item is-family-secondary"
+        >
+          {{ "label.logo.as.user" | transloco: { userName: userName } }}
         </a>
       </div>
     </div>
