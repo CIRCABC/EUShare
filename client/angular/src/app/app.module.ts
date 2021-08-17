@@ -18,7 +18,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule, Routes } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -31,7 +30,6 @@ import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
 import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
 import { HttpErrorInterceptor } from './interceptors/http-error-interceptor';
-import { LoginGuard } from './login.guard';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UploadComponent } from './upload/upload.component';
@@ -61,7 +59,6 @@ import { PrivacyStatementComponent } from './privacy-statement/privacy-statement
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { DownloadCardComponent } from './common/download-card/download-card.component';
 import { UploadSucessComponent } from './upload-sucess/upload-sucess.component';
-import { UploadSuccessGuard } from './upload-success.guard';
 import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
 import { CbcEcLogoAppComponent } from './header/cbc-ec-logo-app/cbc-ec-logo-app.component';
 import { CbcPersonalMenuComponent } from './header/cbc-personal-menu/cbc-personal-menu.component';
@@ -69,6 +66,7 @@ import { CbcLangSelectorComponent } from './header/cbc-lang-selector/cbc-lang-se
 import { PersonalMenuComponent } from './header/personal-menu/personal-menu.component';
 import { DeleteButtonComponent } from './common/buttons/delete-button/delete-button.component';
 import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
+import { AppRoutingModule } from './app-routing.module';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -79,64 +77,7 @@ export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'home',
-    component: MySharedFilesComponent,
-    canActivate: [LoginGuard],
-  },
-  {
-    path: 'upload',
-    component: UploadComponent,
-    canActivate: [LoginGuard],
-  },
-  {
-    path: 'uploadSuccess',
-    component: UploadSucessComponent,
-    canActivate: [LoginGuard, UploadSuccessGuard],
-  },
-  {
-    path: 'download',
-    component: SharedWithMeComponent,
-    canActivate: [LoginGuard],
-  },
-  {
-    path: 'filelink/:id/:filenameb64/:isPasswordProtected',
-    component: FilelinkComponent,
-  },
-  {
-    path: 'administration',
-    component: AdministrationComponent,
-    canActivate: [LoginGuard],
-  },
-  {
-    path: 'administration/:userId/files',
-    component: OtherUserSharedFilesComponent,
-    data: { userName: 'dummyUserName' },
-    canActivate: [LoginGuard],
-  },
-  {
-    path: 'callback',
-    component: CallBackComponent,
-  },
-  {
-    path: 'myUser',
-    component: MyUserComponent,
-  },
-  {
-    path: 'privacyStatement',
-    component: PrivacyStatementComponent,
-  },
-  {
-    path: 'termsOfService',
-    component: TermsOfServiceComponent,
-  },
-];
+
 
 @NgModule({
   declarations: [
@@ -182,6 +123,7 @@ const routes: Routes = [
     DeleteButtonComponent,
   ],
   imports: [
+    AppRoutingModule,
     ApiModule,
     HammerModule,
     TranslateModule.forRoot({
@@ -201,7 +143,6 @@ const routes: Routes = [
         sendAccessToken: true,
       },
     }),
-    RouterModule.forRoot(routes),
     FontAwesomeModule,
     BrowserAnimationsModule,
   ],
