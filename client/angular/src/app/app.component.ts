@@ -16,7 +16,7 @@ import {
 import { environment } from '../environments/environment';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { TranslateService } from '@ngx-translate/core';
+import { getBrowserLang, TranslocoService } from '@ngneat/transloco';
 
 export const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -46,7 +46,7 @@ export class AppComponent {
   constructor(
     private oauthService: OAuthService,
     private router: Router,
-    private translateService: TranslateService
+    private translateService: TranslocoService,
   ) {
     this.routerHelpForDownloadsBox();
     this.configureOAuth();
@@ -54,8 +54,17 @@ export class AppComponent {
   }
 
   private configureI18n() {
+    // this language will be used as a fallback when a translation isn't found in the current language
     this.translateService.setDefaultLang('en');
-    this.translateService.use('en');
+
+    // the lang to use, if the lang isn't available, it will use the language from the browser
+    // if the browser language could not be read, it will use english as language
+    const browserLang = getBrowserLang();
+    if (browserLang !== undefined) {
+      this.translateService.setActiveLang(browserLang);
+    } else {
+      this.translateService.setActiveLang('en');
+    }
   }
 
   private async configureOAuth() {

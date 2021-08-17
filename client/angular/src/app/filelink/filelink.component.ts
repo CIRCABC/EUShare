@@ -10,7 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
-import { TranslateService } from '@ngx-translate/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-filelink',
@@ -26,7 +26,7 @@ export class FilelinkComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalsService,
-    private translateService: TranslateService
+    private translateService: TranslocoService
   ) {
     this.configureI18n();
   }
@@ -41,7 +41,7 @@ export class FilelinkComponent implements OnInit {
 
   private configureI18n() {
     this.translateService.setDefaultLang('en');
-    this.translateService.use('en');
+    this.translateService.setActiveLang('en');
   }
 
   ngOnInit() {

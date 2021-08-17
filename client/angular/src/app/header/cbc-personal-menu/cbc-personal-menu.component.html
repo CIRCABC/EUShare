@@ -4,7 +4,7 @@
         [routerLink]="['/login']"
         style="color: #fff;"
         *ngIf="isGuest()"
-        >{{ 'label.login' | translate }}</a
+        >{{ 'label.login' | transloco }}</a
       >
       <span style="color: #fff;" *ngIf="isUser()">{{
         user.firstname + ' ' + user.lastname
@@ -34,38 +34,37 @@
       <section class="dropdown--personal-menu__sidebar">
         <nav>
           <div class="links-group">
-            <a [routerLink]="['/me']">{{ 'label.dashboard' | translate }}</a>
+            <a [routerLink]="['/me']">{{ 'label.dashboard' | transloco }}</a>
             <a [routerLink]="['/me/calendar']">{{
-              'personal-menu.calendar' | translate
+              'personal-menu.calendar' | transloco
             }}</a>
-            <a [routerLink]="['/me/roles']">{{ 'label.my.roles' | translate }}</a>
+            <a [routerLink]="['/me/roles']">{{ 'label.my.roles' | transloco }}</a>
           </div>
           <div class="links-group">
             <a [routerLink]="['/me/account']">{{
-              'personal-menu.account' | translate
+              'personal-menu.account' | transloco
             }}</a>
           </div>
           <div class="links-group">
             <a [routerLink]="['/login/logout']">{{
-              'label.logout' | translate
+              'label.logout' | transloco
             }}</a>
           </div>
           <div class="links-group" *ngIf="isAppAdmin()">
             <a [routerLink]="['/support']">{{
-              'label.support.area' | translate
+              'label.support.area' | transloco
             }}</a>
           </div>
           <div class="links-group">
-            <a [routerLink]="['/help']">{{ 'label.help' | translate }}</a>
+            <a [routerLink]="['/help']">{{ 'label.help' | transloco }}</a>
             <a [routerLink]="['/help/contact']">{{
-              'welcome.contact' | translate
+              'welcome.contact' | transloco
             }}</a>
             <a [routerLink]="['/help/legal-notice']">{{
-              'label.legal.notice' | translate
+              'label.legal.notice' | transloco
             }}</a>
           </div>
         </nav>
       </section>
     </div>
   </div>
-  
