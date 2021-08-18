@@ -38,7 +38,8 @@
   <div class="level">
     <div class="level-item">
       <a
-        >Shared by <strong>{{ fileToDisplay.uploaderName }}</strong></a
+        >{{ "shared.by" | transloco }}
+        <strong>{{ fileToDisplay.uploaderName }}</strong></a
       >
     </div>
     <div class="level-item">
@@ -49,7 +50,7 @@
           (tap)="displayMore()"
           (mouseleave)="displayLess()"
         >
-          <a class="navbar-link"> Actions </a>
+          <a class="navbar-link"> {{ "actions" | transloco }} </a>
 
           <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
             <a class="navbar-item" (click)="tryDownload()"> Download </a>

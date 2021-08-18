@@ -22,7 +22,9 @@
         </div>
         <div class="level-item">
           <div class="level-right">
-            <p class="subtitle is-6">{{ "expires.on" | transloco }} {{ file.expirationDate }}</p>
+            <p class="subtitle is-6">
+              {{ "expires.on" | transloco }} {{ file.expirationDate }}
+            </p>
           </div>
         </div>
       </div>
@@ -31,9 +33,9 @@
   <!-- Right side -->
   <div class="level">
     <div class="level-item">
-      <a *ngIf="displayAsUploader" (click)="displayRecipients()"
-        >Shared {{ file.sharedWith.length }} time(s)</a
-      >
+      <a *ngIf="displayAsUploader" (click)="displayRecipients()">
+        {{ "shared.times" | transloco: { count: file.sharedWith.length } }}
+      </a>
     </div>
 
     <div class="level-item">
@@ -45,7 +47,7 @@
           (mouseleave)="displayLess()"
         >
           <a class="navbar-link">
-            Actions
+            {{ "actions" | transloco }}
           </a>
 
           <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
@@ -53,13 +55,10 @@
               class="navbar-item"
               *ngIf="displayAsUploader"
               (click)="openAddRecipientsModal(file.name, file.fileId)"
-              >Add a recipient
+              >{{ "add.recipient" | transloco }}
             </a>
-            <a
-              class="navbar-item"
-              (click)="tryDownload()"
-            >
-              Download
+            <a class="navbar-item" (click)="tryDownload()">
+              {{ "download" | transloco }}
             </a>
             <hr class="navbar-divider" />
             <a
@@ -67,7 +66,7 @@
               *ngIf="displayAsAdministrator || displayAsUploader"
               (click)="delete()"
             >
-              Delete
+              {{ "delete" | transloco }}
             </a>
           </div>
         </div>
