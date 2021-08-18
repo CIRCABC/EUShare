@@ -18,7 +18,7 @@
     "prettier": "npx gulp prettier",
     "prettier-css": "gulp format:css ",
     "e2e": "ng e2e",
-    "licchkadd": "license-check-and-add",
+    "licchkadd": "license-check-and-add check",
     "tsc": "tsc --project tsconfig.json --pretty",
     "ncu": "npx npm-check-updates",
     "build-stat": "ng build --prod --stats-json",
@@ -35,24 +35,7 @@
     "i18n:find": "transloco-keys-manager find",
     "spellcheck": "cspell /src/**/*.ts"
   },
-  "license-check-and-add-config": {
-    "folder": ".",
-    "license": "LICENSE_HEADER.txt",
-    "exact_paths_method": "INCLUDE",
-    "exact_paths": [
-      "src/app"
-    ],
-    "file_type_method": "EXCLUDE",
-    "file_types": [
-      ".html",
-      ".txt",
-      ".json",
-      ".sh",
-      ".md",
-      ".css"
-    ],
-    "insert_license": false
-  },
+  
   "private": true,
   "dependencies": {
     "@angular-devkit/architect": "0.1202.1",

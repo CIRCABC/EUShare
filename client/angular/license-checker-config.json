@@ -1,0 +1,15 @@
+{
+  "folder": ".",
+  "license": "LICENSE_HEADER.txt",
+  "exact_paths_method": "INCLUDE",
+  "exact_paths": ["src/app"],
+  "ignore": [
+    "**/*.html",
+    "**/*.txt",
+    "**/*.json",
+    "**/*.sh",
+    "**/*.md",
+    "**/*.css"
+  ],
+  "insert_license": false
+}
