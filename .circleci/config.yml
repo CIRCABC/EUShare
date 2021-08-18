@@ -35,16 +35,17 @@ jobs:
       # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
           path: target/easyshareserver.war
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples 
-      - run:
-          name: Install Sonarqube scanner
-          command: |
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
-            unzip sonar-scanner-cli-3.2.0.1227-linux.zip
-      - run:
-          name: Run Sonarqube scanner
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.sources=server/src -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=server/**/resources/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dsonar.java.binaries=server/target/classes/ -Dsonar.coverage.jacoco.xmlReportPaths=server/target/site/jacoco-ut/jacoco.xml 
+      
+      # - run:
+      #     name: Install Sonarqube scanner
+      #     command: |
+      #       wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
+      #       unzip sonar-scanner-cli-3.2.0.1227-linux.zip
+      # - run:
+      #     name: Run Sonarqube scanner
+      #     command: |
+      #       export SONAR_SCANNER_OPTS="-Xmx2048m"
+      #       eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.sources=server/src -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=server/**/resources/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dsonar.java.binaries=server/target/classes/ -Dsonar.coverage.jacoco.xmlReportPaths=server/target/site/jacoco-ut/jacoco.xml 
   build_frontend:
     # see https://circleci.com/docs/2.0/language-javascript/
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
@@ -70,22 +71,22 @@ jobs:
       - run:
           name: build-app
           command: npm run build
-      - run:
-          name: check-license
-          command: npm run licchkadd
+      # - run:
+      #     name: check-license
+      #     command: npm run licchkadd
       - run:
           name: check-style
           command: npm run lint
-      - run:
-          name: Install Sonarqube scanner
-          command: |
-            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
-            unzip sonar-scanner-cli-3.2.0.1227-linux.zip
-      - run:
-          name: Run Sonarqube scanner
-          command: |
-            export SONAR_SCANNER_OPTS="-Xmx2048m"
-            eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=EASYSHARE_FRONT -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=**/assets/**,**/sonar-scanner-3.2.0.1227-linux/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_FRONTEND_TOKEN}
+      # - run:
+      #     name: Install Sonarqube scanner
+      #     command: |
+      #       wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-3.2.0.1227-linux.zip
+      #       unzip sonar-scanner-cli-3.2.0.1227-linux.zip
+      # - run:
+      #     name: Run Sonarqube scanner
+      #     command: |
+      #       export SONAR_SCANNER_OPTS="-Xmx2048m"
+      #       eval ./sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner -Dsonar.projectKey=EASYSHARE_FRONT -Dsonar.sources=. -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=**/assets/**,**/sonar-scanner-3.2.0.1227-linux/** -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_FRONTEND_TOKEN}
 workflows:
   version: 2.1
   build_backend_and_frontend:
