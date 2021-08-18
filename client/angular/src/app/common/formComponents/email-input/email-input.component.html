@@ -1,4 +1,4 @@
-<label class="label">Email:</label>
+<label class="label">{{ "email" | transloco }}</label>
 <div class="field is-grouped">
   <div class="control is-expanded">
     <input
@@ -9,19 +9,19 @@
       (keyup.enter)="sendClick()"
       class="input"
       type="text"
-      placeholder="Name.SURNAME@email.com"
+      [attr.placeholder]="'name.surname.email.com' | transloco"
     />
     <p class="help is-danger" [hidden]="!errorMessage">{{ errorMessage }}</p>
   </div>
   <p class="control">
     <button
-    *ngIf="showAddRecipient"
+      *ngIf="showAddRecipient"
       [disabled]="errorMessage || input.value === ''"
       (click)="sendClick()"
       type="button"
       class="button"
     >
-      Add Recipient
+      {{ "add.recipient" | transloco }}
     </button>
   </p>
 </div>

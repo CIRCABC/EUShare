@@ -65,7 +65,7 @@
             <div class="control">
               <label
                 class="radio tooltip"
-                data-tooltip="{{ 'send.link' | transloco }}"
+                [attr.data-tooltip]="'send.link' | transloco"
               >
                 <input
                   type="radio"
@@ -79,7 +79,7 @@
               </label>
               <label
                 class="radio tooltip"
-                data-tooltip="{{ 'generate.link' | transloco }}"
+                [attr.data-tooltip]="'generate.link' | transloco"
               >
                 <input
                   id="radioLink"
@@ -165,9 +165,12 @@
       </div>
       <div class="field">
         <label class="label">{{ "file.password.optional" | transloco }}</label>
-        <input formControlName="password" class="input" placeholder="{{
-          "password.on.file.download" | transloco
-        }}" value="" />
+        <input
+          formControlName="password"
+          class="input"
+          [attr.placeholder]="'password.on.file.download' | transloco"
+          value=""
+        />
       </div>
       <br />
       <div class="field">
@@ -177,7 +180,7 @@
           type="submit"
           [disabled]="!uploadform.valid"
         >
-        {{ "submit" | transloco }}
+          {{ "submit" | transloco }}
         </button>
       </div>
       <div *ngIf="uploadInProgress">
