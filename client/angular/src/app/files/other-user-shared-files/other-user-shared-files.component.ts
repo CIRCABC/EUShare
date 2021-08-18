@@ -32,7 +32,7 @@ export class OtherUserSharedFilesComponent implements OnInit {
       this.userName = userNameOrNull;
     } else {
       this.notificationService.addErrorMessage(
-        'A problem occured while downloading files information. Please contact the support.'
+        'A problem occurred while downloading files information. Please contact the support.'
       );
     }
   }

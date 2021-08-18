@@ -32,7 +32,8 @@
     "build-sm": "ng build --prod",
     "source-map-explorer": "source-map-explorer dist/**/*.js",
     "i18n:extract": "transloco-keys-manager extract",
-    "i18n:find": "transloco-keys-manager find"
+    "i18n:find": "transloco-keys-manager find",
+    "spellcheck": "cspell /src/**/*.ts"
   },
   "license-check-and-add-config": {
     "folder": ".",
@@ -93,13 +94,14 @@
     "@angular/cli": "12.2.1",
     "@angular/compiler-cli": "12.2.1",
     "@angular/language-service": "12.2.1",
-    "@openapitools/openapi-generator-cli": "2.3.10",
     "@ngneat/transloco-keys-manager": "2.7.4",
+    "@openapitools/openapi-generator-cli": "2.3.10",
     "@types/file-saver": "2.0.3",
     "@types/jasmine": "3.8.2",
     "@types/jasminewd2": "2.0.10",
     "@types/node": "16.6.1",
     "codelyzer": "6.0.2",
+    "cspell": "5.7.2",
     "git-describe": "4.0.4",
     "gulp": "4.0.2",
     "gulp-prettier": "4.0.0",
