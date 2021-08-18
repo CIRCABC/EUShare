@@ -15,10 +15,13 @@
                   ? (fileInfoUploader.name | slice: 0:25) + ".."
                   : fileInfoUploader.name
               }}
-              succesfully uploaded
+              {{ "successfully.uploaded" | transloco }}
             </p>
             <p class="subtitle is-6">
-              The file will expire on the {{ fileInfoUploader.expirationDate }}
+              {{
+                "file.will.expire"
+                  | transloco: { date: fileInfoUploader.expirationDate }
+              }}
             </p>
           </div>
         </div>
@@ -74,7 +77,7 @@
             <div class="level-left">
               <div class="level-item has-text-centered">
                 <div class="field">
-                  <strong>Link:</strong>
+                  <strong>{{ "link" | transloco }}</strong>
                 </div>
               </div>
               <div class="level-item has-text-centered">
@@ -88,7 +91,9 @@
                 </div>
               </div>
               <div class="level-item has-text-centered">
-                <a class="button" (click)="copyLink(i)">Copy</a>
+                <a class="button" (click)="copyLink(i)">{{
+                  "copy" | transloco
+                }}</a>
               </div>
             </div>
           </div>

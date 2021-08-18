@@ -1,5 +1,7 @@
 <div class="centered">
-  <h1 class="title">{{ userName }}'s uploaded files</h1>
+  <h1 class="title">
+    {{ "user.uploaded.files" | transloco: { userName: userName } }}
+  </h1>
   <app-uploaded-file-row-container
     [userId]="userId"
     [displayAsUploader]="false"

@@ -1,22 +1,22 @@
 <div class="centered">
-  <h1 class="title">Administration</h1>
+  <h1 class="title">{{ "administration" | transloco }}</h1>
   <div class="columns">
     <div class="column is-one-half">
-      <label class="label">User search</label>
+      <label class="label">{{ "user.search" | transloco }}</label>
       <input
         [(ngModel)]="searchString"
         class="input"
         type="text"
-        placeholder="User's name OR email"
+        [attr.placeholder]="'user.name.or.email' | transloco"
       />
       <a
         class="button"
         [class.is-loading]="searchIsLoading"
         (click)="search()"
-        >Search</a
+        >{{ "search" | transloco }}</a
       >
       <div *ngIf="isAfterSearch">
-        <label class="label">Results</label>
+        <label class="label">{{ "results" | transloco }}</label>
         <ul class="menu-list">
           <li
             *ngFor="let userInfo of userInfoArray; let i = index"
@@ -36,13 +36,13 @@
             *ngIf="pageNumber > 0"
             class="pagination-previous button"
             (click)="resultsPreviousPage()"
-            >Previous</a
+            >{{ "previous" | transloco }}</a
           >
           <a
             *ngIf="userInfoArrayNext.length > 0"
             class="pagination-next button"
             (click)="resultsNextPage()"
-            >Next page</a
+            >{{ "next.page" | transloco }}</a
           >
         </nav>
       </div>
@@ -50,13 +50,13 @@
     <div class="column is-one-half">
       <div *ngIf="isAfterSearch && isAfterSelected">
         <div>
-          <label class="label">User info</label>
+          <label class="label">{{ "user.info" | transloco }}</label>
           <p *ngIf="!isChangePermissions && !selectedUserInfo.isAdmin">
             Internal user: {{ selectedUserInfo.givenName }}
             <fa-icon [icon]="faUser"></fa-icon>
           </p>
           <p *ngIf="!isChangePermissions && selectedUserInfo.isAdmin">
-            Admin user: {{ selectedUserInfo.givenName }}
+            {{ "admin.user" | transloco }}: {{ selectedUserInfo.givenName }}
             <fa-icon [icon]="faUserTie"></fa-icon>
           </p>
           <div class="select" *ngIf="isChangePermissions">
@@ -67,7 +67,8 @@
           </div>
           <br *ngIf="isChangePermissions" />
           <p *ngIf="!isChangePermissions">
-            Total Space: {{ selectedUserInfo.totalSpace | fileSizeFormat }}
+            {{ "total.space" | transloco }}:
+            {{ selectedUserInfo.totalSpace | fileSizeFormat }}
           </p>
           <div class="select" *ngIf="isChangePermissions">
             <select [(ngModel)]="selectedValueInGigaBytes">
@@ -76,13 +77,17 @@
                 [attr.data-index]="i"
                 [selected]="i === selectedValueInGigaBytesIndex"
                 [ngValue]="valueInGig"
-                >Total Space: {{ valueInGig }} GB</option
               >
+                {{ "total.space" | transloco }}: {{ valueInGig }} GB
+              </option>
             </select>
           </div>
-          <p>Used space: {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
           <p>
-            Free space:
+            {{ "used.space" | transloco }}:
+            {{ selectedUserInfo.usedSpace | fileSizeFormat }}
+          </p>
+          <p>
+            {{ "free.space" | transloco }}::
             {{
               selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
                 | fileSizeFormat
@@ -94,25 +99,25 @@
           class="button"
           [class.is-loading]="changeIsLoading"
           (click)="changePermissions()"
-          >Done</a
+          >{{ "done" | transloco }}</a
         >
         <a
           *ngIf="isChangePermissions"
           class="button buttonMargin"
           (click)="toggleChangePermissions()"
-          >Cancel</a
+          >{{ "cancel" | transloco }}</a
         >
         <a
           *ngIf="!isChangePermissions"
           class="button"
           (click)="toggleChangePermissions()"
-          >Change permissions</a
+          >{{ "change.permissions" | transloco }}</a
         >
         <a
           *ngIf="!isChangePermissions"
           class="button buttonMargin"
           (click)="goToUserUploadedFiles()"
-          >Display shared files</a
+          >{{ "display.shared.files" | transloco }}</a
         >
       </div>
     </div>

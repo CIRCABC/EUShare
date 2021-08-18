@@ -3,7 +3,7 @@
     *ngIf="fileInfoUploaderArray && fileInfoUploaderArray.length === 0"
     class="subtitle"
   >
-    No uploaded files
+    {{ "no.uploaded.files" | transloco }}
   </div>
   <app-uploaded-file-row
     *ngFor="let fileInfoUploader of fileInfoUploaderArray"
@@ -21,7 +21,7 @@
       [style.visibility]="hasPreviousPage ? 'visible' : 'hidden'"
       class="pagination-previous button"
       (click)="previousPage()"
-      >Previous</a
+      >{{ "previous" | transloco }}</a
     >
     <ul class="pagination-list">
       <a
@@ -35,7 +35,7 @@
       [style.visibility]="hasNextPage ? 'visible' : 'hidden'"
       class="pagination-next button"
       (click)="nextPage()"
-      >Next page</a
+      >{{ "next.page" | transloco }}</a
     >
   </nav>
 </div>
