@@ -1,11 +1,11 @@
-<label class="label">Link name:</label>
+<label class="label">{{ "link.name" | transloco }}</label>
 <input
   #input
   [disabled]="disabled"
   (blur)="onTouched()"
   (input)="onChange($event.target.value)"
-  placeholder="e.g. A link name to remember"
+  [attr.placeholder]="'link.name.remember' | transloco"
   class="input"
   type="text"
 />
-<label class="label error" *ngIf="errorMessage">{{errorMessage}}</label>
+<label class="label error" *ngIf="errorMessage">{{ errorMessage }}</label>

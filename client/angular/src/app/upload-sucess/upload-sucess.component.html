@@ -56,7 +56,7 @@
               <div class="level-left" *ngIf="recipient.sendEmail === false">
                 <div class="level-item has-text-centered">
                   <div class="field">
-                    <strong>Link name:</strong>
+                    <strong>{{ "link.name" | transloco }}</strong>
                   </div>
                 </div>
                 <div class="level-item has-text-centered">
@@ -88,9 +88,7 @@
                 </div>
               </div>
               <div class="level-item has-text-centered">
-                <a class="button" (click)="copyLink(i)"
-                  >Copy</a
-                >
+                <a class="button" (click)="copyLink(i)">Copy</a>
               </div>
             </div>
           </div>
