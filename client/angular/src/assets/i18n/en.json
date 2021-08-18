@@ -1,6 +1,7 @@
 {
   "actions": "Actions",
   "add.file": "Add File",
+  "add.recipient.to": "Add recipient to",
   "add.recipient": "Add Recipient",
   "admin.user": "Admin user",
   "administration": "Administration",
@@ -23,7 +24,8 @@
   "flies.shared.with.me": "Files shared with me",
   "free.space": "Free space",
   "generate.link": "Generate a link to your file and share it however you prefer",
-  "how.to.share": "How do you want to share your file?",
+  "how.to.share.file": "How do you want to share your file?",
+  "how.to.share": "How to share?",
   "information": "Information",
   "link.name.remember": "e.g. A link name to remember",
   "link.name": "Link name",

@@ -158,7 +158,7 @@ export class UploadedFilesService {
         .toPromise();
 
       this.notificationService.addSuccessMessage(
-        'Succesfully added your recipient to ' + fileName
+        'Successfully added your recipient to ' + fileName
       );
 
       this.fileInfoUploader.forEach((file) => {

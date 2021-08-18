@@ -2,17 +2,22 @@
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
-      <p class="modal-card-title">Add recipient to <br> <strong>
-        {{ modalFileName.length > 25
-          ? (modalFileName | slice: 0:25) + "..."
-          : modalFileName }}
-      </strong></p>
+      <p class="modal-card-title">
+        {{ "add.recipient.to" | transloco }} <br />
+        <strong>
+          {{
+            modalFileName.length > 25
+              ? (modalFileName | slice: 0:25) + "..."
+              : modalFileName
+          }}
+        </strong>
+      </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
       <form [formGroup]="sharedWithFormGroup">
         <div class="field">
-          <label class="label">How to share?</label>
+          <label class="label">{{ "how.to.share" | transloco }}</label>
           <div class="field-body">
             <div class="field is-narrow">
               <div class="control">
@@ -39,10 +44,13 @@
           </div>
         </div>
         <div *ngIf="addRecipientsByEmailOrByLink">
-          <app-email-input formControlName="email" [showAddRecipient]=false></app-email-input>
+          <app-email-input
+            formControlName="email"
+            [showAddRecipient]="false"
+          ></app-email-input>
           <app-message-text-area
-          [isOptional]=false
-          formControlName="message"
+            [isOptional]="false"
+            formControlName="message"
           ></app-message-text-area>
         </div>
         <div *ngIf="!addRecipientsByEmailOrByLink">
