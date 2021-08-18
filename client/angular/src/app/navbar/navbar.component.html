@@ -35,7 +35,7 @@
           routerLink="home"
         >
           <span class="spanlabel">{{
-            "label.my.shared.files" | transloco
+            "my.shared.files" | transloco
           }}</span>
         </a>
         <a
@@ -45,7 +45,7 @@
           routerLink="download"
         >
           <span class="spanlabel"
-            >{{ "label.shared.with.me" | transloco }}
+            >{{ "shared.with.me" | transloco }}
           </span>
         </a>
         <a
@@ -56,7 +56,7 @@
           routerLink="administration"
         >
           <span class="spanlabel"
-            >{{ "label.administration" | transloco }}
+            >{{ "administration" | transloco }}
           </span>
         </a>
       </div>
@@ -70,7 +70,7 @@
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
             </span>
-            {{ "label.share.a.new.file" | transloco }}
+            {{ "share.a.new.file" | transloco }}
           </button>
         </div>
         <div (click)="toggleBurger()" *ngIf="loggedIn" class="navbar-item">
@@ -81,7 +81,7 @@
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faSignOutAlt"></fa-icon>
             </span>
-            {{ "label.logout" | transloco }}
+            {{ "logout" | transloco }}
           </button>
         </div>
         <a
@@ -89,7 +89,7 @@
           *ngIf="loggedIn"
           class="navbar-item is-family-secondary"
         >
-          {{ "label.logo.as.user" | transloco: { userName: userName } }}
+          {{ "logo.as.user" | transloco: { userName: userName } }}
         </a>
       </div>
     </div>

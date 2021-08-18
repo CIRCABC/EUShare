@@ -2,20 +2,20 @@
   <header class="header" style="background-color: rgba(255, 255, 255, 0.3);">
     <span class="title" [ngSwitch]="message.level">
       <ng-template [ngSwitchCase]="0">
-        {{ 'label.information' | transloco }}
+        {{ 'information' | transloco }}
       </ng-template>
       <ng-template [ngSwitchCase]="1">
-        {{ 'label.warning' | transloco }}
+        {{ 'warning' | transloco }}
       </ng-template>
       <ng-template [ngSwitchCase]="2">
-        {{ 'label.error' | transloco }}
+        {{ 'error' | transloco }}
       </ng-template>
       <ng-template [ngSwitchCase]="3">
-        {{ 'label.success' | transloco }}
+        {{ 'success' | transloco }}
       </ng-template>
     </span>
     <span style="float: right;">
-      <a (click)="closeMessage()">{{ 'label.close' | transloco }}</a>
+      <a (click)="closeMessage()">{{ 'close' | transloco }}</a>
     </span>
   </header>
   <div class="box--message--icon" [ngSwitch]="message.level">

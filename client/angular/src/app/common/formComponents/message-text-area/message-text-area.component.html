@@ -1,5 +1,5 @@
-<label class="label" *ngIf="isOptional">{{ 'label.text.optional' | transloco }}</label>
-<label class="label" *ngIf="!isOptional">{{ 'label.text' | transloco }}</label>
+<label class="label" *ngIf="isOptional">{{ 'text.optional' | transloco }}</label>
+<label class="label" *ngIf="!isOptional">{{ 'text' | transloco }}</label>
 <textarea
   #textarea
   [disabled]="disabled"

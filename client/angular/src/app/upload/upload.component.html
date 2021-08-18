@@ -1,18 +1,18 @@
 <div class="centered">
-  <h1 class="title">{{ "label.share.a.new.file" | transloco }}</h1>
+  <h1 class="title">{{ "share.a.new.file" | transloco }}</h1>
   <h2 class="subtitle is-family-secondary is-uppercase">
-    {{ "label.you.can.upload.up.to" | transloco }}
+    {{ "you.can.upload.up.to" | transloco }}
     {{ leftSpaceInBytes | fileSizeFormat }} ({{
       totalSpaceInBytes | fileSizeFormat
     }}
-    {{ "label.quota" | transloco }})
+    {{ "quota" | transloco }})
   </h2>
   <div class="formContainer">
     <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
       <div>
         <!-- DRAG AND DROP-->
         <div class="field">
-          <label class="label">{{ "label.file" | transloco }}</label>
+          <label class="label">{{ "file" | transloco }}</label>
           <div
             class="file has-name is-boxed"
             [class.has-name]="getFileFromDisk() !== undefined"
@@ -28,7 +28,7 @@
               />
               <span class="button cta--plus is-bigger">
                 <span class="file-label">
-                  {{ "label.add.file" | transloco }}
+                  {{ "add.file" | transloco }}
                 </span>
               </span>
               <!-- FILE SIZE AND NAME -->
@@ -52,21 +52,20 @@
           <!-- DRAG AND DROP BOX -->
           <div (drop)="drop($event)" class="container">
             <div class="notification dragAndDrop">
-              Or simply drag and drop one file here
+              {{ "drop.file" | transloco }}
             </div>
           </div>
         </div>
       </div>
       <br />
       <div class="field">
-        <label class="label">How do you want to share your file?</label>
+        <label class="label">{{ "how.to.share" | transloco }}</label>
         <div class="field-body">
           <div class="field is-narrow">
             <div class="control">
               <label
                 class="radio tooltip"
-                data-tooltip="Send a link to your
-               file in an email"
+                data-tooltip="{{ 'send.link' | transloco }}"
               >
                 <input
                   type="radio"
@@ -76,12 +75,11 @@
                   (click)="resetRecipientsEmail()"
                   value="Email"
                 />
-                Email
+                {{ "email" | transloco }}
               </label>
               <label
                 class="radio tooltip"
-                data-tooltip="Generate a link to your file
-               and share it however you prefer"
+                data-tooltip="{{ 'generate.link' | transloco }}"
               >
                 <input
                   id="radioLink"
@@ -91,7 +89,7 @@
                   formControlName="emailOrLink"
                   value="Link"
                 />
-                Link
+                {{ "link" | transloco }}
               </label>
             </div>
           </div>
@@ -166,13 +164,10 @@
         </div>
       </div>
       <div class="field">
-        <label class="label">File password (optional)</label>
-        <input
-          formControlName="password"
-          class="input"
-          placeholder="Password on file download"
-          value=""
-        />
+        <label class="label">{{ "file.password.optional" | transloco }}</label>
+        <input formControlName="password" class="input" placeholder="{{
+          "password.on.file.download" | transloco
+        }}" value="" />
       </div>
       <br />
       <div class="field">
@@ -182,7 +177,7 @@
           type="submit"
           [disabled]="!uploadform.valid"
         >
-          Submit
+        {{ "submit" | transloco }}
         </button>
       </div>
       <div *ngIf="uploadInProgress">
