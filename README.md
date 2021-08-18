@@ -95,7 +95,7 @@ To start developping:
 
 1. Run the front-end application from __/client/angular__ folder (http://localhost:8080/)
     ``` batch
-    npm run start
+    npm start
     ```
 1. Build the back-end application from __/server__ folder
      ``` batch
