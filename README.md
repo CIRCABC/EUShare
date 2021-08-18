@@ -52,7 +52,7 @@ To start developping:
         "default_id_token_max_age" : 46800,
         "grant_types" : [ "authorization_code", "urn:ietf:params:oauth:grant-type:token-exchange" ],
         "id_token_signed_response_alg" : "PS512",
-        "redirect_uris" : [ "http://localhost:4200/callback" ],
+        "redirect_uris" : [ "http://localhost:8888/callback" ],
         "response_types" : [ "code" ],
         "scope" : "openid email profile phone hr authentication_factors",
         "subject_type" : "public",
@@ -72,7 +72,7 @@ To start developping:
         "default_id_token_max_age" : 46800,
         "grant_types" : [ "implicit", "urn:ietf:params:oauth:grant-type:jwt-bearer" ],
         "id_token_signed_response_alg" : "PS512",
-        "redirect_uris" : [ "http://localhost:4200/callback" ],
+        "redirect_uris" : [ "http://localhost:8080/callback" ],
         "response_types" : [ "id_token" ],
         "scope" : "openid email profile phone hr authentication_factors",
         "subject_type" : "public",
@@ -93,7 +93,7 @@ To start developping:
     GRANT ALL PRIVILEGES ON easyshare.* TO 'easyshare'@'%';
     ```
 
-1. Run the front-end application from __/client/angular__ folder (http://localhost:4200/)
+1. Run the front-end application from __/client/angular__ folder (http://localhost:8080/)
     ``` batch
     npm run start
     ```
@@ -106,4 +106,4 @@ To start developping:
     java -jar target/easyshareserver.war
     ```
 
-You can now start using the application from http://localhost:4200/. Login using the existing user Jason Bourne. If you want to add more users, please refer to the Eulogin configuration files __user_projects/domains/base_domain/classes/userDataBase.xml__
+You can now start using the application from http://localhost:8080/. Login using the existing user Jason Bourne. If you want to add more users, please refer to the Eulogin configuration files __user_projects/domains/base_domain/classes/userDataBase.xml__
