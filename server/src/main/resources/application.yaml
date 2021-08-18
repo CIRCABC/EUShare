@@ -13,8 +13,8 @@ easyshare:
     - C:\temp\easyshare
 logging:
   level:
-    org.springframework: DEBUG
-    org.hibernate.SQL: ERROR
+    org.springframework: WARN
+    org.hibernate.SQL: WARN
 spring:
   security:
     oauth2:
