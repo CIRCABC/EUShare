@@ -71,9 +71,9 @@ jobs:
       - run:
           name: build-app
           command: npm run build
-      # - run:
-      #     name: check-license
-      #     command: npm run licchkadd
+      - run:
+          name: check-license
+          command: npm run licchkchk
       - run:
           name: check-style
           command: npm run lint

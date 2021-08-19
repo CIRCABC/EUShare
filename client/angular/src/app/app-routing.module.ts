@@ -1,5 +1,14 @@
+/*
+EasyShare - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "EasyShare" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
 import { NgModule } from '@angular/core';
-import { NoPreloading, PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { NoPreloading, RouterModule, Routes } from '@angular/router';
 import { FilelinkComponent } from './filelink/filelink.component';
 import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';

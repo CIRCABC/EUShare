@@ -18,7 +18,8 @@
     "prettier": "npx gulp prettier",
     "prettier-css": "gulp format:css ",
     "e2e": "ng e2e",
-    "licchkadd": "license-check-and-add check",
+    "licchkchk": "license-check-and-add check",
+    "licchkadd": "license-check-and-add add",
     "tsc": "tsc --project tsconfig.json --pretty",
     "ncu": "npx npm-check-updates",
     "build-stat": "ng build --prod --stats-json",
@@ -35,7 +36,7 @@
     "i18n:find": "transloco-keys-manager find",
     "spellcheck": "cspell /src/**/*.ts"
   },
-  
+
   "private": true,
   "dependencies": {
     "@angular-devkit/architect": "0.1202.1",

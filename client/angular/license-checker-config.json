@@ -1,15 +1,23 @@
 {
   "folder": ".",
   "license": "LICENSE_HEADER.txt",
-  "exact_paths_method": "INCLUDE",
-  "exact_paths": ["src/app"],
   "ignore": [
+    "**/browserslist",
+    "**/Dockerfile",
+    "*.*",
+    "**/src/assets/*.*",
+    "**/e2e/*.*",
+    "**/src/*.*",
+    "**/src/environments/*.*",
     "**/*.html",
     "**/*.txt",
     "**/*.json",
     "**/*.sh",
     "**/*.md",
-    "**/*.css"
-  ],
-  "insert_license": false
+    "**/*.css",
+    "**/*.scss",
+    "**/*.js",
+    "**/*.svg",
+    "**/*.conf"
+  ]
 }
