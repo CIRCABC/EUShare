@@ -146,7 +146,7 @@ export class NotificationService {
       }
       default: {
         this.addErrorMessage(
-          'An unexepected error occured while ' +
+          'An unexpected error occured while ' +
             action +
             '! Please contact the support.'
         );
