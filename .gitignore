@@ -41,3 +41,5 @@ client/angular/documentation/
 
 client/angular/src/environments/version.ts
 client/angular/package-lock.json
+client/angular/yarn.lock
+client/angular/package-lock.json
