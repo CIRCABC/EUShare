@@ -35,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestPart;
-import java.util.Optional;
+
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2020-02-07T11:07:17.544+01:00[Europe/Paris]")
 
 @Validated
