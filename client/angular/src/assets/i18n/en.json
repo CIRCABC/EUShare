@@ -1,6 +1,4 @@
 {
-
-  "oidc.error":"Encountered an OIDC error of type {type}",
   "actions": "Actions",
   "add.file": "Add File",
   "add.recipient.to": "Add recipient to",
@@ -44,8 +42,11 @@
   "next.page": "Next page",
   "no.files.to.download": "No files to download",
   "no.uploaded.files": "No uploaded files",
+  "oidc.error":"Encountered an OIDC error of type {type}",
   "password.on.file.download": "Password on file download",
   "previous": "Previous",
+  "problem.occurred.download":"A problem occurred while downloading files information.",
+  "problem.occurred.navigation":"A problem occurred while navigation to upload success.",
   "quota": "quota",
   "results": "Results",
   "search": "Search",
@@ -72,5 +73,6 @@
   "user.uploaded.files": "{{ userName }}'s uploaded files",
   "warning": "Warning",
   "welcome": "Welcome!",
+  "wrong.password":"Wrong password, please try again.",
   "you.can.upload.up.to": "You can upload up to"
 }
