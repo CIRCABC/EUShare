@@ -145,7 +145,7 @@ export class DownloadCardComponent implements OnInit {
   }
 }
 
-export interface DownloadToDisplay {
+interface DownloadToDisplay {
   fileName: string;
   hasError: boolean;
   fileId: string;

@@ -191,25 +191,25 @@ export class ModalsService {
     this.deactivateDeleteConfirmModal();
   }
 }
-export interface DownloadModalValue {
+interface DownloadModalValue {
   modalActive: boolean;
   modalFileId: string;
   modalFileName: string;
   modalFileHasPassword: boolean;
 }
 
-export interface FileLinkModalValue {
+interface FileLinkModalValue {
   modalActive: boolean;
   fileLink: string;
 }
 
-export interface AddRecipientsModalValue {
+interface AddRecipientsModalValue {
   modalActive: boolean;
   modalFileName: string;
   modalFileId: string;
 }
 
-export interface ShareWithUsersModalValue {
+interface ShareWithUsersModalValue {
   modalActive: boolean;
   modalFileName: string;
   modalFileId: string;
@@ -217,7 +217,7 @@ export interface ShareWithUsersModalValue {
   recipientsWithLink: RecipientWithLink[];
 }
 
-export interface DeleteConfirmModalValue {
+interface DeleteConfirmModalValue {
   modalActive: boolean;
   modalFileName: string;
   modalFileId: string;

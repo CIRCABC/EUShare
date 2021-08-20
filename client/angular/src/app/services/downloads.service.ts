@@ -174,7 +174,7 @@ export class DownloadsService {
   }
 }
 
-export interface DownloadInProgressObservableWithMeta {
+interface DownloadInProgressObservableWithMeta {
   downloadInProgressObservable: Observable<DownloadInProgress>;
   fileId: string;
 }

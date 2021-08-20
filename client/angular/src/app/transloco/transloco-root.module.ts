@@ -22,7 +22,7 @@ import { environment } from '../../environments/environment';
 
 
 @Injectable({ providedIn: 'root' })
-export class TranslocoHttpLoader implements TranslocoLoader {
+class TranslocoHttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
 
   getTranslation(lang: string) {

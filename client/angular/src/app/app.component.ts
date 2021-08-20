@@ -18,7 +18,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { getBrowserLang, TranslocoService } from '@ngneat/transloco';
 
-export const authCodeFlowConfig: AuthConfig = {
+const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
   issuer: environment.OIDC_ISSUER,
   // URL of the SPA to redirect the user to after login

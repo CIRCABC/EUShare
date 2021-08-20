@@ -175,7 +175,7 @@ export class UploadedFilesService {
   }
 }
 
-export interface FileUploaderArrayAndMetaData {
+interface FileUploaderArrayAndMetaData {
   fileInfoUploaderArray: FileInfoUploader[];
   hasNextPage: boolean;
   hasPreviousPage: boolean;
