@@ -29,9 +29,11 @@ export class UploadSucessComponent implements OnInit {
     if (this.isFileInfoUploader(passedData)) {
       this.fileInfoUploader = <FileInfoUploader>passedData;
     } else {
-      this.notificationService.addErrorMessage(
-        `${this.notificationService.translate('problem.occurred.navigation)} ${this.notificationService.pleaseContactSupportTranslate()}`
-      );
+      const message = `${this.notificationService.translate(
+        'problem.occurred.navigation'
+      )} ${this.notificationService.pleaseContactSupportTranslate()}`;
+
+      this.notificationService.addErrorMessage(message);
     }
   }
 

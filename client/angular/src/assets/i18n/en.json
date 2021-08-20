@@ -47,6 +47,7 @@
   "previous": "Previous",
   "problem.occurred.download":"A problem occurred while downloading files information.",
   "problem.occurred.navigation":"A problem occurred while navigation to upload success.",
+  "error.occurred.download":"An error occurred while downloading the file.",
   "quota": "quota",
   "results": "Results",
   "search": "Search",

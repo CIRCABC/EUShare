@@ -32,7 +32,9 @@ export class OtherUserSharedFilesComponent implements OnInit {
       this.userName = userNameOrNull;
     } else {
       this.notificationService.addErrorMessage(
-        `${this.notificationService.translate('problem.occurred.download')} ${this.notificationService.pleaseContactSupportTranslate()}`
+        `${this.notificationService.translate(
+          'problem.occurred.download'
+        )} ${this.notificationService.pleaseContactSupportTranslate()}`
       );
     }
   }

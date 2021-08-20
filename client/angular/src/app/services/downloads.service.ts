@@ -84,7 +84,7 @@ export class DownloadsService {
 
   private error(fileId: string, message?: string): Error {
     if (message === undefined) {
-      message = `An unknown error occured while downloading the file. Please contact the support.`;
+      message = `An unknown error occurred while downloading the file. ${this.notificationService.pleaseContactSupportTranslate()}`;
     }
     // notification sent in the interceptor
     this.currentDownloadsInProgress.delete(fileId);
@@ -117,8 +117,9 @@ export class DownloadsService {
           );
         }
         if (event.status === 401) {
-          this.notificationService.addErrorMessage(
-            'Wrong password, please try again.',
+          this.notificationService.addErrorMessageTranslation(
+            'wrong.password',
+            undefined,
             true
           );
           throw this.error(fileId, 'Wrong password, please try again.');
@@ -135,7 +136,9 @@ export class DownloadsService {
         if (event.status === 500) {
           throw this.error(
             fileId,
-            `An error occured while downloading the file. Please contact the support.`
+            `${this.notificationService.translate(
+              'error.occurred.download'
+            )} ${this.notificationService.pleaseContactSupportTranslate()}`
           );
         }
         throw this.error(fileId);
