@@ -37,7 +37,50 @@ export class NotificationService {
     this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
   }
 
+  public pleaseContactSupportTranslate(): string {
+    return this.translateService.translate<string>('contact.support');
+  }
+
+  public translate(key: string, params?: HashMap): string {
+    if (params === undefined) {
+      return this.translateService.translate<string>(key);
+    } else {
+      return this.translateService.translate<string>(key, params);
+    }
+  }
+
+  public addErrorMessageTranslation(
+    key: string,
+    params?: HashMap,
+    autoclose: boolean = false,
+    displayTime?: number
+  ): void {
+    this.addMessageTranslation(
+      NotificationLevel.ERROR,
+      key,
+      params,
+      autoclose,
+      displayTime
+    );
+  }
+
   public addSuccessMessageTranslation(
+    key: string,
+    params?: HashMap,
+    autoclose: boolean = false,
+    displayTime?: number
+  ): void {
+    this.addMessageTranslation(
+      NotificationLevel.SUCCESS,
+      key,
+      params,
+      autoclose,
+      displayTime
+    );
+  }
+
+  public addMessageTranslation(
+    level: NotificationLevel,
     key: string,
     params?: HashMap,
     autoclose: boolean = false,
@@ -49,7 +92,7 @@ export class NotificationService {
     } else {
       message = this.translateService.translate<string>(key, params);
     }
-    this.addMessage(message, NotificationLevel.SUCCESS, autoclose, displayTime);
+    this.addMessage(message, level, autoclose, displayTime);
   }
 
   public removeMessage(message: NotificationMessage): void {

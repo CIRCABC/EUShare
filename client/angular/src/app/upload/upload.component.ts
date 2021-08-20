@@ -545,7 +545,7 @@ export class UploadComponent implements OnInit {
 
       default:
         this.notificationService.addErrorMessage(
-          'An error occured while downloading the file. Please contact the support.' +
+          `An error occured while downloading the file. Please contact the support.` +
             JSON.stringify(event)
         );
         this.uploadInProgress = false;

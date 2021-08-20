@@ -84,8 +84,7 @@ export class DownloadsService {
 
   private error(fileId: string, message?: string): Error {
     if (message === undefined) {
-      message =
-        'An unknown error occured while downloading the file. Please contact the support.';
+      message = `An unknown error occured while downloading the file. Please contact the support.`;
     }
     // notification sent in the interceptor
     this.currentDownloadsInProgress.delete(fileId);
@@ -136,7 +135,7 @@ export class DownloadsService {
         if (event.status === 500) {
           throw this.error(
             fileId,
-            'An error occured while downloading the file. Please contact the support.'
+            `An error occured while downloading the file. Please contact the support.`
           );
         }
         throw this.error(fileId);

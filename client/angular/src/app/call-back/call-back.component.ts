@@ -52,9 +52,9 @@ export class CallBackComponent implements OnInit {
           break;
         }
         default: {
-          this.notificationService.addErrorMessage(
-            'Encountered an OIDC error of type ' + next.type
-          );
+          this.notificationService.addErrorMessageTranslation('oidc.error', {
+            type: next.type,
+          });
           break;
         }
       }

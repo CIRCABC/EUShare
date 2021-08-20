@@ -130,7 +130,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             case 401: {
               if (!isGetFile) {
                 this.notificationService.addErrorMessage(
-                  'Invalid ECAS token, please logout and login again.'
+                  'Invalid EULogin token, please logout and login again.'
                 );
               } else {
                 this.notificationService.addErrorMessage('Wrong password.');

@@ -1,4 +1,6 @@
 {
+
+  "oidc.error":"Encountered an OIDC error of type {type}",
   "actions": "Actions",
   "add.file": "Add File",
   "add.recipient.to": "Add recipient to",

@@ -30,7 +30,7 @@ export class UploadSucessComponent implements OnInit {
       this.fileInfoUploader = <FileInfoUploader>passedData;
     } else {
       this.notificationService.addErrorMessage(
-        'A problem occured while navigation to upload success. Please contact the support.'
+        `A problem occured while navigation to upload success. Please contact the support.`
       );
     }
   }
