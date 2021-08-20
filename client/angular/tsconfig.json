@@ -2,7 +2,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "resolveJsonModule": true,
     "downlevelIteration": true,
     "module": "esnext",
