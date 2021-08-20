@@ -46,7 +46,7 @@ export class AppComponent {
   constructor(
     private oauthService: OAuthService,
     private router: Router,
-    private translateService: TranslocoService,
+    private translateService: TranslocoService
   ) {
     this.routerHelpForDownloadsBox();
     this.configureOAuth();

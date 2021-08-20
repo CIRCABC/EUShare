@@ -197,18 +197,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
           }
-
-          if (err.status === 0) {
-          }
-          if (err.status === 400) {
-          }
-          if (err.status === 401) {
-          }
-          if (err.status === 403) {
-          }
-
-          if (err.status === 404) {
-          }
         }
         const error = err.error.message || err.statusText;
         return throwError(error);

@@ -20,15 +20,12 @@ import {
 import { Injectable, NgModule } from '@angular/core';
 import { environment } from '../../environments/environment';
 
-
 @Injectable({ providedIn: 'root' })
 class TranslocoHttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
 
   getTranslation(lang: string) {
-    return this.http.get<Translation>(
-      `/assets/i18n/${lang}.json`
-    );
+    return this.http.get<Translation>(`/assets/i18n/${lang}.json`);
   }
 }
 

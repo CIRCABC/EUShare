@@ -141,8 +141,9 @@ export class AdministrationComponent implements OnInit {
       await this.usersApi
         .putUserUserInfo(this.selectedUserInfo.id, this.selectedUserInfo)
         .toPromise();
-      this.notificationService.addSuccessMessage(
-        'Your change was applied',
+      this.notificationService.addSuccessMessageTranslation(
+        'change.applied',
+        undefined,
         true
       );
     } catch (error) {

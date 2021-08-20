@@ -28,70 +28,70 @@ const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'home',
     component: MySharedFilesComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'upload',
     component: UploadComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'uploadSuccess',
     component: UploadSucessComponent,
-    canActivate: [LoginGuard, UploadSuccessGuard]
+    canActivate: [LoginGuard, UploadSuccessGuard],
   },
   {
     path: 'download',
     component: SharedWithMeComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'filelink/:id/:filenameb64/:isPasswordProtected',
-    component: FilelinkComponent
+    component: FilelinkComponent,
   },
   {
     path: 'administration',
     component: AdministrationComponent,
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'administration/:userId/files',
     component: OtherUserSharedFilesComponent,
     data: { userName: 'dummyUserName' },
-    canActivate: [LoginGuard]
+    canActivate: [LoginGuard],
   },
   {
     path: 'callback',
-    component: CallBackComponent
+    component: CallBackComponent,
   },
   {
     path: 'myUser',
-    component: MyUserComponent
+    component: MyUserComponent,
   },
   {
     path: 'privacyStatement',
-    component: PrivacyStatementComponent
+    component: PrivacyStatementComponent,
   },
   {
     path: 'termsOfService',
-    component: TermsOfServiceComponent
-  }
+    component: TermsOfServiceComponent,
+  },
 ];
 
 @NgModule({
   imports: [
     RouterModule.forRoot(appRoutes, {
       preloadingStrategy: NoPreloading,
-      paramsInheritanceStrategy: 'emptyOnly' ,
+      paramsInheritanceStrategy: 'emptyOnly',
       scrollPositionRestoration: 'disabled',
-      enableTracing: false // !environment.production
-    })
+      enableTracing: false, // !environment.production
+    }),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

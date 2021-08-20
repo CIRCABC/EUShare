@@ -55,11 +55,9 @@ export class ShareWithUsersModalComponent implements OnInit {
       .toPromise()
       .then((_success) => {
         this.recipientsWithLink.splice(shareIndex, 1);
-        this.notificationService.addSuccessMessage(
-          'Successfully removed file ' +
-            this.modalFileName +
-            " 's share with " +
-            shareName
+        this.notificationService.addSuccessMessageTranslation(
+          'successfully.removed',
+          { fileName: this.modalFileName, shareName: shareName }
         );
       })
       .catch((_error) => {
@@ -79,7 +77,11 @@ export class ShareWithUsersModalComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
-    this.notificationService.addSuccessMessage('Copied file link', true);
+    this.notificationService.addSuccessMessageTranslation(
+      'copied.file.link',
+      undefined,
+      true
+    );
   }
 
   public formatLink(i: number) {

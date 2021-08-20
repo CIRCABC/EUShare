@@ -27,10 +27,7 @@ import {
 import { NotificationService } from '../common/notification/notification.service';
 import { fileSizeValidator } from '../common/validators/file-validator';
 import { map } from 'rxjs/operators';
-import {
-  HttpEvent,
-  HttpEventType
-} from '@angular/common/http';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({

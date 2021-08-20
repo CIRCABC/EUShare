@@ -130,8 +130,9 @@ export class UploadedFilesService {
   public async removeOneFile(fileId: string, fileName: string) {
     try {
       await this.fileService.deleteFile(fileId).toPromise();
-      this.notificationService.addSuccessMessage(
-        'Successfully deleted file named ' + fileName
+      this.notificationService.addSuccessMessageTranslation(
+        'successfully.deleted',
+        { fileName: fileName }
       );
     } catch (error) {
       // error managed in error interceptor
@@ -157,8 +158,9 @@ export class UploadedFilesService {
         .postFileSharedWith(fileId, recipient)
         .toPromise();
 
-      this.notificationService.addSuccessMessage(
-        'Successfully added your recipient to ' + fileName
+      this.notificationService.addSuccessMessageTranslation(
+        'successfully.added',
+        { fileName: fileName }
       );
 
       this.fileInfoUploader.forEach((file) => {

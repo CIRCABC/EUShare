@@ -32,7 +32,9 @@ export class CallBackComponent implements OnInit {
       const nextType: string = next.type;
       switch (nextType) {
         case 'token_expires': {
-          this.notificationService.addSuccessMessage('Your session expired');
+          this.notificationService.addSuccessMessageTranslation(
+            'session.expired'
+          );
           this.api.logout();
           break;
         }

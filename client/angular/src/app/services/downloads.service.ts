@@ -11,10 +11,7 @@ import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { FileService } from '../openapi';
-import {
-  HttpEvent,
-  HttpEventType
-} from '@angular/common/http';
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { NotificationService } from '../common/notification/notification.service';
 import { Observable, Subject } from 'rxjs';
 import { saveAs } from 'file-saver';
