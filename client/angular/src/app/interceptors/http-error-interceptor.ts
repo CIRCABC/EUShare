@@ -71,79 +71,108 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             req.url.includes('/fileRequest/sharedWith') &&
             req.method === 'DELETE';
 
-          let action = ' to ?';
+          let action = `${this.notificationService.to()} ?`;
 
           if (isPostLogin) {
-            action = ' to login.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'login'
+            )}.`;
           }
           if (isGetUsersUserInfo) {
-            action = ' to retrieve several users information.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'retrieve.users.info'
+            )}.`;
           }
           if (isPutUserUserInfo) {
-            action = " to modify this user's rights.";
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'modify.user.rights'
+            )}.`;
           }
           if (isGetUserUserInfo) {
-            action = " to retrieve the user's information.";
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'retrieve.user.info'
+            )}.`;
           }
           if (isGetFilesFileInfoUploader) {
-            action = ' to access the uploaded files.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'access.uploaded.files'
+            )}.`;
           }
           if (isGetFilesFileInfoRecipient) {
-            action = ' to access the shared files.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'access.shared.files'
+            )}.`;
           }
           if (isGetFile) {
-            action = ' to download this file.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'download.file'
+            )}.`;
           }
           if (isDeleteFile) {
-            action = ' to delete this file.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'delete.file'
+            )}.`;
           }
           if (isPostFileFileRequest) {
-            action = ' to upload this file.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'upload.file'
+            )}.`;
           }
           if (isPostFileSharedWith) {
-            action = ' to add this recipient to the shared file.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'add.recipient.to.file'
+            )}.`;
           }
           if (isPostFileContent) {
-            action = ' to post this file content.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'post.file'
+            )}.`;
           }
           if (isDeleteFileSharedWithUser) {
-            action = ' to delete this recipient from the shared file.';
+            action = `${this.notificationService.to()} ${this.notificationService.translate(
+              'delete.recipient'
+            )}.`;
           }
 
           switch (err.status) {
             case 0: {
               this.notificationService.addErrorMessage(
-                'Server is not reachable while trying' +
-                  action +
-                  ' Please contact the support.'
+                `${this.notificationService.translate(
+                  'server.not.reachable'
+                )} ${this.notificationService.whileTrying()} ${action} ${this.notificationService.contactSupport()}`
               );
               break;
             }
             case 400: {
               this.notificationService.addErrorMessage(
-                'Bad request while trying' +
-                  action +
-                  ' Please contact the support.'
+                `${this.notificationService.translate(
+                  'bad.request'
+                )} ${this.notificationService.whileTrying()} ${action} ${this.notificationService.contactSupport()}`
               );
               break;
             }
             case 401: {
               if (!isGetFile) {
-                this.notificationService.addErrorMessage(
-                  'Invalid EULogin token, please logout and login again.'
+                this.notificationService.addErrorMessageTranslation(
+                  'invalid.token.'
                 );
               } else {
-                this.notificationService.addErrorMessage('Wrong password.');
+                this.notificationService.addErrorMessageTranslation(
+                  'wrong.password'
+                );
               }
               break;
             }
             case 403: {
-              let errorMessage = 'You are not authorized' + action;
+              let errorMessage = `${this.notificationService.translate(
+                'not.authorized'
+              )} ${action}`;
               if (err.error) {
                 const status: Status = JSON.parse(err.error);
                 if (status.message) {
-                  errorMessage +=
-                    ' Reason: ' + this.separateStatusMessage(status.message);
+                  errorMessage += `${this.notificationService.translate(
+                    'reason'
+                  )} ${this.separateStatusMessage(status.message)}`;
                 }
               }
               this.notificationService.addErrorMessage(errorMessage);
@@ -157,7 +186,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 isGetFilesFileInfoUploader ||
                 isGetFilesFileInfoRecipient
               ) {
-                errorMessage += 'User not found';
+                errorMessage +=
+                  this.notificationService.translate('user.not.found');
               }
               if (
                 isGetFile ||
@@ -165,7 +195,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 isPostFileSharedWith ||
                 isPostFileContent
               ) {
-                errorMessage += 'File not found';
+                errorMessage +=
+                  this.notificationService.translate('file.not.found');
               }
               if (isDeleteFileSharedWithUser) {
                 if (err.error) {
@@ -175,24 +206,25 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                   }
                 }
               }
-              errorMessage += ' while trying ' + action;
+              errorMessage += ` ${this.notificationService.whileTrying()}  ${action}`;
               this.notificationService.addErrorMessage(errorMessage);
               break;
             }
             case 500: {
               this.notificationService.addErrorMessage(
-                'An unexpected error occured on server side while trying' +
-                  action +
-                  ' Please contact the support.'
+                `${this.notificationService.translate(
+                  'unexpected.error'
+                )} ${action} ${this.notificationService.contactSupport()}`
               );
               break;
             }
             default: {
               this.notificationService.addErrorMessage(
-                'An unexpected error occured on server side while trying' +
-                  action +
-                  ' Please contact the support. Error code ' +
-                  err.status
+                `${this.notificationService.translate(
+                  'unexpected.error'
+                )} ${action} ${this.notificationService.contactSupport()} ${this.notificationService.translate(
+                  'error.code'
+                )} ${err.status}`
               );
               break;
             }

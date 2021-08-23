@@ -84,7 +84,7 @@ export class DownloadsService {
 
   private error(fileId: string, message?: string): Error {
     if (message === undefined) {
-      message = `An unknown error occurred while downloading the file. ${this.notificationService.pleaseContactSupportTranslate()}`;
+      message = `An unknown error occurred while downloading the file. ${this.notificationService.contactSupport()}`;
     }
     // notification sent in the interceptor
     this.currentDownloadsInProgress.delete(fileId);
@@ -138,7 +138,7 @@ export class DownloadsService {
             fileId,
             `${this.notificationService.translate(
               'error.occurred.download'
-            )} ${this.notificationService.pleaseContactSupportTranslate()}`
+            )} ${this.notificationService.contactSupport()}`
           );
         }
         throw this.error(fileId);

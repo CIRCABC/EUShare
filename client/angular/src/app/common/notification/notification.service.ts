@@ -37,10 +37,17 @@ export class NotificationService {
     this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
   }
 
-  public pleaseContactSupportTranslate(): string {
+  public contactSupport(): string {
     return this.translateService.translate<string>('contact.support');
   }
 
+  public whileTrying(): string {
+    return this.translateService.translate<string>('while.trying');
+  }
+
+  public to(): string {
+    return this.translateService.translate<string>('to');
+  }
   public translate(key: string, params?: HashMap): string {
     if (params === undefined) {
       return this.translateService.translate<string>(key);

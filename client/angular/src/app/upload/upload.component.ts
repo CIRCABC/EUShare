@@ -547,7 +547,7 @@ export class UploadComponent implements OnInit {
         this.notificationService.addErrorMessage(
           `${this.notificationService.translate(
             'error.occurred.download'
-          )} ${this.notificationService.pleaseContactSupportTranslate()}` +
+          )} ${this.notificationService.contactSupport()}` +
             JSON.stringify(event)
         );
         this.uploadInProgress = false;

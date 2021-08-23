@@ -34,7 +34,7 @@ export class OtherUserSharedFilesComponent implements OnInit {
       this.notificationService.addErrorMessage(
         `${this.notificationService.translate(
           'problem.occurred.download'
-        )} ${this.notificationService.pleaseContactSupportTranslate()}`
+        )} ${this.notificationService.contactSupport()}`
       );
     }
   }

@@ -31,7 +31,7 @@ export class UploadSucessComponent implements OnInit {
     } else {
       const message = `${this.notificationService.translate(
         'problem.occurred.navigation'
-      )} ${this.notificationService.pleaseContactSupportTranslate()}`;
+      )} ${this.notificationService.contactSupport()}`;
 
       this.notificationService.addErrorMessage(message);
     }
