@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
 
@@ -16,13 +16,11 @@ import { KeyStoreService } from '../services/key-store.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   constructor(
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
   ) {}
-
-  ngOnInit() {}
 
   async login() {
     this.keyStoreService.prepareKeyStore();

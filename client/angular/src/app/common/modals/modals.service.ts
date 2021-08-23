@@ -48,8 +48,6 @@ export class ModalsService {
   public activateDeleteConfirmModal$: Observable<DeleteConfirmModalValue> =
     this.activateDeleteConfirmModalSubject.asObservable();
 
-  constructor() {}
-
   public activateDeleteConfirmModal(
     modalFileName: string,
     modalFileId: string

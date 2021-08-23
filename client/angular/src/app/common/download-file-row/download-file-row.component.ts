@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FileInfoRecipient } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +18,7 @@ import { DownloadsService } from '../../services/downloads.service';
   templateUrl: './download-file-row.component.html',
   styleUrls: ['./download-file-row.component.scss'],
 })
-export class DownloadFileRowComponent implements OnInit {
+export class DownloadFileRowComponent {
   // tslint:disable-next-line:no-input-rename
   @Input('fileToDisplay')
   fileToDisplay!: FileInfoRecipient;
@@ -31,8 +31,6 @@ export class DownloadFileRowComponent implements OnInit {
     private modalService: ModalsService,
     private downloadsService: DownloadsService
   ) {}
-
-  ngOnInit() {}
 
   public displayMore() {
     this.isMoreDisplayed = true;

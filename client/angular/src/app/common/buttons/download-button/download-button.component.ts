@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DownloadsService } from '../../../services/downloads.service';
 
 @Component({
@@ -15,7 +15,7 @@ import { DownloadsService } from '../../../services/downloads.service';
   templateUrl: './download-button.component.html',
   styleUrls: ['./download-button.component.scss'],
 })
-export class DownloadButtonComponent implements OnInit {
+export class DownloadButtonComponent {
   // tslint:disable-next-line:no-input-rename
   @Input('fileId')
   public fileId!: string;
@@ -37,8 +37,6 @@ export class DownloadButtonComponent implements OnInit {
   public inputPassword = '';
 
   constructor(private downloadsService: DownloadsService) {}
-
-  ngOnInit() {}
 
   public download() {
     this.isLoading = true;

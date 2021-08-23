@@ -7,7 +7,7 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { UsersService, UserInfo } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
   templateUrl: './administration.component.html',
   styleUrls: ['./administration.component.scss'],
 })
-export class AdministrationComponent implements OnInit {
+export class AdministrationComponent {
   public faUser = faUser;
   public faUserTie = faUserTie;
 
@@ -53,8 +53,6 @@ export class AdministrationComponent implements OnInit {
     private usersApi: UsersService,
     private notificationService: NotificationService
   ) {}
-
-  ngOnInit() {}
 
   public async resultsNextPage() {
     this.removeSelection();
