@@ -73,13 +73,13 @@ public class StringUtils {
     }
 
     public static boolean validateMessage(String message) {
-        return (message == null || (message != null && message.length() < 401));
+        return (message == null || (message.length() < 401));
     }
 
     public static String emailToGivenName(String email) {
         if (email != null && email.indexOf("@") != -1) {
             String givenName = email.substring(0, email.indexOf("@"));
-            givenName = givenName.replaceAll("\\.", " ");
+            givenName = givenName.replace("\\.", " ");
             return givenName;
         }
         return null;
