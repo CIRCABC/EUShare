@@ -79,7 +79,7 @@ public class StringUtils {
     public static String emailToGivenName(String email) {
         if (email != null && email.indexOf("@") != -1) {
             String givenName = email.substring(0, email.indexOf("@"));
-            givenName = givenName.replace("\\.", " ");
+            givenName = givenName.replace(".", " ");
             return givenName;
         }
         return null;
