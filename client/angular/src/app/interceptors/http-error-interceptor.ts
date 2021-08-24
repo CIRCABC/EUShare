@@ -17,6 +17,7 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { I18nService } from '../common/i18n/i18n.service';
 import { NotificationService } from '../common/notification/notification.service';
 import { Status } from '../openapi';
 
@@ -24,7 +25,10 @@ import { Status } from '../openapi';
   providedIn: 'root',
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private i18nService: I18nService
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -71,65 +75,65 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             req.url.includes('/fileRequest/sharedWith') &&
             req.method === 'DELETE';
 
-          let action = `${this.notificationService.to()} ?`;
+          let action = `${this.i18nService.to()} ?`;
 
           if (isPostLogin) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'login'
             )}.`;
           }
           if (isGetUsersUserInfo) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'retrieve.users.info'
             )}.`;
           }
           if (isPutUserUserInfo) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'modify.user.rights'
             )}.`;
           }
           if (isGetUserUserInfo) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'retrieve.user.info'
             )}.`;
           }
           if (isGetFilesFileInfoUploader) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'access.uploaded.files'
             )}.`;
           }
           if (isGetFilesFileInfoRecipient) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'access.shared.files'
             )}.`;
           }
           if (isGetFile) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'download.file'
             )}.`;
           }
           if (isDeleteFile) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'delete.file'
             )}.`;
           }
           if (isPostFileFileRequest) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'upload.file'
             )}.`;
           }
           if (isPostFileSharedWith) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'add.recipient.to.file'
             )}.`;
           }
           if (isPostFileContent) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'post.file'
             )}.`;
           }
           if (isDeleteFileSharedWithUser) {
-            action = `${this.notificationService.to()} ${this.notificationService.translate(
+            action = `${this.i18nService.to()} ${this.i18nService.translate(
               'delete.recipient'
             )}.`;
           }
@@ -137,17 +141,17 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           switch (err.status) {
             case 0: {
               this.notificationService.addErrorMessage(
-                `${this.notificationService.translate(
+                `${this.i18nService.translate(
                   'server.not.reachable'
-                )} ${this.notificationService.whileTrying()} ${action} ${this.notificationService.contactSupport()}`
+                )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`
               );
               break;
             }
             case 400: {
               this.notificationService.addErrorMessage(
-                `${this.notificationService.translate(
+                `${this.i18nService.translate(
                   'bad.request'
-                )} ${this.notificationService.whileTrying()} ${action} ${this.notificationService.contactSupport()}`
+                )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`
               );
               break;
             }
@@ -164,13 +168,13 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
             case 403: {
-              let errorMessage = `${this.notificationService.translate(
+              let errorMessage = `${this.i18nService.translate(
                 'not.authorized'
               )} ${action}`;
               if (err.error) {
                 const status: Status = JSON.parse(err.error);
                 if (status.message) {
-                  errorMessage += `${this.notificationService.translate(
+                  errorMessage += `${this.i18nService.translate(
                     'reason'
                   )} ${this.separateStatusMessage(status.message)}`;
                 }
@@ -186,8 +190,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 isGetFilesFileInfoUploader ||
                 isGetFilesFileInfoRecipient
               ) {
-                errorMessage +=
-                  this.notificationService.translate('user.not.found');
+                errorMessage += this.i18nService.translate('user.not.found');
               }
               if (
                 isGetFile ||
@@ -195,8 +198,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 isPostFileSharedWith ||
                 isPostFileContent
               ) {
-                errorMessage +=
-                  this.notificationService.translate('file.not.found');
+                errorMessage += this.i18nService.translate('file.not.found');
               }
               if (isDeleteFileSharedWithUser) {
                 if (err.error) {
@@ -206,23 +208,23 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                   }
                 }
               }
-              errorMessage += ` ${this.notificationService.whileTrying()}  ${action}`;
+              errorMessage += ` ${this.i18nService.whileTrying()}  ${action}`;
               this.notificationService.addErrorMessage(errorMessage);
               break;
             }
             case 500: {
               this.notificationService.addErrorMessage(
-                `${this.notificationService.translate(
+                `${this.i18nService.translate(
                   'unexpected.error'
-                )} ${action} ${this.notificationService.contactSupport()}`
+                )} ${action} ${this.i18nService.contactSupport()}`
               );
               break;
             }
             default: {
               this.notificationService.addErrorMessage(
-                `${this.notificationService.translate(
+                `${this.i18nService.translate(
                   'unexpected.error'
-                )} ${action} ${this.notificationService.contactSupport()} ${this.notificationService.translate(
+                )} ${action} ${this.i18nService.contactSupport()} ${this.i18nService.translate(
                   'error.code'
                 )} ${err.status}`
               );

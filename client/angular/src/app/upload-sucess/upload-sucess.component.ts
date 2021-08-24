@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../common/notification/notification.service';
 import { FileInfoUploader } from '../openapi';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { I18nService } from '../common/i18n/i18n.service';
 
 @Component({
   selector: 'app-upload-sucess',
@@ -22,16 +23,19 @@ export class UploadSucessComponent implements OnInit {
 
   public faCheckCircle = faCheckCircle;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private i18nService: I18nService
+  ) {}
 
   async ngOnInit() {
     const passedData = history.state.data;
     if (this.isFileInfoUploader(passedData)) {
       this.fileInfoUploader = <FileInfoUploader>passedData;
     } else {
-      const message = `${this.notificationService.translate(
+      const message = `${this.i18nService.translate(
         'problem.occurred.navigation'
-      )} ${this.notificationService.contactSupport()}`;
+      )} ${this.i18nService.contactSupport()}`;
 
       this.notificationService.addErrorMessage(message);
     }

@@ -29,6 +29,7 @@ import { fileSizeValidator } from '../common/validators/file-validator';
 import { map } from 'rxjs/operators';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { I18nService } from '../common/i18n/i18n.service';
 
 @Component({
   selector: 'app-upload',
@@ -55,7 +56,8 @@ export class UploadComponent implements OnInit {
     private sessionApi: SessionService,
     private userApi: UsersService,
     private fileApi: FileService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private i18nService: I18nService
   ) {
     this.initializeForm();
   }
@@ -545,10 +547,9 @@ export class UploadComponent implements OnInit {
 
       default:
         this.notificationService.addErrorMessage(
-          `${this.notificationService.translate(
+          `${this.i18nService.translate(
             'error.occurred.download'
-          )} ${this.notificationService.contactSupport()}` +
-            JSON.stringify(event)
+          )} ${this.i18nService.contactSupport()}` + JSON.stringify(event)
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

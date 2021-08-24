@@ -15,6 +15,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { NotificationService } from '../common/notification/notification.service';
 import { Observable, Subject } from 'rxjs';
 import { saveAs } from 'file-saver';
+import { I18nService } from '../common/i18n/i18n.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,8 @@ export class DownloadsService {
 
   constructor(
     private fileApi: FileService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private i18nService: I18nService
   ) {}
 
   public getCurrentObservables(): Observable<DownloadInProgress>[] {
@@ -84,7 +86,7 @@ export class DownloadsService {
 
   private error(fileId: string, message?: string): Error {
     if (message === undefined) {
-      message = `An unknown error occurred while downloading the file. ${this.notificationService.contactSupport()}`;
+      message = `An unknown error occurred while downloading the file. ${this.i18nService.contactSupport()}`;
     }
     // notification sent in the interceptor
     this.currentDownloadsInProgress.delete(fileId);
@@ -136,9 +138,9 @@ export class DownloadsService {
         if (event.status === 500) {
           throw this.error(
             fileId,
-            `${this.notificationService.translate(
+            `${this.i18nService.translate(
               'error.occurred.download'
-            )} ${this.notificationService.contactSupport()}`
+            )} ${this.i18nService.contactSupport()}`
           );
         }
         throw this.error(fileId);

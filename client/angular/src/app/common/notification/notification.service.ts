@@ -8,8 +8,9 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Injectable } from '@angular/core';
-import { HashMap, TranslocoService } from '@ngneat/transloco';
+import { HashMap } from '@ngneat/transloco';
 import { Observable, Subject } from 'rxjs';
+import { I18nService } from '../i18n/i18n.service';
 import { NotificationLevel } from './notification-level';
 import { NotificationMessage } from './notification-message';
 
@@ -17,7 +18,7 @@ import { NotificationMessage } from './notification-message';
   providedIn: 'root',
 })
 export class NotificationService {
-  constructor(private translateService: TranslocoService) {}
+  constructor(private i18nService: I18nService) {}
 
   public messageSource: Subject<NotificationMessage> =
     new Subject<NotificationMessage>();
@@ -35,25 +36,6 @@ export class NotificationService {
     displayTime?: number
   ): void {
     this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
-  }
-
-  public contactSupport(): string {
-    return this.translateService.translate<string>('contact.support');
-  }
-
-  public whileTrying(): string {
-    return this.translateService.translate<string>('while.trying');
-  }
-
-  public to(): string {
-    return this.translateService.translate<string>('to');
-  }
-  public translate(key: string, params?: HashMap): string {
-    if (params === undefined) {
-      return this.translateService.translate<string>(key);
-    } else {
-      return this.translateService.translate<string>(key, params);
-    }
   }
 
   public addErrorMessageTranslation(
@@ -95,9 +77,9 @@ export class NotificationService {
   ): void {
     let message: string;
     if (params === undefined) {
-      message = this.translateService.translate<string>(key);
+      message = this.i18nService.translate(key);
     } else {
-      message = this.translateService.translate<string>(key, params);
+      message = this.i18nService.translate(key, params);
     }
     this.addMessage(message, level, autoclose, displayTime);
   }
