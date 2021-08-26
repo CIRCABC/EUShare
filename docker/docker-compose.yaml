@@ -13,13 +13,18 @@ services:
   server:
     build: server
     image: tomcat-easyshare-server
+    extra_hosts:
+      ecas-mockup.cc.cec.eu.int: 10.69.125.187
     volumes:
       - type: bind
-        source: ~/eushare
+        source: ~/eushare-data
         target: /easyshare/
     ports:
       - "8888:8080"
       - "8886:8886"
+    environment:
+      - JPDA_ADDRESS:8886
+      - JPDA_TRANSPORT:dt_socket
     container_name: tomcat_easyshare_server
     depends_on:
       - db
@@ -31,13 +36,17 @@ services:
     container_name: tomcat_easyshare_client
     depends_on:
       - server
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:80"
   proxy:
     image: nginx:alpine
     container_name: nginx_easyshare_proxy
     volumes:
-      - ./proxy/conf:/etc/nginx
+      - ./proxy/conf/noSSL_nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
-      - 443:443
+     # - 443:443 incompatible with AWS workspace pcoip-agent
     depends_on:
       - client

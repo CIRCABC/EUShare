@@ -8,7 +8,11 @@ FROM tomcat:8.5.41-jdk8
 # ./conf/setenv.sh is the environment variables configuration
 
 COPY ./conf/eulogin.crt eulogin.crt
-RUN echo yes | keytool -importcert -alias euloginCertAlias -storepass changeit -file eulogin.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
+RUN echo yes | keytool -import -v -alias ecas-mockup-ssl -storepass changeit -file eulogin.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
+#RUN echo yes | keytool -importcert -alias euloginCertAlias -storepass changeit -file eulogin.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
+
+#COPY ./conf/euloginCA.crt euloginCA.crt
+#RUN echo yes | keytool -importcert -alias "eu.cec.digit.ecas.ecasmockupca (dev only)" -storepass changeit -file euloginCA.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
 
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
 COPY ./dist/easyshareserver.war /usr/local/tomcat/webapps/webservice.war

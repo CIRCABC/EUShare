@@ -18,15 +18,46 @@
     sudo chmod +x /usr/local/bin/docker-compose
   ``` 
 
+## Build the Docker images
+- Build the application from root folder
+``` batch
+mvn clean install -Dspring.profiles.active=devdocker -Dmaven.test.skip=true
+```
+
+## Copy web applications archives
+```
+cp client/target/easyshareclient.war docker/client/dist
+cp server/target/easyshareserver.war docker/server/dist
+```
+
 ## Run the environment
-- Go into ` docker_dev/ ` folder and run ` build.sh ` 
 
-## Client image
-- Client is built using Multi Stage Build
-- For more info check:
-- <https://dev.to/avatsaev/create-efficient-angular-docker-images-with-multi-stage-builds-1f3n>
+- Go into ` docker/ ` folder and run 
+```
+docker-compose -f docker-compose.yaml build
+docker-compose -f docker-compose.yaml up 
+``` 
 
-## Server image
-- Server image is built using jib maven plugin
-- For more info check :
-- <https://github.com/GoogleContainerTools/jib>
+## Debug server tomcat from vscode
+
+Add .vscode/lauch.json with the following content :
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Attach) - Remote",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 8886
+        }
+    ]
+}
+```
+
+
+## Update the environment
+In order to update the client and the server, you may use the tomcat7 maven plugin.
+- Go into `server` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=devdocker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the server with your latest changes.
+- Go into `client` and run `mvn clean tomcat7:deploy -Dmaven.test.skip=true -Dspring.profiles.active=devdocker -Dtomcat.admin=managerscript -Dtomcat.admin.password=password -Dtomcat.deploy.url=YourVMUrl/manager/text` in order to update the client with your latest changes.
