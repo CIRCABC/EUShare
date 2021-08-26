@@ -87,18 +87,14 @@ export class ShareWithUsersModalComponent implements OnInit {
   public formatLink(i: number) {
     const isPasswordProtected = this.modalFileIsPasswordProtected;
 
-    let fileLinkBuild =
-      window.location.protocol +
-      '//' +
-      window.location.host +
-      '/filelink/' +
-      this.recipientsWithLink[i].downloadLink +
-      '/' +
-      encodeURIComponent(btoa(this.modalFileName)) +
-      '/';
+    let fileLinkBuild = `${window.location.protocol}//${
+      window.location.host
+    }/filelink/${this.recipientsWithLink[i].downloadLink}/${encodeURIComponent(
+      btoa(this.modalFileName)
+    )}/`;
     fileLinkBuild = isPasswordProtected
-      ? fileLinkBuild + '1'
-      : fileLinkBuild + '0';
+      ? `${fileLinkBuild}1`
+      : `${fileLinkBuild}0`;
     return fileLinkBuild;
   }
 }
