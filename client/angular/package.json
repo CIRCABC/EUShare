@@ -36,7 +36,6 @@
     "i18n:find": "transloco-keys-manager find",
     "spellcheck": "cspell /src/**/*.ts"
   },
-
   "private": true,
   "dependencies": {
     "@angular-devkit/architect": "0.1202.2",

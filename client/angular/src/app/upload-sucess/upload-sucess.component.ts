@@ -74,18 +74,14 @@ export class UploadSucessComponent implements OnInit {
   public formatLink(i: number) {
     const isPasswordProtected = this.fileInfoUploader.hasPassword;
 
-    let fileLinkBuild =
-      window.location.protocol +
-      '//' +
-      window.location.host +
-      '/filelink/' +
-      this.fileInfoUploader.sharedWith[i].downloadLink +
-      '/' +
-      encodeURIComponent(btoa(this.fileInfoUploader.name)) +
-      '/';
+    let fileLinkBuild = `${window.location.protocol}//${
+      window.location.host
+    }/filelink/${
+      this.fileInfoUploader.sharedWith[i].downloadLink
+    }/${encodeURIComponent(btoa(this.fileInfoUploader.name))}/`;
     fileLinkBuild = isPasswordProtected
-      ? fileLinkBuild + '1'
-      : fileLinkBuild + '0';
+      ? `${fileLinkBuild}1`
+      : `${fileLinkBuild}0`;
     return fileLinkBuild;
   }
 }

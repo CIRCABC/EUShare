@@ -89,10 +89,7 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
       this.controlDirective.control.errors &&
       this.controlDirective.control.errors.forbiddenMessageLength
     ) {
-      return (
-        "Text shouldn't be bigger than " +
-        this.controlDirective.control.errors.forbiddenMessageLength.value
-      );
+      return `Text shouldn't be bigger than ${this.controlDirective.control.errors.forbiddenMessageLength.value}`;
     }
     return null;
   }
