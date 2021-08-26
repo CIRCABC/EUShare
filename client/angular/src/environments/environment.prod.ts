@@ -9,7 +9,7 @@ export const environment: Environment = {
   frontend_url: 'http://localhost:8080',
   API_BASE_PATH: 'http://localhost:8888',
   OIDC_ISSUER: 'https://localhost:7002/cas/oauth2',
-  OIDC_REDIRECTURI: window.location.origin + '/callback',
+  OIDC_REDIRECTURI: `${window.location.origin}/callback`,
   OIDC_CLIENTID:
     'SUaZzHzotYc0aWZwRNH8DsNdVF0RdzvszanVEMzVlUuQSpy8WEylWDiKTrspJtg7fnbizPObS5HObgpIVDNWL0rG-PnCd3ypAN98azctE7ydwH9',
   OIDC_BACKEND_CLIENTID:

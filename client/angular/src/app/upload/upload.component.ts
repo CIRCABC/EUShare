@@ -549,7 +549,7 @@ export class UploadComponent implements OnInit {
         this.notificationService.addErrorMessage(
           `${this.i18nService.translate(
             'error.occurred.download'
-          )} ${this.i18nService.contactSupport()}` + JSON.stringify(event)
+          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}`
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

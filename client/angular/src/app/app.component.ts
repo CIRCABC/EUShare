@@ -23,7 +23,7 @@ const authCodeFlowConfig: AuthConfig = {
   issuer: environment.OIDC_ISSUER,
   // URL of the SPA to redirect the user to after login
   redirectUri: environment.OIDC_REDIRECTURI,
-  silentRefreshRedirectUri: window.location.origin + '/tokenRefresh.html',
+  silentRefreshRedirectUri: `${window.location.origin}/tokenRefresh.html`,
   clientId: environment.OIDC_CLIENTID,
   requestAccessToken: false,
 
