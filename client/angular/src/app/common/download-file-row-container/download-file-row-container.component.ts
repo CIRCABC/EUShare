@@ -16,7 +16,7 @@ import { FileInfoRecipient, UsersService } from '../../openapi';
   styleUrls: ['./download-file-row-container.component.scss'],
 })
 export class DownloadFileRowContainerComponent implements OnInit {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('userId')
   public userId!: string;
 

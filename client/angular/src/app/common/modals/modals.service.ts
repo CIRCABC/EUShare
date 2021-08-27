@@ -58,8 +58,8 @@ export class ModalsService {
     this.activeModal = this.possibleActiveModals[4];
     this.activateDeleteConfirmModalSubject.next({
       modalActive: true,
-      modalFileName: modalFileName,
-      modalFileId: modalFileId,
+      modalFileName,
+      modalFileId,
     });
   }
 
@@ -75,10 +75,10 @@ export class ModalsService {
     this.activeModal = this.possibleActiveModals[3];
     this.activateShareWithUsersModalSubject.next({
       modalActive: true,
-      modalFileName: modalFileName,
-      modalFileId: modalFileId,
-      modalFileHasPassword: modalFileHasPassword,
-      recipientsWithLink: recipientsWithLink,
+      modalFileName,
+      modalFileId,
+      modalFileHasPassword,
+      recipientsWithLink,
     });
   }
 
@@ -92,8 +92,8 @@ export class ModalsService {
     this.activeModal = this.possibleActiveModals[2];
     this.activateAddRecipientsModalSubject.next({
       modalActive: true,
-      modalFileName: modalFileName,
-      modalFileId: modalFileId,
+      modalFileName,
+      modalFileId,
     });
   }
 
@@ -119,9 +119,9 @@ export class ModalsService {
     this.activeModal = this.possibleActiveModals[0];
     this.activateDownloadModalSubject.next({
       modalActive: true,
-      modalFileId: modalFileId,
-      modalFileName: modalFileName,
-      modalFileHasPassword: modalFileHasPassword,
+      modalFileId,
+      modalFileName,
+      modalFileHasPassword,
     });
   }
 

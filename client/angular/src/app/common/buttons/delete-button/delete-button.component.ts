@@ -17,11 +17,11 @@ import { ModalsService } from '../../modals/modals.service';
   styleUrls: ['./delete-button.component.scss'],
 })
 export class DeleteButtonComponent {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('fileId')
   public fileId!: string;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('fileName')
   public fileName!: string;
 

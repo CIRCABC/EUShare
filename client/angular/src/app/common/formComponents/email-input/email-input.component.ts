@@ -30,13 +30,13 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;
   onTouched!: () => void;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('showAddRecipient')
   public showAddRecipient = true;
 
   @ViewChild('input', { static: true }) input!: ElementRef;
 
-  // tslint:disable-next-line:no-output-rename
+  // eslint-disable-next-line @angular-eslint/no-output-rename
   @Output('downClick')
   clicked = new EventEmitter<boolean>();
 

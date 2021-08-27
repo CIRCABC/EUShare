@@ -18,15 +18,15 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./uploaded-file-row-container.component.scss'],
 })
 export class FileRowContainerComponent implements OnInit, OnDestroy {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('userId')
   public userId!: string;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('displayAsAdministrator')
   public displayAsAdministrator = false;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('displayAsUploader')
   public displayAsUploader = true;
 

@@ -72,7 +72,7 @@ export class DownloadsService {
       const downloadInProgressObservableWithMeta: DownloadInProgressObservableWithMeta =
         {
           downloadInProgressObservable: newDownloadObservable,
-          fileId: fileId,
+          fileId,
         };
       if (!withSubcription) {
         this.nextDownloadsInProgressSubject.next(
@@ -100,7 +100,7 @@ export class DownloadsService {
   ): DownloadInProgress {
     const downloadValueToReturn: DownloadInProgress = {
       name: fileName,
-      fileId: fileId,
+      fileId,
       percentage: 0,
     };
 

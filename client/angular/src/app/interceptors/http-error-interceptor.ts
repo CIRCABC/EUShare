@@ -243,7 +243,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
     for (let i = 0; i < message.length; i++) {
       if (i > 1 && message.charAt(i) === message.charAt(i).toUpperCase()) {
-        // tslint:disable-next-line:prefer-template
+        // eslint-disable-next-line prefer-template
         returnString += ' ' + message.charAt(i).toLowerCase();
       } else {
         returnString += message.charAt(i);

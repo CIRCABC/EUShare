@@ -18,7 +18,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* tslint:disable:no-unused-variable member-ordering */
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
 
 export class BearerToken {
     access_token!: string;
@@ -69,7 +69,7 @@ export class SessionService {
     public userInfo$ = this.userInfoSubject.asObservable();
 
     public getStoredUserInfo(): UserInfo | null {
-        let userInfoStringified = sessionStorage.getItem('ES_USERINFO');
+        const userInfoStringified = sessionStorage.getItem('ES_USERINFO');
         if (userInfoStringified) {
             const userInfo = JSON.parse(userInfoStringified);
             this.userInfoSubject.next(userInfo);
@@ -113,13 +113,13 @@ export class SessionService {
 
         const now = Date.now();
         const assertionData = {
-            'iss': environment.OIDC_CLIENTID, // iss must be equal to sub and must be the ClientID of the SPA
-            'sub': environment.OIDC_CLIENTID,
-            'aud': environment.OIDC_TOKENENDPOINT,   // aud must be the URI of the EU Login end-point + '/token'
-            'jti': this.keystoreService.randomHex(64), // a unique, random and unguessable value
-            'exp': now + (5 * 60 * 1000), // expiration time, e.g. now + 5 minutes
-            'iat': now, // the issuing time
-            'id_token': this.oAuthService.getIdToken() // the token acquired during the authentication
+            iss: environment.OIDC_CLIENTID, // iss must be equal to sub and must be the ClientID of the SPA
+            sub: environment.OIDC_CLIENTID,
+            aud: environment.OIDC_TOKENENDPOINT,   // aud must be the URI of the EU Login end-point + '/token'
+            jti: this.keystoreService.randomHex(64), // a unique, random and unguessable value
+            exp: now + (5 * 60 * 1000), // expiration time, e.g. now + 5 minutes
+            iat: now, // the issuing time
+            id_token: this.oAuthService.getIdToken() // the token acquired during the authentication
         };
         const assertionJws = this.keystoreService.signJWT(assertionData);
 
@@ -136,8 +136,8 @@ export class SessionService {
                 environment.OIDC_TOKENENDPOINT,
                 null,
                 {
-                    headers: headers,
-                    params: params,
+                    headers,
+                    params,
                     withCredentials: true
                 });
     }
@@ -160,6 +160,7 @@ export class SessionService {
 
     /**
      * Used to login by internal users
+     *
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -186,9 +187,9 @@ export class SessionService {
             null,
             {
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress,
+                headers,
+                observe,
+                reportProgress,
                 responseType: 'text'
             }
         );

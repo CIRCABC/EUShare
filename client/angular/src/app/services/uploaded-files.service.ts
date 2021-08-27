@@ -132,7 +132,7 @@ export class UploadedFilesService {
       await this.fileService.deleteFile(fileId).toPromise();
       this.notificationService.addSuccessMessageTranslation(
         'successfully.deleted',
-        { fileName: fileName }
+        { fileName }
       );
     } catch (error) {
       // error managed in error interceptor
@@ -160,7 +160,7 @@ export class UploadedFilesService {
 
       this.notificationService.addSuccessMessageTranslation(
         'successfully.added',
-        { fileName: fileName }
+        { fileName }
       );
 
       this.fileInfoUploader.forEach((file) => {

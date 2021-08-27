@@ -19,7 +19,7 @@ import { DownloadsService } from '../../services/downloads.service';
   styleUrls: ['./download-file-row.component.scss'],
 })
 export class DownloadFileRowComponent {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('fileToDisplay')
   fileToDisplay!: FileInfoRecipient;
 

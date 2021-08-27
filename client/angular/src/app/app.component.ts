@@ -61,11 +61,7 @@ export class AppComponent {
 
   private routerHelpForDownloadsBox() {
     this.router.events
-      .pipe(
-        filter((event) => {
-          return event instanceof NavigationEnd;
-        })
-      )
+      .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((nextEvent) => {
         const nextEventNavigationEnd: NavigationEnd = <NavigationEnd>nextEvent;
         const urlAfterRedirect = nextEventNavigationEnd.urlAfterRedirects;
