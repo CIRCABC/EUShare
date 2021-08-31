@@ -16,19 +16,19 @@ import { DownloadsService } from '../../../services/downloads.service';
   styleUrls: ['./download-button.component.scss'],
 })
 export class DownloadButtonComponent {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('fileId')
   public fileId!: string;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('fileName')
   public fileName!: string;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('isFileHasPassword')
   public isFileHasPassword = false;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('isShowProgress')
   public isShowProgress = false;
 

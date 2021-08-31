@@ -18,7 +18,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* tslint:disable:no-unused-variable member-ordering */
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
@@ -76,6 +76,7 @@ export class FileService {
 
     /**
      * Used by INTERNAL users and ADMIN in order to delete a file
+     *
      * @param fileID The id of the file
      * @param reason Reason for deletion of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -111,15 +112,16 @@ export class FileService {
             {
                 params: queryParameters,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to delete a share link for one of the shared users
+     *
      * @param fileID The id of the file
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -152,15 +154,16 @@ export class FileService {
         return this.httpClient.delete<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith/${encodeURIComponent(String(userID))}`,
             {
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL and EXTERNAL users to download a shared file
+     *
      * @param fileID The id of the file
      * @param password Password of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -197,15 +200,16 @@ export class FileService {
                 params: queryParameters,
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to post the file content on the pre-reserved file space
+     *
      * @param fileID The id of the file
      * @param file 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -241,7 +245,7 @@ export class FileService {
 
         let formParams: { append(param: string, value: any): any; };
         let useForm = false;
-        let convertFormParamsToString = false;
+        const convertFormParamsToString = false;
         // use FormData to transmit files using content-type "multipart/form-data"
         // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
         useForm = canConsumeForm;
@@ -259,15 +263,16 @@ export class FileService {
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to request the reservation of space for a file
+     *
      * @param fileRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -307,9 +312,9 @@ export class FileService {
             fileRequest,
             {
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress,
+                headers,
+                observe,
+                reportProgress,
                 responseType: 'text'
             }
         );
@@ -317,6 +322,7 @@ export class FileService {
 
     /**
      * Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required
+     *
      * @param fileID The id of the file
      * @param recipient The userID or email of user to share the file with
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -359,9 +365,9 @@ export class FileService {
             recipient,
             {
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }

@@ -43,5 +43,9 @@ client/angular/src/environments/version.ts
 client/angular/package-lock.json
 client/angular/yarn.lock
 client/angular/package-lock.json
+<<<<<<< HEAD
 
 docker-dev
+=======
+client/angular/src/environments/version.ts
+>>>>>>> c2ac75e2d9e3fe8acd625bf27faa6cceef62b17e

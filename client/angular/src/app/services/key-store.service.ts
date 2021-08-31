@@ -87,6 +87,7 @@ export class KeyStoreService {
 
   /**
    * Returns a random hex-string of <code>n</code> bytes
+   *
    * @param n the number of bytes to allocate
    */
   randomHex = (n: number) => KJUR.crypto.Util.getRandomHexOfNbytes(n);

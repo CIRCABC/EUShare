@@ -34,7 +34,7 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   @ViewChild('textarea', { static: true }) textarea!: ElementRef;
   disabled!: boolean;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('isOptional')
   public isOptional = true;
 

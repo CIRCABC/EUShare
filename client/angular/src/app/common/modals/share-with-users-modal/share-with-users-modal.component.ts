@@ -57,7 +57,7 @@ export class ShareWithUsersModalComponent implements OnInit {
         this.recipientsWithLink.splice(shareIndex, 1);
         this.notificationService.addSuccessMessageTranslation(
           'successfully.removed',
-          { fileName: this.modalFileName, shareName: shareName }
+          { fileName: this.modalFileName, shareName }
         );
       })
       .catch((_error) => {

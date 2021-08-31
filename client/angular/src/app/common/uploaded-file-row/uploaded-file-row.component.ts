@@ -19,15 +19,15 @@ import { DownloadsService } from '../../services/downloads.service';
   styleUrls: ['./uploaded-file-row.component.scss'],
 })
 export class UploadedFileRowComponent {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('fileToDisplay')
   public file!: FileInfoUploader;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('displayAsAdministrator')
   public displayAsAdministrator = false;
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('displayAsUploader')
   public displayAsUploader = false;
 
