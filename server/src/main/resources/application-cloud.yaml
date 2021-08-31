@@ -1,0 +1,54 @@
+---
+server:
+  port: 8888
+cors:
+  origin: '*'
+easyshare:
+  clientHttpAddress: http://localhost:8080
+  expirationdays: 7
+  defaultuserspace: 5368709120
+  # 4Gb
+  maxSizeAllowedInBytes: 4294967296 
+  activateMailService: true
+  disks:
+    - C:\temp\easyshare
+logging:
+  level:
+    org.springframework: WARN
+    org.hibernate.SQL: WARN
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://localhost:7002/cas/oauth2/token/introspect
+          client-id: jJFw8RBTrvm8LFdWe6nINhPPOg7ygzcfihddYGsWM3EbE391A9R3iezpeUzygoQUwEUDoLBcERD86CWx5WNKZaW-PnCd3ypAN98azctE7ydwH9
+          client-secret: 8eGhQCJ-wC4zWpPHbHWVslDqZr4zYst0dQRskqZpWQ8xru6fsrhxXTy3BqiVVjhtlV9F61wJfH7gaGpD71EEA28VBsKI5ClAfk_FlEU3I4VXUhpBa9wxT5UYY2m8h10kidsaj0PF-5TuNVzNWXkDh82RxGTW03dE_IivcPcARO8
+  datasource:
+    #jdbc:oracle:thin:@localhost:1521:testing
+    url: jdbc:mysql://localhost:3306/easyshare
+    username: easyshare
+    password: easyshare
+    driver:
+      #oracle.jdbc.driver.OracleDriver
+      class: com.mysql.jdbc.Driver
+  jpa:
+    #org.hibernate.dialect.Oracle10gDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: localhost
+    port: 1025
+    username: username
+    password: password
+  servlet:
+    multipart:
+      enabled: false
+      max-file-size: 256MB
+      max-request-size: 256MB
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api-docs

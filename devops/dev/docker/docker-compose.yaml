@@ -1,0 +1,44 @@
+version: "3.7"
+services:
+  db:
+    container_name: db
+    image: mysql:5.6
+    ports:
+      - "3306:3306"
+    environment:
+        - MYSQL_ROOT_PASSWORD=password
+    volumes:
+        - ./mysql:/docker-entrypoint-initdb.d/:ro
+    command: --lower_case_table_names=1 --transaction-isolation=READ-COMMITTED
+  server:
+    build: server
+    image: eushare-dev-server
+    extra_hosts:
+      ecas-mockup.cc.cec.eu.int: 10.69.125.187
+    volumes:
+      - type: bind
+        source: ~/eushare-data
+        target: /easyshare/
+    container_name: eushare_dev_server
+    depends_on:
+      - db
+  client:
+    build: client
+    image: eushare-dev-client
+    container_name: eushare_dev_client
+    depends_on:
+      - server
+  maildev:
+    image: maildev/maildev
+    ports:
+      - "1080:80"
+  proxy:
+    image: nginx:alpine
+    container_name: nginx_eushare_proxy
+    volumes:
+      - ./proxy/conf/noSSL_nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+     # - 443:443 incompatible with AWS workspace pcoip-agent
+    depends_on:
+      - client
