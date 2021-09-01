@@ -53,20 +53,20 @@
                 <spring.profiles.active>webapp</spring.profiles.active>
                 <packaging.type>war</packaging.type>
             </properties>
-                        <build>
+            <build>
                 <plugins>
                     <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
 
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                              </plugin>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
             <dependencies>
@@ -79,7 +79,7 @@
         </profile>
 
         <profile>
-            <id>cloud</id>
+            <id>prod</id>
             <activation>
                 <property>
                     <name>env</name>
@@ -87,18 +87,56 @@
                 </property>
             </activation>
             <properties>
-                <spring.profiles.active>webapp</spring.profiles.active>
+                <spring.profiles.active>prod</spring.profiles.active>
                 <packaging.type>jar</packaging.type>
             </properties>
             <build>
+
                 <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-help-plugin</artifactId>
+                        <version>3.1.0</version>
+                        <executions>
+                            <execution>
+                                <id>show-profiles</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>active-profiles</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
                     <plugin>
                         <groupId>com.google.cloud.tools</groupId>
                         <artifactId>jib-maven-plugin</artifactId>
                         <version>3.1.4</version>
+                        <configuration>
+                            <!-- Copies files from 'src/main/custom-extra-dir' and '/home/user/jib-extras' instead of 'src/main/jib' -->
+                            <extraDirectories>
+                                <paths>
+                                    <path>
+                                        <from>src/main/resources/cacerts</from>
+                                        <into>/opt/java/openjdk/lib/security</into>
+                                    </path>
+                                    <path>
+                                        <from>src/main/resources/cacerts</from>
+                                        <into>/opt/java/openjdk/lib/security2</into>
+                                    </path>
+                                </paths>
+                            </extraDirectories>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <scope>compile</scope>
+                </dependency>
+            </dependencies>
         </profile>
 
     </profiles>
@@ -323,7 +361,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
