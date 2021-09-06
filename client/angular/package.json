@@ -6,6 +6,7 @@
     "postinstall": "node ./src/version.js",
     "ng": "ng",
     "start": "ng serve -o --port=8080",
+    "start-local": "ng serve -o --port=8080 -c=dev-local ",
     "build": "ng build -c=dev",
     "maildev": "maildev",
     "test": "ng test",

@@ -46,11 +46,11 @@
                 <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env</name>
-                    <value>webapp</value>
+                    <value>dev-local</value>
                 </property>
             </activation>
             <properties>
-                <spring.profiles.active>webapp</spring.profiles.active>
+                <spring.profiles.active>dev-local</spring.profiles.active>
                 <packaging.type>war</packaging.type>
             </properties>
             <build>
