@@ -15,13 +15,13 @@ jobs:
       - restore_cache: 
           # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          key: Server-{{ checksum "pom.xml" }}
+          key: Server-{{ checksum "~/EasyShare/server/pom.xml" }}
       - run: mvn dependency:go-offline # gets the project dependencies
       
       - save_cache: # saves the project dependencies
           paths:
             - ~/.m2
-          key: Server-{{ checksum "pom.xml" }}
+          key: Server-{{ checksum "~/EasyShare/server/pom.xml" }}
       - run: mvn clean install -Pdev-local -Dskip.unit.tests=true -Dskip.integration.tests=false -X
       - run: mvn clean install -Pdev-local
       
