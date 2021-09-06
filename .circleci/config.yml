@@ -2,7 +2,7 @@ version: 2.1 # use CircleCI 2.1
 jobs: 
   build_backend:
     # see https://circleci.com/docs/2.0/language-java/
-    working_directory: ~/EasyShare # directory where steps will run
+    working_directory: ~/EasyShare/server # directory where steps will run
 
     docker:
       - image: circleci/openjdk:11-jdk-browsers 
@@ -15,13 +15,13 @@ jobs:
       - restore_cache: 
           # restore the saved cache after the first run or if `pom.xml` has changed
           # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
-          key: Server-{{ checksum "~/EasyShare/server/pom.xml" }}
+          key: Server-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline # gets the project dependencies
       
       - save_cache: # saves the project dependencies
           paths:
             - ~/.m2
-          key: Server-{{ checksum "~/EasyShare/server/pom.xml" }}
+          key: Server-{{ checksum "pom.xml" }}
       - run: mvn clean install -Pdev-local -Dskip.unit.tests=true -Dskip.integration.tests=false -X
       - run: mvn clean install -Pdev-local
       
