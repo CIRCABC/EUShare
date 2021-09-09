@@ -26,13 +26,7 @@
             <version>1.18.4</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>com.circabc</groupId>
-            <artifactId>easyshare-parent</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-            <type>pom</type>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -81,56 +75,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>com.github.eirslett</groupId>
-                <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.12.0</version>
-                <configuration>
-                    <nodeVersion>v12.22.5</nodeVersion>
-                    <npmVersion>6.14.14</npmVersion>
-                    <workingDirectory>angular/</workingDirectory>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>install node and npm</id>
-                        <goals>
-                            <goal>install-node-and-npm</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                    </execution>
-                    <execution>
-                        <id>npm install</id>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <phase>generate-resources</phase>
-                    </execution>
-                    <execution>
-                        <id>npm run build</id>
-                        <phase>generate-resources</phase>
-                        <goals>
-                            <goal>npm</goal>
-                        </goals>
-                        <configuration>
-                            <arguments>run build${spring.profiles.active}</arguments>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>2.1</version>
-                <configuration>
-                    <username>${tomcat.admin}</username>
-                    <password>${tomcat.admin.password}</password>
-                    <warFile>${project.build.directory}/${war.final.name}.war</warFile>
-                    <url>${tomcat.deploy.url}</url>
-                    <path>/ROOT</path>
-                    <update>true</update>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
 </project>

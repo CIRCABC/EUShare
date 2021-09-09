@@ -1,25 +1,24 @@
 
 spring:
-  profiles: dev
   security:
     oauth2:
       resourceserver:
         opaquetoken:
-          introspection-uri: https://ecas-mockup.cc.cec.eu.int:7002/cas/oauth2/token/introspect
-          client-id: VtwvhHcuGQFNUV519SdUj7ZXFztOqUqKyizqyusEHYyeq4zWWg0wlrsCH2C2k2UOdRP7BSzgl5ZCxpC8YsaRQRy-l0EvyMANoKy8j6knSKYyfa
-          client_secret: WMq48iaCiYMh2qWTbibco_zQ9afXy4peIlk4NlM9htGrKYPhAQ1mR5JesbWVaxacAkiUagbXDTwMWCN3YP8vJbYRXWMFV1nZkGTj3fiDKSY95Dkw__aTAIcaUcyAn_hobZE6nnMvSO84AO1706yK5YnvObzCsTO6DFyeCtApAlM
+          introspection-uri: https://ecas-mockup:7002/cas/oauth2/token/introspect
+          client-id: my_client_id
+          client_secret: my_client_secret
   datasource:
     #continue-on-error: true
     #jdbc:oracle:thin:@localhost:1521:testing
     url: jdbc:mysql://db/easyshare
-    username: easyshare
-    password: easyshare
+    username: easyshare_username
+    password: easyshare_password
     driverClassName: com.mysql.cj.jdbc.Driver 
   jpa:
     #org.hibernate.dialect.Oracle10gDialect
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   mail:
     host: maildev
     port: 25

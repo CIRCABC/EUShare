@@ -8,9 +8,9 @@ export const environment: Environment = {
   frontend_url: '/',
   backend_url: '/webservice',
   API_BASE_PATH: '/webservice',
-  OIDC_ISSUER: 'https://ecas-mockup.cc.cec.eu.int:7002/cas/oauth2',
+  OIDC_ISSUER: 'https://ecas-mockup:7002/cas/oauth2',
   OIDC_REDIRECTURI: `${window.location.origin}/callback`,
-  OIDC_CLIENTID: 'CyLq8yleGpc7G1MmxF8la4ckmvzuxN0dodvXht89zzjqXi6geXFTIaNyfpRjAVFMisztmpvxWdXIrLqyNQvErbS-l0EvyMANoKy8j6knSKYyfa',
-  OIDC_BACKEND_CLIENTID: 'VtwvhHcuGQFNUV519SdUj7ZXFztOqUqKyizqyusEHYyeq4zWWg0wlrsCH2C2k2UOdRP7BSzgl5ZCxpC8YsaRQRy-l0EvyMANoKy8j6knSKYyfa',
-  OIDC_TOKENENDPOINT: 'https://ecas-mockup.cc.cec.eu.int:7002/cas/oauth2/token'
+  OIDC_CLIENTID: 'my_oidc_clientid',
+  OIDC_BACKEND_CLIENTID: 'my_oidc_backend_clientid',
+  OIDC_TOKENENDPOINT: 'https://ecas-mockup:7002/cas/oauth2/token'
   };

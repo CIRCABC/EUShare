@@ -46,3 +46,5 @@ client/angular/package-lock.json
 
 docker-dev
 client/angular/src/environments/version.ts
+server/src/main/resources/application-dev-empty.yaml
+client/angular/src/environments/environment.dev-empty.ts
