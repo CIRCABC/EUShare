@@ -49,3 +49,7 @@ We apply the [GitFlow](https://www.atlassian.com/git/tutorials/comparing-workflo
 
 ### Commits
 For each commit, we ask to add the number of the issue to which the commit is relevant. E.g.  Issue #1245 : Adding css for class .aClassName. For each branch, we ask it to be named by the issue name then its number. E.g. for an issue like named "Dockerize environment" numbered 1246, the branch name will be "dockerizeEnvironment#1246".
+
+
+## Jib build 
+``` mvn clean compile jib:dockerBuild -Pprod-cloud -Dimage=eushare-jib-server -Dmaven.test.skip=true `` 

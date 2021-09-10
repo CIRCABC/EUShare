@@ -40,17 +40,18 @@
             </build>
         </profile>
 
+
         <profile>
-            <id>dev-local</id>
+            <id>prod</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env</name>
-                    <value>dev-local</value>
+                    <value>prod</value>
                 </property>
             </activation>
             <properties>
-                <spring.profiles.active>dev-local</spring.profiles.active>
+                <spring.profiles.active>prod</spring.profiles.active>
                 <packaging.type>war</packaging.type>
             </properties>
             <build>
@@ -79,11 +80,11 @@
         </profile>
 
         <profile>
-            <id>prod</id>
+            <id>prod-cloud</id>
             <activation>
                 <property>
                     <name>env</name>
-                    <value>prod</value>
+                    <value>prod-cloud</value>
                 </property>
             </activation>
             <properties>
@@ -91,23 +92,7 @@
                 <packaging.type>jar</packaging.type>
             </properties>
             <build>
-
                 <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-help-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <executions>
-                            <execution>
-                                <id>show-profiles</id>
-                                <phase>compile</phase>
-                                <goals>
-                                    <goal>active-profiles</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <plugin>
                         <groupId>com.google.cloud.tools</groupId>
                         <artifactId>jib-maven-plugin</artifactId>
