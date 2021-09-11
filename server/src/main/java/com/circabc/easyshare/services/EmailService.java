@@ -22,6 +22,8 @@ import com.circabc.easyshare.configuration.EasyShareConfiguration;
 import com.circabc.easyshare.model.FileBasics;
 import com.circabc.easyshare.model.FileInfoRecipient;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -29,14 +31,14 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Service for sending emails from EasyShare
  */
-@Slf4j
 @Service
 public class EmailService implements EmailServiceInterface {
+
+    private Logger log = LoggerFactory.getLogger(EmailService.class);
+
     private static final String DOWNLOADER = "downloader";
     private static final String FILENAME = "filename";
     private static final String UPLOADER = "uploader";

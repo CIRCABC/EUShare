@@ -32,55 +32,40 @@ import com.circabc.easyshare.model.UserSpace;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "Users")
 public class DBUser {
-    @Getter
-    @Setter
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
     private Set<DBUserFile> filesReceived = new HashSet<>();
 
     @Id
-    @Getter
-    @Setter
     @Column(nullable = false)
     @GeneratedValue(generator = "prod-generator")
     @GenericGenerator(name = "prod-generator", strategy = "com.circabc.easyshare.storage.SecureRandomIdentifierGenerator")
     private String id;
 
-    @Getter
-    @Setter
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private Role role = com.circabc.easyshare.storage.DBUser.Role.INTERNAL;
 
-    @Getter
-    @Setter
     @Column(nullable = false)
     private long totalSpace;
 
-    @Getter
-    @Setter
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "uploader")
     private Set<DBFile> filesUploaded = new HashSet<>();
 
-    @Getter
-    @Setter
+
     @Column(nullable = true, unique = true)
     private String username;
     // Is the username used for login
 
-    @Getter
-    @Setter
+ 
     @Column(nullable = true, unique = true)
     private String email;
     // Is the email used for login is nullable because a user can represent a link recipient
 
-    @Getter
-    @Setter
+
     @Column(nullable = true)
     private String name;
     // Is the GivenName of the INTERNAL user !!OR!! the link name of the EXTERNAL user
@@ -221,4 +206,70 @@ public class DBUser {
     public int hashCode() {
         return id.hashCode();
     }
+
+    public Set<DBUserFile> getFilesReceived() {
+        return filesReceived;
+    }
+
+    public void setFilesReceived(Set<DBUserFile> filesReceived) {
+        this.filesReceived = filesReceived;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public long getTotalSpace() {
+        return totalSpace;
+    }
+
+    public void setTotalSpace(long totalSpace) {
+        this.totalSpace = totalSpace;
+    }
+
+    public Set<DBFile> getFilesUploaded() {
+        return filesUploaded;
+    }
+
+    public void setFilesUploaded(Set<DBFile> filesUploaded) {
+        this.filesUploaded = filesUploaded;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    
 }

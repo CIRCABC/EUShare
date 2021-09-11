@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
-import com.circabc.easyshare.exceptions.NonInternalUsersCannotBecomeAdminException;
 import com.circabc.easyshare.exceptions.IllegalSpaceException;
+import com.circabc.easyshare.exceptions.NonInternalUsersCannotBecomeAdminException;
 import com.circabc.easyshare.exceptions.UnknownUserException;
 import com.circabc.easyshare.exceptions.UserUnauthorizedException;
 import com.circabc.easyshare.exceptions.WrongAuthenticationException;
@@ -26,6 +26,8 @@ import com.circabc.easyshare.model.validation.UserInfoValidator;
 import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.UserService;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +41,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
-import lombok.extern.slf4j.Slf4j;
+
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
-@Slf4j
+
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")
 public class UserApiController implements UserApi {
+
+
+    private Logger log = LoggerFactory.getLogger(UserApiController.class);
 
     private final NativeWebRequest request;
 

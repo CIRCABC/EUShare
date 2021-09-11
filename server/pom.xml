@@ -21,12 +21,10 @@
         <profile>
             <id>dev</id>
             <activation>
-                <property>
-                    <name>env</name>
-                    <value>dev</value>
-                </property>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <activatedProperties>dev</activatedProperties>
                 <spring.profiles.active>dev</spring.profiles.active>
                 <packaging.type>jar</packaging.type>
             </properties>
@@ -311,12 +309,7 @@
     </build>
     <dependencies>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.4</version>
-            <scope>provided</scope>
-        </dependency>
+    
 
         <dependency>
             <groupId>commons-fileupload</groupId>

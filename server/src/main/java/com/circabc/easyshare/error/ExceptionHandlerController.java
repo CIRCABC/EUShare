@@ -12,6 +12,10 @@ package com.circabc.easyshare.error;
 
 import javax.validation.ConstraintViolationException;
 
+import com.circabc.easyshare.api.UserApiController;
+
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -24,11 +28,11 @@ import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.server.ResponseStatusException;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @ControllerAdvice
 public class ExceptionHandlerController {
+
+   private Logger log = LoggerFactory.getLogger(ExceptionHandlerController.class);
 
    @ExceptionHandler(value = ResponseStatusException.class)
    public ResponseEntity<Object> responseStatusException(ResponseStatusException exception) {

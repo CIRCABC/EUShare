@@ -16,7 +16,7 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.*;
 
 /**
- * RecipientWithLink
+ * RecipientWithLink 
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
 

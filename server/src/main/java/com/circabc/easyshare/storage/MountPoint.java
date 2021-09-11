@@ -16,11 +16,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@Slf4j
 public class MountPoint {
+
+  
+    private Logger log = LoggerFactory.getLogger(MountPoint.class);
+
     private static final long SIZE_THRESHOLD = 1024L * 1024L * 128L; // keep 128 MiB free
 
     private final Path root;
@@ -35,7 +38,11 @@ public class MountPoint {
      * From {@code id} = 'ARandomID'
      * Resolves {@code root} + '/A/ARandomID'
      */
-    private Path getIdPath(@NonNull String id) {
+    private Path getIdPath(String id) {
+        if (id == null) {
+            throw new NullPointerException("id is null!");
+          }
+
         char firstChar = id.charAt(0);
         return root.resolve(String.valueOf(firstChar)).resolve(id).toAbsolutePath();
     }
@@ -56,7 +63,10 @@ public class MountPoint {
      * If the file path is already taken, removes it
      * @return Absolute path to file if it could be created, else Optional.empty()
      */
-    public Optional<String> tryReserveSpace(@NonNull String id, long filesize) {
+    public Optional<String> tryReserveSpace( String id, long filesize) {
+        if (id == null) {
+            throw new NullPointerException("id is null!");
+          }
         if (this.getUsableSpace() < filesize) {
             return Optional.empty();
         }

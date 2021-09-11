@@ -20,32 +20,22 @@ import javax.persistence.Table;
 import com.circabc.easyshare.model.Recipient;
 import com.circabc.easyshare.model.RecipientWithLink;
 
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "users_to_files")
 public class DBUserFile {
 
     @Id
-    @Getter
-    @Setter
     private String downloadId;
 
-    @Getter
-    @Setter
     @ManyToOne(optional = false)
     @JoinColumn(foreignKey= @ForeignKey(name = "Fk_to_user"))
     private DBUser receiver;
 
-    @Getter
-    @Setter
     @ManyToOne(optional = false)
     @JoinColumn(foreignKey= @ForeignKey(name = "Fk_to_file"))
     private DBFile file;
 
-    @Getter
-    @Setter
     private String message;
 
     private DBUserFile() {
@@ -111,4 +101,38 @@ public class DBUserFile {
         recipientWithLink.setDownloadLink(this.getDownloadId());
         return recipientWithLink;
     }
+
+    public String getDownloadId() {
+        return downloadId;
+    }
+
+    public void setDownloadId(String downloadId) {
+        this.downloadId = downloadId;
+    }
+
+    public DBUser getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(DBUser receiver) {
+        this.receiver = receiver;
+    }
+
+    public DBFile getFile() {
+        return file;
+    }
+
+    public void setFile(DBFile file) {
+        this.file = file;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    
 }

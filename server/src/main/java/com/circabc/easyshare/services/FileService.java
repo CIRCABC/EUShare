@@ -59,6 +59,8 @@ import com.circabc.easyshare.storage.UserFileRepository;
 import com.circabc.easyshare.storage.UserRepository;
 import com.circabc.easyshare.utils.StringUtils;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -66,17 +68,15 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import lombok.Data;
-import lombok.NonNull;
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * Service for managing all files that are available in the application. Use
  * this class exclusively to access files.
  */
 @Service
-@Slf4j
 public class FileService implements FileServiceInterface {
+
+    private Logger log = LoggerFactory.getLogger(FileService.class);
+
     private final List<MountPoint> mountPoints = new ArrayList<>();
 
     @Autowired
@@ -221,11 +221,12 @@ public class FileService implements FileServiceInterface {
             }
             DBFile dbFile = findAvailableFile(fileId, false);
             DBUser dbRecipient = userService.getUserOrCreateExternalOrLinkUser(recipient);
-            DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(),
-                    dbRecipient, dbFile, recipient.getMessage());
+            DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), dbRecipient, dbFile,
+                    recipient.getMessage());
             userFileRepository.save(dbUserFile);
             if (recipient.getSendEmail()) {
-                emailService.sendShareNotification(recipient.getEmailOrName(), dbFile.toFileInfoRecipient(dbRecipient.getId()), recipient.getMessage());
+                emailService.sendShareNotification(recipient.getEmailOrName(),
+                        dbFile.toFileInfoRecipient(dbRecipient.getId()), recipient.getMessage());
             }
 
             return dbUserFile.toRecipientWithLink();
@@ -451,9 +452,16 @@ public class FileService implements FileServiceInterface {
     /**
      * Saves a file the file will not be saved.
      */
-    private void save(@NonNull DBFile dbFile, @NonNull MultipartFile file)
+    private void save(DBFile dbFile, MultipartFile file)
             throws IllegalFileStateException, UnknownFileException, FileLargerThanAllocationException,
             UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
+
+        if (dbFile == null) {
+            throw new NullPointerException("dbFile is null");
+        }
+        if (file == null) {
+            throw new NullPointerException("file is null");
+        }
         if (dbFile.getStatus() != DBFile.Status.ALLOCATED) {
             throw new IllegalFileStateException();
         }
@@ -483,7 +491,8 @@ public class FileService implements FileServiceInterface {
         fileRepository.save(dbFile);
         for (DBUserFile recipient : dbFile.getSharedWith()) {
             DBUser dbRecipient = recipient.getReceiver();
-            if (dbRecipient != null && dbRecipient.getEmail() != null && StringUtils.validateEmailAddress(dbRecipient.getEmail())) {
+            if (dbRecipient != null && dbRecipient.getEmail() != null
+                    && StringUtils.validateEmailAddress(dbRecipient.getEmail())) {
                 FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(dbRecipient.getId());
                 this.emailService.sendShareNotification(dbRecipient.getEmail(), fileInfoRecipient,
                         recipient.getMessage());
@@ -492,11 +501,72 @@ public class FileService implements FileServiceInterface {
 
     }
 
-    @Data
     public static class DownloadReturn {
         private final File file;// NOSONAR
         private final String filename;// NOSONAR
         private final Long fileSizeInBytes;// NOSONAR
+
+        public DownloadReturn(File file, String filename, Long fileSizeInBytes) {
+            this.file = file;
+            this.filename = filename;
+            this.fileSizeInBytes = fileSizeInBytes;
+        }
+
+        public File getFile() {
+            return file;
+        }
+
+        public String getFilename() {
+            return filename;
+        }
+
+        public Long getFileSizeInBytes() {
+            return fileSizeInBytes;
+        }
+
+        @Override
+        public String toString() {
+            return "DownloadReturn [file=" + file + ", fileSizeInBytes=" + fileSizeInBytes + ", filename=" + filename
+                    + "]";
+        }
+
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + ((file == null) ? 0 : file.hashCode());
+            result = prime * result + ((fileSizeInBytes == null) ? 0 : fileSizeInBytes.hashCode());
+            result = prime * result + ((filename == null) ? 0 : filename.hashCode());
+            return result;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (getClass() != obj.getClass())
+                return false;
+            DownloadReturn other = (DownloadReturn) obj;
+            if (file == null) {
+                if (other.file != null)
+                    return false;
+            } else if (!file.equals(other.file))
+                return false;
+            if (fileSizeInBytes == null) {
+                if (other.fileSizeInBytes != null)
+                    return false;
+            } else if (!fileSizeInBytes.equals(other.fileSizeInBytes))
+                return false;
+            if (filename == null) {
+                if (other.filename != null)
+                    return false;
+            } else if (!filename.equals(other.filename))
+                return false;
+            return true;
+        }
+
     }
 
 }

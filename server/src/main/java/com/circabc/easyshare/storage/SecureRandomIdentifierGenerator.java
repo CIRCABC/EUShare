@@ -12,19 +12,13 @@ package com.circabc.easyshare.storage;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Properties;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.circabc.easyshare.utils.StringUtils;
 
 import org.hibernate.HibernateException;
-import org.hibernate.MappingException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
-import org.hibernate.id.Configurable;
 import org.hibernate.id.IdentifierGenerator;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.type.Type;
 
 public class SecureRandomIdentifierGenerator implements IdentifierGenerator {
 

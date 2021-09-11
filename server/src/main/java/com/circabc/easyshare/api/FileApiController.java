@@ -46,6 +46,8 @@ import com.circabc.easyshare.services.FileService;
 import com.circabc.easyshare.services.FileService.DownloadReturn;
 import com.circabc.easyshare.services.UserService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
@@ -63,14 +65,16 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import lombok.extern.slf4j.Slf4j;
+
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
 
-@Slf4j
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")
 public class FileApiController implements FileApi {
+
+    private static final Logger log = LoggerFactory.getLogger(FileApiController.class);
+  
 
     private final NativeWebRequest request;
 

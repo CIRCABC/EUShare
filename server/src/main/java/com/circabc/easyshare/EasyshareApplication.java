@@ -16,6 +16,8 @@ import com.circabc.easyshare.services.UserService;
 import com.fasterxml.jackson.databind.Module;
 
 import org.openapitools.jackson.nullable.JsonNullableModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
@@ -24,12 +26,13 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @SpringBootApplication
 public class EasyshareApplication extends SpringBootServletInitializer {
-
+    
+   
+    private Logger log = LoggerFactory.getLogger(EasyshareApplication.class);
+    
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(EasyshareApplication.class);

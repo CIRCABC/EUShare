@@ -9,6 +9,7 @@
  */
 package com.circabc.easyshare.client;
 
+
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,13 +17,12 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.stereotype.Controller;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @SpringBootApplication
 @Controller
 public class Application extends SpringBootServletInitializer {
 
+     
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(Application.class);

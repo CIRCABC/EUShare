@@ -38,13 +38,9 @@ import com.circabc.easyshare.model.RecipientWithLink;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "Files")
-@Getter
-@Setter
 public class DBFile {
     @Column(nullable = false)
     private LocalDate expirationDate;
@@ -163,4 +159,81 @@ public class DBFile {
     public int hashCode() {
         return id.hashCode();
     }
+
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(LocalDateTime lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public Set<DBUserFile> getSharedWith() {
+        return sharedWith;
+    }
+
+    public void setSharedWith(Set<DBUserFile> sharedWith) {
+        this.sharedWith = sharedWith;
+    }
+
+    public long getSize() {
+        return size;
+    }
+
+    public void setSize(long size) {
+        this.size = size;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public DBUser getUploader() {
+        return uploader;
+    }
+
+    public void setUploader(DBUser uploader) {
+        this.uploader = uploader;
+    }
+    
 }

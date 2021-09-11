@@ -22,13 +22,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import lombok.Getter;
-import lombok.Setter;
 
 @Configuration
 @ConfigurationProperties("easyshare")
-@Getter
-@Setter
 @EnableScheduling
 public class EasyShareConfiguration {
     @NotNull
@@ -64,4 +60,53 @@ public class EasyShareConfiguration {
             }
         };
     }
+
+    public long getDefaultUserSpace() {
+        return defaultUserSpace;
+    }
+
+    public void setDefaultUserSpace(long defaultUserSpace) {
+        this.defaultUserSpace = defaultUserSpace;
+    }
+
+    public List<String> getDisks() {
+        return disks;
+    }
+
+    public void setDisks(List<String> disks) {
+        this.disks = disks;
+    }
+
+    public int getExpirationDays() {
+        return expirationDays;
+    }
+
+    public void setExpirationDays(int expirationDays) {
+        this.expirationDays = expirationDays;
+    }
+
+    public boolean isActivateMailService() {
+        return activateMailService;
+    }
+
+    public void setActivateMailService(boolean activateMailService) {
+        this.activateMailService = activateMailService;
+    }
+
+    public long getMaxSizeAllowedInBytes() {
+        return maxSizeAllowedInBytes;
+    }
+
+    public void setMaxSizeAllowedInBytes(long maxSizeAllowedInBytes) {
+        this.maxSizeAllowedInBytes = maxSizeAllowedInBytes;
+    }
+
+    public String getClientHttpAddress() {
+        return clientHttpAddress;
+    }
+
+    public void setClientHttpAddress(String clientHttpAddress) {
+        this.clientHttpAddress = clientHttpAddress;
+    }
+    
 }

@@ -30,6 +30,8 @@ import com.circabc.easyshare.storage.DBUser.Role;
 import com.circabc.easyshare.storage.UserRepository;
 import com.circabc.easyshare.utils.StringUtils;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -41,11 +43,11 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Service
 public class UserService implements UserServiceInterface, UserDetailsService {
+
+    private Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserRepository userRepository;
