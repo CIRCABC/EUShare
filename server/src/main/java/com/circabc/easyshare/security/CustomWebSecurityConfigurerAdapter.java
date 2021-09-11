@@ -35,7 +35,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()                      // Authorizing login by anyone, after authentication or not
         .antMatchers(HttpMethod.GET,"/file/{.+}").anonymous()                   // If an Authorization Header is present, will return 403
         //.antMatchers(HttpMethod.GET,"/users/userInfo").hasAuthority("ROLE_ADMIN") // For later use, when opaqueToken will support authentication converter
-        //.antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
+        .antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
         .anyRequest().authenticated()     
         .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())                          // Forces successful authentication for the rest of the mapping
         .and()
