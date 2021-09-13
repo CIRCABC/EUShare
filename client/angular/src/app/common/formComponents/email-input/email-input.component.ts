@@ -78,7 +78,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
     if (
       this.controlDirective.control &&
       this.controlDirective.control.errors &&
-      this.controlDirective.control.errors.pattern
+      this.controlDirective.control.errors['pattern']
     ) {
       return 'Invalid email form';
     }

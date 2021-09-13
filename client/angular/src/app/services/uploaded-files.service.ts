@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Injectable } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, firstValueFrom } from 'rxjs';
 import {
   FileInfoUploader,
   UsersService,
@@ -110,21 +110,33 @@ export class UploadedFilesService {
   }
 
   private async getCurrentFileInfoUploader() {
-    this.fileInfoUploader = await this.userService
-      .getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber)
-      .toPromise();
+    this.fileInfoUploader = await firstValueFrom(
+      this.userService.getFilesFileInfoUploader(
+        this.userId,
+        this.pageSize,
+        this.pageNumber
+      )
+    );
   }
 
   private async getNextFileInfoUploader() {
-    this.nextPageFileInfoUploader = await this.userService
-      .getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber + 1)
-      .toPromise();
+    this.nextPageFileInfoUploader = await firstValueFrom(
+      this.userService.getFilesFileInfoUploader(
+        this.userId,
+        this.pageSize,
+        this.pageNumber + 1
+      )
+    );
   }
 
   private async getPreviousFileInfoUploader() {
-    this.previousPageFileInfoUploader = await this.userService
-      .getFilesFileInfoUploader(this.userId, this.pageSize, this.pageNumber - 1)
-      .toPromise();
+    this.previousPageFileInfoUploader = await firstValueFrom(
+      this.userService.getFilesFileInfoUploader(
+        this.userId,
+        this.pageSize,
+        this.pageNumber - 1
+      )
+    );
   }
 
   public async removeOneFile(fileId: string, fileName: string) {
@@ -154,10 +166,9 @@ export class UploadedFilesService {
     recipient: Recipient
   ) {
     try {
-      const recipientWithLink = await this.fileService
-        .postFileSharedWith(fileId, recipient)
-        .toPromise();
-
+      const recipientWithLink = await firstValueFrom(
+        this.fileService.postFileSharedWith(fileId, recipient)
+      );
       this.notificationService.addSuccessMessageTranslation(
         'successfully.added',
         { fileName }

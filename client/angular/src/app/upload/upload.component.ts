@@ -30,6 +30,7 @@ import { map } from 'rxjs/operators';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { I18nService } from '../common/i18n/i18n.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -72,7 +73,7 @@ export class UploadComponent implements OnInit {
 
     if (id) {
       try {
-        const me = await this.userApi.getUserUserInfo(id).toPromise();
+        const me = await firstValueFrom(this.userApi.getUserUserInfo(id));
         this.leftSpaceInBytes =
           me && me.totalSpace - me.usedSpace > 0
             ? me.totalSpace - me.usedSpace
@@ -298,7 +299,7 @@ export class UploadComponent implements OnInit {
       emailArrayIndex
     );
     if (emailFormGroup) {
-      return <FormControl | null>emailFormGroup.controls.email;
+      return <FormControl | null>emailFormGroup.controls['email'];
     }
     return null;
   }
@@ -482,13 +483,14 @@ export class UploadComponent implements OnInit {
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
         }
-        const fileId = await this.fileApi
-          .postFileFileRequest(myFileRequest)
-          .toPromise();
-        const fileInfoUploader = await this.fileApi
-          .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
-          .pipe(map((event) => this.getEventMessage(event)))
-          .toPromise();
+        const fileId = await firstValueFrom(
+          this.fileApi.postFileFileRequest(myFileRequest)
+        );
+        const fileInfoUploader = firstValueFrom(
+          await this.fileApi
+            .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
+            .pipe(map((event) => this.getEventMessage(event)))
+        );
 
         if (fileInfoUploader) {
           this.router.navigateByUrl('uploadSuccess', {

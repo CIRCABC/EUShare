@@ -8,6 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { SessionService, UsersService, UserInfo } from '../openapi';
 
 @Component({
@@ -36,7 +37,7 @@ export class MyUserComponent implements OnInit {
 
     if (id) {
       try {
-        this.userInfo = await this.userApi.getUserUserInfo(id).toPromise();
+        this.userInfo = await firstValueFrom(this.userApi.getUserUserInfo(id));
       } catch (error) {
         // managed in the interceptor
       }

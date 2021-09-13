@@ -12,5 +12,5 @@ export const environment: Environment = {
   OIDC_REDIRECTURI: `${window.location.origin}/callback`,
   OIDC_CLIENTID: 'my_oidc_clientid',
   OIDC_BACKEND_CLIENTID: 'my_oidc_backend_clientid',
-  OIDC_TOKENENDPOINT: 'https://ecas-mockup:7002/cas/oauth2/token'
-  };
+  OIDC_TOKENENDPOINT: 'https://ecas-mockup:7002/cas/oauth2/token',
+};
