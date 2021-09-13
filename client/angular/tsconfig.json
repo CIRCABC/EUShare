@@ -15,12 +15,7 @@
     "target": "es5",
     "typeRoots": ["node_modules/@types"],
     "strict": true,
-    "lib": ["es2017", "dom"],
-    "useUnknownInCatchVariables": true,
-    "exactOptionalPropertyTypes": false,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess":false
+    "lib": ["es2017", "dom"]
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
