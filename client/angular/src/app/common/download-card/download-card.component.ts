@@ -100,8 +100,8 @@ export class DownloadCardComponent implements OnInit {
           downloadInProgress$.fileId,
           downloadInProgress$.downloadInProgressObservable
         );
-        downloadInProgress$.downloadInProgressObservable.subscribe(
-          (downloadInProgress) => {
+        downloadInProgress$.downloadInProgressObservable.subscribe({
+          next: (downloadInProgress) => {
             const index = this.downloadsToDisplay.findIndex(
               (element) => element.fileId === downloadInProgress.fileId
             );
@@ -130,7 +130,7 @@ export class DownloadCardComponent implements OnInit {
               this.downloadsToDisplay.unshift(nextDownloadToDisplay);
             }
           },
-          (error) => {
+          error: (error) => {
             const id: string = error.message;
             const index = this.downloadsToDisplay.findIndex(
               (element) => element.fileId === id
@@ -138,8 +138,8 @@ export class DownloadCardComponent implements OnInit {
             if (index >= 0) {
               this.downloadsToDisplay[index].hasError = true;
             }
-          }
-        );
+          },
+        });
       }
     );
   }

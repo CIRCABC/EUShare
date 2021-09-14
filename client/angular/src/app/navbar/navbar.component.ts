@@ -47,13 +47,13 @@ export class NavbarComponent implements OnInit {
       this.isAdmin = userInfo.isAdmin;
     }
 
-    this.sessionService.userInfo$.subscribe(
-      (secondUserInfo) => {
+    this.sessionService.userInfo$.subscribe({
+      next: (secondUserInfo) => {
         this.userName = secondUserInfo.givenName;
         this.isAdmin = secondUserInfo.isAdmin;
       },
-      (_error) => {}
-    );
+      error: (_error) => {},
+    });
   }
 
   logout() {
