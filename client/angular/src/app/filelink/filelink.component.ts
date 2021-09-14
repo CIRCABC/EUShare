@@ -48,7 +48,7 @@ export class FilelinkComponent implements OnInit {
     );
     if (id && fileNameB64URIEncoded && isPasswordProtected) {
       this.fileId = id;
-      this.fileName = atob(decodeURIComponent(fileNameB64URIEncoded));
+      this.fileName = atob(decodeURIComponent(fileNameB64URIEncoded)); // nosonar
       this.isFilePasswordProtected = isPasswordProtected === '1';
     } else {
       this.router.navigateByUrl('/home');

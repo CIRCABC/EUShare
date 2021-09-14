@@ -91,7 +91,7 @@ export class ShareWithUsersModalComponent implements OnInit {
     let fileLinkBuild = `${window.location.protocol}//${
       window.location.host
     }/filelink/${this.recipientsWithLink[i].downloadLink}/${encodeURIComponent(
-      btoa(this.modalFileName)
+      btoa(this.modalFileName) // nosonar
     )}/`;
     fileLinkBuild = isPasswordProtected
       ? `${fileLinkBuild}1`
