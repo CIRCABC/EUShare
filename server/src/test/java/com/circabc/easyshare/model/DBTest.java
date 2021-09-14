@@ -66,6 +66,9 @@ public class DBTest {
         DBFile dbFile = new DBFile("id", dbUser, Collections.emptySet(), "filename", 1024, LocalDate.now(),
                 "/a/sample/path"); // NOSONAR
         fileRepository.save(dbFile);
+         // Verify insertion
+         DBFile dbFileSaved = fileRepository.findOneById("id");
+         assertEquals(dbFile, dbFileSaved);
     }
 
     @Test

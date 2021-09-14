@@ -9,7 +9,6 @@
  */
 package com.circabc.easyshare.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +22,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 @EnableWebMvc
 public class UploadConfiguration extends WebMvcConfigurationSupport {
 
-    @Autowired
-    private EasyShareConfiguration esConfig;
-
     @Bean(name = "multipartResolver")
-    public MultipartResolver multipartResolver() {
+    public MultipartResolver multipartResolver(EasyShareConfiguration esConfig) {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setMaxUploadSize(esConfig.getMaxSizeAllowedInBytes());
         multipartResolver.setMaxUploadSizePerFile(esConfig.getMaxSizeAllowedInBytes());

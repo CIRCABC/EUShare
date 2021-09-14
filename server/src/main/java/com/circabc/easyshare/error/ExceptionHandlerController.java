@@ -12,8 +12,6 @@ package com.circabc.easyshare.error;
 
 import javax.validation.ConstraintViolationException;
 
-import com.circabc.easyshare.api.UserApiController;
-
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
