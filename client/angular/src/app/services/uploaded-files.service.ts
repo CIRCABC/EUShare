@@ -141,7 +141,7 @@ export class UploadedFilesService {
 
   public async removeOneFile(fileId: string, fileName: string) {
     try {
-      await this.fileService.deleteFile(fileId).toPromise();
+      await firstValueFrom(this.fileService.deleteFile(fileId));
       this.notificationService.addSuccessMessageTranslation(
         'successfully.deleted',
         { fileName }

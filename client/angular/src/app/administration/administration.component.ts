@@ -149,9 +149,12 @@ export class AdministrationComponent {
       this.selectedUserInfo.totalSpace =
         this.selectedValueInGigaBytes * 1024 * 1024 * 1024;
       this.selectedUserInfo.isAdmin = this.selectedIsAdminValue;
-      await this.usersApi
-        .putUserUserInfo(this.selectedUserInfo.id, this.selectedUserInfo)
-        .toPromise();
+      await firstValueFrom(
+        this.usersApi.putUserUserInfo(
+          this.selectedUserInfo.id,
+          this.selectedUserInfo
+        )
+      );
       this.notificationService.addSuccessMessageTranslation(
         'change.applied',
         undefined,
