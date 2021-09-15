@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   db:
-    container_name: db
+    container_name: eushare_db
     image: mysql:5.6
     ports:
       - "3306:3306"
@@ -36,7 +36,7 @@ services:
     image: nginx:alpine
     container_name: nginx_eushare_proxy
     volumes:
-      - ./proxy/conf/noSSL_nginx.conf:/etc/nginx/nginx.conf
+      - ./proxy/conf/nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
      # - 443:443 incompatible with AWS workspace pcoip-agent
