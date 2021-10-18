@@ -35,6 +35,11 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
       top: 10px;
     }
   }
+  .demo {
+    color: red;
+    font-size: large;
+    font-weight: bold;
+  }
   
   @media screen and (max-width: $break-tiny) {
     .logo {
