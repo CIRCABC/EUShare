@@ -45,7 +45,7 @@
                 }
               ]
             },
-            "prod": {
+            "production": {
               "optimization": false,
               "outputHashing": "all",
               "sourceMap": true,

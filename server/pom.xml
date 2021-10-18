@@ -103,10 +103,6 @@
                                         <from>src/main/resources/cacerts</from>
                                         <into>/opt/java/openjdk/lib/security</into>
                                     </path>
-                                    <path>
-                                        <from>src/main/resources/cacerts</from>
-                                        <into>/opt/java/openjdk/lib/security2</into>
-                                    </path>
                                 </paths>
                             </extraDirectories>
                         </configuration>
