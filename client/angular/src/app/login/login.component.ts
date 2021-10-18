@@ -22,12 +22,12 @@ export class LoginComponent {
     private keyStoreService: KeyStoreService
   ) {}
 
-  async login() {
+  login() {
     this.keyStoreService.prepareKeyStore();
     const customQueryParams: { [key: string]: any } = {};
     customQueryParams['req_cnf'] =
       this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;
-    await this.oauthService.initImplicitFlow();
+    this.oauthService.initImplicitFlow();
   }
 }

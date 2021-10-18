@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { SessionService, UsersService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-call-back',
@@ -63,10 +64,10 @@ export class CallBackComponent implements OnInit {
 
   public async loginAndRedirect() {
     try {
-      const identifier = await this.api.postLogin().toPromise();
-      const userInfo = await this.userService
-        .getUserUserInfo(identifier)
-        .toPromise();
+      const identifier = await firstValueFrom(this.api.postLogin());
+      const userInfo = await firstValueFrom(
+        this.userService.getUserUserInfo(identifier)
+      );
       this.api.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('upload');
     } catch (e) {

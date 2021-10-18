@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
 import { RecipientWithLink, FileService } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-share-with-users-modal',
@@ -50,9 +51,9 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   public deleteShare(shareId: string, shareName: string, shareIndex: number) {
-    this.fileApi
-      .deleteFileSharedWithUser(this.modalFileId, shareId)
-      .toPromise()
+    firstValueFrom(
+      this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareId)
+    )
       .then((_success) => {
         this.recipientsWithLink.splice(shareIndex, 1);
         this.notificationService.addSuccessMessageTranslation(
@@ -90,7 +91,7 @@ export class ShareWithUsersModalComponent implements OnInit {
     let fileLinkBuild = `${window.location.protocol}//${
       window.location.host
     }/filelink/${this.recipientsWithLink[i].downloadLink}/${encodeURIComponent(
-      btoa(this.modalFileName)
+      btoa(this.modalFileName) // nosonar
     )}/`;
     fileLinkBuild = isPasswordProtected
       ? `${fileLinkBuild}1`

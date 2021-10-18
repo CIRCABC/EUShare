@@ -52,18 +52,18 @@ export class DownloadButtonComponent {
     } else {
       this.downloadsService
         .downloadAFile(this.fileId, this.fileName, this.inputPassword, true)
-        .subscribe(
-          (next) => {
+        .subscribe({
+          next: (next) => {
             console.log(next.percentage);
             this.percentageDownloaded = next.percentage;
             if (next.percentage === 100) {
               this.isLoading = false;
             }
           },
-          (_error) => {
+          error: (_error) => {
             this.isLoading = false;
-          }
-        );
+          },
+        });
     }
   }
 }

@@ -36,7 +36,7 @@ public class UserInfoValidator {
         if (userInfo.getGivenName() == null) {// NOSONAR
             return false;
         }
-        if (userInfo.getIsAdmin() == null) {
+        if (userInfo.getIsAdmin() == null) {// NOSONAR
             return false;
         }
         return true;

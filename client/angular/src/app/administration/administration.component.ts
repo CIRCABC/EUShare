@@ -12,6 +12,7 @@ import { UsersService, UserInfo } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
@@ -62,9 +63,13 @@ export class AdministrationComponent {
 
     if (this.userInfoArrayNext.length >= this.pageSize) {
       this.userInfoArrayNext = new Array();
-      this.userInfoArrayNext = await this.usersApi
-        .getUsersUserInfo(this.pageSize, this.pageNumber + 1, this.searchString)
-        .toPromise();
+      this.userInfoArrayNext = await firstValueFrom(
+        this.usersApi.getUsersUserInfo(
+          this.pageSize,
+          this.pageNumber + 1,
+          this.searchString
+        )
+      );
     }
   }
 
@@ -75,9 +80,13 @@ export class AdministrationComponent {
     this.userInfoArray = this.userInfoArrayPrevious;
 
     if (this.pageNumber >= 1) {
-      this.userInfoArrayPrevious = await this.usersApi
-        .getUsersUserInfo(this.pageSize, this.pageNumber - 1, this.searchString)
-        .toPromise();
+      this.userInfoArrayPrevious = await firstValueFrom(
+        this.usersApi.getUsersUserInfo(
+          this.pageSize,
+          this.pageNumber - 1,
+          this.searchString
+        )
+      );
     }
   }
 
@@ -93,17 +102,21 @@ export class AdministrationComponent {
       this.userInfoArrayNext = new Array();
       this.userInfoArrayPrevious = new Array();
 
-      this.userInfoArray = await this.usersApi
-        .getUsersUserInfo(this.pageSize, this.pageNumber, this.searchString)
-        .toPromise();
+      this.userInfoArray = await firstValueFrom(
+        this.usersApi.getUsersUserInfo(
+          this.pageSize,
+          this.pageNumber,
+          this.searchString
+        )
+      );
       if (this.userInfoArray.length >= this.pageSize) {
-        this.userInfoArrayNext = await this.usersApi
-          .getUsersUserInfo(
+        this.userInfoArrayNext = await firstValueFrom(
+          this.usersApi.getUsersUserInfo(
             this.pageSize,
             this.pageNumber + 1,
             this.searchString
           )
-          .toPromise();
+        );
       }
       this.isAfterSearch = true;
     } catch (error) {
@@ -136,9 +149,12 @@ export class AdministrationComponent {
       this.selectedUserInfo.totalSpace =
         this.selectedValueInGigaBytes * 1024 * 1024 * 1024;
       this.selectedUserInfo.isAdmin = this.selectedIsAdminValue;
-      await this.usersApi
-        .putUserUserInfo(this.selectedUserInfo.id, this.selectedUserInfo)
-        .toPromise();
+      await firstValueFrom(
+        this.usersApi.putUserUserInfo(
+          this.selectedUserInfo.id,
+          this.selectedUserInfo
+        )
+      );
       this.notificationService.addSuccessMessageTranslation(
         'change.applied',
         undefined,

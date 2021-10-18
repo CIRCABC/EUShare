@@ -8,6 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit, Input } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { FileInfoRecipient, UsersService } from '../../openapi';
 
 @Component({
@@ -66,29 +67,33 @@ export class DownloadFileRowContainerComponent implements OnInit {
   }
 
   private async getCurrentFileInfoUploader() {
-    this.fileInfoRecipientArray = await this.userService
-      .getFilesFileInfoRecipient(this.userId, this.pageSize, this.pageNumber)
-      .toPromise();
+    this.fileInfoRecipientArray = await firstValueFrom(
+      this.userService.getFilesFileInfoRecipient(
+        this.userId,
+        this.pageSize,
+        this.pageNumber
+      )
+    );
   }
 
   private async getNextFileInfoUploader() {
-    this.fileInfoRecipientArrayNext = await this.userService
-      .getFilesFileInfoRecipient(
+    this.fileInfoRecipientArrayNext = await firstValueFrom(
+      this.userService.getFilesFileInfoRecipient(
         this.userId,
         this.pageSize,
         this.pageNumber + 1
       )
-      .toPromise();
+    );
   }
 
   private async getPreviousFileInfoUploader() {
-    this.fileInfoRecipientArrayPrevious = await this.userService
-      .getFilesFileInfoRecipient(
+    this.fileInfoRecipientArrayPrevious = await firstValueFrom(
+      this.userService.getFilesFileInfoRecipient(
         this.userId,
         this.pageSize,
         this.pageNumber - 1
       )
-      .toPromise();
+    );
   }
 
   public async update() {

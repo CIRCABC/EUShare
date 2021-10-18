@@ -116,7 +116,7 @@ public class FileService implements FileServiceInterface {
     @Transactional
     void cleanupFiles() {
         for (DBFile file : fileRepository.findByStatus(DBFile.Status.DELETED, PageRequest.of(0, Integer.MAX_VALUE))) {
-            log.info(String.format("Launching deletion of file id %s", file.getId()));
+            log.info("Launching deletion of file id {}", file.getId());
             boolean fileDeletion = false;
             Path path = Paths.get(file.getPath());
             try {
@@ -135,7 +135,7 @@ public class FileService implements FileServiceInterface {
                 log.error("Could not delete DBFile, try again in next run", e);
             } finally {
                 if (!fileDeletion) {
-                    log.error("Could not delete file at path %s", path.toAbsolutePath());
+                    log.error("Could not delete file at path {}", path.toAbsolutePath());
                 }
             }
         }
@@ -148,7 +148,7 @@ public class FileService implements FileServiceInterface {
     @Transactional
     void markExpiredFiles() {
         for (DBFile file : fileRepository.findByExpirationDateBefore(LocalDate.now())) {
-            log.info(String.format("DBFile %s expired", file.getId()));
+            log.info("DBFile %s expired{}", file.getId());
             file.setStatus(com.circabc.easyshare.storage.DBFile.Status.DELETED);
             fileRepository.save(file);
         }
