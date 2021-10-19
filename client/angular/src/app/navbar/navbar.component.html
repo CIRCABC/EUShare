@@ -29,15 +29,15 @@
 
       
 
-       <a class="navbar-item is-family-secondary circabc-link-separator"></a>
+       <a *ngIf="loggedIn" class="navbar-item is-family-secondary circabc-link-separator"></a>
 
-        <a (click)="toggleBurger()" routerLinkActive="tab--current"
+        <a *ngIf="loggedIn" (click)="toggleBurger()" routerLinkActive="tab--current"
           class="navbar-item is-family-secondary my-shared-files" routerLink="home">
           <span class="spanlabel">{{
             "my.shared.files" | transloco
             }}</span>
         </a>
-        <a (click)="toggleBurger()" routerLinkActive="tab--current"
+        <a *ngIf="loggedIn" (click)="toggleBurger()" routerLinkActive="tab--current"
           class="navbar-item is-family-secondary shared-with-me" routerLink="download">
           <span class="spanlabel">{{ "shared.with.me" | transloco }}
           </span>
