@@ -19,6 +19,29 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
   line-height: $navbar-height;
 }
 
+.circabc-link-dashboard::before {
+  background: url("../../img/icon-info-grey.png") no-repeat;
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  background-size: 18px 18px;
+}
+.circabc-link-my-calendar::before {
+  background: url("../../img/icon-agenda-grey.png") no-repeat;
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  background-size: 18px 18px;
+}
+
+.circabc-link-roles::before {
+  background: url("../../img/business-card.png") no-repeat;
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  //background-size: 18px 18px;
+}
+.circabc-link-browse-public-groups::before {
+  background: url("../../img/icon-group-browser-grey.png") no-repeat;
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  background-size: 18px 18px;
+}
+
+
 .my-shared-files::before {
   background: url("../../img/mySharedFiles.svg") no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
@@ -34,6 +57,12 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
 }
 
+
+
+.circabc-link-dashboard,
+.circabc-link-my-calendar,
+.circabc-link-roles,
+.circabc-link-browse-public-groups,
 .shared-with-me,
 .my-shared-files,
 .administration {
@@ -54,6 +83,20 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
     top: 0.75rem;
   }
 }
+
+.circabc-link-dashboard,
+.circabc-link-my-calendar,
+.circabc-link-roles,
+.circabc-link-browse-public-groups {
+  background-color: white;
+}
+
+.circabc-link-separator {
+  border-right: solid;
+  border-color: #dbdbdb;
+  border-right-width: 2px;
+}
+
 
 .avatar {
   display: inline-block;
