@@ -486,11 +486,10 @@ export class UploadComponent implements OnInit {
         const fileId = await firstValueFrom(
           this.fileApi.postFileFileRequest(myFileRequest)
         );
-        const fileInfoUploader = await firstValueFrom(
-          this.fileApi
-            .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
-            .pipe(map((event) => this.getEventMessage(event)))
-        );
+        const fileInfoUploader = await this.fileApi
+          .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
+          .pipe(map((event) => this.getEventMessage(event)))
+          .toPromise();
 
         if (fileInfoUploader) {
           this.router.navigateByUrl('uploadSuccess', {
