@@ -486,6 +486,7 @@ export class UploadComponent implements OnInit {
         const fileId = await firstValueFrom(
           this.fileApi.postFileFileRequest(myFileRequest)
         );
+        // do not use firstValueFrom bellow, because it does not work
         const fileInfoUploader = await this.fileApi
           .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
           .pipe(map((event) => this.getEventMessage(event)))
