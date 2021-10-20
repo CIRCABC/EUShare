@@ -43,7 +43,7 @@ public class EasyshareApplication extends SpringBootServletInitializer {
 
     @PostConstruct
     public void initUsers() {
-        userService.createDefaultUsers();
+        userService.setAdminUsers();
     }
     
     public void run(String... arg0) throws Exception {

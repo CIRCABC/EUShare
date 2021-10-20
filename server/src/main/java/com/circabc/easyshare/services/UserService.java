@@ -33,6 +33,7 @@ import com.circabc.easyshare.utils.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -42,7 +43,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
-
 
 @Service
 public class UserService implements UserServiceInterface, UserDetailsService {
@@ -54,6 +54,9 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
     @Autowired
     private EasyShareConfiguration esConfig;
+
+    @Value("${spring.security.adminusers}")
+    private String[] adminUsers;
 
     @Override
     public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException {
@@ -86,14 +89,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
     private DBUser createInternalUser(String email, String givenName, String username) {
         DBUser user = DBUser.createInternalUser(email, givenName, esConfig.getDefaultUserSpace(), username);
+        for (String admin : adminUsers) {
+            if(admin.equals(username))
+               user.setRole(DBUser.Role.ADMIN);
+        }
         return userRepository.save(user);
     }
 
-    private DBUser createAdminUser(String email, String givenName, String username) {
-        DBUser user = this.createInternalUser(email, givenName, username);
-        user.setRole(Role.ADMIN);
-        return userRepository.save(user);
-    }
 
     /**
      * One of the arguments can be null
@@ -133,25 +135,24 @@ public class UserService implements UserServiceInterface, UserDetailsService {
                     return this.createLinkUser(emailOrName);
                 } else {
                     throw new WrongNameStructureException();
+                }
             }
         }
     }
-    }
+
+
 
     @Override
-    public void createDefaultUsers() {
-        if (userRepository.findOneByUsername("admin") == null
-                && userRepository.findOneByEmailIgnoreCase("admin@admin.com") == null) {
-            this.createAdminUser("admin@admin.com", "admin", "admin");
-        } else {
-            log.warn("Admin could not be created, already exists");
-        }
-        if (userRepository.findOneByUsername("username") == null
-                && userRepository.findOneByEmailIgnoreCase("email@email.com") == null) {
-            this.createInternalUser("email@email.com", "name", "username");
-        } else {
-            log.warn("Internal user could not be created, already exists");
-        }
+    public void setAdminUsers() {
+        for (String admin : adminUsers) {
+            DBUser user = userRepository.findOneByUsername(admin);
+            if (user != null) {
+                user.setRole(DBUser.Role.ADMIN);
+                userRepository.save(user);
+                log.warn("User " + admin + " set to admin");
+            }
+        }        
+
     }
 
     /**
@@ -238,7 +239,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     /**
      * Grant admin rights to the specified user.
      */
-    private void grantAdminRights(String userId) throws UnknownUserException, NonInternalUsersCannotBecomeAdminException {
+    private void grantAdminRights(String userId)
+            throws UnknownUserException, NonInternalUsersCannotBecomeAdminException {
         DBUser user = this.getDbUser(userId);
 
         if (!user.getRole().equals(DBUser.Role.INTERNAL)) {
@@ -321,9 +323,9 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             } else {
                 // Found in the database, probably an external
                 if (dbUser.getName() == null) {
-                    if (givenName == null ||  givenName.isEmpty()) {
+                    if (givenName == null || givenName.isEmpty()) {
                         givenName = StringUtils.emailToGivenName(email);
-                    } 
+                    }
                     dbUser.setName(givenName);
                     userRepository.save(dbUser);
                 }

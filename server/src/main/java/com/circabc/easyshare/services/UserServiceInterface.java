@@ -43,6 +43,6 @@ public interface UserServiceInterface {
     public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
             throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException;
 
-    public void createDefaultUsers();
+    public void setAdminUsers();
 
 }
