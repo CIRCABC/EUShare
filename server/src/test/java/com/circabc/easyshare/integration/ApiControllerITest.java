@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.circabc.easyshare.configuration.EasyShareConfiguration;
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
@@ -94,6 +95,28 @@ public class ApiControllerITest {
 
   @LocalServerPort
   private int port;
+
+  @Autowired
+  private EasyShareConfiguration esConfig;
+  
+
+  @Test
+  public void createDefaultUsers() {
+    DBUser admin = DBUser.createInternalUser("admin@admin.com", "admin", esConfig.getDefaultUserSpace(), "admin");
+    userRepository.save(admin);
+
+    DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", esConfig.getDefaultUserSpace(), "username");
+    userRepository.save(defautUser);
+
+  }
+
+  @Test
+  public void createDefaultUser() throws Exception {
+    HttpEntity httpEntity = this.httpEntityAsInternalUser("");
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
+    assertEquals(HttpStatus.OK, entity.getStatusCode());
+    assertEquals(userRepository.findOneByEmailIgnoreCase("email@email.com").getId(), entity.getBody());
+  }
 
   @Test
   public void postLogin200() throws Exception {
