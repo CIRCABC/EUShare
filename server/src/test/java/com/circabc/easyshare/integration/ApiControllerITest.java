@@ -85,7 +85,7 @@ public class ApiControllerITest {
   private TestRestTemplate testRestTemplate;
 
   @Autowired
-  private UserRepository userRepository;
+  private static UserRepository userRepository;
 
   @Autowired
   private FileRepository fileRepository;
@@ -100,7 +100,7 @@ public class ApiControllerITest {
   private int port;
 
   @Autowired
-  private EasyShareConfiguration esConfig;
+  private static EasyShareConfiguration esConfig;
   
 
   @BeforeClass
