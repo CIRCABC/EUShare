@@ -3,9 +3,50 @@
 
 
     <div id="menu" class="navbar-menu" id="myMenu" [class.is-active]="isBurgerActive">
+      <div *ngIf="!loggedIn" class="navbar-start">
+      <a class="navbar-item" routerLink="home">
+        <fa-icon class="icon is-large" [icon]="faShareAlt" size="2x"></fa-icon>
+        <p *ngIf="!loggedIn">EUShare</p>
+      </a>
+      <a
+        role="button"
+        class="navbar-burger"
+        aria-label="menu"
+        aria-expanded="false"
+        [class.is-active]="isBurgerActive"
+        (click)="toggleBurger()"
+        data-target="myMenu"
+        *ngIf="loggedIn"
+      >
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
 
-      <div class="navbar-start">
+      <div *ngIf="loggedIn" class="navbar-start">
+        
 
+
+        <a (click)="toggleBurger()" routerLinkActive="tab--current"
+          class="navbar-item is-family-secondary my-shared-files" routerLink="home">
+          <span class="spanlabel">{{
+            "my.shared.files" | transloco
+            }}</span>
+        </a>
+        <a (click)="toggleBurger()" routerLinkActive="tab--current"
+          class="navbar-item is-family-secondary shared-with-me" routerLink="download">
+          <span class="spanlabel">{{ "shared.with.me" | transloco }}
+          </span>
+        </a>
+        <a (click)="toggleBurger()" routerLinkActive="tab--current" *ngIf="isAdmin"
+          class="navbar-item is-family-secondary administration" routerLink="administration">
+          <span class="spanlabel">{{ "administration" | transloco }}
+          </span>
+        </a>
+        
+        <a  class="navbar-item is-family-secondary circabc-link-separator"></a>
+        
         <a href="https://circabc.europa.eu/ui/me"  class="navbar-item is-family-secondary circabc-link-dashboard">
           <span class="spanlabel">{{
             "dashboard" | transloco
@@ -29,24 +70,7 @@
 
       
 
-       <a *ngIf="loggedIn" class="navbar-item is-family-secondary circabc-link-separator"></a>
 
-        <a *ngIf="loggedIn" (click)="toggleBurger()" routerLinkActive="tab--current"
-          class="navbar-item is-family-secondary my-shared-files" routerLink="home">
-          <span class="spanlabel">{{
-            "my.shared.files" | transloco
-            }}</span>
-        </a>
-        <a *ngIf="loggedIn" (click)="toggleBurger()" routerLinkActive="tab--current"
-          class="navbar-item is-family-secondary shared-with-me" routerLink="download">
-          <span class="spanlabel">{{ "shared.with.me" | transloco }}
-          </span>
-        </a>
-        <a (click)="toggleBurger()" routerLinkActive="tab--current" *ngIf="isAdmin"
-          class="navbar-item is-family-secondary administration" routerLink="administration">
-          <span class="spanlabel">{{ "administration" | transloco }}
-          </span>
-        </a>
       </div>
 
       <div class="navbar-end">
