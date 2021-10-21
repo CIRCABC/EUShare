@@ -110,6 +110,13 @@ public class ApiControllerITest {
 
   }
 
+  @Test
+  public void createDefaultUser() throws Exception {
+    HttpEntity httpEntity = this.httpEntityAsInternalUser("");
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
+    assertEquals(HttpStatus.OK, entity.getStatusCode());
+    assertEquals(userRepository.findOneByEmailIgnoreCase("email@email.com").getId(), entity.getBody());
+  }
 
   @Test
   public void postLogin200() throws Exception {
