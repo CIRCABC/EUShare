@@ -101,12 +101,18 @@ public class ApiControllerITest {
 
   @Before
   public void createDefaultUsers() {
-    DBUser admin = DBUser.createInternalUser("admin@admin.com", "admin", 102400, "admin");
-    userRepository.save(admin);
+    DBUser admin = userRepository.findOneByUsername("admin");
+    if (admin == null) {
+      admin = DBUser.createInternalUser("admin@admin.com", "admin", 102400, "admin");
+      userRepository.save(admin);
+    }
 
-    DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", 102400, "username");
-    userRepository.save(defautUser);
-
+    DBUser username = userRepository.findOneByUsername("username");
+    if (username == null) {
+      DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", 102400, "username");
+      userRepository.save(defautUser);
+    }
+    assert(true);
   }
 
   @Test
