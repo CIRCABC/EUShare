@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import com.circabc.easyshare.configuration.EasyShareConfiguration;
 import com.circabc.easyshare.error.HttpErrorAnswerBuilder;
 import com.circabc.easyshare.model.FileInfoRecipient;
 import com.circabc.easyshare.model.FileInfoUploader;
@@ -42,6 +43,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import org.apache.commons.io.IOUtils;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +71,7 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -94,6 +98,31 @@ public class ApiControllerITest {
 
   @LocalServerPort
   private int port;
+
+  @Before
+  public void createDefaultUsers() {
+    DBUser admin = userRepository.findOneByUsername("admin");
+    if (admin == null) {
+      admin = DBUser.createInternalUser("admin@admin.com", "admin", 1024000000, "admin");
+      admin.setRole(DBUser.Role.ADMIN);
+      userRepository.save(admin);
+    }
+
+    DBUser username = userRepository.findOneByUsername("username");
+    if (username == null) {
+      DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", 1024000000, "username");
+      userRepository.save(defautUser);
+    }
+    assert(true);
+  }
+
+  @Test
+  public void createDefaultUser() throws Exception {
+    HttpEntity httpEntity = this.httpEntityAsInternalUser("");
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
+    assertEquals(HttpStatus.OK, entity.getStatusCode());
+    assertEquals(userRepository.findOneByEmailIgnoreCase("email@email.com").getId(), entity.getBody());
+  }
 
   @Test
   public void postLogin200() throws Exception {
