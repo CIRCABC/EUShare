@@ -24,7 +24,8 @@ spring:
       enabled: false
       max-file-size: 256MB
       max-request-size: 256MB
-
+  security:
+    adminusers: dummy
 springfox:
   documentation:
     swagger:
