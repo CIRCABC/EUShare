@@ -77,7 +77,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.multipart.MultipartFile;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class ApiControllerITest {
 
@@ -103,13 +103,14 @@ public class ApiControllerITest {
   public void createDefaultUsers() {
     DBUser admin = userRepository.findOneByUsername("admin");
     if (admin == null) {
-      admin = DBUser.createInternalUser("admin@admin.com", "admin", 102400, "admin");
+      admin = DBUser.createInternalUser("admin@admin.com", "admin", 1024000000, "admin");
+      admin.setRole(DBUser.Role.ADMIN);
       userRepository.save(admin);
     }
 
     DBUser username = userRepository.findOneByUsername("username");
     if (username == null) {
-      DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", 102400, "username");
+      DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", 1024000000, "username");
       userRepository.save(defautUser);
     }
     assert(true);
