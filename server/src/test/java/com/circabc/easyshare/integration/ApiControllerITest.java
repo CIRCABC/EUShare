@@ -85,7 +85,7 @@ public class ApiControllerITest {
   private TestRestTemplate testRestTemplate;
 
   @Autowired
-  private static UserRepository userRepository;
+  private UserRepository userRepository;
 
   @Autowired
   private FileRepository fileRepository;
@@ -99,12 +99,8 @@ public class ApiControllerITest {
   @LocalServerPort
   private int port;
 
-  @Autowired
-  private static EasyShareConfiguration esConfig;
-  
-
-  @BeforeClass
-  public static void createDefaultUsers() {
+  @Before
+  public void createDefaultUsers() {
     DBUser admin = DBUser.createInternalUser("admin@admin.com", "admin", 102400, "admin");
     userRepository.save(admin);
 
