@@ -105,10 +105,10 @@ public class ApiControllerITest {
 
   @BeforeClass
   public static void createDefaultUsers() {
-    DBUser admin = DBUser.createInternalUser("admin@admin.com", "admin", esConfig.getDefaultUserSpace(), "admin");
+    DBUser admin = DBUser.createInternalUser("admin@admin.com", "admin", 102400, "admin");
     userRepository.save(admin);
 
-    DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", esConfig.getDefaultUserSpace(), "username");
+    DBUser defautUser = DBUser.createInternalUser("email@email.com", "name", 102400, "username");
     userRepository.save(defautUser);
 
   }
