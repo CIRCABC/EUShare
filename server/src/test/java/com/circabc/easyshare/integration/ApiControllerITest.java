@@ -419,9 +419,10 @@ public class ApiControllerITest {
   public void getFilesFileInfoRecipient401() throws Exception {
     // Creating the uploaded file
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
+    uploader.setRole(DBUser.Role.ADMIN);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
-    assertEquals(uploader, uploaderSaved);
+    assertEquals(DBUser.Role.ADMIN, uploaderSaved.getRole());
 
     DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
@@ -924,7 +925,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", fileSystemResource);
+    body.add("file", fileSystemResource);
 
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
@@ -957,7 +958,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/emptyfile.txt";
     Resource fileSystemResource = new ClassPathResource("emptyfile.txt", this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", fileSystemResource);
+    body.add("file", fileSystemResource);
 
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
@@ -971,7 +972,8 @@ public class ApiControllerITest {
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
     // Done
 
-    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body, "emailA@email.com", "stupidUsername");
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body, "emailA@email.com",
+        "stupidUsername");
 
     ResponseEntity<String> entity = this.testRestTemplate
         .exchange("/file/" + dbFile.getId() + "/fileRequest/fileContent", HttpMethod.POST, httpEntity, String.class);
@@ -988,7 +990,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", fileSystemResource);
+    body.add("file", fileSystemResource);
 
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
@@ -1019,7 +1021,7 @@ public class ApiControllerITest {
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", fileSystemResource);
+    body.add("file", fileSystemResource);
 
     DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
     userRepository.save(uploader);
@@ -1049,7 +1051,7 @@ public class ApiControllerITest {
     File resourcesDirectory = new File("src/test/resources");
     Resource fileSystemResource = new ClassPathResource("file.txt", this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", fileSystemResource);
+    body.add("file", fileSystemResource);
     HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body);
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange("/file/" + "dummyId" + "/fileRequest/fileContent",
