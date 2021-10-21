@@ -23,12 +23,17 @@ import { PrivacyStatementComponent } from './privacy-statement/privacy-statement
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { UploadSucessComponent } from './upload-sucess/upload-sucess.component';
 import { UploadSuccessGuard } from './upload-success.guard';
+import { LoginCircabcComponent } from './login/loginCircabc.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'logincircabc',
+    component: LoginCircabcComponent,
   },
   {
     path: 'home',
