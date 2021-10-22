@@ -10,7 +10,7 @@ easyshare:
   maxSizeAllowedInBytes: 4294967296 
   activateMailService: false
   disks:
-    - C:\temp\easyshare
+    - tmp
 logging:
   level:
     org.hibernate.type: trace
