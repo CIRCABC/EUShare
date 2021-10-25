@@ -19,7 +19,7 @@
     "licchkadd": "license-check-and-add add",
     "tsc": "tsc --project tsconfig.json --pretty",
     "ncu": "npx npm-check-updates",
-    "build-stat": "ng build --prod --stats-json",
+    "build-stat": "ng build -c=prod --stats-json",
     "bundle-report": "npx webpack-bundle-analyzer dist/stats.json",
     "bundle-report-es2015": "npx webpack-bundle-analyzer dist/stats-es2015.json",
     "doc-build-serve": "npx compodoc -p tsconfig.json -s -r 9090 -o",
