@@ -14,7 +14,6 @@ import { SessionService } from '../../openapi';
 @Component({
   selector: 'app-my-shared-files',
   templateUrl: './my-shared-files.component.html',
-  styleUrls: ['./my-shared-files.component.scss'],
 })
 export class MySharedFilesComponent implements OnInit {
   public myId!: string;
