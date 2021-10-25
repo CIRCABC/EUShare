@@ -10,7 +10,9 @@ export const environment: Environment = {
   API_BASE_PATH: '/webservice',
   OIDC_ISSUER: 'https://eulogin:7002/cas/oauth2',
   OIDC_REDIRECTURI: `${window.location.origin}/callback`,
-  OIDC_CLIENTID: 'wr7KvlzqBR5iySOs4QYXgJYjw1Zu6E35toDsGdza0ViwqHMZlnstwwilEgkzazqm6ssLpzfKKHog8u4sUnK8DEH-4y0FDGUzNAp3Z2nrB01jCK',
-  OIDC_BACKEND_CLIENTID: 'LTUzzKUROQlIqzgkCIHZ9czRHTWh3UXjzRgQzRQNrIA01AVCvLZ2wM5ApdezdUkuOcOJIZUpzTLsUEofwajHVbyk-4y0FDGUzNAp3Z2nrB01jCK',
-  OIDC_TOKENENDPOINT: 'https://eulogin:7002/cas/oauth2/token'
-  };
+  OIDC_CLIENTID:
+    'wr7KvlzqBR5iySOs4QYXgJYjw1Zu6E35toDsGdza0ViwqHMZlnstwwilEgkzazqm6ssLpzfKKHog8u4sUnK8DEH-4y0FDGUzNAp3Z2nrB01jCK',
+  OIDC_BACKEND_CLIENTID:
+    'LTUzzKUROQlIqzgkCIHZ9czRHTWh3UXjzRgQzRQNrIA01AVCvLZ2wM5ApdezdUkuOcOJIZUpzTLsUEofwajHVbyk-4y0FDGUzNAp3Z2nrB01jCK',
+  OIDC_TOKENENDPOINT: 'https://eulogin:7002/cas/oauth2/token',
+};
