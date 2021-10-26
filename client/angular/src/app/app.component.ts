@@ -66,15 +66,10 @@ export class AppComponent {
         const nextEventNavigationEnd: NavigationEnd = <NavigationEnd>nextEvent;
         const urlAfterRedirect = nextEventNavigationEnd.urlAfterRedirects;
 
-        if (
-          urlAfterRedirect === '/login' ||
-          urlAfterRedirect.startsWith('/filelink')
-        ) {
-          this.showRightDownload = false;
-        }
-
-        if (urlAfterRedirect === '/home') {
+        if (urlAfterRedirect === '/home' || urlAfterRedirect === '/download') {
           this.showRightDownload = true;
+        } else {
+          this.showRightDownload = false;
         }
       });
   }
