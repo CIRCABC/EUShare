@@ -115,7 +115,7 @@ public class DBFile {
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
         List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream()
-                .map(dbUserFile -> dbUserFile.toRecipientWithLink()).collect(Collectors.toList());
+                .map(DBUserFile::toRecipientWithLink).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);

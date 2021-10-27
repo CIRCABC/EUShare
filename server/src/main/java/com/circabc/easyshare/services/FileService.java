@@ -289,7 +289,7 @@ public class FileService implements FileServiceInterface {
         }
 
         List<DBUserFile> recipientDBUserList = new LinkedList<>();
-        DBFile dbFile = new DBFile(generatedFileId, uploader, new HashSet<DBUserFile>(recipientDBUserList), fileName,
+        DBFile dbFile = new DBFile(generatedFileId, uploader, new HashSet<>(recipientDBUserList), fileName,
                 filesize, expirationDate, path, password);
         fileRepository.save(dbFile);
 

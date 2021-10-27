@@ -109,7 +109,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     }
 
     DBUser getDbUser(String userId) throws UnknownUserException {
-        return userRepository.findById(userId).orElseThrow(() -> new UnknownUserException());
+        return userRepository.findById(userId).orElseThrow(UnknownUserException::new);
     }
 
     DBUser getUserOrCreateExternalOrLinkUser(Recipient recipient)
@@ -353,8 +353,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         if (dbUser == null) {
             throw new UsernameNotFoundException("Invalid email adress as username");
         }
-        UserDetails userDetails = User.builder().username(email).password("n/a").roles(dbUser.getRole().toString())
-                .build();
-        return userDetails;
+        return User.builder().username(email).password("n/a").roles(dbUser.getRole().toString()).build();
+
     }
 }
