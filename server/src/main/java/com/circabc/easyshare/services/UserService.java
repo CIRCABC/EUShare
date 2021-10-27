@@ -77,12 +77,11 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             DBUser dbUser = null;
             try {
                 dbUser = this.getOrCreateInternalUser(email, givenName, username);
+                return dbUser.getId();
             } catch (WrongEmailStructureException e) {
                 throw new WrongAuthenticationException(e);
             }
-            if (dbUser != null) {
-                return dbUser.getId();
-            }
+
         }
         throw new WrongAuthenticationException();
     }
@@ -90,12 +89,11 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     private DBUser createInternalUser(String email, String givenName, String username) {
         DBUser user = DBUser.createInternalUser(email, givenName, esConfig.getDefaultUserSpace(), username);
         for (String admin : adminUsers) {
-            if(admin.equals(username))
-               user.setRole(DBUser.Role.ADMIN);
+            if (admin.equals(username))
+                user.setRole(DBUser.Role.ADMIN);
         }
         return userRepository.save(user);
     }
-
 
     /**
      * One of the arguments can be null
@@ -140,8 +138,6 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         }
     }
 
-
-
     @Override
     public void setAdminUsers() {
         for (String admin : adminUsers) {
@@ -149,9 +145,9 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             if (user != null) {
                 user.setRole(DBUser.Role.ADMIN);
                 userRepository.save(user);
-                log.warn("User " + admin + " set to admin");
+                log.warn("User {} set to admin", admin);
             }
-        }        
+        }
 
     }
 
@@ -322,26 +318,30 @@ public class UserService implements UserServiceInterface, UserDetailsService {
                 dbUser = this.createInternalUser(email, givenName, username);
             } else {
                 // Found in the database, probably an external
-                if (dbUser.getName() == null) {
-                    if (givenName == null || givenName.isEmpty()) {
-                        givenName = StringUtils.emailToGivenName(email);
-                    }
-                    dbUser.setName(givenName);
-                    userRepository.save(dbUser);
-                }
-                if (dbUser.getUsername() == null) {
-                    dbUser.setUsername(username);
-                    userRepository.save(dbUser);
-                }
-                if (dbUser.getRole().equals(DBUser.Role.EXTERNAL)) {
-                    dbUser.setRole(DBUser.Role.INTERNAL);
-                    dbUser.setTotalSpace(esConfig.getDefaultUserSpace());
-                    userRepository.save(dbUser);
-                }
+                updateUser(email, givenName, username, dbUser);
             }
             return dbUser;
         }
         throw new WrongEmailStructureException();
+    }
+
+    private void updateUser(String email, String givenName, String username, DBUser dbUser) {
+        if (dbUser.getName() == null) {
+            if (givenName == null || givenName.isEmpty()) {
+                givenName = StringUtils.emailToGivenName(email);
+            }
+            dbUser.setName(givenName);
+            userRepository.save(dbUser);
+        }
+        if (dbUser.getUsername() == null) {
+            dbUser.setUsername(username);
+            userRepository.save(dbUser);
+        }
+        if (dbUser.getRole().equals(DBUser.Role.EXTERNAL)) {
+            dbUser.setRole(DBUser.Role.INTERNAL);
+            dbUser.setTotalSpace(esConfig.getDefaultUserSpace());
+            userRepository.save(dbUser);
+        }
     }
 
     @Override
