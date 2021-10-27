@@ -29,7 +29,7 @@ public class ApiUtil {
                 res.getWriter().print(example);
             }            
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e);//NOSONAR
         }
     }
 }

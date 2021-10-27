@@ -79,8 +79,9 @@ public class DBFile {
         this(id, uploader, sharedWith, filename, size, expirationDate, path, null);
     }
 
+    @SuppressWarnings("java:S107")
     public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
-            LocalDate expirationDate, String path, String password) { // NOSONAR
+            LocalDate expirationDate, String path, String password) {
         this.id = id;
         this.uploader = uploader;
         this.sharedWith = new HashSet<>(sharedWith);
