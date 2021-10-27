@@ -58,14 +58,14 @@ public class StringUtils {
     }
 
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern
-            .compile("^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$", Pattern.CASE_INSENSITIVE);
+            .compile("^[a-z0-9._%-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", Pattern.CASE_INSENSITIVE);
 
     public static boolean validateEmailAddress(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
     }
 
-    public static final Pattern VALID_USERNAME_REGEX = Pattern.compile("^[A-Za-z0-9]{2,25}$", Pattern.CASE_INSENSITIVE);
+    public static final Pattern VALID_USERNAME_REGEX = Pattern.compile("^[a-z0-9]{2,25}$", Pattern.CASE_INSENSITIVE);
 
     public static boolean validateLinkName(String username) {
         Matcher matcher = VALID_USERNAME_REGEX.matcher(username);
