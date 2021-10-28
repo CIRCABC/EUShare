@@ -1,25 +1,18 @@
-/**
- * EasyShare - a module of CIRCABC
- * Copyright (C) 2019 European Commission
- *
- * This file is part of the "EasyShare" project.
- *
- * This code is publicly distributed under the terms of EUPL-V1.2 license,
- * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
- */
-
 package eu.europa.circabc.eushare.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Status
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
-
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class Status   {
   @JsonProperty("code")
   private Integer code;
@@ -70,7 +63,7 @@ public class Status   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -102,7 +95,7 @@ public class Status   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

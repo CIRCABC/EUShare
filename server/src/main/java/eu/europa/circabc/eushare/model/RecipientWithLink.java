@@ -1,25 +1,20 @@
-/**
- * EasyShare - a module of CIRCABC
- * Copyright (C) 2019 European Commission
- *
- * This file is part of the "EasyShare" project.
- *
- * This code is publicly distributed under the terms of EUPL-V1.2 license,
- * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
- */
-
 package eu.europa.circabc.eushare.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import eu.europa.circabc.eushare.model.Recipient;
+import eu.europa.circabc.eushare.model.RecipientWithLinkAllOf;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import org.openapitools.jackson.nullable.JsonNullable;
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * RecipientWithLink 
+ * RecipientWithLink
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
-
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class RecipientWithLink   {
   @JsonProperty("emailOrName")
   private String emailOrName;
@@ -142,7 +137,7 @@ public class RecipientWithLink   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -150,7 +145,7 @@ public class RecipientWithLink   {
       return false;
     }
     RecipientWithLink recipientWithLink = (RecipientWithLink) o;
-    return Objects.equals(this.emailOrName, recipientWithLink.emailOrName) &&//NOSONAR
+    return Objects.equals(this.emailOrName, recipientWithLink.emailOrName) &&
         Objects.equals(this.message, recipientWithLink.message) &&
         Objects.equals(this.sendEmail, recipientWithLink.sendEmail) &&
         Objects.equals(this.recipientId, recipientWithLink.recipientId) &&
@@ -180,7 +175,7 @@ public class RecipientWithLink   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

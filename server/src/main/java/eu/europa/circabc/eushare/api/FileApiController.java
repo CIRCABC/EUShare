@@ -1,13 +1,3 @@
-/**
- * EasyShare - a module of CIRCABC
- * Copyright (C) 2019 European Commission
- *
- * This file is part of the "EasyShare" project.
- *
- * This code is publicly distributed under the terms of EUPL-V1.2 license,
- * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
- */
-
 package eu.europa.circabc.eushare.api;
 
 import java.io.File;
@@ -65,12 +55,9 @@ import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
 
-
-
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
-
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
-@RequestMapping("${openapi.easyShare.base-path:}")
+@RequestMapping("${openapi.easyShare.base-path:/auth/realms/dev/.well-known/OpenID-configuration}")
 public class FileApiController implements FileApi {
 
     private static final Logger log = LoggerFactory.getLogger(FileApiController.class);
@@ -88,7 +75,6 @@ public class FileApiController implements FileApi {
     public FileApiController(NativeWebRequest request) {
         this.request = request;
     }
-
     @Override
     public ResponseEntity<Void> deleteFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "reason", required = false) String reason) {

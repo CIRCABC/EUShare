@@ -1,20 +1,10 @@
-/**
- * EasyShare - a module of CIRCABC
- * Copyright (C) 2019 European Commission
- *
- * This file is part of the "EasyShare" project.
- *
- * This code is publicly distributed under the terms of EUPL-V1.2 license,
- * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
- */
-
 package eu.europa.circabc.eushare.api;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,14 +30,9 @@ import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.model.validation.UserInfoValidator;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
-
-
-
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-09-30T14:41:19.080+02:00[Europe/Paris]")
-
-
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
-@RequestMapping("${openapi.easyShare.base-path:}")
+@RequestMapping("${openapi.easyShare.base-path:/auth/realms/dev/.well-known/OpenID-configuration}")
 public class UserApiController implements UserApi {
 
 

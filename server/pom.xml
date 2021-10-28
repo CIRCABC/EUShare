@@ -147,6 +147,35 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <!-- RELEASE_VERSION -->
+                <version>5.0.1</version>
+                <!-- /RELEASE_VERSION -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../api.yaml</inputSpec>
+                            <output>.</output>
+                            <generatorName>spring</generatorName>
+                            <modelPackage>eu.europa.circabc.eushare.model</modelPackage>
+                            <apiPackage>eu.europa.circabc.eushare.api</apiPackage>
+                            <invokerPackage>eu.europa.circabc.eushare.api</invokerPackage>
+                            <configPackage>eu.europa.circabc.eushare.configuration</configPackage>
+                           
+                            <configOptions>
+                                <sourceFolder>src/main/java</sourceFolder>
+                                <hideGenerationTimestamp>true</hideGenerationTimestamp>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
             <!-- TESTING PHASE 
              inspired from https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
             <plugin>
@@ -305,8 +334,12 @@
     </build>
     <dependencies>
 
-    
 
+         <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.1.11</version>
+        </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
             <artifactId>commons-fileupload</artifactId>

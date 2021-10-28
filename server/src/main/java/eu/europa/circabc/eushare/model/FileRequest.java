@@ -1,39 +1,28 @@
-/**
- * EasyShare - a module of CIRCABC
- * Copyright (C) 2019 European Commission
- *
- * This file is part of the "EasyShare" project.
- *
- * This code is publicly distributed under the terms of EUPL-V1.2 license,
- * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
- */
-
 package eu.europa.circabc.eushare.model;
 
+import java.util.Objects;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import eu.europa.circabc.eushare.model.FileBasics;
+import eu.europa.circabc.eushare.model.FileRequestAllOf;
+import eu.europa.circabc.eushare.model.Recipient;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-
+import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import io.swagger.annotations.ApiModelProperty;
+import javax.validation.constraints.*;
 
 /**
  * FileRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2019-11-05T16:07:50.538+01:00[Europe/Paris]")
-
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class FileRequest   {
   @JsonProperty("expirationDate")
-  @JsonFormat(pattern="yyyy-MM-dd")
+  @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
   private LocalDate expirationDate;
 
   @JsonProperty("hasPassword")
@@ -188,7 +177,7 @@ public class FileRequest   {
 
 
   @Override
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -196,7 +185,7 @@ public class FileRequest   {
       return false;
     }
     FileRequest fileRequest = (FileRequest) o;
-    return Objects.equals(this.expirationDate, fileRequest.expirationDate) &&//NOSONAR
+    return Objects.equals(this.expirationDate, fileRequest.expirationDate) &&
         Objects.equals(this.hasPassword, fileRequest.hasPassword) &&
         Objects.equals(this.name, fileRequest.name) &&
         Objects.equals(this.size, fileRequest.size) &&
@@ -228,7 +217,7 @@ public class FileRequest   {
    * Convert the given object to string with each line indented by 4 spaces
    * (except the first line).
    */
-  private String toIndentedString(java.lang.Object o) {
+  private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }

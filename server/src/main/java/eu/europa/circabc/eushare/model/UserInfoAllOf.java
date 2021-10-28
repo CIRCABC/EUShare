@@ -3,26 +3,17 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import eu.europa.circabc.eushare.model.UserInfoAllOf;
-import eu.europa.circabc.eushare.model.UserSpace;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.math.BigDecimal;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * UserInfo
+ * UserInfoAllOf
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class UserInfo   {
-  @JsonProperty("totalSpace")
-  private BigDecimal totalSpace;
-
-  @JsonProperty("usedSpace")
-  private BigDecimal usedSpace;
-
+public class UserInfoAllOf   {
   @JsonProperty("id")
   private String id;
 
@@ -38,53 +29,7 @@ public class UserInfo   {
   @JsonProperty("isAdmin")
   private Boolean isAdmin;
 
-  public UserInfo totalSpace(BigDecimal totalSpace) {
-    this.totalSpace = totalSpace;
-    return this;
-  }
-
-  /**
-   * Total space the user has (Bytes)
-   * minimum: 0
-   * @return totalSpace
-  */
-  @ApiModelProperty(required = true, value = "Total space the user has (Bytes)")
-  @NotNull
-
-  @Valid
-@DecimalMin("0")
-  public BigDecimal getTotalSpace() {
-    return totalSpace;
-  }
-
-  public void setTotalSpace(BigDecimal totalSpace) {
-    this.totalSpace = totalSpace;
-  }
-
-  public UserInfo usedSpace(BigDecimal usedSpace) {
-    this.usedSpace = usedSpace;
-    return this;
-  }
-
-  /**
-   * Space the user already used (Bytes)
-   * minimum: 0
-   * @return usedSpace
-  */
-  @ApiModelProperty(required = true, value = "Space the user already used (Bytes)")
-  @NotNull
-
-  @Valid
-@DecimalMin("0")
-  public BigDecimal getUsedSpace() {
-    return usedSpace;
-  }
-
-  public void setUsedSpace(BigDecimal usedSpace) {
-    this.usedSpace = usedSpace;
-  }
-
-  public UserInfo id(String id) {
+  public UserInfoAllOf id(String id) {
     this.id = id;
     return this;
   }
@@ -105,7 +50,7 @@ public class UserInfo   {
     this.id = id;
   }
 
-  public UserInfo loginUsername(String loginUsername) {
+  public UserInfoAllOf loginUsername(String loginUsername) {
     this.loginUsername = loginUsername;
     return this;
   }
@@ -126,7 +71,7 @@ public class UserInfo   {
     this.loginUsername = loginUsername;
   }
 
-  public UserInfo givenName(String givenName) {
+  public UserInfoAllOf givenName(String givenName) {
     this.givenName = givenName;
     return this;
   }
@@ -146,7 +91,7 @@ public class UserInfo   {
     this.givenName = givenName;
   }
 
-  public UserInfo email(String email) {
+  public UserInfoAllOf email(String email) {
     this.email = email;
     return this;
   }
@@ -167,7 +112,7 @@ public class UserInfo   {
     this.email = email;
   }
 
-  public UserInfo isAdmin(Boolean isAdmin) {
+  public UserInfoAllOf isAdmin(Boolean isAdmin) {
     this.isAdmin = isAdmin;
     return this;
   }
@@ -197,28 +142,24 @@ public class UserInfo   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    UserInfo userInfo = (UserInfo) o;
-    return Objects.equals(this.totalSpace, userInfo.totalSpace) &&
-        Objects.equals(this.usedSpace, userInfo.usedSpace) &&
-        Objects.equals(this.id, userInfo.id) &&
-        Objects.equals(this.loginUsername, userInfo.loginUsername) &&
-        Objects.equals(this.givenName, userInfo.givenName) &&
-        Objects.equals(this.email, userInfo.email) &&
-        Objects.equals(this.isAdmin, userInfo.isAdmin);
+    UserInfoAllOf userInfoAllOf = (UserInfoAllOf) o;
+    return Objects.equals(this.id, userInfoAllOf.id) &&
+        Objects.equals(this.loginUsername, userInfoAllOf.loginUsername) &&
+        Objects.equals(this.givenName, userInfoAllOf.givenName) &&
+        Objects.equals(this.email, userInfoAllOf.email) &&
+        Objects.equals(this.isAdmin, userInfoAllOf.isAdmin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalSpace, usedSpace, id, loginUsername, givenName, email, isAdmin);
+    return Objects.hash(id, loginUsername, givenName, email, isAdmin);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class UserInfo {\n");
+    sb.append("class UserInfoAllOf {\n");
     
-    sb.append("    totalSpace: ").append(toIndentedString(totalSpace)).append("\n");
-    sb.append("    usedSpace: ").append(toIndentedString(usedSpace)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    loginUsername: ").append(toIndentedString(loginUsername)).append("\n");
     sb.append("    givenName: ").append(toIndentedString(givenName)).append("\n");
