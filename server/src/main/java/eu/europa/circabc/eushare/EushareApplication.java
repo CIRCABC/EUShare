@@ -29,14 +29,14 @@ import org.springframework.context.annotation.Bean;
 
 
 @SpringBootApplication
-public class EasyshareApplication extends SpringBootServletInitializer {
+public class EushareApplication extends SpringBootServletInitializer {
     
    
-    private Logger log = LoggerFactory.getLogger(EasyshareApplication.class);
+    private Logger log = LoggerFactory.getLogger(EushareApplication.class);
     
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(EasyshareApplication.class);
+        return builder.sources(EushareApplication.class);
     }
 
     @Autowired
@@ -55,7 +55,7 @@ public class EasyshareApplication extends SpringBootServletInitializer {
     }
 
     public static void main(String[] args) throws Exception {
-        new SpringApplication(EasyshareApplication.class).run(args);
+        new SpringApplication(EushareApplication.class).run(args);
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {

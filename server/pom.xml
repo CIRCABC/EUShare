@@ -34,7 +34,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>eu.europa.circabc.eushare.EasyshareApplication</mainClass>
+                            <mainClass>eu.europa.circabc.eushare.EushareApplication</mainClass>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -61,7 +61,7 @@
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
-                            <mainClass>eu.europa.circabc.eushare.EasyshareApplication</mainClass>
+                            <mainClass>eu.europa.circabc.eushare.EushareApplication</mainClass>
                         </configuration>
                         <executions>
                             <execution>
@@ -152,7 +152,7 @@
                 </executions>
             </plugin>
 
-            <!-- plugin>
+            <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
             
@@ -171,7 +171,7 @@
                             <apiPackage>eu.europa.circabc.eushare.api</apiPackage>
                             <invokerPackage>eu.europa.circabc.eushare.api</invokerPackage>
                             <configPackage>eu.europa.circabc.eushare.configuration</configPackage>
-                           
+                            <skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
                             <configOptions>
                                 <sourceFolder>src/main/java</sourceFolder>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
@@ -179,7 +179,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin -->
+            </plugin>
 
             <!-- TESTING PHASE 
              inspired from https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
