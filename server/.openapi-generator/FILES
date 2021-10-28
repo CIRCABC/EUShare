@@ -2,7 +2,6 @@ README.md
 src/main/java/eu/europa/circabc/eushare/api/ApiUtil.java
 src/main/java/eu/europa/circabc/eushare/api/FileApi.java
 src/main/java/eu/europa/circabc/eushare/api/LoginApi.java
-src/main/java/eu/europa/circabc/eushare/api/OpenAPI2SpringBoot.java
 src/main/java/eu/europa/circabc/eushare/api/RFC3339DateFormat.java
 src/main/java/eu/europa/circabc/eushare/api/UserApi.java
 src/main/java/eu/europa/circabc/eushare/api/UsersApi.java

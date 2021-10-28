@@ -29,3 +29,4 @@
 ../../../pom.xml
 ../../../../pom.xml
 /pom.xml
+**/OpenAPI2SpringBoot.java

@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>server</artifactId>
     <packaging>${packaging.type}</packaging>
-    <groupId>com.circabc</groupId>
+    <groupId>eu.europa.circabc</groupId>
     <properties>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -33,6 +33,9 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>eu.europa.circabc.eushare.EasyshareApplication</mainClass>
+                        </configuration>
                     </plugin>
                 </plugins>
             </build>
@@ -57,7 +60,9 @@
                     <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
-
+                        <configuration>
+                            <mainClass>eu.europa.circabc.eushare.EasyshareApplication</mainClass>
+                        </configuration>
                         <executions>
                             <execution>
                                 <goals>
@@ -147,12 +152,12 @@
                 </executions>
             </plugin>
 
-            <plugin>
+            <!-- plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-                <!-- RELEASE_VERSION -->
+            
                 <version>5.0.1</version>
-                <!-- /RELEASE_VERSION -->
+  
                 <executions>
                     <execution>
                         <goals>
@@ -174,7 +179,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin -->
 
             <!-- TESTING PHASE 
              inspired from https://www.petrikainulainen.net/programming/maven/creating-code-coverage-reports-for-unit-and-integration-tests-with-the-jacoco-maven-plugin/ -->
