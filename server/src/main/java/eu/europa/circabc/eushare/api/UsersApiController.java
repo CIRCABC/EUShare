@@ -21,7 +21,7 @@ import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.services.UserService;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
-@RequestMapping("${openapi.easyShare.base-path:/auth/realms/dev/.well-known/OpenID-configuration}")
+@RequestMapping("${openapi.easyShare.base-path:}")
 public class UsersApiController implements UsersApi {
 
     private final NativeWebRequest request;
