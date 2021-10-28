@@ -7,6 +7,7 @@ spring:
           introspection-uri: https://ecas-mockup:7002/cas/oauth2/token/introspect
           client-id: my_client_id
           client_secret: my_client_secret
+
   datasource:
     #continue-on-error: true
     #jdbc:oracle:thin:@localhost:1521:testing

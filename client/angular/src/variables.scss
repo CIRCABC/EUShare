@@ -1,0 +1,20 @@
+$white-ter: hsl(0, 0%, 96%) !default;
+$background: $white-ter !default;
+
+$break-tiny: 437px;
+$break-small: 595px;
+$break-medium: 1023px;
+
+$dark-green: rgba(88, 195, 126, 1);
+$grey-darker: hsl(0, 0%, 21%) !default;
+$dark: $grey-darker !default;
+$grey: hsl(0, 0%, 48%) !default;
+$light-green: rgba(141, 203, 108, 1);
+$link: rgba(0, 51, 85, 1);
+
+$navbar-height: 3.5rem;
+$border: $grey-darker;
+$table-cell-border: 1px solid $border !default;
+$table-cell-padding: 0.5em 0.75em !default;
+$scheme-main-ter: $white-ter !default;
+$table-striped-row-even-hover-background-color: $scheme-main-ter !default;

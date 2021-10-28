@@ -79,7 +79,6 @@ public class MountPoint {
                 f.setLength(filesize);
             }
         } catch (IOException e) {
-            // TODO: remove this deletion
             try {
                 Files.deleteIfExists(path);
             } catch (IOException ignored) {

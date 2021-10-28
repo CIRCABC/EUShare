@@ -79,8 +79,9 @@ public class DBFile {
         this(id, uploader, sharedWith, filename, size, expirationDate, path, null);
     }
 
+    @SuppressWarnings("java:S107")
     public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
-            LocalDate expirationDate, String path, String password) { // NOSONAR
+            LocalDate expirationDate, String path, String password) {
         this.id = id;
         this.uploader = uploader;
         this.sharedWith = new HashSet<>(sharedWith);
@@ -115,7 +116,7 @@ public class DBFile {
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
         List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream()
-                .map(dbUserFile -> dbUserFile.toRecipientWithLink()).collect(Collectors.toList());
+                .map(DBUserFile::toRecipientWithLink).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);

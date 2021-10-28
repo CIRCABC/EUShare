@@ -7,30 +7,30 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-@import '../../../styles.scss';
+@import '../../../variables.scss';
 
 .ec-logo {
     height: 48px;
-  
+
     @media screen and (max-width: $break-small) {
       display: none;
     }
   }
-  
+
   .eu-logo {
     height: 48px;
     border: 1px solid #fff;
-  
+
     @media screen and (max-width: $break-small) {
       display: none;
     }
   }
-  
+
   .app-logo {
     padding: 4px 10px;
     top: -8px;
     position: relative;
-  
+
     @media screen and (max-width: $break-small) {
       top: 10px;
     }
@@ -40,10 +40,9 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
     font-size: large;
     font-weight: bold;
   }
-  
+
   @media screen and (max-width: $break-tiny) {
     .logo {
       display: none;
     }
   }
-  

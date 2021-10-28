@@ -16,7 +16,6 @@ import { DownloadsService } from '../../services/downloads.service';
 @Component({
   selector: 'app-uploaded-file-row',
   templateUrl: './uploaded-file-row.component.html',
-  styleUrls: ['./uploaded-file-row.component.scss'],
 })
 export class UploadedFileRowComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

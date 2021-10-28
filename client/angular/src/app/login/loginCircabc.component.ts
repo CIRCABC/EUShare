@@ -11,23 +11,21 @@ import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
 
-
 @Component({
   selector: 'app-logincircabc',
   templateUrl: './loginCircabc.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginCircabcComponent implements OnInit {
-
   constructor(
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
-  ) { }
+  ) {}
 
   ngOnInit() {
     // your other code
     setTimeout(() => {
-      this.login()
+      this.login();
     }, 200);
   }
 
