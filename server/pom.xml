@@ -155,9 +155,9 @@
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
-            
+
                 <version>5.1.0</version>
-  
+
                 <executions>
                     <execution>
                         <goals>
@@ -167,17 +167,53 @@
                             <inputSpec>${project.basedir}/../api.yaml</inputSpec>
                             <output>.</output>
                             <generatorName>spring</generatorName>
-                           
+
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <apiPackage>eu.europa.circabc.eushare.api</apiPackage>
                             <modelPackage>eu.europa.circabc.eushare.model</modelPackage>
                             <skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
                             <configOptions>
-                                 <basePackage>eu.europa.circabc.eushare</basePackage>
+                                <basePackage>eu.europa.circabc.eushare</basePackage>
                                 <sourceFolder>src/main/java</sourceFolder>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                             </configOptions>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+              <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>4.1</version>
+                <configuration>
+                    <licenseSets>
+                        <licenseSet>
+                            <header>LICENSE_HEADER.txt</header>
+                            <excludes>
+                                <exclude>build.sh</exclude>
+                                <exclude>.settings/**</exclude>
+                                <exclude>.vscode</exclude>
+                                <exclude>.gitignore</exclude>
+                                <exclude>**/.gitignore</exclude>
+                                <exclude>.openapi-generator-ignore/**</exclude>
+                                <exclude>.openapi-generator-ignore</exclude>
+                                <exclude>pom.xml</exclude>
+                                <exclude>LICENSE.txt</exclude>
+                                <exclude>**/README</exclude>
+                                <exclude>src/test/resources/**</exclude>
+                                <exclude>src/main/resources/**</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -293,35 +329,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>3.0</version>
-                <configuration>
-                    <header>LICENSE_HEADER.txt</header>
-                    <excludes>
-                        <exclude>build.sh</exclude>
-                        <exclude>.settings/**</exclude>
-                        <exclude>.vscode</exclude>
-                        <exclude>.openapi-generator-ignore/**</exclude>
-                        <exclude>pom.xml</exclude>
-                        <exclude>pom_jib.xml</exclude>
-                        <exclude>LICENSE.txt</exclude>
-                        <exclude>**/README</exclude>
-                        <exclude>src/test/resources/**</exclude>
-                        <exclude>src/main/resources/**</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                             
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin -->
+          
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
@@ -341,7 +349,7 @@
     <dependencies>
 
 
-         <dependency>
+        <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>2.1.11</version>
