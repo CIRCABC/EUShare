@@ -66,7 +66,7 @@ import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
-@RequestMapping("${openapi.easyShare.base-path:/auth/realms/dev/.well-known/OpenID-configuration}")
+@RequestMapping("${openapi.easyShare.base-path:}")
 public class FileApiController implements FileApi {
 
     private static final Logger log = LoggerFactory.getLogger(FileApiController.class);
