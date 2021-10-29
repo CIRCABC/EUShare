@@ -1,10 +1,14 @@
 README.md
 src/main/java/eu/europa/circabc/eushare/api/ApiUtil.java
 src/main/java/eu/europa/circabc/eushare/api/FileApi.java
+src/main/java/eu/europa/circabc/eushare/api/FileApiController.java
 src/main/java/eu/europa/circabc/eushare/api/LoginApi.java
+src/main/java/eu/europa/circabc/eushare/api/LoginApiController.java
 src/main/java/eu/europa/circabc/eushare/api/RFC3339DateFormat.java
 src/main/java/eu/europa/circabc/eushare/api/UserApi.java
+src/main/java/eu/europa/circabc/eushare/api/UserApiController.java
 src/main/java/eu/europa/circabc/eushare/api/UsersApi.java
+src/main/java/eu/europa/circabc/eushare/api/UsersApiController.java
 src/main/java/eu/europa/circabc/eushare/model/FileBasics.java
 src/main/java/eu/europa/circabc/eushare/model/FileInfoRecipient.java
 src/main/java/eu/europa/circabc/eushare/model/FileInfoRecipientAllOf.java
@@ -19,5 +23,5 @@ src/main/java/eu/europa/circabc/eushare/model/Status.java
 src/main/java/eu/europa/circabc/eushare/model/UserInfo.java
 src/main/java/eu/europa/circabc/eushare/model/UserInfoAllOf.java
 src/main/java/eu/europa/circabc/eushare/model/UserSpace.java
-src/main/java/org/openapitools/configuration/OpenAPIDocumentationConfig.java
+src/main/java/org/openapitools/configuration/HomeController.java
 src/main/resources/application.properties

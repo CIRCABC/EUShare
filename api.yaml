@@ -1,6 +1,6 @@
 openapi: 3.0.0
 servers:
-  - url: http://localhost:8080/auth/realms/dev/.well-known/OpenID-configuration
+  - url: http://localhost:8080
 info:
   title: EasyShare
   description: This is a API definition for the EasyShare service.
@@ -648,7 +648,7 @@ components:
   securitySchemes:
     OpenID:   # <--- Arbitrary name for the security scheme. Used to refer to it from elsewhere.
       type: openIdConnect
-      openIdConnectUrl: https://localhost:8080/realms/dev/.well-known/openid-configuration
+      openIdConnectUrl: https://localhost:8080/realms/
   parameters:
     pageSize:
       name: pageSize
