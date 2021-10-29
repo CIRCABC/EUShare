@@ -29,7 +29,7 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
 
-import eu.europa.circabc.eushare.configuration.EasyShareConfiguration;
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.IllegalSpaceException;
 import eu.europa.circabc.eushare.exceptions.NonInternalUsersCannotBecomeAdminException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
@@ -53,7 +53,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired
-    private EasyShareConfiguration esConfig;
+    private EushareConfiguration esConfig;
 
     @Value("${spring.security.adminusers}")
     private String[] adminUsers;

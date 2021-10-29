@@ -2,7 +2,7 @@ server:
   port: 8080
 cors:
   origin: '*'
-easyshare:
+eushare:
   clientHttpAddress: http://localhost
   expirationdays: 7
   defaultuserspace: 5368709120
@@ -10,7 +10,7 @@ easyshare:
   maxSizeAllowedInBytes: 4294967296 
   activateMailService: true
   disks:
-    - /easyshare/
+    - /eushare/
 logging:
   level:
     org.springframework: ERROR

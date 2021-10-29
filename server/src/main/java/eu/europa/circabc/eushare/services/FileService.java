@@ -38,7 +38,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import eu.europa.circabc.eushare.configuration.EasyShareConfiguration;
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.CouldNotAllocateFileException;
 import eu.europa.circabc.eushare.exceptions.CouldNotSaveFileException;
 import eu.europa.circabc.eushare.exceptions.DateLiesInPastException;
@@ -80,7 +80,7 @@ public class FileService implements FileServiceInterface {
     private final List<MountPoint> mountPoints = new ArrayList<>();
 
     @Autowired
-    private EasyShareConfiguration esConfig;
+    private EushareConfiguration esConfig;
 
     @Autowired
     private EmailService emailService;

@@ -2,7 +2,7 @@ cors:
   origin: '*'
 server:
   port: 8888
-easyshare:
+eushare:
   clientHttpAddress: http://localhost:4200
   expirationdays: 7
   defaultuserspace: 5368709120

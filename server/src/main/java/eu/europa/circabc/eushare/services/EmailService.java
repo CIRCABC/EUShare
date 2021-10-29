@@ -27,7 +27,7 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import eu.europa.circabc.eushare.configuration.EasyShareConfiguration;
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 
@@ -53,7 +53,7 @@ public class EmailService implements EmailServiceInterface {
     private TemplateEngine templateEngine;
 
     @Autowired
-    private EasyShareConfiguration esConfig;
+    private EushareConfiguration esConfig;
 
     private void sendMessage(String recipient, String content) throws MessagingException {
         if (esConfig.isActivateMailService()) {

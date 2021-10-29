@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <sonar.version>3.7.0.1746</sonar.version>
-        <war.final.name>easyshareserver</war.final.name>
+        <war.final.name>eushareserver</war.final.name>
         <skip.unit.tests>false</skip.unit.tests>
         <skip.integration.tests>true</skip.integration.tests>
 
@@ -171,7 +171,7 @@
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <apiPackage>eu.europa.circabc.eushare.api</apiPackage>
                             <modelPackage>eu.europa.circabc.eushare.model</modelPackage>
-                            <!-- skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged -->
+                            <skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
                             <configOptions>
                                  <basePackage>eu.europa.circabc.eushare</basePackage>
                                 <sourceFolder>src/main/java</sourceFolder>
