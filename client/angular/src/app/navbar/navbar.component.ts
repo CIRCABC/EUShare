@@ -16,8 +16,9 @@ import {
   faUsersCog,
   faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { SessionService } from '../openapi';
+
 import { OAuthService } from 'angular-oauth2-oidc';
+import { SessionServiceImpl } from '../openapi/api/session.service.impl';
 
 @Component({
   selector: 'app-navbar',
@@ -36,7 +37,7 @@ export class NavbarComponent implements OnInit {
   public isBurgerActive = false;
 
   constructor(
-    private sessionService: SessionService,
+    private sessionService: SessionServiceImpl,
     private oAuthService: OAuthService
   ) {}
 

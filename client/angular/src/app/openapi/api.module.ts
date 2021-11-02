@@ -10,11 +10,10 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
-
-
 import { FileService } from './api/file.service';
-import { SessionService } from './api/session.service';
 import { UsersService } from './api/users.service';
+import { SessionServiceImpl } from './api/session.service.impl';
+
 
 @NgModule({
     imports: [],
@@ -23,7 +22,7 @@ import { UsersService } from './api/users.service';
     ],
     providers: [
         FileService,
-        SessionService,
+        SessionServiceImpl,
         UsersService]
 })
 export class ApiModule {

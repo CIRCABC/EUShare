@@ -9,7 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { SessionService, UsersService, UserInfo } from '../openapi';
+import {  UsersService, UserInfo } from '../openapi';
+import { SessionServiceImpl } from '../openapi/api/session.service.impl';
 
 @Component({
   selector: 'app-my-user',
@@ -20,7 +21,7 @@ export class MyUserComponent implements OnInit {
   public userInfo!: UserInfo;
 
   constructor(
-    private sessionApi: SessionService,
+    private sessionApi: SessionServiceImpl,
     private userApi: UsersService
   ) {}
 

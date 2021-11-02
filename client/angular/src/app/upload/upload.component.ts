@@ -21,9 +21,9 @@ import {
   FileRequest,
   Recipient,
   UsersService,
-  SessionService,
   FileInfoUploader,
 } from '../openapi';
+
 import { NotificationService } from '../common/notification/notification.service';
 import { fileSizeValidator } from '../common/validators/file-validator';
 import { map } from 'rxjs/operators';
@@ -31,6 +31,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { I18nService } from '../common/i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
+import { SessionServiceImpl } from '../openapi/api/session.service.impl';
 
 @Component({
   selector: 'app-upload',
@@ -54,7 +55,7 @@ export class UploadComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private sessionApi: SessionService,
+    private sessionApi: SessionServiceImpl,
     private userApi: UsersService,
     private fileApi: FileService,
     private notificationService: NotificationService,

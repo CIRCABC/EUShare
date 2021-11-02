@@ -10,9 +10,13 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { SessionService, UsersService } from '../openapi';
+
 import { NotificationService } from '../common/notification/notification.service';
 import { firstValueFrom } from 'rxjs';
+
+import { UsersService } from '../openapi';
+import { SessionServiceImpl } from '../openapi/api/session.service.impl';
+
 
 @Component({
   selector: 'app-call-back',
@@ -23,7 +27,7 @@ export class CallBackComponent implements OnInit {
   constructor(
     private userService: UsersService,
     private notificationService: NotificationService,
-    private api: SessionService,
+    private api: SessionServiceImpl,
     private oAuthService: OAuthService,
     private router: Router
   ) {}

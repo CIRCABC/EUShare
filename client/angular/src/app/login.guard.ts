@@ -16,7 +16,8 @@ import {
 } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
-import { SessionService } from './openapi';
+import { SessionServiceImpl } from './openapi/api/session.service.impl';
+
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class LoginGuard implements CanActivate {
   constructor(
     private router: Router,
     private oAuthService: OAuthService,
-    private sessionService: SessionService
+    private sessionService: SessionServiceImpl
   ) {}
 
   canActivate(
