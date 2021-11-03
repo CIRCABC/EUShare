@@ -1,12 +1,3 @@
-/*
-EasyShare - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "EasyShare" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -18,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
+/* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
@@ -26,14 +17,16 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { FileInfoUploader } from '../model/fileInfoUploader';
-import { FileRequest } from '../model/fileRequest';
-import { Recipient } from '../model/recipient';
-import { RecipientWithLink } from '../model/recipientWithLink';
-import { Status } from '../model/status';
+import { FileInfoUploader } from '../model/models';
+import { FileRequest } from '../model/models';
+import { FileResult } from '../model/models';
+import { Recipient } from '../model/models';
+import { RecipientWithLink } from '../model/models';
+import { Status } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
+
 
 
 @Injectable({
@@ -41,7 +34,7 @@ import { Configuration }                                     from '../configurat
 })
 export class FileService {
 
-    protected basePath = 'http://localhost:8888';
+    protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
@@ -74,63 +67,107 @@ export class FileService {
     }
 
 
+    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+        if (typeof value === "object" && value instanceof Date === false) {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value);
+        } else {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
+        }
+        return httpParams;
+    }
+
+    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
+        if (value == null) {
+            return httpParams;
+        }
+
+        if (typeof value === "object") {
+            if (Array.isArray(value)) {
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+            } else if (value instanceof Date) {
+                if (key != null) {
+                    httpParams = httpParams.append(key,
+                        (value as Date).toISOString().substr(0, 10));
+                } else {
+                   throw Error("key may not be null if value is Date");
+                }
+            } else {
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
+                    httpParams, value[k], key != null ? `${key}.${k}` : k));
+            }
+        } else if (key != null) {
+            httpParams = httpParams.append(key, value);
+        } else {
+            throw Error("key may not be null if value is not object or array");
+        }
+        return httpParams;
+    }
+
     /**
      * Used by INTERNAL users and ADMIN in order to delete a file
-     *
      * @param fileID The id of the file
      * @param reason Reason for deletion of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteFile(fileID: string, reason?: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteFile(fileID: string, reason?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteFile(fileID: string, reason?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteFile(fileID: string, reason?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteFile(fileID: string, reason?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public deleteFile(fileID: string, reason?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public deleteFile(fileID: string, reason?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public deleteFile(fileID: string, reason?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling deleteFile.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (reason !== undefined && reason !== null) {
-            queryParameters = queryParameters.set('reason', <any>reason);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>reason, 'reason');
         }
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.delete<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to delete a share link for one of the shared users
-     *
      * @param fileID The id of the file
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteFileSharedWithUser(fileID: string, userID: string, observe?: 'body', reportProgress?: boolean): Observable<any>;
-    public deleteFileSharedWithUser(fileID: string, userID: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<any>>;
-    public deleteFileSharedWithUser(fileID: string, userID: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<any>>;
-    public deleteFileSharedWithUser(fileID: string, userID: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public deleteFileSharedWithUser(fileID: string, userID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public deleteFileSharedWithUser(fileID: string, userID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public deleteFileSharedWithUser(fileID: string, userID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public deleteFileSharedWithUser(fileID: string, userID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling deleteFileSharedWithUser.');
         }
@@ -140,56 +177,68 @@ export class FileService {
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.delete<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith/${encodeURIComponent(String(userID))}`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL and EXTERNAL users to download a shared file
-     *
      * @param fileID The id of the file
      * @param password Password of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFile(fileID: string, password?: string, observe?: 'body', reportProgress?: boolean): Observable<Blob>;
-    public getFile(fileID: string, password?: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Blob>>;
-    public getFile(fileID: string, password?: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Blob>>;
-    public getFile(fileID: string, password?: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getFile(fileID: string, password?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json'}): Observable<Blob>;
+    public getFile(fileID: string, password?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json'}): Observable<HttpResponse<Blob>>;
+    public getFile(fileID: string, password?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json'}): Observable<HttpEvent<Blob>>;
+    public getFile(fileID: string, password?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream' | 'application/json'}): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling getFile.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (password !== undefined && password !== null) {
-            queryParameters = queryParameters.set('password', <any>password);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>password, 'password');
         }
 
         let headers = this.defaultHeaders;
 
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/octet-stream',
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/octet-stream',
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -200,41 +249,42 @@ export class FileService {
                 params: queryParameters,
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to post the file content on the pre-reserved file space
-     *
      * @param fileID The id of the file
      * @param file 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileContent(fileID: string, file?: Blob, observe?: 'body', reportProgress?: boolean): Observable<FileInfoUploader>;
-    public postFileContent(fileID: string, file?: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileInfoUploader>>;
-    public postFileContent(fileID: string, file?: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileInfoUploader>>;
-    public postFileContent(fileID: string, file?: Blob, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public postFileContent(fileID: string, file?: Blob, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<FileInfoUploader>;
+    public postFileContent(fileID: string, file?: Blob, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<FileInfoUploader>>;
+    public postFileContent(fileID: string, file?: Blob, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<FileInfoUploader>>;
+    public postFileContent(fileID: string, file?: Blob, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling postFileContent.');
         }
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
-
 
         // to determine the Content-Type header
         const consumes: string[] = [
@@ -245,7 +295,7 @@ export class FileService {
 
         let formParams: { append(param: string, value: any): any; };
         let useForm = false;
-        const convertFormParamsToString = false;
+        let convertFormParamsToString = false;
         // use FormData to transmit files using content-type "multipart/form-data"
         // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
         useForm = canConsumeForm;
@@ -259,41 +309,47 @@ export class FileService {
             formParams = formParams.append('file', <any>file) as any || formParams;
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<FileInfoUploader>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/fileContent`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to request the reservation of space for a file
-     *
      * @param fileRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileFileRequest(fileRequest: FileRequest, observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public postFileFileRequest(fileRequest: FileRequest, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public postFileFileRequest(fileRequest: FileRequest, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
-    public postFileFileRequest(fileRequest: FileRequest, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public postFileFileRequest(fileRequest: FileRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<FileResult>;
+    public postFileFileRequest(fileRequest: FileRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<FileResult>>;
+    public postFileFileRequest(fileRequest: FileRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<FileResult>>;
+    public postFileFileRequest(fileRequest: FileRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (fileRequest === null || fileRequest === undefined) {
             throw new Error('Required parameter fileRequest was null or undefined when calling postFileFileRequest.');
         }
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'text/plain',
-            //'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -308,30 +364,34 @@ export class FileService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
-        return this.httpClient.post(`${this.configuration.basePath}/file/fileRequest`,
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<FileResult>(`${this.configuration.basePath}/file/fileRequest`,
             fileRequest,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress,
-                responseType: 'text'
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required
-     *
      * @param fileID The id of the file
      * @param recipient The userID or email of user to share the file with
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'body', reportProgress?: boolean): Observable<RecipientWithLink>;
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<RecipientWithLink>>;
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<RecipientWithLink>>;
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<RecipientWithLink>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<RecipientWithLink>>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<RecipientWithLink>>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling postFileSharedWith.');
         }
@@ -341,12 +401,15 @@ export class FileService {
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -361,13 +424,19 @@ export class FileService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.post<RecipientWithLink>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith`,
             recipient,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }

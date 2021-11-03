@@ -9,27 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileBasics } from './fileBasics';
-import { FileInfoRecipientAllOf } from './fileInfoRecipientAllOf';
 
 
-export interface FileInfoRecipient { 
-    /**
-     * Expiration date of file
-     */
-    expirationDate: string;
-    /**
-     * File is password-protected
-     */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+export interface FileInfoRecipientAllOf { 
     /**
      * name of the uploader
      */

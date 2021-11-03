@@ -36,6 +36,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((err) => {
+        console.log(err);
         if (err instanceof HttpErrorResponse) {
           const isPostLogin =
             req.url.includes('/login') && req.method === 'POST';

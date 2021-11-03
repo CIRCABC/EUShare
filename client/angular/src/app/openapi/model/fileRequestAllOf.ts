@@ -9,24 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { Recipient } from './recipient';
 
 
-export interface FileBasics { 
+export interface FileRequestAllOf { 
     /**
-     * Expiration date of file
+     * Password protecting the file
      */
-    expirationDate: string;
+    password?: string;
     /**
-     * File is password-protected
+     * User IDs this file is shared with
      */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+    sharedWith: Array<Recipient>;
 }
 

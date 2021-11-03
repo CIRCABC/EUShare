@@ -1,12 +1,3 @@
-/*
-EasyShare - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "EasyShare" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -18,6 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserInfoAllOf } from './userInfoAllOf';
 import { UserSpace } from './userSpace';
 
 
@@ -41,7 +33,7 @@ export interface UserInfo {
     /**
      * Full name of the user
      */
-    givenName: string;
+    givenName?: string;
     /**
      * Email adress
      */

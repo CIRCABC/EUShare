@@ -11,22 +11,14 @@
  */
 
 
-export interface FileBasics { 
+export interface RecipientWithLinkAllOf { 
     /**
-     * Expiration date of file
+     * Id of the recipient
      */
-    expirationDate: string;
+    recipientId: string;
     /**
-     * File is password-protected
+     * Download link to a specific file
      */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+    downloadLink: string;
 }
 

@@ -11,22 +11,10 @@
  */
 
 
-export interface FileBasics { 
+export interface UserResult { 
     /**
-     * Expiration date of file
+     * user Id
      */
-    expirationDate: string;
-    /**
-     * File is password-protected
-     */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+    userId: string;
 }
 

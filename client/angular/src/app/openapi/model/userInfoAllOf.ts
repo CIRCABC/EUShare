@@ -11,22 +11,26 @@
  */
 
 
-export interface FileBasics { 
+export interface UserInfoAllOf { 
     /**
-     * Expiration date of file
+     * User ID
      */
-    expirationDate: string;
+    id: string;
     /**
-     * File is password-protected
+     * Abreviated user name used for login
      */
-    hasPassword: boolean;
+    loginUsername: string;
     /**
-     * Filename
+     * Full name of the user
      */
-    name: string;
+    givenName?: string;
     /**
-     * Size of file (Bytes)
+     * Email adress
      */
-    size: number;
+    email: string;
+    /**
+     * True if the user is admin
+     */
+    isAdmin: boolean;
 }
 

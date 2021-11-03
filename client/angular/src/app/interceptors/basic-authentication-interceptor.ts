@@ -19,7 +19,7 @@ import { OAuthService } from 'angular-oauth2-oidc';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
-import { SessionService } from '../openapi';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,7 @@ import { SessionService } from '../openapi';
 export class BasicAuthenticationInterceptor implements HttpInterceptor {
   constructor(
     protected http: HttpClient,
-    private sessionService: SessionService,
+    private sessionService: SessionStorageService,
     private oAuthService: OAuthService
   ) {}
 

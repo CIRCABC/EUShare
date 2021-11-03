@@ -18,10 +18,10 @@ import {
 import { faUpload, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import {
   FileService,
+  FileResult,
   FileRequest,
   Recipient,
   UsersService,
-  SessionService,
   FileInfoUploader,
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
@@ -31,6 +31,7 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { I18nService } from '../common/i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Component({
   selector: 'app-upload',
@@ -54,7 +55,7 @@ export class UploadComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private sessionApi: SessionService,
+    private sessionApi: SessionStorageService,
     private userApi: UsersService,
     private fileApi: FileService,
     private notificationService: NotificationService,
@@ -483,12 +484,17 @@ export class UploadComponent implements OnInit {
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
         }
-        const fileId = await firstValueFrom(
+        const fileResult = await firstValueFrom(
           this.fileApi.postFileFileRequest(myFileRequest)
         );
         // do not use firstValueFrom bellow, because it does not work
         const fileInfoUploader = await this.fileApi
-          .postFileContent(fileId, this.getFileFromDisk(), 'events', true)
+          .postFileContent(
+            fileResult.fileId,
+            this.getFileFromDisk(),
+            'events',
+            true
+          )
           .pipe(map((event) => this.getEventMessage(event)))
           .toPromise();
 

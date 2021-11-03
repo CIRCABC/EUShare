@@ -1,12 +1,3 @@
-/*
-EasyShare - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "EasyShare" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -18,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/member-ordering */
+/* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams,
@@ -26,13 +17,14 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { FileInfoRecipient } from '../model/fileInfoRecipient';
-import { FileInfoUploader } from '../model/fileInfoUploader';
-import { Status } from '../model/status';
-import { UserInfo } from '../model/userInfo';
+import { FileInfoRecipient } from '../model/models';
+import { FileInfoUploader } from '../model/models';
+import { Status } from '../model/models';
+import { UserInfo } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
+
 
 
 @Injectable({
@@ -40,7 +32,7 @@ import { Configuration }                                     from '../configurat
 })
 export class UsersService {
 
-    protected basePath = 'http://localhost:8888';
+    protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
     public encoder: HttpParameterCodec;
@@ -60,19 +52,54 @@ export class UsersService {
 
 
 
+    private addToHttpParams(httpParams: HttpParams, value: any, key?: string): HttpParams {
+        if (typeof value === "object" && value instanceof Date === false) {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value);
+        } else {
+            httpParams = this.addToHttpParamsRecursive(httpParams, value, key);
+        }
+        return httpParams;
+    }
+
+    private addToHttpParamsRecursive(httpParams: HttpParams, value?: any, key?: string): HttpParams {
+        if (value == null) {
+            return httpParams;
+        }
+
+        if (typeof value === "object") {
+            if (Array.isArray(value)) {
+                (value as any[]).forEach( elem => httpParams = this.addToHttpParamsRecursive(httpParams, elem, key));
+            } else if (value instanceof Date) {
+                if (key != null) {
+                    httpParams = httpParams.append(key,
+                        (value as Date).toISOString().substr(0, 10));
+                } else {
+                   throw Error("key may not be null if value is Date");
+                }
+            } else {
+                Object.keys(value).forEach( k => httpParams = this.addToHttpParamsRecursive(
+                    httpParams, value[k], key != null ? `${key}.${k}` : k));
+            }
+        } else if (key != null) {
+            httpParams = httpParams.append(key, value);
+        } else {
+            throw Error("key may not be null if value is not object or array");
+        }
+        return httpParams;
+    }
+
     /**
      * Used by the INTERNAL users in order to search the files they have recieved
-     *
      * @param userID The id of the user
      * @param pageSize Number of files returned
      * @param pageNumber Page number
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean): Observable<Array<FileInfoRecipient>>;
-    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FileInfoRecipient>>>;
-    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FileInfoRecipient>>>;
-    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<FileInfoRecipient>>;
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<FileInfoRecipient>>>;
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<FileInfoRecipient>>>;
+    public getFilesFileInfoRecipient(userID: string, pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (userID === null || userID === undefined) {
             throw new Error('Required parameter userID was null or undefined when calling getFilesFileInfoRecipient.');
         }
@@ -85,49 +112,59 @@ export class UsersService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (pageSize !== undefined && pageSize !== null) {
-            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'pageSize');
         }
         if (pageNumber !== undefined && pageNumber !== null) {
-            queryParameters = queryParameters.set('pageNumber', <any>pageNumber);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageNumber, 'pageNumber');
         }
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Array<FileInfoRecipient>>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/files/fileInfoRecipient`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by the INTERNAL users in order to search their own files\&#39; FileInfoUploader
-     *
      * @param userID The id of the user
      * @param pageSize Number of files returned
      * @param pageNumber Page number
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean): Observable<Array<FileInfoUploader>>;
-    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<FileInfoUploader>>>;
-    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<FileInfoUploader>>>;
-    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<FileInfoUploader>>;
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<FileInfoUploader>>>;
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<FileInfoUploader>>>;
+    public getFilesFileInfoUploader(userID: string, pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (userID === null || userID === undefined) {
             throw new Error('Required parameter userID was null or undefined when calling getFilesFileInfoUploader.');
         }
@@ -140,87 +177,105 @@ export class UsersService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (pageSize !== undefined && pageSize !== null) {
-            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'pageSize');
         }
         if (pageNumber !== undefined && pageNumber !== null) {
-            queryParameters = queryParameters.set('pageNumber', <any>pageNumber);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageNumber, 'pageNumber');
         }
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Array<FileInfoUploader>>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/files/fileInfoUploader`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
-     * Used by the users in order to fetch their personnal information
-     *
+     * Used by the users in order to fetch their personal information
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUserUserInfo(userID: string, observe?: 'body', reportProgress?: boolean): Observable<UserInfo>;
-    public getUserUserInfo(userID: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserInfo>>;
-    public getUserUserInfo(userID: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserInfo>>;
-    public getUserUserInfo(userID: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getUserUserInfo(userID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<UserInfo>;
+    public getUserUserInfo(userID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<UserInfo>>;
+    public getUserUserInfo(userID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<UserInfo>>;
+    public getUserUserInfo(userID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (userID === null || userID === undefined) {
             throw new Error('Required parameter userID was null or undefined when calling getUserUserInfo.');
         }
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<UserInfo>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/userInfo`,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by the administrators in order to search for INTERNAL users\&#39; UserInfo
-     *
      * @param pageSize Number of persons returned
      * @param pageNumber Page number
      * @param searchString 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'body', reportProgress?: boolean): Observable<Array<UserInfo>>;
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<UserInfo>>>;
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<UserInfo>>>;
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<UserInfo>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<UserInfo>>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<UserInfo>>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
             throw new Error('Required parameter pageSize was null or undefined when calling getUsersUserInfo.');
         }
@@ -233,51 +288,62 @@ export class UsersService {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (pageSize !== undefined && pageSize !== null) {
-            queryParameters = queryParameters.set('pageSize', <any>pageSize);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageSize, 'pageSize');
         }
         if (pageNumber !== undefined && pageNumber !== null) {
-            queryParameters = queryParameters.set('pageNumber', <any>pageNumber);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>pageNumber, 'pageNumber');
         }
         if (searchString !== undefined && searchString !== null) {
-            queryParameters = queryParameters.set('searchString', <any>searchString);
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>searchString, 'searchString');
         }
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
 
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.get<Array<UserInfo>>(`${this.configuration.basePath}/users/userInfo`,
             {
                 params: queryParameters,
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by the administrators in order to update a specific INTERNAL user total space or admin status
-     *
      * @param userID The id of the user
      * @param userInfo 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'body', reportProgress?: boolean): Observable<UserInfo>;
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<UserInfo>>;
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<UserInfo>>;
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<UserInfo>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<UserInfo>>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<UserInfo>>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (userID === null || userID === undefined) {
             throw new Error('Required parameter userID was null or undefined when calling putUserUserInfo.');
         }
@@ -287,12 +353,15 @@ export class UsersService {
 
         let headers = this.defaultHeaders;
 
-        // authentication (openId) required
-        // to determine the Accept header
-        const httpHeaderAccepts: string[] = [
-            'application/json'
-        ];
-        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
@@ -307,13 +376,19 @@ export class UsersService {
             headers = headers.set('Content-Type', httpContentTypeSelected);
         }
 
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
         return this.httpClient.put<UserInfo>(`${this.configuration.basePath}/user/${encodeURIComponent(String(userID))}/userInfo`,
             userInfo,
             {
+                responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }

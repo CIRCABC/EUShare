@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SessionService } from '../../openapi';
+import { SessionStorageService } from '../../services/session-storage.service';
 
 @Component({
   selector: 'app-my-shared-files',
@@ -18,7 +18,7 @@ import { SessionService } from '../../openapi';
 export class MySharedFilesComponent implements OnInit {
   public myId!: string;
 
-  constructor(private session: SessionService, private router: Router) {}
+  constructor(private session: SessionStorageService, private router: Router) {}
 
   public ngOnInit() {
     const id = this.session.getStoredId();

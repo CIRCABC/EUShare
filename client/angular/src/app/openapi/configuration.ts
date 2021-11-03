@@ -1,12 +1,3 @@
-/*
-EasyShare - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "EasyShare" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
 import { HttpParameterCodec } from '@angular/common/http';
 
 export interface ConfigurationParameters {
@@ -42,11 +33,10 @@ export class Configuration {
      * Select the correct content-type to use for a request.
      * Uses {@link Configuration#isJsonMime} to determine the correct content-type.
      * If no content type is found return the first found type if the contentTypes is not empty
-     *
      * @param contentTypes - the array of content types that are available for selection
      * @returns the selected content-type or <code>undefined</code> if no selection could be made.
      */
-    public selectHeaderContentType(contentTypes: string[]): string | undefined {
+    public selectHeaderContentType (contentTypes: string[]): string | undefined {
         if (contentTypes.length === 0) {
             return undefined;
         }
@@ -62,7 +52,6 @@ export class Configuration {
      * Select the correct accept content-type to use for a request.
      * Uses {@link Configuration#isJsonMime} to determine the correct accept content-type.
      * If no content type is found return the first found type if the contentTypes is not empty
-     *
      * @param accepts - the array of content types that are available for selection.
      * @returns the selected content-type or <code>undefined</code> if no selection could be made.
      */
@@ -85,12 +74,11 @@ export class Configuration {
      *   application/json; charset=UTF8
      *   APPLICATION/JSON
      *   application/vnd.company+json
-     *
      * @param mime - MIME (Multipurpose Internet Mail Extensions)
      * @return True if the given MIME is JSON, false otherwise.
      */
     public isJsonMime(mime: string): boolean {
-        const jsonMime = new RegExp('^(application\/json|[^;/ \t]+\/[^;/ \t]+[+]json)[ \t]*(;.*)?$', 'i');
+        const jsonMime: RegExp = new RegExp('^(application\/json|[^;/ \t]+\/[^;/ \t]+[+]json)[ \t]*(;.*)?$', 'i');
         return mime !== null && (jsonMime.test(mime) || mime.toLowerCase() === 'application/json-patch+json');
     }
 }

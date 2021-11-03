@@ -10,9 +10,12 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { SessionService, UsersService } from '../openapi';
+import { UsersService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
+
 import { firstValueFrom } from 'rxjs';
+import { SessionStorageService } from '../services/session-storage.service';
+import { SessionService } from '../openapi';
 
 @Component({
   selector: 'app-call-back',
@@ -23,7 +26,8 @@ export class CallBackComponent implements OnInit {
   constructor(
     private userService: UsersService,
     private notificationService: NotificationService,
-    private api: SessionService,
+    private sessionStorageService: SessionStorageService,
+    private sessionService: SessionService,
     private oAuthService: OAuthService,
     private router: Router
   ) {}
@@ -36,7 +40,7 @@ export class CallBackComponent implements OnInit {
           this.notificationService.addSuccessMessageTranslation(
             'session.expired'
           );
-          this.api.logout();
+          this.sessionStorageService.logout();
           break;
         }
         case 'token_received':
@@ -64,11 +68,11 @@ export class CallBackComponent implements OnInit {
 
   public async loginAndRedirect() {
     try {
-      const identifier = await firstValueFrom(this.api.postLogin());
+      const identifier = await firstValueFrom(this.sessionService.postLogin());
       const userInfo = await firstValueFrom(
-        this.userService.getUserUserInfo(identifier)
+        this.userService.getUserUserInfo(identifier.userId)
       );
-      this.api.setStoredUserInfo(userInfo);
+      this.sessionStorageService.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('upload');
     } catch (e) {
       // managed in the interceptor

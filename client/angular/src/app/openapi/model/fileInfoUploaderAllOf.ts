@@ -9,24 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RecipientWithLink } from './recipientWithLink';
 
 
-export interface FileBasics { 
+export interface FileInfoUploaderAllOf { 
     /**
-     * Expiration date of file
+     * file id
      */
-    expirationDate: string;
+    fileId: string;
     /**
-     * File is password-protected
+     * User IDs this file is shared with
      */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+    sharedWith: Array<RecipientWithLink>;
 }
 

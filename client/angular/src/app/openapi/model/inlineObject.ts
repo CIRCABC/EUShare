@@ -11,22 +11,7 @@
  */
 
 
-export interface FileBasics { 
-    /**
-     * Expiration date of file
-     */
-    expirationDate: string;
-    /**
-     * File is password-protected
-     */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+export interface InlineObject { 
+    file?: Blob;
 }
 

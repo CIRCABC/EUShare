@@ -16,8 +16,8 @@ import {
   faUsersCog,
   faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
-import { SessionService } from '../openapi';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Component({
   selector: 'app-navbar',
@@ -36,20 +36,20 @@ export class NavbarComponent implements OnInit {
   public isBurgerActive = false;
 
   constructor(
-    private sessionService: SessionService,
+    private sessionService: SessionStorageService,
     private oAuthService: OAuthService
   ) {}
 
   ngOnInit() {
     const userInfo = this.sessionService.getStoredUserInfo();
     if (userInfo) {
-      this.userName = userInfo.givenName;
+      this.userName = userInfo.givenName as string;
       this.isAdmin = userInfo.isAdmin;
     }
 
     this.sessionService.userInfo$.subscribe({
       next: (secondUserInfo) => {
-        this.userName = secondUserInfo.givenName;
+        this.userName = secondUserInfo.givenName as string;
         this.isAdmin = secondUserInfo.isAdmin;
       },
       error: (_error) => {},
