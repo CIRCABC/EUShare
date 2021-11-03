@@ -25,7 +25,7 @@
     "doc-build-serve": "npx compodoc -p tsconfig.json -s -r 9090 -o",
     "gen-version": "openapi-generator-cli version",
     "gen-version-list": "openapi-generator-cli version-manager list",
-    "gen-eu-share-client": "rimraf src/app/openapi && openapi-generator-cli generate -i ./../../api.yaml -g typescript-angular -o src/app/openapi --additional-properties ngVersion=9.0.0,providedInRoot=true && npm run prettier && npm run tsc && npm run licchkadd",
+    "gen-eu-share-client": "rimraf src/app/openapi && openapi-generator-cli generate -i ./../../api.yaml -g typescript-angular -o src/app/openapi --additional-properties ngVersion=9.0.0,providedInRoot=true && npm run prettier && npm run tsc && npm run licchkadd && npm run lint-fix",
     "build-sm": "ng build -c=development",
     "source-map-explorer": "source-map-explorer dist/**/*.js",
     "i18n:extract": "transloco-keys-manager extract",
