@@ -480,7 +480,7 @@ public class FileApiControllerTest {
                 anyString(), anyList(), anyLong(), anyString());
         this.mockMvc.perform(MockMvcRequestBuilders.post("/file/fileRequest") // NOSONAR
                 .header("Authorization", "Bearer " + token).characterEncoding("utf-8").content(validFileRequestContent)
-                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN)).andDo(print())
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andDo(print())
                 .andExpect(status().isOk()).andExpect(content().string(containsString(fileID)));
     }
 
@@ -542,7 +542,7 @@ public class FileApiControllerTest {
                 .perform(MockMvcRequestBuilders.post("/file/fileRequest").header("Authorization",
                         "Bearer " + token)
                         .content(validFileRequestContent).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.TEXT_PLAIN))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -573,7 +573,7 @@ public class FileApiControllerTest {
                 .perform(MockMvcRequestBuilders.post("/file/fileRequest").header("Authorization",
                         "Bearer " + token)
                         .content(validFileRequestContent).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.TEXT_PLAIN))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -604,7 +604,7 @@ public class FileApiControllerTest {
                 .perform(MockMvcRequestBuilders.post("/file/fileRequest").header("Authorization",
                         "Bearer " + token)
                         .content(validFileRequestContent).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.TEXT_PLAIN))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -635,7 +635,7 @@ public class FileApiControllerTest {
                 .perform(MockMvcRequestBuilders.post("/file/fileRequest").header("Authorization",
                         "Bearer " + token)
                         .content(validFileRequestContent).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.TEXT_PLAIN))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -666,7 +666,7 @@ public class FileApiControllerTest {
                 .perform(MockMvcRequestBuilders.post("/file/fileRequest").header("Authorization",
                         "Bearer " + token)
                         .content(validFileRequestContent).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.TEXT_PLAIN))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -697,7 +697,7 @@ public class FileApiControllerTest {
                 .perform(MockMvcRequestBuilders.post("/file/fileRequest").header("Authorization",
                         "Bearer " + token)
                         .content(validFileRequestContent).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.TEXT_PLAIN))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }
@@ -727,7 +727,7 @@ public class FileApiControllerTest {
                 .perform(MockMvcRequestBuilders.post("/file/fileRequest").header("Authorization",
                         "Bearer " + token)
                         .content(validFileRequestContent).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.TEXT_PLAIN))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isInternalServerError())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
     }

@@ -10,55 +10,32 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Status
+ * FileResult
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class Status   {
-  @JsonProperty("code")
-  private Integer code;
+public class FileResult   {
+  @JsonProperty("fileId")
+  private String fileId;
 
-  @JsonProperty("message")
-  private String message;
-
-  public Status code(Integer code) {
-    this.code = code;
+  public FileResult fileId(String fileId) {
+    this.fileId = fileId;
     return this;
   }
 
   /**
-   * Status code
-   * @return code
+   * file Id
+   * @return fileId
   */
-  @ApiModelProperty(required = true, value = "Status code")
+  @ApiModelProperty(required = true, value = "file Id")
   @NotNull
 
 
-  public Integer getCode() {
-    return code;
+  public String getFileId() {
+    return fileId;
   }
 
-  public void setCode(Integer code) {
-    this.code = code;
-  }
-
-  public Status message(String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Additional message
-   * @return message
-  */
-  @ApiModelProperty(value = "Additional message")
-
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
+  public void setFileId(String fileId) {
+    this.fileId = fileId;
   }
 
 
@@ -70,23 +47,21 @@ public class Status   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Status status = (Status) o;
-    return Objects.equals(this.code, status.code) &&
-        Objects.equals(this.message, status.message);
+    FileResult fileResult = (FileResult) o;
+    return Objects.equals(this.fileId, fileResult.fileId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message);
+    return Objects.hash(fileId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Status {\n");
+    sb.append("class FileResult {\n");
     
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -122,7 +122,7 @@ public class ApiControllerITest {
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
     ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(userRepository.findOneByEmailIgnoreCase("email@email.com").getId(), entity.getBody());
+    assert(entity.getBody().contains(userRepository.findOneByEmailIgnoreCase("email@email.com").getId()));
   }
 
   @Test
@@ -130,7 +130,7 @@ public class ApiControllerITest {
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
     ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(userRepository.findOneByEmailIgnoreCase("email@email.com").getId(), entity.getBody());
+    assert(entity.getBody().contains(userRepository.findOneByEmailIgnoreCase("email@email.com").getId()) );
   }
 
   @Test

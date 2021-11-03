@@ -25,6 +25,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
+import eu.europa.circabc.eushare.model.User;
+import eu.europa.circabc.eushare.model.UserResult;
 import eu.europa.circabc.eushare.services.UserService;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
@@ -49,10 +51,11 @@ public class LoginApiController implements LoginApi {
     }
 
     @Override
-    public ResponseEntity<String> postLogin() {
+    public ResponseEntity<UserResult> postLogin() {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            return new ResponseEntity<String>(userService.getAuthenticatedUserId(authentication), HttpStatus.OK);
+            String userId= userService.getAuthenticatedUserId(authentication);
+            return new ResponseEntity<>((new UserResult()).userId(userId), HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
             log.debug("wrong authentication !");
             ResponseStatusException responseStatusException = new ResponseStatusException(HttpStatus.UNAUTHORIZED,

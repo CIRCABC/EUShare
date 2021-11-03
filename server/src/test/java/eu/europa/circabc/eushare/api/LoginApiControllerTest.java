@@ -84,7 +84,7 @@ public class LoginApiControllerTest {
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/login").header("Authorization", "Bearer " + token).content("")
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isOk()).andExpect(content().string(containsString("testId")));
     }
 
@@ -120,7 +120,7 @@ public class LoginApiControllerTest {
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/login").header("Authorization", "Bearer " + token).content("")
-                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.TEXT_PLAIN))
+                        .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isInternalServerError())
                 .andExpect(content().string(containsString(LoginApiControllerTest.asJsonString(status))));
     }

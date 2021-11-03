@@ -56,6 +56,7 @@ import eu.europa.circabc.eushare.exceptions.WrongNameStructureException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
+import eu.europa.circabc.eushare.model.FileResult;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.model.validation.FileRequestValidator;
@@ -161,7 +162,7 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<String> postFileFileRequest(@RequestBody(required = false) FileRequest fileRequest) {
+    public ResponseEntity<FileResult> postFileFileRequest(@RequestBody(required = false) FileRequest fileRequest) {
         if (!FileRequestValidator.validate(fileRequest)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
         }
@@ -171,7 +172,7 @@ public class FileApiController implements FileApi {
             String fileId = fileService.allocateFileOnBehalfOf(fileRequest.getExpirationDate(), fileRequest.getName(),
                     fileRequest.getPassword(), requesterId, fileRequest.getSharedWith(),
                     fileRequest.getSize().longValue(), requesterId);
-            return new ResponseEntity<>(fileId, HttpStatus.OK);
+            return new ResponseEntity<>((new FileResult()).fileId(fileId), HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
             log.debug("wrong authentication !");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),

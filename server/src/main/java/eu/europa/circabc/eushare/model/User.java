@@ -10,55 +10,32 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Status
+ * User
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class Status   {
-  @JsonProperty("code")
-  private Integer code;
+public class User   {
+  @JsonProperty("userId")
+  private String userId;
 
-  @JsonProperty("message")
-  private String message;
-
-  public Status code(Integer code) {
-    this.code = code;
+  public User userId(String userId) {
+    this.userId = userId;
     return this;
   }
 
   /**
-   * Status code
-   * @return code
+   * user Id
+   * @return userId
   */
-  @ApiModelProperty(required = true, value = "Status code")
+  @ApiModelProperty(required = true, value = "user Id")
   @NotNull
 
 
-  public Integer getCode() {
-    return code;
+  public String getUserId() {
+    return userId;
   }
 
-  public void setCode(Integer code) {
-    this.code = code;
-  }
-
-  public Status message(String message) {
-    this.message = message;
-    return this;
-  }
-
-  /**
-   * Additional message
-   * @return message
-  */
-  @ApiModelProperty(value = "Additional message")
-
-
-  public String getMessage() {
-    return message;
-  }
-
-  public void setMessage(String message) {
-    this.message = message;
+  public void setUserId(String userId) {
+    this.userId = userId;
   }
 
 
@@ -70,23 +47,21 @@ public class Status   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Status status = (Status) o;
-    return Objects.equals(this.code, status.code) &&
-        Objects.equals(this.message, status.message);
+    User user = (User) o;
+    return Objects.equals(this.userId, user.userId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message);
+    return Objects.hash(userId);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Status {\n");
+    sb.append("class User {\n");
     
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
     sb.append("}");
     return sb.toString();
   }
