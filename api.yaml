@@ -29,9 +29,9 @@ paths:
         200:
           description: Returns the user id to use in all other requests
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/UserResult'
         401:
           description: UNAUTHORIZED the Error message will be empty
           content:
@@ -164,7 +164,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
     get:
-      description: Used by the users in order to fetch their personnal information
+      description: Used by the users in order to fetch their personal information
       operationId: getUserUserInfo
       tags:
       - Users
@@ -445,9 +445,9 @@ paths:
         200:
           description: SUCCESS Returns the File ID of the newly-created file
           content:
-            text/plain:
+            application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/FileResult'
         400:
           description: BAD REQUEST the Error Message will be empty
           content:
@@ -836,3 +836,19 @@ components:
       required:
       - totalSpace
       - usedSpace
+    UserResult:
+      type: object
+      properties:
+        userId:
+          description: user Id
+          type: string
+      required:
+      - userId
+    FileResult:
+      type: object
+      properties:
+        fileId:
+          description: file Id
+          type: string
+      required:
+      - fileId
