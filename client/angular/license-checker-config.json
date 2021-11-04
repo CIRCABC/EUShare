@@ -18,6 +18,8 @@
     "**/*.scss",
     "**/*.js",
     "**/*.svg",
-    "**/*.conf"
+    "**/*.conf",
+    "client/angular/src/app/openapi/**",
+    ".angular/cache/**"
   ]
 }
