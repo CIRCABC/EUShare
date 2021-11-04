@@ -20,6 +20,7 @@
     "**/*.svg",
     "**/*.conf",
     "client/angular/src/app/openapi/**",
-    ".angular/cache/**"
+    ".angular/cache/**",
+    ".cache/**"
   ]
 }
