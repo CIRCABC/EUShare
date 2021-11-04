@@ -15,7 +15,12 @@
     "target": "es5",
     "typeRoots": ["node_modules/@types"],
     "strict": true,
-    "lib": ["es2017", "dom"]
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "lib": ["es2020", "dom"]
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

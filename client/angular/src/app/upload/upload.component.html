@@ -41,10 +41,10 @@
               class="label error"
               *ngIf="
                 uf['fileFromDisk'].errors &&
-                uf['fileFromDisk'].errors.forbiddenFileSize
+                uf['fileFromDisk'].errors['forbiddenFileSize']
               "
               >File size bigger than
-              {{ uf["fileFromDisk"].errors.forbiddenFileSize.value }} bytes
+              {{ uf["fileFromDisk"].errors['forbiddenFileSize'].value }} bytes
             </label>
           </div>
         </div>
