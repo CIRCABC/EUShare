@@ -13,7 +13,7 @@ eushare:
     - /eushare/
 logging:
   level:
-    org.springframework: ERROR
+    org.springframework: DEBUG
     org.hibernate.SQL: ERROR
 spring:
   profiles:

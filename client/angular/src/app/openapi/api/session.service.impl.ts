@@ -32,9 +32,13 @@ export class Actor {
     azp!: string;
 }
 
+import {
+    HttpClient, HttpHeaders, HttpParams
+} from '@angular/common/http';
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { Observable, Subject } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { KeyStoreService } from '../../services/key-store.service';
 import { Configuration } from '../configuration';
@@ -42,12 +46,6 @@ import { UserInfo } from '../model/userInfo';
 import { BASE_PATH } from '../variables';
 import { SessionService } from './session.service';
 
-import {
-    HttpClient, HttpHeaders, HttpParams,
-    HttpResponse, HttpEvent, HttpParameterCodec
-} from '@angular/common/http';
-import { CustomHttpParameterCodec } from '../encoder';
-import { Observable, Subject } from 'rxjs';
 
 
 
