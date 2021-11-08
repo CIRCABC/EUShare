@@ -191,8 +191,6 @@
                         <licenseSet>
                             <header>LICENSE_HEADER.txt</header>
                             <excludes>
-                                <exclude>src/main/java/eu/europa/circabc/eushare/api/**</exclude>
-                                <exclude>src/main/java/eu/europa/circabc/eushare/model/**</exclude>
                                 <exclude>build.sh</exclude>
                                 <exclude>.settings/**</exclude>
                                 <exclude>.vscode</exclude>
