@@ -63,7 +63,7 @@ public class FileRequest   {
   @NotNull
 
   @Valid
-@Pattern(regexp="/([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/") 
+
   public LocalDate getExpirationDate() {
     return expirationDate;
   }
