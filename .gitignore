@@ -55,3 +55,4 @@ server/src/main/resources/application-prod.yaml
 server/src/main/resources/application-dev.yaml
 server/.openapi-generator
 client/angular/.cache/
+server/.openapi-generator/api.yaml.sha256
