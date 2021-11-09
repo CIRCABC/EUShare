@@ -55,7 +55,6 @@ import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.model.Status;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
@@ -105,9 +104,8 @@ public class FileApiControllerTest {
         fileRequest.setName("name");
         fileRequest.setSize(new BigDecimal(1024));
         Recipient recipient = new Recipient();
-        recipient.setEmailOrName("email@email.com");
+        recipient.setEmail("email@email.com");
         recipient.setMessage("message");
-        recipient.setSendEmail(true);
         validRecipient = FileApiControllerTest.asJsonString(recipient);
         fileRequest.setSharedWith(Arrays.asList(recipient));
         validFileRequestContent = FileApiControllerTest.asJsonString(fileRequest);
@@ -734,11 +732,11 @@ public class FileApiControllerTest {
 
     @Test
     public void postFileSharedWith200() throws Exception {// NOSONAR
-        RecipientWithLink recipientWithLink = new RecipientWithLink();
-        recipientWithLink.setEmailOrName("email@email.com");
+        Recipient recipientWithLink = new Recipient();
+        recipientWithLink.setEmail("email@email.com");
         recipientWithLink.setMessage("message");
-        recipientWithLink.setSendEmail(true);
-        recipientWithLink.setRecipientId("recipientId");
+  
+
 
         String token = "StupidToken";
 
@@ -767,12 +765,11 @@ public class FileApiControllerTest {
     public void postFileSharedWith400() throws Exception {// NOSONAR
         Status status = new Status();
         status.setCode(400);
-        RecipientWithLink recipientWithLink = new RecipientWithLink();
-        recipientWithLink.setEmailOrName("email@email.com");
+        Recipient recipientWithLink = new Recipient();
+        recipientWithLink.setEmail("email@email.com");
         recipientWithLink.setMessage("message");
-        recipientWithLink.setSendEmail(true);
-        recipientWithLink.setRecipientId("recipientId");
 
+        
         String token = "StupidToken";
 
         Map<String, Object> attributes = new HashMap<>();
@@ -802,11 +799,10 @@ public class FileApiControllerTest {
     public void postFileSharedWith401ForNoAuthentication() throws Exception {// NOSONAR
         Status status = new Status();
         status.setCode(401);
-        RecipientWithLink recipientWithLink = new RecipientWithLink();
-        recipientWithLink.setEmailOrName("email@email.com");
+        Recipient recipientWithLink = new Recipient();
+        recipientWithLink.setEmail("email@email.com");
         recipientWithLink.setMessage("message");
-        recipientWithLink.setSendEmail(true);
-        recipientWithLink.setRecipientId("recipientId");
+
 
         when(fileService.addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString()))
                 .thenReturn(recipientWithLink);
@@ -824,11 +820,10 @@ public class FileApiControllerTest {
         String token = "StupidToken";
         when(opaqueTokenIntrospector.introspect(anyString())).thenThrow(new OAuth2IntrospectionException(""));
 
-        RecipientWithLink recipientWithLink = new RecipientWithLink();
-        recipientWithLink.setEmailOrName("email@email.com");
+        Recipient recipientWithLink = new Recipient();
+        recipientWithLink.setEmail("email@email.com");
         recipientWithLink.setMessage("message");
-        recipientWithLink.setSendEmail(true);
-        recipientWithLink.setRecipientId("recipientId");
+
 
         when(fileService.addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString()))
                 .thenReturn(recipientWithLink);

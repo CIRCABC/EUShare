@@ -33,7 +33,6 @@ import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBUser;
@@ -425,7 +424,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
+    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
     userFileRepository.save(dbUserFile);
     userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
@@ -460,7 +459,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
+    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
     userFileRepository.save(dbUserFile);
     userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
@@ -497,7 +496,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
+    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
     userFileRepository.save(dbUserFile);
     userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
@@ -708,9 +707,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+  
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(fileRequest));
@@ -730,9 +729,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(fileRequest));
@@ -754,9 +753,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -781,9 +780,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(0));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(fileRequest));
@@ -814,19 +813,18 @@ public class ApiControllerITest {
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("EMAIL@EMAIL.COM");
+    recipient.setEmail("EMAIL@EMAIL.COM");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient),
         "emailA@email.com", "stupidUsername");
 
-    ResponseEntity<RecipientWithLink> entity = this.testRestTemplate.exchange(
-        "/file/" + dbFile.getId() + "/fileRequest/sharedWith", HttpMethod.POST, httpEntity, RecipientWithLink.class);
+    ResponseEntity<Recipient> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith", HttpMethod.POST, httpEntity, Recipient.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(recipient.getEmailOrName(), entity.getBody().getEmailOrName());
-    assertEquals(recipient.getSendEmail(), entity.getBody().getSendEmail());
+    assertEquals(recipient.getEmail(), entity.getBody().getEmail());
     assertEquals(recipient.getMessage(), entity.getBody().getMessage());
   }
 
@@ -849,9 +847,8 @@ public class ApiControllerITest {
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName(null);
+    recipient.setEmail(null);
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient),
         "emailA@email.com", "stupidUsername");
@@ -882,9 +879,9 @@ public class ApiControllerITest {
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName(null);
+    recipient.setEmail(null);
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+   
 
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -917,9 +914,8 @@ public class ApiControllerITest {
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
 
@@ -934,9 +930,8 @@ public class ApiControllerITest {
   @DirtiesContext
   public void postFileSharedWith404() {
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
 
@@ -1106,7 +1101,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
+    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
     userFileRepository.save(dbUserFile);
     userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
@@ -1135,7 +1130,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
+    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
     userFileRepository.save(dbUserFile);
     userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
@@ -1165,7 +1160,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
+    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
     userFileRepository.save(dbUserFile);
     userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done

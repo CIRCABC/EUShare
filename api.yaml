@@ -497,11 +497,11 @@ paths:
                 $ref: '#/components/schemas/Recipient'
       responses:
         200:
-          description: SUCCESS Returns the RecipientWithLink for the added recipient
+          description: SUCCESS Returns the Recipient for the added recipient
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RecipientWithLink'
+                $ref: '#/components/schemas/Recipient'
         400:
           description: BAD REQUEST the Error Message will be empty
           content:
@@ -708,7 +708,7 @@ components:
               description: User IDs this file is shared with
               type: array
               items:
-                $ref: '#/components/schemas/RecipientWithLink'
+                $ref: '#/components/schemas/Recipient'
               minItems: 1
               maxItems: 10
           required:
@@ -772,32 +772,24 @@ components:
             - fileBytes
     Recipient:
       properties:
-        emailOrName:
-          description: Email or name of the recipient
+        email:
+          description: Email of the recipient
           type: string
         message: 
           description: Optional message to send
           type: string
-        sendEmail:
-          description: True to send an email with the download link
-          type: boolean
+        downloadLink:
+          description: Download link to a specific file
+          type: string
+        shortUrl:
+          description: Short link to a specific file
+          type: string
       required:
         - emailOrName
         - sendEmail
-    RecipientWithLink:
-      allOf:
-        - $ref: '#/components/schemas/Recipient'
-        - type: object
-          properties:
-            recipientId:
-              description: Id of the recipient
-              type: string
-            downloadLink:
-              description: Download link to a specific file
-              type: string
-          required:
-          - downloadLink
-          - recipientId
+        - downloadLink
+        - shortUrl
+
     UserInfo:
       allOf:
         - $ref: '#/components/schemas/UserSpace'

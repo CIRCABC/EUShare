@@ -17,5 +17,5 @@ public interface UserFileRepository extends CrudRepository<DBUserFile, String> {
     DBUserFile findOneByDownloadId(String downloadId);
     List<DBUserFile> findByFile_id(String fileId);
     void deleteByDownloadId(String downloadId);
-    void deleteByReceiver_idAndFile_id(String receiverId, String fileId);
+    void deleteByReceiverAndFile_id(String receiver, String fileId);
 }

@@ -78,33 +78,7 @@ public class DBUser {
         this.role = role;
     }
 
-     /**
-     * Create a new user with specified role {@code LINK}
-     */
-    public static DBUser createLinkUser(String name) throws IllegalArgumentException {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
-        DBUser dbUser = new DBUser(0, Role.LINK);
-        dbUser.setName(name);
-        return dbUser;
-    }
 
-    /**
-     * Create a new user with specified role {@code EXTERNAL}
-     */
-    public static DBUser createExternalUser(String mail, String name) throws IllegalArgumentException {
-        if (mail == null && name == null) {
-            throw new IllegalArgumentException();
-        }
-        DBUser dbUser = new DBUser(0, Role.EXTERNAL);
-        if (mail != null) {
-            String upperCaseEmail = mail.toUpperCase();
-            dbUser.setEmail(upperCaseEmail);
-        }
-        dbUser.setName(name);
-        return dbUser;
-    }
 
     /**
      * Create a new user with specified role {@code INTERNAL}
@@ -179,7 +153,6 @@ public class DBUser {
     }
 
     public enum Role {
-        LINK, // A user representing a share by link
         EXTERNAL, // A user added by another, non active yet. Has an email address and nothing else.
         INTERNAL, // An active user. Has an email, a name and a username.
         ADMIN, // An internal user with extra advantage

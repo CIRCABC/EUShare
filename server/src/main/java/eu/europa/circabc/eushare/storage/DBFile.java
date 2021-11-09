@@ -35,39 +35,41 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
+import eu.europa.circabc.eushare.model.Recipient;
 
 
 @Entity
 @Table(name = "Files")
 public class DBFile {
-    @Column(nullable = false)
-    private LocalDate expirationDate;
-
-    @Column(nullable = false)
-    private String filename;
 
     @Id
     @Column(name = "FILE_ID", nullable = false, unique = true)
     private String id;
 
     @Column(nullable = false)
-    private LocalDateTime lastModified = LocalDateTime.now();
-
-    private String password;
+    private String filename;
 
     @Column(nullable = false)
     private String path;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
-    private Set<DBUserFile> sharedWith;
-
     @Column(name = "fileSize", nullable = false)
     private long size;
+
+    @Column(nullable = false)
+    private LocalDate expirationDate;
+
+    @Column(nullable = false)
+    private LocalDateTime lastModified = LocalDateTime.now();
+
+    private String password;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status = Status.ALLOCATED;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
+    private Set<DBUserFile> sharedWith;
+
 
     @ManyToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_uploader"))
@@ -97,7 +99,7 @@ public class DBFile {
     private DBFile() {
     }
 
-    public FileInfoRecipient toFileInfoRecipient(String recipientId) {
+    public FileInfoRecipient toFileInfoRecipient(String recipient) {
         FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();
         fileInfoRecipient.setExpirationDate(this.expirationDate);
         fileInfoRecipient.setHasPassword(this.password != null);
@@ -105,7 +107,7 @@ public class DBFile {
         fileInfoRecipient.setSize(new BigDecimal(this.size));
         fileInfoRecipient.setUploaderName(this.uploader.getName());
         for (DBUserFile dbUserFile : this.getSharedWith()) {
-            if(dbUserFile.getReceiver().getId().equals(recipientId)) {
+            if(dbUserFile.getReceiver().equals(recipient)) {
                 fileInfoRecipient.setFileId(dbUserFile.getDownloadId());
             }
         }
@@ -114,8 +116,8 @@ public class DBFile {
 
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
-        List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream()
-                .map(DBUserFile::toRecipientWithLink).collect(Collectors.toList());
+        List<Recipient> sharedWithRecipients = this.getSharedWith().stream()
+                .map(DBUserFile::toRecipient).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);

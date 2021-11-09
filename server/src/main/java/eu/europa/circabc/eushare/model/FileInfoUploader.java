@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploaderAllOf;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
+import eu.europa.circabc.eushare.model.Recipient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
@@ -48,7 +48,7 @@ public class FileInfoUploader   {
 
   @JsonProperty("sharedWith")
   @Valid
-  private List<RecipientWithLink> sharedWith = new ArrayList<>();
+  private List<Recipient> sharedWith = new ArrayList<>();
 
   public FileInfoUploader expirationDate(LocalDate expirationDate) {
     this.expirationDate = expirationDate;
@@ -63,7 +63,7 @@ public class FileInfoUploader   {
   @NotNull
 
   @Valid
-
+@Pattern(regexp="/([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/") 
   public LocalDate getExpirationDate() {
     return expirationDate;
   }
@@ -158,12 +158,12 @@ public class FileInfoUploader   {
     this.fileId = fileId;
   }
 
-  public FileInfoUploader sharedWith(List<RecipientWithLink> sharedWith) {
+  public FileInfoUploader sharedWith(List<Recipient> sharedWith) {
     this.sharedWith = sharedWith;
     return this;
   }
 
-  public FileInfoUploader addSharedWithItem(RecipientWithLink sharedWithItem) {
+  public FileInfoUploader addSharedWithItem(Recipient sharedWithItem) {
     this.sharedWith.add(sharedWithItem);
     return this;
   }
@@ -177,11 +177,11 @@ public class FileInfoUploader   {
 
   @Valid
 @Size(min=1,max=10) 
-  public List<RecipientWithLink> getSharedWith() {
+  public List<Recipient> getSharedWith() {
     return sharedWith;
   }
 
-  public void setSharedWith(List<RecipientWithLink> sharedWith) {
+  public void setSharedWith(List<Recipient> sharedWith) {
     this.sharedWith = sharedWith;
   }
 

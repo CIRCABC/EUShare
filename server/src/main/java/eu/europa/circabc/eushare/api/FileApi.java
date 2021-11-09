@@ -18,7 +18,6 @@ import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.FileResult;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.model.Status;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -217,17 +216,17 @@ public interface FileApi {
      *
      * @param fileID The id of the file (required)
      * @param recipient The userID or email of user to share the file with (required)
-     * @return SUCCESS Returns the RecipientWithLink for the added recipient (status code 200)
+     * @return SUCCESS Returns the Recipient for the added recipient (status code 200)
      *         or BAD REQUEST the Error Message will be empty (status code 400)
      *         or UNAUTHORIZED the Error message will be empty (status code 401)
      *         or FORBIDDEN the Error message will be NotAuthorized, WrongEmailStructure, WrongNameStructure, MessageTooLong (status code 403)
      *         or NOT FOUND the Error Message will be empty (status code 404)
      *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
      */
-    @ApiOperation(value = "", nickname = "postFileSharedWith", notes = "Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required", response = RecipientWithLink.class, authorizations = {
+    @ApiOperation(value = "", nickname = "postFileSharedWith", notes = "Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required", response = Recipient.class, authorizations = {
          }, tags={ "File", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS Returns the RecipientWithLink for the added recipient", response = RecipientWithLink.class),
+        @ApiResponse(code = 200, message = "SUCCESS Returns the Recipient for the added recipient", response = Recipient.class),
         @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
         @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
         @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, WrongEmailStructure, WrongNameStructure, MessageTooLong", response = Status.class),
@@ -238,11 +237,11 @@ public interface FileApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<RecipientWithLink> postFileSharedWith(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The userID or email of user to share the file with" ,required=true )  @Valid @RequestBody Recipient recipient) {
+    default ResponseEntity<Recipient> postFileSharedWith(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The userID or email of user to share the file with" ,required=true )  @Valid @RequestBody Recipient recipient) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "null";
+                    String exampleString = "{ \"downloadLink\" : \"downloadLink\", \"shortUrl\" : \"shortUrl\", \"message\" : \"message\", \"email\" : \"email\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

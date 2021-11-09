@@ -9,6 +9,7 @@
  */
 package eu.europa.circabc.eushare.storage;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
@@ -17,8 +18,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
-
 
 @Entity
 @Table(name = "users_to_files")
@@ -27,13 +26,15 @@ public class DBUserFile {
     @Id
     private String downloadId;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(foreignKey= @ForeignKey(name = "Fk_to_user"))
-    private DBUser receiver;
+    @Column(nullable = false)
+    private String receiver;
 
     @ManyToOne(optional = false)
-    @JoinColumn(foreignKey= @ForeignKey(name = "Fk_to_file"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_file"))
     private DBFile file;
+
+    @Column(nullable = false)
+    private String shorturl;
 
     private String message;
 
@@ -41,17 +42,17 @@ public class DBUserFile {
 
     }
 
-    public DBUserFile(String downloadId, DBUser user, DBFile file) {
-        this.downloadId =  downloadId;
-        this.receiver = user;
+    public DBUserFile(String downloadId, String receiver, DBFile file) {
+        this.downloadId = downloadId;
+        this.receiver = receiver;
         this.file = file;
     }
 
-    public DBUserFile(String downloadId, DBUser user, DBFile file, String message) {
-        this.downloadId =  downloadId;
-        this.receiver = user;
+    public DBUserFile(String downloadId, String receiver, DBFile file, String message) {
+        this.downloadId = downloadId;
+        this.receiver = receiver;
         this.file = file;
-        if(message != null) {
+        if (message != null) {
             this.message = message;
         }
     }
@@ -61,13 +62,13 @@ public class DBUserFile {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof DBUserFile)){
+        if (!(o instanceof DBUserFile)) {
             return false;
         }
         DBUserFile other = (DBUserFile) o;
         return (downloadId != null && downloadId.equals(other.getDownloadId()));
     }
- 
+
     @Override
     public int hashCode() {
         return downloadId.hashCode();
@@ -75,30 +76,10 @@ public class DBUserFile {
 
     public Recipient toRecipient() {
         Recipient recipient = new Recipient();
-        if (this.getReceiver().getEmail() != null){
-            recipient.setEmailOrName(this.getReceiver().getEmail());
-            recipient.setSendEmail(true);
-        } else {
-            recipient.setEmailOrName(this.getReceiver().getName());
-            recipient.setSendEmail(false);
-        }
+        recipient.setEmail(this.getReceiver());
+        recipient.setShortUrl(this.getShorturl());
         recipient.setMessage(this.getMessage());
         return recipient;
-    }
-
-    public RecipientWithLink toRecipientWithLink(){
-        RecipientWithLink recipientWithLink = new RecipientWithLink();
-        if (this.getReceiver().getEmail() != null){
-            recipientWithLink.setEmailOrName(this.getReceiver().getEmail());
-            recipientWithLink.setSendEmail(true);
-        } else {
-            recipientWithLink.setEmailOrName(this.getReceiver().getName());
-            recipientWithLink.setSendEmail(false);
-        }
-        recipientWithLink.setRecipientId(this.getReceiver().getId());
-        recipientWithLink.setMessage(this.getMessage());
-        recipientWithLink.setDownloadLink(this.getDownloadId());
-        return recipientWithLink;
     }
 
     public String getDownloadId() {
@@ -109,11 +90,11 @@ public class DBUserFile {
         this.downloadId = downloadId;
     }
 
-    public DBUser getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(DBUser receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
@@ -133,5 +114,12 @@ public class DBUserFile {
         this.message = message;
     }
 
-    
+    public String getShorturl() {
+        return shorturl;
+    }
+
+    public void setShorturl(String shorturl) {
+        this.shorturl = shorturl;
+    }
+
 }

@@ -58,7 +58,6 @@ import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.FileResult;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.model.validation.FileRequestValidator;
 import eu.europa.circabc.eushare.model.validation.RecipientValidator;
 import eu.europa.circabc.eushare.services.FileService;
@@ -247,7 +246,7 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<RecipientWithLink> postFileSharedWith(@PathVariable("fileID") String fileID,
+    public ResponseEntity<Recipient> postFileSharedWith(@PathVariable("fileID") String fileID,
             @RequestBody Recipient recipient) {
         if (!RecipientValidator.validate(recipient)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
@@ -255,7 +254,7 @@ public class FileApiController implements FileApi {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
-            RecipientWithLink recipientWithLink = fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
+            Recipient recipientWithLink = fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
             return new ResponseEntity<>(recipientWithLink, HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),

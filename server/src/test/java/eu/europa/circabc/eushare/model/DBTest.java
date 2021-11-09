@@ -47,15 +47,7 @@ public class DBTest {
     @Autowired
     UserFileRepository userFileRepository;
 
-    @Test
-    @Transactional
-    public void creationOfanExternalUserTest() {
-        DBUser dbUser = DBUser.createExternalUser("emailA@email.com", null);
-        dbUser = userRepository.save(dbUser);
-        assertEquals(dbUser, userRepository.findOneByEmailIgnoreCase("emailA@email.com"));
-        assertEquals(dbUser, userRepository.findOneByName(null));
-        assertEquals(dbUser, userRepository.findOneByUsername(null));
-    }
+
 
     @Test
     @Transactional
@@ -89,23 +81,18 @@ public class DBTest {
         DBFile dbFileSaved = fileRepository.findOneById("id");
         assertEquals(dbFile, dbFileSaved);
 
-        DBUser shareUser = DBUser.createExternalUser("emailExternal@email.com", null); // NOSONAR
-        userRepository.save(shareUser);
+  
 
-        // Verify insertion
-        DBUser shareUserSaved = userRepository.findOneByEmailIgnoreCase("emailExternal@email.com");
-        assertEquals(shareUser, shareUserSaved);
-
-        DBUserFile dbUserFile = new DBUserFile("downloadId", shareUser, dbFile);
+        DBUserFile dbUserFile = new DBUserFile("downloadId","emailExternal@email.com", dbFile);
         userFileRepository.save(dbUserFile);
 
         // Verify insertion
         DBUserFile dbUserFileSaved = userFileRepository.findOneByDownloadId("downloadId");
-        assertEquals(new DBUserFile("downloadId", shareUser, dbFile), dbUserFileSaved);
+        assertEquals(new DBUserFile("downloadId", "emailExternal@email.com", dbFile), dbUserFileSaved);
 
         // Verify deletion
         // userFileRepository.deleteByDownloadId("downloadId");
-        userFileRepository.deleteByReceiver_idAndFile_id(shareUserSaved.getId(), dbFileSaved.getId());
+        userFileRepository.deleteByReceiverAndFile_id("emailExternal@email.com", dbFileSaved.getId());
         DBUserFile dbUserFileDeleted = userFileRepository.findOneByDownloadId("downloadId");
         assertEquals(null, dbUserFileDeleted);
 
@@ -125,14 +112,11 @@ public class DBTest {
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
 
-        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name");
-        userRepository.save(shareUser);
-
-        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
+        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), "email2@email.com", dbFile);
         userFileRepository.save(dbUserFile);
 
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Receiver_Id(DBFile.Status.AVAILABLE,
-                shareUser.getId(), PageRequest.of(0, 10));
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Receiver(DBFile.Status.AVAILABLE,
+        "email2@email.com", PageRequest.of(0, 10));
 
         assertEquals(1, shareUsersFiles.size());
         assertEquals(dbFile, shareUsersFiles.get(0));
@@ -141,7 +125,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByReceiverWhereNothingIsThere() {
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Receiver_Id(DBFile.Status.AVAILABLE,
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Receiver(DBFile.Status.AVAILABLE,
                 "fakeID", PageRequest.of(1, 10));
         assertNotNull(shareUsersFiles);
         assertEquals(0, shareUsersFiles.size());
@@ -159,10 +143,7 @@ public class DBTest {
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
 
-        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name");
-        userRepository.save(shareUser);
-
-        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
+        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), "email2@email.com", dbFile);
         userFileRepository.save(dbUserFile);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_Id(DBFile.Status.AVAILABLE,
@@ -205,10 +186,7 @@ public class DBTest {
         dbFile3.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile3);
 
-        DBUser shareUser = DBUser.createExternalUser("email2@email.com", "name");
-        userRepository.save(shareUser);
-
-        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), shareUser, dbFile);
+        DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), "email2@email.com", dbFile);
         userFileRepository.save(dbUserFile);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(

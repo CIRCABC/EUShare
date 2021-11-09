@@ -56,7 +56,6 @@ import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.DBUserFile;
@@ -122,11 +121,7 @@ public class FileService implements FileServiceInterface {
                 fileDeletion = Files.deleteIfExists(path);
                 if (fileDeletion) {
                     for (DBUserFile dbUserFile : userFileRepository.findByFile_id(file.getId())) {
-                        DBUser receiver = dbUserFile.getReceiver();
                         userFileRepository.delete(dbUserFile);
-                        if (receiver.getRole().equals(Role.EXTERNAL) || receiver.getRole().equals(Role.LINK)) {
-                            userRepository.delete(receiver);
-                        }
                     }
                     fileRepository.delete(file);
                 }
@@ -197,7 +192,7 @@ public class FileService implements FileServiceInterface {
     public void removeShareOnFileOnBehalfOf(String fileId, String userId, String requesterId)
             throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            userFileRepository.deleteByReceiver_idAndFile_id(userId, fileId);
+            userFileRepository.deleteByReceiverAndFile_id(userId, fileId);
         } else {
             throw new UserUnauthorizedException();
         }
@@ -211,7 +206,7 @@ public class FileService implements FileServiceInterface {
 
     @Transactional
     @Override
-    public RecipientWithLink addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
+    public Recipient addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
             throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
             WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
@@ -219,16 +214,16 @@ public class FileService implements FileServiceInterface {
                 throw new MessageTooLongException();
             }
             DBFile dbFile = findAvailableFile(fileId, false);
-            DBUser dbRecipient = userService.getUserOrCreateExternalOrLinkUser(recipient);
-            DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), dbRecipient, dbFile,
+           
+            DBUserFile dbUserFile = new DBUserFile(StringUtils.randomString(), recipient.getEmail(), dbFile,
                     recipient.getMessage());
             userFileRepository.save(dbUserFile);
-            if (recipient.getSendEmail()) {
-                emailService.sendShareNotification(recipient.getEmailOrName(),
-                        dbFile.toFileInfoRecipient(dbRecipient.getId()), recipient.getMessage());
-            }
+           
+                emailService.sendShareNotification(recipient.getEmail(),
+                        dbFile.toFileInfoRecipient(recipient.getEmail()), recipient.getMessage());
+            
 
-            return dbUserFile.toRecipientWithLink();
+            return dbUserFile.toRecipient();
         } else {
             throw new UserUnauthorizedException();
         }
@@ -288,16 +283,16 @@ public class FileService implements FileServiceInterface {
         }
 
         List<DBUserFile> recipientDBUserList = new LinkedList<>();
-        DBFile dbFile = new DBFile(generatedFileId, uploader, new HashSet<>(recipientDBUserList), fileName,
-                filesize, expirationDate, path, password);
+        DBFile dbFile = new DBFile(generatedFileId, uploader, new HashSet<>(recipientDBUserList), fileName, filesize,
+                expirationDate, path, password);
         fileRepository.save(dbFile);
 
         for (Recipient recipient : recipientList) {
-            DBUser recipientDBUser = userService.getUserOrCreateExternalOrLinkUser(recipient);
+            
             if (!StringUtils.validateMessage(recipient.getMessage())) {
                 throw new MessageTooLongException();
             }
-            DBUserFile dbUserFile = new DBUserFile(this.generateNewFileId(), recipientDBUser, dbFile,
+            DBUserFile dbUserFile = new DBUserFile(this.generateNewFileId(), recipient.getEmail(), dbFile,
                     recipient.getMessage());
             userFileRepository.save(dbUserFile);
         }
@@ -379,10 +374,8 @@ public class FileService implements FileServiceInterface {
             if (!dbFile.getStatus().equals(DBFile.Status.AVAILABLE)) {
                 throw new UnknownFileException();
             }
-            String userIdentifier = dbUserFile.getReceiver().getEmail();
-            if (userIdentifier == null) {
-                userIdentifier = dbUserFile.getReceiver().getName();
-            }
+            String userIdentifier = dbUserFile.getReceiver();
+      
             try {
                 this.emailService.sendDownloadNotification(dbFile.getUploader().getEmail(), userIdentifier,
                         dbFile.toFileBasics());
@@ -404,7 +397,7 @@ public class FileService implements FileServiceInterface {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             if (userService.isUserExists(userId)) {
                 return fileRepository
-                        .findByStatusAndSharedWith_Receiver_IdOrderByExpirationDateAscFilenameAsc(
+                        .findByStatusAndSharedWith_ReceiverOrderByExpirationDateAscFilenameAsc(
                                 DBFile.Status.AVAILABLE, userId, PageRequest.of(pageNumber, pageSize))
                         .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
             } else {
@@ -489,11 +482,11 @@ public class FileService implements FileServiceInterface {
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
         for (DBUserFile recipient : dbFile.getSharedWith()) {
-            DBUser dbRecipient = recipient.getReceiver();
-            if (dbRecipient != null && dbRecipient.getEmail() != null
-                    && StringUtils.validateEmailAddress(dbRecipient.getEmail())) {
-                FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(dbRecipient.getId());
-                this.emailService.sendShareNotification(dbRecipient.getEmail(), fileInfoRecipient,
+            String recipientEmail = recipient.getReceiver();
+            if (recipient != null 
+                    && StringUtils.validateEmailAddress(recipientEmail)) {
+                FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(recipientEmail);
+                this.emailService.sendShareNotification(recipientEmail, fileInfoRecipient,
                         recipient.getMessage());
             }
         }
