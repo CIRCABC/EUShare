@@ -94,14 +94,11 @@ export class AddRecipientsModalComponent implements OnInit {
 
     if (this.sendEmailIsTrue) {
       recipient = {
-        emailOrName: this.email,
-        sendEmail: this.sendEmailIsTrue,
-        message: this.message,
+        email: this.email,
       };
     } else {
       recipient = {
-        emailOrName: this.name,
-        sendEmail: this.sendEmailIsTrue,
+        email: this.name,
       };
     }
     await this.uploadedFileService.addOneRecipient(

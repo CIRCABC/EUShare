@@ -1,12 +1,3 @@
-/*
-EasyShare - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "EasyShare" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -30,7 +21,6 @@ import { FileInfoUploader } from '../model/models';
 import { FileRequest } from '../model/models';
 import { FileResult } from '../model/models';
 import { Recipient } from '../model/models';
-import { RecipientWithLink } from '../model/models';
 import { Status } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -114,7 +104,6 @@ export class FileService {
 
     /**
      * Used by INTERNAL users and ADMIN in order to delete a file
-     *
      * @param fileID The id of the file
      * @param reason Reason for deletion of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -160,16 +149,15 @@ export class FileService {
                 params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to delete a share link for one of the shared users
-     *
      * @param fileID The id of the file
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -211,16 +199,15 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL and EXTERNAL users to download a shared file
-     *
      * @param fileID The id of the file
      * @param password Password of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -261,16 +248,15 @@ export class FileService {
                 params: queryParameters,
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to post the file content on the pre-reserved file space
-     *
      * @param fileID The id of the file
      * @param file 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -308,7 +294,7 @@ export class FileService {
 
         let formParams: { append(param: string, value: any): any; };
         let useForm = false;
-        const convertFormParamsToString = false;
+        let convertFormParamsToString = false;
         // use FormData to transmit files using content-type "multipart/form-data"
         // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
         useForm = canConsumeForm;
@@ -332,16 +318,15 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to request the reservation of space for a file
-     *
      * @param fileRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -388,24 +373,23 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required
-     *
      * @param fileID The id of the file
      * @param recipient The userID or email of user to share the file with
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<RecipientWithLink>;
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<RecipientWithLink>>;
-    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<RecipientWithLink>>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Recipient>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Recipient>>;
+    public postFileSharedWith(fileID: string, recipient: Recipient, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Recipient>>;
     public postFileSharedWith(fileID: string, recipient: Recipient, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (fileID === null || fileID === undefined) {
             throw new Error('Required parameter fileID was null or undefined when calling postFileSharedWith.');
@@ -444,14 +428,14 @@ export class FileService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<RecipientWithLink>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith`,
+        return this.httpClient.post<Recipient>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith`,
             recipient,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }

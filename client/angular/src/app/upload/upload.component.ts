@@ -443,8 +443,7 @@ export class UploadComponent implements OnInit {
                 );
                 if (emailOrNull && emailOrNull !== '') {
                   const recipient: Recipient = {
-                    emailOrName: emailOrNull,
-                    sendEmail: this.emailOrLinkIsEmail(),
+                    email: emailOrNull,
                   };
                   if (
                     messageOrNull &&
@@ -463,10 +462,9 @@ export class UploadComponent implements OnInit {
           for (let i = 0; i < this.getLinkArrayLength(); i++) {
             const formGroupOrNull = this.getLinkFormGroup(i);
             if (formGroupOrNull) {
-              const name: string = formGroupOrNull.controls['name'].value;
+              const receiver: string = '';
               const recipient: Recipient = {
-                emailOrName: name,
-                sendEmail: this.emailOrLinkIsEmail(),
+                email: receiver,
               };
               recipientArray.push(recipient);
             }

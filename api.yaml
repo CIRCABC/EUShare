@@ -784,11 +784,6 @@ components:
         shortUrl:
           description: Short link to a specific file
           type: string
-      required:
-        - emailOrName
-        - sendEmail
-        - downloadLink
-        - shortUrl
 
     UserInfo:
       allOf:

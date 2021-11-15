@@ -35,9 +35,8 @@ import eu.europa.circabc.eushare.model.UserSpace;
 @Entity
 @Table(name = "Users")
 public class DBUser {
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
-    private Set<DBUserFile> filesReceived = new HashSet<>();
-
+  
+ 
     @Id
     @Column(nullable = false)
     @GeneratedValue(generator = "prod-generator")
@@ -179,13 +178,7 @@ public class DBUser {
         return id.hashCode();
     }
 
-    public Set<DBUserFile> getFilesReceived() {
-        return filesReceived;
-    }
 
-    public void setFilesReceived(Set<DBUserFile> filesReceived) {
-        this.filesReceived = filesReceived;
-    }
 
     public String getId() {
         return id;

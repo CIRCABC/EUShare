@@ -84,8 +84,7 @@ public class Recipient   {
    * Download link to a specific file
    * @return downloadLink
   */
-  @ApiModelProperty(required = true, value = "Download link to a specific file")
-  @NotNull
+  @ApiModelProperty(value = "Download link to a specific file")
 
 
   public String getDownloadLink() {
@@ -105,8 +104,7 @@ public class Recipient   {
    * Short link to a specific file
    * @return shortUrl
   */
-  @ApiModelProperty(required = true, value = "Short link to a specific file")
-  @NotNull
+  @ApiModelProperty(value = "Short link to a specific file")
 
 
   public String getShortUrl() {

@@ -68,20 +68,20 @@ public class DBFile {
     private Status status = Status.ALLOCATED;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
-    private Set<DBUserFile> sharedWith;
+    private Set<DBShare> sharedWith;
 
 
     @ManyToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_uploader"))
     private DBUser uploader;
 
-    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
+    public DBFile(String id, DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
             LocalDate expirationDate, String path) {
         this(id, uploader, sharedWith, filename, size, expirationDate, path, null);
     }
 
     @SuppressWarnings("java:S107")
-    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
+    public DBFile(String id, DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
             LocalDate expirationDate, String path, String password) {
         this.id = id;
         this.uploader = uploader;
@@ -106,9 +106,9 @@ public class DBFile {
         fileInfoRecipient.setName(this.filename);
         fileInfoRecipient.setSize(new BigDecimal(this.size));
         fileInfoRecipient.setUploaderName(this.uploader.getName());
-        for (DBUserFile dbUserFile : this.getSharedWith()) {
-            if(dbUserFile.getReceiver().equals(recipient)) {
-                fileInfoRecipient.setFileId(dbUserFile.getDownloadId());
+        for (DBShare dbShare : this.getSharedWith()) {
+            if(dbShare.getEmail().equals(recipient)) {
+                fileInfoRecipient.setFileId(dbShare.getDownloadId());
             }
         }
         return fileInfoRecipient;
@@ -117,7 +117,7 @@ public class DBFile {
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
         List<Recipient> sharedWithRecipients = this.getSharedWith().stream()
-                .map(DBUserFile::toRecipient).collect(Collectors.toList());
+                .map(DBShare::toRecipient).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);
@@ -210,11 +210,11 @@ public class DBFile {
         this.path = path;
     }
 
-    public Set<DBUserFile> getSharedWith() {
+    public Set<DBShare> getSharedWith() {
         return sharedWith;
     }
 
-    public void setSharedWith(Set<DBUserFile> sharedWith) {
+    public void setSharedWith(Set<DBShare> sharedWith) {
         this.sharedWith = sharedWith;
     }
 

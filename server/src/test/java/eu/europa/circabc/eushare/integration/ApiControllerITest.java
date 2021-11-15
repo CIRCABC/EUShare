@@ -36,9 +36,9 @@ import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.DBUserFile;
+import eu.europa.circabc.eushare.storage.DBShare;
 import eu.europa.circabc.eushare.storage.FileRepository;
-import eu.europa.circabc.eushare.storage.UserFileRepository;
+import eu.europa.circabc.eushare.storage.ShareRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.ResourceMultipartFile;
 
@@ -91,7 +91,7 @@ public class ApiControllerITest {
   private FileRepository fileRepository;
 
   @Autowired
-  private UserFileRepository userFileRepository;
+  private ShareRepository shareRepository;
 
   @MockBean
   private OpaqueTokenIntrospector opaqueTokenIntrospector;
@@ -424,9 +424,9 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(uploader.getId());
@@ -459,9 +459,9 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(uploader.getId());
@@ -496,9 +496,9 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(uploader.getId());
@@ -1101,9 +1101,9 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("", "emailA@email.com", "dummyUsername");
@@ -1130,9 +1130,9 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
 
     HttpEntity<String> httpEntity = this.httpEntityAsAnonymousUser("");
@@ -1160,9 +1160,9 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById("szgakjq2yso7xobngy_9");
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare("downloadIdq7xobngy_1", uploader.getEmail(), dbFile);
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId("downloadIdq7xobngy_1");
     // Done
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");

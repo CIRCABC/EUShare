@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { RecipientWithLink } from '../../openapi';
+import { Recipient } from '../../openapi';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +66,7 @@ export class ModalsService {
   public activateShareWithUsersModal(
     modalFileName: string,
     modalFileId: string,
-    recipientsWithLink: RecipientWithLink[],
+    recipients: Recipient[],
     modalFileHasPassword: boolean
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[3]) {
@@ -78,7 +78,7 @@ export class ModalsService {
       modalFileName,
       modalFileId,
       modalFileHasPassword,
-      recipientsWithLink,
+      recipients,
     });
   }
 
@@ -166,7 +166,7 @@ export class ModalsService {
         modalFileName: '',
         modalFileId: '',
         modalFileHasPassword: false,
-        recipientsWithLink: [],
+        recipients: [],
       });
     }
   }
@@ -212,7 +212,7 @@ interface ShareWithUsersModalValue {
   modalFileName: string;
   modalFileId: string;
   modalFileHasPassword: boolean;
-  recipientsWithLink: RecipientWithLink[];
+  recipients: Recipient[];
 }
 
 interface DeleteConfirmModalValue {
