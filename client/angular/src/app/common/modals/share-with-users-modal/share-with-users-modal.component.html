@@ -14,21 +14,21 @@
         <div class="level-item has-text-centered">
           <p>
             <strong>{{ modalFileName }}</strong> is shared
-            <strong>{{ recipientsWithLink.length }}</strong> time(s)
+            <strong>{{ recipients.length }}</strong> time(s)
           </p>
         </div>
       </div>
       <div
         class="level share"
-        *ngFor="let recipient of recipientsWithLink; let i = index"
+        *ngFor="let recipient of recipients; let i = index"
         [attr.data-index]="i"
       >
         <div class="level-left">
           <div *ngIf="recipient.sendEmail === true" class="level-item">
-            <p><strong>Recipient</strong> {{ recipient.emailOrName | lowercase }}</p>
+            <p><strong>Recipient</strong> {{ recipient.email | lowercase }}</p>
           </div>
           <div *ngIf="recipient.sendEmail === false" class="level-item">
-            <p><strong>Link</strong> {{ recipient.emailOrName | lowercase }}</p>
+            <p><strong>Link</strong> {{ recipient.email | lowercase }}</p>
           </div>
           <div class="level-item">
             <div class="field">
@@ -46,7 +46,7 @@
             <a
               class="button"
               (click)="
-                deleteShare(recipient.recipientId, recipient.emailOrName, i)
+                deleteShare(recipient.recipientId, recipient.email, i)
               "
               >Remove</a
             >

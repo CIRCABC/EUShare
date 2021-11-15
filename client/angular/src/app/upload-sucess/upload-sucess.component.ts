@@ -77,7 +77,7 @@ export class UploadSucessComponent implements OnInit {
     let fileLinkBuild = `${window.location.protocol}//${
       window.location.host
     }/filelink/${
-      this.fileInfoUploader.sharedWith[i].downloadLink
+      this.fileInfoUploader.sharedWith[i].shortUrl
     }/${encodeURIComponent(btoa(this.fileInfoUploader.name))}/`; // nosonar
     fileLinkBuild = isPasswordProtected
       ? `${fileLinkBuild}1`

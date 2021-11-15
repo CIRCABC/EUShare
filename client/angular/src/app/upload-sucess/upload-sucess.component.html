@@ -32,14 +32,14 @@
           [attr.data-index]="i"
         >
           <div class="media-content">
-            <p *ngIf="!recipient.sendEmail" class="subtitle is-6">
+            <p *ngIf="!recipient.email" class="subtitle is-6">
               You may now share the following link to your file.
             </p>
-            <p *ngIf="recipient.sendEmail" class="subtitle is-6">
+            <p *ngIf="recipient.email" class="subtitle is-6">
               The following link has been sent to your recipient.
             </p>
             <div class="level">
-              <div class="level-left" *ngIf="recipient.sendEmail === true">
+              <div class="level-left" *ngIf="recipient.email">
                 <div class="level-item has-text-centered">
                   <div class="field">
                     <strong>{{ "email" | transloco }}</strong>
@@ -50,7 +50,7 @@
                     <input
                       class="input is-info"
                       type="text"
-                      value="{{ recipient.emailOrName | lowercase }}"
+                      value="{{ recipient.email | lowercase }}"
                       readonly
                     />
                   </div>
@@ -67,7 +67,7 @@
                     <input
                       class="input is-info"
                       type="text"
-                      value="{{ recipient.emailOrName | lowercase }}"
+                      value="{{ recipient.email | lowercase }}"
                       readonly
                     />
                   </div>
