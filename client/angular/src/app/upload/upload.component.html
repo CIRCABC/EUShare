@@ -49,7 +49,7 @@
           </div>
         </div>
         <div class="field">
-          <!-- DRAG AND DROP BOX -->
+          <!-- DRAG AND DROP BOX  -->
           <div (drop)="drop($event)" class="container">
             <div class="notification dragAndDrop">
               {{ "drop.file" | transloco }}
@@ -58,48 +58,33 @@
         </div>
       </div>
       <br />
-      <div class="field">
-        <label class="label">{{ "how.to.share.file" | transloco }}</label>
-        <div class="field-body">
-          <div class="field is-narrow">
-            <div class="control">
-              <label
-                class="radio tooltip"
-                [attr.data-tooltip]="'send.link' | transloco"
-              >
-                <input
-                  type="radio"
-                  id="radioEmail"
-                  required
-                  formControlName="emailOrLink"
-                  (click)="resetRecipientsEmail()"
-                  value="Email"
-                />
-                {{ "email" | transloco }}
-              </label>
-              <label
-                class="radio tooltip"
-                [attr.data-tooltip]="'generate.link' | transloco"
-              >
-                <input
-                  id="radioLink"
-                  type="radio"
-                  (click)="resetRecipientsLink()"
-                  required
-                  formControlName="emailOrLink"
-                  value="Link"
-                />
-                {{ "link" | transloco }}
-              </label>
+
+      
+
+      <div (click)="toggleMoreOptions()" class="is-info" >
+        <span class="button cta--dots is-bigger">
+          <span class="file-label">
+            {{ "more.advanced" | transloco }}
+          </span>
+        </span>
+      </div>
+
+
+     
+      <!-- EMAILS AND USER NAMES -->
+      <div class="field"  *ngIf="moreOptions">
+
+        <div class="field">
+          <label class="label">{{ "how.to.share.file" | transloco }}</label>
+          <div class="field-body">
+            <div class="field is-narrow">
+            
             </div>
           </div>
         </div>
-      </div>
-      <!-- EMAILS AND USER NAMES -->
-      <div class="field">
         <!-- EMAIL AND MESSAGES -->
         <div
-          *ngIf="emailOrLinkIsEmail()"
+       
           formArrayName="emailMessageArray"
           class="column is-half-desktop emailColumn"
         >
@@ -148,22 +133,8 @@
             </div>
           </div>
         </div>
-        <div
-          *ngIf="emailOrLinkIsLink()"
-          formArrayName="linkArray"
-          class="column is-half-desktop emailColumn"
-        >
-          <div
-            *ngFor="let recipientName of linkArray.controls; let i = index"
-            class="media"
-          >
-            <div [formGroupName]="i" class="media-content">
-              <app-link-input formControlName="name"></app-link-input>
-            </div>
-          </div>
-        </div>
       </div>
-      <div class="field">
+      <div class="field" *ngIf="moreOptions">
         <label class="label">{{ "file.password.optional" | transloco }}</label>
         <input
           formControlName="password"

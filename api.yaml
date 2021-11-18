@@ -336,7 +336,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
-  
+
   '/file/{fileID}':
     parameters:
     - name: fileID

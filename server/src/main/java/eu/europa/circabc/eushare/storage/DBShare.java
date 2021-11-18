@@ -9,6 +9,8 @@
  */
 package eu.europa.circabc.eushare.storage;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -17,6 +19,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import eu.europa.circabc.eushare.model.Recipient;
+import com.google.common.hash.Hashing;
 
 @Entity
 @Table(name = "shares")
@@ -43,12 +46,14 @@ public class DBShare {
 
     public DBShare(String downloadId, String email, DBFile file) {
         this.downloadId = downloadId;
+        this.shorturl = Hashing.murmur3_32().hashString(downloadId, StandardCharsets.UTF_8).toString();
         this.email = email;
         this.file = file;
     }
 
     public DBShare(String downloadId, String email, DBFile file, String message) {
         this.downloadId = downloadId;
+        this.shorturl = Hashing.murmur3_32().hashString(downloadId, StandardCharsets.UTF_8).toString();
         this.email = email;
         this.file = file;
         if (message != null) {

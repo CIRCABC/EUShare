@@ -114,7 +114,6 @@ export class UploadComponent implements OnInit {
           fileSizeValidator(this.leftSpaceInBytes),
         ]),
       ],
-      emailOrLink: ['', Validators.required],
       emailMessageArray: this.fb.array([
         // this.initializeEmailMessageFormGroup()
       ]),
@@ -124,6 +123,12 @@ export class UploadComponent implements OnInit {
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
       password: [undefined],
     });
+    this.resetEmailMessageArray();
+    this.addEmailMessageFormGroup();
+  }
+
+  toggleMore(){
+    
   }
 
   getEmailMessageFormGroup(i: number): FormGroup {
@@ -137,7 +142,7 @@ export class UploadComponent implements OnInit {
 
   initializeEmailMessageFormGroup(): FormGroup {
     const initializedFg = this.fb.group({
-      emailArray: this.fb.array([], Validators.required),
+      emailArray: this.fb.array([]),
       message: [''],
     });
 
@@ -157,21 +162,13 @@ export class UploadComponent implements OnInit {
   initializedEmailFormGroupValue(value: any): FormGroup {
     const emailGroup = this.fb.group(
       {
-        email: new FormControl(value, Validators.required),
+        email: new FormControl(value),
       },
       { updateOn: 'change' }
     );
     return emailGroup;
   }
 
-  initializeLinkFormGroup(): FormGroup {
-    return this.fb.group(
-      {
-        name: new FormControl('', Validators.required),
-      },
-      { updateOn: 'change' }
-    );
-  }
 
   async ngOnInit() {
     this.initializeEventListeners();
@@ -199,16 +196,7 @@ export class UploadComponent implements OnInit {
     this.uploadform.controls['fileFromDisk'].reset();
   }
 
-  // EMAIL OR LINK
-  getEmailOrLink(): string {
-    return this.uploadform.controls['emailOrLink'].value;
-  }
-  emailOrLinkIsEmail(): boolean {
-    return this.getEmailOrLink() === 'Email';
-  }
-  emailOrLinkIsLink(): boolean {
-    return this.getEmailOrLink() === 'Link';
-  }
+
 
   // EMAIL WITH MESSAGES
   get emailMessageArray() {
@@ -345,54 +333,11 @@ export class UploadComponent implements OnInit {
     return 0;
   }
 
-  // LINKS
-  get linkArray() {
-    return this.uploadform.get('linkArray') as FormArray;
-  }
-  addLinkFormGroup() {
-    this.linkArray.push(this.initializeLinkFormGroup());
-  }
-  deleteLinkFormGroup(i: number) {
-    this.linkArray.removeAt(i);
-  }
-  resetLinkArray() {
-    const formArray: FormArray = this.linkArray;
-    while (formArray.length !== 0) {
-      formArray.removeAt(0);
-    }
-  }
-  getLinkArrayLength(): number {
-    const formArray: FormArray = this.linkArray;
-    if (formArray) {
-      return formArray.controls.length;
-    }
-    return 0;
-  }
-  getLinkFormGroup(i: number): FormGroup | null {
-    const formArray: FormArray = this.linkArray;
-    if (formArray) {
-      return formArray.controls[i] as FormGroup;
-    }
-    return null;
-  }
 
-  resetRecipients() {
-    this.resetEmailMessageArray();
-    this.resetLinkArray();
-  }
 
-  resetRecipientsEmail() {
-    this.resetRecipients();
-    this.addEmailMessageFormGroup();
-  }
-
-  resetRecipientsLink() {
-    this.resetRecipients();
-    this.addLinkFormGroup();
-  }
 
   // MORE OPTIONS
-  moreOptionsChange() {
+  toggleMoreOptions() {
     this.moreOptions = !this.moreOptions;
     this.resetExpirationDate();
     this.resetPassword();
@@ -424,12 +369,13 @@ export class UploadComponent implements OnInit {
     this.uploadform.controls['password'].reset();
   }
 
+
   async submit() {
     this.uploadInProgress = true;
     if (this.getFileFromDisk()) {
       try {
         const recipientArray = new Array<Recipient>();
-        if (this.emailOrLinkIsEmail()) {
+      
           for (let i = 0; i < this.getEmailMessageArrayLength(); i++) {
             const formGroupOrNull: FormGroup | null =
               this.getEmailMessageFormGroup(i);
@@ -447,8 +393,7 @@ export class UploadComponent implements OnInit {
                   };
                   if (
                     messageOrNull &&
-                    messageOrNull !== '' &&
-                    this.emailOrLinkIsEmail
+                    messageOrNull !== '' 
                   ) {
                     recipient.message = messageOrNull;
                   }
@@ -457,19 +402,14 @@ export class UploadComponent implements OnInit {
               }
             }
           }
-        } else {
-          // IS LINK
-          for (let i = 0; i < this.getLinkArrayLength(); i++) {
-            const formGroupOrNull = this.getLinkFormGroup(i);
-            if (formGroupOrNull) {
-              const receiver: string = '';
-              const recipient: Recipient = {
-                email: receiver,
-              };
-              recipientArray.push(recipient);
-            }
+          if(this.getEmailArrayLength(0)==0) {
+            const receiver: string = '';
+            const recipient: Recipient = {
+              email: receiver,
+            };
+            recipientArray.push(recipient);
           }
-        }
+
         const myFileRequest: FileRequest = {
           expirationDate: this.getExpirationDate()
             .toISOString()

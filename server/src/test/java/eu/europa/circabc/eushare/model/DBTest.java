@@ -115,7 +115,7 @@ public class DBTest {
         DBShare dbShare = new DBShare(StringUtils.randomString(), "email2@email.com", dbFile);
         shareRepository.save(dbShare);
 
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Receiver(DBFile.Status.AVAILABLE,
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Email(DBFile.Status.AVAILABLE,
         "email2@email.com", PageRequest.of(0, 10));
 
         assertEquals(1, shareUsersFiles.size());
@@ -125,7 +125,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByReceiverWhereNothingIsThere() {
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Receiver(DBFile.Status.AVAILABLE,
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Email(DBFile.Status.AVAILABLE,
                 "fakeID", PageRequest.of(1, 10));
         assertNotNull(shareUsersFiles);
         assertEquals(0, shareUsersFiles.size());

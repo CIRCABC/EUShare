@@ -16,34 +16,8 @@
     </header>
     <section class="modal-card-body">
       <form [formGroup]="sharedWithFormGroup">
-        <div class="field">
-          <label class="label">{{ "how.to.share" | transloco }}</label>
-          <div class="field-body">
-            <div class="field is-narrow">
-              <div class="control">
-                <label class="radio">
-                  <input
-                    type="radio"
-                    required
-                    formControlName="sendEmail"
-                    value="True"
-                    (click)="changeByEmailOrLink(true)"
-                  />Email
-                </label>
-                <label class="radio">
-                  <input
-                    type="radio"
-                    required
-                    formControlName="sendEmail"
-                    value="False"
-                    (click)="changeByEmailOrLink(false)"
-                  />Link
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="addRecipientsByEmailOrByLink">
+
+        <div>
           <app-email-input
             formControlName="email"
             [showAddRecipient]="false"
@@ -53,9 +27,7 @@
             formControlName="message"
           ></app-message-text-area>
         </div>
-        <div *ngIf="!addRecipientsByEmailOrByLink">
-          <app-link-input formControlName="name"></app-link-input>
-        </div>
+
       </form>
     </section>
     <footer class="modal-card-foot">
@@ -64,7 +36,7 @@
         (click)="onSubmit()"
         [class.is-loading]="uploadInProgress"
         type="submit"
-        [disabled]="!sharedWithFormGroup.valid"
+       
       >
         Submit
       </button>

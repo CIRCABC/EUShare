@@ -20,6 +20,8 @@ public interface FileRepository extends PagingAndSortingRepository<DBFile, Strin
 
     DBFile findByStatusAndSharedWith_DownloadId(DBFile.Status status, String downloadId);
 
+    DBFile findByStatusAndSharedWith_Shorturl(DBFile.Status status, String shortUrl);
+
     DBFile findByStatusAndId(DBFile.Status status, String id);
 
     DBFile findOneById(String id);
