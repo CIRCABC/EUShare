@@ -41,7 +41,7 @@
   "flies.shared.with.me": "Files shared with me",
   "free.space": "Free space",
   "generate.link": "Generate a link to your file and share it however you prefer",
-  "how.to.share.file": "Notifications by email (optional)",
+  "how.to.share.file": "Notifications by email",
   "how.to.share": "How to share?",
   "information": "Information",
   "invalid.token":"Invalid EULogin token, please logout and login again.",

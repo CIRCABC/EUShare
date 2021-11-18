@@ -70,7 +70,8 @@ export class AddRecipientsModalComponent implements OnInit {
   
   }
 
-  public async onSubmit() {
+  async onSubmit() {
+   
     this.uploadInProgress = true;
     let recipient: Recipient;
 

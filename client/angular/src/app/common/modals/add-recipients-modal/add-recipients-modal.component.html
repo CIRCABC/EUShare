@@ -6,45 +6,34 @@
         {{ "add.recipient.to" | transloco }} <br />
         <strong>
           {{
-            modalFileName.length > 25
-              ? (modalFileName | slice: 0:25) + "..."
-              : modalFileName
+          modalFileName.length > 25
+          ? (modalFileName | slice: 0:25) + "..."
+          : modalFileName
           }}
         </strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
-      <form [formGroup]="sharedWithFormGroup">
-
+      <form [formGroup]="sharedWithFormGroup" (ngSubmit)="onSubmit()" #fmod="ngForm">
         <div>
-          <app-email-input
-            formControlName="email"
-            [showAddRecipient]="false"
-          ></app-email-input>
-          <app-message-text-area
-            [isOptional]="false"
-            formControlName="message"
-          ></app-message-text-area>
+          <app-email-input formControlName="email" [showAddRecipient]="false"></app-email-input>
+          <app-message-text-area [isOptional]="false" formControlName="message"></app-message-text-area>
         </div>
-
+        <div>
+          <button class="button" [class.is-loading]="uploadInProgress" type="submit"
+            [disabled]="!sharedWithFormGroup.valid">
+            Submit
+          </button>
+        </div>
       </form>
     </section>
     <footer class="modal-card-foot">
-      <button
-        class="button"
-        (click)="onSubmit()"
-        [class.is-loading]="uploadInProgress"
-        type="submit"
-       
-      >
-        Submit
+      <!-- workaround for unknow bug ... submit button not responding if not duplicated here ?!? -->
+      <button class="button" style=" visibility: hidden;" type="submit" [disabled]="!sharedWithFormGroup.valid">
+
       </button>
-      <button
-        class="modal-close is-large"
-        (click)="closeModal()"
-        aria-label="close"
-      ></button>
     </footer>
+
   </div>
 </div>
