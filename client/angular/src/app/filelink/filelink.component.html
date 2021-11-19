@@ -3,7 +3,9 @@
     <h1 class="title">{{ "download.shared.file" | transloco }}</h1>
     <h2 class="subtitle">
       {{ "download" | transloco }}
+      <span *ngIf="fileName">
       {{ fileName.length > 25 ? (fileName | slice: 0:25) + ".." : fileName }}.
+      </span>
     </h2>
     <p *ngIf="isFilePasswordProtected">{{ "file.is.protected" | transloco }}</p>
     <app-download-button

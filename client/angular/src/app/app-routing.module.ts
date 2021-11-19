@@ -60,6 +60,10 @@ const appRoutes: Routes = [
     component: FilelinkComponent,
   },
   {
+    path: 'filelink/:id',
+    component: FilelinkComponent,
+  },
+  {
     path: 'administration',
     component: AdministrationComponent,
     canActivate: [LoginGuard],

@@ -419,9 +419,11 @@ public class FileService implements FileServiceInterface {
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             if (userService.isUserExists(userId)) {
+                DBUser user = userRepository.findOneById(userId);
+                String email = user.getEmail();
                 return fileRepository
                         .findByStatusAndSharedWith_EmailOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE,
-                                userId, PageRequest.of(pageNumber, pageSize))
+                                email, PageRequest.of(pageNumber, pageSize))
                         .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
             } else {
                 throw new UnknownUserException();
