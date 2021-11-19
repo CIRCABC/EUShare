@@ -39,8 +39,11 @@ public class DBUser {
  
     @Id
     @Column(nullable = false)
-    @GeneratedValue(generator = "prod-generator")
-    @GenericGenerator(name = "prod-generator", strategy = "eu.europa.circabc.eushare.storage.SecureRandomIdentifierGenerator")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private String id;
 
     @Enumerated(value = EnumType.STRING)

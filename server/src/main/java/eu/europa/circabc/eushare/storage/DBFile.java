@@ -24,12 +24,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import eu.europa.circabc.eushare.model.FileBasics;
@@ -43,6 +45,11 @@ import eu.europa.circabc.eushare.model.Recipient;
 public class DBFile {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "FILE_ID", nullable = false, unique = true)
     private String id;
 
@@ -75,15 +82,15 @@ public class DBFile {
     @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_uploader"))
     private DBUser uploader;
 
-    public DBFile(String id, DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
+    public DBFile(DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
             LocalDate expirationDate, String path) {
-        this(id, uploader, sharedWith, filename, size, expirationDate, path, null);
+        this( uploader, sharedWith, filename, size, expirationDate, path, null);
     }
 
     @SuppressWarnings("java:S107")
-    public DBFile(String id, DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
+    public DBFile(DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
             LocalDate expirationDate, String path, String password) {
-        this.id = id;
+       
         this.uploader = uploader;
         this.sharedWith = new HashSet<>(sharedWith);
         this.filename = filename;

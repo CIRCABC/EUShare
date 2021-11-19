@@ -9,11 +9,17 @@
  */
 package eu.europa.circabc.eushare.storage;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,11 +27,15 @@ import javax.persistence.Table;
 import eu.europa.circabc.eushare.model.Recipient;
 import com.google.common.hash.Hashing;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 @Table(name = "shares")
 public class DBShare {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String downloadId;
 
     @Column(nullable = false)
@@ -35,25 +45,17 @@ public class DBShare {
     @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_file"))
     private DBFile file;
 
-    @Column(nullable = false,length = 50)
+    @Column(nullable = false, length = 50)
     private String shorturl;
 
     private String message;
 
-    private DBShare() {
+    public DBShare() {
 
     }
 
-    public DBShare(String downloadId, String email, DBFile file) {
-        this.downloadId = downloadId;
-        this.shorturl = Hashing.murmur3_32().hashString(downloadId, StandardCharsets.UTF_8).toString();
-        this.email = email;
-        this.file = file;
-    }
+    public DBShare(String email, DBFile file, String message) {
 
-    public DBShare(String downloadId, String email, DBFile file, String message) {
-        this.downloadId = downloadId;
-        this.shorturl = Hashing.murmur3_32().hashString(downloadId, StandardCharsets.UTF_8).toString();
         this.email = email;
         this.file = file;
         if (message != null) {
@@ -124,6 +126,15 @@ public class DBShare {
 
     public void setShorturl(String shorturl) {
         this.shorturl = shorturl;
+    }
+
+    public String generateShortUrl() {
+
+        UUID uuid = UUID.randomUUID();
+        String shortUrl = uuid.toString().replace("-", "").replace("0", "").replace("o", "").substring(0,6);
+ 
+        return shortUrl;
+
     }
 
 }

@@ -54,7 +54,7 @@ public class DBTest {
     public void creationOfaFileTest() {
         DBUser dbUser = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
         userRepository.save(dbUser);
-        DBFile dbFile = new DBFile("id", dbUser, Collections.emptySet(), "filename", 1024, LocalDate.now(),
+        DBFile dbFile = new DBFile( dbUser, Collections.emptySet(), "filename", 1024, LocalDate.now(),
                 "/a/sample/path"); // NOSONAR
         fileRepository.save(dbFile);
          // Verify insertion
@@ -107,12 +107,12 @@ public class DBTest {
                 "uniqueUsername");
         userRepository.save(uploader);
 
-        DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
+        DBFile dbFile = new DBFile( uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
                 "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
 
-        DBShare dbShare = new DBShare(StringUtils.randomString(), "email2@email.com", dbFile);
+        DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message");
         shareRepository.save(dbShare);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Email(DBFile.Status.AVAILABLE,
@@ -138,12 +138,12 @@ public class DBTest {
                 "uniqueUsername");
         userRepository.save(uploader);
 
-        DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
+        DBFile dbFile = new DBFile(uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
                 "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
 
-        DBShare dbShare = new DBShare(StringUtils.randomString(), "email2@email.com", dbFile);
+        DBShare dbShare = new DBShare("email2@email.com", dbFile,"message");
         shareRepository.save(dbShare);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_Id(DBFile.Status.AVAILABLE,
@@ -171,22 +171,22 @@ public class DBTest {
                 "uniqueUsername");
         userRepository.save(uploader);
 
-        DBFile dbFile = new DBFile("id", uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
+        DBFile dbFile = new DBFile( uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
                 "/a/sample/path");
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
 
-        DBFile dbFile2 = new DBFile("id2", uploader, Collections.emptySet(), "filename", 1024,
+        DBFile dbFile2 = new DBFile(uploader, Collections.emptySet(), "filename", 1024,
                 LocalDate.now().plusDays(1), "/a/sample/path");
         dbFile2.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile2);
 
-        DBFile dbFile3 = new DBFile("id3", uploader, Collections.emptySet(), "zfilenam", 1024,
+        DBFile dbFile3 = new DBFile(uploader, Collections.emptySet(), "zfilenam", 1024,
                 LocalDate.now().plusDays(1), "/a/sample/path");
         dbFile3.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile3);
 
-        DBShare dbShare = new DBShare(StringUtils.randomString(), "email2@email.com", dbFile);
+        DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message");
         shareRepository.save(dbShare);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(

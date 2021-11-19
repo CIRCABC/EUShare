@@ -156,18 +156,6 @@ public class FileService implements FileServiceInterface {
     }
 
     /**
-     * Generate a new, unique file ID.
-     */
-    private String generateNewFileId() {
-        while (true) {
-            String id = StringUtils.randomString();
-            if (!fileRepository.existsById(id)) {
-                return id;
-            }
-        }
-    }
-
-    /**
      * Tries to reserve space on any disk for the given file with size
      * {@code filesize}. On success, the path to this file will be returned,
      * otherwise {@code Optional.empty()}.
@@ -215,8 +203,14 @@ public class FileService implements FileServiceInterface {
             }
             DBFile dbFile = findAvailableFile(fileId, false);
 
-            DBShare dbShare = new DBShare(StringUtils.randomString(), recipient.getEmail(), dbFile,
-                    recipient.getMessage());
+            DBShare dbShare = new DBShare(recipient.getEmail(), dbFile, recipient.getMessage());
+
+            String shortUrl;
+            do {
+                shortUrl = dbShare.generateShortUrl();
+            } while (shareRepository.findOneByShorturl(shortUrl) != null);
+            dbShare.setShorturl(shortUrl);
+
             shareRepository.save(dbShare);
 
             emailService.sendShareNotification(recipient.getEmail(), dbFile.toFileInfoRecipient(recipient.getEmail()),
@@ -275,15 +269,19 @@ public class FileService implements FileServiceInterface {
             throw new UserHasInsufficientSpaceException();
         }
 
-        String generatedFileId = this.generateNewFileId();
+        List<DBShare> recipientDBUserList = new LinkedList<>();
+        DBFile dbFile = new DBFile(uploader, new HashSet<>(recipientDBUserList), fileName, filesize, expirationDate,
+                "path", password);
+        fileRepository.save(dbFile);
+        String generatedFileId = dbFile.getId();
+
         String path = this.tryReserveSpace(generatedFileId, filesize).orElse(null);
         if (path == null) {
+            fileRepository.delete(dbFile);
             throw new CouldNotAllocateFileException();
         }
 
-        List<DBShare> recipientDBUserList = new LinkedList<>();
-        DBFile dbFile = new DBFile(generatedFileId, uploader, new HashSet<>(recipientDBUserList), fileName, filesize,
-                expirationDate, path, password);
+        dbFile.setPath(path);
         fileRepository.save(dbFile);
 
         for (Recipient recipient : recipientList) {
@@ -291,8 +289,14 @@ public class FileService implements FileServiceInterface {
             if (!StringUtils.validateMessage(recipient.getMessage())) {
                 throw new MessageTooLongException();
             }
-            DBShare dbShare = new DBShare(this.generateNewFileId(), recipient.getEmail(), dbFile,
-                    recipient.getMessage());
+            DBShare dbShare = new DBShare(recipient.getEmail(), dbFile, recipient.getMessage());
+
+            String shortUrl;
+            do {
+                shortUrl = dbShare.generateShortUrl();
+            } while (shareRepository.findOneByShorturl(shortUrl) != null);
+            dbShare.setShorturl(shortUrl);
+
             shareRepository.save(dbShare);
         }
         return generatedFileId;
