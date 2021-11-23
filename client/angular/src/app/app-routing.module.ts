@@ -56,11 +56,7 @@ const appRoutes: Routes = [
     canActivate: [LoginGuard],
   },
   {
-    path: 'filelink/:id/:filenameb64/:isPasswordProtected',
-    component: FilelinkComponent,
-  },
-  {
-    path: 'filelink/:id',
+    path: 'fs/:id',
     component: FilelinkComponent,
   },
   {

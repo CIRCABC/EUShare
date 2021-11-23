@@ -1,3 +1,12 @@
+/*
+EasyShare - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "EasyShare" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -90,6 +99,7 @@ export class UsersService {
 
     /**
      * Used by the INTERNAL users in order to search the files they have recieved
+     *
      * @param userID The id of the user
      * @param pageSize Number of files returned
      * @param pageNumber Page number
@@ -146,15 +156,16 @@ export class UsersService {
                 params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by the INTERNAL users in order to search their own files\&#39; FileInfoUploader
+     *
      * @param userID The id of the user
      * @param pageSize Number of files returned
      * @param pageNumber Page number
@@ -211,15 +222,16 @@ export class UsersService {
                 params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by the users in order to fetch their personal information
+     *
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -257,15 +269,16 @@ export class UsersService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by the administrators in order to search for INTERNAL users\&#39; UserInfo
+     *
      * @param pageSize Number of persons returned
      * @param pageNumber Page number
      * @param searchString 
@@ -326,15 +339,16 @@ export class UsersService {
                 params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }
 
     /**
      * Used by the administrators in order to update a specific INTERNAL user total space or admin status
+     *
      * @param userID The id of the user
      * @param userInfo 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -386,9 +400,9 @@ export class UsersService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }

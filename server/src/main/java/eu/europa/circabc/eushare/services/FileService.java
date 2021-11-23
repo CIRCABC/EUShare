@@ -323,7 +323,7 @@ public class FileService implements FileServiceInterface {
         return f;
     }
 
-    private DBFile findAvailableFileByShortUrl(String shortUrl, boolean isNotUploaderOrAdmin)
+    public DBFile findAvailableFileByShortUrl(String shortUrl)
             throws UnknownFileException {
         DBFile f;
 
@@ -365,6 +365,9 @@ public class FileService implements FileServiceInterface {
         }
     }
 
+
+   
+
     /**
      * Download the given file via the given session. Fails if the user may not
      * access the file, the file is unknown or the given password is wrong.
@@ -390,7 +393,7 @@ public class FileService implements FileServiceInterface {
             // File is downloaded by its uploader
 
             if (fileId.length() < 10) {
-                dbFile = findAvailableFileByShortUrl(fileId, false);
+                dbFile = findAvailableFileByShortUrl(fileId);
             } else {
                 dbFile = findAvailableFile(fileId, false);
             }
@@ -416,6 +419,7 @@ public class FileService implements FileServiceInterface {
         File file = Paths.get(dbFile.getPath()).toFile();
         return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
     }
+
 
     @Override
     @Transactional

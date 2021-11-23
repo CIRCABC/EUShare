@@ -32,7 +32,8 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         .and().csrf().disable()                                                // Disabling CSRF verification, a user can modify the content
         .authorizeRequests()
         .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()                      // Authorizing login by anyone, after authentication or not
-        .antMatchers(HttpMethod.GET,"/file/{.+}").anonymous()                   // If an Authorization Header is present, will return 403
+        .antMatchers(HttpMethod.GET,"/file/{.+}").anonymous()      
+        .antMatchers(HttpMethod.GET,"/file/{.+}/fileInfo").anonymous()                 // If an Authorization Header is present, will return 403
         //.antMatchers(HttpMethod.GET,"/users/userInfo").hasAuthority("ROLE_ADMIN") // For later use, when opaqueToken will support authentication converter
         .antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
         .anyRequest().authenticated()     

@@ -11,6 +11,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
 import { I18nService } from '../common/i18n/i18n.service';
+import { FileService } from '../openapi/api/file.service';
+import { FileBasics } from '../openapi';
+import { firstValueFrom, map } from 'rxjs';
 
 @Component({
   selector: 'app-filelink',
@@ -26,7 +29,8 @@ export class FilelinkComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalsService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private fileApi: FileService
   ) {
     this.i18nService.configureI18n();
   }
@@ -39,19 +43,19 @@ export class FilelinkComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
-    const fileNameB64URIEncoded =
-      this.route.snapshot.paramMap.get('filenameb64');
-    const isPasswordProtected = this.route.snapshot.paramMap.get(
-      'isPasswordProtected'
-    );
-    if (id && fileNameB64URIEncoded && isPasswordProtected) {
-      this.fileId = id;
-      this.fileName = atob(decodeURIComponent(fileNameB64URIEncoded)); // nosonar
-      this.isFilePasswordProtected = isPasswordProtected === '1';
-    } else if (id) {
-      this.fileId = id;
+
+    if (id) {
+      await firstValueFrom(
+        this.fileApi.getFileInfo(id).pipe(
+          map((fileinfo) => {
+            this.fileId = id;
+            this.fileName = fileinfo.name;
+            this.isFilePasswordProtected = fileinfo.hasPassword;
+          })
+        )
+      );
     } else {
       this.router.navigateByUrl('/home');
     }

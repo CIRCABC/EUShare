@@ -127,9 +127,7 @@ export class UploadComponent implements OnInit {
     this.addEmailMessageFormGroup();
   }
 
-  toggleMore(){
-    
-  }
+  toggleMore() {}
 
   getEmailMessageFormGroup(i: number): FormGroup {
     const emailMessageArray: FormArray = this.emailMessageArray;
@@ -169,7 +167,6 @@ export class UploadComponent implements OnInit {
     return emailGroup;
   }
 
-
   async ngOnInit() {
     this.initializeEventListeners();
     await this.initializeAvailableSpace();
@@ -195,8 +192,6 @@ export class UploadComponent implements OnInit {
   resetFileFromDisk(): void {
     this.uploadform.controls['fileFromDisk'].reset();
   }
-
-
 
   // EMAIL WITH MESSAGES
   get emailMessageArray() {
@@ -333,9 +328,6 @@ export class UploadComponent implements OnInit {
     return 0;
   }
 
-
-
-
   // MORE OPTIONS
   toggleMoreOptions() {
     this.moreOptions = !this.moreOptions;
@@ -369,46 +361,41 @@ export class UploadComponent implements OnInit {
     this.uploadform.controls['password'].reset();
   }
 
-
   async submit() {
     this.uploadInProgress = true;
     if (this.getFileFromDisk()) {
       try {
         const recipientArray = new Array<Recipient>();
-      
-          for (let i = 0; i < this.getEmailMessageArrayLength(); i++) {
-            const formGroupOrNull: FormGroup | null =
-              this.getEmailMessageFormGroup(i);
-            if (formGroupOrNull) {
-              const messageOrNull: string | null =
-                this.getMessageControlValue(i);
-              for (let j = 0; j < this.getEmailArrayLength(i); j++) {
-                const emailOrNull: string | null = this.getEmailControlValue(
-                  i,
-                  j
-                );
-                if (emailOrNull && emailOrNull !== '') {
-                  const recipient: Recipient = {
-                    email: emailOrNull,
-                  };
-                  if (
-                    messageOrNull &&
-                    messageOrNull !== '' 
-                  ) {
-                    recipient.message = messageOrNull;
-                  }
-                  recipientArray.push(recipient);
+
+        for (let i = 0; i < this.getEmailMessageArrayLength(); i++) {
+          const formGroupOrNull: FormGroup | null =
+            this.getEmailMessageFormGroup(i);
+          if (formGroupOrNull) {
+            const messageOrNull: string | null = this.getMessageControlValue(i);
+            for (let j = 0; j < this.getEmailArrayLength(i); j++) {
+              const emailOrNull: string | null = this.getEmailControlValue(
+                i,
+                j
+              );
+              if (emailOrNull && emailOrNull !== '') {
+                const recipient: Recipient = {
+                  email: emailOrNull,
+                };
+                if (messageOrNull && messageOrNull !== '') {
+                  recipient.message = messageOrNull;
                 }
+                recipientArray.push(recipient);
               }
             }
           }
-          if(this.getEmailArrayLength(0)==0) {
-            const receiver: string = '';
-            const recipient: Recipient = {
-              email: receiver,
-            };
-            recipientArray.push(recipient);
-          }
+        }
+        if (this.getEmailArrayLength(0) == 0) {
+          const receiver = '';
+          const recipient: Recipient = {
+            email: receiver,
+          };
+          recipientArray.push(recipient);
+        }
 
         const myFileRequest: FileRequest = {
           expirationDate: this.getExpirationDate()

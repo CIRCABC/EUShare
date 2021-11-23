@@ -1,3 +1,12 @@
+/*
+EasyShare - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "EasyShare" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
 /**
  * EasyShare
  * This is a API definition for the EasyShare service.
@@ -88,6 +97,7 @@ export class SessionService {
 
     /**
      * Used to login by internal users
+     *
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -122,9 +132,9 @@ export class SessionService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
+                headers,
+                observe,
+                reportProgress
             }
         );
     }

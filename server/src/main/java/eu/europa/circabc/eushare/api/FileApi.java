@@ -14,6 +14,7 @@
  */
 package eu.europa.circabc.eushare.api;
 
+import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.FileResult;
@@ -125,6 +126,43 @@ public interface FileApi {
         produces = { "application/octet-stream", "application/json" }
     )
     default ResponseEntity<org.springframework.core.io.Resource> getFile(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "Password of the file") @Valid @RequestParam(value = "password", required = false) String password) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /file/{fileShortUrl}/fileInfo
+     * Used by INTERNAL and EXTERNAL users to get file&#39;s metadata from short url
+     *
+     * @param fileShortUrl The short url of the file (required)
+     * @return SUCCESS Returns the File&#39;s metadat of the newly-created file (status code 200)
+     *         or BAD REQUEST the Error Message will be empty (status code 400)
+     *         or UNAUTHORIZED the Error message will be empty (status code 401)
+     *         or FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong (status code 403)
+     *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
+     */
+    @ApiOperation(value = "", nickname = "getFileInfo", notes = "Used by INTERNAL and EXTERNAL users to get file's metadata from short url", response = FileBasics.class, tags={ "File", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "SUCCESS Returns the File's metadat of the newly-created file", response = FileBasics.class),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong", response = Status.class),
+        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
+    @GetMapping(
+        value = "/file/{fileShortUrl}/fileInfo",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<FileBasics> getFileInfo(@ApiParam(value = "The short url of the file",required=true) @PathVariable("fileShortUrl") String fileShortUrl) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"size\" : 0.08008281904610115, \"name\" : \"name\", \"hasPassword\" : true, \"expirationDate\" : \"2000-01-23\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

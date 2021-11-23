@@ -24,8 +24,6 @@ export class AddRecipientsModalComponent implements OnInit {
   private modalFileId = '';
   public uploadInProgress = false;
 
-
-
   public sharedWithFormGroup!: FormGroup;
 
   public get email(): string {
@@ -40,14 +38,13 @@ export class AddRecipientsModalComponent implements OnInit {
     private modalService: ModalsService,
     private fb: FormBuilder,
     private uploadedFileService: UploadedFilesService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.sharedWithFormGroup = this.fb.group(
       {
-     
         message: [''],
-        email: ['']
+        email: [''],
       },
       { validators: recipientValidator(), updateOn: 'change' }
     );
@@ -67,14 +64,11 @@ export class AddRecipientsModalComponent implements OnInit {
   public resetRecipient() {
     this.sharedWithFormGroup.controls['message'].reset();
     this.sharedWithFormGroup.controls['email'].reset();
-  
   }
 
   async onSubmit() {
-   
     this.uploadInProgress = true;
     let recipient: Recipient;
-
 
     recipient = {
       email: this.email,
