@@ -792,3 +792,11 @@ body {
   }
 }
 
+.cta--dots {
+  &::after {
+    background-image: url("assets/img/icon-more-white.png");
+  }
+}
+
+
+

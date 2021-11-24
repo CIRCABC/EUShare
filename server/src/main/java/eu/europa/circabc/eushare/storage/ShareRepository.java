@@ -13,9 +13,11 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface UserFileRepository extends CrudRepository<DBUserFile, String> {
-    DBUserFile findOneByDownloadId(String downloadId);
-    List<DBUserFile> findByFile_id(String fileId);
+public interface ShareRepository extends CrudRepository<DBShare, String> {
+    DBShare findOneByDownloadId(String downloadId);
+    DBShare findOneByShorturl(String shortUrl);
+    List<DBShare> findByFile_id(String fileId);
+    List<DBShare> findByEmail(String email);
     void deleteByDownloadId(String downloadId);
-    void deleteByReceiver_idAndFile_id(String receiverId, String fileId);
+    void deleteByEmailAndFile_id(String email, String fileId);
 }

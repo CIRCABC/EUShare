@@ -94,48 +94,12 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         return userRepository.save(user);
     }
 
-    /**
-     * One of the arguments can be null
-     */
-    private DBUser createExternalUser(String email, String name) {
-        DBUser user = DBUser.createExternalUser(email, name);
-        return userRepository.save(user);
-    }
 
-    private DBUser createLinkUser(String name) {
-        DBUser user = DBUser.createLinkUser(name);
-        return userRepository.save(user);
-    }
 
     DBUser getDbUser(String userId) throws UnknownUserException {
         return userRepository.findById(userId).orElseThrow(UnknownUserException::new);
     }
 
-    DBUser getUserOrCreateExternalOrLinkUser(Recipient recipient)
-            throws WrongEmailStructureException, WrongNameStructureException {
-        final String emailOrName = recipient.getEmailOrName();
-        DBUser dbUser = userRepository.findOneByNameAndRole(emailOrName, DBUser.Role.LINK);
-        if (dbUser == null) {
-            dbUser = userRepository.findOneByEmailIgnoreCase(emailOrName);
-        }
-        if (dbUser != null) {
-            return dbUser;
-        } else {
-            if (recipient.getSendEmail()) {
-                if (StringUtils.validateEmailAddress(emailOrName)) {
-                    return this.createExternalUser(emailOrName, null);
-                } else {
-                    throw new WrongEmailStructureException();
-                }
-            } else {
-                if (StringUtils.validateLinkName(emailOrName)) {
-                    return this.createLinkUser(emailOrName);
-                } else {
-                    throw new WrongNameStructureException();
-                }
-            }
-        }
-    }
 
     @Override
     public void setAdminUsers() {

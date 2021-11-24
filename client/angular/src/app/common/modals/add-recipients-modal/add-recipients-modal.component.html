@@ -6,73 +6,34 @@
         {{ "add.recipient.to" | transloco }} <br />
         <strong>
           {{
-            modalFileName.length > 25
-              ? (modalFileName | slice: 0:25) + "..."
-              : modalFileName
+          modalFileName.length > 25
+          ? (modalFileName | slice: 0:25) + "..."
+          : modalFileName
           }}
         </strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
-      <form [formGroup]="sharedWithFormGroup">
-        <div class="field">
-          <label class="label">{{ "how.to.share" | transloco }}</label>
-          <div class="field-body">
-            <div class="field is-narrow">
-              <div class="control">
-                <label class="radio">
-                  <input
-                    type="radio"
-                    required
-                    formControlName="sendEmail"
-                    value="True"
-                    (click)="changeByEmailOrLink(true)"
-                  />Email
-                </label>
-                <label class="radio">
-                  <input
-                    type="radio"
-                    required
-                    formControlName="sendEmail"
-                    value="False"
-                    (click)="changeByEmailOrLink(false)"
-                  />Link
-                </label>
-              </div>
-            </div>
-          </div>
+      <form [formGroup]="sharedWithFormGroup" (ngSubmit)="onSubmit()" #fmod="ngForm">
+        <div>
+          <app-email-input formControlName="email" [showAddRecipient]="false"></app-email-input>
+          <app-message-text-area [isOptional]="false" formControlName="message"></app-message-text-area>
         </div>
-        <div *ngIf="addRecipientsByEmailOrByLink">
-          <app-email-input
-            formControlName="email"
-            [showAddRecipient]="false"
-          ></app-email-input>
-          <app-message-text-area
-            [isOptional]="false"
-            formControlName="message"
-          ></app-message-text-area>
-        </div>
-        <div *ngIf="!addRecipientsByEmailOrByLink">
-          <app-link-input formControlName="name"></app-link-input>
+        <div>
+          <button class="button" [class.is-loading]="uploadInProgress" type="submit"
+            [disabled]="!sharedWithFormGroup.valid">
+            Submit
+          </button>
         </div>
       </form>
     </section>
     <footer class="modal-card-foot">
-      <button
-        class="button"
-        (click)="onSubmit()"
-        [class.is-loading]="uploadInProgress"
-        type="submit"
-        [disabled]="!sharedWithFormGroup.valid"
-      >
-        Submit
+      <!-- workaround for unknow bug ... submit button not responding if not duplicated here ?!? -->
+      <button class="button" style=" visibility: hidden;" type="submit" [disabled]="!sharedWithFormGroup.valid">
+
       </button>
-      <button
-        class="modal-close is-large"
-        (click)="closeModal()"
-        aria-label="close"
-      ></button>
     </footer>
+
   </div>
 </div>

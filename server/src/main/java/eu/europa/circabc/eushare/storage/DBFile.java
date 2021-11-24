@@ -24,64 +24,73 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
+import eu.europa.circabc.eushare.model.Recipient;
 
 
 @Entity
 @Table(name = "Files")
 public class DBFile {
-    @Column(nullable = false)
-    private LocalDate expirationDate;
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "FILE_ID", nullable = false, unique = true)
+    private String id;
 
     @Column(nullable = false)
     private String filename;
 
-    @Id
-    @Column(name = "FILE_ID", nullable = false, unique = true)
-    private String id;
+    @Column(nullable = false)
+    private String path;
+
+    @Column(name = "fileSize", nullable = false)
+    private long size;
+
+    @Column(nullable = false)
+    private LocalDate expirationDate;
 
     @Column(nullable = false)
     private LocalDateTime lastModified = LocalDateTime.now();
 
     private String password;
 
-    @Column(nullable = false)
-    private String path;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
-    private Set<DBUserFile> sharedWith;
-
-    @Column(name = "fileSize", nullable = false)
-    private long size;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status = Status.ALLOCATED;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
+    private Set<DBShare> sharedWith;
+
 
     @ManyToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_uploader"))
     private DBUser uploader;
 
-    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
+    public DBFile(DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
             LocalDate expirationDate, String path) {
-        this(id, uploader, sharedWith, filename, size, expirationDate, path, null);
+        this( uploader, sharedWith, filename, size, expirationDate, path, null);
     }
 
     @SuppressWarnings("java:S107")
-    public DBFile(String id, DBUser uploader, Collection<DBUserFile> sharedWith, String filename, long size,
+    public DBFile(DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
             LocalDate expirationDate, String path, String password) {
-        this.id = id;
+       
         this.uploader = uploader;
         this.sharedWith = new HashSet<>(sharedWith);
         this.filename = filename;
@@ -97,16 +106,16 @@ public class DBFile {
     private DBFile() {
     }
 
-    public FileInfoRecipient toFileInfoRecipient(String recipientId) {
+    public FileInfoRecipient toFileInfoRecipient(String recipient) {
         FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();
         fileInfoRecipient.setExpirationDate(this.expirationDate);
         fileInfoRecipient.setHasPassword(this.password != null);
         fileInfoRecipient.setName(this.filename);
         fileInfoRecipient.setSize(new BigDecimal(this.size));
         fileInfoRecipient.setUploaderName(this.uploader.getName());
-        for (DBUserFile dbUserFile : this.getSharedWith()) {
-            if(dbUserFile.getReceiver().getId().equals(recipientId)) {
-                fileInfoRecipient.setFileId(dbUserFile.getDownloadId());
+        for (DBShare dbShare : this.getSharedWith()) {
+            if(dbShare.getEmail().equals(recipient)) {
+                fileInfoRecipient.setFileId(dbShare.getDownloadId());
             }
         }
         return fileInfoRecipient;
@@ -114,8 +123,8 @@ public class DBFile {
 
     public FileInfoUploader toFileInfoUploader() {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
-        List<RecipientWithLink> sharedWithRecipients = this.getSharedWith().stream()
-                .map(DBUserFile::toRecipientWithLink).collect(Collectors.toList());
+        List<Recipient> sharedWithRecipients = this.getSharedWith().stream()
+                .map(DBShare::toRecipient).collect(Collectors.toList());
         fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);
@@ -208,11 +217,11 @@ public class DBFile {
         this.path = path;
     }
 
-    public Set<DBUserFile> getSharedWith() {
+    public Set<DBShare> getSharedWith() {
         return sharedWith;
     }
 
-    public void setSharedWith(Set<DBUserFile> sharedWith) {
+    public void setSharedWith(Set<DBShare> sharedWith) {
         this.sharedWith = sharedWith;
     }
 

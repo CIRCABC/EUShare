@@ -17,8 +17,6 @@ export * from './fileRequestAllOf';
 export * from './fileResult';
 export * from './inlineObject';
 export * from './recipient';
-export * from './recipientWithLink';
-export * from './recipientWithLinkAllOf';
 export * from './status';
 export * from './userInfo';
 export * from './userInfoAllOf';

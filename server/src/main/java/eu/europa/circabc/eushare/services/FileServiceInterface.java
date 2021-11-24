@@ -34,14 +34,13 @@ import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
 
 public interface FileServiceInterface {
         public void removeShareOnFileOnBehalfOf(String fileId, String userId, String requesterId)
                         throws UnknownUserException, UnknownFileException, UserUnauthorizedException;
 
-        public RecipientWithLink addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
+        public Recipient addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
                         throws UnknownFileException, UserUnauthorizedException, UnknownUserException,
                         WrongNameStructureException, WrongEmailStructureException, MessageTooLongException, MessagingException;
 

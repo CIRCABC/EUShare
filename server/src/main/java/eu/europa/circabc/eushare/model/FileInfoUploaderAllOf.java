@@ -12,7 +12,7 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
+import eu.europa.circabc.eushare.model.Recipient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class FileInfoUploaderAllOf   {
 
   @JsonProperty("sharedWith")
   @Valid
-  private List<RecipientWithLink> sharedWith = new ArrayList<>();
+  private List<Recipient> sharedWith = new ArrayList<>();
 
   public FileInfoUploaderAllOf fileId(String fileId) {
     this.fileId = fileId;
@@ -54,12 +54,12 @@ public class FileInfoUploaderAllOf   {
     this.fileId = fileId;
   }
 
-  public FileInfoUploaderAllOf sharedWith(List<RecipientWithLink> sharedWith) {
+  public FileInfoUploaderAllOf sharedWith(List<Recipient> sharedWith) {
     this.sharedWith = sharedWith;
     return this;
   }
 
-  public FileInfoUploaderAllOf addSharedWithItem(RecipientWithLink sharedWithItem) {
+  public FileInfoUploaderAllOf addSharedWithItem(Recipient sharedWithItem) {
     this.sharedWith.add(sharedWithItem);
     return this;
   }
@@ -73,11 +73,11 @@ public class FileInfoUploaderAllOf   {
 
   @Valid
 @Size(min=1,max=10) 
-  public List<RecipientWithLink> getSharedWith() {
+  public List<Recipient> getSharedWith() {
     return sharedWith;
   }
 
-  public void setSharedWith(List<RecipientWithLink> sharedWith) {
+  public void setSharedWith(List<Recipient> sharedWith) {
     this.sharedWith = sharedWith;
   }
 

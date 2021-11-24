@@ -18,7 +18,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { RecipientWithLink } from './recipientWithLink';
+import { Recipient } from './recipient';
 
 
 export interface FileInfoUploaderAllOf { 
@@ -29,6 +29,6 @@ export interface FileInfoUploaderAllOf {
     /**
      * User IDs this file is shared with
      */
-    sharedWith: Array<RecipientWithLink>;
+    sharedWith: Array<Recipient>;
 }
 

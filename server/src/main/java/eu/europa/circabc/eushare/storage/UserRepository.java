@@ -26,6 +26,7 @@ public interface UserRepository extends PagingAndSortingRepository<DBUser, Strin
     
     public DBUser findOneByEmailIgnoreCaseAndRole(String email, DBUser.Role role);
     public DBUser findOneByName(String name);
+    public DBUser findOneById(String id);
     public DBUser findOneByNameAndRole(String name, DBUser.Role role);
     public List<DBUser> findByEmailIgnoreCaseStartsWith(String start, Pageable page);
 }

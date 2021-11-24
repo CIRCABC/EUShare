@@ -337,6 +337,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
   
+  '/file/{fileShortUrl}/fileInfo':
+    parameters:
+    - name: fileShortUrl
+      in: path
+      description: The short url of the file
+      required: true
+      schema:
+        type: string
+    get:
+      description: Used by INTERNAL and EXTERNAL users to get file's metadata from short url
+      operationId: getFileInfo
+      tags:
+      - File
+      responses:
+        200:
+          description: SUCCESS Returns the File's metadat of the newly-created file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileBasics'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+
   '/file/{fileID}':
     parameters:
     - name: fileID
@@ -497,11 +542,11 @@ paths:
                 $ref: '#/components/schemas/Recipient'
       responses:
         200:
-          description: SUCCESS Returns the RecipientWithLink for the added recipient
+          description: SUCCESS Returns the Recipient for the added recipient
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RecipientWithLink'
+                $ref: '#/components/schemas/Recipient'
         400:
           description: BAD REQUEST the Error Message will be empty
           content:
@@ -708,7 +753,7 @@ components:
               description: User IDs this file is shared with
               type: array
               items:
-                $ref: '#/components/schemas/RecipientWithLink'
+                $ref: '#/components/schemas/Recipient'
               minItems: 1
               maxItems: 10
           required:
@@ -772,32 +817,19 @@ components:
             - fileBytes
     Recipient:
       properties:
-        emailOrName:
-          description: Email or name of the recipient
+        email:
+          description: Email of the recipient
           type: string
         message: 
           description: Optional message to send
           type: string
-        sendEmail:
-          description: True to send an email with the download link
-          type: boolean
-      required:
-        - emailOrName
-        - sendEmail
-    RecipientWithLink:
-      allOf:
-        - $ref: '#/components/schemas/Recipient'
-        - type: object
-          properties:
-            recipientId:
-              description: Id of the recipient
-              type: string
-            downloadLink:
-              description: Download link to a specific file
-              type: string
-          required:
-          - downloadLink
-          - recipientId
+        downloadLink:
+          description: Download link to a specific file
+          type: string
+        shortUrl:
+          description: Short link to a specific file
+          type: string
+
     UserInfo:
       allOf:
         - $ref: '#/components/schemas/UserSpace'

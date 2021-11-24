@@ -24,33 +24,14 @@ export class AddRecipientsModalComponent implements OnInit {
   private modalFileId = '';
   public uploadInProgress = false;
 
-  public addRecipientsByEmailOrByLink = true;
-
   public sharedWithFormGroup!: FormGroup;
-
-  public get sendEmail(): string {
-    return this.sharedWithFormGroup.controls['sendEmail'].value;
-  }
-
-  public get sendEmailIsTrue(): boolean {
-    return this.sendEmail === 'True';
-  }
 
   public get email(): string {
     return this.sharedWithFormGroup.controls['email'].value;
   }
 
-  public get name(): string {
-    return this.sharedWithFormGroup.controls['name'].value;
-  }
-
   public get message(): string {
     return this.sharedWithFormGroup.controls['message'].value;
-  }
-
-  public changeByEmailOrLink(emailOrLink: boolean): void {
-    this.addRecipientsByEmailOrByLink = emailOrLink;
-    this.resetRecipient();
   }
 
   constructor(
@@ -62,10 +43,8 @@ export class AddRecipientsModalComponent implements OnInit {
   ngOnInit() {
     this.sharedWithFormGroup = this.fb.group(
       {
-        sendEmail: ['True', Validators.required],
         message: [''],
         email: [''],
-        name: [''],
       },
       { validators: recipientValidator(), updateOn: 'change' }
     );
@@ -85,25 +64,16 @@ export class AddRecipientsModalComponent implements OnInit {
   public resetRecipient() {
     this.sharedWithFormGroup.controls['message'].reset();
     this.sharedWithFormGroup.controls['email'].reset();
-    this.sharedWithFormGroup.controls['name'].reset();
   }
 
-  public async onSubmit() {
+  async onSubmit() {
     this.uploadInProgress = true;
     let recipient: Recipient;
 
-    if (this.sendEmailIsTrue) {
-      recipient = {
-        emailOrName: this.email,
-        sendEmail: this.sendEmailIsTrue,
-        message: this.message,
-      };
-    } else {
-      recipient = {
-        emailOrName: this.name,
-        sendEmail: this.sendEmailIsTrue,
-      };
-    }
+    recipient = {
+      email: this.email,
+    };
+
     await this.uploadedFileService.addOneRecipient(
       this.modalFileName,
       this.modalFileId,

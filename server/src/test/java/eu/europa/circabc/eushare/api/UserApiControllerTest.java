@@ -36,7 +36,7 @@ import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
+import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.Status;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.services.FileService;
@@ -285,11 +285,9 @@ public class UserApiControllerTest {
         fileInfoUploader.setSize(new BigDecimal(1024));
         fileInfoUploader.setFileId("fileId");
 
-        RecipientWithLink recipientWithLink = new RecipientWithLink();
-        recipientWithLink.setEmailOrName("email@email.com");
+        Recipient recipientWithLink = new Recipient();
+        recipientWithLink.setEmail("email@email.com");
         recipientWithLink.setMessage("message");
-        recipientWithLink.setSendEmail(true);
-        recipientWithLink.setRecipientId("recipientId");
         recipientWithLink.setDownloadLink("fileId");
 
         fileInfoUploader.setSharedWith(Arrays.asList(recipientWithLink));

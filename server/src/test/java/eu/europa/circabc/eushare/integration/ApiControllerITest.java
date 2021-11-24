@@ -33,13 +33,12 @@ import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.DBUserFile;
+import eu.europa.circabc.eushare.storage.DBShare;
 import eu.europa.circabc.eushare.storage.FileRepository;
-import eu.europa.circabc.eushare.storage.UserFileRepository;
+import eu.europa.circabc.eushare.storage.ShareRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.ResourceMultipartFile;
 
@@ -92,7 +91,7 @@ public class ApiControllerITest {
   private FileRepository fileRepository;
 
   @Autowired
-  private UserFileRepository userFileRepository;
+  private ShareRepository shareRepository;
 
   @MockBean
   private OpaqueTokenIntrospector opaqueTokenIntrospector;
@@ -317,11 +316,12 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
+   
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById( dbFile.getId());
     // Done
 
     FileInfoUploader expecterFileInfoUploader = dbFile.toFileInfoUploader();
@@ -347,11 +347,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile( uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById( dbFile.getId());
     // Done
 
     FileInfoUploader expecterFileInfoUploader = dbFile.toFileInfoUploader();
@@ -380,11 +380,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile( uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById( dbFile.getId());
     // Done
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
@@ -419,15 +419,15 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile( uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById( dbFile.getId());
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare( uploader.getEmail(), dbFile,"message");
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(uploader.getId());
@@ -454,15 +454,15 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(DBUser.Role.ADMIN, uploaderSaved.getRole());
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById( dbFile.getId());
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare( uploader.getEmail(), dbFile,"message");
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(uploader.getId());
@@ -491,15 +491,15 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile( uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById( dbFile.getId());
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare( uploader.getEmail(), dbFile,"message");
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(uploader.getId());
@@ -540,11 +540,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile( uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById( dbFile.getId());
     // Done
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -569,11 +569,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path, "dummyPassword");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -614,11 +614,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     HttpEntity httpEntity = this.httpEntityAsAdmin("");
@@ -640,11 +640,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -670,11 +670,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
@@ -708,9 +708,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+  
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(fileRequest));
@@ -730,9 +730,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(fileRequest));
@@ -754,9 +754,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpHeaders httpHeaders = new HttpHeaders();
@@ -781,9 +781,9 @@ public class ApiControllerITest {
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(0));
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(fileRequest));
@@ -806,27 +806,26 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("EMAIL@EMAIL.COM");
+    recipient.setEmail("EMAIL@EMAIL.COM");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient),
         "emailA@email.com", "stupidUsername");
 
-    ResponseEntity<RecipientWithLink> entity = this.testRestTemplate.exchange(
-        "/file/" + dbFile.getId() + "/fileRequest/sharedWith", HttpMethod.POST, httpEntity, RecipientWithLink.class);
+    ResponseEntity<Recipient> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith", HttpMethod.POST, httpEntity, Recipient.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(recipient.getEmailOrName(), entity.getBody().getEmailOrName());
-    assertEquals(recipient.getSendEmail(), entity.getBody().getSendEmail());
+    assertEquals(recipient.getEmail(), entity.getBody().getEmail());
     assertEquals(recipient.getMessage(), entity.getBody().getMessage());
   }
 
@@ -841,17 +840,16 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName(null);
+    recipient.setEmail(null);
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient),
         "emailA@email.com", "stupidUsername");
@@ -874,17 +872,17 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName(null);
+    recipient.setEmail(null);
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
+   
 
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
@@ -909,17 +907,16 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
 
@@ -934,9 +931,8 @@ public class ApiControllerITest {
   @DirtiesContext
   public void postFileSharedWith404() {
     Recipient recipient = new Recipient();
-    recipient.setEmailOrName("email@email.com");
+    recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    recipient.setSendEmail(true);
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
 
@@ -962,11 +958,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     FileInfoUploader fileInfoUploader = dbFile.toFileInfoUploader();
@@ -995,11 +991,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "emptyfile.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "emptyfile.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body, "emailA@email.com",
@@ -1027,11 +1023,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsAnonymousUser(body);
@@ -1058,11 +1054,11 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "file.txt", 13,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "file.txt", 13,
         LocalDate.now(), path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
     // Done
 
     HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body);
@@ -1100,15 +1096,15 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare( uploader.getEmail(), dbFile,"message");
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("", "emailA@email.com", "dummyUsername");
@@ -1129,15 +1125,15 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare( uploader.getEmail(), dbFile,"message");
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     HttpEntity<String> httpEntity = this.httpEntityAsAnonymousUser("");
@@ -1159,15 +1155,15 @@ public class ApiControllerITest {
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase("emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
-    DBFile dbFile = new DBFile("szgakjq2yso7xobngy_9", uploaderSaved, Collections.emptySet(), "filename", 1024,
+    DBFile dbFile = new DBFile(uploaderSaved, Collections.emptySet(), "filename", 1024,
         LocalDate.now(), "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
-    fileRepository.findOneById("szgakjq2yso7xobngy_9");
+    fileRepository.findOneById(dbFile.getId());
 
-    DBUserFile dbUserFile = new DBUserFile("downloadIdq7xobngy_1", uploader, dbFile);
-    userFileRepository.save(dbUserFile);
-    userFileRepository.findOneByDownloadId("downloadIdq7xobngy_1");
+    DBShare dbShare = new DBShare( uploader.getEmail(), dbFile,"message");
+    shareRepository.save(dbShare);
+    shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");

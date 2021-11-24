@@ -35,13 +35,15 @@ import eu.europa.circabc.eushare.model.UserSpace;
 @Entity
 @Table(name = "Users")
 public class DBUser {
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
-    private Set<DBUserFile> filesReceived = new HashSet<>();
-
+  
+ 
     @Id
     @Column(nullable = false)
-    @GeneratedValue(generator = "prod-generator")
-    @GenericGenerator(name = "prod-generator", strategy = "eu.europa.circabc.eushare.storage.SecureRandomIdentifierGenerator")
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+        name = "UUID",
+        strategy = "org.hibernate.id.UUIDGenerator"
+    )
     private String id;
 
     @Enumerated(value = EnumType.STRING)
@@ -78,33 +80,7 @@ public class DBUser {
         this.role = role;
     }
 
-     /**
-     * Create a new user with specified role {@code LINK}
-     */
-    public static DBUser createLinkUser(String name) throws IllegalArgumentException {
-        if (name == null) {
-            throw new IllegalArgumentException();
-        }
-        DBUser dbUser = new DBUser(0, Role.LINK);
-        dbUser.setName(name);
-        return dbUser;
-    }
 
-    /**
-     * Create a new user with specified role {@code EXTERNAL}
-     */
-    public static DBUser createExternalUser(String mail, String name) throws IllegalArgumentException {
-        if (mail == null && name == null) {
-            throw new IllegalArgumentException();
-        }
-        DBUser dbUser = new DBUser(0, Role.EXTERNAL);
-        if (mail != null) {
-            String upperCaseEmail = mail.toUpperCase();
-            dbUser.setEmail(upperCaseEmail);
-        }
-        dbUser.setName(name);
-        return dbUser;
-    }
 
     /**
      * Create a new user with specified role {@code INTERNAL}
@@ -179,7 +155,6 @@ public class DBUser {
     }
 
     public enum Role {
-        LINK, // A user representing a share by link
         EXTERNAL, // A user added by another, non active yet. Has an email address and nothing else.
         INTERNAL, // An active user. Has an email, a name and a username.
         ADMIN, // An internal user with extra advantage
@@ -206,13 +181,7 @@ public class DBUser {
         return id.hashCode();
     }
 
-    public Set<DBUserFile> getFilesReceived() {
-        return filesReceived;
-    }
 
-    public void setFilesReceived(Set<DBUserFile> filesReceived) {
-        this.filesReceived = filesReceived;
-    }
 
     public String getId() {
         return id;

@@ -54,16 +54,17 @@ import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
 import eu.europa.circabc.eushare.exceptions.WrongNameStructureException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
+import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.FileResult;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.model.RecipientWithLink;
 import eu.europa.circabc.eushare.model.validation.FileRequestValidator;
 import eu.europa.circabc.eushare.model.validation.RecipientValidator;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
+import eu.europa.circabc.eushare.storage.DBFile;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
@@ -71,7 +72,6 @@ import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
 public class FileApiController implements FileApi {
 
     private static final Logger log = LoggerFactory.getLogger(FileApiController.class);
-  
 
     private final NativeWebRequest request;
 
@@ -85,6 +85,7 @@ public class FileApiController implements FileApi {
     public FileApiController(NativeWebRequest request) {
         this.request = request;
     }
+
     @Override
     public ResponseEntity<Void> deleteFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "reason", required = false) String reason) {
@@ -131,6 +132,22 @@ public class FileApiController implements FileApi {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
                     HttpErrorAnswerBuilder.build404FileNotFoundToString(), exc3);
         }
+    }
+
+    @Override
+    public ResponseEntity<FileBasics> getFileInfo(@PathVariable("fileShortUrl") String fileShortUrl) {
+        DBFile dbFile;
+        try {
+            dbFile = fileService.findAvailableFileByShortUrl(fileShortUrl);
+            FileBasics fileInfo = dbFile.toFileBasics();
+            HttpHeaders responseHeaders = new HttpHeaders();
+            return new ResponseEntity<FileBasics>(fileInfo, responseHeaders,HttpStatus.OK);
+        } catch (UnknownFileException e) {
+            // TODO Auto-generated catch block
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    e);
+        }
+
     }
 
     @Override
@@ -247,7 +264,7 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<RecipientWithLink> postFileSharedWith(@PathVariable("fileID") String fileID,
+    public ResponseEntity<Recipient> postFileSharedWith(@PathVariable("fileID") String fileID,
             @RequestBody Recipient recipient) {
         if (!RecipientValidator.validate(recipient)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, HttpErrorAnswerBuilder.build400EmptyToString());
@@ -255,7 +272,7 @@ public class FileApiController implements FileApi {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
-            RecipientWithLink recipientWithLink = fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
+            Recipient recipientWithLink = fileService.addShareOnFileOnBehalfOf(fileID, recipient, requesterId);
             return new ResponseEntity<>(recipientWithLink, HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),

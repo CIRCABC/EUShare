@@ -30,12 +30,10 @@ public class RecipientValidator {
         if (recipient == null) { // NOSONAR
             return false;
         }
-        if (recipient.getEmailOrName() == null) { // NOSONAR
+        if (recipient.getEmail() == null) { // NOSONAR
             return false;
         }
-        if (recipient.getSendEmail() == null) { // NOSONAR
-            return false;
-        }
+ 
         return true;
     }
 }

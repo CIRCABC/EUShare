@@ -23,34 +23,36 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class Recipient   {
-  @JsonProperty("emailOrName")
-  private String emailOrName;
+  @JsonProperty("email")
+  private String email;
 
   @JsonProperty("message")
   private String message;
 
-  @JsonProperty("sendEmail")
-  private Boolean sendEmail;
+  @JsonProperty("downloadLink")
+  private String downloadLink;
 
-  public Recipient emailOrName(String emailOrName) {
-    this.emailOrName = emailOrName;
+  @JsonProperty("shortUrl")
+  private String shortUrl;
+
+  public Recipient email(String email) {
+    this.email = email;
     return this;
   }
 
   /**
-   * Email or name of the recipient
-   * @return emailOrName
+   * Email of the recipient
+   * @return email
   */
-  @ApiModelProperty(required = true, value = "Email or name of the recipient")
-  @NotNull
+  @ApiModelProperty(value = "Email of the recipient")
 
 
-  public String getEmailOrName() {
-    return emailOrName;
+  public String getEmail() {
+    return email;
   }
 
-  public void setEmailOrName(String emailOrName) {
-    this.emailOrName = emailOrName;
+  public void setEmail(String email) {
+    this.email = email;
   }
 
   public Recipient message(String message) {
@@ -73,25 +75,44 @@ public class Recipient   {
     this.message = message;
   }
 
-  public Recipient sendEmail(Boolean sendEmail) {
-    this.sendEmail = sendEmail;
+  public Recipient downloadLink(String downloadLink) {
+    this.downloadLink = downloadLink;
     return this;
   }
 
   /**
-   * True to send an email with the download link
-   * @return sendEmail
+   * Download link to a specific file
+   * @return downloadLink
   */
-  @ApiModelProperty(required = true, value = "True to send an email with the download link")
-  @NotNull
+  @ApiModelProperty(value = "Download link to a specific file")
 
 
-  public Boolean getSendEmail() {
-    return sendEmail;
+  public String getDownloadLink() {
+    return downloadLink;
   }
 
-  public void setSendEmail(Boolean sendEmail) {
-    this.sendEmail = sendEmail;
+  public void setDownloadLink(String downloadLink) {
+    this.downloadLink = downloadLink;
+  }
+
+  public Recipient shortUrl(String shortUrl) {
+    this.shortUrl = shortUrl;
+    return this;
+  }
+
+  /**
+   * Short link to a specific file
+   * @return shortUrl
+  */
+  @ApiModelProperty(value = "Short link to a specific file")
+
+
+  public String getShortUrl() {
+    return shortUrl;
+  }
+
+  public void setShortUrl(String shortUrl) {
+    this.shortUrl = shortUrl;
   }
 
 
@@ -104,14 +125,15 @@ public class Recipient   {
       return false;
     }
     Recipient recipient = (Recipient) o;
-    return Objects.equals(this.emailOrName, recipient.emailOrName) &&
+    return Objects.equals(this.email, recipient.email) &&
         Objects.equals(this.message, recipient.message) &&
-        Objects.equals(this.sendEmail, recipient.sendEmail);
+        Objects.equals(this.downloadLink, recipient.downloadLink) &&
+        Objects.equals(this.shortUrl, recipient.shortUrl);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(emailOrName, message, sendEmail);
+    return Objects.hash(email, message, downloadLink, shortUrl);
   }
 
   @Override
@@ -119,9 +141,10 @@ public class Recipient   {
     StringBuilder sb = new StringBuilder();
     sb.append("class Recipient {\n");
     
-    sb.append("    emailOrName: ").append(toIndentedString(emailOrName)).append("\n");
+    sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
-    sb.append("    sendEmail: ").append(toIndentedString(sendEmail)).append("\n");
+    sb.append("    downloadLink: ").append(toIndentedString(downloadLink)).append("\n");
+    sb.append("    shortUrl: ").append(toIndentedString(shortUrl)).append("\n");
     sb.append("}");
     return sb.toString();
   }

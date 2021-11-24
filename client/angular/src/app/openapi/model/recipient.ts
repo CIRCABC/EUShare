@@ -22,16 +22,20 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 export interface Recipient { 
     /**
-     * Email or name of the recipient
+     * Email of the recipient
      */
-    emailOrName: string;
+    email?: string;
     /**
      * Optional message to send
      */
     message?: string;
     /**
-     * True to send an email with the download link
+     * Download link to a specific file
      */
-    sendEmail: boolean;
+    downloadLink?: string;
+    /**
+     * Short link to a specific file
+     */
+    shortUrl?: string;
 }
 

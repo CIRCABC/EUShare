@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
-import { RecipientWithLink, FileService } from '../../../openapi';
+import { Recipient, FileService } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
 import { firstValueFrom } from 'rxjs';
 
@@ -23,7 +23,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   public modalActive = false;
   public modalFileName = '';
   private modalFileId = '';
-  public recipientsWithLink: RecipientWithLink[] = [];
+  public recipients: Recipient[] = [];
   private modalFileIsPasswordProtected = false;
 
   constructor(
@@ -45,7 +45,7 @@ export class ShareWithUsersModalComponent implements OnInit {
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.modalFileIsPasswordProtected =
           nextModalActiveValue.modalFileHasPassword;
-        this.recipientsWithLink = nextModalActiveValue.recipientsWithLink;
+        this.recipients = nextModalActiveValue.recipients;
       }
     );
   }
@@ -55,7 +55,7 @@ export class ShareWithUsersModalComponent implements OnInit {
       this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareId)
     )
       .then((_success) => {
-        this.recipientsWithLink.splice(shareIndex, 1);
+        this.recipients.splice(shareIndex, 1);
         this.notificationService.addSuccessMessageTranslation(
           'successfully.removed',
           { fileName: this.modalFileName, shareName }
@@ -90,12 +90,8 @@ export class ShareWithUsersModalComponent implements OnInit {
 
     let fileLinkBuild = `${window.location.protocol}//${
       window.location.host
-    }/filelink/${this.recipientsWithLink[i].downloadLink}/${encodeURIComponent(
-      btoa(this.modalFileName) // nosonar
-    )}/`;
-    fileLinkBuild = isPasswordProtected
-      ? `${fileLinkBuild}1`
-      : `${fileLinkBuild}0`;
+    }/fs/${this.recipients[i].shortUrl}`;
+
     return fileLinkBuild;
   }
 }
