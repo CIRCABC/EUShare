@@ -90,12 +90,8 @@ export class ShareWithUsersModalComponent implements OnInit {
 
     let fileLinkBuild = `${window.location.protocol}//${
       window.location.host
-    }/filelink/${this.recipients[i].downloadLink}/${encodeURIComponent(
-      btoa(this.modalFileName) // nosonar
-    )}/`;
-    fileLinkBuild = isPasswordProtected
-      ? `${fileLinkBuild}1`
-      : `${fileLinkBuild}0`;
+    }/fs/${this.recipients[i].shortUrl}`;
+
     return fileLinkBuild;
   }
 }
