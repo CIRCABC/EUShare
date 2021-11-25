@@ -56,23 +56,6 @@
                   </div>
                 </div>
               </div>
-              <div class="level-left" *ngIf="recipient.sendEmail === false">
-                <div class="level-item has-text-centered">
-                  <div class="field">
-                    <strong>{{ "link.name" | transloco }}</strong>
-                  </div>
-                </div>
-                <div class="level-item has-text-centered">
-                  <div class="field">
-                    <input
-                      class="input is-info"
-                      type="text"
-                      value="{{ recipient.email | lowercase }}"
-                      readonly
-                    />
-                  </div>
-                </div>
-              </div>
             </div>
             <div class="level-left">
               <div class="level-item has-text-centered">

@@ -24,12 +24,6 @@
         [attr.data-index]="i"
       >
         <div class="level-left">
-          <div *ngIf="recipient.sendEmail === true" class="level-item">
-            <p><strong>Recipient</strong> {{ recipient.email | lowercase }}</p>
-          </div>
-          <div *ngIf="recipient.sendEmail === false" class="level-item">
-            <p><strong>Link</strong> {{ recipient.email | lowercase }}</p>
-          </div>
           <div class="level-item">
             <div class="field">
               <input
@@ -40,22 +34,10 @@
             </div>
           </div>
         </div>
-        <div class="level-right">
-          <div class="level-item">
-            <a class="button" (click)="copyLink(i)">Copy</a>
-            <a
-              class="button"
-              (click)="
-                deleteShare(recipient.recipientId, recipient.email, i)
-              "
-              >Remove</a
-            >
-          </div>
-        </div>
       </div>
     </section>
     <footer class="modal-card-foot">
-        <button
+      <button
         class="modal-close is-large"
         (click)="closeModal()"
         aria-label="close"
