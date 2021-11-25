@@ -12,6 +12,8 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploaderAllOf;
 import eu.europa.circabc.eushare.model.Recipient;
@@ -30,6 +32,7 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class FileInfoUploader   {
+  @JsonFormat(pattern = "yyyy-MM-dd")
   @JsonProperty("expirationDate")
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
   private LocalDate expirationDate;

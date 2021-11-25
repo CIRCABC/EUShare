@@ -12,7 +12,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
 import { I18nService } from '../common/i18n/i18n.service';
 import { FileService } from '../openapi/api/file.service';
-import { FileBasics } from '../openapi';
 import { firstValueFrom, map } from 'rxjs';
 
 @Component({

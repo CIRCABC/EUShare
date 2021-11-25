@@ -32,9 +32,9 @@ export class AdministrationComponent {
   private pageSize = 10;
   public pageNumber = 0;
 
-  public userInfoArray: Array<UserInfo> = new Array();
-  public userInfoArrayNext: Array<UserInfo> = new Array();
-  public userInfoArrayPrevious: Array<UserInfo> = new Array();
+  public userInfoArray: Array<UserInfo> = [];
+  public userInfoArrayNext: Array<UserInfo> = [];
+  public userInfoArrayPrevious: Array<UserInfo> = [];
 
   private selectedUserInfoIndex = 0;
 
@@ -62,7 +62,7 @@ export class AdministrationComponent {
     this.userInfoArray = this.userInfoArrayNext;
 
     if (this.userInfoArrayNext.length >= this.pageSize) {
-      this.userInfoArrayNext = new Array();
+      this.userInfoArrayNext = [];
       this.userInfoArrayNext = await firstValueFrom(
         this.usersApi.getUsersUserInfo(
           this.pageSize,
@@ -99,8 +99,8 @@ export class AdministrationComponent {
 
       this.removeSelection();
 
-      this.userInfoArrayNext = new Array();
-      this.userInfoArrayPrevious = new Array();
+      this.userInfoArrayNext = [];
+      this.userInfoArrayPrevious = [];
 
       this.userInfoArray = await firstValueFrom(
         this.usersApi.getUsersUserInfo(

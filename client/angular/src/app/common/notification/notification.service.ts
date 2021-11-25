@@ -32,7 +32,7 @@ export class NotificationService {
 
   public addErrorMessage(
     message: string,
-    autoclose: boolean = false,
+    autoclose = false,
     displayTime?: number
   ): void {
     this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
@@ -41,7 +41,7 @@ export class NotificationService {
   public addErrorMessageTranslation(
     key: string,
     params?: HashMap,
-    autoclose: boolean = false,
+    autoclose = false,
     displayTime?: number
   ): void {
     this.addMessageTranslation(
@@ -56,7 +56,7 @@ export class NotificationService {
   public addSuccessMessageTranslation(
     key: string,
     params?: HashMap,
-    autoclose: boolean = false,
+    autoclose = false,
     displayTime?: number
   ): void {
     this.addMessageTranslation(
@@ -72,7 +72,7 @@ export class NotificationService {
     level: NotificationLevel,
     key: string,
     params?: HashMap,
-    autoclose: boolean = false,
+    autoclose = false,
     displayTime?: number
   ): void {
     let message: string;
@@ -105,7 +105,7 @@ export class NotificationService {
   private addMessage(
     message: string,
     level: NotificationLevel,
-    autoclose: boolean = false,
+    autoclose = false,
     displayTime?: number
   ): void {
     let finalDisplayTime;
