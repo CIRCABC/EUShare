@@ -18,7 +18,6 @@ import {
 import { faUpload, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import {
   FileService,
-  FileResult,
   FileRequest,
   Recipient,
   UsersService,
