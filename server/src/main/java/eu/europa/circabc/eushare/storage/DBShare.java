@@ -21,6 +21,7 @@ import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -30,7 +31,8 @@ import com.google.common.hash.Hashing;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "shares")
+@Table(name = "shares",
+indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl"))
 public class DBShare {
 
     @Id
@@ -45,7 +47,7 @@ public class DBShare {
     @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_file"))
     private DBFile file;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, unique= true, length = 10)
     private String shorturl;
 
     private String message;
