@@ -58,7 +58,7 @@ public class DBTest {
                 "/a/sample/path"); // NOSONAR
         fileRepository.save(dbFile);
          // Verify insertion
-         DBFile dbFileSaved = fileRepository.findOneById("id");
+         DBFile dbFileSaved = fileRepository.findOneById(dbFile.getId());
          assertEquals(dbFile, dbFileSaved);
     }
 
@@ -113,6 +113,7 @@ public class DBTest {
         fileRepository.save(dbFile);
 
         DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message");
+        dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Email(DBFile.Status.AVAILABLE,
@@ -144,6 +145,7 @@ public class DBTest {
         fileRepository.save(dbFile);
 
         DBShare dbShare = new DBShare("email2@email.com", dbFile,"message");
+        dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_Id(DBFile.Status.AVAILABLE,
@@ -187,6 +189,7 @@ public class DBTest {
         fileRepository.save(dbFile3);
 
         DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message");
+        dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
         List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(
