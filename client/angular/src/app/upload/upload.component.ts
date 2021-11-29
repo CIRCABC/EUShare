@@ -50,7 +50,6 @@ export class UploadComponent implements OnInit {
 
   public emailControl!: FormControl;
   public isShowEmailControl = true;
-  public emailAlreadyExist = false;
 
   constructor(
     private router: Router,
@@ -213,9 +212,8 @@ export class UploadComponent implements OnInit {
       );
       if (emailArray) {
         const addEmail = this.initializedEmailFormGroupValue(this.emailControl.value);
-        this.emailAlreadyExist = false;
-        emailArray.controls.forEach((element) => { if (addEmail.controls['email'].value === element.value.email) { this.emailAlreadyExist = true; } });
-        if (!this.emailAlreadyExist) {
+        const emailAlreadyExist = emailArray.controls.some(element => element.value.email === addEmail.controls['email'].value) ;
+        if (!emailAlreadyExist) {
           emailArray.push(
             addEmail
           );
