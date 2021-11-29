@@ -24,6 +24,7 @@
         [attr.data-index]="i"
       >
         <div class="level-left">
+
           <div class="level-item">
             <div class="field">
               <input
@@ -32,6 +33,22 @@
                 value="{{ formatLink(i) }}"
               />
             </div>
+            <div *ngIf="recipient.email != ''" class="level-item">
+              <p><strong>&nbsp;Notification : </strong> {{ recipient.email | lowercase }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+           
+            <a *ngIf="recipient.email != ''"
+              class="button"
+              (click)="
+                deleteShare( recipient.email, i)
+              "
+              >Remove</a
+            >
+            <a class="button" (click)="copyLink(i)">Copy</a>
           </div>
         </div>
       </div>

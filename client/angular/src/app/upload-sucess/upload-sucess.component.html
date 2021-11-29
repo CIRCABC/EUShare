@@ -11,26 +11,22 @@
           <div class="media-content">
             <p class="title is-4">
               {{
-                fileInfoUploader.name.length > 25
-                  ? (fileInfoUploader.name | slice: 0:25) + ".."
-                  : fileInfoUploader.name
+              fileInfoUploader.name.length > 25
+              ? (fileInfoUploader.name | slice: 0:25) + ".."
+              : fileInfoUploader.name
               }}
               {{ "successfully.uploaded" | transloco }}
             </p>
             <p class="subtitle is-6">
               {{
-                "file.will.expire"
-                  | transloco: { date: fileInfoUploader.expirationDate }
+              "file.will.expire"
+              | transloco: { date: fileInfoUploader.expirationDate }
               }}
             </p>
           </div>
         </div>
 
-        <div
-          class="media"
-          *ngFor="let recipient of fileInfoUploader.sharedWith; let i = index"
-          [attr.data-index]="i"
-        >
+        <div class="media" *ngFor="let recipient of fileInfoUploader.sharedWith; let i = index" [attr.data-index]="i">
           <div class="media-content">
             <p *ngIf="!recipient.email" class="subtitle is-6">
               You may now share the following link to your file.
@@ -39,44 +35,36 @@
               The following link has been sent to your recipient.
             </p>
             <div class="level">
-              <div class="level-left" *ngIf="recipient.email">
-                <div class="level-item has-text-centered">
-                  <div class="field">
-                    <strong>{{ "email" | transloco }}</strong>
+              <div class="level-left">
+                <div class="level-left" *ngIf="recipient.email">
+                  <div class="level-item has-text-centered">
+                    <div class="field">
+                      <strong>{{ "email" | transloco }}</strong>
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <div class="field">
+                      <input class="input is-info" type="text" value="{{ recipient.email | lowercase }}" readonly />
+                    </div>
                   </div>
                 </div>
-                <div class="level-item has-text-centered">
-                  <div class="field">
-                    <input
-                      class="input is-info"
-                      type="text"
-                      value="{{ recipient.email | lowercase }}"
-                      readonly
-                    />
+                <div class="level-left">
+                  <div class="level-item has-text-centered">
+                    <div class="field">
+                      <strong>{{ "link" | transloco }}</strong>
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <div class="field">
+                      <input class="input is-info" type="text" value="{{ formatLink(i) }}" readonly />
+                    </div>
+                  </div>
+                  <div class="level-item has-text-centered">
+                    <a class="button" (click)="copyLink(i)">{{
+                      "copy" | transloco
+                      }}</a>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="level-left">
-              <div class="level-item has-text-centered">
-                <div class="field">
-                  <strong>{{ "link" | transloco }}</strong>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div class="field">
-                  <input
-                    class="input is-info"
-                    type="text"
-                    value="{{ formatLink(i) }}"
-                    readonly
-                  />
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <a class="button" (click)="copyLink(i)">{{
-                  "copy" | transloco
-                }}</a>
               </div>
             </div>
           </div>

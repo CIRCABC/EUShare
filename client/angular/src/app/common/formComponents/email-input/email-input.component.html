@@ -6,7 +6,8 @@
       [disabled]="disabled"
       (blur)="onTouched()"
       (input)="onChange($event.target.value)"
-      (keyup.enter)="sendClick()"
+      (keyup.enter)="addRecipient()"
+      (focusout)="addRecipient()"
       class="input"
       type="text"
       [attr.placeholder]="'name.surname.email.com' | transloco"
@@ -17,7 +18,7 @@
     <button
       *ngIf="showAddRecipient"
       [disabled]="errorMessage || input.value === ''"
-      (click)="sendClick()"
+      (click)="addRecipient()"
       type="button"
       class="button"
     >

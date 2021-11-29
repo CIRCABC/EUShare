@@ -50,6 +50,7 @@ export class UploadComponent implements OnInit {
 
   public emailControl!: FormControl;
   public isShowEmailControl = true;
+  public emailAlreadyExist = false;
 
   constructor(
     private router: Router,
@@ -126,7 +127,7 @@ export class UploadComponent implements OnInit {
     this.addEmailMessageFormGroup();
   }
 
-  toggleMore() {}
+  toggleMore() { }
 
   getEmailMessageFormGroup(i: number): FormGroup {
     const emailMessageArray: FormArray = this.emailMessageArray;
@@ -201,6 +202,7 @@ export class UploadComponent implements OnInit {
     return form.controls.emailArray.controls;
   }
 
+
   addEmailFormGroup(emailMessageFormArrayIndex: number) {
     const formGroupOrNull = <FormGroup | null>(
       this.emailMessageArray.controls[emailMessageFormArrayIndex]
@@ -210,9 +212,14 @@ export class UploadComponent implements OnInit {
         formGroupOrNull.controls['emailArray']
       );
       if (emailArray) {
-        emailArray.push(
-          this.initializedEmailFormGroupValue(this.emailControl.value)
-        );
+        const addEmail = this.initializedEmailFormGroupValue(this.emailControl.value);
+        this.emailAlreadyExist = false;
+        emailArray.controls.forEach((element) => { if (addEmail.controls['email'].value === element.value.email) { this.emailAlreadyExist = true; } });
+        if (!this.emailAlreadyExist) {
+          emailArray.push(
+            addEmail
+          );
+        }
         this.isShowEmailControl = false;
         this.emailControl = this.fb.control('');
         setTimeout(() => (this.isShowEmailControl = true));

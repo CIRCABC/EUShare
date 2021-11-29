@@ -85,7 +85,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
     return null;
   }
 
-  sendClick() {
+  addRecipient() {
     if (this.errorMessage === null && this.input.nativeElement !== '') {
       this.clicked.emit(true);
     }

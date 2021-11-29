@@ -50,15 +50,15 @@ export class ShareWithUsersModalComponent implements OnInit {
     );
   }
 
-  public deleteShare(shareId: string, shareName: string, shareIndex: number) {
+  public deleteShare(shareEmail: string, shareIndex: number) {
     firstValueFrom(
-      this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareId)
+      this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareEmail)
     )
       .then((_success) => {
         this.recipients.splice(shareIndex, 1);
         this.notificationService.addSuccessMessageTranslation(
           "successfully.removed",
-          { fileName: this.modalFileName, shareName }
+          { fileName: this.modalFileName, shareEmail }
         );
       })
       .catch((_error) => {

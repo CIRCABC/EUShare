@@ -177,10 +177,10 @@ public class FileService implements FileServiceInterface {
 
     @Override
     @Transactional
-    public void removeShareOnFileOnBehalfOf(String fileId, String userId, String requesterId)
+    public void removeShareOnFileOnBehalfOf(String fileId, String userEmail, String requesterId)
             throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            shareRepository.deleteByEmailAndFile_id(userId, fileId);
+            shareRepository.deleteByEmailAndFile_id(userEmail, fileId);
         } else {
             throw new UserUnauthorizedException();
         }
