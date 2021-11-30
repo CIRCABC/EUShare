@@ -393,7 +393,7 @@ export class UploadComponent implements OnInit {
             }
           }
         }
-        if (this.getEmailArrayLength(0) == 0) {
+        if (this.getEmailArrayLength(0) === 0) {
           const receiver = '';
           const recipient: Recipient = {
             email: receiver,
@@ -405,7 +405,7 @@ export class UploadComponent implements OnInit {
           expirationDate: this.getExpirationDate()
             .toISOString()
             .substring(0, 10),
-          hasPassword: this.getPassword() != null && this.getPassword() !== '',
+          hasPassword: this.getPassword() !== null && this.getPassword() !== '',
           name: this.getFileFromDisk().name,
           size: this.getFileFromDisk().size,
           sharedWith: recipientArray,
