@@ -50,7 +50,10 @@ export class ShareWithUsersModalComponent implements OnInit {
     );
   }
 
-  public deleteShare(shareEmail: string, shareIndex: number) {
+  public deleteShare(shareEmail: string | undefined, shareIndex: number) {
+    if (shareEmail === undefined) {
+      return;
+    }
     firstValueFrom(
       this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareEmail)
     )

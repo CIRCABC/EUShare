@@ -30,8 +30,8 @@ export class KeyStoreService {
 
   private load = () => {
     const available =
-      sessionStorage.getItem(this._PRVKEY) != null &&
-      sessionStorage.getItem(this._PUBKEY) != null;
+      sessionStorage.getItem(this._PRVKEY) !== null &&
+      sessionStorage.getItem(this._PUBKEY) !== null;
 
     if (!available) {
       const keystore = KEYUTIL.generateKeypair('EC', 'secp256r1');
@@ -51,7 +51,7 @@ export class KeyStoreService {
    */
   private publicKey = () => {
     const pubKey = sessionStorage.getItem(this._PUBKEY);
-    if (pubKey != null) {
+    if (pubKey !== null) {
       return KEYUTIL.getKey(JSON.parse(pubKey));
     }
 
@@ -65,7 +65,7 @@ export class KeyStoreService {
    */
   private privateKey() {
     const privKey = sessionStorage.getItem(this._PRVKEY);
-    if (privKey != null) {
+    if (privKey !== null) {
       return KEYUTIL.getKey(JSON.parse(privKey));
     }
 
