@@ -23,15 +23,15 @@
 
           <div class="level-item">
             <div class="field">
-              <input class="input is-info shorturl" type="text" value="{{ formatLink(i) }}" />  <input
-                *ngIf="recipient.email != ''" class="input is-info notif" type="text"
+              <input class="input is-info shorturl" type="text" value="{{ formatLink(i) }}" /> : <input
+                *ngIf="recipient.email !== ''" class="input is-info notif" type="text"
                 value="{{ recipient.email | lowercase }}" />
             </div>
           </div>
         </div>
         <div class="level-right">
           <div class="level-item">
-            <a *ngIf="recipient.email != ''" class="button" (click)="deleteShare( recipient.email, i)">Remove</a>
+            <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">Remove</a>
             <a class="button" (click)="copyLink(i)">Copy</a>
           </div>
         </div>
