@@ -26,7 +26,7 @@ import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
   styleUrls: ['./email-input.component.scss'],
 })
 export class EmailInputComponent implements ControlValueAccessor, OnInit {
-  private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,4}$';
+  private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,10}$';
   onChange!: (_: any) => void;
   onTouched!: () => void;
 
