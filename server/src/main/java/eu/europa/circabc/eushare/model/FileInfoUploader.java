@@ -12,8 +12,6 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploaderAllOf;
 import eu.europa.circabc.eushare.model.Recipient;
@@ -32,7 +30,6 @@ import javax.validation.constraints.*;
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class FileInfoUploader   {
-  @JsonFormat(pattern = "yyyy-MM-dd")
   @JsonProperty("expirationDate")
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
   private LocalDate expirationDate;
@@ -53,6 +50,9 @@ public class FileInfoUploader   {
   @Valid
   private List<Recipient> sharedWith = new ArrayList<>();
 
+  @JsonProperty("downloads")
+  private BigDecimal downloads;
+
   public FileInfoUploader expirationDate(LocalDate expirationDate) {
     this.expirationDate = expirationDate;
     return this;
@@ -66,7 +66,7 @@ public class FileInfoUploader   {
   @NotNull
 
   @Valid
-@Pattern(regexp="/([0-9]{4})-(?:[0-9]{2})-([0-9]{2})/") 
+
   public LocalDate getExpirationDate() {
     return expirationDate;
   }
@@ -188,6 +188,29 @@ public class FileInfoUploader   {
     this.sharedWith = sharedWith;
   }
 
+  public FileInfoUploader downloads(BigDecimal downloads) {
+    this.downloads = downloads;
+    return this;
+  }
+
+  /**
+   * number of downloads
+   * minimum: 0
+   * @return downloads
+  */
+  @ApiModelProperty(required = true, value = "number of downloads")
+  @NotNull
+
+  @Valid
+@DecimalMin("0")
+  public BigDecimal getDownloads() {
+    return downloads;
+  }
+
+  public void setDownloads(BigDecimal downloads) {
+    this.downloads = downloads;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -203,12 +226,13 @@ public class FileInfoUploader   {
         Objects.equals(this.name, fileInfoUploader.name) &&
         Objects.equals(this.size, fileInfoUploader.size) &&
         Objects.equals(this.fileId, fileInfoUploader.fileId) &&
-        Objects.equals(this.sharedWith, fileInfoUploader.sharedWith);
+        Objects.equals(this.sharedWith, fileInfoUploader.sharedWith) &&
+        Objects.equals(this.downloads, fileInfoUploader.downloads);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith);
+    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith, downloads);
   }
 
   @Override
@@ -222,6 +246,7 @@ public class FileInfoUploader   {
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
+    sb.append("    downloads: ").append(toIndentedString(downloads)).append("\n");
     sb.append("}");
     return sb.toString();
   }

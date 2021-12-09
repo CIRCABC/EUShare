@@ -1,9 +1,9 @@
-<div class="modal" [class.is-active]="modalActive">
+<div class="modal" [class.is-active]="modalActive">§
   <div class="modal-background"></div>
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        File shares <br />
+        File Downloads <br />
         <strong> {{ modalFileName }}</strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
@@ -13,7 +13,7 @@
         <!-- Left side -->
         <div class="level-item has-text-centered">
           <p>
-            <strong>{{ modalFileName }}</strong> is shared
+            <strong>{{ modalFileName }}</strong> has been downloaded
             <strong>{{ recipients.length }}</strong> time(s)
           </p>
         </div>

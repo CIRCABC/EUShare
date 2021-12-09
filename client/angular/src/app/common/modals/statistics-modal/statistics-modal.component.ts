@@ -14,12 +14,12 @@ import { NotificationService } from '../../notification/notification.service';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'app-share-with-users-modal',
-  templateUrl: './share-with-users-modal.component.html',
-  styleUrls: ['./share-with-users-modal.component.scss'],
+  selector: 'app-statistics-modal',
+  templateUrl: './statistics-modal.component.html',
+  styleUrls: ['./statistics-modal.component.scss'],
   preserveWhitespaces: true,
 })
-export class ShareWithUsersModalComponent implements OnInit {
+export class StatisticsModalComponent implements OnInit {
   public modalActive = false;
   public modalFileName = '';
   private modalFileId = '';
@@ -33,12 +33,12 @@ export class ShareWithUsersModalComponent implements OnInit {
   ) {}
 
   public closeModal() {
-    this.modalService.deactivateShareWithUsersModal();
+    this.modalService.deactivateStatisticsModal();
   }
 
   ngOnInit() {
     this.modalActive = false;
-    this.modalService.activateShareWithUsersModal$.subscribe(
+    this.modalService.activateStatisticsModal$.subscribe(
       (nextModalActiveValue) => {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileId = nextModalActiveValue.modalFileId;

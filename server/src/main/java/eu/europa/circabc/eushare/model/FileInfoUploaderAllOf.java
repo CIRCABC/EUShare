@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.europa.circabc.eushare.model.Recipient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -32,6 +33,9 @@ public class FileInfoUploaderAllOf   {
   @JsonProperty("sharedWith")
   @Valid
   private List<Recipient> sharedWith = new ArrayList<>();
+
+  @JsonProperty("downloads")
+  private BigDecimal downloads;
 
   public FileInfoUploaderAllOf fileId(String fileId) {
     this.fileId = fileId;
@@ -81,6 +85,29 @@ public class FileInfoUploaderAllOf   {
     this.sharedWith = sharedWith;
   }
 
+  public FileInfoUploaderAllOf downloads(BigDecimal downloads) {
+    this.downloads = downloads;
+    return this;
+  }
+
+  /**
+   * number of downloads
+   * minimum: 0
+   * @return downloads
+  */
+  @ApiModelProperty(required = true, value = "number of downloads")
+  @NotNull
+
+  @Valid
+@DecimalMin("0")
+  public BigDecimal getDownloads() {
+    return downloads;
+  }
+
+  public void setDownloads(BigDecimal downloads) {
+    this.downloads = downloads;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -92,12 +119,13 @@ public class FileInfoUploaderAllOf   {
     }
     FileInfoUploaderAllOf fileInfoUploaderAllOf = (FileInfoUploaderAllOf) o;
     return Objects.equals(this.fileId, fileInfoUploaderAllOf.fileId) &&
-        Objects.equals(this.sharedWith, fileInfoUploaderAllOf.sharedWith);
+        Objects.equals(this.sharedWith, fileInfoUploaderAllOf.sharedWith) &&
+        Objects.equals(this.downloads, fileInfoUploaderAllOf.downloads);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fileId, sharedWith);
+    return Objects.hash(fileId, sharedWith, downloads);
   }
 
   @Override
@@ -107,6 +135,7 @@ public class FileInfoUploaderAllOf   {
     
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
+    sb.append("    downloads: ").append(toIndentedString(downloads)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -126,7 +126,7 @@ export class UploadComponent implements OnInit {
     this.addEmailMessageFormGroup();
   }
 
-  toggleMore() { }
+  toggleMore() {}
 
   getEmailMessageFormGroup(i: number): FormGroup {
     const emailMessageArray: FormArray = this.emailMessageArray;
@@ -201,7 +201,6 @@ export class UploadComponent implements OnInit {
     return form.controls.emailArray.controls;
   }
 
-
   addEmailFormGroup(emailMessageFormArrayIndex: number) {
     const formGroupOrNull = <FormGroup | null>(
       this.emailMessageArray.controls[emailMessageFormArrayIndex]
@@ -211,12 +210,14 @@ export class UploadComponent implements OnInit {
         formGroupOrNull.controls['emailArray']
       );
       if (emailArray) {
-        const addEmail = this.initializedEmailFormGroupValue(this.emailControl.value);
-        const emailAlreadyExist = emailArray.controls.some(element => element.value.email === addEmail.controls['email'].value) ;
+        const addEmail = this.initializedEmailFormGroupValue(
+          this.emailControl.value
+        );
+        const emailAlreadyExist = emailArray.controls.some(
+          (element) => element.value.email === addEmail.controls['email'].value
+        );
         if (!emailAlreadyExist) {
-          emailArray.push(
-            addEmail
-          );
+          emailArray.push(addEmail);
         }
         this.isShowEmailControl = false;
         this.emailControl = this.fb.control('');

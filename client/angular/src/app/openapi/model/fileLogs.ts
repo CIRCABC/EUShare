@@ -18,21 +18,24 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { Recipient } from './recipient';
 
 
-export interface FileInfoUploaderAllOf { 
+export interface FileLogs { 
     /**
-     * file id
+     * ID of the file
      */
     fileId: string;
     /**
-     * User IDs this file is shared with
+     * Download date of file
      */
-    sharedWith: Array<Recipient>;
+    downloadDate: string;
     /**
-     * number of downloads
+     * recipient of the file
      */
-    downloads: number;
+    recipient: string;
+    /**
+     * download link
+     */
+    downloadLink: string;
 }
 

@@ -39,7 +39,6 @@ import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
 
-
 @Entity
 @Table(name = "Files")
 public class DBFile {
@@ -73,6 +72,9 @@ public class DBFile {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status = Status.ALLOCATED;
+
+    @Column(name = "downloads", nullable = false)
+    private long downloads;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
     private Set<DBShare> sharedWith;
@@ -131,6 +133,7 @@ public class DBFile {
         fileInfoUploader.setSize(new BigDecimal(this.size));
         fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
+        fileInfoUploader.setDownloads(new BigDecimal(this.downloads));
         return fileInfoUploader;
     }
 
@@ -243,6 +246,14 @@ public class DBFile {
 
     public void setUploader(DBUser uploader) {
         this.uploader = uploader;
+    }
+
+    public long getDownloads() {
+        return downloads;
+    }
+
+    public void setDownloads(long downloads) {
+        this.downloads = downloads;
     }
     
 }

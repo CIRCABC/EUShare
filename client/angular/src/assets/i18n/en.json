@@ -25,6 +25,7 @@
   "done": "Done",
   "download.file":"download this file",
   "download.shared.file":"Download a shared file",
+  "downloaded.times":"Downloaded {{count}} time(s)",
   "download": "Download",
   "drop.file": "Or simply drag and drop one file here",
   "email": "Email",

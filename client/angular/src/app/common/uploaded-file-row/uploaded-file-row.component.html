@@ -8,7 +8,7 @@
       <p class="subtitle is-5 filename">
         <strong>
           {{
-            file.name.length > 25 ? (file.name | slice: 0:25) + ".." : file.name
+          file.name.length > 25 ? (file.name | slice: 0:25) + ".." : file.name
           }}
         </strong>
       </p>
@@ -32,7 +32,14 @@
   </div>
   <!-- Right side -->
   <div class="level">
-    <div class="level-item">
+    <div class="level-item"> 
+      <a *ngIf="displayAsUploader" (click)="displayDownloads()">
+        {{ "downloaded.times" | transloco: { count: file.downloads } }}
+      </a>
+    </div>
+    <div class="level-item">&nbsp;|&nbsp;
+    </div>
+    <div class="level-item"> 
       <a *ngIf="displayAsUploader" (click)="displayRecipients()">
         {{ "shared.times" | transloco: { count: file.sharedWith.length } }}
       </a>
@@ -40,32 +47,21 @@
 
     <div class="level-item">
       <div class="navbar-menu is-active" id="navMenu">
-        <div
-          class="navbar-item has-dropdown is-hoverable"
-          (mouseenter)="displayMore()"
-          (tap)="displayMore()"
-          (mouseleave)="displayLess()"
-        >
+        <div class="navbar-item has-dropdown is-hoverable" (mouseenter)="displayMore()" (tap)="displayMore()"
+          (mouseleave)="displayLess()">
           <a class="navbar-link">
             {{ "actions" | transloco }}
           </a>
 
           <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
-            <a
-              class="navbar-item"
-              *ngIf="displayAsUploader"
-              (click)="openAddRecipientsModal(file.name, file.fileId)"
-              >{{ "add.recipient" | transloco }}
+            <a class="navbar-item" *ngIf="displayAsUploader" (click)="openAddRecipientsModal(file.name, file.fileId)">{{
+              "add.recipient" | transloco }}
             </a>
             <a class="navbar-item" (click)="tryDownload()">
               {{ "download" | transloco }}
             </a>
             <hr class="navbar-divider" />
-            <a
-              class="navbar-item"
-              *ngIf="displayAsAdministrator || displayAsUploader"
-              (click)="delete()"
-            >
+            <a class="navbar-item" *ngIf="displayAsAdministrator || displayAsUploader" (click)="delete()">
               {{ "delete" | transloco }}
             </a>
           </div>

@@ -12,6 +12,7 @@ import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FileInfoUploader } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { DownloadsService } from '../../services/downloads.service';
+import { UploadedFilesService } from '../../services/uploaded-files.service';
 
 @Component({
   selector: 'app-uploaded-file-row',
@@ -37,8 +38,9 @@ export class UploadedFileRowComponent {
 
   constructor(
     private modalService: ModalsService,
-    private downloadsService: DownloadsService
-  ) {}
+    private downloadsService: DownloadsService, 
+    private uploadService: UploadedFilesService
+  ) { }
 
   public tryDownload() {
     if (this.file.hasPassword) {
@@ -50,6 +52,7 @@ export class UploadedFileRowComponent {
     } else {
       this.downloadsService.displayDownloadsBox();
       this.downloadsService.downloadAFile(this.file.fileId, this.file.name);
+      this.uploadService.update();
     }
   }
 
@@ -67,6 +70,17 @@ export class UploadedFileRowComponent {
   public displayRecipients() {
     if (this.file.sharedWith.length >= 1) {
       this.modalService.activateShareWithUsersModal(
+        this.file.name,
+        this.file.fileId,
+        this.file.sharedWith,
+        this.file.hasPassword
+      );
+    }
+  }
+
+  public displayDownloads() {
+    if (this.file.sharedWith.length >= 1) {
+      this.modalService.activateStatisticsModal(
         this.file.name,
         this.file.fileId,
         this.file.sharedWith,

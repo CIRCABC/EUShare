@@ -48,5 +48,9 @@ export interface FileInfoUploader {
      * User IDs this file is shared with
      */
     sharedWith: Array<Recipient>;
+    /**
+     * number of downloads
+     */
+    downloads: number;
 }
 

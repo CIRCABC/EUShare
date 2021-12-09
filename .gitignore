@@ -57,3 +57,4 @@ server/.openapi-generator
 client/angular/.cache/
 server/.openapi-generator/api.yaml.sha256
 node_modules
+test-files

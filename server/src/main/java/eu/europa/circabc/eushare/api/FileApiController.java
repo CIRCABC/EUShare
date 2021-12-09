@@ -160,6 +160,7 @@ public class FileApiController implements FileApi {
             InputStreamResource inputStreamResource = new InputStreamResource(stream);
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(HttpHeaders.CONTENT_LENGTH, downloadReturn.getFileSizeInBytes().toString());
+
             ResponseEntity<Resource> responseEntity = new ResponseEntity<>(inputStreamResource, responseHeaders,
                     HttpStatus.OK);
             return responseEntity;

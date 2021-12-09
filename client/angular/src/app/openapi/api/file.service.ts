@@ -28,6 +28,7 @@ import { Observable }                                        from 'rxjs';
 
 import { FileBasics } from '../model/models';
 import { FileInfoUploader } from '../model/models';
+import { FileLogs } from '../model/models';
 import { FileRequest } from '../model/models';
 import { FileResult } from '../model/models';
 import { Recipient } from '../model/models';
@@ -114,7 +115,6 @@ export class FileService {
 
     /**
      * Used by INTERNAL users and ADMIN in order to delete a file
-     *
      * @param fileID The id of the file
      * @param reason Reason for deletion of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -160,16 +160,15 @@ export class FileService {
                 params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to delete a share link for one of the shared users
-     *
      * @param fileID The id of the file
      * @param userID The id of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -211,16 +210,15 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL and EXTERNAL users to download a shared file
-     *
      * @param fileID The id of the file
      * @param password Password of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -261,16 +259,15 @@ export class FileService {
                 params: queryParameters,
                 responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL and EXTERNAL users to get file\&#39;s metadata from short url
-     *
      * @param fileShortUrl The short url of the file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -307,16 +304,60 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Used by INTERNAL and EXTERNAL users to get file\&#39;s logs from ID
+     * @param fileID The ID the file
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getFileLogs(fileID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<FileLogs>;
+    public getFileLogs(fileID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<FileLogs>>;
+    public getFileLogs(fileID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<FileLogs>>;
+    public getFileLogs(fileID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (fileID === null || fileID === undefined) {
+            throw new Error('Required parameter fileID was null or undefined when calling getFileLogs.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<FileLogs>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileLogs`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to post the file content on the pre-reserved file space
-     *
      * @param fileID The id of the file
      * @param file 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -354,7 +395,7 @@ export class FileService {
 
         let formParams: { append(param: string, value: any): any; };
         let useForm = false;
-        const convertFormParamsToString = false;
+        let convertFormParamsToString = false;
         // use FormData to transmit files using content-type "multipart/form-data"
         // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
         useForm = canConsumeForm;
@@ -378,16 +419,15 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to request the reservation of space for a file
-     *
      * @param fileRequest 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
@@ -434,16 +474,15 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }
 
     /**
      * Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required
-     *
      * @param fileID The id of the file
      * @param recipient The userID or email of user to share the file with
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
@@ -495,9 +534,9 @@ export class FileService {
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
-                headers,
-                observe,
-                reportProgress
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
             }
         );
     }

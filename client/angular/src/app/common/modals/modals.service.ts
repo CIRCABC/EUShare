@@ -43,6 +43,10 @@ export class ModalsService {
   public activateShareWithUsersModal$: Observable<ShareWithUsersModalValue> =
     this.activateShareWithUsersModalSubject.asObservable();
 
+  private activateStatisticsModalSubject = new Subject<StatisticsModalValue>();
+  public activateStatisticsModal$: Observable<StatisticsModalValue> =
+    this.activateStatisticsModalSubject.asObservable();
+
   private activateDeleteConfirmModalSubject =
     new Subject<DeleteConfirmModalValue>();
   public activateDeleteConfirmModal$: Observable<DeleteConfirmModalValue> =
@@ -74,6 +78,25 @@ export class ModalsService {
     }
     this.activeModal = this.possibleActiveModals[3];
     this.activateShareWithUsersModalSubject.next({
+      modalActive: true,
+      modalFileName,
+      modalFileId,
+      modalFileHasPassword,
+      recipients,
+    });
+  }
+
+  public activateStatisticsModal(
+    modalFileName: string,
+    modalFileId: string,
+    recipients: Recipient[],
+    modalFileHasPassword: boolean
+  ) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[3]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[3];
+    this.activateStatisticsModalSubject.next({
       modalActive: true,
       modalFileName,
       modalFileId,
@@ -171,6 +194,19 @@ export class ModalsService {
     }
   }
 
+  public deactivateStatisticsModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[3]) {
+      this.activeModal = ' ';
+      this.activateStatisticsModalSubject.next({
+        modalActive: false,
+        modalFileName: '',
+        modalFileId: '',
+        modalFileHasPassword: false,
+        recipients: [],
+      });
+    }
+  }
+
   public deactivateDeleteConfirmModal() {
     if (this.activeModal && this.activeModal === this.possibleActiveModals[4]) {
       this.activeModal = ' ';
@@ -208,6 +244,14 @@ interface AddRecipientsModalValue {
 }
 
 interface ShareWithUsersModalValue {
+  modalActive: boolean;
+  modalFileName: string;
+  modalFileId: string;
+  modalFileHasPassword: boolean;
+  recipients: Recipient[];
+}
+
+interface StatisticsModalValue {
   modalActive: boolean;
   modalFileName: string;
   modalFileId: string;

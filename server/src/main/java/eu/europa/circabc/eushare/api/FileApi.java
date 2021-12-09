@@ -16,6 +16,7 @@ package eu.europa.circabc.eushare.api;
 
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
+import eu.europa.circabc.eushare.model.FileLogs;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.FileResult;
 import eu.europa.circabc.eushare.model.Recipient;
@@ -158,6 +159,43 @@ public interface FileApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"size\" : 0.08008281904610115, \"name\" : \"name\", \"hasPassword\" : true, \"expirationDate\" : \"2000-01-23\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /file/{fileID}/fileLogs
+     * Used by INTERNAL and EXTERNAL users to get file&#39;s logs from ID
+     *
+     * @param fileID The ID the file (required)
+     * @return SUCCESS Returns the File&#39;s logs of the newly-created file (status code 200)
+     *         or BAD REQUEST the Error Message will be empty (status code 400)
+     *         or UNAUTHORIZED the Error message will be empty (status code 401)
+     *         or FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong (status code 403)
+     *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
+     */
+    @ApiOperation(value = "", nickname = "getFileLogs", notes = "Used by INTERNAL and EXTERNAL users to get file's logs from ID", response = FileLogs.class, tags={ "File", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "SUCCESS Returns the File's logs of the newly-created file", response = FileLogs.class),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong", response = Status.class),
+        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
+    @GetMapping(
+        value = "/file/{fileID}/fileLogs",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<FileLogs> getFileLogs(@ApiParam(value = "The ID the file",required=true) @PathVariable("fileID") String fileID) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"downloadDate\" : \"2000-01-23\", \"downloadLink\" : \"downloadLink\", \"recipient\" : \"recipient\", \"fileId\" : \"fileId\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

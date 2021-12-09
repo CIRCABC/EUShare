@@ -7,31 +7,31 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit } from "@angular/core";
-import { ModalsService } from "../modals.service";
-import { FormBuilder, FormGroup } from "@angular/forms";
-import { Recipient } from "../../../openapi";
-import { recipientValidator } from "../../validators/recipient-validator";
-import { UploadedFilesService } from "../../../services/uploaded-files.service";
+import { Component, OnInit } from '@angular/core';
+import { ModalsService } from '../modals.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Recipient } from '../../../openapi';
+import { recipientValidator } from '../../validators/recipient-validator';
+import { UploadedFilesService } from '../../../services/uploaded-files.service';
 
 @Component({
-  selector: "app-add-recipients-modal",
-  templateUrl: "./add-recipients-modal.component.html",
+  selector: 'app-add-recipients-modal',
+  templateUrl: './add-recipients-modal.component.html',
 })
 export class AddRecipientsModalComponent implements OnInit {
   public modalActive = false;
-  public modalFileName = "";
-  private modalFileId = "";
+  public modalFileName = '';
+  private modalFileId = '';
   public uploadInProgress = false;
 
   public sharedWithFormGroup!: FormGroup;
 
   public get email(): string {
-    return this.sharedWithFormGroup.controls["email"].value;
+    return this.sharedWithFormGroup.controls['email'].value;
   }
 
   public get message(): string {
-    return this.sharedWithFormGroup.controls["message"].value;
+    return this.sharedWithFormGroup.controls['message'].value;
   }
 
   constructor(
@@ -43,10 +43,10 @@ export class AddRecipientsModalComponent implements OnInit {
   ngOnInit() {
     this.sharedWithFormGroup = this.fb.group(
       {
-        message: [""],
-        email: [""],
+        message: [''],
+        email: [''],
       },
-      { validators: recipientValidator(), updateOn: "change" }
+      { validators: recipientValidator(), updateOn: 'change' }
     );
     this.modalService.activateAddRecipientsModal$.subscribe(
       (nextModalActiveValue) => {
@@ -62,8 +62,8 @@ export class AddRecipientsModalComponent implements OnInit {
   }
 
   public resetRecipient() {
-    this.sharedWithFormGroup.controls["message"].reset();
-    this.sharedWithFormGroup.controls["email"].reset();
+    this.sharedWithFormGroup.controls['message'].reset();
+    this.sharedWithFormGroup.controls['email'].reset();
   }
 
   async onSubmit() {

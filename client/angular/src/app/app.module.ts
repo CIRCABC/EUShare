@@ -45,6 +45,7 @@ import { FileSizeFormatPipe } from './common/pipes/file-size-format.pipe';
 import { UploadedFileRowComponent } from './common/uploaded-file-row/uploaded-file-row.component';
 import { OtherUserSharedFilesComponent } from './files/other-user-shared-files/other-user-shared-files.component';
 import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
+import { StatisticsModalComponent } from './common/modals/statistics-modal/statistics-modal.component';
 import { FileRowContainerComponent } from './common/uploaded-file-row-container/uploaded-file-row-container.component';
 import { DownloadFileRowContainerComponent } from './common/download-file-row-container/download-file-row-container.component';
 import { DownloadFileRowComponent } from './common/download-file-row/download-file-row.component';
@@ -89,6 +90,7 @@ import { AppRoutingModule } from './app-routing.module';
     UploadedFileRowComponent,
     OtherUserSharedFilesComponent,
     ShareWithUsersModalComponent,
+    StatisticsModalComponent,
     DeleteConfirmModalComponent,
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,
