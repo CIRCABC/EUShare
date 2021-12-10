@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
-import { Recipient, FileService } from '../../../openapi';
+import { Recipient, FileService, FileLog } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
 import { firstValueFrom } from 'rxjs';
 
@@ -23,14 +23,13 @@ export class StatisticsModalComponent implements OnInit {
   public modalActive = false;
   public modalFileName = '';
   private modalFileId = '';
-  public recipients: Recipient[] = [];
-  private modalFileIsPasswordProtected = false;
+  public fileLogs: FileLog[] = [];
 
   constructor(
     private modalService: ModalsService,
     private fileApi: FileService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   public closeModal() {
     this.modalService.deactivateStatisticsModal();
@@ -43,54 +42,17 @@ export class StatisticsModalComponent implements OnInit {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
-        this.modalFileIsPasswordProtected =
-          nextModalActiveValue.modalFileHasPassword;
-        this.recipients = nextModalActiveValue.recipients;
+        this.fileLogs = nextModalActiveValue.fileLogs;
       }
     );
   }
 
-  public deleteShare(shareEmail: string | undefined, shareIndex: number) {
-    if (shareEmail === undefined) {
-      return;
+  public formatLink(link: string) {
+    if (link == '')
+      return link
+    else {
+      const fileLinkBuild = `${window.location.protocol}//${window.location.host}/fs/${link}`;
+      return fileLinkBuild;
     }
-    firstValueFrom(
-      this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareEmail)
-    )
-      .then((_success) => {
-        this.recipients.splice(shareIndex, 1);
-        this.notificationService.addSuccessMessageTranslation(
-          'successfully.removed',
-          { fileName: this.modalFileName, shareEmail }
-        );
-      })
-      .catch((_error) => {
-        // managed in the interceptor
-      });
-  }
-
-  public copyLink(i: number) {
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = this.formatLink(i);
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
-    this.notificationService.addSuccessMessageTranslation(
-      'copied.file.link',
-      undefined,
-      true
-    );
-  }
-
-  public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}//${window.location.host}/fs/${this.recipients[i].shortUrl}`;
-
-    return fileLinkBuild;
   }
 }

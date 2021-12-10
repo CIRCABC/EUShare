@@ -19,6 +19,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * Do not edit the class manually.
  */
 import { FileBasics } from './fileBasics';
+import { FileLog } from './fileLog';
 import { Recipient } from './recipient';
 import { FileInfoUploaderAllOf } from './fileInfoUploaderAllOf';
 
@@ -48,6 +49,10 @@ export interface FileInfoUploader {
      * User IDs this file is shared with
      */
     sharedWith: Array<Recipient>;
+    /**
+     * File logs
+     */
+    fileLogs: Array<FileLog>;
     /**
      * number of downloads
      */

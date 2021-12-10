@@ -12,7 +12,7 @@ export * from './fileInfoRecipient';
 export * from './fileInfoRecipientAllOf';
 export * from './fileInfoUploader';
 export * from './fileInfoUploaderAllOf';
-export * from './fileLogs';
+export * from './fileLog';
 export * from './fileRequest';
 export * from './fileRequestAllOf';
 export * from './fileResult';

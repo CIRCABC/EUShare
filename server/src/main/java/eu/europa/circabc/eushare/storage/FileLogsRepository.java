@@ -13,9 +13,9 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface FileLogsRepository extends CrudRepository<DBFileLogs, String> {
+public interface FileLogsRepository extends CrudRepository<DBFileLog, String> {
 
-    List<DBFileLogs> findByFile_id(String fileId);
+    List<DBFileLog> findByFile_id(String fileId);
 
 
 }

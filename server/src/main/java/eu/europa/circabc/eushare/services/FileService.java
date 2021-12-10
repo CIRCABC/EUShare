@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -58,7 +59,7 @@ import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.storage.DBFile;
-import eu.europa.circabc.eushare.storage.DBFileLogs;
+import eu.europa.circabc.eushare.storage.DBFileLog;
 import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.FileLogsRepository;
 import eu.europa.circabc.eushare.storage.DBShare;
@@ -425,18 +426,22 @@ public class FileService implements FileServiceInterface {
         fileRepository.save(dbFile);
 
 
-        DBFileLogs fileLogs;
+        DBFileLog fileLogs;
         if(dbShare==null) {
-         fileLogs = new DBFileLogs(dbFile, "owner", LocalDate.now(),"");
+         fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(),"");
         }
         else{
-         fileLogs = new DBFileLogs(dbFile, dbShare.getEmail(), LocalDate.now(), dbShare.getShorturl());
+         fileLogs = new DBFileLog(dbFile, dbShare.getEmail(), LocalDateTime.now(), dbShare.getShorturl());
         }
         fileLogsRepository.save(fileLogs);
 
 
         return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
     }
+
+
+
+
 
     @Override
     @Transactional

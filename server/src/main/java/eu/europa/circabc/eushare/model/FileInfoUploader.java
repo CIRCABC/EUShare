@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploaderAllOf;
+import eu.europa.circabc.eushare.model.FileLog;
 import eu.europa.circabc.eushare.model.Recipient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -49,6 +50,10 @@ public class FileInfoUploader   {
   @JsonProperty("sharedWith")
   @Valid
   private List<Recipient> sharedWith = new ArrayList<>();
+
+  @JsonProperty("fileLogs")
+  @Valid
+  private List<FileLog> fileLogs = new ArrayList<>();
 
   @JsonProperty("downloads")
   private BigDecimal downloads;
@@ -188,6 +193,33 @@ public class FileInfoUploader   {
     this.sharedWith = sharedWith;
   }
 
+  public FileInfoUploader fileLogs(List<FileLog> fileLogs) {
+    this.fileLogs = fileLogs;
+    return this;
+  }
+
+  public FileInfoUploader addFileLogsItem(FileLog fileLogsItem) {
+    this.fileLogs.add(fileLogsItem);
+    return this;
+  }
+
+  /**
+   * File logs
+   * @return fileLogs
+  */
+  @ApiModelProperty(required = true, value = "File logs")
+  @NotNull
+
+  @Valid
+
+  public List<FileLog> getFileLogs() {
+    return fileLogs;
+  }
+
+  public void setFileLogs(List<FileLog> fileLogs) {
+    this.fileLogs = fileLogs;
+  }
+
   public FileInfoUploader downloads(BigDecimal downloads) {
     this.downloads = downloads;
     return this;
@@ -227,12 +259,13 @@ public class FileInfoUploader   {
         Objects.equals(this.size, fileInfoUploader.size) &&
         Objects.equals(this.fileId, fileInfoUploader.fileId) &&
         Objects.equals(this.sharedWith, fileInfoUploader.sharedWith) &&
+        Objects.equals(this.fileLogs, fileInfoUploader.fileLogs) &&
         Objects.equals(this.downloads, fileInfoUploader.downloads);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith, downloads);
+    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith, fileLogs, downloads);
   }
 
   @Override
@@ -246,6 +279,7 @@ public class FileInfoUploader   {
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
+    sb.append("    fileLogs: ").append(toIndentedString(fileLogs)).append("\n");
     sb.append("    downloads: ").append(toIndentedString(downloads)).append("\n");
     sb.append("}");
     return sb.toString();

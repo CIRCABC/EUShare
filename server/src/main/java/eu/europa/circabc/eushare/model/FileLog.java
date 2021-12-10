@@ -14,22 +14,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.time.LocalDate;
 import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * FileLogs
+ * FileLog
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class FileLogs   {
+public class FileLog   {
   @JsonProperty("fileId")
   private String fileId;
 
   @JsonProperty("downloadDate")
-  @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
-  private LocalDate downloadDate;
+  private String downloadDate;
 
   @JsonProperty("recipient")
   private String recipient;
@@ -37,7 +35,7 @@ public class FileLogs   {
   @JsonProperty("downloadLink")
   private String downloadLink;
 
-  public FileLogs fileId(String fileId) {
+  public FileLog fileId(String fileId) {
     this.fileId = fileId;
     return this;
   }
@@ -58,7 +56,7 @@ public class FileLogs   {
     this.fileId = fileId;
   }
 
-  public FileLogs downloadDate(LocalDate downloadDate) {
+  public FileLog downloadDate(String downloadDate) {
     this.downloadDate = downloadDate;
     return this;
   }
@@ -70,17 +68,16 @@ public class FileLogs   {
   @ApiModelProperty(required = true, value = "Download date of file")
   @NotNull
 
-  @Valid
 
-  public LocalDate getDownloadDate() {
+  public String getDownloadDate() {
     return downloadDate;
   }
 
-  public void setDownloadDate(LocalDate downloadDate) {
+  public void setDownloadDate(String downloadDate) {
     this.downloadDate = downloadDate;
   }
 
-  public FileLogs recipient(String recipient) {
+  public FileLog recipient(String recipient) {
     this.recipient = recipient;
     return this;
   }
@@ -101,7 +98,7 @@ public class FileLogs   {
     this.recipient = recipient;
   }
 
-  public FileLogs downloadLink(String downloadLink) {
+  public FileLog downloadLink(String downloadLink) {
     this.downloadLink = downloadLink;
     return this;
   }
@@ -131,11 +128,11 @@ public class FileLogs   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    FileLogs fileLogs = (FileLogs) o;
-    return Objects.equals(this.fileId, fileLogs.fileId) &&
-        Objects.equals(this.downloadDate, fileLogs.downloadDate) &&
-        Objects.equals(this.recipient, fileLogs.recipient) &&
-        Objects.equals(this.downloadLink, fileLogs.downloadLink);
+    FileLog fileLog = (FileLog) o;
+    return Objects.equals(this.fileId, fileLog.fileId) &&
+        Objects.equals(this.downloadDate, fileLog.downloadDate) &&
+        Objects.equals(this.recipient, fileLog.recipient) &&
+        Objects.equals(this.downloadLink, fileLog.downloadLink);
   }
 
   @Override
@@ -146,7 +143,7 @@ public class FileLogs   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class FileLogs {\n");
+    sb.append("class FileLog {\n");
     
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    downloadDate: ").append(toIndentedString(downloadDate)).append("\n");

@@ -28,7 +28,6 @@ import { Observable }                                        from 'rxjs';
 
 import { FileBasics } from '../model/models';
 import { FileInfoUploader } from '../model/models';
-import { FileLogs } from '../model/models';
 import { FileRequest } from '../model/models';
 import { FileResult } from '../model/models';
 import { Recipient } from '../model/models';
@@ -301,51 +300,6 @@ export class FileService {
         }
 
         return this.httpClient.get<FileBasics>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileShortUrl))}/fileInfo`,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Used by INTERNAL and EXTERNAL users to get file\&#39;s logs from ID
-     * @param fileID The ID the file
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getFileLogs(fileID: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<FileLogs>;
-    public getFileLogs(fileID: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<FileLogs>>;
-    public getFileLogs(fileID: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<FileLogs>>;
-    public getFileLogs(fileID: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (fileID === null || fileID === undefined) {
-            throw new Error('Required parameter fileID was null or undefined when calling getFileLogs.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.get<FileLogs>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileLogs`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

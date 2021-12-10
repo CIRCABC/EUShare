@@ -20,7 +20,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  */
 
 
-export interface FileLogs { 
+export interface FileLog { 
     /**
      * ID of the file
      */

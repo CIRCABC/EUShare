@@ -10,42 +10,38 @@
 package eu.europa.circabc.eushare.storage;
 
 import java.time.LocalDate;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import eu.europa.circabc.eushare.model.FileLogs;
-
+import eu.europa.circabc.eushare.model.FileLog;
 
 @Entity
 @Table(name = "logs")
-public class DBFileLogs {
+public class DBFileLog {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(
-        name = "UUID",
-        strategy = "org.hibernate.id.UUIDGenerator"
-    )
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "LOG_ID", nullable = false, unique = true)
     private String id;
-
 
     @ManyToOne(optional = false)
     @JoinColumn(foreignKey = @ForeignKey(name = "Logs_to_file"))
     private DBFile file;
-
 
     @Column(nullable = false)
     private String recipient;
@@ -54,31 +50,33 @@ public class DBFileLogs {
     private String downloadLink;
 
     @Column(nullable = false)
-    private LocalDate downloadDate;
+    private LocalDateTime downloadDate;
 
     @SuppressWarnings("java:S107")
-    public DBFileLogs(DBFile file, String recipient, 
-            LocalDate downloadDate, String downloadLink) {
-        this.file= file;
+    public DBFileLog(DBFile file, String recipient,
+            LocalDateTime downloadDate, String downloadLink) {
+        this.file = file;
         this.recipient = recipient;
-        this.downloadDate=downloadDate;
-        this.downloadLink=downloadLink;
+        this.downloadDate = downloadDate;
+        this.downloadLink = downloadLink;
     }
 
-
-    private DBFileLogs() {
+    private DBFileLog() {
     }
 
-    public FileLogs toFileLogs() {
-        FileLogs fileLogs = new FileLogs();
-        fileLogs.setFileId(file.getId());
-        fileLogs.setDownloadDate(downloadDate);
-        fileLogs.setDownloadLink(downloadLink);
-        fileLogs.setRecipient(recipient);
-
-        return fileLogs;
+    public FileLog toFileLog() {
+        FileLog fileLog = new FileLog();
+        fileLog.setFileId(file.getId());
+        final ZoneId zone = ZoneId.of("Europe/Paris");
+       
+        ZoneOffset zoneOffSet = zone.getRules().getOffset(downloadDate);
+        OffsetDateTime offsetDateTime = downloadDate.atOffset(zoneOffSet);
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        fileLog.setDownloadDate(offsetDateTime.format(fmt));
+        fileLog.setDownloadLink(downloadLink);
+        fileLog.setRecipient(recipient);
+        return fileLog;
     }
-
 
     @Override
     public int hashCode() {
@@ -92,7 +90,6 @@ public class DBFileLogs {
         return result;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -101,7 +98,7 @@ public class DBFileLogs {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        DBFileLogs other = (DBFileLogs) obj;
+        DBFileLog other = (DBFileLog) obj;
         if (downloadDate == null) {
             if (other.downloadDate != null)
                 return false;
@@ -126,46 +123,37 @@ public class DBFileLogs {
         return true;
     }
 
-
     public DBFile getFile() {
         return file;
     }
-
 
     public void setFile(DBFile file) {
         this.file = file;
     }
 
-
     public String getRecipient() {
         return recipient;
     }
-
 
     public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
 
-
     public String getDownloadLink() {
         return downloadLink;
     }
-
 
     public void setDownloadLink(String downloadLink) {
         this.downloadLink = downloadLink;
     }
 
-
-    public LocalDate getDownloadDate() {
+    public LocalDateTime getDownloadDate() {
         return downloadDate;
     }
 
-
-    public void setDownloadDate(LocalDate downloadDate) {
+    public void setDownloadDate(LocalDateTime downloadDate) {
         this.downloadDate = downloadDate;
     }
-
 
     @Override
     public String toString() {
@@ -173,7 +161,4 @@ public class DBFileLogs {
                 + ", recipient=" + recipient + "]";
     }
 
-    
-
-    
 }

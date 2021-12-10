@@ -64,6 +64,7 @@ import { CbcEcLogoAppComponent } from './header/cbc-ec-logo-app/cbc-ec-logo-app.
 import { DeleteButtonComponent } from './common/buttons/delete-button/delete-button.component';
 import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
 import { AppRoutingModule } from './app-routing.module';
+import { FileDateFormatPipe } from './common/pipes/file-date-format.pipe';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { AppRoutingModule } from './app-routing.module';
     LinkInputComponent,
     AdministrationComponent,
     FileSizeFormatPipe,
+    FileDateFormatPipe,
     UploadedFileRowComponent,
     OtherUserSharedFilesComponent,
     ShareWithUsersModalComponent,

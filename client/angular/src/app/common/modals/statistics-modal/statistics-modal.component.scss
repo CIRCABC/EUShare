@@ -24,16 +24,12 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
     background-color: $table-striped-row-even-hover-background-color;
 }
 
-.shorturl {
-    width: 350px;
-    margin-right: 10px;
-  }
-.notif {
-    display: flex;
-    align-items: center;
+
+.table {
+   width: 100%;
   }
 
-  .modal-card {
+.modal-card {
     margin-top: 100px;
     width: 800px;
-  }
+ }
