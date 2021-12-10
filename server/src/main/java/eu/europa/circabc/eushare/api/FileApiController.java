@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
@@ -150,6 +151,9 @@ public class FileApiController implements FileApi {
 
     }
 
+
+
+
     @Override
     public ResponseEntity<Resource> getFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "password", required = false) String password) {
@@ -160,6 +164,7 @@ public class FileApiController implements FileApi {
             InputStreamResource inputStreamResource = new InputStreamResource(stream);
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.set(HttpHeaders.CONTENT_LENGTH, downloadReturn.getFileSizeInBytes().toString());
+
             ResponseEntity<Resource> responseEntity = new ResponseEntity<>(inputStreamResource, responseHeaders,
                     HttpStatus.OK);
             return responseEntity;

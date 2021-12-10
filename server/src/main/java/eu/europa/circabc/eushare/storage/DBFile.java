@@ -37,8 +37,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
+import eu.europa.circabc.eushare.model.FileLog;
 import eu.europa.circabc.eushare.model.Recipient;
-
 
 @Entity
 @Table(name = "Files")
@@ -76,6 +76,10 @@ public class DBFile {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
     private Set<DBShare> sharedWith;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
+    private Set<DBFileLog> fileLogs;
+
 
 
     @ManyToOne(optional = false)
@@ -125,12 +129,17 @@ public class DBFile {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
         List<Recipient> sharedWithRecipients = this.getSharedWith().stream()
                 .map(DBShare::toRecipient).collect(Collectors.toList());
-        fileInfoUploader.setExpirationDate(this.expirationDate);
+        List<FileLog> fileLogs = this.getFileLogs().stream()
+                .map(DBFileLog::toFileLog).collect(Collectors.toList());
+
+                fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);
         fileInfoUploader.setSize(new BigDecimal(this.size));
         fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
+        fileInfoUploader.setFileLogs(fileLogs);
+      
         return fileInfoUploader;
     }
 
@@ -224,6 +233,15 @@ public class DBFile {
     public void setSharedWith(Set<DBShare> sharedWith) {
         this.sharedWith = sharedWith;
     }
+    
+
+    public Set<DBFileLog> getFileLogs() {
+        return fileLogs;
+    }
+
+    public void setFileLogs(Set<DBFileLog> fileLogs) {
+        this.fileLogs = fileLogs;
+    }
 
     public long getSize() {
         return size;
@@ -244,5 +262,6 @@ public class DBFile {
     public void setUploader(DBUser uploader) {
         this.uploader = uploader;
     }
+
     
 }

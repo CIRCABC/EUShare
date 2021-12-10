@@ -337,50 +337,51 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
   
+
   '/file/{fileShortUrl}/fileInfo':
-    parameters:
-    - name: fileShortUrl
-      in: path
-      description: The short url of the file
-      required: true
-      schema:
-        type: string
-    get:
-      description: Used by INTERNAL and EXTERNAL users to get file's metadata from short url
-      operationId: getFileInfo
-      tags:
-      - File
-      responses:
-        200:
-          description: SUCCESS Returns the File's metadat of the newly-created file
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/FileBasics'
-        400:
-          description: BAD REQUEST the Error Message will be empty
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
-        401:
-          description: UNAUTHORIZED the Error message will be empty
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
-        403:
-          description: FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
-        500:
-          description: INTERNAL SERVER ERROR the Error Message will be empty
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
+      parameters:
+      - name: fileShortUrl
+        in: path
+        description: The short url of the file
+        required: true
+        schema:
+          type: string
+      get:
+        description: Used by INTERNAL and EXTERNAL users to get file's metadata from short url
+        operationId: getFileInfo
+        tags:
+        - File
+        responses:
+          200:
+            description: SUCCESS Returns the File's metadat of the newly-created file
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/FileBasics'
+          400:
+            description: BAD REQUEST the Error Message will be empty
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Status'
+          401:
+            description: UNAUTHORIZED the Error message will be empty
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Status'
+          403:
+            description: FORBIDDEN the Error message will be NotAuthorized, IllegalFileSize, DateLiesInPast, UserHasInsufficientSpace, EmptyFileName, WrongEmailStructure, WrongNameStructure, MessageTooLong
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Status'
+          500:
+            description: INTERNAL SERVER ERROR the Error Message will be empty
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Status'
 
   '/file/{fileID}':
     parameters:
@@ -756,8 +757,14 @@ components:
                 $ref: '#/components/schemas/Recipient'
               minItems: 1
               maxItems: 10
+            fileLogs:
+              description: File logs
+              type: array
+              items:
+                $ref: '#/components/schemas/FileLog'
           required:
             - sharedWith
+            - fileLogs
             - fileId
     FileInfoRecipient:
       allOf:
@@ -795,6 +802,26 @@ components:
       - hasPassword
       - name
       - size
+    FileLog:
+      type: object
+      properties:
+        fileId:
+          description: ID of the file
+          type: string
+        downloadDate:
+          description: Download date of file
+          type: string
+        recipient:
+          description: recipient of the file
+          type: string
+        downloadLink:
+          description: download link
+          type: string
+      required:
+      - fileId
+      - downloadDate
+      - recipient
+      - downloadLink
     FileRequest:
       allOf:
         - $ref: '#/components/schemas/FileBasics'

@@ -1,0 +1,67 @@
+<div class="modal" [class.is-active]="modalActive">§
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        File Downloads <br />
+        <strong> {{ modalFileName }}</strong>
+      </p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <div class="level">
+        <!-- Left side -->
+        <div class="level-item has-text-centered">
+          <p>
+            <strong>{{ modalFileName }}</strong> has been downloaded
+            <strong>{{ fileLogs.length }}</strong> time(s)
+          </p>
+        </div>
+      </div>
+
+      <div class="level share">
+
+        <div class="level-right">
+
+        </div>
+      </div>
+
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th><abbr title="Downloader">Downloader</abbr></th>
+            <th><abbr title="Date">Date</abbr></th>
+            <th><abbr title="Link">Download Link</abbr></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let fileLog of fileLogs; let i = index" [attr.data-index]="i">
+            <td>
+              <span *ngIf="fileLog.recipient !== ''">
+                {{
+                fileLog.recipient.length > 35 ? (fileLog.recipient | lowercase | slice: 0:35) + ".." :
+                ( (fileLog.recipient === "" ? "Anonymous":fileLog.recipient) |
+                lowercase)
+                }}
+              </span>
+            </td>
+            <td>
+              {{ fileLog.downloadDate }}
+            </td>
+            <td>
+              {{ formatLink(fileLog.downloadLink) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+
+
+
+    </section>
+    <footer class="modal-card-foot">
+      <button class="modal-close is-large" (click)="closeModal()" aria-label="close"></button>
+    </footer>
+  </div>
+</div>

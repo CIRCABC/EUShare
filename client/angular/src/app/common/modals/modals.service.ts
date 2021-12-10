@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { Recipient } from '../../openapi';
+import { FileLog, Recipient } from '../../openapi';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +42,10 @@ export class ModalsService {
     new Subject<ShareWithUsersModalValue>();
   public activateShareWithUsersModal$: Observable<ShareWithUsersModalValue> =
     this.activateShareWithUsersModalSubject.asObservable();
+
+  private activateStatisticsModalSubject = new Subject<StatisticsModalValue>();
+  public activateStatisticsModal$: Observable<StatisticsModalValue> =
+    this.activateStatisticsModalSubject.asObservable();
 
   private activateDeleteConfirmModalSubject =
     new Subject<DeleteConfirmModalValue>();
@@ -79,6 +83,23 @@ export class ModalsService {
       modalFileId,
       modalFileHasPassword,
       recipients,
+    });
+  }
+
+  public activateStatisticsModal(
+    modalFileName: string,
+    modalFileId: string,
+    fileLogs: FileLog[]
+  ) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[3]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[3];
+    this.activateStatisticsModalSubject.next({
+      modalActive: true,
+      modalFileName,
+      modalFileId,
+      fileLogs,
     });
   }
 
@@ -171,6 +192,18 @@ export class ModalsService {
     }
   }
 
+  public deactivateStatisticsModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[3]) {
+      this.activeModal = ' ';
+      this.activateStatisticsModalSubject.next({
+        modalActive: false,
+        modalFileName: '',
+        modalFileId: '',
+        fileLogs: [],
+      });
+    }
+  }
+
   public deactivateDeleteConfirmModal() {
     if (this.activeModal && this.activeModal === this.possibleActiveModals[4]) {
       this.activeModal = ' ';
@@ -213,6 +246,13 @@ interface ShareWithUsersModalValue {
   modalFileId: string;
   modalFileHasPassword: boolean;
   recipients: Recipient[];
+}
+
+interface StatisticsModalValue {
+  modalActive: boolean;
+  modalFileName: string;
+  modalFileId: string;
+  fileLogs: FileLog[];
 }
 
 interface DeleteConfirmModalValue {

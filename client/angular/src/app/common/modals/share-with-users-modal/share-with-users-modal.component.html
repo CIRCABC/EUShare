@@ -18,14 +18,37 @@
           </p>
         </div>
       </div>
+
+      <div class="level share">
+        <div class="level-left">
+
+          <div class="level-item">
+            <div class="notif">
+              <span class="shorturl"> <strong>Links</strong></span>
+              <span> <strong>Notifications</strong> </span>
+            </div>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+
+          </div>
+        </div>
+      </div>
+
       <div class="level share" *ngFor="let recipient of recipients; let i = index" [attr.data-index]="i">
         <div class="level-left">
 
           <div class="level-item">
-            <div class="field">
-              <input class="input is-info shorturl" type="text" value="{{ formatLink(i) }}" /> : <input
-                *ngIf="recipient.email !== ''" class="input is-info notif" type="text"
-                value="{{ recipient.email | lowercase }}" />
+            <div class="notif">
+              <input class="input shorturl" type="text" value="{{ formatLink(i) }}" />
+              <label *ngIf="recipient.email !== ''">
+                {{
+                recipient.email.length > 35 ? (recipient.email | lowercase | slice: 0:35) + ".." : (recipient.email |
+                lowercase)
+                }}
+              </label>
+
             </div>
           </div>
         </div>

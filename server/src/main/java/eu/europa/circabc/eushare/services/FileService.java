@@ -16,6 +16,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -29,6 +30,7 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 
 import org.slf4j.LoggerFactory;
+import org.sonarsource.scanner.api.internal.shaded.okhttp.Dns;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -57,7 +59,9 @@ import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.storage.DBFile;
+import eu.europa.circabc.eushare.storage.DBFileLog;
 import eu.europa.circabc.eushare.storage.DBUser;
+import eu.europa.circabc.eushare.storage.FileLogsRepository;
 import eu.europa.circabc.eushare.storage.DBShare;
 import eu.europa.circabc.eushare.storage.FileRepository;
 import eu.europa.circabc.eushare.storage.MountPoint;
@@ -85,6 +89,9 @@ public class FileService implements FileServiceInterface {
 
     @Autowired
     private FileRepository fileRepository;
+
+    @Autowired
+    private FileLogsRepository fileLogsRepository;
 
     @Autowired
     private ShareRepository shareRepository;
@@ -365,9 +372,6 @@ public class FileService implements FileServiceInterface {
         }
     }
 
-
-   
-
     /**
      * Download the given file via the given session. Fails if the user may not
      * access the file, the file is unknown or the given password is wrong.
@@ -417,8 +421,22 @@ public class FileService implements FileServiceInterface {
             throw new WrongPasswordException();
         }
         File file = Paths.get(dbFile.getPath()).toFile();
+
+        DBFileLog fileLogs;
+        if(dbShare==null) {
+         fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(),"");
+        }
+        else{
+         fileLogs = new DBFileLog(dbFile, dbShare.getEmail(), LocalDateTime.now(), dbShare.getShorturl());
+        }
+        fileLogsRepository.save(fileLogs);
+
+
         return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
     }
+
+
+
 
 
     @Override

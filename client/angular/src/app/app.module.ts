@@ -45,6 +45,7 @@ import { FileSizeFormatPipe } from './common/pipes/file-size-format.pipe';
 import { UploadedFileRowComponent } from './common/uploaded-file-row/uploaded-file-row.component';
 import { OtherUserSharedFilesComponent } from './files/other-user-shared-files/other-user-shared-files.component';
 import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
+import { StatisticsModalComponent } from './common/modals/statistics-modal/statistics-modal.component';
 import { FileRowContainerComponent } from './common/uploaded-file-row-container/uploaded-file-row-container.component';
 import { DownloadFileRowContainerComponent } from './common/download-file-row-container/download-file-row-container.component';
 import { DownloadFileRowComponent } from './common/download-file-row/download-file-row.component';
@@ -63,6 +64,7 @@ import { CbcEcLogoAppComponent } from './header/cbc-ec-logo-app/cbc-ec-logo-app.
 import { DeleteButtonComponent } from './common/buttons/delete-button/delete-button.component';
 import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
 import { AppRoutingModule } from './app-routing.module';
+import { FileDateFormatPipe } from './common/pipes/file-date-format.pipe';
 
 @NgModule({
   declarations: [
@@ -86,9 +88,11 @@ import { AppRoutingModule } from './app-routing.module';
     LinkInputComponent,
     AdministrationComponent,
     FileSizeFormatPipe,
+    FileDateFormatPipe,
     UploadedFileRowComponent,
     OtherUserSharedFilesComponent,
     ShareWithUsersModalComponent,
+    StatisticsModalComponent,
     DeleteConfirmModalComponent,
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,

@@ -7,22 +7,22 @@ This file is part of the "EasyShare" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit } from "@angular/core";
-import { ModalsService } from "../modals.service";
-import { Recipient, FileService } from "../../../openapi";
-import { NotificationService } from "../../notification/notification.service";
-import { firstValueFrom } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { ModalsService } from '../modals.service';
+import { Recipient, FileService } from '../../../openapi';
+import { NotificationService } from '../../notification/notification.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
-  selector: "app-share-with-users-modal",
-  templateUrl: "./share-with-users-modal.component.html",
-  styleUrls: ["./share-with-users-modal.component.scss"],
+  selector: 'app-share-with-users-modal',
+  templateUrl: './share-with-users-modal.component.html',
+  styleUrls: ['./share-with-users-modal.component.scss'],
   preserveWhitespaces: true,
 })
 export class ShareWithUsersModalComponent implements OnInit {
   public modalActive = false;
-  public modalFileName = "";
-  private modalFileId = "";
+  public modalFileName = '';
+  private modalFileId = '';
   public recipients: Recipient[] = [];
   private modalFileIsPasswordProtected = false;
 
@@ -60,7 +60,7 @@ export class ShareWithUsersModalComponent implements OnInit {
       .then((_success) => {
         this.recipients.splice(shareIndex, 1);
         this.notificationService.addSuccessMessageTranslation(
-          "successfully.removed",
+          'successfully.removed',
           { fileName: this.modalFileName, shareEmail }
         );
       })
@@ -70,19 +70,19 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   public copyLink(i: number) {
-    const selBox = document.createElement("textarea");
-    selBox.style.position = "fixed";
-    selBox.style.left = "0";
-    selBox.style.top = "0";
-    selBox.style.opacity = "0";
+    const selBox = document.createElement('textarea');
+    selBox.style.position = 'fixed';
+    selBox.style.left = '0';
+    selBox.style.top = '0';
+    selBox.style.opacity = '0';
     selBox.value = this.formatLink(i);
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();
-    document.execCommand("copy");
+    document.execCommand('copy');
     document.body.removeChild(selBox);
     this.notificationService.addSuccessMessageTranslation(
-      "copied.file.link",
+      'copied.file.link',
       undefined,
       true
     );

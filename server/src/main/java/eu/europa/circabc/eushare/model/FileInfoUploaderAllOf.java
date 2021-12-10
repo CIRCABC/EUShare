@@ -12,6 +12,7 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import eu.europa.circabc.eushare.model.FileLog;
 import eu.europa.circabc.eushare.model.Recipient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,6 +33,10 @@ public class FileInfoUploaderAllOf   {
   @JsonProperty("sharedWith")
   @Valid
   private List<Recipient> sharedWith = new ArrayList<>();
+
+  @JsonProperty("fileLogs")
+  @Valid
+  private List<FileLog> fileLogs = new ArrayList<>();
 
   public FileInfoUploaderAllOf fileId(String fileId) {
     this.fileId = fileId;
@@ -81,6 +86,33 @@ public class FileInfoUploaderAllOf   {
     this.sharedWith = sharedWith;
   }
 
+  public FileInfoUploaderAllOf fileLogs(List<FileLog> fileLogs) {
+    this.fileLogs = fileLogs;
+    return this;
+  }
+
+  public FileInfoUploaderAllOf addFileLogsItem(FileLog fileLogsItem) {
+    this.fileLogs.add(fileLogsItem);
+    return this;
+  }
+
+  /**
+   * File logs
+   * @return fileLogs
+  */
+  @ApiModelProperty(required = true, value = "File logs")
+  @NotNull
+
+  @Valid
+
+  public List<FileLog> getFileLogs() {
+    return fileLogs;
+  }
+
+  public void setFileLogs(List<FileLog> fileLogs) {
+    this.fileLogs = fileLogs;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -92,12 +124,13 @@ public class FileInfoUploaderAllOf   {
     }
     FileInfoUploaderAllOf fileInfoUploaderAllOf = (FileInfoUploaderAllOf) o;
     return Objects.equals(this.fileId, fileInfoUploaderAllOf.fileId) &&
-        Objects.equals(this.sharedWith, fileInfoUploaderAllOf.sharedWith);
+        Objects.equals(this.sharedWith, fileInfoUploaderAllOf.sharedWith) &&
+        Objects.equals(this.fileLogs, fileInfoUploaderAllOf.fileLogs);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fileId, sharedWith);
+    return Objects.hash(fileId, sharedWith, fileLogs);
   }
 
   @Override
@@ -107,6 +140,7 @@ public class FileInfoUploaderAllOf   {
     
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
+    sb.append("    fileLogs: ").append(toIndentedString(fileLogs)).append("\n");
     sb.append("}");
     return sb.toString();
   }

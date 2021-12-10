@@ -18,40 +18,24 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileBasics } from './fileBasics';
-import { FileLog } from './fileLog';
-import { Recipient } from './recipient';
-import { FileInfoUploaderAllOf } from './fileInfoUploaderAllOf';
 
 
-export interface FileInfoUploader { 
+export interface FileLog { 
     /**
-     * Expiration date of file
-     */
-    expirationDate: string;
-    /**
-     * File is password-protected
-     */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
-    /**
-     * file id
+     * ID of the file
      */
     fileId: string;
     /**
-     * User IDs this file is shared with
+     * Download date of file
      */
-    sharedWith: Array<Recipient>;
+    downloadDate: string;
     /**
-     * File logs
+     * recipient of the file
      */
-    fileLogs: Array<FileLog>;
+    recipient: string;
+    /**
+     * download link
+     */
+    downloadLink: string;
 }
 

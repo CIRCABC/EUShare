@@ -44,7 +44,7 @@ public class DBShare {
     private String email;
 
     @ManyToOne(optional = false)
-    @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_file"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "Share_to_file"))
     private DBFile file;
 
     @Column(nullable = false, unique= true, length = 10)
