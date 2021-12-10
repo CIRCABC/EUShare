@@ -74,9 +74,6 @@ public class DBFile {
     @Column(nullable = false)
     private Status status = Status.ALLOCATED;
 
-    @Column(name = "downloads", nullable = false)
-    private long downloads;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
     private Set<DBShare> sharedWith;
 
@@ -142,7 +139,7 @@ public class DBFile {
         fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
         fileInfoUploader.setFileLogs(fileLogs);
-        fileInfoUploader.setDownloads(new BigDecimal(this.downloads));
+      
         return fileInfoUploader;
     }
 
@@ -266,12 +263,5 @@ public class DBFile {
         this.uploader = uploader;
     }
 
-    public long getDownloads() {
-        return downloads;
-    }
-
-    public void setDownloads(long downloads) {
-        this.downloads = downloads;
-    }
     
 }

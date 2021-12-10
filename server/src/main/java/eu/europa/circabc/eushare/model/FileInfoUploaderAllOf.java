@@ -16,7 +16,6 @@ import eu.europa.circabc.eushare.model.FileLog;
 import eu.europa.circabc.eushare.model.Recipient;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
@@ -38,9 +37,6 @@ public class FileInfoUploaderAllOf   {
   @JsonProperty("fileLogs")
   @Valid
   private List<FileLog> fileLogs = new ArrayList<>();
-
-  @JsonProperty("downloads")
-  private BigDecimal downloads;
 
   public FileInfoUploaderAllOf fileId(String fileId) {
     this.fileId = fileId;
@@ -117,29 +113,6 @@ public class FileInfoUploaderAllOf   {
     this.fileLogs = fileLogs;
   }
 
-  public FileInfoUploaderAllOf downloads(BigDecimal downloads) {
-    this.downloads = downloads;
-    return this;
-  }
-
-  /**
-   * number of downloads
-   * minimum: 0
-   * @return downloads
-  */
-  @ApiModelProperty(required = true, value = "number of downloads")
-  @NotNull
-
-  @Valid
-@DecimalMin("0")
-  public BigDecimal getDownloads() {
-    return downloads;
-  }
-
-  public void setDownloads(BigDecimal downloads) {
-    this.downloads = downloads;
-  }
-
 
   @Override
   public boolean equals(Object o) {
@@ -152,13 +125,12 @@ public class FileInfoUploaderAllOf   {
     FileInfoUploaderAllOf fileInfoUploaderAllOf = (FileInfoUploaderAllOf) o;
     return Objects.equals(this.fileId, fileInfoUploaderAllOf.fileId) &&
         Objects.equals(this.sharedWith, fileInfoUploaderAllOf.sharedWith) &&
-        Objects.equals(this.fileLogs, fileInfoUploaderAllOf.fileLogs) &&
-        Objects.equals(this.downloads, fileInfoUploaderAllOf.downloads);
+        Objects.equals(this.fileLogs, fileInfoUploaderAllOf.fileLogs);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(fileId, sharedWith, fileLogs, downloads);
+    return Objects.hash(fileId, sharedWith, fileLogs);
   }
 
   @Override
@@ -169,7 +141,6 @@ public class FileInfoUploaderAllOf   {
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
     sb.append("    fileLogs: ").append(toIndentedString(fileLogs)).append("\n");
-    sb.append("    downloads: ").append(toIndentedString(downloads)).append("\n");
     sb.append("}");
     return sb.toString();
   }

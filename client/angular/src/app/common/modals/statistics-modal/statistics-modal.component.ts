@@ -29,7 +29,7 @@ export class StatisticsModalComponent implements OnInit {
     private modalService: ModalsService,
     private fileApi: FileService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   public closeModal() {
     this.modalService.deactivateStatisticsModal();
@@ -48,8 +48,7 @@ export class StatisticsModalComponent implements OnInit {
   }
 
   public formatLink(link: string) {
-    if (link == '')
-      return link
+    if (link == '') return link;
     else {
       const fileLinkBuild = `${window.location.protocol}//${window.location.host}/fs/${link}`;
       return fileLinkBuild;

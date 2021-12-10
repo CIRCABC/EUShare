@@ -762,15 +762,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/FileLog'
-            downloads:
-              description: number of downloads
-              type: number
-              minimum: 0
           required:
             - sharedWith
             - fileLogs
             - fileId
-            - downloads
     FileInfoRecipient:
       allOf:
         - $ref: '#/components/schemas/FileBasics'

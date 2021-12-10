@@ -422,10 +422,6 @@ public class FileService implements FileServiceInterface {
         }
         File file = Paths.get(dbFile.getPath()).toFile();
 
-        dbFile.setDownloads(dbFile.getDownloads()+1);
-        fileRepository.save(dbFile);
-
-
         DBFileLog fileLogs;
         if(dbShare==null) {
          fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(),"");

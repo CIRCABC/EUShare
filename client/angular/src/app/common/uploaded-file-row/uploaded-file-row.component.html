@@ -34,7 +34,7 @@
   <div class="level">
     <div class="level-item"> 
       <a *ngIf="displayAsUploader" (click)="displayDownloads()">
-        {{ "downloaded.times" | transloco: { count: file.downloads } }}
+        {{ "downloaded.times" | transloco: { count: file.fileLogs.length } }}
       </a>
     </div>
     <div class="level-item">&nbsp;|&nbsp;

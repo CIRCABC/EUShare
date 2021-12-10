@@ -15,8 +15,6 @@ import { ReplaySubject } from 'rxjs';
 })
 export class FileDateFormatPipe implements PipeTransform {
   transform(value: string): string {
-    
-      return value.toString().replace(new RegExp(",", 'g'),"-");
-    
+    return value.toString().replace(new RegExp(',', 'g'), '-');
   }
 }

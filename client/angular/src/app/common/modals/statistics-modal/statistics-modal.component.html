@@ -41,7 +41,7 @@
               <span *ngIf="fileLog.recipient !== ''">
                 {{
                 fileLog.recipient.length > 35 ? (fileLog.recipient | lowercase | slice: 0:35) + ".." :
-                ( (fileLog.recipient == "" ? "Anonymous":fileLog.recipient) |
+                ( (fileLog.recipient === "" ? "Anonymous":fileLog.recipient) |
                 lowercase)
                 }}
               </span>

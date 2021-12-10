@@ -55,9 +55,6 @@ public class FileInfoUploader   {
   @Valid
   private List<FileLog> fileLogs = new ArrayList<>();
 
-  @JsonProperty("downloads")
-  private BigDecimal downloads;
-
   public FileInfoUploader expirationDate(LocalDate expirationDate) {
     this.expirationDate = expirationDate;
     return this;
@@ -220,29 +217,6 @@ public class FileInfoUploader   {
     this.fileLogs = fileLogs;
   }
 
-  public FileInfoUploader downloads(BigDecimal downloads) {
-    this.downloads = downloads;
-    return this;
-  }
-
-  /**
-   * number of downloads
-   * minimum: 0
-   * @return downloads
-  */
-  @ApiModelProperty(required = true, value = "number of downloads")
-  @NotNull
-
-  @Valid
-@DecimalMin("0")
-  public BigDecimal getDownloads() {
-    return downloads;
-  }
-
-  public void setDownloads(BigDecimal downloads) {
-    this.downloads = downloads;
-  }
-
 
   @Override
   public boolean equals(Object o) {
@@ -259,13 +233,12 @@ public class FileInfoUploader   {
         Objects.equals(this.size, fileInfoUploader.size) &&
         Objects.equals(this.fileId, fileInfoUploader.fileId) &&
         Objects.equals(this.sharedWith, fileInfoUploader.sharedWith) &&
-        Objects.equals(this.fileLogs, fileInfoUploader.fileLogs) &&
-        Objects.equals(this.downloads, fileInfoUploader.downloads);
+        Objects.equals(this.fileLogs, fileInfoUploader.fileLogs);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith, fileLogs, downloads);
+    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith, fileLogs);
   }
 
   @Override
@@ -280,7 +253,6 @@ public class FileInfoUploader   {
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
     sb.append("    fileLogs: ").append(toIndentedString(fileLogs)).append("\n");
-    sb.append("    downloads: ").append(toIndentedString(downloads)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -53,9 +53,5 @@ export interface FileInfoUploader {
      * File logs
      */
     fileLogs: Array<FileLog>;
-    /**
-     * number of downloads
-     */
-    downloads: number;
 }
 
