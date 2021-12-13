@@ -37,7 +37,7 @@
         {{ "downloaded.times" | transloco: { count: file.fileLogs.length } }}
       </a>
     </div>
-    <div class="level-item">&nbsp;|&nbsp;
+    <div *ngIf="displayAsUploader" class="level-item">&nbsp;|&nbsp;
     </div>
     <div class="level-item"> 
       <a *ngIf="displayAsUploader" (click)="displayRecipients()">
@@ -59,6 +59,10 @@
             </a>
             <a class="navbar-item" (click)="tryDownload()">
               {{ "download" | transloco }}
+            </a>
+
+            <a class="navbar-item" *ngIf="!displayAsUploader" (click)="openExpirationDateModal(file.name, file.fileId)">{{
+              "change.expirationdate" | transloco }}
             </a>
             <hr class="navbar-divider" />
             <a class="navbar-item" *ngIf="displayAsAdministrator || displayAsUploader" (click)="delete()">
