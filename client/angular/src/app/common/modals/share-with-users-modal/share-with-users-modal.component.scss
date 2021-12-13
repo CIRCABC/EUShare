@@ -25,15 +25,23 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 }
 
 .shorturl {
-    width: 350px;
     margin-right: 10px;
-  }
-.notif {
-    display: flex;
-    align-items: center;
+    width: 100%;
   }
 
-  .modal-card {
-    margin-top: 100px;
-    width: 800px;
+.table td {
+    vertical-align: middle;
+  }
+
+  .table {
+    width: 100%;
+   }
+
+.tdbutton {
+  width: fit-content;
+}
+ 
+ .modal-card {
+     margin-top: 100px;
+     width: 800px;
   }

@@ -20,55 +20,48 @@
             <p class="subtitle is-6">
               {{
               "file.will.expire"
-              | transloco: { date: fileInfoUploader.expirationDate }
+              | transloco: { date: fileInfoUploader.expirationDate | fileDateFormat }
               }}
             </p>
           </div>
         </div>
 
-        <div class="media" *ngFor="let recipient of fileInfoUploader.sharedWith; let i = index" [attr.data-index]="i">
-          <div class="media-content">
-            <p *ngIf="!recipient.email" class="subtitle is-6">
-              You may now share the following link to your file.
-            </p>
-            <p *ngIf="recipient.email" class="subtitle is-6">
-              The following link has been sent to your recipient.
-            </p>
-            <div class="level">
-              <div class="level-left">
-                <div class="level-left" *ngIf="recipient.email">
-                  <div class="level-item has-text-centered">
-                    <div class="field">
-                      <strong>{{ "email" | transloco }}</strong>
-                    </div>
-                  </div>
-                  <div class="level-item has-text-centered">
-                    <div class="field">
-                      <input class="input is-info" type="text" value="{{ recipient.email | lowercase }}" readonly />
-                    </div>
-                  </div>
-                </div>
-                <div class="level-left">
-                  <div class="level-item has-text-centered">
-                    <div class="field">
-                      <strong>{{ "link" | transloco }}</strong>
-                    </div>
-                  </div>
-                  <div class="level-item has-text-centered">
-                    <div class="field">
-                      <input class="input is-info shorturl" type="text" value="{{ formatLink(i) }}" readonly />
-                    </div>
-                  </div>
-                  <div class="level-item has-text-centered">
-                    <a class="button" (click)="copyLink(i)">{{
-                      "copy" | transloco
-                      }}</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <p class="subtitle is-6">
+          You may now share the following link to your file.
+        </p>
+
+        <table class="table">
+          <thead *ngIf="fileInfoUploader.sharedWith[0].email" >
+            <tr>
+              <th><abbr title="Notifications">Notifications</abbr></th>
+              <th><abbr title="Links">Links</abbr></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let recipient of  fileInfoUploader.sharedWith; let i = index" [attr.data-index]="i">
+              <td>
+                <span *ngIf="recipient.email !== ''">
+                  {{
+                  recipient.email.length > 35 ? (recipient.email | lowercase | slice: 0:35) + ".." : (recipient.email |
+                  lowercase)
+                  }}
+                </span>
+              </td>
+              <td class="shorturl">
+                <input class="input" type="text" value="{{ formatLink(i) }}" />
+              </td>
+              <td>
+                <a class="button" (click)="copyLink(i)">Copy</a>
+              </td>
+              <td>
+                <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">Remove</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
     </div>
   </div>

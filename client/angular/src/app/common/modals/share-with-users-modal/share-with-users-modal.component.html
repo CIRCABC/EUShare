@@ -19,46 +19,38 @@
         </div>
       </div>
 
-      <div class="level share">
-        <div class="level-left">
-
-          <div class="level-item">
-            <div class="notif">
-              <span class="shorturl"> <strong>Links</strong></span>
-              <span> <strong>Notifications</strong> </span>
-            </div>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-
-          </div>
-        </div>
-      </div>
-
-      <div class="level share" *ngFor="let recipient of recipients; let i = index" [attr.data-index]="i">
-        <div class="level-left">
-
-          <div class="level-item">
-            <div class="notif">
-              <input class="input shorturl" type="text" value="{{ formatLink(i) }}" />
-              <label *ngIf="recipient.email !== ''">
+      <table class="table">
+        <thead>
+          <tr>
+            <th><abbr title="Notifications">Notifications</abbr></th>
+            <th><abbr title="Links">Links</abbr></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let recipient of recipients; let i = index" [attr.data-index]="i">
+            <td>
+              <span *ngIf="recipient.email !== ''">
                 {{
                 recipient.email.length > 35 ? (recipient.email | lowercase | slice: 0:35) + ".." : (recipient.email |
                 lowercase)
                 }}
-              </label>
+              </span>
+            </td>
+            <td class="shorturl">
+              <input class="input" type="text" value="{{ formatLink(i) }}" />
+            </td>
+            <td>
+              <a class="button" (click)="copyLink(i)">Copy</a>
+            </td>
+            <td>
+              <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">Remove</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-            </div>
-          </div>
-        </div>
-        <div class="level-right">
-          <div class="level-item">
-            <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">Remove</a>
-            <a class="button" (click)="copyLink(i)">Copy</a>
-          </div>
-        </div>
-      </div>
     </section>
     <footer class="modal-card-foot">
       <button class="modal-close is-large" (click)="closeModal()" aria-label="close"></button>
