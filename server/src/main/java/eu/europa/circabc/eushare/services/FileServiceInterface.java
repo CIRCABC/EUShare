@@ -67,5 +67,8 @@ public interface FileServiceInterface {
         public void deleteFileOnBehalfOf(String fileId, String reason, String requesterId)
                         throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
 
+        public void updateFileOnBehalfOf(String fileId, LocalDate expirationDate, String requesterId)
+                        throws UnknownFileException, UserUnauthorizedException, UnknownUserException ;
+
  
 }

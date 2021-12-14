@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestPart;
 import org.slf4j.Logger;
@@ -142,7 +143,7 @@ public class FileApiController implements FileApi {
             dbFile = fileService.findAvailableFileByShortUrl(fileShortUrl);
             FileBasics fileInfo = dbFile.toFileBasics();
             HttpHeaders responseHeaders = new HttpHeaders();
-            return new ResponseEntity<FileBasics>(fileInfo, responseHeaders,HttpStatus.OK);
+            return new ResponseEntity<FileBasics>(fileInfo, responseHeaders, HttpStatus.OK);
         } catch (UnknownFileException e) {
             // TODO Auto-generated catch block
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
@@ -150,9 +151,6 @@ public class FileApiController implements FileApi {
         }
 
     }
-
-
-
 
     @Override
     public ResponseEntity<Resource> getFile(@PathVariable("fileID") String fileID,
@@ -306,6 +304,34 @@ public class FileApiController implements FileApi {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     HttpErrorAnswerBuilder.build500EmptyToString(), e);
         }
+    }
+
+    @Override
+    public ResponseEntity<Void> updateFile(String fileID, @Valid FileBasics fileBasics) {
+        try {
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
+
+            fileService.updateFileOnBehalfOf(fileID, fileBasics.getExpirationDate(), requesterId);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (UnknownFileException exc3) {
+            log.warn(exc3.getMessage(), exc3);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc3);
+        } catch (WrongAuthenticationException exc) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
+        } catch (UserUnauthorizedException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
+        }  catch (UnknownUserException exc3) {
+            log.warn(exc3.getMessage(), exc3);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc3);
+        }
+
     }
 
     @Override

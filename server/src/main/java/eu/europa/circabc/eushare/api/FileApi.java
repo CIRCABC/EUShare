@@ -289,4 +289,35 @@ public interface FileApi {
 
     }
 
+
+    /**
+     * PUT /file/{fileID}
+     * Used by ADMIN to update file&#39;s medatada (expiration date)
+     *
+     * @param fileID The id of the file (required)
+     * @param fileBasics  (required)
+     * @return SUCCESS Updates the file content and its meta data (status code 200)
+     *         or UNAUTHORIZED the Error message will be empty (status code 401)
+     *         or FORBIDDEN the Error message will be NotAuthorized (status code 403)
+     *         or NOT FOUND the Error Message will be empty (status code 404)
+     *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
+     */
+    @ApiOperation(value = "", nickname = "updateFile", notes = "Used by ADMIN to update file's medatada (expiration date)", authorizations = {
+         }, tags={ "File", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "SUCCESS Updates the file content and its meta data"),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
+    @PutMapping(
+        value = "/file/{fileID}",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<Void> updateFile(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "" ,required=true )  @Valid @RequestBody FileBasics fileBasics) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
 }

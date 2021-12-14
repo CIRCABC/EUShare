@@ -372,6 +372,28 @@ public class FileService implements FileServiceInterface {
         }
     }
 
+
+    @Override
+    @Transactional
+    public void updateFileOnBehalfOf(String fileId, LocalDate expirationDate, String requesterId)
+            throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
+        DBFile f = fileRepository.findById(fileId).orElse(null);
+
+        if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
+            throw new UnknownFileException();
+        }
+
+        if (!requesterId.equals(f.getUploader().getId()) && !userService.isAdmin(requesterId)) {
+            throw new UserUnauthorizedException();
+        }
+        f.setExpirationDate(expirationDate);
+    
+        fileRepository.save(f);
+
+       
+    }
+    
+
     /**
      * Download the given file via the given session. Fails if the user may not
      * access the file, the file is unknown or the given password is wrong.

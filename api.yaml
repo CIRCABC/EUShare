@@ -472,6 +472,47 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'   
+    put:
+      description: Used by ADMIN to update file's medatada (expiration date)
+      operationId: updateFile
+      tags:
+      - File
+      security:
+        - OpenID:
+          - email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileBasics'
+      responses:
+        200:
+          description: SUCCESS Updates the file content and its meta data
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status' 
   '/file/fileRequest':
     post:
       description: Used by INTERNAL users in order to request the reservation of space for a file
