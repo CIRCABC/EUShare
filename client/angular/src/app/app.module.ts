@@ -65,6 +65,7 @@ import { DeleteButtonComponent } from './common/buttons/delete-button/delete-but
 import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
 import { AppRoutingModule } from './app-routing.module';
 import { FileDateFormatPipe } from './common/pipes/file-date-format.pipe';
+import { ChangeExpirationDateModalComponent } from './common/modals/change-expiration-date-modal/change-expiration-date-modal.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { FileDateFormatPipe } from './common/pipes/file-date-format.pipe';
     ShareWithUsersModalComponent,
     StatisticsModalComponent,
     DeleteConfirmModalComponent,
+    ChangeExpirationDateModalComponent,
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,
     DownloadFileRowComponent,

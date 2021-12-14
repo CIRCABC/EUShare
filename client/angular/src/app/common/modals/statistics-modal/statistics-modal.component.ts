@@ -9,9 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
-import { Recipient, FileService, FileLog } from '../../../openapi';
+import { FileService, FileLog } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
-import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-statistics-modal',

@@ -495,4 +495,64 @@ export class FileService {
         );
     }
 
+    /**
+     * Used by ADMIN to update file\&#39;s medatada (expiration date)
+     * @param fileID The id of the file
+     * @param fileBasics 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public updateFile(fileID: string, fileBasics: FileBasics, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public updateFile(fileID: string, fileBasics: FileBasics, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public updateFile(fileID: string, fileBasics: FileBasics, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public updateFile(fileID: string, fileBasics: FileBasics, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (fileID === null || fileID === undefined) {
+            throw new Error('Required parameter fileID was null or undefined when calling updateFile.');
+        }
+        if (fileBasics === null || fileBasics === undefined) {
+            throw new Error('Required parameter fileBasics was null or undefined when calling updateFile.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected !== undefined) {
+            headers = headers.set('Content-Type', httpContentTypeSelected);
+        }
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}`,
+            fileBasics,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
 }

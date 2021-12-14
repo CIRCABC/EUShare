@@ -51,8 +51,8 @@ $size-7: 0.75rem;
   padding: 2px;
 }
 
-@import "../node_modules/bulma/bulma.sass";
-@import "../node_modules/bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.sass";
+@import '../node_modules/bulma';
+@import '../node_modules/bulma-extensions/bulma-tooltip/src/sass/index';
 
 .button {
   background: linear-gradient(180deg, #8dcb6c 0, #58c37e) !important;

@@ -21,7 +21,8 @@ export class ModalsService {
     'addRecipients',
     'shareWithUsers',
     'deleteConfirm',
-    ' ',
+    'statistics',
+    'changeExpirationDate',
   ];
   private activeModal!: string;
 
@@ -52,15 +53,48 @@ export class ModalsService {
   public activateDeleteConfirmModal$: Observable<DeleteConfirmModalValue> =
     this.activateDeleteConfirmModalSubject.asObservable();
 
-  public activateDeleteConfirmModal(
+  private activateChangeExpirationDateModalSubject =
+    new Subject<ChangeExpirationDateModalValue>();
+  public activateChangeExpirationDateModal$: Observable<ChangeExpirationDateModalValue> =
+    this.activateChangeExpirationDateModalSubject.asObservable();
+
+  public activateDownloadModal(
+    modalFileId: string,
+    modalFileName: string,
+    modalFileHasPassword: boolean
+  ) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[0]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[0];
+    this.activateDownloadModalSubject.next({
+      modalActive: true,
+      modalFileId,
+      modalFileName,
+      modalFileHasPassword,
+    });
+  }
+
+  public activateFileLinkModal(link: string) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[1]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[1];
+    this.activateFileLinkModalSubject.next({
+      modalActive: true,
+      fileLink: link,
+    });
+  }
+
+  public activateAddRecipientsModal(
     modalFileName: string,
     modalFileId: string
   ) {
-    if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[2]) {
       this.deactivateAllModals();
     }
-    this.activeModal = this.possibleActiveModals[4];
-    this.activateDeleteConfirmModalSubject.next({
+    this.activeModal = this.possibleActiveModals[2];
+    this.activateAddRecipientsModalSubject.next({
       modalActive: true,
       modalFileName,
       modalFileId,
@@ -86,15 +120,30 @@ export class ModalsService {
     });
   }
 
+  public activateDeleteConfirmModal(
+    modalFileName: string,
+    modalFileId: string
+  ) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[4];
+    this.activateDeleteConfirmModalSubject.next({
+      modalActive: true,
+      modalFileName,
+      modalFileId,
+    });
+  }
+
   public activateStatisticsModal(
     modalFileName: string,
     modalFileId: string,
     fileLogs: FileLog[]
   ) {
-    if (this.activeModal && this.activeModal !== this.possibleActiveModals[3]) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[5]) {
       this.deactivateAllModals();
     }
-    this.activeModal = this.possibleActiveModals[3];
+    this.activeModal = this.possibleActiveModals[5];
     this.activateStatisticsModalSubject.next({
       modalActive: true,
       modalFileName,
@@ -103,46 +152,20 @@ export class ModalsService {
     });
   }
 
-  public activateAddRecipientsModal(
+  public activateChangeExpirationDateModal(
     modalFileName: string,
-    modalFileId: string
-  ) {
-    if (this.activeModal && this.activeModal !== this.possibleActiveModals[2]) {
-      this.deactivateAllModals();
-    }
-    this.activeModal = this.possibleActiveModals[2];
-    this.activateAddRecipientsModalSubject.next({
-      modalActive: true,
-      modalFileName,
-      modalFileId,
-    });
-  }
-
-  public activateFileLinkModal(link: string) {
-    if (this.activeModal && this.activeModal !== this.possibleActiveModals[1]) {
-      this.deactivateAllModals();
-    }
-    this.activeModal = this.possibleActiveModals[1];
-    this.activateFileLinkModalSubject.next({
-      modalActive: true,
-      fileLink: link,
-    });
-  }
-
-  public activateDownloadModal(
     modalFileId: string,
-    modalFileName: string,
-    modalFileHasPassword: boolean
+    expirationDate: string
   ) {
-    if (this.activeModal && this.activeModal !== this.possibleActiveModals[0]) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[6]) {
       this.deactivateAllModals();
     }
-    this.activeModal = this.possibleActiveModals[0];
-    this.activateDownloadModalSubject.next({
+    this.activeModal = this.possibleActiveModals[6];
+    this.activateChangeExpirationDateModalSubject.next({
       modalActive: true,
-      modalFileId,
       modalFileName,
-      modalFileHasPassword,
+      modalFileId,
+      expirationDate,
     });
   }
 
@@ -192,8 +215,19 @@ export class ModalsService {
     }
   }
 
+  public deactivateDeleteConfirmModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[4]) {
+      this.activeModal = ' ';
+      this.activateDeleteConfirmModalSubject.next({
+        modalActive: false,
+        modalFileName: '',
+        modalFileId: '',
+      });
+    }
+  }
+
   public deactivateStatisticsModal() {
-    if (this.activeModal && this.activeModal === this.possibleActiveModals[3]) {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[5]) {
       this.activeModal = ' ';
       this.activateStatisticsModalSubject.next({
         modalActive: false,
@@ -204,13 +238,14 @@ export class ModalsService {
     }
   }
 
-  public deactivateDeleteConfirmModal() {
-    if (this.activeModal && this.activeModal === this.possibleActiveModals[4]) {
+  public deactivateChangeExpirationDateModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[6]) {
       this.activeModal = ' ';
-      this.activateDeleteConfirmModalSubject.next({
+      this.activateChangeExpirationDateModalSubject.next({
         modalActive: false,
         modalFileName: '',
         modalFileId: '',
+        expirationDate: '',
       });
     }
   }
@@ -259,4 +294,11 @@ interface DeleteConfirmModalValue {
   modalActive: boolean;
   modalFileName: string;
   modalFileId: string;
+}
+
+interface ChangeExpirationDateModalValue {
+  modalActive: boolean;
+  modalFileName: string;
+  modalFileId: string;
+  expirationDate: string;
 }

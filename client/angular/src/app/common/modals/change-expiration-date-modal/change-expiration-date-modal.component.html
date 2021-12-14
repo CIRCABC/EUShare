@@ -1,0 +1,30 @@
+<div class="modal" [class.is-active]="modalActive">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">
+        {{'file.request.change.expirationdate' | transloco}} <br> <strong> {{ modalFileName }}
+        </strong>
+      </p>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+
+    </header>
+    <section class="modal-card-body">
+      <form (ngSubmit)="save()" #fmod="ngForm">
+        <div class="field">
+          <input type="date" [(ngModel)]="expirationDate" name="expirationDate" />
+        </div>
+        <div class="field">
+          <div class="control">
+            <button class="button" [class.is-loading]="isLoading" type="submit">
+              SAVE
+            </button>
+          </div>
+        </div>
+      </form>
+    </section>
+    <footer class="modal-card-foot">
+      <button class="modal-close is-large" (click)="closeModal()" aria-label="close"></button>
+    </footer>
+  </div>
+</div>

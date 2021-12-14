@@ -14,6 +14,7 @@ import {
   UsersService,
   FileService,
   Recipient,
+  FileBasics,
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import { ModalsService } from '../common/modals/modals.service';
@@ -158,6 +159,25 @@ export class UploadedFilesService {
       this.fileInfoUploader.push(elementToAddOrNull);
     }
     this.emitValueToObservable();
+  }
+
+  public async updateOneFile(fileId: string, file: FileBasics) {
+    try {
+      await firstValueFrom(this.fileService.updateFile(fileId,file));
+      
+    } catch (error) {
+      // error managed in error interceptor
+    }
+
+    this.fileInfoUploader = this.fileInfoUploader.filter(
+      (file) => file.fileId !== fileId
+    );
+    const elementToAddOrNull = this.nextPageFileInfoUploader.shift();
+    if (elementToAddOrNull) {
+      this.fileInfoUploader.push(elementToAddOrNull);
+    }
+    this.emitValueToObservable();
+    this.modalService.deactivateChangeExpirationDateModal();
   }
 
   public async addOneRecipient(

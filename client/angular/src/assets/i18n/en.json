@@ -38,6 +38,7 @@
   "file.not.found":"File not found",
   "file.password.optional": "File password (optional)",
   "file.request.accepting.deletion": "You are about to delete the file named",
+  "file.request.change.expirationdate": "Change expiration date",
   "file.will.expire": "The file will expire on the {{date}}",
   "file": "File",
   "flies.shared.with.me": "Files shared with me",

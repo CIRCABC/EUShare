@@ -9,11 +9,10 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, Input } from '@angular/core';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
-import { FileInfoUploader, FileService } from '../../openapi';
+import { FileInfoUploader } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { DownloadsService } from '../../services/downloads.service';
 import { UploadedFilesService } from '../../services/uploaded-files.service';
-import { firstValueFrom, map } from 'rxjs';
 
 @Component({
   selector: 'app-uploaded-file-row',
@@ -65,6 +64,14 @@ export class UploadedFileRowComponent {
     this.modalService.activateDeleteConfirmModal(
       this.file.name,
       this.file.fileId
+    );
+  }
+
+  public async openExpirationDateModal() {
+    this.modalService.activateChangeExpirationDateModal(
+      this.file.name,
+      this.file.fileId,
+      this.file.expirationDate
     );
   }
 
