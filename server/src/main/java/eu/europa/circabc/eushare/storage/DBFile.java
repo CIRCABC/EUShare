@@ -112,6 +112,7 @@ public class DBFile {
 
     public FileInfoRecipient toFileInfoRecipient(String recipient) {
         FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();
+        fileInfoRecipient.setFileId(this.getId());
         fileInfoRecipient.setExpirationDate(this.expirationDate);
         fileInfoRecipient.setHasPassword(this.password != null);
         fileInfoRecipient.setName(this.filename);
