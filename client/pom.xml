@@ -62,7 +62,7 @@
                             <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${project.parent.basedir}/client/angular/dist/</directory>
+                                    <directory>${project.basedir}/../client/angular/dist/</directory>
                                 </resource>
                             </resources>
                         </configuration>
