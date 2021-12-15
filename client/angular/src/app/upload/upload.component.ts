@@ -214,9 +214,9 @@ export class UploadComponent implements OnInit {
           this.emailControl.value
         );
         const emailAlreadyExist = emailArray.controls.some(
-          (element) => element.value.email === addEmail.controls['email'].value
+          (element) => element.value.email.toUpperCase() === addEmail.controls['email'].value.toUpperCase()
         );
-        if (!emailAlreadyExist) {
+        if (!emailAlreadyExist && addEmail.controls['email'].value ) {
           emailArray.push(addEmail);
         }
         this.isShowEmailControl = false;
