@@ -8,7 +8,7 @@
 
     <artifactId>client</artifactId>
     <properties>
-        <war.final.name>easyshareclient</war.final.name>
+        <war.final.name>eushareclient</war.final.name>
         <spring.profiles.active></spring.profiles.active>
     </properties>
 
@@ -19,9 +19,6 @@
     </parent>
 
     <dependencies>
-
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -62,7 +59,8 @@
                             <outputDirectory>${project.build.directory}/classes/resources/</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>${project.basedir}/../angular/dist/</directory>
+                                    <directory>${project.basedir}/angular/dist/</directory>
+                                   
                                 </resource>
                             </resources>
                         </configuration>
