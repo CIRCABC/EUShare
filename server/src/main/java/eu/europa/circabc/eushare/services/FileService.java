@@ -468,11 +468,12 @@ public class FileService implements FileServiceInterface {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             if (userService.isUserExists(userId)) {
                 DBUser user = userRepository.findOneById(userId);
+                DBUser recipient = userRepository.findOneById(requesterId);
                 String email = user.getEmail();
                 return fileRepository
                         .findByStatusAndSharedWith_EmailOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE,
                                 email, PageRequest.of(pageNumber, pageSize))
-                        .stream().map(dbFile -> dbFile.toFileInfoRecipient(requesterId)).collect(Collectors.toList());
+                        .stream().map(dbFile -> dbFile.toFileInfoRecipient(recipient.getEmail())).collect(Collectors.toList());
             } else {
                 throw new UnknownUserException();
             }

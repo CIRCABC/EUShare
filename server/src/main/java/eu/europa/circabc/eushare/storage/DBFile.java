@@ -112,14 +112,14 @@ public class DBFile {
 
     public FileInfoRecipient toFileInfoRecipient(String recipient) {
         FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();
-        fileInfoRecipient.setFileId(this.getId());
+        
         fileInfoRecipient.setExpirationDate(this.expirationDate);
         fileInfoRecipient.setHasPassword(this.password != null);
         fileInfoRecipient.setName(this.filename);
         fileInfoRecipient.setSize(new BigDecimal(this.size));
         fileInfoRecipient.setUploaderName(this.uploader.getName());
         for (DBShare dbShare : this.getSharedWith()) {
-            if(dbShare.getEmail().equals(recipient)) {
+            if(dbShare.getEmail().equalsIgnoreCase(recipient)) {
                 fileInfoRecipient.setFileId(dbShare.getDownloadId());
             }
         }
