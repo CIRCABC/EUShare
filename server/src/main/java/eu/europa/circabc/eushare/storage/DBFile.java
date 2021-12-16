@@ -105,6 +105,8 @@ public class DBFile {
         if (password != null) {
             this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         }
+        this.fileLogs = new HashSet<>(); 
+
     }
 
     private DBFile() {
@@ -133,7 +135,7 @@ public class DBFile {
         List<FileLog> fileLogs = this.getFileLogs().stream()
                 .map(DBFileLog::toFileLog).collect(Collectors.toList());
 
-                fileInfoUploader.setExpirationDate(this.expirationDate);
+        fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);
         fileInfoUploader.setSize(new BigDecimal(this.size));

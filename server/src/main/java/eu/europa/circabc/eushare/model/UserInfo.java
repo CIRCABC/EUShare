@@ -1,12 +1,3 @@
-/*
- * EUShare - a module of CIRCABC
- * Copyright (C) 2019-2021 European Commission
- *
- * This file is part of the "EUShare" project.
- *
- * This code is publicly distributed under the terms of EUPL-V1.2 license,
- * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
- */
 package eu.europa.circabc.eushare.model;
 
 import java.util.Objects;
@@ -21,6 +12,8 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+// eushare
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * UserInfo
  */
@@ -120,10 +113,10 @@ public class UserInfo   {
   }
 
   /**
-   * Abreviated user name used for login
+   * Abbreviated user name used for login
    * @return loginUsername
   */
-  @ApiModelProperty(required = true, value = "Abreviated user name used for login")
+  @ApiModelProperty(required = true, value = "Abbreviated user name used for login")
   @NotNull
 
 
@@ -161,10 +154,10 @@ public class UserInfo   {
   }
 
   /**
-   * Email adress
+   * Email address
    * @return email
   */
-  @ApiModelProperty(required = true, value = "Email adress")
+  @ApiModelProperty(required = true, value = "Email address")
   @NotNull
 
 

@@ -1,12 +1,3 @@
-/*
- * EUShare - a module of CIRCABC
- * Copyright (C) 2019-2021 European Commission
- *
- * This file is part of the "EUShare" project.
- *
- * This code is publicly distributed under the terms of EUPL-V1.2 license,
- * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
- */
 package eu.europa.circabc.eushare.model;
 
 import java.util.Objects;
@@ -22,12 +13,17 @@ import org.openapitools.jackson.nullable.JsonNullable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+// eushare
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * FileInfoRecipient
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 public class FileInfoRecipient   {
   @JsonProperty("expirationDate")
+  // Eushare
+  @JsonFormat(pattern = "yyyy-MM-dd")
+  
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
   private LocalDate expirationDate;
 
