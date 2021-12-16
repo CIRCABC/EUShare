@@ -353,7 +353,7 @@ paths:
         - File
         responses:
           200:
-            description: SUCCESS Returns the File's metadat of the newly-created file
+            description: SUCCESS Returns the File's metadata of the newly-created file
             content:
               application/json:
                 schema:
@@ -473,7 +473,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'   
     put:
-      description: Used by ADMIN to update file's medatada (expiration date)
+      description: Used by ADMIN to update file's metadata (expiration date)
       operationId: updateFile
       tags:
       - File
@@ -906,13 +906,13 @@ components:
               description: User ID 
               type: string
             loginUsername:
-              description: Abreviated user name used for login
+              description: Abbreviated user name used for login
               type: string
             givenName:
               description: Full name of the user
               type: string
             email:
-              description: Email adress 
+              description: Email address 
               type: string
             isAdmin:
               description: True if the user is admin
