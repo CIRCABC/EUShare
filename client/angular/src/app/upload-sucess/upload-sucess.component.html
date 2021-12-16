@@ -42,7 +42,7 @@
           <tbody>
             <tr *ngFor="let recipient of  fileInfoUploader.sharedWith; let i = index" [attr.data-index]="i">
               <td>
-                <span *ngIf="recipient.email !== ''">
+                <span *ngIf="recipient.email">
                   {{
                   recipient.email.length > 35 ? (recipient.email | lowercase | slice: 0:35) + ".." : (recipient.email |
                   lowercase)
@@ -54,9 +54,6 @@
               </td>
               <td>
                 <a class="button" (click)="copyLink(i)">Copy</a>
-              </td>
-              <td>
-                <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">Remove</a>
               </td>
             </tr>
           </tbody>

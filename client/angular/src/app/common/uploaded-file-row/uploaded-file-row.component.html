@@ -54,14 +54,14 @@
           </a>
 
           <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
-            <a class="navbar-item" *ngIf="displayAsUploader" (click)="openAddRecipientsModal(file.name, file.fileId)">{{
+            <a class="navbar-item" *ngIf="displayAsUploader" (click)="openAddRecipientsModal()">{{
               "add.recipient" | transloco }}
             </a>
             <a class="navbar-item" (click)="tryDownload()">
               {{ "download" | transloco }}
             </a>
 
-            <a class="navbar-item" *ngIf="!displayAsUploader" (click)="openExpirationDateModal(file.name, file.fileId)">{{
+            <a class="navbar-item" *ngIf="!displayAsUploader" (click)="openExpirationDateModal()">{{
               "change.expirationdate" | transloco }}
             </a>
             <hr class="navbar-divider" />

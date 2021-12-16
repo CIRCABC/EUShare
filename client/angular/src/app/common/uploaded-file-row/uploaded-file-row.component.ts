@@ -40,7 +40,7 @@ export class UploadedFileRowComponent {
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
     private uploadService: UploadedFilesService
-  ) {}
+  ) { }
 
   public tryDownload() {
     if (this.file.hasPassword) {
@@ -56,8 +56,10 @@ export class UploadedFileRowComponent {
     }
   }
 
-  public openAddRecipientsModal(fileName: string, fileId: string) {
-    this.modalService.activateAddRecipientsModal(fileName, fileId);
+  public openAddRecipientsModal() {
+    this.modalService.activateAddRecipientsModal(
+      this.file.name,
+      this.file.fileId);
   }
 
   public async delete() {

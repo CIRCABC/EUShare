@@ -31,9 +31,9 @@
         <tbody>
           <tr *ngFor="let recipient of recipients; let i = index" [attr.data-index]="i">
             <td>
-              <span *ngIf="recipient.email !== ''">
+              <span *ngIf="recipient.email">
                 {{
-                recipient.email.length > 35 ? (recipient.email | lowercase | slice: 0:35) + ".." : (recipient.email |
+                  recipient.email.length > 35 ? (recipient.email | lowercase | slice: 0:35) + ".." : (recipient.email |
                 lowercase)
                 }}
               </span>
