@@ -173,7 +173,7 @@ public class HttpErrorAnswerBuilder {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
             return objectMapper.writeValueAsString(status);
-        } catch (JsonProcessingException e) {//NOSONAR
+        } catch (JsonProcessingException e) {// NOSONAR
             // ignore
             return "";
         }

@@ -26,6 +26,7 @@ public class ApiUtil {
             res.addHeader("Content-Type", contentType);
             res.getWriter().print(example);
         } catch (IOException e) {
+            // NOSONAR
             throw new RuntimeException(e);
         }
     }
