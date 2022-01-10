@@ -28,10 +28,6 @@ export class DownloadButtonComponent {
   @Input('isFileHasPassword')
   public isFileHasPassword = false;
 
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input('isShowProgress')
-  public isShowProgress = false;
-
   public isLoading = false;
   public percentageDownloaded = 0;
   public inputPassword = '';
@@ -41,20 +37,11 @@ export class DownloadButtonComponent {
   public download() {
     this.isLoading = true;
 
-    if (!this.isShowProgress) {
-      this.downloadsService.displayDownloadsBox();
-      this.downloadsService.downloadAFile(
-        this.fileId,
-        this.fileName,
-        this.inputPassword,
-        false
-      );
-    } else {
+
       this.downloadsService
-        .downloadAFile(this.fileId, this.fileName, this.inputPassword, true)
+        .downloadAFile(this.fileId, this.fileName, this.inputPassword)
         .subscribe({
           next: (next) => {
-            console.log(next.percentage);
             this.percentageDownloaded = next.percentage;
             if (next.percentage === 100) {
               this.isLoading = false;
@@ -64,6 +51,6 @@ export class DownloadButtonComponent {
             this.isLoading = false;
           },
         });
-    }
+    
   }
 }

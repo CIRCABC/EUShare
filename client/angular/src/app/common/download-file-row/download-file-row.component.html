@@ -60,3 +60,12 @@
     </div>
   </div>
 </div>
+<div *ngIf="isLoading">
+  {{ percentageDownloaded }}%
+  <progress
+    class="progress is-success"
+    value="{{ percentageDownloaded }}"
+    max="100"
+    >{{ percentageDownloaded }}%</progress
+  >
+</div>

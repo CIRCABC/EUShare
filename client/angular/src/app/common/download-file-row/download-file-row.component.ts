@@ -25,6 +25,8 @@ export class DownloadFileRowComponent {
   public isMoreDisplayed = false;
   public faFile = faFile;
   public faLock = faLock;
+  public isLoading = false;
+  public percentageDownloaded = 0;
 
   constructor(
     private modalService: ModalsService,
@@ -47,11 +49,21 @@ export class DownloadFileRowComponent {
         this.fileToDisplay.hasPassword
       );
     } else {
-      this.downloadsService.displayDownloadsBox();
-      this.downloadsService.downloadAFile(
-        this.fileToDisplay.fileId,
-        this.fileToDisplay.name
-      );
+      this.isLoading = true;
+
+      this.downloadsService.downloadAFile(this.fileToDisplay.fileId, this.fileToDisplay.name).subscribe({
+        next: (next) => {
+          this.percentageDownloaded = next.percentage;
+          if (next.percentage === 100) {
+            this.isLoading = false;
+          }
+         
+        },
+        error: (_error) => {
+          this.isLoading = false;
+        },
+      });
+      
     }
   }
 }

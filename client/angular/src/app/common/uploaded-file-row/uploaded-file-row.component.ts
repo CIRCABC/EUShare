@@ -36,6 +36,9 @@ export class UploadedFileRowComponent {
   public faFile = faFile;
   public faLock = faLock;
 
+  public isLoading = false;
+  public percentageDownloaded = 0;
+
   constructor(
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
@@ -50,9 +53,21 @@ export class UploadedFileRowComponent {
         this.file.hasPassword
       );
     } else {
-      this.downloadsService.displayDownloadsBox();
-      this.downloadsService.downloadAFile(this.file.fileId, this.file.name);
-      this.uploadService.update();
+      this.isLoading = true;
+      this.downloadsService.downloadAFile(this.file.fileId, this.file.name).subscribe({
+        next: (next) => {
+          this.percentageDownloaded = next.percentage;
+        },
+        complete:() => {
+          this.isLoading = false;
+          this.uploadService.update();
+        },
+        error: (_error) => {
+          console.log(_error);
+          this.isLoading = false;
+        },
+      });
+      
     }
   }
 

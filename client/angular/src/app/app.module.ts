@@ -57,7 +57,6 @@ import { FooterComponent } from './footer/footer.component';
 import { MyUserComponent } from './my-user/my-user.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
-import { DownloadCardComponent } from './common/download-card/download-card.component';
 import { UploadSucessComponent } from './upload-sucess/upload-sucess.component';
 import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
 import { CbcEcLogoAppComponent } from './header/cbc-ec-logo-app/cbc-ec-logo-app.component';
@@ -105,7 +104,6 @@ import { ChangeExpirationDateModalComponent } from './common/modals/change-expir
     MyUserComponent,
     PrivacyStatementComponent,
     TermsOfServiceComponent,
-    DownloadCardComponent,
     UploadSucessComponent,
     CbcHeaderComponent,
     CbcEcLogoAppComponent,

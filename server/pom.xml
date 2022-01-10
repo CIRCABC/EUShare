@@ -45,16 +45,17 @@
         <profile>
             <id>prod</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env</name>
                     <value>prod</value>
                 </property>
             </activation>
             <properties>
+                <activatedProperties>prod</activatedProperties>
                 <spring.profiles.active>prod</spring.profiles.active>
                 <packaging.type>war</packaging.type>
             </properties>
+
             <build>
                 <plugins>
                     <plugin>
@@ -71,6 +72,27 @@
                             </execution>
                         </executions>
                     </plugin>
+                    <!-- plugin>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy-file</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy-file</goal>
+                                </goals>
+                                <configuration>
+                                    <file>./ENVIRONMENTNAME_TST-1.0.0.zip</file>
+                                    <repositoryId>tomcat-DIGIT-CIRCABC-SHARE</repositoryId>
+                                    <url>https://tomcat-nexus.devops.tech.ec.europa.eu/repository/tomcat-DIGIT-CIRCABC-SHARE</url>
+                                    <groupId>groupId</groupId>
+                                    <artifactId>artifactId</artifactId>
+                                    <version>1.0</version>
+                                    <packaging>zip</packaging>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin -->
                 </plugins>
             </build>
             <dependencies>
@@ -80,6 +102,7 @@
                     <scope>provided</scope>
                 </dependency>
             </dependencies>
+
         </profile>
 
         <profile>
@@ -182,7 +205,7 @@
             </plugin>
 
 
-              <plugin>
+            <plugin>
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <version>4.1</version>
@@ -328,7 +351,7 @@
                     </execution>
                 </executions>
             </plugin>
-          
+
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
@@ -483,10 +506,10 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.0.1-jre</version>
-          </dependency>
-          
+        </dependency>
+
     </dependencies>
-    
+
     <reporting>
         <plugins>
             <plugin>

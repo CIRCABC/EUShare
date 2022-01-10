@@ -251,18 +251,19 @@ export class FileService {
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
-
+        
 
         return this.httpClient.get(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}`,
             {
                 params: queryParameters,
-                responseType: "blob",
+                responseType: "arraybuffer",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,
                 reportProgress: reportProgress
             }
         );
+    
     }
 
     /**

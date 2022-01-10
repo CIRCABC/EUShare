@@ -58,3 +58,4 @@ client/angular/.cache/
 server/.openapi-generator/api.yaml.sha256
 node_modules
 test-files
+server/ENVIRONMENTNAME_TST-1.0.0.zip

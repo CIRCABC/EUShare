@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { map, timeout } from 'rxjs/operators';
 
 import { FileService } from '../openapi';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
@@ -21,17 +21,8 @@ import { I18nService } from '../common/i18n/i18n.service';
   providedIn: 'root',
 })
 export class DownloadsService {
-  private currentDownloadsInProgress = new Map<
-    string,
-    Observable<DownloadInProgress>
-  >();
-  private nextDownloadsInProgressSubject =
-    new Subject<DownloadInProgressObservableWithMeta>();
-  public nextDownloadsInProgress$: Observable<DownloadInProgressObservableWithMeta> =
-    this.nextDownloadsInProgressSubject.asObservable();
 
-  private displayDownloadsSubject = new Subject<boolean>();
-  public displayDownloads$ = this.displayDownloadsSubject.asObservable();
+
 
   constructor(
     private fileApi: FileService,
@@ -39,49 +30,23 @@ export class DownloadsService {
     private i18nService: I18nService
   ) {}
 
-  public getCurrentObservables(): Observable<DownloadInProgress>[] {
-    const observablesArray: Observable<DownloadInProgress>[] = [];
-    this.currentDownloadsInProgress.forEach(
-      (observale: Observable<DownloadInProgress>, _fileId: string) => {
-        observablesArray.push(observale);
-      }
-    );
-    return observablesArray;
-  }
 
-  public displayDownloadsBox() {
-    this.displayDownloadsSubject.next(true);
-  }
+
 
   public downloadAFile(
     fileId: string,
     fileName: string,
-    inputPassword?: string,
-    withSubcription?: boolean
+    inputPassword?: string
   ): Observable<DownloadInProgress> {
-    const currentDownloadInProgressOrUndefined =
-      this.currentDownloadsInProgress.get(fileId);
 
-    if (currentDownloadInProgressOrUndefined) {
-      return currentDownloadInProgressOrUndefined;
-    } else {
+
       const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
         .getFile(fileId, inputPassword, 'events', true)
         .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
-      this.currentDownloadsInProgress.set(fileId, newDownloadObservable);
-      const downloadInProgressObservableWithMeta: DownloadInProgressObservableWithMeta =
-        {
-          downloadInProgressObservable: newDownloadObservable,
-          fileId,
-        };
-      if (!withSubcription) {
-        this.nextDownloadsInProgressSubject.next(
-          downloadInProgressObservableWithMeta
-        );
-      }
+      
 
       return newDownloadObservable;
-    }
+    
   }
 
   private error(fileId: string, message?: string): Error {
@@ -89,7 +54,6 @@ export class DownloadsService {
       message = `An unknown error occurred while downloading the file. ${this.i18nService.contactSupport()}`;
     }
     // notification sent in the interceptor
-    this.currentDownloadsInProgress.delete(fileId);
     return new Error(fileId);
   }
 
@@ -161,7 +125,7 @@ export class DownloadsService {
           const file = event.body as Blob;
           saveAs(file, fileName);
           downloadValueToReturn.percentage = 100;
-          this.currentDownloadsInProgress.delete(fileId);
+         
           return downloadValueToReturn;
         } else {
           // notification sent in error interceptor

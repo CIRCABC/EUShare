@@ -41,7 +41,7 @@ const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  public showRightDownload = false;
+;
 
   constructor(
     private oauthService: OAuthService,
@@ -66,11 +66,6 @@ export class AppComponent {
         const nextEventNavigationEnd: NavigationEnd = <NavigationEnd>nextEvent;
         const urlAfterRedirect = nextEventNavigationEnd.urlAfterRedirects;
 
-        if (urlAfterRedirect === '/home' || urlAfterRedirect === '/download') {
-          this.showRightDownload = true;
-        } else {
-          this.showRightDownload = false;
-        }
       });
   }
 }

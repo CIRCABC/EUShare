@@ -2,19 +2,7 @@ server:
   port: 8080
 cors:
   origin: '*'
-eushare:
-  clientHttpAddress: http://localhost
-  expirationdays: 7
-  defaultuserspace: 5368709120
-  # 4Gb
-  maxSizeAllowedInBytes: 4294967296 
-  activateMailService: true
-  disks:
-    - /eushare/
-logging:
-  level:
-    org.springframework: DEBUG
-    org.hibernate.SQL: ERROR
+
 spring:
   profiles:
     active: @spring.profiles.active@
@@ -30,3 +18,10 @@ springfox:
     swagger:
       v2:
         path: /api-docs
+eushare:
+  clientHttpAddress: http://localhost
+  expirationdays: 7
+  defaultuserspace: 5368709120
+  # 4Gb
+  maxSizeAllowedInBytes: 4294967296 
+  activateMailService: true
