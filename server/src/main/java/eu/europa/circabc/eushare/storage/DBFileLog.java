@@ -9,7 +9,6 @@
  */
 package eu.europa.circabc.eushare.storage;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -91,6 +90,7 @@ public class DBFileLog {
     }
 
     @Override
+    // NOSONAR
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

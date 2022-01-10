@@ -54,7 +54,7 @@ export class UploadedFileRowComponent {
       );
     } else {
       this.isLoading = true;
-      this.downloadsService.downloadAFile(this.file.fileId, this.file.name).subscribe({
+      this.downloadsService.downlaoadAFile(this.file.fileId, this.file.name).subscribe({
         next: (next) => {
           this.percentageDownloaded = next.percentage;
         },

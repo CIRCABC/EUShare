@@ -42,8 +42,8 @@ public class FileRequestValidator {
         if (fileRequest.getSharedWith().isEmpty()) { // NOSONAR
             return false;
         }
-        for (Recipient recipient : fileRequest.getSharedWith()) { //NOSONAR
-            if (!RecipientValidator.validate(recipient)) { //NOSONAR
+        for (Recipient recipient : fileRequest.getSharedWith()) { // NOSONAR
+            if (!RecipientValidator.validate(recipient)) { // NOSONAR
                 return false;
             }
         }

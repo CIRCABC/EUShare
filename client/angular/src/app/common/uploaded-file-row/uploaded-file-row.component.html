@@ -23,7 +23,7 @@
         <div class="level-item">
           <div class="level-right">
             <p class="subtitle is-6">
-              {{ "expires.on" | transloco }} {{ file.expirationDate | fileDateFormat }}
+              {{ "expires.on" | transloco }} {{ file.expirationDate }}
             </p>
           </div>
         </div>
@@ -32,14 +32,14 @@
   </div>
   <!-- Right side -->
   <div class="level">
-    <div class="level-item"> 
+    <div class="level-item">
       <a *ngIf="displayAsUploader" (click)="displayDownloads()">
         {{ "downloaded.times" | transloco: { count: file.fileLogs.length } }}
       </a>
     </div>
     <div *ngIf="displayAsUploader" class="level-item">&nbsp;|&nbsp;
     </div>
-    <div class="level-item"> 
+    <div class="level-item">
       <a *ngIf="displayAsUploader" (click)="displayRecipients()">
         {{ "shared.times" | transloco: { count: file.sharedWith.length } }}
       </a>
@@ -74,14 +74,4 @@
     </div>
 
   </div>
-
-</div>
-<div *ngIf="isLoading">
-  {{ percentageDownloaded }}%
-  <progress
-    class="progress is-success"
-    value="{{ percentageDownloaded }}"
-    max="100"
-    >{{ percentageDownloaded }}%</progress
-  >
 </div>

@@ -187,12 +187,12 @@
                         <configuration>
                             <inputSpec>${project.basedir}/../api.yaml</inputSpec>
                             <output>.</output>
-                            <generatorName>spring</generatorName>
-
+                            <generatorName>spring</generatorName>   
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <apiPackage>eu.europa.circabc.eushare.api</apiPackage>
                             <modelPackage>eu.europa.circabc.eushare.model</modelPackage>
                             <skipIfSpecIsUnchanged>true</skipIfSpecIsUnchanged>
+                            <templateDirectory>openapi-spring-templates</templateDirectory>
                             <configOptions>
                                 <basePackage>eu.europa.circabc.eushare</basePackage>
                                 <sourceFolder>src/main/java</sourceFolder>

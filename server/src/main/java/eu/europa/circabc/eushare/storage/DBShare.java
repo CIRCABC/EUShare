@@ -26,13 +26,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import eu.europa.circabc.eushare.model.Recipient;
-import com.google.common.hash.Hashing;
-
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "shares",
-indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl"))
+@Table(name = "shares", indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl"))
 public class DBShare {
 
     @Id
@@ -47,7 +44,7 @@ public class DBShare {
     @JoinColumn(foreignKey = @ForeignKey(name = "Share_to_file"))
     private DBFile file;
 
-    @Column(nullable = false, unique= true, length = 10)
+    @Column(nullable = false, unique = true, length = 10)
     private String shorturl;
 
     private String message;
@@ -133,9 +130,7 @@ public class DBShare {
     public String generateShortUrl() {
 
         UUID uuid = UUID.randomUUID();
-        String shortUrl = uuid.toString().replace("-", "").replace("0", "").replace("o", "").substring(0,6);
- 
-        return shortUrl;
+        return uuid.toString().replace("-", "").replace("0", "").replace("o", "").substring(0, 6);
 
     }
 

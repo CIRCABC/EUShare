@@ -105,6 +105,8 @@ public class DBFile {
         if (password != null) {
             this.password = BCrypt.hashpw(password, BCrypt.gensalt());
         }
+        this.fileLogs = new HashSet<>(); 
+
     }
 
     private DBFile() {
@@ -130,16 +132,16 @@ public class DBFile {
         FileInfoUploader fileInfoUploader = new FileInfoUploader();
         List<Recipient> sharedWithRecipients = this.getSharedWith().stream()
                 .map(DBShare::toRecipient).collect(Collectors.toList());
-        List<FileLog> fileLogs = this.getFileLogs().stream()
+        List<FileLog> localFileLogs = this.getFileLogs().stream()
                 .map(DBFileLog::toFileLog).collect(Collectors.toList());
 
-                fileInfoUploader.setExpirationDate(this.expirationDate);
+        fileInfoUploader.setExpirationDate(this.expirationDate);
         fileInfoUploader.setHasPassword(this.password != null);
         fileInfoUploader.setName(this.filename);
         fileInfoUploader.setSize(new BigDecimal(this.size));
         fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
-        fileInfoUploader.setFileLogs(fileLogs);
+        fileInfoUploader.setFileLogs(localFileLogs);
       
         return fileInfoUploader;
     }
