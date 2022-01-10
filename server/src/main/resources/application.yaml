@@ -25,3 +25,5 @@ eushare:
   # 4Gb
   maxSizeAllowedInBytes: 4294967296 
   activateMailService: true
+  disks:
+    - /eushare/
