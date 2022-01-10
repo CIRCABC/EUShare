@@ -45,6 +45,7 @@
         <profile>
             <id>prod</id>
             <activation>
+                <activeByDefault>true</activeByDefault>
                 <property>
                     <name>env</name>
                     <value>prod</value>
