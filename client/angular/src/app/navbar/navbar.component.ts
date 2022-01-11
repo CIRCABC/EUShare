@@ -17,6 +17,7 @@ import {
   faSignOutAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { environment } from '../../environments/environment';
 import { SessionStorageService } from '../services/session-storage.service';
 
 @Component({
@@ -34,6 +35,7 @@ export class NavbarComponent implements OnInit {
   public userName: string | null = null;
   public isAdmin: boolean | null = null;
   public isBurgerActive = false;
+  public circabc_url: string = environment.circabc_url;
 
   constructor(
     private sessionService: SessionStorageService,
