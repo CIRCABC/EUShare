@@ -8,12 +8,12 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Injectable } from '@angular/core';
-import { map, timeout } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { FileService } from '../openapi';
 import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { NotificationService } from '../common/notification/notification.service';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
 import { I18nService } from '../common/i18n/i18n.service';
 
@@ -43,10 +43,10 @@ export class DownloadsService {
       const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
         .getFile(fileId, inputPassword, 'events', true)
         .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
-      
+
 
       return newDownloadObservable;
-    
+
   }
 
   private error(fileId: string, message?: string): Error {
@@ -125,7 +125,7 @@ export class DownloadsService {
           const file = event.body as Blob;
           saveAs(file, fileName);
           downloadValueToReturn.percentage = 100;
-         
+
           return downloadValueToReturn;
         } else {
           // notification sent in error interceptor
@@ -139,10 +139,6 @@ export class DownloadsService {
   }
 }
 
-interface DownloadInProgressObservableWithMeta {
-  downloadInProgressObservable: Observable<DownloadInProgress>;
-  fileId: string;
-}
 
 export interface DownloadInProgress {
   name: string;
