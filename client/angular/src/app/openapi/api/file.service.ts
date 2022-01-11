@@ -256,7 +256,7 @@ export class FileService {
         return this.httpClient.get(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}`,
             {
                 params: queryParameters,
-                responseType: "arraybuffer",
+                responseType: "blob",
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
                 observe: observe,

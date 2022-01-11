@@ -57,10 +57,10 @@ export class UploadedFileRowComponent {
       this.downloadsService.downloadAFile(this.file.fileId, this.file.name).subscribe({
         next: (next) => {
           this.percentageDownloaded = next.percentage;
-        },
-        complete:() => {
-          this.isLoading = false;
-          this.uploadService.update();
+          if (next.percentage === 100) {
+            this.isLoading = false;
+            this.uploadService.update();
+          }
         },
         error: (_error) => {
           console.log(_error);

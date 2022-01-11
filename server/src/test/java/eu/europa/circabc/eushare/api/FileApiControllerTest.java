@@ -32,6 +32,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import javax.mail.MessagingException;
+
 import java.util.Collections;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,11 +49,14 @@ import eu.europa.circabc.eushare.exceptions.DateLiesInPastException;
 import eu.europa.circabc.eushare.exceptions.EmptyFilenameException;
 import eu.europa.circabc.eushare.exceptions.FileLargerThanAllocationException;
 import eu.europa.circabc.eushare.exceptions.IllegalFileSizeException;
+import eu.europa.circabc.eushare.exceptions.MessageTooLongException;
 import eu.europa.circabc.eushare.exceptions.UnknownFileException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
+import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
+import eu.europa.circabc.eushare.exceptions.WrongNameStructureException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
@@ -127,7 +133,7 @@ public class FileApiControllerTest {
     private OpaqueTokenIntrospector opaqueTokenIntrospector;
 
     @Test
-    public void deleteFile200() throws Exception { // NOSONAR
+    public void deleteFile200() throws Exception   { // NOSONAR
         String token = "StupidToken";
 
         Map<String, Object> attributes = new HashMap<>();
@@ -731,7 +737,7 @@ public class FileApiControllerTest {
     }
 
     @Test
-    public void postFileSharedWith200() throws Exception {// NOSONAR
+    public void postFileSharedWith200() throws Exception   {// NOSONAR
         Recipient recipientWithLink = new Recipient();
         recipientWithLink.setEmail("email@email.com");
         recipientWithLink.setMessage("message");
@@ -762,7 +768,7 @@ public class FileApiControllerTest {
     }
 
     @Test
-    public void postFileSharedWith400() throws Exception {// NOSONAR
+    public void postFileSharedWith400() throws Exception, WrongAuthenticationException, UserUnauthorizedException, UnknownUserException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException  {// NOSONAR
         Status status = new Status();
         status.setCode(400);
         Recipient recipientWithLink = new Recipient();
@@ -796,7 +802,7 @@ public class FileApiControllerTest {
     }
 
     @Test
-    public void postFileSharedWith401ForNoAuthentication() throws Exception {// NOSONAR
+    public void postFileSharedWith401ForNoAuthentication() throws Exception  {// NOSONAR
         Status status = new Status();
         status.setCode(401);
         Recipient recipientWithLink = new Recipient();
