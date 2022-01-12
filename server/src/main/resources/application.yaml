@@ -19,11 +19,8 @@ springfox:
       v2:
         path: /api-docs
 eushare:
-  clientHttpAddress: http://localhost
   expirationdays: 7
   defaultuserspace: 5368709120
   # 4Gb
   maxSizeAllowedInBytes: 4294967296 
   activateMailService: true
-  disks:
-    - /eushare/

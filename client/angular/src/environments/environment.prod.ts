@@ -5,7 +5,6 @@
 import { Environment } from './interface';
 export const environment: Environment = {
   production: false,
-  frontend_url: '/',
   backend_url: '/webservice',
   circabc_url: 'https://circabc.europa.eu', 
   API_BASE_PATH: '/webservice',

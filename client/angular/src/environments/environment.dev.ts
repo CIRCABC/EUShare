@@ -5,16 +5,15 @@
 import { Environment } from './interface';
 export const environment: Environment = {
   production: false,
-  frontend_url: '/',
-  backend_url: '/webservice',
+  backend_url: '/share/webservice',
   circabc_url: 'https://circabc.europa.eu', 
-  API_BASE_PATH: '/webservice',
+  API_BASE_PATH: '/share/webservice',
   OIDC_ISSUER: 'https://eulogin:7002/cas/oauth2',
-  OIDC_REDIRECTURI: `${window.location.origin}/callback`,
+  OIDC_REDIRECTURI: `${window.location.origin}/share/callback`,
   OIDC_CLIENTID:
-    'wr7KvlzqBR5iySOs4QYXgJYjw1Zu6E35toDsGdza0ViwqHMZlnstwwilEgkzazqm6ssLpzfKKHog8u4sUnK8DEH-4y0FDGUzNAp3Z2nrB01jCK',
+    'qeBCzrSrDsizahesBX4QY30a6QYXLj8e1vRTIbqav1ajjnDjSJCPRdcZRwiIITzcbzITc7i8i8y6VZ5CDANzoL2-4y0FDGUzNApE4Hnya956ue',
   OIDC_BACKEND_CLIENTID:
-    'LTUzzKUROQlIqzgkCIHZ9czRHTWh3UXjzRgQzRQNrIA01AVCvLZ2wM5ApdezdUkuOcOJIZUpzTLsUEofwajHVbyk-4y0FDGUzNAp3Z2nrB01jCK',
+    '6QCA7zVJsPSmaZfjsZ5QsjIxpXBmzadfzMjRX5Gc0WFywHmF392po2PjVRgzvWKo7n5qo3c5hyPxFEuItUdM3lK-4y0FDGUzNApE4Hnya956ue',
   OIDC_TOKENENDPOINT: 'https://eulogin:7002/cas/oauth2/token',
 
 };
