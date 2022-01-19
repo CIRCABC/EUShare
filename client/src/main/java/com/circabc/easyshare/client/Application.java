@@ -17,6 +17,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.RedirectView;
 
 
 @SpringBootApplication
@@ -36,7 +37,7 @@ public class Application extends SpringBootServletInitializer {
 
    @RequestMapping(value = "/**/{path:[^.]*}")       
    public String redirect() {
-       return "forward:/index.html";
+        return new RedirectView("/index.html", true).getUrl();
    }
 
 
