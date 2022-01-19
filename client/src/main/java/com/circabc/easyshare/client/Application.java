@@ -34,7 +34,7 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 
-   @RequestMapping(value = "/**/fs/**}")       
+   @RequestMapping(value = "/**/{path:[^.]*}")       
    public String redirect() {
        return "forward:/index.html";
    }
