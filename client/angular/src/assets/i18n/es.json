@@ -38,7 +38,7 @@
   "file.not.found": "No se ha encontrado el archivo",
   "file.password.optional": "Contraseña del archivo (opcional)",
   "file.request.accepting.deletion": "Va a eliminar el archivo denominado",
-  "file.request.change.expirationdate": "",
+  "file.request.change.expirationdate": "Cambiar fecha de caducidad",
   "file.will.expire": "El archivo caducará el {{date}}",
   "file": "Archivo",
   "flies.shared.with.me": "Archivos compartidos conmigo",

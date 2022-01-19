@@ -1,10 +1,10 @@
 {
   "access.shared.files": "accesarea fișierelor partajate",
   "access.uploaded.files": "accesează fișierele încărcate",
-  "actions": "",
+  "actions": "Acțiuni",
   "add.file": "Adaugă fișier",
   "add.recipient.to.file": "adăugați acest destinatar la fișierul partajat",
-  "add.recipient.to": "",
+  "add.recipient.to": "Adăugare destinatar la",
   "add.recipient": "Adăugare destinatar",
   "admin.user": "Utilizator administrator",
   "administration": "Administrare",
