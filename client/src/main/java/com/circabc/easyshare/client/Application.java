@@ -34,11 +34,6 @@ public class Application extends SpringBootServletInitializer {
 		SpringApplication.run(Application.class, args);
 	}
 
-    @RequestMapping(value = "/fs")
-    public String fs() {
-        return "forward:index.html";
-    }
-
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;
 
