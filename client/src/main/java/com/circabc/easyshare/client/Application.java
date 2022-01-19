@@ -35,7 +35,7 @@ public class Application extends SpringBootServletInitializer {
 
     @RequestMapping(value = "{_:^(?!index\\.html|webservice).*$}")
     public String redirectApi() {
-        return "forward:/index.html";
+        return "forward:index.html";
     }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
