@@ -6,6 +6,7 @@ import { Environment } from './interface';
 export const environment: Environment = {
   production: false,
   backend_url: '/share/webservice',
+  frontend_url: '/share',
   circabc_url: 'https://circabc.europa.eu', 
   API_BASE_PATH: '/share/webservice',
   OIDC_ISSUER: 'https://eulogin:7002/cas/oauth2',

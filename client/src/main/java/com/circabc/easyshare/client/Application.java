@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @SpringBootApplication
@@ -31,6 +32,11 @@ public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
+
+    @RequestMapping(value = "{_:^(?!index\\.html|webservice).*$}")
+    public String redirectApi() {
+        return "forward:/index.html";
+    }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;

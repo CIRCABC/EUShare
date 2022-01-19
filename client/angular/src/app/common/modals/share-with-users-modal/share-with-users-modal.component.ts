@@ -12,6 +12,7 @@ import { ModalsService } from '../modals.service';
 import { Recipient, FileService } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-share-with-users-modal',
@@ -25,6 +26,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   private modalFileId = '';
   public recipients: Recipient[] = [];
   private modalFileIsPasswordProtected = false;
+  private frontend_url = '';
 
   constructor(
     private modalService: ModalsService,
@@ -37,6 +39,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.frontend_url = environment.frontend_url;
     this.modalActive = false;
     this.modalService.activateShareWithUsersModal$.subscribe(
       (nextModalActiveValue) => {
@@ -89,7 +92,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}//${window.location.host}/fs/${this.recipients[i].shortUrl}`;
+    const fileLinkBuild = `${window.location.protocol}/${window.location.host}${this.frontend_url }/fs/${this.recipients[i].shortUrl}`;
 
     return fileLinkBuild;
   }

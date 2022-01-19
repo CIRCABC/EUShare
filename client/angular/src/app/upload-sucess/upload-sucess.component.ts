@@ -12,6 +12,7 @@ import { NotificationService } from '../common/notification/notification.service
 import { FileInfoUploader } from '../openapi';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { I18nService } from '../common/i18n/i18n.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-upload-sucess',
@@ -22,6 +23,7 @@ export class UploadSucessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;
 
   public faCheckCircle = faCheckCircle;
+  private frontend_url = '';
 
   constructor(
     private notificationService: NotificationService,
@@ -29,6 +31,7 @@ export class UploadSucessComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.frontend_url = environment.frontend_url;
     const passedData = history.state.data;
     if (this.isFileInfoUploader(passedData)) {
       this.fileInfoUploader = <FileInfoUploader>passedData;
@@ -72,7 +75,7 @@ export class UploadSucessComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}//${window.location.host}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
+    const fileLinkBuild = `${window.location.protocol}/${window.location.host}${this.frontend_url }/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
     return fileLinkBuild;
   }
 }
