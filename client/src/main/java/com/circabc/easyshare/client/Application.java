@@ -23,7 +23,6 @@ import org.springframework.web.servlet.view.RedirectView;
 @SpringBootApplication
 @Controller
 public class Application extends SpringBootServletInitializer {
-
      
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

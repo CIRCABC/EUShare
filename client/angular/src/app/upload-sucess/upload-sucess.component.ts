@@ -75,7 +75,7 @@ export class UploadSucessComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}/${window.location.host}${this.frontend_url }/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
+    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url }/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
     return fileLinkBuild;
   }
 }

@@ -92,7 +92,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}/${window.location.host}${this.frontend_url }/fs/${this.recipients[i].shortUrl}`;
+    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url }/fs/${this.recipients[i].shortUrl}`;
 
     return fileLinkBuild;
   }
