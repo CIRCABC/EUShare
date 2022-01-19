@@ -34,10 +34,13 @@ public class Application extends SpringBootServletInitializer {
 	}
 
 
-   @RequestMapping(value = "/**/{path:[^.]*}")       
+   @RequestMapping(value = "/**/fs/**}")       
    public String redirect() {
-       return "forward:/";
+       return "forward:/index.html";
    }
+
+
+
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;
