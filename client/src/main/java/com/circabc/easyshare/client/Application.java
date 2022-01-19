@@ -34,15 +34,6 @@ public class Application extends SpringBootServletInitializer {
 		SpringApplication.run(Application.class, args);
 	}
 
-
-   @RequestMapping(value = "/**/{path:[^.]*}")       
-   public String redirect() {
-        return new RedirectView("/index.html", true).getUrl();
-   }
-
-
-
-
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;
 
