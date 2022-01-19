@@ -33,10 +33,11 @@ public class Application extends SpringBootServletInitializer {
 		SpringApplication.run(Application.class, args);
 	}
 
-    @RequestMapping(value = "{_:^(?!index\\.html|webservice).*$}")
-    public String redirectApi() {
-        return "forward:index.html";
-    }
+
+   @RequestMapping(value = "/**/{path:[^.]*}")       
+   public String redirect() {
+       return "forward:/";
+   }
 
     class ExitException extends RuntimeException implements ExitCodeGenerator {
         private static final long serialVersionUID = 1L;
