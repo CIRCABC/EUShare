@@ -59,3 +59,5 @@ server/.openapi-generator/api.yaml.sha256
 node_modules
 test-files
 server/ENVIRONMENTNAME_TST-1.0.0.zip
+docker/client-tomcat/dist/eushareclient.war
+docker/server-tomcat/dist/eushareserver.war

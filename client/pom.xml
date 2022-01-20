@@ -8,7 +8,7 @@
 
     <artifactId>client</artifactId>
     <properties>
-        <war.final.name>easyshareclient</war.final.name>
+        <war.final.name>eushareclient</war.final.name>
         <spring.profiles.active></spring.profiles.active>
     </properties>
 

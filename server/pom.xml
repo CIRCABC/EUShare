@@ -43,6 +43,71 @@
 
 
         <profile>
+            <id>dev-tomcat</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <properties>
+                <activatedProperties>dev</activatedProperties>
+                <spring.profiles.active>dev</spring.profiles.active>
+                <packaging.type>war</packaging.type>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <mainClass>eu.europa.circabc.eushare.EushareApplication</mainClass>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- plugin>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>deploy-file</id>
+                                <phase>deploy</phase>
+                                <goals>
+                                    <goal>deploy-file</goal>
+                                </goals>
+                                <configuration>
+                                    <file>./ENVIRONMENTNAME_TST-1.0.0.zip</file>
+                                    <repositoryId>tomcat-DIGIT-CIRCABC-SHARE</repositoryId>
+                                    <url>https://tomcat-nexus.devops.tech.ec.europa.eu/repository/tomcat-DIGIT-CIRCABC-SHARE</url>
+                                    <groupId>groupId</groupId>
+                                    <artifactId>artifactId</artifactId>
+                                    <version>1.0</version>
+                                    <packaging>zip</packaging>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin -->
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+
+        </profile>
+
+
+        <profile>
             <id>prod</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
