@@ -131,7 +131,7 @@ import { APP_BASE_HREF } from '@angular/common';
   ],
   providers: [
     KeyStoreService,
-    { provide: APP_BASE_HREF, useValue: environment.frontend_url },
+    { provide: APP_BASE_HREF, useValue: '/share/' },
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
     {
       provide: HTTP_INTERCEPTORS,
