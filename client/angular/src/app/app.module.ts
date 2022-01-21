@@ -65,6 +65,7 @@ import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-moda
 import { AppRoutingModule } from './app-routing.module';
 import { FileDateFormatPipe } from './common/pipes/file-date-format.pipe';
 import { ChangeExpirationDateModalComponent } from './common/modals/change-expiration-date-modal/change-expiration-date-modal.component';
+import { APP_BASE_HREF } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -130,6 +131,7 @@ import { ChangeExpirationDateModalComponent } from './common/modals/change-expir
   ],
   providers: [
     KeyStoreService,
+    { provide: APP_BASE_HREF, useValue: environment.frontend_url },
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
     {
       provide: HTTP_INTERCEPTORS,
