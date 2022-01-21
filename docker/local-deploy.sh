@@ -7,9 +7,8 @@ rm -rf ../server/target/eushareserver.war
 
 pushd ../client/angular
 npm install
-#ng build --configuration=dev --base-href /share/
 ng build --configuration=dev --base-href /share/ 
-
+popd
 
 pushd ../client
 mvn clean install
