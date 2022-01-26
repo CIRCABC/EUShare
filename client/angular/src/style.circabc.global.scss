@@ -62,6 +62,7 @@ html {
 }
 // BACKGROUND
 body {
+  padding-bottom:60px; 
   position: relative;
   min-height: 100%;
   background: #b1e0e8;
@@ -70,12 +71,15 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  padding:10px;
+  padding-bottom: 60px !important;
+
 }
 
 // ---  HEADER
 
 .main-header {
-  height: 65px;
+  height: 65px;   
   min-width: 1024px;
   background: #1f3341;
   background: url("assets/img/header.jpg") no-repeat center bottom;
