@@ -1,39 +1,56 @@
-<footer class="ecl-footer-core">
-  <div class="ecl-container ecl-footer-core__container">
-    <div class="ecl-footer-core__section ecl-footer-core__section1">
-      <a routerLink="home" class="ecl-footer-core__title ecl-link ecl-link--standalone"
-        >CIRCABC Share</a
-      > <br> v{{version.version}} {{hash}}
-      <div class="ecl-footer-core__description">
-        This site is managed by the Directorate General for Informatics
-      </div>
+<footer class="footer-main">
+  <div style="display: flex; align-items: center; justify-content: center">
+    <div>
+      <img src="./assets/img/logo-white.png" width="50" />
     </div>
-    <div
-      class="ecl-footer-core__section ecl-footer-core__section2 ecl-footer-core__section--separator linksSeparator"
-    >
-      <ul class="ecl-footer-core__list ecl-footer-core__list--columns">
-        <li class="ecl-footer-core__list-item">
-          <a
-            routerLink="privacyStatement"
-            class="ecl-footer-core__link ecl-link ecl-link--standalone"
-            >Privacy Statement</a
-          >
-        </li>
-        <li class="ecl-footer-core__list-item">
-          <a
-            routerLink="termsOfService"
-            class="ecl-footer-core__link ecl-link ecl-link--standalone"
-            >Terms of service</a
-          >
-        </li>
-        <li class="ecl-footer-core__list-item">
-          <a
-            routerLink="home"
-            class="ecl-footer-core__link ecl-link ecl-link--standalone"
-            >Support</a
-          >
-        </li>
-      </ul>
+    <div style="padding-top: 10px; padding-left: 10px">
+      {{'footer.title' | transloco }}
+      <a
+        href="https://github.com/CIRCABC/Circabc-OSS"
+        target="_blank"
+        rel="noopener noreferrer"
+        >{{ 'footer.message' | transloco }}</a
+      >
     </div>
   </div>
+
+  <div
+    style="
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    "
+  >
+    <div
+      ><a href="{{circabc_url}}/help/legal-notice"
+        >{{'label.privacy.statement' | transloco }}</a
+      ></div
+    >
+    <div
+      ><a href="{{circabc_url}}/help/legal-notice/terms"
+        >{{'label.terms' | transloco }}</a
+      ></div
+    >
+    <div
+      ><a
+        href="https://ec.europa.eu/info/cookies_en"
+        target="_blank"
+        rel="noopener noreferrer"
+        >{{'cookie.title' | transloco }}</a
+      ></div
+    >
+    <div
+      ><a
+        href="https://ec.europa.eu/info/privacy-policy/europa-analytics_en"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{'label.europa-analytics' | transloco }}</a
+      ></div
+    >
+  </div>
+
+ <!-- V.{{ appVersion }} A.{{ appAlfVersion }} / {{ nodeName }} / {{ buildDate }} -->
 </footer>
