@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 
@@ -26,7 +26,7 @@ export class FooterComponent {
   public nodeName = '';
   public buildDate = '';
   public circabc_url: string = environment.circabc_url;
-  
+
   constructor(
 
   ) {
