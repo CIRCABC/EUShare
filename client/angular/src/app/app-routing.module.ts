@@ -29,63 +29,64 @@ const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
-    component: LoginComponent,
+    component: LoginComponent
   },
   {
     path: 'logincircabc',
-    component: LoginCircabcComponent,
+    component: LoginCircabcComponent
   },
   {
     path: 'home',
     component: MySharedFilesComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard]
   },
   {
     path: 'upload',
     component: UploadComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard]
   },
   {
     path: 'uploadSuccess',
     component: UploadSucessComponent,
-    canActivate: [LoginGuard, UploadSuccessGuard],
+    canActivate: [LoginGuard, UploadSuccessGuard]
   },
   {
     path: 'download',
     component: SharedWithMeComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard]
   },
   {
     path: 'fs/:id',
-    component: FilelinkComponent,
+    component: FilelinkComponent
   },
   {
     path: 'administration',
     component: AdministrationComponent,
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard]
+
   },
   {
     path: 'administration/:userId/files',
     component: OtherUserSharedFilesComponent,
     data: { userName: 'dummyUserName' },
-    canActivate: [LoginGuard],
+    canActivate: [LoginGuard]
   },
   {
     path: 'callback',
-    component: CallBackComponent,
+    component: CallBackComponent
   },
   {
     path: 'myUser',
-    component: MyUserComponent,
+    component: MyUserComponent
   },
   {
     path: 'privacyStatement',
-    component: PrivacyStatementComponent,
+    component: PrivacyStatementComponent
   },
   {
     path: 'termsOfService',
-    component: TermsOfServiceComponent,
-  },
+    component: TermsOfServiceComponent
+  }
 ];
 
 @NgModule({
