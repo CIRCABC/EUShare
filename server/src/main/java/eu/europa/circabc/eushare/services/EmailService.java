@@ -60,7 +60,7 @@ public class EmailService implements EmailServiceInterface {
             MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
             helper.setTo(recipient);
             helper.setText(content, true);
-            helper.setSubject("EUShare notification");
+            helper.setSubject("CIRCABC-Share notification");
 
             sender.send(message);
         }
