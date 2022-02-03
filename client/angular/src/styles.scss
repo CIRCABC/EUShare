@@ -1,5 +1,6 @@
-@import "./style.ec.scss";
-@import "./style.circabc.global.scss";
+@import "./styles/style.ec.scss";
+@import "./styles/style.circabc.global.scss";
+@import "./styles/style.beta.scss";
 
 /** ------------------------------------------ BULMA TEMPLATE  ------------------------------------------ **/
 /** --------------------- ELEMENTS --------------------- **/
@@ -103,5 +104,4 @@ $size-7: 0.75rem;
   padding: 1em;
   min-width: 33%;
 }
-
 
