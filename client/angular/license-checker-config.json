@@ -19,6 +19,12 @@
     "**/*.js",
     "**/*.svg",
     "**/*.conf",
+    "**/*.b64",
+    "**/*.eot",
+    "**/*.ttf",
+    "**/*.woff",
+    "**/*.woff2",
+    "**/*.otf",
     "client/angular/src/app/openapi/**",
     ".angular/cache/**",
     ".cache/**"
