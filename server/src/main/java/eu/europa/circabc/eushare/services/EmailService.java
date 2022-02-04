@@ -60,7 +60,7 @@ public class EmailService implements EmailServiceInterface {
             MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
             helper.setTo(recipient);
             helper.setText(content, true);
-            helper.setSubject("CIRCABC-Share notification");
+            helper.setSubject("EUShare notification");
 
             sender.send(message);
         }
@@ -98,23 +98,16 @@ public class EmailService implements EmailServiceInterface {
      * Send notification to {@code recipient} that someone shared a file with him.
      */
     @Override
-    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message)
+    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message, String shorturl)
             throws MessagingException {
         Context ctx = new Context();
         ctx.setVariable(FILENAME, fileInfo.getName());
         ctx.setVariable(UPLOADER, fileInfo.getUploaderName());
         StringBuilder sb = new StringBuilder();
         sb.append(this.esConfig.getClientHttpAddress());
-        sb.append("/filelink/");
-        sb.append(fileInfo.getFileId());
-        sb.append("/");
-        sb.append(Base64.getUrlEncoder().withoutPadding().encodeToString(fileInfo.getName().getBytes()));
-        sb.append("/");
-        if (fileInfo.getHasPassword()) {
-            sb.append("1");
-        } else {
-            sb.append("0");
-        }
+        sb.append("/fs/");
+        sb.append(shorturl);
+       
 
         try {
             URI linkUri = new URI(sb.toString());

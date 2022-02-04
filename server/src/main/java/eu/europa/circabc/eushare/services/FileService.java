@@ -221,7 +221,7 @@ public class FileService implements FileServiceInterface {
             shareRepository.save(dbShare);
 
             emailService.sendShareNotification(recipient.getEmail(), dbFile.toFileInfoRecipient(recipient.getEmail()),
-                    recipient.getMessage());
+                    recipient.getMessage(),shortUrl);
 
             return dbShare.toRecipient();
         } else {
@@ -559,7 +559,7 @@ public class FileService implements FileServiceInterface {
             String recipientEmail = recipient.getEmail();
             if (recipient != null && StringUtils.validateEmailAddress(recipientEmail)) {
                 FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(recipientEmail);
-                this.emailService.sendShareNotification(recipientEmail, fileInfoRecipient, recipient.getMessage());
+                this.emailService.sendShareNotification(recipientEmail, fileInfoRecipient, recipient.getMessage(), recipient.getShorturl());
             }
         }
 

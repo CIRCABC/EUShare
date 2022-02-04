@@ -23,6 +23,6 @@ public interface EmailServiceInterface {
     public void sendFileDeletedNotification(String recipient, FileBasics fileInfo, String reason)
             throws MessagingException;
 
-    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message)
+    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message, String shorturl)
             throws MessagingException;
 }
