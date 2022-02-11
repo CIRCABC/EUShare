@@ -1,5 +1,8 @@
 server:
   port: 8080
+  tomcat:
+    max-swallow-size: -1
+    max-http-form-post-size: -1  
 cors:
   origin: '*'
 
@@ -10,8 +13,8 @@ spring:
   servlet:
     multipart:
       enabled: false
-      max-file-size: 256MB
-      max-request-size: 256MB
+      max-file-size: -1
+      max-request-size: -1
       
 springfox:
   documentation:

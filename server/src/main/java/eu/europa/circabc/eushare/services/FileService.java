@@ -130,6 +130,9 @@ public class FileService implements FileServiceInterface {
                     for (DBShare dbShare : shareRepository.findByFile_id(file.getId())) {
                         shareRepository.delete(dbShare);
                     }
+                    for (DBFileLog dbFileLog : fileLogsRepository.findByFile_id(file.getId())) {
+                        fileLogsRepository.delete(dbFileLog);
+                    }
                     fileRepository.delete(file);
                 }
             } catch (IOException e) {
