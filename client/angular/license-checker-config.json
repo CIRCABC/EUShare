@@ -27,6 +27,7 @@
     "**/*.otf",
     "client/angular/src/app/openapi/**",
     ".angular/cache/**",
+    ".scannerwork/**",
     ".cache/**"
   ]
 }
