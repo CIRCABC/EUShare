@@ -23,3 +23,8 @@ rm -rf ../docker/server-tomcat/dist/eushareserver.war
 
 cp ../client/target/eushareclient.war ../docker/client-tomcat/dist/eushareclient.war
 cp ../server/target/eushareserver.war ../docker/server-tomcat/dist/eushareserver.war
+
+
+mkdir ~/eushare-data
+
+docker-compose -f docker-compose-tomcat.yaml build
