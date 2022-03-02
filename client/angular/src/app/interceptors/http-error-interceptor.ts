@@ -152,14 +152,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
             case 400: {
-            
               if (err.error) {
                 const error_msg: String = err.error.error;
                 if(error_msg == "invalid_request") { 
                   this.sessionStorageService.logout();
                 }
               }
-
               this.notificationService.addErrorMessage(
                 `${this.i18nService.translate(
                   'bad.request'
