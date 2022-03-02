@@ -20,14 +20,17 @@ import { catchError } from 'rxjs/operators';
 import { I18nService } from '../common/i18n/i18n.service';
 import { NotificationService } from '../common/notification/notification.service';
 import { Status } from '../openapi';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
+ 
   constructor(
     private notificationService: NotificationService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private sessionStorageService: SessionStorageService
   ) {}
 
   intercept(
@@ -149,6 +152,14 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
             case 400: {
+            
+              if (err.error) {
+                const error_msg: String = err.error.error;
+                if(error_msg == "invalid_request") { 
+                  this.sessionStorageService.logout();
+                }
+              }
+
               this.notificationService.addErrorMessage(
                 `${this.i18nService.translate(
                   'bad.request'
