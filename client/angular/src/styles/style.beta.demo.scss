@@ -17,3 +17,22 @@ body:after{
   line-height: 27px;
   transform:rotate(-45deg);
 }
+
+body:before{
+  content: "This is Demo of CIRCABC-Share module, it will be removed soon. Please use acceptance version instead : http://circabc.acceptance.europa.eu/share  ...  (for testing only)";
+  z-index: 999;
+  position: fixed;
+  width: 600px;
+  height: 50px;
+  background: #c71515;
+  top: 120px;
+  left: 0px;
+  text-align: center;
+  font-size: 13px;
+  font-family: sans-serif;
+  
+  font-weight: bold;
+  color: #fff;
+  line-height: 27px;
+ 
+}
