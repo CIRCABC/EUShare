@@ -61,6 +61,8 @@ export class SessionStorageService {
   public logout() {
     sessionStorage.removeItem('ES_AUTH');
     sessionStorage.removeItem('ES_USERINFO');
+    sessionStorage.removeItem('id_token');
+    sessionStorage.removeItem('id_token_claims_obj');
     this.router.navigateByUrl('');
   }
   public defaultHeaders = new HttpHeaders();
