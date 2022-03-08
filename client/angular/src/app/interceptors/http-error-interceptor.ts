@@ -26,7 +26,7 @@ import { SessionStorageService } from '../services/session-storage.service';
   providedIn: 'root',
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
- 
+
   constructor(
     private notificationService: NotificationService,
     private i18nService: I18nService,
@@ -154,7 +154,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             case 400: {
               if (err.error) {
                 const error_msg: String = err.error.error;
-                if(error_msg == "invalid_request") { 
+                if(error_msg === "invalid_request") {
                   this.sessionStorageService.logout();
                 }
               }
