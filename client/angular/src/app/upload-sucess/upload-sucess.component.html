@@ -26,15 +26,18 @@
           </div>
         </div>
 
-        <p class="subtitle is-6">
-          You may now share the following link to your file.
+        <p class="subtitle is-6" *ngIf="!(fileInfoUploader.sharedWith[0].email)" >
+         {{ "notification.link" | transloco }}
+        </p>
+        <p class="subtitle is-6" *ngIf="fileInfoUploader.sharedWith[0].email" >
+          {{ "notification.links" | transloco }}
         </p>
 
         <table class="table">
           <thead *ngIf="fileInfoUploader.sharedWith[0].email" >
             <tr>
-              <th><abbr title="Notifications">Notifications</abbr></th>
-              <th><abbr title="Links">Links</abbr></th>
+              <th><abbr title="Notifications">{{"notifications" | transoloco }}</abbr></th>
+              <th><abbr title="Links">{{"links" | transoloco }}</abbr></th>
               <th></th>
               <th></th>
             </tr>

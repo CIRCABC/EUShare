@@ -205,7 +205,7 @@ export class FileService {
             responseType = 'text';
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith/${encodeURIComponent(String(userID))}`,
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith?userID=${encodeURIComponent(String(userID))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

@@ -31,6 +31,10 @@ h2 {
   border: 2px dashed #999;
 }
 
+.file-name {
+  pointer-events: none !important;
+  cursor: default !important;
+}
 
 .error {
   color: red;

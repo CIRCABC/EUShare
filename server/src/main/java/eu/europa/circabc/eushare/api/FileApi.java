@@ -75,7 +75,7 @@ public interface FileApi {
 
 
     /**
-     * DELETE /file/{fileID}/fileRequest/sharedWith/{userID}
+     * DELETE /file/{fileID}/fileRequest/sharedWith
      * Used by INTERNAL users in order to delete a share link for one of the shared users
      *
      * @param fileID The id of the file (required)
@@ -95,10 +95,10 @@ public interface FileApi {
         @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be either FileNotFound or UserNotFound", response = Status.class),
         @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
     @DeleteMapping(
-        value = "/file/{fileID}/fileRequest/sharedWith/{userID}",
+        value = "/file/{fileID}/fileRequest/sharedWith",
         produces = { "application/json" }
     )
-    default ResponseEntity<Void> deleteFileSharedWithUser(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "The id of the user",required=true) @PathVariable("userID") String userID) {
+    default ResponseEntity<Void> deleteFileSharedWithUser(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@NotNull @ApiParam(value = "The id of the user", required = true) @Valid @RequestParam(value = "userID", required = true) String userID) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

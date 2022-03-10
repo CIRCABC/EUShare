@@ -567,6 +567,7 @@ paths:
         required: true
         schema:
           type: string
+
     post:
       operationId: postFileSharedWith
       description: Used by INTERNAL users in order to add a person to the list of shared, after having uploaded the file a first time. Will send an email if required
@@ -619,6 +620,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+    delete:
+      description: Used by INTERNAL users in order to delete a share link for one of the shared users
+      operationId: deleteFileSharedWithUser
+      parameters:
+      - name: userID
+        in: query
+        description: The id of the user
+        required: true
+        schema:
+          type: string  
+      tags:
+      - File
+      security:
+        - OpenID:
+          - email
+      responses:
+        200:
+          description: SUCCESS
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be either FileNotFound or UserNotFound 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+ 
   '/file/{fileID}/fileRequest/fileContent':
     parameters:
       - name: fileID
@@ -682,55 +726,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
-  '/file/{fileID}/fileRequest/sharedWith/{userID}':
-    parameters:
-      - name: fileID
-        in: path
-        description: The id of the file
-        required: true
-        schema:
-          type: string
-      - name: userID
-        in: path
-        description: The id of the user
-        required: true
-        schema:
-          type: string        
-    delete:
-      description: Used by INTERNAL users in order to delete a share link for one of the shared users
-      operationId: deleteFileSharedWithUser
-      tags:
-      - File
-      security:
-        - OpenID:
-          - email
-      responses:
-        200:
-          description: SUCCESS
-        401:
-          description: UNAUTHORIZED the Error message will be empty
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
-        403:
-          description: FORBIDDEN the Error message will be NotAuthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
-        404:
-          description: NOT FOUND the Error Message will be either FileNotFound or UserNotFound 
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
-        500:
-          description: INTERNAL SERVER ERROR the Error Message will be empty
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Status'
+
+ 
 components:
   securitySchemes:
     OpenID:   # <--- Arbitrary name for the security scheme. Used to refer to it from elsewhere.

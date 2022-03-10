@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.RequestPart;
 import org.slf4j.Logger;
@@ -111,8 +112,8 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteFileSharedWithUser(@PathVariable("fileID") String fileID,
-            @PathVariable("userID") String userID) {
+    public ResponseEntity<Void> deleteFileSharedWithUser(@PathVariable("fileID") String fileID,@NotNull @Valid @RequestParam(value = "userID", required = true) String userID) 
+        {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);

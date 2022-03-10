@@ -32,11 +32,14 @@
                 </span>
               </span>
               <!-- FILE SIZE AND NAME -->
+              
               <span *ngIf="getFileFromDisk()" class="file-name">
                 {{ getFileFromDisk()?.name }}
                 ({{ getFileFromDisk()?.size }} Bytes)
               </span>
+             
             </label>
+ 
             <label
               class="label error"
               *ngIf="
