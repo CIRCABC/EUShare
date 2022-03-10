@@ -29,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -78,6 +79,7 @@ public class DBFile {
     private Set<DBShare> sharedWith;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "file")
+    @OrderBy("downloadDate desc")
     private Set<DBFileLog> fileLogs;
 
 
