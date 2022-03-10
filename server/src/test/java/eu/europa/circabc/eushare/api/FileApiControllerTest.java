@@ -265,7 +265,7 @@ public class FileApiControllerTest {
         doNothing().when(fileService).deleteFileOnBehalfOf(anyString(), anyString(), anyString());
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId) // NOSONAR
+                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith?userID=" + fakeSearchedUserId ) // NOSONAR
                         .header("Authorization", "Bearer " + token).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isOk());
     }
@@ -295,7 +295,7 @@ public class FileApiControllerTest {
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
+                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith?userID=" + fakeSearchedUserId)
                         .header("Authorization", "Bearer " + token).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isForbidden())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
@@ -308,7 +308,7 @@ public class FileApiControllerTest {
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
+                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith?userID=" + fakeSearchedUserId)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isUnauthorized())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
@@ -324,7 +324,7 @@ public class FileApiControllerTest {
 
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
+                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith?userID=" + fakeSearchedUserId)
                         .header("Authorization", "Bearer " + token))
                 .andDo(print()).andExpect(status().isUnauthorized())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
@@ -354,7 +354,7 @@ public class FileApiControllerTest {
                 anyString());
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
+                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith?userID=" + fakeSearchedUserId)
                         .header("Authorization", "Bearer " + token).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isNotFound())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
@@ -384,7 +384,7 @@ public class FileApiControllerTest {
                 anyString());
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
+                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith?userID=" + fakeSearchedUserId)
                         .header("Authorization", "Bearer " + token).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isNotFound())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
@@ -413,7 +413,7 @@ public class FileApiControllerTest {
                 anyString());
         this.mockMvc
                 .perform(MockMvcRequestBuilders
-                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith/" + fakeSearchedUserId)
+                        .delete("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith?userID=" + fakeSearchedUserId)
                         .header("Authorization", "Bearer " + token).accept(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isInternalServerError())
                 .andExpect(content().string(containsString(FileApiControllerTest.asJsonString(status))));
