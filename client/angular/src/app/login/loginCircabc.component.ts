@@ -13,7 +13,7 @@ import { KeyStoreService } from '../services/key-store.service';
 
 @Component({
   selector: 'app-logincircabc',
-  templateUrl: './loginCircabc.component.html',
+  templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginCircabcComponent implements OnInit {
