@@ -1114,7 +1114,7 @@ public class ApiControllerITest {
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("", "emailA@email.com", "dummyUsername");
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange(
-        "/file/" + dbFile.getId() + "/fileRequest/sharedWith/" + uploader.getId(), HttpMethod.DELETE, httpEntity,
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith?userID=" + uploader.getId(), HttpMethod.DELETE, httpEntity,
         String.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
@@ -1144,7 +1144,7 @@ public class ApiControllerITest {
     HttpEntity<String> httpEntity = this.httpEntityAsAnonymousUser("");
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange(
-        "/file/" + dbFile.getId() + "/fileRequest/sharedWith/" + uploader.getId(), HttpMethod.DELETE, httpEntity,
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith?userID=" + uploader.getId(), HttpMethod.DELETE, httpEntity,
         String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
@@ -1175,7 +1175,7 @@ public class ApiControllerITest {
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
     ResponseEntity<String> entity = this.testRestTemplate.exchange(
-        "/file/" + dbFile.getId() + "/fileRequest/sharedWith/" + uploader.getId(), HttpMethod.DELETE, httpEntity,
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith?userID=" + uploader.getId(), HttpMethod.DELETE, httpEntity,
         String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
@@ -1187,7 +1187,7 @@ public class ApiControllerITest {
   public void deleteFileSharedWithUser404() throws Exception {
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity = this.testRestTemplate.exchange("/file/dummyId/fileRequest/sharedWith/dummyId",
+    ResponseEntity<String> entity = this.testRestTemplate.exchange("/file/dummyId/fileRequest/sharedWith?userID=dummyId",
         HttpMethod.DELETE, httpEntity, String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
