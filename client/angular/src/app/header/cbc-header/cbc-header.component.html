@@ -1,9 +1,71 @@
 <!-- MENU -->
 <div class="main-header">
   <div class="wrap-header">
-    <a href="{{circabc_url}}/eulogin"  >
+    <a href="{{circabc_url}}/eulogin">
       <app-cbc-ec-logo-app></app-cbc-ec-logo-app>
     </a>
-    <div class="right-side"></div>
+    <div class="right-side">
+
+
+      <cbc-personal-menu  *ngIf="loggedIn" _ngcontent-oef-c40="">
+        <div class="personal-menu">
+          <span class="personal-menu__name">
+            <!---->
+            <!---->
+            <span style="color: #fff;">{{ userName }}&nbsp;</span>
+            <!---->
+          </span>
+          <!---->
+          <span class="ctn-img">
+            <img alt="Guest" src="assets/img/avatar.png">
+            <!---->
+          </span>
+          <!---->
+
+          <div class="dropdown dropdown--personal-menu">
+            <section class="dropdown--personal-menu__sidebar">
+              <nav>
+                
+                <div class="links-group">
+                  <a href="{{circabc_url}}/eulogin">{{
+                    "dashboard" | transloco
+                    }}</a>
+                  <a href="{{circabc_url}}/eulogin?route=calendar">{{
+                    "my.calendar" | transloco
+                    }}</a>
+                  <a href="{{circabc_url}}/eulogin?route=roles">{{
+                    "roles" | transloco
+                    }}</a>
+                </div>
+
+                <div class="links-group">
+                  <a (click)="logout()">Logout</a>
+                </div>
+              </nav>
+            </section>
+          </div>
+          <!---->
+        </div>
+      </cbc-personal-menu>
+
+      <cbc-lang-selector _ngcontent-oef-c40="" class="responsive-hidden" _nghost-oef-c37=""><span _ngcontent-oef-c37=""
+          class="ng-untouched ng-pristine ng-valid">
+          <!---->
+          <div _ngcontent-oef-c37="" class="selector-compact">
+            <div _ngcontent-oef-c37="" class="selector-icon">
+              <a _ngcontent-oef-c37="" title="Language-en"><img _ngcontent-oef-c37="" src="assets/img/earth-white.png"
+                  class="iconWorldToggle"></a>
+              <!---->
+              <!---->
+              <span _ngcontent-oef-c37="" class="lang-indicator">en</span>
+            </div>
+            <!---->
+          </div>
+          <!---->
+        </span>
+      </cbc-lang-selector>
+
+
+    </div>
   </div>
 </div>

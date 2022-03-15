@@ -22,10 +22,6 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
   }
 }
 
-.right-side {
-  flex: 1;
-  text-align: right;
-}
 
 @media screen and (max-width: 600px) {
   .home-link {
@@ -34,4 +30,110 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
   .responsive-hidden {
     display: none;
   }
+}
+
+.right-side {
+  flex: 1;
+  text-align: right;
+  flex-wrap: nowrap;
+  box-sizing: inherit;
+}
+
+
+.personal-menu {
+  position: relative;
+  text-align: left;
+  display: inline-block;
+  vertical-align: top;
+  color: #fff;
+  text-decoration: none;
+  margin-top: 18px;
+}
+
+.personal-menu .personal-menu__name {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.personal-menu .ctn-img {
+  display: inline-block;
+  vertical-align: middle;
+  background: #8dffa2;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  overflow: hidden;
+  height: 36px;
+  width: 36px;
+  text-align: center;
+  line-height: 59px;
+}
+
+.dropdown--personal-menu {
+  top: 47px;
+  right: 0;
+  display: none;
+  padding: 0;
+}
+
+.dropdown {
+  border-radius: 3px;
+  background: #fff;
+  box-shadow: 0 0 8px #0000004d;
+  width: 195px;
+  position: absolute;
+  top: 0;
+  margin-bottom: 30px;
+  z-index: 999;
+  padding: 15px;
+}
+
+.dropdown--personal-menu .dropdown--personal-menu__sidebar {
+  float: right;
+  width: 168px;
+  height: 100%;
+}
+
+
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
+  display: block;
+}
+
+.right-side[_ngcontent-poj-c91] {
+  flex: 1;
+  text-align: right;
+}
+
+.right-side[_ngcontent-poj-c91] {
+  flex: 1;
+  text-align: right;
+}
+
+.dropdown--personal-menu .dropdown--personal-menu__sidebar {
+  float: right;
+  width: 168px;
+  height: 100%;
+}
+
+
+.dropdown--personal-menu .dropdown--personal-menu__sidebar .links-group {
+  padding: 15px;
+  border-bottom: 2px solid #f5fafa;
+}
+
+.selector-compact{
+  margin-top: 22px;
+  margin-left: 15px;
+  position: relative;
+  display: inline-block;
+  z-index: 10;
+  text-align: left;
+}
+
+.selector-compact .selector-icon {
+  float: right;
+  padding: 3px;
 }

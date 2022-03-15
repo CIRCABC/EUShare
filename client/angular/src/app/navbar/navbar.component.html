@@ -82,17 +82,7 @@
             {{ "share.a.new.file" | transloco }}
           </button>
         </div>
-        <div (click)="toggleBurger()" *ngIf="loggedIn" class="navbar-item">
-          <button class="button is-danger is-family-secondary" (click)="logout()">
-            <span class="icon is-small">
-              <fa-icon class="faIcon" [icon]="faSignOutAlt"></fa-icon>
-            </span>
-            {{ "logout" | transloco }}
-          </button>
-        </div>
-        <a routerLink="myUser" *ngIf="loggedIn" class="navbar-item is-family-secondary">
-          {{ "logged.as.user" | transloco: { userName: userName } }}
-        </a>
+
       </div>
     </div>
   </div>
