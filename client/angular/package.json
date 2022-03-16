@@ -21,7 +21,7 @@
     "prettier": "npx gulp prettier",
     "prettier-css": "gulp format:css ",
     "e2e": "ng e2e",
-    "licchkchk": "license-check-and-add check -f -v",
+    "licchkchk": "license-check-and-add check -f",
     "licchkadd": "license-check-and-add add",
     "tsc": "tsc --project tsconfig.json --pretty",
     "ncu": "npx npm-check-updates",
