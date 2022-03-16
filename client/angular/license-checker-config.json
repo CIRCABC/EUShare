@@ -28,6 +28,7 @@
     "client/angular/src/app/openapi/**",
     ".angular/cache/**",
     ".scannerwork/**",
-    ".cache/**"
+    ".cache/**",
+    "**/src/app/openapi/.openapi-generator/VERSION"
   ]
 }
