@@ -88,9 +88,9 @@ To start developping:
     ```
 1. Run and setup _Mysql_ locally (mysql://localhost:3306)
     ``` sql 
-    CREATE DATABASE easyshare DEFAULT CHARACTER SET utf8;
-    CREATE USER 'easyshare'@'%' IDENTIFIED BY 'easyshare';
-    GRANT ALL PRIVILEGES ON easyshare.* TO 'easyshare'@'%';
+    CREATE DATABASE eushare DEFAULT CHARACTER SET utf8;
+    CREATE USER 'eushare'@'%' IDENTIFIED BY 'eushare';
+    GRANT ALL PRIVILEGES ON eushare.* TO 'eushare'@'%';
     ```
 
 1. Run the front-end application from __/client/angular__ folder (http://localhost:8080/)
@@ -103,7 +103,7 @@ To start developping:
     ```
 1. Run the back-end application from __/server__ folder (http://localhost:8888)
      ``` batch
-    java -jar target/easyshareserver.war
+    java -jar target/eushareserver.war
     ```
 
 You can now start using the application from http://localhost:8080/. Login using the existing user Jason Bourne. If you want to add more users, please refer to the Eulogin configuration files __user_projects/domains/base_domain/classes/userDataBase.xml__

@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import { Component, Input } from '@angular/core';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
 import { FileInfoUploader } from '../../openapi';
@@ -43,7 +44,7 @@ export class UploadedFileRowComponent {
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
     private uploadService: UploadedFilesService
-  ) { }
+  ) {}
 
   public tryDownload() {
     if (this.file.hasPassword) {
@@ -54,27 +55,29 @@ export class UploadedFileRowComponent {
       );
     } else {
       this.isLoading = true;
-      this.downloadsService.downloadAFile(this.file.fileId, this.file.name).subscribe({
-        next: (next) => {
-          this.percentageDownloaded = next.percentage;
-          if (next.percentage === 100) {
+      this.downloadsService
+        .downloadAFile(this.file.fileId, this.file.name)
+        .subscribe({
+          next: (next) => {
+            this.percentageDownloaded = next.percentage;
+            if (next.percentage === 100) {
+              this.isLoading = false;
+              this.uploadService.update();
+            }
+          },
+          error: (_error) => {
+            console.log(_error);
             this.isLoading = false;
-            this.uploadService.update();
-          }
-        },
-        error: (_error) => {
-          console.log(_error);
-          this.isLoading = false;
-        },
-      });
-      
+          },
+        });
     }
   }
 
   public openAddRecipientsModal() {
     this.modalService.activateAddRecipientsModal(
       this.file.name,
-      this.file.fileId);
+      this.file.fileId
+    );
   }
 
   public async delete() {

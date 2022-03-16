@@ -291,6 +291,35 @@ public interface FileApi {
 
 
     /**
+     * POST /file/{fileID}/fileRequest/sharedWithReminder
+     *
+     * @param fileID The id of the file (required)
+     * @param userEmail The email of the user (required)
+     * @return SUCCESS (status code 200)
+     *         or UNAUTHORIZED the Error message will be empty (status code 401)
+     *         or FORBIDDEN the Error message will be NotAuthorized (status code 403)
+     *         or NOT FOUND the Error Message will be either FileNotFound or UserNotFound (status code 404)
+     *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
+     */
+    @ApiOperation(value = "", nickname = "postFileSharedWithReminder", notes = "", authorizations = {
+         }, tags={ "File", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "SUCCESS"),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be either FileNotFound or UserNotFound", response = Status.class),
+        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
+    @PostMapping(
+        value = "/file/{fileID}/fileRequest/sharedWithReminder",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Void> postFileSharedWithReminder(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@NotNull @ApiParam(value = "The email of the user", required = true) @Valid @RequestParam(value = "userEmail", required = true) String userEmail) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * PUT /file/{fileID}
      * Used by ADMIN to update file&#39;s metadata (expiration date)
      *

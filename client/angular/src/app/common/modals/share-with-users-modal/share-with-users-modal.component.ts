@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
 import { Recipient, FileService } from '../../../openapi';
@@ -72,6 +73,24 @@ export class ShareWithUsersModalComponent implements OnInit {
       });
   }
 
+  public reminderShare(shareEmail: string | undefined) {
+    if (shareEmail === undefined) {
+      return;
+    }
+    firstValueFrom(
+      this.fileApi.postFileSharedWithReminder(this.modalFileId, shareEmail)
+    )
+      .then((_success) => {
+        this.notificationService.addSuccessMessageTranslation(
+          'successfully.reminded',
+          { shareEmail, fileName: this.modalFileName }
+        );
+      })
+      .catch((_error) => {
+        // managed in the interceptor
+      });
+  }
+
   public copyLink(i: number) {
     const selBox = document.createElement('textarea');
     selBox.style.position = 'fixed';
@@ -92,7 +111,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url }/fs/${this.recipients[i].shortUrl}`;
+    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.recipients[i].shortUrl}`;
 
     return fileLinkBuild;
   }

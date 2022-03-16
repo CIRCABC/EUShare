@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import { Component, OnInit } from '@angular/core';
 import {
   FormArray,
@@ -214,9 +215,11 @@ export class UploadComponent implements OnInit {
           this.emailControl.value
         );
         const emailAlreadyExist = emailArray.controls.some(
-          (element) => element.value.email.toUpperCase() === addEmail.controls['email'].value.toUpperCase()
+          (element) =>
+            element.value.email.toUpperCase() ===
+            addEmail.controls['email'].value.toUpperCase()
         );
-        if (!emailAlreadyExist && addEmail.controls['email'].value ) {
+        if (!emailAlreadyExist && addEmail.controls['email'].value) {
           emailArray.push(addEmail);
         }
         this.isShowEmailControl = false;

@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import { Component, OnInit } from '@angular/core';
 import { NotificationService } from '../common/notification/notification.service';
 import { FileInfoUploader } from '../openapi';
@@ -75,7 +76,7 @@ export class UploadSucessComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url }/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
+    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
     return fileLinkBuild;
   }
 }

@@ -20,4 +20,5 @@ public interface ShareRepository extends CrudRepository<DBShare, String> {
     List<DBShare> findByEmail(String email);
     void deleteByDownloadId(String downloadId);
     void deleteByEmailAndFile_id(String email, String fileId);
+    DBShare findOneByEmailAndFile_id(String email, String fileId);
 }

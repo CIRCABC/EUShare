@@ -232,6 +232,24 @@ public class FileService implements FileServiceInterface {
         }
     }
 
+
+    public void reminderShareOnFileOnBehalfOf(String fileId, String userEmail, String requesterId) 
+        throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
+            WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException {
+        if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
+            
+            DBFile dbFile = findAvailableFile(fileId, false);
+
+            DBShare dbShare = shareRepository.findOneByEmailAndFile_id(userEmail, fileId);
+            
+            emailService.sendShareNotification(userEmail, dbFile.toFileInfoRecipient(userEmail),
+            dbShare.getMessage(),dbShare.getShorturl());
+          
+        } else {
+            throw new UserUnauthorizedException();
+        }
+    }
+
     /**
      * Tries to allocate space on disk for file with given size. If the allocation
      * fails, throws a corresponding Exception

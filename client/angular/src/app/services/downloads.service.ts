@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 
@@ -21,32 +22,22 @@ import { I18nService } from '../common/i18n/i18n.service';
   providedIn: 'root',
 })
 export class DownloadsService {
-
-
-
   constructor(
     private fileApi: FileService,
     private notificationService: NotificationService,
     private i18nService: I18nService
   ) {}
 
-
-
-
   public downloadAFile(
     fileId: string,
     fileName: string,
     inputPassword?: string
   ): Observable<DownloadInProgress> {
+    const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
+      .getFile(fileId, inputPassword, 'events', true)
+      .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
 
-
-      const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
-        .getFile(fileId, inputPassword, 'events', true)
-        .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
-
-
-      return newDownloadObservable;
-
+    return newDownloadObservable;
   }
 
   private error(fileId: string, message?: string): Error {
@@ -138,7 +129,6 @@ export class DownloadsService {
     }
   }
 }
-
 
 export interface DownloadInProgress {
   name: string;

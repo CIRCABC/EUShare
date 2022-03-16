@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import {
   HttpEvent,
   HttpHandler,
@@ -26,7 +27,6 @@ import { SessionStorageService } from '../services/session-storage.service';
   providedIn: 'root',
 })
 export class HttpErrorInterceptor implements HttpInterceptor {
-
   constructor(
     private notificationService: NotificationService,
     private i18nService: I18nService,
@@ -154,7 +154,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             case 400: {
               if (err.error) {
                 const error_msg: String = err.error.error;
-                if(error_msg === "invalid_request") {
+                if (error_msg === 'invalid_request') {
                   this.sessionStorageService.logout();
                 }
               }

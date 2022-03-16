@@ -1,15 +1,15 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 /**
- * EasyShare
- * This is a API definition for the EasyShare service.
+ * CIRCABC Share
+ * This is a API definition for the CIRCABC Share service.
  *
  * The version of the OpenAPI document: 0.1
  * 
@@ -184,6 +184,12 @@ export class FileService {
             throw new Error('Required parameter userID was null or undefined when calling deleteFileSharedWithUser.');
         }
 
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (userID !== undefined && userID !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>userID, 'userID');
+        }
+
         let headers = this.defaultHeaders;
 
         // authentication (OpenID) required
@@ -205,8 +211,9 @@ export class FileService {
             responseType = 'text';
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith?userID=${encodeURIComponent(String(userID))}`,
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWith`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -251,7 +258,7 @@ export class FileService {
         if (httpHeaderAcceptSelected !== undefined) {
             headers = headers.set('Accept', httpHeaderAcceptSelected);
         }
-        
+
 
         return this.httpClient.get(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}`,
             {
@@ -263,7 +270,6 @@ export class FileService {
                 reportProgress: reportProgress
             }
         );
-    
     }
 
     /**
@@ -497,7 +503,64 @@ export class FileService {
     }
 
     /**
-     * Used by ADMIN to update file\&#39;s medatada (expiration date)
+     * @param fileID The id of the file
+     * @param userEmail The email of the user
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public postFileSharedWithReminder(fileID: string, userEmail: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public postFileSharedWithReminder(fileID: string, userEmail: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public postFileSharedWithReminder(fileID: string, userEmail: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public postFileSharedWithReminder(fileID: string, userEmail: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (fileID === null || fileID === undefined) {
+            throw new Error('Required parameter fileID was null or undefined when calling postFileSharedWithReminder.');
+        }
+        if (userEmail === null || userEmail === undefined) {
+            throw new Error('Required parameter userEmail was null or undefined when calling postFileSharedWithReminder.');
+        }
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (userEmail !== undefined && userEmail !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>userEmail, 'userEmail');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWithReminder`,
+            null,
+            {
+                params: queryParameters,
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Used by ADMIN to update file\&#39;s metadata (expiration date)
      * @param fileID The id of the file
      * @param fileBasics 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.

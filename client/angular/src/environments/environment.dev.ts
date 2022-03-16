@@ -7,7 +7,7 @@ export const environment: Environment = {
   production: false,
   backend_url: '/share/webservice',
   frontend_url: '/share',
-  circabc_url: 'https://circabc.europa.eu', 
+  circabc_url: 'https://circabc.europa.eu',
   API_BASE_PATH: '/share/webservice',
   OIDC_ISSUER: 'https://eulogin:7002/cas/oauth2',
   OIDC_REDIRECTURI: `${window.location.origin}/share/callback`,
@@ -16,5 +16,4 @@ export const environment: Environment = {
   OIDC_BACKEND_CLIENTID:
     '6QCA7zVJsPSmaZfjsZ5QsjIxpXBmzadfzMjRX5Gc0WFywHmF392po2PjVRgzvWKo7n5qo3c5hyPxFEuItUdM3lK-4y0FDGUzNApE4Hnya956ue',
   OIDC_TOKENENDPOINT: 'https://eulogin:7002/cas/oauth2/token',
-
 };

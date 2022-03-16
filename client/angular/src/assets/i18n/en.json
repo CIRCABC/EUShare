@@ -103,6 +103,7 @@
   "successfully.added": "Successfully added your recipient to  {{fileName}}",
   "successfully.deleted": "Successfully deleted file named {{fileName}}",
   "successfully.removed": "Successfully removed file  {{fileName}} 's share with {{shareName}}",
+  "successfully.reminded": "Successfully send reminder to  {{shareEmail}} for shared file : {{fileName}}",
   "successfully.uploaded": "successfully uploaded",
   "text.optional": "Text (optional)",
   "text": "Text:",

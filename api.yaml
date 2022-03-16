@@ -2,8 +2,8 @@ openapi: 3.0.0
 servers:
   - url: http://localhost:8080
 info:
-  title: EasyShare
-  description: This is a API definition for the EasyShare service.
+  title: CIRCABC Share
+  description: This is a API definition for the CIRCABC Share service.
   license:
     name: 'EUPL V1.2'
     url: 'https://joinup.ec.europa.eu/sites/default/files/inline-files/EUPL%20v1_2%20EN(1).txt'
@@ -43,7 +43,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Status'           
+                $ref: '#/components/schemas/Status'     
+                      
   '/users/userInfo':
     parameters:
       - name: pageSize
@@ -663,6 +664,55 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
  
+  '/file/{fileID}/fileRequest/sharedWithReminder':
+    parameters:
+      - name: fileID
+        in: path
+        description: The id of the file
+        required: true
+        schema:
+          type: string
+      - name: userEmail
+        in: query
+        description: The email of the user
+        required: true
+        schema:
+          type: string 
+    post:
+      operationId: postFileSharedWithReminder
+      tags:
+      - File
+      security:
+        - OpenID:
+          - email
+      responses:
+        200:
+          description: SUCCESS
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be either FileNotFound or UserNotFound 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+
   '/file/{fileID}/fileRequest/fileContent':
     parameters:
       - name: fileID

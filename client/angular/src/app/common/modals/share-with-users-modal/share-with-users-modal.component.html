@@ -22,8 +22,8 @@
       <table class="table">
         <thead>
           <tr>
-            <th><abbr title="Notifications">Notifications</abbr></th>
-            <th><abbr title="Links">Links</abbr></th>
+            <th><abbr title="Notifications"> {{'notifications' | transloco}} </abbr></th>
+            <th><abbr title="Links">{{'links' | transloco}} </abbr></th>
             <th></th>
             <th></th>
           </tr>
@@ -42,10 +42,13 @@
               <input class="input" type="text" value="{{ formatLink(i) }}" />
             </td>
             <td>
-              <a class="button" (click)="copyLink(i)">Copy</a>
+              <a class="button" (click)="copyLink(i)">{{'copy' | transloco}} </a>
             </td>
             <td>
-              <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">Remove</a>
+              <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">{{'remove' | transloco}} </a>
+            </td>
+            <td>
+              <a *ngIf="recipient.email !== ''" class="button" (click)="reminderShare( recipient.email)">{{'send.reminder' | transloco}} </a>
             </td>
           </tr>
         </tbody>

@@ -1,21 +1,22 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component } from "@angular/core";
+
+import { Component } from '@angular/core';
 import {
   AuthConfig,
   NullValidationHandler,
   OAuthService,
-} from "angular-oauth2-oidc";
-import { environment } from "../environments/environment";
-import { Router } from "@angular/router";
-import { I18nService } from "./common/i18n/i18n.service";
+} from 'angular-oauth2-oidc';
+import { environment } from '../environments/environment';
+import { Router } from '@angular/router';
+import { I18nService } from './common/i18n/i18n.service';
 
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -26,9 +27,9 @@ const authCodeFlowConfig: AuthConfig = {
   clientId: environment.OIDC_CLIENTID,
   requestAccessToken: false,
 
-  responseType: "id_token",
+  responseType: 'id_token',
 
-  scope: "openid email",
+  scope: 'openid email',
   // disableAtHashCheck: true,
   showDebugInformation: false,
   sessionChecksEnabled: false,
@@ -36,8 +37,8 @@ const authCodeFlowConfig: AuthConfig = {
 };
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
+  selector: 'app-root',
+  templateUrl: './app.component.html',
 })
 export class AppComponent {
   constructor(

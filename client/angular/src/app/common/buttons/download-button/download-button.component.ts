@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import { Component, Input } from '@angular/core';
 import { DownloadsService } from '../../../services/downloads.service';
 
@@ -37,20 +38,18 @@ export class DownloadButtonComponent {
   public download() {
     this.isLoading = true;
 
-
-      this.downloadsService
-        .downloadAFile(this.fileId, this.fileName, this.inputPassword)
-        .subscribe({
-          next: (next) => {
-            this.percentageDownloaded = next.percentage;
-            if (next.percentage === 100) {
-              this.isLoading = false;
-            }
-          },
-          error: (_error) => {
+    this.downloadsService
+      .downloadAFile(this.fileId, this.fileName, this.inputPassword)
+      .subscribe({
+        next: (next) => {
+          this.percentageDownloaded = next.percentage;
+          if (next.percentage === 100) {
             this.isLoading = false;
-          },
-        });
-    
+          }
+        },
+        error: (_error) => {
+          this.isLoading = false;
+        },
+      });
   }
 }

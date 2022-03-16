@@ -1,12 +1,13 @@
 /*
-EasyShare - a module of CIRCABC
+CIRCABC Share - a module of CIRCABC
 Copyright (C) 2019 European Commission
 
-This file is part of the "EasyShare" project.
+This file is part of the "CIRCABC Share" project.
 
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
+
 import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
@@ -25,7 +26,7 @@ export class CbcHeaderComponent implements OnInit {
   constructor(
     private sessionService: SessionStorageService,
     private oAuthService: OAuthService
-  ) { }
+  ) {}
 
   ngOnInit() {
     const userInfo = this.sessionService.getStoredUserInfo();
@@ -39,7 +40,7 @@ export class CbcHeaderComponent implements OnInit {
         this.userName = secondUserInfo.givenName as string;
         this.isAdmin = secondUserInfo.isAdmin;
       },
-      error: (_error) => { },
+      error: (_error) => {},
     });
   }
 
@@ -56,5 +57,3 @@ export class CbcHeaderComponent implements OnInit {
     return true;
   }
 }
-
-

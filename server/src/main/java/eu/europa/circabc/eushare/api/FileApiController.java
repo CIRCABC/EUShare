@@ -308,6 +308,43 @@ public class FileApiController implements FileApi {
     }
 
     @Override
+    public ResponseEntity<Void> postFileSharedWithReminder(String fileID, @NotNull @Valid String userEmail) {
+      
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String requesterId = userService.getAuthenticatedUserId(authentication);
+            fileService.reminderShareOnFileOnBehalfOf(fileID, userEmail, requesterId);
+            return new ResponseEntity<>( HttpStatus.OK);
+        } catch (WrongAuthenticationException exc) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                    exc);
+        } catch (UserUnauthorizedException exc) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
+        } catch (UnknownFileException exc2) {
+            log.warn(exc2.getMessage(), exc2);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc2);
+        } catch (UnknownUserException exc3) {
+            log.warn(exc3.getMessage(), exc3);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                    exc3);
+        } catch (MessageTooLongException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403MessageTooLongToString(), e);
+        } catch (WrongNameStructureException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403WrongNameStructureToString(), e);
+        } catch (WrongEmailStructureException e) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    HttpErrorAnswerBuilder.build403WrongEmailStructureToString(), e);
+        } catch (MessagingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    HttpErrorAnswerBuilder.build500EmptyToString(), e);
+        }
+    }
+
+    @Override
     public ResponseEntity<Void> updateFile(String fileID, @Valid FileBasics fileBasics) {
         try {
 
