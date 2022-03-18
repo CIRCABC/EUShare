@@ -1,71 +1,63 @@
 <!-- MENU -->
-<div class="main-header">
+<div class="main-header" style="display: flex; flex-flow: column">
   <div class="wrap-header">
     <a href="{{circabc_url}}/eulogin">
       <app-cbc-ec-logo-app></app-cbc-ec-logo-app>
     </a>
-    <div class="right-side">
+    <div class="right-side" *ngIf="loggedIn">
 
-
-      <div  *ngIf="loggedIn">
-        <div class="personal-menu">
-          <span class="personal-menu__name">
-            <!---->
-            <!---->
-            <span style="color: #fff;">{{ userName }}&nbsp;</span>
-            <!---->
-          </span>
+      <div class="personal-menu">
+        <span class="personal-menu__name">
           <!---->
-          <span class="ctn-img">
-            <img alt="Guest" src="assets/img/avatar.png">
-            <!---->
-          </span>
           <!---->
-
-          <div class="dropdown dropdown--personal-menu">
-            <section class="dropdown--personal-menu__sidebar">
-              <nav>
-                
-                <div class="links-group">
-                  <a href="{{circabc_url}}/eulogin">{{
-                    "dashboard" | transloco
-                    }}</a>
-                  <a href="{{circabc_url}}/eulogin?route=calendar">{{
-                    "my.calendar" | transloco
-                    }}</a>
-                  <a href="{{circabc_url}}/eulogin?route=roles">{{
-                    "roles" | transloco
-                    }}</a>
-                </div>
-
-                <div class="links-group">
-                  <a (click)="logout()">Logout</a>
-                </div>
-              </nav>
-            </section>
-          </div>
+          <span style="color: #fff;">{{ userName }}&nbsp;</span>
           <!---->
+        </span>
+        <!---->
+        <span class="ctn-img">
+          <img alt="Guest" src="assets/img/avatar.png">
+          <!---->
+        </span>
+        <!---->
+
+        <div class="dropdown dropdown--personal-menu">
+          <section class="dropdown--personal-menu__sidebar">
+            <nav>
+
+              <div class="links-group">
+                <a href="{{circabc_url}}/eulogin">{{
+                  "dashboard" | transloco
+                  }}</a>
+                <a href="{{circabc_url}}/eulogin?route=calendar">{{
+                  "my.calendar" | transloco
+                  }}</a>
+                <a href="{{circabc_url}}/eulogin?route=roles">{{
+                  "roles" | transloco
+                  }}</a>
+              </div>
+
+              <div class="links-group">
+                <a (click)="logout()">Logout</a>
+              </div>
+            </nav>
+          </section>
         </div>
+        <!---->
       </div>
-
-      <div class="responsive-hidden"><span 
-          class="ng-untouched ng-pristine ng-valid">
+      <div><span class="ng-untouched ng-pristine ng-valid">
           <!---->
-          <div  class="selector-compact">
-            <div  class="selector-icon">
-              <a  title="Language-en"><img  src="assets/img/earth-white.png"
-                  class="iconWorldToggle"></a>
+          <div class="selector-compact">
+            <div class="selector-icon">
+              <a title="Language-en"><img src="assets/img/earth-white.png" class="iconWorldToggle"></a>
               <!---->
               <!---->
-              <span  class="lang-indicator">en</span>
+              <span class="lang-indicator">en</span>
             </div>
             <!---->
           </div>
           <!---->
         </span>
       </div>
-
-
     </div>
   </div>
 </div>
