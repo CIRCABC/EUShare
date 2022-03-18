@@ -1,6 +1,8 @@
 
 @import "../../variables.scss";
 
+
+
 .subtitle {
   color: $grey;
 }
@@ -13,7 +15,10 @@
   font-family: "Ubuntu",verdana,helvetica,sans-serif;
   font-size: 15px;
   padding: 7vw 33px;
+  margin-left: calc(-100vw / 2 + 1200px / 2); 
+  margin-right: calc(-100vw / 2 + 1200px / 2);
 }
+
 
 h1 {
   display: block;
@@ -64,8 +69,15 @@ h2 {
   margin: 0.83em 0;
 }
 
-.top {
-  height: 50px;
+
+  .fluid {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    min-width: 1024px;
+    padding: 0 32px;
+    margin: 0 auto;
+
 }
 
 
@@ -113,4 +125,11 @@ a {
   float: right;
   margin-right: 60px;
   margin-top: 60px;
+}
+
+.eu-logo {
+  position: relative;
+  bottom: -26px;
+  height: 56px;
+  border: 2px solid #fff;
 }
