@@ -109,12 +109,14 @@
   right: 0;
   display: none;
   padding: 0;
+  z-index: 999;
 }
 
 .dropdown--personal-menu .dropdown--personal-menu__sidebar {
   float: right;
   width: 168px;
   height: 100%;
+  z-index: 999;
 }
 
 .dropdown:before {
@@ -127,7 +129,7 @@
   right: 20px;
   display: block;
   background: url(https://circabc.acceptance.europa.eu/ui/img/arrow-dropdown-top.png) no-repeat;
-  z-index: 4;
+  z-index: 999;
   }
   
 
@@ -162,11 +164,18 @@ article, aside, details, figcaption, figure, footer, header, hgroup, nav, sectio
   margin-left: 15px;
   position: relative;
   display: inline-block;
-  z-index: 10;
+  z-index: 999;
   text-align: left;
 }
 
 .selector-compact .selector-icon {
   float: right;
   padding: 3px;
+}
+
+.languageName {
+  text-transform: capitalize;
+}
+ .languageCode {
+  text-transform: uppercase;
 }

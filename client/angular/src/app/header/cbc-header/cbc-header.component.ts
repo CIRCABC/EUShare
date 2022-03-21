@@ -9,6 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
+import { getBrowserLang, TranslocoService } from '@ngneat/transloco';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { SessionStorageService } from '../../services/session-storage.service';
@@ -22,13 +23,21 @@ export class CbcHeaderComponent implements OnInit {
   public circabc_url: string = environment.circabc_url;
   public userName: string | null = null;
   public isAdmin: boolean | null = null;
+  public defaultLang: string | undefined ;
 
   constructor(
     private sessionService: SessionStorageService,
-    private oAuthService: OAuthService
+    private oAuthService: OAuthService,
+    private translateService: TranslocoService
   ) {}
 
   ngOnInit() {
+    if ( this.defaultLang == undefined) {
+      this.defaultLang = getBrowserLang() ;
+      this.selectLanguage(this.defaultLang)
+    }
+
+
     const userInfo = this.sessionService.getStoredUserInfo();
     if (userInfo) {
       this.userName = userInfo.givenName as string;
@@ -42,6 +51,15 @@ export class CbcHeaderComponent implements OnInit {
       },
       error: (_error) => {},
     });
+  }
+
+  selectLanguage(lang: string | undefined){
+    this.defaultLang = lang;
+    if ( this.defaultLang !== undefined) {
+      this.translateService.setActiveLang( this.defaultLang);
+    } else {
+      this.translateService.setActiveLang('en');
+    }
   }
 
   logout() {

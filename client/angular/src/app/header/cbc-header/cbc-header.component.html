@@ -44,20 +44,74 @@
         </div>
         <!---->
       </div>
-      <div><span class="ng-untouched ng-pristine ng-valid">
+
+
+
+      <div class="personal-menu selector-compact">
+        <div class="personal-menu__name">
           <!---->
-          <div class="selector-compact">
-            <div class="selector-icon">
-              <a title="Language-en"><img src="assets/img/earth-white.png" class="iconWorldToggle"></a>
-              <!---->
-              <!---->
-              <span class="lang-indicator">en</span>
-            </div>
+          <a title="Language"><img src="assets/img/earth-white.png" class="personal-menu__name"></a>
+          <span class="languageCode">{{ defaultLang }}</span>
+        </div>
+        <div class="dropdown dropdown--personal-menu">
+          <ul>
+            <li><a (click)="selectLanguage('bg')"><span class="languageName">български</span>
+                <span class="languageCode">(bg)</span></a></li>
+            <li><a (click)="selectLanguage('cs')"><span class="languageName">čeština</span>
+                <span class="languageCode">(cs)</span></a></li>
+            <li><a (click)="selectLanguage('da')"><span class="languageName">dansk</span>
+                <span class="languageCode">(da)</span></a></li>
+            <li><a (click)="selectLanguage('de')"><span class="languageName">Deutsch</span>
+                <span class="languageCode">(de)</span></a></li>
+            <li><a (click)="selectLanguage('el')"><span class="languageName">ελληνικά</span>
+                <span class="languageCode">(el)</span></a></li>
+            <li><a (click)="selectLanguage('en')"><span class="languageName">English</span>
+                <span class="languageCode">(en)</span></a></li>
+            <li><a (click)="selectLanguage('es')"><span class="languageName">Español</span>
+                <span class="languageCode">(es)</span></a></li>
+            <li><a (click)="selectLanguage('et')"><span class="languageName">eesti keel</span>
+                <span class="languageCode">(et)</span></a></li>
+            <li><a (click)="selectLanguage('fi')"><span class="languageName">Suomi</span>
+                <span class="languageCode">(fi)</span></a></li>
+            <li><a (click)="selectLanguage('fr')"><span class="languageName">Français</span>
+                <span class="languageCode">(fr)</span></a></li>
+            <!-- li><a (click)="selectLanguage('ga')"><span class="languageName">Gaeilge</span>
+                <span class="languageCode">(ga)</span></a></li -->
+            <li><a (click)="selectLanguage('hr')"><span class="languageName">hrvatski</span>
+                <span class="languageCode">(hr)</span></a></li>
+            <li><a (click)="selectLanguage('it')"><span class="languageName">italiano</span>
+                <span class="languageCode">(it)</span></a></li>
+            <li><a (click)="selectLanguage('lv')"><span class="languageName">latviešu valoda</span>
+                <span class="languageCode">(lv)</span></a></li>
+            <li><a (click)="selectLanguage('lt')"><span class="languageName">lietuvių kalba</span>
+                <span class="languageCode">(lt)</span></a></li>
+            <li><a (click)="selectLanguage('hu')"><span class="languageName">magyar</span>
+                <span class="languageCode">(hu)</span></a></li>
+            <li><a (click)="selectLanguage('mt')"><span class="languageName">Malti</span>
+                <span class="languageCode">(mt)</span></a></li>
+            <li><a (click)="selectLanguage('nl')"><span class="languageName">Nederlands</span>
+                <span class="languageCode">(nl)</span></a></li>
+            <li><a (click)="selectLanguage('pl')"><span class="languageName">polski</span>
+                <span class="languageCode">(pl)</span></a></li>
+            <li><a (click)="selectLanguage('pt')"><span class="languageName">Português</span>
+                <span class="languageCode">(pt)</span></a></li>
+            <li><a (click)="selectLanguage('ro')"><span class="languageName">română</span>
+                <span class="languageCode">(ro)</span></a></li>
+            <li><a (click)="selectLanguage('sk')"><span class="languageName">slovenčina</span>
+                <span class="languageCode">(sk)</span></a></li>
+            <li><a (click)="selectLanguage('sl')"><span class="languageName">slovenščina</span>
+                <span class="languageCode">(sl)</span></a></li>
+            <li><a (click)="selectLanguage('sv')"><span class="languageName">svenska</span>
+                <span class="languageCode">(sv)</span></a></li>
             <!---->
-          </div>
-          <!---->
-        </span>
+          </ul>
+        </div>
+        <!---->
       </div>
+
+
+      <!---->
     </div>
+
   </div>
 </div>
