@@ -31,4 +31,9 @@ export class LoginComponent {
     this.oauthService.customQueryParams = customQueryParams;
     this.oauthService.initImplicitFlow();
   }
+
+  public euLoginCreate() {
+    window.location.href =
+      'https://ecas.cc.cec.eu.int:7002/cas/eim/external/register.cgi';
+  }
 }

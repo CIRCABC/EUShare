@@ -9,7 +9,7 @@
 
 .main {
   min-width: 1024px;
-  background: url(https://circabc.europa.eu/ui/img/background-home.jpg) no-repeat center center;
+  background: url(../../img/background-home.jpg) no-repeat center center;
   background-size: cover;
   color: #fff;
   font-family: "Ubuntu",verdana,helvetica,sans-serif;
@@ -132,4 +132,107 @@ a {
   bottom: -26px;
   height: 56px;
   border: 2px solid #fff;
+}
+
+
+.cta {
+  display: inline-block;
+  border-radius: 3px;
+  font-size: 13px;
+  font-size: 1.3rem;
+  background: #8dcb6c;
+  background: linear-gradient(to bottom,#8dcb6c 0%,#58c37e 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dcb6c",endColorstr="#58c37e",GradientType=0);
+  color: #fff;
+  font-family: Ubuntu,verdana,helvetica,sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  text-shadow: 0 0 6px rgb(0 0 0 / 45%);
+  padding: 12px;
+  padding: 1.2rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(88, 195, 126, 1);
+    text-decoration: none;
+  }
+
+}
+
+a:hover {
+  color: #000;
+}
+
+.cta--homepage {
+  position: relative;
+  border: 0;
+
+  padding: 12px 12px 12px 47px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 12px;
+    width: 35px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    background-image: url("../../img/icon-cadenas.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 3px 0 0 3px;
+  }
+}
+
+
+
+a {
+  text-decoration: none;
+  color: #035;
+  cursor: pointer;
+}
+
+
+.abutton {
+  border: 1px solid #8dffa2;
+  color: #8dffa2;
+  text-transform: uppercase;
+  margin-top: 10px;
+  display: inline-block;
+  border-radius: 3px;
+  border: 1px solid #76a3ad;
+  font-size: 13px;
+  font-size: 1.3rem;
+  font-family: Ubuntu,verdana,helvetica,sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  text-align: center;
+  padding: 12px;
+  padding: 1.2rem;
+}
+.abuttona, input[type=button], input[type=reset], input[type=submit] {
+  display: inline-block;
+  border-radius: 3px;
+  border: 1px solid #76a3ad;
+  font-size: 13px;
+  font-size: 1.3rem;
+  color: #035;
+  font-family: Ubuntu,Verdana,Helvetica,sans-serif;
+  text-decoration: none;
+  text-align: center;
+  padding: 12px;
+  padding: 1.2rem;
+  background: transparent;
+  font-weight: 500;
+}
+
+.abutton:hover {
+  border: 1px solid #58c37e;
+  background: #58c37e;
+  color: #fff;
+  text-shadow: 0 0 6px rgb(0 0 0 / 45%);
 }
