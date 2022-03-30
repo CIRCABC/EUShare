@@ -32,7 +32,7 @@ export class LoginComponent {
     this.oauthService.initImplicitFlow();
   }
 
-  public euLoginCreate() {
+  euLoginCreate() {
     window.location.href =
       'https://ecas.cc.cec.eu.int:7002/cas/eim/external/register.cgi';
   }
