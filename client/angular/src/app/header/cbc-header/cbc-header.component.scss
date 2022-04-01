@@ -24,7 +24,7 @@
 
 .right-side {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .wrap-header {
@@ -131,7 +131,7 @@
   background: url("../../../img/arrow-dropdown-top.png") no-repeat;
   z-index: 999;
   }
-  
+
 
 article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary {
   display: block;

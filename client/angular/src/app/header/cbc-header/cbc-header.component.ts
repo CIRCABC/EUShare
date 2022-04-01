@@ -32,7 +32,7 @@ export class CbcHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if ( this.defaultLang == undefined) {
+    if ( this.defaultLang === undefined) {
       this.defaultLang = getBrowserLang() ;
       this.selectLanguage(this.defaultLang)
     }
