@@ -45,7 +45,7 @@ jobs:
           name: Run Sonarqube scanner
           command: |
             export SONAR_SCANNER_OPTS="-Xmx2048m"
-            eval ./sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.sources=/src/main/java/eu/europa/circabc/eushare -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=**/test/**,/src/main/java/eu/europa/circabc/eushare/api/**/*.java,/src/main/java/eu/europa/circabc/eushare/model/**/*.java  -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dsonar.java.binaries=target/classes/ -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco-ut/jacoco.xml 
+            eval ./sonar-scanner-4.7.0.2747-linux/bin/sonar-scanner -Dsonar.projectKey=CIRCABC_EasyShare -Dsonar.sources=src/main/java/eu/europa/circabc/eushare -Dsonar.sourceEncoding=UTF-8 -Dsonar.organization=circabc -Dsonar.exclusions=**/test/**,src/main/java/eu/europa/circabc/eushare/api/**/*.java,src/main/java/eu/europa/circabc/eushare/model/**/*.java  -Dsonar.host.url=https://sonarcloud.io -Dsonar.projectVersion=${CIRCLE_BRANCH} -Dsonar.login=${SONARQUBE_BACKEND_TOKEN} -Dsonar.java.binaries=target/classes/ -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco-ut/jacoco.xml 
   build_frontend:
     # see https://circleci.com/docs/2.0/language-javascript/
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
