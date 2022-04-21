@@ -16,9 +16,9 @@ import org.springframework.data.repository.CrudRepository;
 public interface ShareRepository extends CrudRepository<DBShare, String> {
     DBShare findOneByDownloadId(String downloadId);
     DBShare findOneByShorturl(String shortUrl);
-    List<DBShare> findByFile_id(String fileId);
+    List<DBShare> findByFileId(String fileId);
     List<DBShare> findByEmail(String email);
     void deleteByDownloadId(String downloadId);
-    void deleteByEmailAndFile_id(String email, String fileId);
-    DBShare findOneByEmailAndFile_id(String email, String fileId);
+    void deleteByEmailAndFileId(String email, String fileId);
+    DBShare findOneByEmailAndFileId(String email, String fileId);
 }

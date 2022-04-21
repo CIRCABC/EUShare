@@ -26,13 +26,11 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 
-
 @SpringBootApplication
 public class EushareApplication extends SpringBootServletInitializer {
-    
-   
+
     private Logger log = LoggerFactory.getLogger(EushareApplication.class);
-    
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
         return builder.sources(EushareApplication.class);
@@ -45,15 +43,15 @@ public class EushareApplication extends SpringBootServletInitializer {
     public void initUsers() {
         userService.setAdminUsers();
     }
-    
-    public void run(String... arg0) throws Exception {
+
+    public void run(String... arg0) throws ExitException {
         log.info("Starting EUSHARE");
         if (arg0.length > 0 && arg0[0].equals("exitcode")) {
             throw new ExitException();
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws ExitException {
         new SpringApplication(EushareApplication.class).run(args);
     }
 

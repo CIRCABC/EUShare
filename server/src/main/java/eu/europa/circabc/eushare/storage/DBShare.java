@@ -9,11 +9,6 @@
  */
 package eu.europa.circabc.eushare.storage;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.UUID;
 
 import javax.persistence.Column;

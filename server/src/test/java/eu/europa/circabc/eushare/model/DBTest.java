@@ -116,7 +116,7 @@ public class DBTest {
         dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Email(DBFile.Status.AVAILABLE,
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWithEmail(DBFile.Status.AVAILABLE,
         "email2@email.com", PageRequest.of(0, 10));
 
         assertEquals(1, shareUsersFiles.size());
@@ -126,7 +126,7 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByReceiverWhereNothingIsThere() {
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWith_Email(DBFile.Status.AVAILABLE,
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndSharedWithEmail(DBFile.Status.AVAILABLE,
                 "fakeID", PageRequest.of(1, 10));
         assertNotNull(shareUsersFiles);
         assertEquals(0, shareUsersFiles.size());
@@ -148,7 +148,7 @@ public class DBTest {
         dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_Id(DBFile.Status.AVAILABLE,
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploaderId(DBFile.Status.AVAILABLE,
                 uploader.getId(), PageRequest.of(0, 10));
         assertEquals(1, shareUsersFiles.size());
         assertEquals(dbFile, shareUsersFiles.get(0));
@@ -192,7 +192,7 @@ public class DBTest {
         dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploaderIdOrderByExpirationDateAscFilenameAsc(
                 DBFile.Status.AVAILABLE, uploader.getId(), PageRequest.of(0, 10));
 
         DBFile[] expectedShareUsersFiles = { dbFile, dbFile2, dbFile3 };

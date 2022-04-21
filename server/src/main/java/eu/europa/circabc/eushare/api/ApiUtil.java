@@ -19,7 +19,6 @@ public class ApiUtil {
     private ApiUtil() {
     }
 
-    @java.lang.SuppressWarnings("squid:java:S112")
     public static void setExampleResponse(NativeWebRequest req, String contentType, String example) {
         try {
             HttpServletResponse res = req.getNativeResponse(HttpServletResponse.class);

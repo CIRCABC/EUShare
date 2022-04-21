@@ -93,7 +93,6 @@ public class DBFile {
         this( uploader, sharedWith, filename, size, expirationDate, path, null);
     }
 
-    @SuppressWarnings("java:S107")
     public DBFile(DBUser uploader, Collection<DBShare> sharedWith, String filename, long size,
             LocalDate expirationDate, String path, String password) {
        
