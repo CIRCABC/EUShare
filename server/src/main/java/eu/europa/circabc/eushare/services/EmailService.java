@@ -12,7 +12,6 @@ package eu.europa.circabc.eushare.services;
 import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Base64;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;

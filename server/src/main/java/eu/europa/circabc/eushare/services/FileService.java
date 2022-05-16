@@ -30,7 +30,6 @@ import javax.mail.MessagingException;
 import javax.transaction.Transactional;
 
 import org.slf4j.LoggerFactory;
-import org.sonarsource.scanner.api.internal.shaded.okhttp.Dns;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -127,10 +126,10 @@ public class FileService implements FileServiceInterface {
             try {
                 fileDeletion = Files.deleteIfExists(path);
                 if (fileDeletion) {
-                    for (DBShare dbShare : shareRepository.findByFile_id(file.getId())) {
+                    for (DBShare dbShare : shareRepository.findByFileId(file.getId())) {
                         shareRepository.delete(dbShare);
                     }
-                    for (DBFileLog dbFileLog : fileLogsRepository.findByFile_id(file.getId())) {
+                    for (DBFileLog dbFileLog : fileLogsRepository.findByFileId(file.getId())) {
                         fileLogsRepository.delete(dbFileLog);
                     }
                     fileRepository.delete(file);
@@ -190,7 +189,7 @@ public class FileService implements FileServiceInterface {
     public void removeShareOnFileOnBehalfOf(String fileId, String userEmail, String requesterId)
             throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            shareRepository.deleteByEmailAndFile_id(userEmail, fileId);
+            shareRepository.deleteByEmailAndFileId(userEmail, fileId);
         } else {
             throw new UserUnauthorizedException();
         }
@@ -234,13 +233,13 @@ public class FileService implements FileServiceInterface {
 
 
     public void reminderShareOnFileOnBehalfOf(String fileId, String userEmail, String requesterId) 
-        throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
-            WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException {
+        throws UserUnauthorizedException, UnknownUserException,
+            UnknownFileException, MessagingException {
         if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
             
             DBFile dbFile = findAvailableFile(fileId, false);
 
-            DBShare dbShare = shareRepository.findOneByEmailAndFile_id(userEmail, fileId);
+            DBShare dbShare = shareRepository.findOneByEmailAndFileId(userEmail, fileId);
             
             emailService.sendShareNotification(userEmail, dbFile.toFileInfoRecipient(userEmail),
             dbShare.getMessage(),dbShare.getShorturl());
@@ -343,7 +342,7 @@ public class FileService implements FileServiceInterface {
         if (!isNotUploaderOrAdmin) {
             f = fileRepository.findByStatusAndId(DBFile.Status.AVAILABLE, fileId);
         } else {
-            f = fileRepository.findByStatusAndSharedWith_DownloadId(DBFile.Status.AVAILABLE, fileId);
+            f = fileRepository.findByStatusAndSharedWithDownloadId(DBFile.Status.AVAILABLE, fileId);
         }
         if (f == null) {
             throw new UnknownFileException();
@@ -355,7 +354,7 @@ public class FileService implements FileServiceInterface {
             throws UnknownFileException {
         DBFile f;
 
-        f = fileRepository.findByStatusAndSharedWith_Shorturl(DBFile.Status.AVAILABLE, shortUrl);
+        f = fileRepository.findByStatusAndSharedWithShorturl(DBFile.Status.AVAILABLE, shortUrl);
 
         if (f == null) {
             throw new UnknownFileException();
@@ -492,7 +491,7 @@ public class FileService implements FileServiceInterface {
                 DBUser recipient = userRepository.findOneById(requesterId);
                 String email = user.getEmail();
                 return fileRepository
-                        .findByStatusAndSharedWith_EmailOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE,
+                        .findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE,
                                 email, PageRequest.of(pageNumber, pageSize))
                         .stream().map(dbFile -> dbFile.toFileInfoRecipient(recipient.getEmail())).collect(Collectors.toList());
             } else {
@@ -510,9 +509,9 @@ public class FileService implements FileServiceInterface {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             if (userService.isUserExists(userId)) {
                 return fileRepository
-                        .findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId,
+                        .findByStatusAndUploaderIdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId,
                                 PageRequest.of(pageNumber, pageSize))
-                        .stream().map(dbFile -> dbFile.toFileInfoUploader()).collect(Collectors.toList());
+                        .stream().map(DBFile::toFileInfoUploader).collect(Collectors.toList());
             } else {
                 throw new UnknownUserException();
             }
@@ -540,8 +539,8 @@ public class FileService implements FileServiceInterface {
      * Saves a file the file will not be saved.
      */
     private void save(DBFile dbFile, MultipartFile file)
-            throws IllegalFileStateException, UnknownFileException, FileLargerThanAllocationException,
-            UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
+            throws IllegalFileStateException, FileLargerThanAllocationException,
+            CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
 
         if (dbFile == null) {
             throw new NullPointerException("dbFile is null");
@@ -577,10 +576,13 @@ public class FileService implements FileServiceInterface {
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
         for (DBShare recipient : dbFile.getSharedWith()) {
-            String recipientEmail = recipient.getEmail();
-            if (recipient != null && StringUtils.validateEmailAddress(recipientEmail)) {
-                FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(recipientEmail);
-                this.emailService.sendShareNotification(recipientEmail, fileInfoRecipient, recipient.getMessage(), recipient.getShorturl());
+            if (recipient != null) {
+                String recipientEmail = recipient.getEmail();
+                if (StringUtils.validateEmailAddress(recipientEmail)) {
+                    FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(recipientEmail);
+                    this.emailService.sendShareNotification(recipientEmail, fileInfoRecipient, recipient.getMessage(),
+                            recipient.getShorturl());
+                }
             }
         }
 

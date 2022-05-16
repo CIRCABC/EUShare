@@ -6,7 +6,10 @@
     "strictTemplateParams": true,
     "strictTemplates": true,
     "strictDomEventTypes": false,
-    "enableIvy": true
+    "enableIvy": true,
+    "extendedDiagnostics": {
+      "defaultCategory": "error"
+    }
   },
   "compilerOptions": {
     "outDir": "../out-tsc/app",

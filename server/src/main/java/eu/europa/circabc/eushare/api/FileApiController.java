@@ -112,8 +112,8 @@ public class FileApiController implements FileApi {
     }
 
     @Override
-    public ResponseEntity<Void> deleteFileSharedWithUser(@PathVariable("fileID") String fileID,@NotNull @Valid @RequestParam(value = "userID", required = true) String userID) 
-        {
+    public ResponseEntity<Void> deleteFileSharedWithUser(@PathVariable("fileID") String fileID,
+            @NotNull @Valid @RequestParam(value = "userID", required = true) String userID) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
@@ -309,12 +309,12 @@ public class FileApiController implements FileApi {
 
     @Override
     public ResponseEntity<Void> postFileSharedWithReminder(String fileID, @NotNull @Valid String userEmail) {
-      
+
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String requesterId = userService.getAuthenticatedUserId(authentication);
             fileService.reminderShareOnFileOnBehalfOf(fileID, userEmail, requesterId);
-            return new ResponseEntity<>( HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (WrongAuthenticationException exc) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
                     exc);
@@ -329,15 +329,6 @@ public class FileApiController implements FileApi {
             log.warn(exc3.getMessage(), exc3);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
                     exc3);
-        } catch (MessageTooLongException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403MessageTooLongToString(), e);
-        } catch (WrongNameStructureException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403WrongNameStructureToString(), e);
-        } catch (WrongEmailStructureException e) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    HttpErrorAnswerBuilder.build403WrongEmailStructureToString(), e);
         } catch (MessagingException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
                     HttpErrorAnswerBuilder.build500EmptyToString(), e);
@@ -364,7 +355,7 @@ public class FileApiController implements FileApi {
         } catch (UserUnauthorizedException exc) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
                     HttpErrorAnswerBuilder.build403NotAuthorizedToString(), exc);
-        }  catch (UnknownUserException exc3) {
+        } catch (UnknownUserException exc3) {
             log.warn(exc3.getMessage(), exc3);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
                     exc3);

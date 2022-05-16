@@ -30,7 +30,7 @@ import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.com
 import { BasicAuthenticationInterceptor } from './interceptors/basic-authentication-interceptor';
 import { HttpErrorInterceptor } from './interceptors/http-error-interceptor';
 import { LoginComponent } from './login/login.component';
-import { LoginCircabcComponent } from './login/loginCircabc.component';
+import { LoginCircabcComponent } from './login/login-circabc.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UploadComponent } from './upload/upload.component';
 import { FileAccessorDirective } from './directives/file-accessor.directive';

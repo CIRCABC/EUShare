@@ -35,8 +35,6 @@ import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
-import eu.europa.circabc.eushare.exceptions.WrongNameStructureException;
-import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.UserRepository;
@@ -170,7 +168,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             String requesterId) throws UnknownUserException, UserUnauthorizedException {
         if (isAdmin(requesterId)) {
             return userRepository.findByEmailRoleInternalOrAdmin(searchString, PageRequest.of(pageNumber, pageSize))
-                    .stream().map(dbUser -> dbUser.toUserInfo()).collect(Collectors.toList());
+                    .stream().map(DBUser::toUserInfo).collect(Collectors.toList());
         } else {
             throw new UserUnauthorizedException();
         }

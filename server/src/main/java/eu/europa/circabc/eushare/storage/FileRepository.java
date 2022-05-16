@@ -18,9 +18,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface FileRepository extends PagingAndSortingRepository<DBFile, String> {
     List<DBFile> findByExpirationDateBefore(LocalDate date);
 
-    DBFile findByStatusAndSharedWith_DownloadId(DBFile.Status status, String downloadId);
+    DBFile findByStatusAndSharedWithDownloadId(DBFile.Status status, String downloadId);
 
-    DBFile findByStatusAndSharedWith_Shorturl(DBFile.Status status, String shortUrl);
+    DBFile findByStatusAndSharedWithShorturl(DBFile.Status status, String shortUrl);
 
     DBFile findByStatusAndId(DBFile.Status status, String id);
 
@@ -29,16 +29,16 @@ public interface FileRepository extends PagingAndSortingRepository<DBFile, Strin
     List<DBFile> findByStatus(DBFile.Status status, Pageable page);
 
     // get the files a receiver can retrieve
-    List<DBFile> findByStatusAndSharedWith_Email(DBFile.Status status, String id, Pageable page);
+    List<DBFile> findByStatusAndSharedWithEmail(DBFile.Status status, String id, Pageable page);
 
     // get the files a receiver can retrieve with ordering by expiration date and file name
-    List<DBFile> findByStatusAndSharedWith_EmailOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
+    List<DBFile> findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
 
     // get the files an uploader has uploaded
-    List<DBFile> findByStatusAndUploader_Id(DBFile.Status status, String id, Pageable page);
+    List<DBFile> findByStatusAndUploaderId(DBFile.Status status, String id, Pageable page);
 
     // get the files an uploader has uploaded with ordering by expiration date and file name
-    List<DBFile> findByStatusAndUploader_IdOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
+    List<DBFile> findByStatusAndUploaderIdOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
 
 
 }

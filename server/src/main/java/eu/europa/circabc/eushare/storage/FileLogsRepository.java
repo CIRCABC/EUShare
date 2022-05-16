@@ -15,7 +15,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface FileLogsRepository extends CrudRepository<DBFileLog, String> {
 
-    List<DBFileLog> findByFile_id(String fileId);
+    List<DBFileLog> findByFileId(String fileId);
 
 
 }

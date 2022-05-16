@@ -51,7 +51,6 @@ public class DBFileLog {
     @Column(nullable = false)
     private LocalDateTime downloadDate;
 
-    @SuppressWarnings("java:S107")
     public DBFileLog(DBFile file, String recipient,
             LocalDateTime downloadDate, String downloadLink) {
         this.file = file;
@@ -90,7 +89,7 @@ public class DBFileLog {
     }
 
     @Override
-    // NOSONAR
+    @SuppressWarnings("java:S3776")
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
