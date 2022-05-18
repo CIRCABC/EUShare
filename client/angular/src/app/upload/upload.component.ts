@@ -329,7 +329,7 @@ export class UploadComponent implements OnInit {
   }
 
   getEmailMessageArrayLength(): number {
-    const formArray: FormArray = <FormArray>this.emailMessageArray;
+    const formArray: FormArray = this.emailMessageArray;
     if (formArray) {
       return formArray.controls.length;
     }
