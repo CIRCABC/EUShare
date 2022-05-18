@@ -38,8 +38,6 @@ import {
   HttpClient,
   HttpHeaders,
   HttpParams,
-  HttpResponse,
-  HttpEvent,
   HttpParameterCodec,
 } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../openapi/encoder';
