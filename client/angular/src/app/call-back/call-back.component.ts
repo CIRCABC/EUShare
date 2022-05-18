@@ -11,12 +11,11 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
-import { UsersService } from '../openapi';
+import { UsersService, SessionService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 
 import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
-import { SessionService } from '../openapi';
 
 @Component({
   selector: 'app-call-back',
