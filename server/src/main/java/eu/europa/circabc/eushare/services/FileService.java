@@ -477,10 +477,6 @@ public class FileService implements FileServiceInterface {
         return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
     }
 
-
-
-
-
     @Override
     @Transactional
     public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(int pageSize, int pageNumber, String userId,

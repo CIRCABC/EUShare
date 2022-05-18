@@ -22,11 +22,11 @@
         </sonar.exclusions>
         <sonar.test.exclusions>
             src/test/**/*
-        </sonar.test.exclusions>   
+        </sonar.test.exclusions>
         <war.final.name>eushareserver</war.final.name>
         <skip.unit.tests>false</skip.unit.tests>
         <skip.integration.tests>true</skip.integration.tests>
-        <error-prone.version>2.12.1</error-prone.version>
+
     </properties>
     <profiles>
         <profile>
@@ -46,6 +46,17 @@
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <configuration>
                             <mainClass>eu.europa.circabc.eushare.EushareApplication</mainClass>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>1.8</source>
+                            <target>1.8</target>
+                            <profiles>
+                                <profile>dev</profile>
+                            </profiles>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -264,7 +275,7 @@
                         <configuration>
                             <inputSpec>${project.basedir}/../api.yaml</inputSpec>
                             <output>.</output>
-                            <generatorName>spring</generatorName>   
+                            <generatorName>spring</generatorName>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <apiPackage>eu.europa.circabc.eushare.api</apiPackage>
                             <modelPackage>eu.europa.circabc.eushare.model</modelPackage>
@@ -443,7 +454,7 @@
                     <fork>true</fork>
                 </configuration>
             </plugin>
-          
+
         </plugins>
     </build>
     <dependencies>

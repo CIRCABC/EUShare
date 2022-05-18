@@ -74,7 +74,8 @@
       </div>
 
       <div class="navbar-end">
-        <div *ngIf="loggedIn" class="navbar-item is-family-secondary">
+        <div *ngIf="loggedIn && router.url!='/upload'" class="navbar-item is-family-secondary">
+          
           <button (click)="toggleBurger()" class="button is-info" routerLink="upload">
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faShare"></fa-icon>

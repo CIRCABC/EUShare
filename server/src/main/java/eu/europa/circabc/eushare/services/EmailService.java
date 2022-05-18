@@ -73,6 +73,10 @@ public class EmailService implements EmailServiceInterface {
     public void sendDownloadNotification(String recipient, String downloaderId, FileBasics fileInfo)
             throws MessagingException, ConnectException {
         Context ctx = new Context();
+       
+        if(downloaderId==null || downloaderId.equals("")) {
+            downloaderId = "a recipient";
+        }
         ctx.setVariable(DOWNLOADER, downloaderId);
         ctx.setVariable(FILENAME, fileInfo.getName());
         String content = this.templateEngine.process("mail/html/download-notification", ctx);
@@ -120,3 +124,4 @@ public class EmailService implements EmailServiceInterface {
         this.sendMessage(recipient, content);
     }
 }
+;

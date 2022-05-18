@@ -9,6 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   faCloudDownloadAlt,
   faShare,
@@ -40,7 +41,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(
     private sessionService: SessionStorageService,
-    private oAuthService: OAuthService
+    private oAuthService: OAuthService,
+    public router: Router
   ) {}
 
   ngOnInit() {
