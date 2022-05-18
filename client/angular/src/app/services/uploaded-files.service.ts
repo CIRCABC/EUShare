@@ -170,7 +170,7 @@ export class UploadedFilesService {
     }
 
     this.fileInfoUploader = this.fileInfoUploader.filter(
-      (file) => file.fileId !== fileId
+      (fileInfo) => fileInfo.fileId !== fileId
     );
     const elementToAddOrNull = this.nextPageFileInfoUploader.shift();
     if (elementToAddOrNull) {
