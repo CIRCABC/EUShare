@@ -25,7 +25,7 @@
     </div>
 
       <div *ngIf="loggedIn" class="navbar-start">
-        
+
 
 
         <a (click)="toggleBurger()" routerLinkActive="tab--current"
@@ -44,9 +44,9 @@
           <span class="spanlabel">{{ "administration" | transloco }}
           </span>
         </a>
-        
+
         <a  class="navbar-item is-family-secondary circabc-link-separator"></a>
-        
+
         <a href="{{circabc_url}}/eulogin"  class="navbar-item is-family-secondary circabc-link-dashboard">
           <span class="spanlabel">{{
             "dashboard" | transloco
@@ -61,21 +61,21 @@
           <span class="spanlabel">{{
             "roles" | transloco
             }}</span>
-        </a>      
+        </a>
         <a href="{{circabc_url}}/eulogin?route=explore" class="navbar-item is-family-secondary circabc-link-browse-public-groups">
           <span class="spanlabel">{{
             "browse.public.groups" | transloco
             }}</span>
         </a>
 
-      
+
 
 
       </div>
 
       <div class="navbar-end">
-        <div *ngIf="loggedIn && router.url!='/upload'" class="navbar-item is-family-secondary">
-          
+        <div *ngIf="loggedIn && router.url!=='/upload'" class="navbar-item is-family-secondary">
+
           <button (click)="toggleBurger()" class="button is-info" routerLink="upload">
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
