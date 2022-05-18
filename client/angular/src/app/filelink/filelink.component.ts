@@ -11,7 +11,6 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
-import { I18nService } from '../common/i18n/i18n.service';
 import { FileService } from '../openapi/api/file.service';
 import { firstValueFrom, map } from 'rxjs';
 
@@ -29,10 +28,8 @@ export class FilelinkComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalsService,
-    private i18nService: I18nService,
     private fileApi: FileService
   ) {
-    this.i18nService.configureI18n();
   }
 
   download() {

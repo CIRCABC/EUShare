@@ -15,8 +15,6 @@ import {
   OAuthService,
 } from 'angular-oauth2-oidc';
 import { environment } from '../environments/environment';
-import { Router } from '@angular/router';
-import { I18nService } from './common/i18n/i18n.service';
 
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -43,11 +41,8 @@ const authCodeFlowConfig: AuthConfig = {
 export class AppComponent {
   constructor(
     private oauthService: OAuthService,
-    private router: Router,
-    private i18nService: I18nService
   ) {
     this.configureOAuth();
-    this.i18nService.configureI18n();
   }
 
   private async configureOAuth() {
