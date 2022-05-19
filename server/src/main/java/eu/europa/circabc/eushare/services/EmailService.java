@@ -124,4 +124,3 @@ public class EmailService implements EmailServiceInterface {
         this.sendMessage(recipient, content);
     }
 }
-;
