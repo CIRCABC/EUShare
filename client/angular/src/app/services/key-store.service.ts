@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Injectable } from '@angular/core';
-import { KEYUTIL, KJUR, stob64u } from 'jsrsasign';
+import { KEYUTIL, KJUR, RSAKey, stob64u } from 'jsrsasign';
 
 /**
  * We want this class to be a singleton.
@@ -78,7 +78,7 @@ export class KeyStoreService {
   /**
    * Returns the public key instance in JWK format
    */
-  publicKeyAsJWK = () => KEYUTIL.getJWKFromKey(this.publicKey());
+  publicKeyAsJWK = () => KEYUTIL.getJWKFromKey(this.publicKey() as RSAKey | KJUR.crypto.ECDSA );
 
   /**
    * Returns the JWK public key instances in a Ba64URL encoded format
