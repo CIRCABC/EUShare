@@ -22,7 +22,7 @@ import { CallBackComponent } from './call-back/call-back.component';
 import { MyUserComponent } from './my-user/my-user.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
-import { UploadSucessComponent } from './upload-sucess/upload-sucess.component';
+import { UploadSuccessComponent } from './upload-success/upload-success.component';
 import { UploadSuccessGuard } from './upload-success.guard';
 import { LoginCircabcComponent } from './login/login-circabc.component';
 
@@ -48,7 +48,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'uploadSuccess',
-    component: UploadSucessComponent,
+    component: UploadSuccessComponent,
     canActivate: [LoginGuard, UploadSuccessGuard]
   },
   {

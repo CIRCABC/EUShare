@@ -16,11 +16,11 @@ import { I18nService } from '../common/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 
 @Component({
-  selector: 'app-upload-sucess',
-  templateUrl: './upload-sucess.component.html',
-  styleUrls: ['./upload-sucess.component.scss'],
+  selector: 'app-upload-success',
+  templateUrl: './upload-success.component.html',
+  styleUrls: ['./upload-success.component.scss'],
 })
-export class UploadSucessComponent implements OnInit {
+export class UploadSuccessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;
 
   public faCheckCircle = faCheckCircle;
@@ -76,7 +76,6 @@ export class UploadSucessComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
-    return fileLinkBuild;
+    return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
   }
 }

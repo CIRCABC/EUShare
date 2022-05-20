@@ -58,7 +58,7 @@ import { FooterComponent } from './footer/footer.component';
 import { MyUserComponent } from './my-user/my-user.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
-import { UploadSucessComponent } from './upload-sucess/upload-sucess.component';
+import { UploadSuccessComponent } from './upload-success/upload-success.component';
 import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
 import { CbcEcLogoAppComponent } from './header/cbc-ec-logo-app/cbc-ec-logo-app.component';
 import { DeleteButtonComponent } from './common/buttons/delete-button/delete-button.component';
@@ -104,7 +104,7 @@ import { APP_BASE_HREF } from '@angular/common';
     MyUserComponent,
     PrivacyStatementComponent,
     TermsOfServiceComponent,
-    UploadSucessComponent,
+    UploadSuccessComponent,
     CbcHeaderComponent,
     CbcEcLogoAppComponent,
     DeleteButtonComponent,

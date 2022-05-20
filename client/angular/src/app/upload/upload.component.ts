@@ -126,7 +126,7 @@ export class UploadComponent implements OnInit {
     this.resetEmailMessageArray();
     this.addEmailMessageFormGroup();
   }
-  
+
   getEmailMessageFormGroup(i: number): FormGroup {
     const emailMessageArray: FormArray = this.emailMessageArray;
     return <FormGroup>emailMessageArray.controls[i];
