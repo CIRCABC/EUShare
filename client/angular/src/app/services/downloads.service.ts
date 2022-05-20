@@ -16,7 +16,6 @@ import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { NotificationService } from '../common/notification/notification.service';
 import { Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
-import { I18nService } from '../common/i18n/i18n.service';
 
 @Injectable({
   providedIn: 'root',
@@ -24,8 +23,7 @@ import { I18nService } from '../common/i18n/i18n.service';
 export class DownloadsService {
   constructor(
     private fileApi: FileService,
-    private notificationService: NotificationService,
-    private i18nService: I18nService
+    private notificationService: NotificationService
   ) {}
 
   public downloadAFile(
@@ -38,10 +36,7 @@ export class DownloadsService {
       .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
   }
 
-  private error(fileId: string, message?: string): Error {
-    if (message === undefined) {
-      message = `An unknown error occurred while downloading the file. ${this.i18nService.contactSupport()}`;
-    }
+  private error(fileId: string): Error {
     // notification sent in the interceptor
     return new Error(fileId);
   }
@@ -66,10 +61,7 @@ export class DownloadsService {
           return downloadValueToReturn;
         }
         if (event.status === 400) {
-          throw this.error(
-            fileId,
-            'The server could not find the file you are seeking to download. Please try again later or contact the support.'
-          );
+          throw this.error(fileId);
         }
         if (event.status === 401) {
           this.notificationService.addErrorMessageTranslation(
@@ -77,24 +69,16 @@ export class DownloadsService {
             undefined,
             true
           );
-          throw this.error(fileId, 'Wrong password, please try again.');
+          throw this.error(fileId);
         }
         if (event.status === 403) {
-          throw this.error(
-            fileId,
-            "It seems like you don't have the rights to access this file"
-          );
+          throw this.error(fileId);
         }
         if (event.status === 404) {
-          throw this.error(fileId, 'File not found.');
+          throw this.error(fileId);
         }
         if (event.status === 500) {
-          throw this.error(
-            fileId,
-            `${this.i18nService.translate(
-              'error.occurred.download'
-            )} ${this.i18nService.contactSupport()}`
-          );
+          throw this.error(fileId);
         }
         throw this.error(fileId);
 
