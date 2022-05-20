@@ -26,7 +26,6 @@ export class ShareWithUsersModalComponent implements OnInit {
   public modalFileName = '';
   private modalFileId = '';
   public recipients: Recipient[] = [];
-  private modalFileIsPasswordProtected = false;
   private frontend_url = '';
 
   constructor(
@@ -47,8 +46,6 @@ export class ShareWithUsersModalComponent implements OnInit {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
-        this.modalFileIsPasswordProtected =
-          nextModalActiveValue.modalFileHasPassword;
         this.recipients = nextModalActiveValue.recipients;
       }
     );
@@ -111,8 +108,6 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    const fileLinkBuild = `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.recipients[i].shortUrl}`;
-
-    return fileLinkBuild;
+    return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.recipients[i].shortUrl}`;
   }
 }
