@@ -55,7 +55,7 @@ export class UploadSuccessComponent implements OnInit {
     document.body.appendChild(selBox);
     selBox.focus();
     selBox.select();
-    document.execCommand('copy');
+    document.execCommand('copy'); // NOSONAR
     document.body.removeChild(selBox);
     this.notificationService.addSuccessMessageTranslation(
       'copied.file.link',

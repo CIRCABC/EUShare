@@ -94,14 +94,14 @@ export class UploadComponent implements OnInit {
         e.preventDefault();
       },
       false
-    );
+    ); // NOSONAR
     window.addEventListener(
       'drop',
       (e) => {
         e.preventDefault();
       },
       false
-    );
+    ); // NOSONAR
   }
 
   initializeForm() {
@@ -423,7 +423,7 @@ export class UploadComponent implements OnInit {
             true
           )
           .pipe(map((event) => this.getEventMessage(event)))
-          .toPromise();
+          .toPromise(); // NOSONAR
 
         if (fileInfoUploader) {
           this.router.navigateByUrl('uploadSuccess', {

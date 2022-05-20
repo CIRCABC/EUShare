@@ -23,6 +23,4 @@ export class FooterComponent {
   public nodeName = '';
   public buildDate = '';
   public circabc_url: string = environment.circabc_url;
-
-  constructor() {}
 }

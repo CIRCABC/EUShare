@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
         this.userName = secondUserInfo.givenName as string;
         this.isAdmin = secondUserInfo.isAdmin;
       },
-      error: (_error) => {},
+      error: (_error) => {}, // NOSONAR
     });
   }
 
