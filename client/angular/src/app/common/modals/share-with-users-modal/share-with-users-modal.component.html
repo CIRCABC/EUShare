@@ -20,21 +20,34 @@
       </div>
 
       <table class="table">
+        <caption>
+          File Recipients
+        </caption>
         <thead>
           <tr>
-            <th><abbr title="Notifications"> {{'notifications' | transloco}} </abbr></th>
-            <th><abbr title="Links">{{'links' | transloco}} </abbr></th>
+            <th>
+              <abbr title="Notifications">
+                {{ "notifications" | transloco }}
+              </abbr>
+            </th>
+            <th>
+              <abbr title="Links">{{ "links" | transloco }} </abbr>
+            </th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let recipient of recipients; let i = index" [attr.data-index]="i">
+          <tr
+            *ngFor="let recipient of recipients; let i = index"
+            [attr.data-index]="i"
+          >
             <td>
               <span *ngIf="recipient.email">
                 {{
-                  recipient.email.length > 35 ? (recipient.email | lowercase | slice: 0:35) + ".." : (recipient.email |
-                lowercase)
+                  recipient.email.length > 35
+                    ? (recipient.email | lowercase | slice: 0:35) + ".."
+                    : (recipient.email | lowercase)
                 }}
               </span>
             </td>
@@ -42,21 +55,36 @@
               <input class="input" type="text" value="{{ formatLink(i) }}" />
             </td>
             <td>
-              <a class="button" (click)="copyLink(i)">{{'copy' | transloco}} </a>
+              <a class="button" (click)="copyLink(i)"
+                >{{ "copy" | transloco }}
+              </a>
             </td>
             <td>
-              <a *ngIf="recipient.email !== ''" class="button" (click)="deleteShare( recipient.email, i)">{{'remove' | transloco}} </a>
+              <a
+                *ngIf="recipient.email !== ''"
+                class="button"
+                (click)="deleteShare(recipient.email, i)"
+                >{{ "remove" | transloco }}
+              </a>
             </td>
             <td>
-              <a *ngIf="recipient.email !== ''" class="button" (click)="reminderShare( recipient.email)">{{'send.reminder' | transloco}} </a>
+              <a
+                *ngIf="recipient.email !== ''"
+                class="button"
+                (click)="reminderShare(recipient.email)"
+                >{{ "send.reminder" | transloco }}
+              </a>
             </td>
           </tr>
         </tbody>
       </table>
-
     </section>
     <footer class="modal-card-foot">
-      <button class="modal-close is-large" (click)="closeModal()" aria-label="close"></button>
+      <button
+        class="modal-close is-large"
+        (click)="closeModal()"
+        aria-label="close"
+      ></button>
     </footer>
   </div>
 </div>
