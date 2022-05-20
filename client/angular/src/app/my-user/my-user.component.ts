@@ -16,7 +16,6 @@ import { SessionStorageService } from '../services/session-storage.service';
 @Component({
   selector: 'app-my-user',
   templateUrl: './my-user.component.html',
-  styleUrls: ['./my-user.component.scss'],
 })
 export class MyUserComponent implements OnInit {
   public userInfo!: UserInfo;
