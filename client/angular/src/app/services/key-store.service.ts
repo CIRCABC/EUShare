@@ -78,7 +78,8 @@ export class KeyStoreService {
   /**
    * Returns the public key instance in JWK format
    */
-  publicKeyAsJWK = () => KEYUTIL.getJWKFromKey(this.publicKey() as RSAKey | KJUR.crypto.ECDSA );
+  publicKeyAsJWK = () =>
+    KEYUTIL.getJWKFromKey(this.publicKey() as RSAKey | KJUR.crypto.ECDSA);
 
   /**
    * Returns the JWK public key instances in a Ba64URL encoded format

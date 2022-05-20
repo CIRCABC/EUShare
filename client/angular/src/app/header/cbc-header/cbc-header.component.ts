@@ -23,7 +23,7 @@ export class CbcHeaderComponent implements OnInit {
   public circabc_url: string = environment.circabc_url;
   public userName: string | null = null;
   public isAdmin: boolean | null = null;
-  public defaultLang: string | undefined ;
+  public defaultLang: string | undefined;
 
   constructor(
     private sessionService: SessionStorageService,
@@ -32,11 +32,10 @@ export class CbcHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if ( this.defaultLang === undefined) {
-      this.defaultLang = getBrowserLang() ;
-      this.selectLanguage(this.defaultLang)
+    if (this.defaultLang === undefined) {
+      this.defaultLang = getBrowserLang();
+      this.selectLanguage(this.defaultLang);
     }
-
 
     const userInfo = this.sessionService.getStoredUserInfo();
     if (userInfo) {
@@ -53,10 +52,10 @@ export class CbcHeaderComponent implements OnInit {
     });
   }
 
-  selectLanguage(lang: string | undefined){
+  selectLanguage(lang: string | undefined) {
     this.defaultLang = lang;
-    if ( this.defaultLang !== undefined) {
-      this.translateService.setActiveLang( this.defaultLang);
+    if (this.defaultLang !== undefined) {
+      this.translateService.setActiveLang(this.defaultLang);
     } else {
       this.translateService.setActiveLang('en');
     }

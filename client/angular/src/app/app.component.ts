@@ -39,9 +39,7 @@ const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  constructor(
-    private oauthService: OAuthService,
-  ) {
+  constructor(private oauthService: OAuthService) {
     this.configureOAuth();
   }
 

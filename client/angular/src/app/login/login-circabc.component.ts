@@ -8,14 +8,14 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, OnInit } from "@angular/core";
-import { OAuthService } from "angular-oauth2-oidc";
-import { KeyStoreService } from "../services/key-store.service";
+import { Component, OnInit } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { KeyStoreService } from '../services/key-store.service';
 
 @Component({
-  selector: "app-logincircabc",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.scss"],
+  selector: 'app-logincircabc',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginCircabcComponent implements OnInit {
   constructor(
@@ -33,7 +33,7 @@ export class LoginCircabcComponent implements OnInit {
   login() {
     this.keyStoreService.prepareKeyStore();
     const customQueryParams: { [key: string]: any } = {};
-    customQueryParams["req_cnf"] =
+    customQueryParams['req_cnf'] =
       this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;
     this.oauthService.initImplicitFlow();
@@ -41,6 +41,6 @@ export class LoginCircabcComponent implements OnInit {
 
   euLoginCreate() {
     window.location.href =
-      "https://ecas.cc.cec.eu.int:7002/cas/eim/external/register.cgi";
+      'https://ecas.cc.cec.eu.int:7002/cas/eim/external/register.cgi';
   }
 }

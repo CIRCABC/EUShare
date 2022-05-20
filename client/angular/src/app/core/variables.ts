@@ -8,7 +8,6 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-
 import { InjectionToken } from '@angular/core';
 
 export const ALF_BASE_PATH = new InjectionToken<string>('alfBasePath');

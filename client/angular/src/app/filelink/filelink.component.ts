@@ -29,8 +29,7 @@ export class FilelinkComponent implements OnInit {
     private router: Router,
     private modalService: ModalsService,
     private fileApi: FileService
-  ) {
-  }
+  ) {}
 
   download() {
     this.modalService.activateDownloadModal(

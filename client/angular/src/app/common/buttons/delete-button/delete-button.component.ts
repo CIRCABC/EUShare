@@ -15,7 +15,6 @@ import { ModalsService } from '../../modals/modals.service';
 @Component({
   selector: 'app-delete-button',
   templateUrl: './delete-button.component.html',
-  styleUrls: ['./delete-button.component.scss'],
 })
 export class DeleteButtonComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
