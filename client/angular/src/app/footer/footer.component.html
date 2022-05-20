@@ -1,15 +1,15 @@
 <footer class="footer-main">
   <div style="display: flex; align-items: center; justify-content: center">
     <div>
-      <img src="./assets/img/logo-white.png" width="50" />
+      <img src="./assets/img/logo-white.png" alt="Logo" width="50" />
     </div>
     <div style="padding-top: 10px; padding-left: 10px">
-      {{'footer.title' | transloco }}
+      {{ "footer.title" | transloco }}
       <a
         href="https://github.com/CIRCABC/Circabc-OSS"
         target="_blank"
         rel="noopener noreferrer"
-        >{{ 'footer.message' | transloco }}</a
+        >{{ "footer.message" | transloco }}</a
       >
     </div>
   </div>
@@ -23,34 +23,34 @@
       padding-bottom: 10px;
     "
   >
-    <div
-      ><a href="{{circabc_url}}/ui/help/legal-notice"
-        >{{'label.privacy.statement' | transloco }}</a
-      ></div
-    >
-    <div
-      ><a href="{{circabc_url}}/ui/help/legal-notice/terms"
-        >{{'label.terms' | transloco }}</a
-      ></div
-    >
-    <div
-      ><a
+    <div>
+      <a href="{{ circabc_url }}/ui/help/legal-notice">{{
+        "label.privacy.statement" | transloco
+      }}</a>
+    </div>
+    <div>
+      <a href="{{ circabc_url }}/ui/help/legal-notice/terms">{{
+        "label.terms" | transloco
+      }}</a>
+    </div>
+    <div>
+      <a
         href="https://ec.europa.eu/info/cookies_en"
         target="_blank"
         rel="noopener noreferrer"
-        >{{'cookie.title' | transloco }}</a
-      ></div
-    >
-    <div
-      ><a
+        >{{ "cookie.title" | transloco }}</a
+      >
+    </div>
+    <div>
+      <a
         href="https://ec.europa.eu/info/privacy-policy/europa-analytics_en"
         target="_blank"
         rel="noopener noreferrer"
       >
-        {{'label.europa-analytics' | transloco }}</a
-      ></div
-    >
+        {{ "label.europa-analytics" | transloco }}</a
+      >
+    </div>
   </div>
 
- <!-- V.{{ appVersion }} A.{{ appAlfVersion }} / {{ nodeName }} / {{ buildDate }} -->
+  <!-- V.{{ appVersion }} A.{{ appAlfVersion }} / {{ nodeName }} / {{ buildDate }} -->
 </footer>

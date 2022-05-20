@@ -1,38 +1,38 @@
-<section class="{{getClassPerLevel(message.level)}} {{animationClass}}">
-  <header class="header" style="background-color: rgba(255, 255, 255, 0.3);">
+<section class="{{ getClassPerLevel(message.level) }} {{ animationClass }}">
+  <header class="header" style="background-color: rgba(255, 255, 255, 0.3)">
     <span class="title" [ngSwitch]="message.level">
       <ng-template [ngSwitchCase]="0">
-        {{ 'information' | transloco }}
+        {{ "information" | transloco }}
       </ng-template>
       <ng-template [ngSwitchCase]="1">
-        {{ 'warning' | transloco }}
+        {{ "warning" | transloco }}
       </ng-template>
       <ng-template [ngSwitchCase]="2">
-        {{ 'error' | transloco }}
+        {{ "error" | transloco }}
       </ng-template>
       <ng-template [ngSwitchCase]="3">
-        {{ 'success' | transloco }}
+        {{ "success" | transloco }}
       </ng-template>
     </span>
-    <span style="float: right;">
-      <a (click)="closeMessage()">{{ 'close' | transloco }}</a>
+    <span style="float: right">
+      <a (click)="closeMessage()">{{ "close" | transloco }}</a>
     </span>
   </header>
   <div class="box--message--icon" [ngSwitch]="message.level">
     <ng-template [ngSwitchCase]="0">
-      <img src="{{ imageInfoLink }}" />
+      <img src="{{ imageInfoLink }}" alt="Information" />
     </ng-template>
     <ng-template [ngSwitchCase]="1">
-      <img src="{{ imageExclamationLink }}" />
+      <img src="{{ imageExclamationLink }}" alt="Exclamation" />
     </ng-template>
     <ng-template [ngSwitchCase]="2">
-      <img src="{{ imageErrorLink }}" />
+      <img src="{{ imageErrorLink }}" alt="Error" />
     </ng-template>
     <ng-template [ngSwitchCase]="3">
-      <img src="{{ imageCheckMarkLink }}" />
+      <img src="{{ imageCheckMarkLink }}" alt="OK" />
     </ng-template>
   </div>
   <div class="box--message--content">
-    {{message.body}}
+    {{ message.body }}
   </div>
 </section>
