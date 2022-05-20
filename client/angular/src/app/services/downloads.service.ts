@@ -33,11 +33,9 @@ export class DownloadsService {
     fileName: string,
     inputPassword?: string
   ): Observable<DownloadInProgress> {
-    const newDownloadObservable: Observable<DownloadInProgress> = this.fileApi
+    return this.fileApi
       .getFile(fileId, inputPassword, 'events', true)
       .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
-
-    return newDownloadObservable;
   }
 
   private error(fileId: string, message?: string): Error {

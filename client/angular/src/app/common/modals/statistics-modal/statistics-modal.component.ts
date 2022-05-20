@@ -50,8 +50,7 @@ export class StatisticsModalComponent implements OnInit {
   public formatLink(link: string) {
     if (link === '') return link;
     else {
-      const fileLinkBuild = `${window.location.protocol}//${window.location.host}/fs/${link}`;
-      return fileLinkBuild;
+      return `${window.location.protocol}//${window.location.host}/fs/${link}`;
     }
   }
 }

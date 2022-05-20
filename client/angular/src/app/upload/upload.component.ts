@@ -137,32 +137,28 @@ export class UploadComponent implements OnInit {
   }
 
   initializeEmailMessageFormGroup(): FormGroup {
-    const initializedFg = this.fb.group({
+    return this.fb.group({
       emailArray: this.fb.array([]),
       message: [''],
     });
-
-    return initializedFg;
   }
 
   initializedEmailFormGroup(): FormGroup {
-    const emailGroup = this.fb.group(
+    return this.fb.group(
       {
         email: new FormControl('', Validators.required),
       },
       { updateOn: 'change' }
     );
-    return emailGroup;
   }
 
   initializedEmailFormGroupValue(value: any): FormGroup {
-    const emailGroup = this.fb.group(
+    return this.fb.group(
       {
         email: new FormControl(value),
       },
       { updateOn: 'change' }
     );
-    return emailGroup;
   }
 
   async ngOnInit() {
