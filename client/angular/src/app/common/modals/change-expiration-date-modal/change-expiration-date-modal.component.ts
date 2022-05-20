@@ -39,7 +39,7 @@ export class ChangeExpirationDateModalComponent implements OnInit {
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.expirationDate = nextModalActiveValue.expirationDate
           .toString()
-          .replace(new RegExp(',', 'g'), '-');
+          .replace(/,/g, '-');
       }
     );
   }
