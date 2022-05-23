@@ -55,11 +55,10 @@ $size-7: 0.75rem;
 @import '../node_modules/bulma-extensions/bulma-tooltip/src/sass/index';
 
 .button {
-  background: linear-gradient(180deg, #8dcb6c 0, #58c37e) !important;
+  background: #8dcb6c;
   color: #fff;
   font-family: "Ubuntu", verdana, helvetica, sans-serif;
   text-transform: uppercase;
-  background: #8dcb6c;
 }
 
 .button:hover {

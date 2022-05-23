@@ -102,6 +102,7 @@ html {
   text-decoration: none;
   text-align: center;
   text-shadow: 0 0 6px rgb(0 0 0 / 45%);
+  padding: 12px;
   padding: 1.2rem;
   cursor: pointer;
 
@@ -111,17 +112,6 @@ html {
   font-size: 1.3rem;
   background: #8dcb6c;
   background: linear-gradient(to bottom, #8dcb6c 0%, #58c37e 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dcb6c",endColorstr="#58c37e",GradientType=0);
-  color: #fff;
-  font-family: Ubuntu, verdana, helvetica, sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-decoration: none;
-  text-align: center;
-  text-shadow: 0 0 6px rgb(0 0 0 / 45%);
-  padding: 12px;
-  padding: 1.2rem;
-  cursor: pointer;
 
   &:hover {
     background: rgba(88, 195, 126, 1);
@@ -160,13 +150,12 @@ a:hover {
 }
 
 .abutton {
-  border: 1px solid #8dffa2;
+  border: 1px solid #76a3ad;
   color: #8dffa2;
   text-transform: uppercase;
   margin-top: 10px;
   display: inline-block;
   border-radius: 3px;
-  border: 1px solid #76a3ad;
   font-size: 13px;
   font-size: 1.3rem;
   font-family: Ubuntu, verdana, helvetica, sans-serif;

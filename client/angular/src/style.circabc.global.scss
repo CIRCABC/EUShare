@@ -67,7 +67,8 @@ html {
 }
 // BACKGROUND
 body {
-  padding-bottom: 60px;
+  padding: 10px;
+  padding-bottom: 60px !important;
   position: relative;
   min-height: 100%;
   background: #b1e0e8;
@@ -76,8 +77,6 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  padding: 10px;
-  padding-bottom: 60px !important;
 }
 
 // ---  HEADER
