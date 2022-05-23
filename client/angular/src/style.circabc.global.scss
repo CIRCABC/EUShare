@@ -17,19 +17,24 @@ $fluo-red: rgba(231, 81, 61, 1); // #
 $light-grey: rgba(204, 204, 204, 1); // #ccc
 $dark-grey: rgba(117, 117, 117, 1); // #757575
 
-$textAAA: rgba(91, 91, 91, 1); // #5B5B5B // Color that have a AAA contrast ratio on white
-$textAA: rgba(117, 117, 117, 1); // #757575 // Color that have a AA contrast ratio on white
+$textAAA: rgba(
+  91,
+  91,
+  91,
+  1
+); // #5B5B5B // Color that have a AAA contrast ratio on white
+$textAA: rgba(
+  117,
+  117,
+  117,
+  1
+); // #757575 // Color that have a AA contrast ratio on white
 
 // - gradients
 
 // - fonts
-$titling: 'Ubuntu',
-verdana,
-helvetica,
-sans-serif;
-$standardText: 'verdana',
-helvetica,
-sans-serif;
+$titling: "Ubuntu", verdana, helvetica, sans-serif;
+$standardText: "verdana", helvetica, sans-serif;
 
 $break-medium: 1023px;
 $break-small: 595px;
@@ -62,7 +67,7 @@ html {
 }
 // BACKGROUND
 body {
-  padding-bottom:60px; 
+  padding-bottom: 60px;
   position: relative;
   min-height: 100%;
   background: #b1e0e8;
@@ -71,15 +76,14 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  padding:10px;
+  padding: 10px;
   padding-bottom: 60px !important;
-
 }
 
 // ---  HEADER
 
 .main-header {
-  height: 65px;   
+  height: 65px;
   min-width: 1024px;
   background: #1f3341;
   background: url("assets/img/header.jpg") no-repeat center bottom;
@@ -145,7 +149,7 @@ body {
     }
 
     &::after {
-      content: 'icon';
+      content: "icon";
     }
   }
 
@@ -350,7 +354,7 @@ body {
       position: absolute;
       left: calc(50% - 9px);
       top: 8px;
-      content: '';
+      content: "";
       display: block;
       width: 18px;
       height: 18px;
@@ -360,41 +364,14 @@ body {
       position: relative;
       top: 10px;
     }
-  
   }
 }
-
 
 // ---  MIXINS
 @mixin background-cover {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
-}
-
-// ---  HEADER
-.main-header {
-  height: 65px;
-  min-width: 1024px;
-  background: #1f3341;
-  background: url("assets/img/header.jpg") no-repeat center bottom;
-
-  @include background-cover;
-
-  color: #fff;
-  font-size: 11.5px;
-  font-size: 1.15rem;
-
-  @include responsive-break-medium();
-
-  .home-link {
-    text-decoration: none;
-  }
-
-  .logo {
-    margin-top: 8px;
-  }
-  
 }
 
 // PERSONNAL MENU
@@ -546,7 +523,6 @@ body {
       }
     }
   }
-
 
   .notifications {
     float: left;
@@ -774,7 +750,7 @@ body {
   padding: 12px 47px 12px 12px;
 
   &::after {
-    content: '';
+    content: "";
     display: inline-block;
     position: absolute;
     right: 0;
@@ -801,6 +777,3 @@ body {
     background-image: url("assets/img/icon-more-white.png");
   }
 }
-
-
-
