@@ -33,9 +33,9 @@ export class AdministrationComponent {
   private pageSize = 10;
   public pageNumber = 0;
 
+  public hasNextPage = false;
+
   public userInfoArray: Array<UserInfo> = [];
-  public userInfoArrayNext: Array<UserInfo> = [];
-  public userInfoArrayPrevious: Array<UserInfo> = [];
 
   private selectedUserInfoIndex = 0;
 
@@ -59,36 +59,28 @@ export class AdministrationComponent {
   public async resultsNextPage() {
     this.removeSelection();
     this.pageNumber++;
-    this.userInfoArrayPrevious = this.userInfoArray;
-    this.userInfoArray = this.userInfoArrayNext;
 
-    if (this.userInfoArrayNext.length >= this.pageSize) {
-      this.userInfoArrayNext = [];
-      this.userInfoArrayNext = await firstValueFrom(
-        this.usersApi.getUsersUserInfo(
-          this.pageSize,
-          this.pageNumber + 1,
-          this.searchString
-        )
-      );
-    }
+    this.userInfoArray = await firstValueFrom(
+      this.usersApi.getUsersUserInfo(
+        this.pageSize,
+        this.pageNumber + 1,
+        this.searchString
+      )
+    );
+    this.hasNextPage = !(await this.isLastPage());
   }
 
   public async resultsPreviousPage() {
     this.removeSelection();
     this.pageNumber--;
-    this.userInfoArrayNext = this.userInfoArray;
-    this.userInfoArray = this.userInfoArrayPrevious;
 
-    if (this.pageNumber >= 1) {
-      this.userInfoArrayPrevious = await firstValueFrom(
-        this.usersApi.getUsersUserInfo(
-          this.pageSize,
-          this.pageNumber - 1,
-          this.searchString
-        )
-      );
-    }
+    this.userInfoArray = await firstValueFrom(
+      this.usersApi.getUsersUserInfo(
+        this.pageSize,
+        this.pageNumber - 1,
+        this.searchString
+      )
+    );
   }
 
   public async search() {
@@ -100,9 +92,6 @@ export class AdministrationComponent {
 
       this.removeSelection();
 
-      this.userInfoArrayNext = [];
-      this.userInfoArrayPrevious = [];
-
       this.userInfoArray = await firstValueFrom(
         this.usersApi.getUsersUserInfo(
           this.pageSize,
@@ -110,15 +99,7 @@ export class AdministrationComponent {
           this.searchString
         )
       );
-      if (this.userInfoArray.length >= this.pageSize) {
-        this.userInfoArrayNext = await firstValueFrom(
-          this.usersApi.getUsersUserInfo(
-            this.pageSize,
-            this.pageNumber + 1,
-            this.searchString
-          )
-        );
-      }
+      this.hasNextPage = !(await this.isLastPage());
       this.isAfterSearch = true;
     } catch (error) {
       // managed in interceptor
@@ -142,6 +123,23 @@ export class AdministrationComponent {
 
   public removeSelection() {
     this.isAfterSelected = false;
+  }
+
+  private async isLastPage() {
+    if (this.userInfoArray.length === 0) {
+      return true;
+    } else if (this.userInfoArray.length < this.pageSize) {
+      return true;
+    } else {
+      const nextPage = await firstValueFrom(
+        this.usersApi.getUsersUserInfo(
+          this.pageSize,
+          this.pageNumber + 1,
+          this.searchString
+        )
+      );
+      return nextPage.length === 0;
+    }
   }
 
   public async changePermissions() {

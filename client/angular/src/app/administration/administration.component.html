@@ -39,7 +39,7 @@
             >{{ "previous" | transloco }}</a
           >
           <a
-            *ngIf="userInfoArrayNext.length > 0"
+            *ngIf="hasNextPage"
             class="pagination-next button"
             (click)="resultsNextPage()"
             >{{ "next.page" | transloco }}</a
