@@ -21,7 +21,7 @@ public interface UserRepository extends PagingAndSortingRepository<DBUser, Strin
     public DBUser findOneByUsername(String username);
     public DBUser findOneByEmailIgnoreCase(String email);
 
-    @Query("FROM DBUser u WHERE (u.email like upper(concat(:start,'%')) or (u.name like upper(concat('%',:start,'%')))) and (u.role='INTERNAL' or u.role='ADMIN')")
+    @Query("FROM DBUser u WHERE (u.email like upper(concat(:start,'%')) or (u.name like upper(concat('%',:start,'%')))) and (u.role='INTERNAL' or u.role='ADMIN') ORDER BY u.name")
     public List<DBUser> findByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
     
     public DBUser findOneByEmailIgnoreCaseAndRole(String email, DBUser.Role role);
