@@ -57,6 +57,10 @@ export class AdministrationComponent {
   ) {}
 
   public async resultsNextPage() {
+    if (await this.isLastPage()) {
+      return;
+    }
+
     this.removeSelection();
     this.pageNumber++;
 
