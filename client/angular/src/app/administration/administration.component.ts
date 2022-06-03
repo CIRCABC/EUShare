@@ -63,7 +63,7 @@ export class AdministrationComponent {
     this.userInfoArray = await firstValueFrom(
       this.usersApi.getUsersUserInfo(
         this.pageSize,
-        this.pageNumber + 1,
+        this.pageNumber,
         this.searchString
       )
     );
@@ -77,7 +77,7 @@ export class AdministrationComponent {
     this.userInfoArray = await firstValueFrom(
       this.usersApi.getUsersUserInfo(
         this.pageSize,
-        this.pageNumber - 1,
+        this.pageNumber,
         this.searchString
       )
     );
