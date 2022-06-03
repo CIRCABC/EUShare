@@ -81,6 +81,7 @@ export class AdministrationComponent {
         this.searchString
       )
     );
+    this.hasNextPage = !(await this.isLastPage());
   }
 
   public async search() {
