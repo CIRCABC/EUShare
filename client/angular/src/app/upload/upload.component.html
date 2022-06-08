@@ -25,7 +25,7 @@
                 class="file-input"
                 type="file"
                 formControlName="fileFromDisk"
-                (change)="checkExistingFile($event.target.files)"
+                (change)="checkExistingFile($event.target.files[0])"
               />
               <span class="button cta--plus is-bigger">
                 <span class="file-label">

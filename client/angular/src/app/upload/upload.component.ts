@@ -171,12 +171,8 @@ export class UploadComponent implements OnInit {
 
   public  lastfile!: File ;
 
-  checkExistingFile(files: File[]){
-    let file = files[0];
-    console.log(file.name)
-    if(this.lastfile){
-    console.log(this.lastfile.name)
-    }
+  checkExistingFile(file: File){
+ 
     if(this.lastfile && !(file===this.lastfile)){
       this.modalService.activateOverwriteConfirmModal(
         file.name,
@@ -200,10 +196,8 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['fileFromDisk'].value;
   }
   setFileFromDisk(file: File): void {
-    console.log("test")
-    if(file.name==this.getFileFromDisk().name){
-      console.log("file already exist")
-    }
+    
+    this.checkExistingFile(file);
     this.uploadform.controls['fileFromDisk'].setValue(file);
   }
   resetFileFromDisk(): void {
