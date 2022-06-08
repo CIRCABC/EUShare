@@ -185,10 +185,23 @@ summary {
   min-width: 1024px;
   padding: 0 32px;
   margin: 0 auto;
+  background-color: white;
 }
 
+.whiteheader {
+  background-color: white;
+  width: 100%;
+  padding: 15px;
+}
 
 .ec-links ul, .ec-links li,  .ec-links select {
   display: inline-block;
   margin-left: 10px;
+  
+}
+
+
+.ec-links  select:not(:-internal-list-box) {
+  background-color: white;
+  overflow: visible !important;
 }

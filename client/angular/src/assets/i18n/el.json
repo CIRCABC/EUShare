@@ -41,6 +41,8 @@
   "file.password.optional": "Κωδικός πρόσβασης αρχείου (προαιρετικό)",
   "file.request.accepting.deletion": "Πρόκειται να διαγράψετε το αρχείο με το όνομα",
   "file.request.change.expirationdate": "Αλλαγή ημερομηνίας λήξης",
+  "file.upload.change.title": "Προειδοποίηση, μπορείτε να κάνετε κοινή χρήση μόνο ένα αρχείο κάθε φορά!",
+  "file.upload.change.message": "Το αρχείο «{{file1}}» θα μεταφορτωθεί αντί για το «{{file2}}»",
   "file.will.expire": "Το αρχείο θα λήξει στον {{date}}",
   "flies.shared.with.me": "Αρχεία που μοιράζονται μαζί μου",
   "footer.message": "Το CIRCABC είναι ανοικτού κώδικα",

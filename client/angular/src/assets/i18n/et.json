@@ -41,6 +41,8 @@
   "file.password.optional": "Faili parool (valikuline)",
   "file.request.accepting.deletion": "Olete kustutada faili nimega",
   "file.request.change.expirationdate": "Muuda aegumiskuupäeva",
+  "file.upload.change.title": "Hoiatus, saate jagada ainult ühte faili korraga!",
+  "file.upload.change.message": "„{{file2}}}” asemel laaditakse üles fail „{{file1}}”",
   "file.will.expire": "Fail aegub {{date}}",
   "flies.shared.with.me": "Mulle ühiskasutusse antud failid",
   "footer.message": "CIRCABC on avatud lähtekoodiga",

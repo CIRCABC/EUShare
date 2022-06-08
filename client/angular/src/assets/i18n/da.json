@@ -41,6 +41,8 @@
   "file.password.optional": "Fil adgangskode (valgfrit)",
   "file.request.accepting.deletion": "Du er ved at slette den navngivne fil",
   "file.request.change.expirationdate": "Skift udløbsdato",
+  "file.upload.change.title": "Advarsel, du kan kun dele en fil ad gangen!",
+  "file.upload.change.message": "Filen „{{file1}}“ vil blive uploadet i stedet for „{{file2}}“",
   "file.will.expire": "Filen udløber på {{date}}",
   "flies.shared.with.me": "Filer delt med mig",
   "footer.message": "CIRCABC er open source",

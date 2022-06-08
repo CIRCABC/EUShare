@@ -41,6 +41,8 @@
   "file.password.optional": "Wachtwoord bestand (optioneel)",
   "file.request.accepting.deletion": "U gaat het bestand met de naam verwijderen",
   "file.request.change.expirationdate": "Vervaldatum wijzigen",
+  "file.upload.change.title": "Waarschuwing, je kunt maar één bestand tegelijk delen!",
+  "file.upload.change.message": "Bestand „{{file1}}” wordt geüpload in plaats van „{{file2}}”",
   "file.will.expire": "Het bestand verloopt op de {{date}}",
   "flies.shared.with.me": "Bestanden die met mij worden gedeeld",
   "footer.message": "CIRCABC is open source",

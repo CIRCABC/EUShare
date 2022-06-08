@@ -162,101 +162,107 @@
   </div>
 </div>
 <div *ngIf="!(loggedIn)" class="right-side">
-  <header class="header fluid">
-    <div class="ec-links">
-      <ul>
-        <li>
-          <a href="/ui/explore">Discover</a>
-        </li>
-        <li>
-          <a href="/ui/help">Help</a>
-        </li>
-        <li>
-          <a href="/ui/help/contact">Contact</a>
-        </li>
-      </ul>
-      <cbc-lang-selector><span class="ng-untouched ng-pristine ng-valid">
-          <select  (change)="selectLanguage($event.target.value)" formcontrolname="lang" class="ng-untouched ng-pristine ng-valid">
-            <option value="bg">
-              български (bg)
-            </option>
-            <option value="cs">
-              čeština (cs)
-            </option>
-            <option value="da">
-              dansk (da)
-            </option>
-            <option value="de">
-              Deutsch (de)
-            </option>
-            <option value="el">
-              ελληνικά (el)
-            </option>
-            <option value="en">
-              English (en)
-            </option>
-            <option value="es">
-              Español (es)
-            </option>
-            <option value="et">
-              eesti keel (et)
-            </option>
-            <option value="fi">
-              Suomi (fi)
-            </option>
-            <option value="fr">
-              Français (fr)
-            </option>
-            <option value="ga">
-              Gaeilge (ga)
-            </option>
-            <option value="hr">
-              hrvatski (hr)
-            </option>
-            <option value="it">
-              italiano (it)
-            </option>
-            <option value="lv">
-              latviešu valoda (lv)
-            </option>
-            <option value="lt">
-              lietuvių kalba (lt)
-            </option>
-            <option value="hu">
-              magyar (hu)
-            </option>
-            <option value="mt">
-              Malti (mt)
-            </option>
-            <option value="nl">
-              Nederlands (nl)
-            </option>
-            <option value="pl">
-              polski (pl)
-            </option>
-            <option value="pt">
-              Português (pt)
-            </option>
-            <option value="ro">
-              română (ro)
-            </option>
-            <option value="sk">
-              slovenčina (sk)
-            </option>
-            <option value="sl">
-              slovenščina (sl)
-            </option>
-            <option value="sv">
-              svenska (sv)
-            </option>
+  <div class="whiteheader">
+    <header class="header fluid">
+      <div class="ec-links">
+        <ul>
+          <li>
+            <a href="/ui/explore">Discover</a>
+          </li>
+          <li>
+            <a href="/ui/help">Help</a>
+          </li>
+          <li>
+            <a href="/ui/help/contact">Contact</a>
+          </li>
+        </ul>
+        <cbc-lang-selector><span class="ng-untouched ng-pristine ng-valid">
+            <select (change)="selectLanguage($event.target.value)" formcontrolname="lang"
+              class="ng-untouched ng-pristine ng-valid">
+              <option value="en">
+             
+              </option>
+              <option value="bg">
+                български (bg)
+              </option>
+              <option value="cs">
+                čeština (cs)
+              </option>
+              <option value="da">
+                dansk (da)
+              </option>
+              <option value="de">
+                Deutsch (de)
+              </option>
+              <option value="el">
+                ελληνικά (el)
+              </option>
+              <option value="en">
+                English (en)
+              </option>
+              <option value="es">
+                Español (es)
+              </option>
+              <option value="et">
+                eesti keel (et)
+              </option>
+              <option value="fi">
+                Suomi (fi)
+              </option>
+              <option value="fr">
+                Français (fr)
+              </option>
+              <option value="ga">
+                Gaeilge (ga)
+              </option>
+              <option value="hr">
+                hrvatski (hr)
+              </option>
+              <option value="it">
+                italiano (it)
+              </option>
+              <option value="lv">
+                latviešu valoda (lv)
+              </option>
+              <option value="lt">
+                lietuvių kalba (lt)
+              </option>
+              <option value="hu">
+                magyar (hu)
+              </option>
+              <option value="mt">
+                Malti (mt)
+              </option>
+              <option value="nl">
+                Nederlands (nl)
+              </option>
+              <option value="pl">
+                polski (pl)
+              </option>
+              <option value="pt">
+                Português (pt)
+              </option>
+              <option value="ro">
+                română (ro)
+              </option>
+              <option value="sk">
+                slovenčina (sk)
+              </option>
+              <option value="sl">
+                slovenščina (sl)
+              </option>
+              <option value="sv">
+                svenska (sv)
+              </option>
+              <!---->
+            </select>
             <!---->
-          </select>
-          <!---->
-          <!---->
-        </span>
-      </cbc-lang-selector>
-    </div>
-    <!---->
+            <!---->
+          </span>
+        </cbc-lang-selector>
+      </div>
+      <!---->
 
-  </header>
+    </header>
+  </div>
 </div>

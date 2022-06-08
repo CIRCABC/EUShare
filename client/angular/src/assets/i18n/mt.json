@@ -41,6 +41,8 @@
   "file.password.optional": "Password tal-fajl (mhux obbligatorju)",
   "file.request.accepting.deletion": "Inti waslu biex tħassar il-fajl imsemmi",
   "file.request.change.expirationdate": "Bidla data ta 'skadenza",
+  "file.upload.change.title": "Twissija, tista 'taqsam fajl wieħed biss kull darba!",
+  "file.upload.change.message": "Fajl “{{file1}}” se jittella' minflok “{{file2}}”",
   "file.will.expire": "Il-fajl jiskadi fuq il- {{date}}",
   "flies.shared.with.me": "Fajls maqsuma miegħi",
   "footer.message": "CIRCABC huwa sors miftuħ",

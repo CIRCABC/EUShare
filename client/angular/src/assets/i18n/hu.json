@@ -41,6 +41,8 @@
   "file.password.optional": "Fájl jelszó (opcionális)",
   "file.request.accepting.deletion": "Törölni fogja a megnevezett fájlt",
   "file.request.change.expirationdate": "A lejárati dátum módosítása",
+  "file.upload.change.title": "Figyelem, egyszerre csak egy fájlt oszthat meg!",
+  "file.upload.change.message": "A (z) „{{file2}}” helyett „{{file1}}” fájl kerül feltöltésre",
   "file.will.expire": "A fájl lejár a {{date}}",
   "flies.shared.with.me": "Velem megosztott fájlok",
   "footer.message": "A CIRCABC nyílt forráskódú",

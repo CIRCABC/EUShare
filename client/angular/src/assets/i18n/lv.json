@@ -41,6 +41,8 @@
   "file.password.optional": "Faila parole (pēc izvēles)",
   "file.request.accepting.deletion": "Jūs gatavojaties izdzēst failu ar nosaukumu",
   "file.request.change.expirationdate": "Mainīt derīguma termiņu",
+  "file.upload.change.title": "Brīdinājums, jūs varat koplietot tikai vienu failu vienlaikus!",
+  "file.upload.change.message": "Fails “{{file1}}” tiks augšupielādēts “{{file2}}” vietā",
   "file.will.expire": "Faila derīguma termiņš beigsies {{date}}",
   "flies.shared.with.me": "Ar mani koplietotie faili",
   "footer.message": "CIRCABC ir atvērtā koda",

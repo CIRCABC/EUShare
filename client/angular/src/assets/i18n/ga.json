@@ -41,6 +41,8 @@
   "file.password.optional": "Focal faire comhad (roghnach)",
   "file.request.accepting.deletion": "Tá tú ar tí an comhad ainmnithe a scriosadh",
   "file.request.change.expirationdate": "Athraigh an dáta éaga",
+  "file.upload.change.title": "Rabhadh, is féidir leat a roinnt ach amháin comhad ag an am!",
+  "file.upload.change.message": "Comhad “{{file1}}” a uaslódáil in ionad “{{file2}}”",
   "file.will.expire": "Rachaidh an comhad in éag ar an {{date}}",
   "flies.shared.with.me": "Comhaid roinnte liom",
   "footer.message": "Is foinse oscailte é CIRCABC",

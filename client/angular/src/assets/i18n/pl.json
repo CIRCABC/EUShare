@@ -41,6 +41,8 @@
   "file.password.optional": "Hasło pliku (opcjonalnie)",
   "file.request.accepting.deletion": "Masz zamiar usunąć plik o nazwie",
   "file.request.change.expirationdate": "Zmień datę wygaśnięcia",
+  "file.upload.change.title": "Ostrzeżenie, możesz udostępnić tylko jeden plik naraz!",
+  "file.upload.change.message": "Plik „{{file1}}” zostanie przesłany zamiast „{{file2}}”",
   "file.will.expire": "Plik wygaśnie na {{date}}",
   "flies.shared.with.me": "Pliki udostępnione mi",
   "footer.message": "CIRCABC jest open source",

@@ -41,6 +41,8 @@
   "file.password.optional": "Heslo souboru (volitelné)",
   "file.request.accepting.deletion": "Chystáte se odstranit soubor s názvem",
   "file.request.change.expirationdate": "Změnit datum vypršení platnosti",
+  "file.upload.change.title": "Upozornění, můžete sdílet pouze jeden soubor najednou!",
+  "file.upload.change.message": "Soubor „{{file1}}“ bude nahrán místo „{{file2}}“",
   "file.will.expire": "Platnost souboru vyprší na {{date}}",
   "flies.shared.with.me": "Soubory sdílené se mnou",
   "footer.message": "CIRCABC je open source",

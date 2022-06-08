@@ -41,6 +41,8 @@
   "file.password.optional": "Парола на файла (по избор)",
   "file.request.accepting.deletion": "Вие сте на път да изтриете файла с име",
   "file.request.change.expirationdate": "Промяна на срока на годност",
+  "file.upload.change.title": "Внимание, можете да споделяте само един файл наведнъж!",
+  "file.upload.change.message": "Файлът „{{file1}}“ ще бъде качен вместо „{{file2}}“",
   "file.will.expire": "Файлът ще изтече на {{date}}",
   "flies.shared.with.me": "Файлове, споделени с мен",
   "footer.message": "CIRCABC е с отворен код",

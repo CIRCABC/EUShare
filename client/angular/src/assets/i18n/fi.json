@@ -41,6 +41,8 @@
   "file.password.optional": "Tiedoston salasana (valinnainen)",
   "file.request.accepting.deletion": "Olet poistamassa nimetyn tiedoston",
   "file.request.change.expirationdate": "Muuta viimeistä käyttöpäivää",
+  "file.upload.change.title": "Varoitus, voit jakaa vain yhden tiedoston kerrallaan!",
+  "file.upload.change.message": "Tiedosto ”{{file1}}” ladataan ”{{file2}}” sijaan",
   "file.will.expire": "Tiedosto vanhenee {{date}}",
   "flies.shared.with.me": "Minulle jaetut tiedostot",
   "footer.message": "CIRCABC on avoimen lähdekoodin",

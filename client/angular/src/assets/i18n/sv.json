@@ -41,6 +41,8 @@
   "file.password.optional": "Fillösenord (valfritt)",
   "file.request.accepting.deletion": "Du är på väg att ta bort filen med namnet",
   "file.request.change.expirationdate": "Ändra utgångsdatum",
+  "file.upload.change.title": "Varning, du kan bara dela en fil åt gången!",
+  "file.upload.change.message": "Filen ”{{file1}}” kommer att laddas upp istället för ”{{file2}}”",
   "file.will.expire": "Filen förfaller på {{date}}",
   "flies.shared.with.me": "Filer som delas med mig",
   "footer.message": "CIRCABC är öppen källkod",

@@ -41,6 +41,8 @@
   "file.password.optional": "Lozinka za datoteke (neobavezno)",
   "file.request.accepting.deletion": "Izbrisat ćete datoteku pod nazivom",
   "file.request.change.expirationdate": "Promijeni datum isteka",
+  "file.upload.change.title": "Upozorenje, možete dijeliti samo jednu datoteku odjednom!",
+  "file.upload.change.message": "Datoteka \"{{file1}}\" bit će učitana umjesto \"{{file2}}\"",
   "file.will.expire": "Datoteka će isteći na {{date}}",
   "flies.shared.with.me": "Datoteke podijeljene sa mnom",
   "footer.message": "CIRCABC je otvorenog koda",

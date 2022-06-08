@@ -41,6 +41,8 @@
   "file.password.optional": "Password file (opzionale)",
   "file.request.accepting.deletion": "Stai per eliminare il file denominato",
   "file.request.change.expirationdate": "Modifica la data di scadenza",
+  "file.upload.change.title": "Attenzione, puoi condividere un solo file alla volta!",
+  "file.upload.change.message": "Il file «{{file1}}» verrà caricato al posto di «{{file2}}»",
   "file.will.expire": "Il file scadrà il {{date}}",
   "flies.shared.with.me": "File condivisi con me",
   "footer.message": "CIRCABC è open source",

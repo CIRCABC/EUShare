@@ -41,6 +41,8 @@
   "file.password.optional": "Geslo za datoteke (neobvezno)",
   "file.request.accepting.deletion": "Datoteko z imenom boste izbrisali",
   "file.request.change.expirationdate": "Spremeni datum poteka",
+  "file.upload.change.title": "Opozorilo, lahko delite samo eno datoteko naenkrat!",
+  "file.upload.change.message": "Datoteka »{{file1}}« bo naložena namesto »{{file2}}«",
   "file.will.expire": "Datoteka bo potekla na {{date}}",
   "flies.shared.with.me": "Datoteke v skupni rabi",
   "footer.message": "CIRCABC je odprtokodna",

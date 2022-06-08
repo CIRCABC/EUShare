@@ -41,6 +41,8 @@
   "file.password.optional": "Parola fișier (opțional)",
   "file.request.accepting.deletion": "Sunteţi pe cale să ştergeţi fişierul numit",
   "file.request.change.expirationdate": "Modificarea datei de expirare",
+  "file.upload.change.title": "Atenție, puteți partaja un singur fișier la un moment dat!",
+  "file.upload.change.message": "Fișierul „{{file1}}” va fi încărcat în loc de „{{file2}}”",
   "file.will.expire": "Fișierul va expira pe {{date}}",
   "flies.shared.with.me": "Fișiere partajate cu mine",
   "footer.message": "CIRCABC este open source",
