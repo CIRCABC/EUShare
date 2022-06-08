@@ -57,13 +57,17 @@ export class AdministrationComponent {
   ) {}
 
   public async resultsNextPage() {
+    if (await this.isLastPage()) {
+      return;
+    }
+
     this.removeSelection();
     this.pageNumber++;
 
     this.userInfoArray = await firstValueFrom(
       this.usersApi.getUsersUserInfo(
         this.pageSize,
-        this.pageNumber + 1,
+        this.pageNumber,
         this.searchString
       )
     );
@@ -77,10 +81,11 @@ export class AdministrationComponent {
     this.userInfoArray = await firstValueFrom(
       this.usersApi.getUsersUserInfo(
         this.pageSize,
-        this.pageNumber - 1,
+        this.pageNumber,
         this.searchString
       )
     );
+    this.hasNextPage = !(await this.isLastPage());
   }
 
   public async search() {
