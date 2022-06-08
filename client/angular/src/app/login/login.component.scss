@@ -16,6 +16,27 @@
   margin-right: calc(-100vw / 2 + 1200px / 2);
 }
 
+@import "../../variables.scss";
+
+
+
+.subtitle {
+  color: $grey;
+}
+
+.main {
+  min-width: 1024px;
+  background: url(../../img/background-home.jpg) no-repeat center center;
+  background-size: cover;
+  color: #fff;
+  font-family: "Ubuntu",verdana,helvetica,sans-serif;
+  font-size: 15px;
+  padding: 7vw 33px;
+  margin-left: calc(-100vw / 2 + 1200px / 2); 
+  margin-right: calc(-100vw / 2 + 1200px / 2);
+}
+
+
 h1 {
   display: block;
   font-size: 2em;
@@ -23,14 +44,12 @@ h1 {
   margin-block-end: 0.67em;
   margin-inline-start: 0px;
   margin-inline-end: 0px;
-  margin: 0.67em 0;
   font-weight: bold;
 }
 
 h2 {
   display: block;
   font-size: 1.5em;
-  margin: 0.83em 0;
   margin-block-start: 0.83em;
   margin-block-end: 0.83em;
   margin-inline-start: 0px;
@@ -41,7 +60,7 @@ h2 {
 html {
   height: 100%;
   font-size: 62.5%;
-  font-family: "verdana", helvetica, sans-serif;
+  font-family: "verdana",helvetica,sans-serif;
 }
 
 .main h1 {
@@ -49,6 +68,10 @@ html {
   font-size: 24px;
   width: 475px;
   text-align: left;
+}
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
 }
 
 .main h2 {
@@ -58,15 +81,22 @@ html {
   text-align: left;
   line-height: 23px;
 }
-
-.fluid {
-  display: flex;
-  justify-content: center;
-  height: 50px;
-  min-width: 1024px;
-  padding: 0 32px;
-  margin: 0 auto;
+h2 {
+  font-size: 1.5em;
+  margin: 0.83em 0;
 }
+
+
+  .fluid {
+    display: flex;
+    justify-content: center;
+    height: 50px;
+    min-width: 1024px;
+    padding: 0 32px;
+    margin: 0 auto;
+
+}
+
 
 .main .cta {
   margin-top: 30px;
@@ -74,49 +104,25 @@ html {
 .cta--homepage {
   position: relative;
   border: 0;
-
   padding: 12px 12px 12px 47px;
-
-  &::before {
-    content: "";
-    display: inline-block;
-    position: absolute;
-    left: 0;
-    top: 0;
-    padding: 12px;
-    width: 35px;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    background-image: url("../../img/icon-cadenas.png");
-    background-position: center center;
-    background-repeat: no-repeat;
-    border-radius: 3px 0 0 3px;
-  }
 }
 .cta {
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dcb6c",endColorstr="#58c37e",GradientType=0);
-  color: #fff;
-  font-family: "Ubuntu", verdana, helvetica, sans-serif;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-decoration: none;
-  text-align: center;
-  text-shadow: 0 0 6px rgb(0 0 0 / 45%);
-  padding: 12px;
-  padding: 1.2rem;
-  cursor: pointer;
-
   display: inline-block;
   border-radius: 3px;
   font-size: 13px;
   font-size: 1.3rem;
   background: #8dcb6c;
-  background: linear-gradient(to bottom, #8dcb6c 0%, #58c37e 100%);
-
-  &:hover {
-    background: rgba(88, 195, 126, 1);
-    text-decoration: none;
-  }
+  background: linear-gradient(to bottom,#8dcb6c 0%,#58c37e 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dcb6c",endColorstr="#58c37e",GradientType=0);
+  color: #fff;
+  font-family: "Ubuntu",verdana,helvetica,sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  text-shadow: 0 0 6px rgb(0 0 0 / 45%);
+  padding: 1.2rem;
+  cursor: pointer;
 }
 
 a {
@@ -145,37 +151,94 @@ a {
   border: 2px solid #fff;
 }
 
+
+.cta {
+  display: inline-block;
+  border-radius: 3px;
+  font-size: 13px;
+  font-size: 1.3rem;
+  background: #8dcb6c;
+  background: linear-gradient(to bottom,#8dcb6c 0%,#58c37e 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#8dcb6c",endColorstr="#58c37e",GradientType=0);
+  color: #fff;
+  font-family: Ubuntu,verdana,helvetica,sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  text-shadow: 0 0 6px rgb(0 0 0 / 45%);
+  padding: 12px;
+  padding: 1.2rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(88, 195, 126, 1);
+    text-decoration: none;
+  }
+
+}
+
 a:hover {
   color: #000;
 }
 
+.cta--homepage {
+  position: relative;
+  border: 0;
+
+  padding: 12px 12px 12px 47px;
+
+  &::before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 12px;
+    width: 35px;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    background-image: url("../../img/icon-cadenas.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    border-radius: 3px 0 0 3px;
+  }
+}
+
+
+
+a {
+  text-decoration: none;
+  color: #035;
+  cursor: pointer;
+}
+
+
 .abutton {
-  border: 1px solid #76a3ad;
+  border: 1px solid #8dffa2;
   color: #8dffa2;
   text-transform: uppercase;
   margin-top: 10px;
   display: inline-block;
   border-radius: 3px;
+  border: 1px solid #76a3ad;
   font-size: 13px;
   font-size: 1.3rem;
-  font-family: Ubuntu, verdana, helvetica, sans-serif;
+  font-family: Ubuntu,verdana,helvetica,sans-serif;
   font-weight: 700;
   text-decoration: none;
   text-align: center;
   padding: 12px;
   padding: 1.2rem;
 }
-.abuttona,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+.abuttona, input[type=button], input[type=reset], input[type=submit] {
   display: inline-block;
   border-radius: 3px;
   border: 1px solid #76a3ad;
   font-size: 13px;
   font-size: 1.3rem;
   color: #035;
-  font-family: Ubuntu, Verdana, Helvetica, sans-serif;
+  font-family: Ubuntu,Verdana,Helvetica,sans-serif;
   text-decoration: none;
   text-align: center;
   padding: 12px;
@@ -190,3 +253,5 @@ input[type="submit"] {
   color: #fff;
   text-shadow: 0 0 6px rgb(0 0 0 / 45%);
 }
+img.logo-circabc 
+{ }

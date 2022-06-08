@@ -66,6 +66,7 @@ import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-moda
 import { AppRoutingModule } from './app-routing.module';
 import { ChangeExpirationDateModalComponent } from './common/modals/change-expiration-date-modal/change-expiration-date-modal.component';
 import { APP_BASE_HREF } from '@angular/common';
+import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { APP_BASE_HREF } from '@angular/common';
     ShareWithUsersModalComponent,
     StatisticsModalComponent,
     DeleteConfirmModalComponent,
+    OverwriteConfirmModalComponent,
     ChangeExpirationDateModalComponent,
     FileRowContainerComponent,
     DownloadFileRowContainerComponent,

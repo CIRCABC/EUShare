@@ -76,15 +76,49 @@
       <div class="navbar-end">
         <div *ngIf="loggedIn && router.url!=='/upload'" class="navbar-item is-family-secondary">
 
-          <button (click)="toggleBurger()" class="button is-info" routerLink="upload">
+          <button (click)="toggleBurger()" class="button movedownbutton" routerLink="upload">
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
             </span>
-            {{ "share.a.new.file" | transloco }}
+            &nbsp;{{ "share.a.new.file" | transloco }}
           </button>
         </div>
 
       </div>
+
+      <div _ngcontent-urs-c43="" class="main-nav menu2">
+        <!---->
+    
+        <div _ngcontent-urs-c43="" class="menuitem">
+          <div _ngcontent-urs-c43="" class="personal-menu-help">
+            <a _ngcontent-urs-c43="" data-cy="help" class="tab tab--help">
+              <span _ngcontent-urs-c43="" class="label">Help</span>
+            </a>
+    
+            <div _ngcontent-urs-c43="" class="dropdown-help dropdown--personal-menu-help">
+              <section _ngcontent-urs-c43="" class="dropdown--personal-menu__sidebar">
+                <nav _ngcontent-urs-c43="">
+                  <div _ngcontent-urs-c43="" class="links-group">
+                    <a _ngcontent-urs-c43="" href="{{circabc_url}}/ui/help">Help Center</a>
+    
+                    <a _ngcontent-urs-c43="" href="{{circabc_url}}/ui/help/contact">Contact Support</a>
+    
+                    <a _ngcontent-urs-c43="" target="_blank" href="https://github.com/CIRCABC/Circabc-OSS">Download Source</a>
+    
+                    <a _ngcontent-urs-c43="" href="{{circabc_url}}/ui/help/about">About CIRCABC</a>
+    
+                    <!---->
+                  </div>
+                </nav>
+              </section>
+            </div>
+          </div>
+        </div>
+    
+        
+      </div>
+
+
     </div>
   </div>
 </nav>

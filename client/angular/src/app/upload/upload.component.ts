@@ -32,6 +32,7 @@ import { Router } from '@angular/router';
 import { I18nService } from '../common/i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
+import { ModalsService } from '../common/modals/modals.service';
 
 @Component({
   selector: 'app-upload',
@@ -59,7 +60,8 @@ export class UploadComponent implements OnInit {
     private userApi: UsersService,
     private fileApi: FileService,
     private notificationService: NotificationService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private modalService: ModalsService
   ) {
     this.initializeForm();
   }
@@ -167,6 +169,23 @@ export class UploadComponent implements OnInit {
     this.initializeForm();
   }
 
+  public  lastfile!: File ;
+
+  checkExistingFile(files: File[]){
+    let file = files[0];
+    console.log(file.name)
+    if(this.lastfile){
+    console.log(this.lastfile.name)
+    }
+    if(this.lastfile && !(file===this.lastfile)){
+      this.modalService.activateOverwriteConfirmModal(
+        file.name,
+        this.lastfile.name
+      );
+    }
+    this.lastfile=file
+  }
+
   // SELECT IMPORT
   getSelectImport(): string {
     return this.uploadform.controls['selectImport'].value;
@@ -181,6 +200,10 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['fileFromDisk'].value;
   }
   setFileFromDisk(file: File): void {
+    console.log("test")
+    if(file.name==this.getFileFromDisk().name){
+      console.log("file already exist")
+    }
     this.uploadform.controls['fileFromDisk'].setValue(file);
   }
   resetFileFromDisk(): void {

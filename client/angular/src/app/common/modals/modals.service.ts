@@ -16,6 +16,7 @@ import { FileLog, Recipient } from '../../openapi';
   providedIn: 'root',
 })
 export class ModalsService {
+ 
   private possibleActiveModals: string[] = [
     'download',
     'fileLink',
@@ -24,6 +25,7 @@ export class ModalsService {
     'deleteConfirm',
     'statistics',
     'changeExpirationDate',
+    'overwriteConfirm'
   ];
   private activeModal!: string;
 
@@ -53,6 +55,14 @@ export class ModalsService {
     new Subject<DeleteConfirmModalValue>();
   public activateDeleteConfirmModal$: Observable<DeleteConfirmModalValue> =
     this.activateDeleteConfirmModalSubject.asObservable();
+
+
+    private activateOverwriteConfirmModalSubject =
+    new Subject<OverwriteConfirmModalValue>();
+  public activateOverwriteConfirmModal$: Observable<OverwriteConfirmModalValue> =
+    this.activateOverwriteConfirmModalSubject.asObservable();
+
+
 
   private activateChangeExpirationDateModalSubject =
     new Subject<ChangeExpirationDateModalValue>();
@@ -136,6 +146,8 @@ export class ModalsService {
     });
   }
 
+
+
   public activateStatisticsModal(
     modalFileName: string,
     modalFileId: string,
@@ -167,6 +179,21 @@ export class ModalsService {
       modalFileName,
       modalFileId,
       expirationDate,
+    });
+  }
+
+  public activateOverwriteConfirmModal(
+    modalFileName: string,
+    modalFileId: string
+  ) {
+    if (this.activeModal && this.activeModal !== this.possibleActiveModals[7]) {
+      this.deactivateAllModals();
+    }
+    this.activeModal = this.possibleActiveModals[7];
+    this.activateOverwriteConfirmModalSubject.next({
+      modalActive: true,
+      modalFileName,
+      modalFileId,
     });
   }
 
@@ -251,11 +278,23 @@ export class ModalsService {
     }
   }
 
+  public deactivateOverwriteConfirmModal() {
+    if (this.activeModal && this.activeModal === this.possibleActiveModals[7]) {
+      this.activeModal = ' ';
+      this.activateOverwriteConfirmModalSubject.next({
+        modalActive: false,
+        modalFileName: '',
+        modalFileId: '',
+      });
+    }
+  }
+
   private deactivateAllModals() {
     this.deactivateDownloadModal();
     this.deactivateFileLinkModal();
     this.deactivateAddRecipientsModal();
     this.deactivateDeleteConfirmModal();
+    this.deactivateOverwriteConfirmModal();
   }
 }
 interface DownloadModalValue {
@@ -302,4 +341,10 @@ interface ChangeExpirationDateModalValue {
   modalFileName: string;
   modalFileId: string;
   expirationDate: string;
+}
+
+interface OverwriteConfirmModalValue {
+  modalActive: boolean;
+  modalFileName: string;
+  modalFileId: string;
 }
