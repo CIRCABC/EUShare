@@ -52,6 +52,9 @@ h2 {
   margin-bottom: 0.6em;
 }
 
+
+
+
 #radioEmail,
 #radioLink {
   margin-right: 0.1em;
@@ -61,3 +64,18 @@ h2 {
   padding-top: 0;
   padding-bottom: 0;
 }
+
+
+.fieldset {
+  border: 1px dotted gray;
+  padding: 2px;
+}
+
+.legend {
+  position: relative;
+  top: -0.8em;
+  margin-left: 1em;
+  display: inline;
+  background-color: white;
+}
+
