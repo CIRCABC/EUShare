@@ -12,6 +12,9 @@ package eu.europa.circabc.eushare.services;
 import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -43,6 +46,7 @@ public class EmailService implements EmailServiceInterface {
     private static final String REASON = "reason";
     private static final String MESSAGE = "message";
     private static final String LINK = "link";
+    private static final String EXPDATE = "expdate";
 
     @Autowired
     private JavaMailSender sender;
@@ -73,8 +77,8 @@ public class EmailService implements EmailServiceInterface {
     public void sendDownloadNotification(String recipient, String downloaderId, FileBasics fileInfo)
             throws MessagingException, ConnectException {
         Context ctx = new Context();
-       
-        if(downloaderId==null || downloaderId.equals("")) {
+
+        if (downloaderId == null || downloaderId.equals("")) {
             downloaderId = "a recipient";
         }
         ctx.setVariable(DOWNLOADER, downloaderId);
@@ -101,16 +105,18 @@ public class EmailService implements EmailServiceInterface {
      * Send notification to {@code recipient} that someone shared a file with him.
      */
     @Override
-    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message, String shorturl)
+    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message, String shorturl,
+            LocalDate expDate)
             throws MessagingException {
         Context ctx = new Context();
         ctx.setVariable(FILENAME, fileInfo.getName());
         ctx.setVariable(UPLOADER, fileInfo.getUploaderName());
+        ctx.setVariable(EXPDATE, expDate.format(DateTimeFormatter
+                .ofLocalizedDate(FormatStyle.LONG)));
         StringBuilder sb = new StringBuilder();
         sb.append(this.esConfig.getClientHttpAddress());
         sb.append("/fs/");
         sb.append(shorturl);
-       
 
         try {
             URI linkUri = new URI(sb.toString());
@@ -118,7 +124,7 @@ public class EmailService implements EmailServiceInterface {
         } catch (URISyntaxException e) {
             log.error(e.getReason(), e);
         }
-        
+
         ctx.setVariable(MESSAGE, message);
         String content = this.templateEngine.process("mail/html/share-notification", ctx);
         this.sendMessage(recipient, content);

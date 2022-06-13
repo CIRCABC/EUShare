@@ -10,6 +10,7 @@
 package eu.europa.circabc.eushare.services;
 
 import java.net.ConnectException;
+import java.time.LocalDate;
 
 import javax.mail.MessagingException;
 
@@ -23,6 +24,6 @@ public interface EmailServiceInterface {
     public void sendFileDeletedNotification(String recipient, FileBasics fileInfo, String reason)
             throws MessagingException;
 
-    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message, String shorturl)
+    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message, String shorturl, LocalDate expDate)
             throws MessagingException;
 }

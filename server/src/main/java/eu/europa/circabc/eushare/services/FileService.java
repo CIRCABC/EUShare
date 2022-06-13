@@ -222,8 +222,8 @@ public class FileService implements FileServiceInterface {
 
             shareRepository.save(dbShare);
 
-            emailService.sendShareNotification(recipient.getEmail(), dbFile.toFileInfoRecipient(recipient.getEmail()),
-                    recipient.getMessage(),shortUrl);
+            emailService.sendShareNotification(recipient.getEmail(), dbFile.toFileInfoRecipient(recipient.getEmail()), 
+                    recipient.getMessage(),shortUrl,dbFile.getExpirationDate());
 
             return dbShare.toRecipient();
         } else {
@@ -242,7 +242,7 @@ public class FileService implements FileServiceInterface {
             DBShare dbShare = shareRepository.findOneByEmailAndFileId(userEmail, fileId);
             
             emailService.sendShareNotification(userEmail, dbFile.toFileInfoRecipient(userEmail),
-            dbShare.getMessage(),dbShare.getShorturl());
+            dbShare.getMessage(),dbShare.getShorturl(),dbFile.getExpirationDate());
           
         } else {
             throw new UserUnauthorizedException();
@@ -577,7 +577,7 @@ public class FileService implements FileServiceInterface {
                 if (StringUtils.validateEmailAddress(recipientEmail)) {
                     FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(recipientEmail);
                     this.emailService.sendShareNotification(recipientEmail, fileInfoRecipient, recipient.getMessage(),
-                            recipient.getShorturl());
+                            recipient.getShorturl(),dbFile.getExpirationDate());
                 }
             }
         }
