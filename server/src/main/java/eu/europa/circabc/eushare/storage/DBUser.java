@@ -155,7 +155,6 @@ public class DBUser {
     }
 
     public enum Role {
-        EXTERNAL, // A user added by another, non active yet. Has an email address and nothing else.
         INTERNAL, // An active user. Has an email, a name and a username.
         ADMIN, // An internal user with extra advantage
     }

@@ -288,10 +288,6 @@ public class FileService implements FileServiceInterface {
 
         DBUser uploader = userService.getDbUser(uploaderId);
 
-        if (uploader.getRole().equals(DBUser.Role.EXTERNAL)) {
-            throw new UserUnauthorizedException();
-        }
-
         if (uploader.getFreeSpace() < filesize) {
             throw new UserHasInsufficientSpaceException();
         }
