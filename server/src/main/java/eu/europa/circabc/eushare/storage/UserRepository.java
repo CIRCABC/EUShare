@@ -19,7 +19,9 @@ import org.springframework.data.repository.query.Param;
 public interface UserRepository extends PagingAndSortingRepository<DBUser, String> {
     public List<DBUser> findAllById(String id);
     public DBUser findOneByUsername(String username);
-    public DBUser findOneByEmailIgnoreCase(String email);
+
+    @Query("FROM DBUser u WHERE (u.email = upper(:email))")
+    public DBUser findOneByEmailIgnoreCase(@Param("email") String email);
 
     @Query("FROM DBUser u WHERE (u.email like upper(concat(:start,'%')) or (u.name like upper(concat('%',:start,'%')))) and (u.role='INTERNAL' or u.role='ADMIN') ORDER BY u.name")
     public List<DBUser> findByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
