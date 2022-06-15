@@ -116,7 +116,7 @@ public class FileService implements FileServiceInterface {
      * Retrieve all files that are marked as deleted and physically removes them
      * from the file system.
      */
-    @Scheduled(fixedDelay = 5000) // Every 5 seconds
+    @Scheduled(fixedDelay = 1800000) // Every 30 minutes
     @Transactional
     void cleanupFiles() {
         for (DBFile file : fileRepository.findByStatus(DBFile.Status.DELETED, PageRequest.of(0, Integer.MAX_VALUE))) {
@@ -147,7 +147,7 @@ public class FileService implements FileServiceInterface {
     /**
      * Marks all expired files as deleted in the database.
      */
-    @Scheduled(fixedDelay = 10000) // Every 10 seconds
+    @Scheduled(fixedDelay = 3600000) // Every hour
     @Transactional
     void markExpiredFiles() {
         for (DBFile file : fileRepository.findByExpirationDateBefore(LocalDate.now())) {
