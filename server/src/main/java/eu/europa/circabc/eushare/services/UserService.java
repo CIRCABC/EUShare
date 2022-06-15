@@ -298,11 +298,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
             dbUser.setUsername(username);
             userRepository.save(dbUser);
         }
-        if (dbUser.getRole().equals(DBUser.Role.EXTERNAL)) {
-            dbUser.setRole(DBUser.Role.INTERNAL);
-            dbUser.setTotalSpace(esConfig.getDefaultUserSpace());
-            userRepository.save(dbUser);
-        }
+        
     }
 
     @Override
