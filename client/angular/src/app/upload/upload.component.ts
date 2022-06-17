@@ -169,17 +169,16 @@ export class UploadComponent implements OnInit {
     this.initializeForm();
   }
 
-  public  lastfile!: File ;
+  public lastfile!: File;
 
-  checkExistingFile(file: File){
- 
-    if(this.lastfile && !(file===this.lastfile)){
+  checkExistingFile(file: File) {
+    if (this.lastfile && file !== this.lastfile) {
       this.modalService.activateOverwriteConfirmModal(
         file.name,
         this.lastfile.name
       );
     }
-    this.lastfile=file
+    this.lastfile = file;
   }
 
   // SELECT IMPORT
@@ -196,7 +195,6 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['fileFromDisk'].value;
   }
   setFileFromDisk(file: File): void {
-    
     this.checkExistingFile(file);
     this.uploadform.controls['fileFromDisk'].setValue(file);
   }
