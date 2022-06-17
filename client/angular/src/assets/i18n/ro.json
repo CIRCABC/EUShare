@@ -78,6 +78,7 @@
   "notification.links": "Notificări trimise următorilor destinatari cu următoarele linkuri către fișierul dvs.: ",
   "notifications": "Notificarea",
   "oidc.error": "A întâlnit o eroare OIDC de tip {type}",
+  "ok": "ACCEPTABIL",
   "password.on.file.download": "Parola la descărcarea fișierului",
   "post.file": "posta acest conținut de fișier",
   "previous": "Anterior",

@@ -78,6 +78,7 @@
   "notification.links": "Notifications envoyées aux destinataires suivants avec les liens suivants vers votre fichier : ",
   "notifications": "Les notifications",
   "oidc.error": "Une erreur OIDC de type {{type}} a été rencontrée",
+  "ok": "OK.",
   "password.on.file.download": "Mot de passe pour le téléchargement",
   "post.file": "publier le contenu de ce fichier",
   "previous": "précédent",

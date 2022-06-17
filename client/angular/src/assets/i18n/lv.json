@@ -78,6 +78,7 @@
   "notification.links": "Paziņojumi, kas nosūtīti šādiem adresātiem ar šādām saitēm uz jūsu failu: ",
   "notifications": "Paziņojumi",
   "oidc.error": "Radās OIDC kļūdas tips {type}",
+  "ok": "LABI",
   "password.on.file.download": "Parole faila lejupielādē",
   "post.file": "publicēt šo faila saturu",
   "previous": "Iepriekšējais",

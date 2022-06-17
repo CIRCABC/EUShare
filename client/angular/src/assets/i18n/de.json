@@ -78,6 +78,7 @@
   "notification.links": "An die folgenden Empfänger gesendete Benachrichtigungen mit den folgenden Links zu Ihrer Datei: ",
   "notifications": "Benachrichtigungen",
   "oidc.error": "Ein OIDC-Fehler vom Typ {type} ist aufgetreten",
+  "ok": "IN ORDNUNG",
   "password.on.file.download": "Passwort beim Herunterladen der Datei",
   "post.file": "posten Sie den Inhalt dieser Datei",
   "previous": "Vorherige",

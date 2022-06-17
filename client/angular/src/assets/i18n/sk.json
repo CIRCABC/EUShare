@@ -78,6 +78,7 @@
   "notification.links": "Oznámenia odoslané nasledujúcim príjemcom s nasledujúcimi odkazmi na súbor: ",
   "notifications": "Notifikácie",
   "oidc.error": "Vyskytla sa chyba OIDC typu {type}",
+  "ok": "DOBRE",
   "password.on.file.download": "Heslo pri sťahovaní súboru",
   "post.file": "uverejniť tento obsah súboru",
   "previous": "Predchádzajúce",

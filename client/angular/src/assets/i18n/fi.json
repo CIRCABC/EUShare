@@ -78,6 +78,7 @@
   "notification.links": "Seuraaville vastaanottajille lähetetyt ilmoitukset, joissa on seuraavat linkit tiedostoon: ",
   "notifications": "Ilmoitukset",
   "oidc.error": "Havaitsi tyypin OIDC-virheen {type}",
+  "ok": "KUNNOSSA",
   "password.on.file.download": "Salasana tiedoston latauksessa",
   "post.file": "lähetä tämä tiedoston sisältö",
   "previous": "Edellinen",

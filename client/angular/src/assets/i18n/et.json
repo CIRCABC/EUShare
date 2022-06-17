@@ -78,6 +78,7 @@
   "notification.links": "Järgmistele adressaatidele saadetud teatised failile järgmiste linkidega: ",
   "notifications": "Teatised",
   "oidc.error": "Tekkis OIDC tõrge tüüp {type}",
+  "ok": "OKEI",
   "password.on.file.download": "Parool faili allalaadimisel",
   "post.file": "postitage see faili sisu",
   "previous": "Eelmine",

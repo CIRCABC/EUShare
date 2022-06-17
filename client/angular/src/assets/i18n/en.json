@@ -79,6 +79,7 @@
   "notification.links":"Notifications sent to the following recipients with the following links to your file : ",
   "notifications":"Notifications",
   "oidc.error":"Encountered an OIDC error of type {{type}}",
+  "ok":"OK",
   "password.on.file.download": "Password on file download",
   "post.file":"post this file content",
   "previous": "Previous",

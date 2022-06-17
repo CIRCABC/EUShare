@@ -78,6 +78,7 @@
   "notification.links": "Meddelelser sendt til følgende modtagere med følgende links til din fil: ",
   "notifications": "Meddelelser",
   "oidc.error": "StÃ ̧dt på en OIDC-fejl af typen {type}",
+  "ok": "OK",
   "password.on.file.download": "Adgangskode på fil download",
   "post.file": "post denne fil indhold",
   "previous": "Forrige",

@@ -78,6 +78,7 @@
   "notification.links": "A következő címzetteknek küldött értesítések a fájlra mutató alábbi linkekkel: ",
   "notifications": "Értesítések",
   "oidc.error": "{type} típusú OIDC hiba történt",
+  "ok": "RENDBEN",
   "password.on.file.download": "Jelszó a fájl letöltésnél",
   "post.file": "tegye közzé ezt a fájlt",
   "previous": "Előző",

@@ -78,6 +78,7 @@
   "notification.links": "Meldingen die naar de volgende ontvangers worden verzonden met de volgende koppelingen naar uw bestand: ",
   "notifications": "Meldingen",
   "oidc.error": "Er is een OIDC-fout opgetreden van het type {type}",
+  "ok": "OKÉ",
   "password.on.file.download": "Wachtwoord op bestand downloaden",
   "post.file": "deze bestandsinhoud plaatsen",
   "previous": "Vorige",

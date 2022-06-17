@@ -78,6 +78,7 @@
   "notification.links": "Powiadomienia wysyłane do następujących odbiorców z następującymi linkami do pliku: ",
   "notifications": "Powiadomienia",
   "oidc.error": "Napotkano błąd OIDC typu {type}",
+  "ok": "DOBRZE",
   "password.on.file.download": "Hasło do pobrania pliku",
   "post.file": "opublikuj zawartość tego pliku",
   "previous": "Poprzedni",

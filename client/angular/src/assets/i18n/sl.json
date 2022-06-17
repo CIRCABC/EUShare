@@ -78,6 +78,7 @@
   "notification.links": "Obvestila, poslana naslednjim prejemnikom, s temi povezavami do datoteke: ",
   "notifications": "Obvestila",
   "oidc.error": "Prišlo je do napake OIDC tipa {type}",
+  "ok": "OK",
   "password.on.file.download": "Geslo za prenos datoteke",
   "post.file": "objavite to vsebino datoteke",
   "previous": "Prejšnji",

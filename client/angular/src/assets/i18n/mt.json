@@ -78,6 +78,7 @@
   "notification.links": "Notifiki mibgħuta lir-riċevituri li ġejjin bil-links li ġejjin għall-fajl tiegħek: ",
   "notifications": "In-notifiki",
   "oidc.error": "Iltaqa' ma' żball tal-OIDC tat-tip {type}",
+  "ok": "KOLLOX SEW",
   "password.on.file.download": "Password fuq download fajl",
   "post.file": "post dan il-kontenut fajl",
   "previous": "Preċedenti",

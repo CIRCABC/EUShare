@@ -78,6 +78,7 @@
   "notification.links": "Obavijesti poslane sljedećim primateljima sa sljedećim vezama na datoteku: ",
   "notifications": "Obavijesti",
   "oidc.error": "Naišao je na OIDC pogrešku tipa {type}",
+  "ok": "U REDU",
   "password.on.file.download": "Lozinka na preuzimanje datoteke",
   "post.file": "objavite ovaj sadržaj datoteke",
   "previous": "Prethodna",

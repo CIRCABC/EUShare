@@ -78,6 +78,7 @@
   "notification.links": "Šiems gavėjams siunčiami pranešimai su šiomis nuorodomis į jūsų failą: ",
   "notifications": "Pranešimai",
   "oidc.error": "Susidūrė su OIDC klaida tipo {type}",
+  "ok": "GERAI",
   "password.on.file.download": "Slaptažodis failų atsisiuntimui",
   "post.file": "rašyti šio failo turinį",
   "previous": "Ankstesnis",
