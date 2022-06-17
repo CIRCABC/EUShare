@@ -71,6 +71,7 @@ export class AddRecipientsModalComponent implements OnInit {
     this.uploadInProgress = true;
     const recipient: Recipient = {
       email: this.email,
+      message: this.message,
     };
 
     await this.uploadedFileService.addOneRecipient(
