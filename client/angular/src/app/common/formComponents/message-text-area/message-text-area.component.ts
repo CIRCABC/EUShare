@@ -20,9 +20,9 @@ import {
 import {
   ControlValueAccessor,
   NgControl,
-  ValidatorFn,
-  AbstractControl,
+  Validators,
 } from '@angular/forms';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-message-text-area',
@@ -39,7 +39,10 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   @Input('isOptional')
   public isOptional = true;
 
-  constructor(@Optional() @Self() public controlDirective: NgControl) {
+  constructor(
+    @Optional() @Self() public controlDirective: NgControl,
+    private i18nService: I18nService
+  ) {
     controlDirective.valueAccessor = this;
   }
 
@@ -47,12 +50,9 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
     const control = this.controlDirective.control;
     if (control) {
       if (!control.validator) {
-        control.setValidators([this.messageToRecipientValidator(255)]);
+        control.setValidators([Validators.maxLength(255)]);
       } else {
-        control.setValidators([
-          control.validator,
-          this.messageToRecipientValidator(255),
-        ]);
+        control.setValidators([control.validator, Validators.maxLength(255)]);
       }
       setTimeout(() => control.updateValueAndValidity({ emitEvent: true }));
     }
@@ -71,26 +71,16 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
     this.disabled = disabled;
   }
 
-  public messageToRecipientValidator(maxCharacters: number): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const message: string = control.value;
-      if (message) {
-        const forbidden = message.length > maxCharacters;
-        return forbidden
-          ? { forbiddenMessageLength: { value: maxCharacters } }
-          : null;
-      }
-      return null;
-    };
-  }
-
   get errorMessage(): string | null {
     if (
       this.controlDirective.control &&
       this.controlDirective.control.errors &&
-      this.controlDirective.control.errors['forbiddenMessageLength']
+      this.controlDirective.control.errors['maxlength']
     ) {
-      return `Text shouldn't be bigger than ${this.controlDirective.control.errors['forbiddenMessageLength'].value}`;
+      return this.i18nService.translate(
+        'validation.maxlength',
+        this.controlDirective.control.errors['maxlength']
+      );
     }
     return null;
   }
