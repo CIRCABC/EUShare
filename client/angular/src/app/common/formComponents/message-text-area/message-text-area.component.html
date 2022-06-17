@@ -6,6 +6,6 @@
   (blur)="onTouched()"
   (input)="onChange($event.target.value)"
   class="textarea"
-  placeholder="Please enter a message for the recipient of this file."
+  placeholder="{{ 'please.enter.message' | transloco }}"
 ></textarea>
 <label class="label error" *ngIf="errorMessage">{{errorMessage}}</label>
