@@ -113,7 +113,7 @@ public class DBFile {
     private DBFile() {
     }
 
-    public FileInfoRecipient toFileInfoRecipient(String recipient) {
+    public FileInfoRecipient toFileInfoRecipient(String recipientEmail) {
         FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();
         
         fileInfoRecipient.setExpirationDate(this.expirationDate);
@@ -122,7 +122,7 @@ public class DBFile {
         fileInfoRecipient.setSize(new BigDecimal(this.size));
         fileInfoRecipient.setUploaderName(this.uploader.getName());
         for (DBShare dbShare : this.getSharedWith()) {
-            if(dbShare.getEmail().equalsIgnoreCase(recipient)) {
+            if(dbShare.getEmail().equals(recipientEmail)) {
                 fileInfoRecipient.setFileId(dbShare.getDownloadId());
             }
         }

@@ -93,8 +93,8 @@ public class DBUser {
             throw new IllegalArgumentException();
         }
         DBUser dbUser = new DBUser(totalSpace, Role.INTERNAL);
-        String upperCaseEmail = email.toUpperCase();
-        dbUser.setEmail(upperCaseEmail);
+        String lowerCaseEmail = email.toLowerCase();
+        dbUser.setEmail(lowerCaseEmail);
 
         if (name == null || name.isEmpty()) {
             name = eu.europa.circabc.eushare.utils.StringUtils.emailToGivenName(email);

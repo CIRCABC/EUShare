@@ -212,7 +212,7 @@ public class FileService implements FileServiceInterface {
             }
             DBFile dbFile = findAvailableFile(fileId, false);
 
-            DBShare dbShare = new DBShare(recipient.getEmail(), dbFile, recipient.getMessage());
+            DBShare dbShare = new DBShare(recipient.getEmail().toLowerCase(), dbFile, recipient.getMessage());
 
             String shortUrl;
             do {
@@ -312,7 +312,7 @@ public class FileService implements FileServiceInterface {
             if (!StringUtils.validateMessage(recipient.getMessage())) {
                 throw new MessageTooLongException();
             }
-            DBShare dbShare = new DBShare(recipient.getEmail(), dbFile, recipient.getMessage());
+            DBShare dbShare = new DBShare(recipient.getEmail().toLowerCase(), dbFile, recipient.getMessage());
 
             String shortUrl;
             do {
