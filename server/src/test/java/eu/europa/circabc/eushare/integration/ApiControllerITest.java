@@ -828,7 +828,7 @@ public class ApiControllerITest {
         "/file/" + dbFile.getId() + "/fileRequest/sharedWith", HttpMethod.POST, httpEntity, Recipient.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assertEquals(recipient.getEmail(), entity.getBody().getEmail());
+    assertEquals(recipient.getEmail().toLowerCase(), entity.getBody().getEmail());
     assertEquals(recipient.getMessage(), entity.getBody().getMessage());
   }
 

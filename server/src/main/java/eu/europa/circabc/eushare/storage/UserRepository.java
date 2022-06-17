@@ -20,7 +20,7 @@ public interface UserRepository extends PagingAndSortingRepository<DBUser, Strin
     public List<DBUser> findAllById(String id);
     public DBUser findOneByUsername(String username);
 
-    @Query("FROM DBUser u WHERE (u.email = (:email))")
+    @Query("FROM DBUser u WHERE (u.email = lower(:email))")
     public DBUser findOneByEmailIgnoreCase(@Param("email") String email);
 
     @Query("FROM DBUser u WHERE (u.email like lower(concat(:start,'%')) or (lower(u.name) like lower(concat('%',:start,'%')))) ORDER BY u.name")
