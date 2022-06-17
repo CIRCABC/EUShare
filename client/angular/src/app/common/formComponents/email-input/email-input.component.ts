@@ -51,11 +51,15 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
     const control = this.controlDirective.control;
     if (control) {
       if (!control.validator) {
-        control.setValidators([Validators.pattern(this.emailRegex)]);
+        control.setValidators([
+          Validators.pattern(this.emailRegex),
+          Validators.maxLength(254),
+        ]);
       } else {
         control.setValidators([
           control.validator,
           Validators.pattern(this.emailRegex),
+          Validators.maxLength(254),
         ]);
       }
       setTimeout(() => control.updateValueAndValidity({ emitEvent: true }));
@@ -76,12 +80,12 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   }
 
   get errorMessage(): string | null {
-    if (
-      this.controlDirective.control &&
-      this.controlDirective.control.errors &&
-      this.controlDirective.control.errors['pattern']
-    ) {
-      return 'Invalid email form';
+    if (this.controlDirective.control && this.controlDirective.control.errors) {
+      if (this.controlDirective.control.errors['pattern']) {
+        return 'Invalid email form';
+      } else if (this.controlDirective.control.errors['maxlength']) {
+        return 'Email too long';
+      }
     }
     return null;
   }
