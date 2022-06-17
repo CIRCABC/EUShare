@@ -120,6 +120,8 @@
   "user.not.found": "Lietotājs nav atrasts",
   "user.search": "Lietotāja meklēšana",
   "user.uploaded.files": "{{ userName }} augšupielādētie faili",
+  "validation.invalidEmail": "Nederīga e-pasta adrese",
+  "validation.maxlength": "Maksimālais garums ir {{requiredLength}}, bet faktiskais garums ir {{actualLength}}",
   "warning": "Brīdinājums",
   "welcome": "Welcome!",
   "while.trying": "mēģinot",

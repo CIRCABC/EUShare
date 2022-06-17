@@ -120,6 +120,8 @@
   "user.not.found": "Vartotojas nerastas",
   "user.search": "Vartotojo paieška",
   "user.uploaded.files": "{{ userName }} įkeltos bylos",
+  "validation.invalidEmail": "Neteisingas el.",
+  "validation.maxlength": "Maksimalus ilgis yra {{requiredLength}}, bet tikrasis ilgis yra {{actualLength}}",
   "warning": "įspėjimas",
   "welcome": "Sveiki atvykę!",
   "while.trying": "bandydamas",

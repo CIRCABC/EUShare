@@ -121,6 +121,8 @@
   "user.not.found":"User not found",
   "user.search": "User search",
   "user.uploaded.files": "{{ userName }}'s uploaded files",
+  "validation.invalidEmail": "Invalid email address",
+  "validation.maxlength": "Maximum length is {{requiredLength}} but actual length is {{actualLength}}",
   "warning": "Warning",
   "welcome": "Welcome!",
   "while.trying":"while trying",

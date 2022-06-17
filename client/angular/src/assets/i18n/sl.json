@@ -120,6 +120,8 @@
   "user.not.found": "Uporabnika ni bilo mogoče najti",
   "user.search": "Iskanje uporabnikov",
   "user.uploaded.files": "Naložene datoteke {{ userName }}",
+  "validation.invalidEmail": "Neveljaven e-poštni naslov",
+  "validation.maxlength": "Največja dolžina je {{requiredLength}}, dejanska dolžina pa {{actualLength}}",
   "warning": "Opozorilo",
   "welcome": "Dobrodošli!",
   "while.trying": "medtem ko poskušate",

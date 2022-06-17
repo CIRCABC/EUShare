@@ -120,6 +120,8 @@
   "user.not.found": "Потребителят не е намерен",
   "user.search": "Търсене на потребители",
   "user.uploaded.files": "{{ userName }} Качени файлове",
+  "validation.invalidEmail": "Невалиден имейл адрес",
+  "validation.maxlength": "Максималната дължина е {{requiredLength}}, но действителната дължина е {{actualLength}}",
   "warning": "Предупреждение",
   "welcome": "Добре дошли!",
   "while.trying": "докато се опитвате",

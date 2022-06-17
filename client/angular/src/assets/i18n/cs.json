@@ -120,6 +120,8 @@
   "user.not.found": "Uživatel nenalezen",
   "user.search": "Vyhledávání uživatelů",
   "user.uploaded.files": "Nahrané soubory {{ userName }}",
+  "validation.invalidEmail": "Neplatná e-mailová adresa",
+  "validation.maxlength": "Maximální délka je {{requiredLength}}, ale skutečná délka je {{actualLength}}",
   "warning": "Varování",
   "welcome": "Vítejte!",
   "while.trying": "zatímco se snaží",

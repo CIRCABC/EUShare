@@ -120,6 +120,8 @@
   "user.not.found": "Användaren hittades inte",
   "user.search": "Sök användare",
   "user.uploaded.files": "{{ userName }} s uppladdade filer",
+  "validation.invalidEmail": "Ogiltig e-postadress",
+  "validation.maxlength": "Maximal längd är {{requiredLength}} men den faktiska längden är {{actualLength}}",
   "warning": "Varning",
   "welcome": "Välkomna!",
   "while.trying": "medan du försöker",

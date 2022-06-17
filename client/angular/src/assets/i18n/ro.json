@@ -120,6 +120,8 @@
   "user.not.found": "Utilizatorul nu a găsit",
   "user.search": "Căutare utilizator",
   "user.uploaded.files": "Fișierele încărcate de {{ userName }}",
+  "validation.invalidEmail": "Adresă de e-mail nevalidă",
+  "validation.maxlength": "Lungimea maximă este {{requiredLength}} dar lungimea reală este {{actualLength}}",
   "warning": "Avertizare",
   "welcome": "Bine aţi venit!",
   "while.trying": "în timp ce încercați",

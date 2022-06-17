@@ -120,6 +120,8 @@
   "user.not.found": "Utent ma sabet",
   "user.search": "Tiftix għall-utent",
   "user.uploaded.files": "{{ userName }} fajls uploaded",
+  "validation.invalidEmail": "Indirizz tal-email invalidu",
+  "validation.maxlength": "It-tul massimu huwa {{requiredLength}} imma t-tul attwali huwa {{actualLength}}",
   "warning": "twissija",
   "welcome": "Merħba!",
   "while.trying": "waqt li tipprova",

@@ -120,6 +120,8 @@
   "user.not.found": "Brugeren blev ikke fundet",
   "user.search": "Bruger søgning",
   "user.uploaded.files": "{{ userName }} s uploadede filer",
+  "validation.invalidEmail": "Ugyldig e-mail-adresse",
+  "validation.maxlength": "Maksimal længde er {{requiredLength}} men den faktiske længde er {{actualLength}}",
   "warning": "Advarsel",
   "welcome": "Velkommen!",
   "while.trying": "mens du prøver",

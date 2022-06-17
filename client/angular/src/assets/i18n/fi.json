@@ -120,6 +120,8 @@
   "user.not.found": "Käyttäjää ei löydy",
   "user.search": "Käyttäjän haku",
   "user.uploaded.files": "Käyttäjän {{ userName }} lataamat tiedostot",
+  "validation.invalidEmail": "Virheellinen sähköpostiosoite",
+  "validation.maxlength": "Enimmäispituus on {{requiredLength}}, mutta todellinen pituus on {{actualLength}}",
   "warning": "Varoitus",
   "welcome": "Tervetuloa!",
   "while.trying": "kun yrität",

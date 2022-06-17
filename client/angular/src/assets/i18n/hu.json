@@ -120,6 +120,8 @@
   "user.not.found": "A felhasználó nem található",
   "user.search": "Felhasználói keresés",
   "user.uploaded.files": "{{ userName }} feltöltött fájljai",
+  "validation.invalidEmail": "Érvénytelen e-mail cím",
+  "validation.maxlength": "A maximális hosszúság {{requiredLength}}, de a tényleges hossz {{actualLength}}",
   "warning": "Figyelmeztetés",
   "welcome": "Üdvözlöm!",
   "while.trying": "miközben próbál",

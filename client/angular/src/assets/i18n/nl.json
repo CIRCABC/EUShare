@@ -120,6 +120,8 @@
   "user.not.found": "Gebruiker niet gevonden",
   "user.search": "Zoeken door gebruikers",
   "user.uploaded.files": "De geüploade bestanden van {{ userName }}",
+  "validation.invalidEmail": "Ongeldig e-mailadres",
+  "validation.maxlength": "De maximale lengte is {{requiredLength}} maar de werkelijke lengte is {{actualLength}}",
   "warning": "Waarschuwing",
   "welcome": "Welkom!",
   "while.trying": "tijdens het proberen",

@@ -120,6 +120,8 @@
   "user.not.found": "Ο χρήστης δεν βρέθηκε",
   "user.search": "Αναζήτηση χρήστη",
   "user.uploaded.files": "Τα αρχεία που έχουν αποσταλεί {{ userName }}",
+  "validation.invalidEmail": "Μη έγκυρη διεύθυνση email",
+  "validation.maxlength": "Το μέγιστο μήκος είναι {{requiredLength}} αλλά το πραγματικό μήκος είναι {{actualLength}}",
   "warning": "Προειδοποίηση",
   "welcome": "Καλώς ήρθατε!",
   "while.trying": "ενώ προσπαθείτε",

@@ -120,6 +120,8 @@
   "user.not.found": "Utilisateur introuvable",
   "user.search": "Recherche d'utilisateurs",
   "user.uploaded.files": "Les fichiers téléchargés de {{ userName }}",
+  "validation.invalidEmail": "Adresse e-mail non valide",
+  "validation.maxlength": "La longueur maximale est de {{requiredLength}} mais la longueur réelle est de {{actualLength}}",
   "warning": "Avertissement",
   "welcome": "Bienvenue !",
   "while.trying": "tout en essayant",

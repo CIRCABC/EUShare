@@ -120,6 +120,8 @@
   "user.not.found": "Korisnik nije pronađen",
   "user.search": "Pretraživanje korisnika",
   "user.uploaded.files": "{{ userName }} učitane datoteke",
+  "validation.invalidEmail": "Neispravna adresa e-pošte",
+  "validation.maxlength": "Maksimalna duljina je {{requiredLength}}, ali stvarna duljina je {{actualLength}}",
   "warning": "Upozorenje",
   "welcome": "Dobrodošli!",
   "while.trying": "dok pokušavate",

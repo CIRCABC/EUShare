@@ -120,6 +120,8 @@
   "user.not.found": "Kasutajat ei leitud",
   "user.search": "Kasutaja otsing",
   "user.uploaded.files": "{{ userName }} on üles laaditud failid",
+  "validation.invalidEmail": "Kehtetu meiliaadress",
+  "validation.maxlength": "Maksimaalne pikkus on {{requiredLength}}, kuid tegelik pikkus on {{actualLength}}",
   "warning": "Hoiatus",
   "welcome": "Tere tulemast!",
   "while.trying": "püüdes",

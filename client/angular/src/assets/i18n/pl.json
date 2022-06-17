@@ -120,6 +120,8 @@
   "user.not.found": "Nie znaleziono użytkownika",
   "user.search": "Wyszukiwanie użytkownika",
   "user.uploaded.files": "{{ userName }} przesłane pliki",
+  "validation.invalidEmail": "Nieprawidłowy adres e-mail",
+  "validation.maxlength": "Maksymalna długość wynosi {{requiredLength}}, ale rzeczywista długość to {{actualLength}}",
   "warning": "Ostrzeżenie",
   "welcome": "Witamy!",
   "while.trying": "podczas próby",

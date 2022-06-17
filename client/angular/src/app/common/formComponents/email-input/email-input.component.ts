@@ -20,6 +20,7 @@ import {
   Input,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
+import { I18nService } from '../../i18n/i18n.service';
 
 @Component({
   selector: 'app-email-input',
@@ -43,7 +44,10 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
 
   disabled!: boolean;
 
-  constructor(@Optional() @Self() public controlDirective: NgControl) {
+  constructor(
+    @Optional() @Self() public controlDirective: NgControl,
+    private i18nService: I18nService
+  ) {
     controlDirective.valueAccessor = this;
   }
 
@@ -82,9 +86,12 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   get errorMessage(): string | null {
     if (this.controlDirective.control && this.controlDirective.control.errors) {
       if (this.controlDirective.control.errors['pattern']) {
-        return 'Invalid email form';
+        return this.i18nService.translate('validation.invalidEmail');
       } else if (this.controlDirective.control.errors['maxlength']) {
-        return 'Email too long';
+        return this.i18nService.translate(
+          'validation.maxlength',
+          this.controlDirective.control.errors['maxlength']
+        );
       }
     }
     return null;

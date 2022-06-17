@@ -120,6 +120,8 @@
   "user.not.found": "Používateľ nebol nájdený",
   "user.search": "Vyhľadávanie používateľov",
   "user.uploaded.files": "nahrané súbory {{ userName }}",
+  "validation.invalidEmail": "Neplatná e-mailová adresa",
+  "validation.maxlength": "Maximálna dĺžka je {{requiredLength}}, ale skutočná dĺžka je {{actualLength}}",
   "warning": "Varovanie",
   "welcome": "Vitajte!",
   "while.trying": "pri pokuse",

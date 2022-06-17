@@ -120,6 +120,8 @@
   "user.not.found": "Níor aimsíodh an t-úsáideoir",
   "user.search": "Cuardach úsáideora",
   "user.uploaded.files": "{{ userName }}'s comhaid a uaslódáil",
+  "validation.invalidEmail": "Seoladh ríomhphoist neamhbhailí",
+  "validation.maxlength": "Is é an fad uasta {{requiredLength}} ach is é an fad iarbhír {{actualLength}}",
   "warning": "Rabhadh",
   "welcome": "Fáilte!",
   "while.trying": "agus tú ag iarraidh",
