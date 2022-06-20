@@ -71,11 +71,7 @@ html {
 .main .cta {
   margin-top: 30px;
 }
-.cta--homepage {
-  position: relative;
-  border: 0;
-  padding: 12px 12px 12px 47px;
-}
+
 .cta {
   display: inline-block;
   border-radius: 3px;
@@ -134,7 +130,6 @@ a:hover {
 .cta--homepage {
   position: relative;
   border: 0;
-
   padding: 12px 12px 12px 47px;
 
   &::before {
