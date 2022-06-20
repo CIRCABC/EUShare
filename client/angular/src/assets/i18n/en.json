@@ -43,13 +43,14 @@
   "file.request.change.expirationdate": "Change expiration date",
   "file.upload.change.title":"Warning, you can only share one file at a time!",
   "file.upload.change.message":"File \"{{file1}}\" will be uploaded instead of \"{{file2}}\"",
- 
+
   "file.will.expire": "The file will expire on the {{date}}",
   "flies.shared.with.me": "Files shared with me",
   "footer.message": "CIRCABC is open source",
   "footer.title": "CIRCABC is supported by the European Commission's ISA² programme, which promotes interoperability solutions for European public administrations. It is also available as an open-source software version ",
   "free.space": "Free space",
   "generate.link": "Generate a link to your file and share it however you prefer",
+  "help.menu": "Help menu",
   "how.to.share": "How to share?",
   "how.to.share.file": "Notifications by email",
   "information": "Information",
@@ -66,6 +67,7 @@
   "login.title":"The easiest way to share documents inside and outside the European Commission",
   "login.with.eulogin": "Login with EULogin",
   "logout": "Logout",
+  "main.menu" : "Main menu",
   "modify.user.rights":"modify this user's rights",
   "more.advanced":"More options",
   "my.calendar": "My calendar",

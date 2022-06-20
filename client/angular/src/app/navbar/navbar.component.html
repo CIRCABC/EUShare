@@ -1,112 +1,165 @@
-<nav *ngIf="loggedIn" class="navbar" role="navigation">
+<nav
+  *ngIf="loggedIn"
+  class="navbar"
+  [attr.aria-label]="'main.menu' | transloco"
+  role="navigation"
+>
   <div class="container">
-
-
-    <div id="menu" class="navbar-menu" id="myMenu" [class.is-active]="isBurgerActive">
+    <div
+      id="menu"
+      class="navbar-menu"
+      id="myMenu"
+      [class.is-active]="isBurgerActive"
+    >
       <div *ngIf="!loggedIn" class="navbar-start">
-      <a class="navbar-item" routerLink="home">
-        <fa-icon class="icon is-large" [icon]="faShareAlt" size="2x"></fa-icon>
-        <p *ngIf="!loggedIn">CIRCABC Share</p>
-      </a>
-      <a
-        role="button"
-        class="navbar-burger"
-        aria-label="menu"
-        aria-expanded="false"
-        [class.is-active]="isBurgerActive"
-        (click)="toggleBurger()"
-        data-target="myMenu"
-        *ngIf="loggedIn"
-      >
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-        <span aria-hidden="true"></span>
-      </a>
-    </div>
+        <a class="navbar-item" routerLink="home">
+          <fa-icon
+            class="icon is-large"
+            [icon]="faShareAlt"
+            size="2x"
+          ></fa-icon>
+          <p *ngIf="!loggedIn">CIRCABC Share</p>
+        </a>
+        <a
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          [class.is-active]="isBurgerActive"
+          (click)="toggleBurger()"
+          data-target="myMenu"
+          *ngIf="loggedIn"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
 
       <div *ngIf="loggedIn" class="navbar-start">
+        <a
+          (click)="toggleBurger()"
+          routerLinkActive="tab--current"
+          class="navbar-item is-family-secondary my-shared-files"
+          routerLink="home"
+        >
+          <span class="spanlabel">{{ "my.shared.files" | transloco }}</span>
+        </a>
+        <a
+          (click)="toggleBurger()"
+          routerLinkActive="tab--current"
+          class="navbar-item is-family-secondary shared-with-me"
+          routerLink="download"
+        >
+          <span class="spanlabel">{{ "shared.with.me" | transloco }} </span>
+        </a>
+        <a
+          (click)="toggleBurger()"
+          routerLinkActive="tab--current"
+          *ngIf="isAdmin"
+          class="navbar-item is-family-secondary administration"
+          routerLink="administration"
+        >
+          <span class="spanlabel">{{ "administration" | transloco }} </span>
+        </a>
 
+        <a class="navbar-item is-family-secondary circabc-link-separator"></a>
 
-
-        <a (click)="toggleBurger()" routerLinkActive="tab--current"
-          class="navbar-item is-family-secondary my-shared-files" routerLink="home">
-          <span class="spanlabel">{{
-            "my.shared.files" | transloco
-            }}</span>
+        <a
+          href="{{ circabc_url }}/eulogin"
+          class="navbar-item is-family-secondary circabc-link-dashboard"
+        >
+          <span class="spanlabel">{{ "dashboard" | transloco }}</span>
         </a>
-        <a (click)="toggleBurger()" routerLinkActive="tab--current"
-          class="navbar-item is-family-secondary shared-with-me" routerLink="download">
-          <span class="spanlabel">{{ "shared.with.me" | transloco }}
-          </span>
+        <a
+          href="{{ circabc_url }}/eulogin?route=calendar"
+          class="navbar-item is-family-secondary circabc-link-my-calendar"
+        >
+          <span class="spanlabel">{{ "my.calendar" | transloco }}</span>
         </a>
-        <a (click)="toggleBurger()" routerLinkActive="tab--current" *ngIf="isAdmin"
-          class="navbar-item is-family-secondary administration" routerLink="administration">
-          <span class="spanlabel">{{ "administration" | transloco }}
-          </span>
+        <a
+          href="{{ circabc_url }}/eulogin?route=roles"
+          class="navbar-item is-family-secondary circabc-link-roles"
+        >
+          <span class="spanlabel">{{ "roles" | transloco }}</span>
         </a>
-
-        <a  class="navbar-item is-family-secondary circabc-link-separator"></a>
-
-        <a href="{{circabc_url}}/eulogin"  class="navbar-item is-family-secondary circabc-link-dashboard">
-          <span class="spanlabel">{{
-            "dashboard" | transloco
-            }}</span>
-        </a>
-        <a href="{{circabc_url}}/eulogin?route=calendar" class="navbar-item is-family-secondary circabc-link-my-calendar">
-          <span class="spanlabel">{{
-            "my.calendar" | transloco
-            }}</span>
-        </a>
-        <a href="{{circabc_url}}/eulogin?route=roles" class="navbar-item is-family-secondary circabc-link-roles">
-          <span class="spanlabel">{{
-            "roles" | transloco
-            }}</span>
-        </a>
-        <a href="{{circabc_url}}/eulogin?route=explore" class="navbar-item is-family-secondary circabc-link-browse-public-groups">
+        <a
+          href="{{ circabc_url }}/eulogin?route=explore"
+          class="
+            navbar-item
+            is-family-secondary
+            circabc-link-browse-public-groups
+          "
+        >
           <span class="spanlabel">{{
             "browse.public.groups" | transloco
-            }}</span>
+          }}</span>
         </a>
-
-
-
-
       </div>
 
       <div class="navbar-end">
-        <div *ngIf="loggedIn && router.url!=='/upload'" class="navbar-item is-family-secondary">
-
-          <button (click)="toggleBurger()" class="button movedownbutton" routerLink="upload">
+        <div
+          *ngIf="loggedIn && router.url !== '/upload'"
+          class="navbar-item is-family-secondary"
+        >
+          <button
+            (click)="toggleBurger()"
+            class="button movedownbutton"
+            routerLink="upload"
+          >
             <span class="icon is-small">
               <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
             </span>
             &nbsp;{{ "share.a.new.file" | transloco }}
           </button>
         </div>
-
       </div>
 
       <div _ngcontent-urs-c43="" class="main-nav menu2">
         <!---->
-    
+
         <div _ngcontent-urs-c43="" class="menuitem">
           <div _ngcontent-urs-c43="" class="personal-menu-help">
             <a _ngcontent-urs-c43="" data-cy="help" class="tab tab--help">
               <span _ngcontent-urs-c43="" class="labelhelp">Help</span>
             </a>
-    
-            <div _ngcontent-urs-c43="" class="dropdown-help dropdown--personal-menu-help">
-              <section _ngcontent-urs-c43="" class="dropdown--personal-menu__sidebar">
-                <nav _ngcontent-urs-c43="">
+
+            <div
+              _ngcontent-urs-c43=""
+              class="dropdown-help dropdown--personal-menu-help"
+            >
+              <section
+                _ngcontent-urs-c43=""
+                class="dropdown--personal-menu__sidebar"
+              >
+                <nav
+                  _ngcontent-urs-c43=""
+                  [attr.aria-label]="'help.menu' | transloco"
+                >
                   <div _ngcontent-urs-c43="" class="links-group">
-                    <a _ngcontent-urs-c43="" href="{{circabc_url}}/ui/help">Help Center</a>
-    
-                    <a _ngcontent-urs-c43="" href="{{circabc_url}}/ui/help/contact">Contact Support</a>
-    
-                    <a _ngcontent-urs-c43="" target="_blank" href="https://github.com/CIRCABC/Circabc-OSS">Download Source</a>
-    
-                    <a _ngcontent-urs-c43="" href="{{circabc_url}}/ui/help/about">About CIRCABC</a>
-    
+                    <a _ngcontent-urs-c43="" href="{{ circabc_url }}/ui/help"
+                      >Help Center</a
+                    >
+
+                    <a
+                      _ngcontent-urs-c43=""
+                      href="{{ circabc_url }}/ui/help/contact"
+                      >Contact Support</a
+                    >
+
+                    <a
+                      _ngcontent-urs-c43=""
+                      target="_blank"
+                      href="https://github.com/CIRCABC/Circabc-OSS"
+                      >Download Source</a
+                    >
+
+                    <a
+                      _ngcontent-urs-c43=""
+                      href="{{ circabc_url }}/ui/help/about"
+                      >About CIRCABC</a
+                    >
+
                     <!---->
                   </div>
                 </nav>
@@ -114,11 +167,7 @@
             </div>
           </div>
         </div>
-    
-        
       </div>
-
-
     </div>
   </div>
 </nav>
