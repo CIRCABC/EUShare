@@ -1,4 +1,3 @@
-
 @import "../../variables.scss";
 
 .faIcon {
@@ -13,43 +12,47 @@
 
 .circabc-link-dashboard::before {
   background: url("../../img/icon-info-grey.png") no-repeat;
-  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
+    brightness(93%) contrast(86%);
   background-size: 18px 18px;
 }
 .circabc-link-my-calendar::before {
   background: url("../../img/icon-agenda-grey.png") no-repeat;
-  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
+    brightness(93%) contrast(86%);
   background-size: 18px 18px;
 }
 
 .circabc-link-roles::before {
   background: url("../../img/business-card.png") no-repeat;
-  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
+    brightness(93%) contrast(86%);
   //background-size: 18px 18px;
 }
 .circabc-link-browse-public-groups::before {
   background: url("../../img/icon-group-browser-grey.png") no-repeat;
-  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
+    brightness(93%) contrast(86%);
   background-size: 18px 18px;
 }
 
-
 .my-shared-files::before {
   background: url("../../img/mySharedFiles.svg") no-repeat;
-  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
+    brightness(93%) contrast(86%);
 }
 
 .shared-with-me::before {
   background: url("../../img/sharedWithMe.svg") no-repeat;
-  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
+    brightness(93%) contrast(86%);
 }
 
 .administration::before {
   background: url("../../img/administration.svg") no-repeat;
-  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg) brightness(93%) contrast(86%);
+  filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
+    brightness(93%) contrast(86%);
 }
-
-
 
 .circabc-link-dashboard,
 .circabc-link-my-calendar,
@@ -89,7 +92,6 @@
   border-right-width: 2px;
 }
 
-
 .avatar {
   display: inline-block;
   vertical-align: middle;
@@ -104,9 +106,7 @@
   margin-left: 1em;
 }
 
-
-.tab--current
-{
+.tab--current {
   color: $link;
   position: relative;
 
@@ -143,14 +143,13 @@
 }
 
 .movedownbutton {
-  margin-top:125px;
+  margin-top: 125px;
   left: -100px;
-  position:absolute;
+  position: absolute;
   font-weight: 500;
 }
 
 /////////////////////
-
 
 .menu2[_ngcontent-urs-c43] {
   right: 0;
@@ -162,25 +161,32 @@
   box-shadow: unset;
 }
 
-.dropdown--personal-menu-help[_ngcontent-urs-c43] .dropdown--personal-menu__sidebar[_ngcontent-urs-c43] .links-group[_ngcontent-urs-c43] a[_ngcontent-urs-c43] {
+.dropdown--personal-menu-help[_ngcontent-urs-c43]
+  .dropdown--personal-menu__sidebar[_ngcontent-urs-c43]
+  .links-group[_ngcontent-urs-c43]
+  a[_ngcontent-urs-c43] {
   display: block;
   margin-bottom: 10px;
   font-size: 12px;
 }
 
-.dropdown--personal-menu-help[_ngcontent-urs-c43] .dropdown--personal-menu__sidebar[_ngcontent-urs-c43] .links-group[_ngcontent-urs-c43]:last-of-type {
+.dropdown--personal-menu-help[_ngcontent-urs-c43]
+  .dropdown--personal-menu__sidebar[_ngcontent-urs-c43]
+  .links-group[_ngcontent-urs-c43]:last-of-type {
   border: none;
 }
 
-.dropdown--personal-menu-help[_ngcontent-urs-c43] .dropdown--personal-menu__sidebar[_ngcontent-urs-c43] .links-group[_ngcontent-urs-c43] {
+.dropdown--personal-menu-help[_ngcontent-urs-c43]
+  .dropdown--personal-menu__sidebar[_ngcontent-urs-c43]
+  .links-group[_ngcontent-urs-c43] {
   padding: 15px;
   border-bottom: 2px solid #f5fafa;
 }
 
-.personal-menu-help[_ngcontent-urs-c43]:hover .dropdown--personal-menu-help[_ngcontent-urs-c43] {
+.personal-menu-help[_ngcontent-urs-c43]:hover
+  .dropdown--personal-menu-help[_ngcontent-urs-c43] {
   display: block;
 }
-
 
 .dropdown--personal-menu-help[_ngcontent-urs-c43] {
   top: 62px;
@@ -220,21 +226,20 @@
 }
 
 .main-nav .tab {
-    font-size: 13px;
-    display: inline-block;
-    font-family: Ubuntu,verdana,helvetica,sans-serif;
-    text-decoration: none;
-    color: #5b5b5b;
-    height: 52px;
-    line-height: 52px;
-    padding: 0 18px;
+  font-size: 13px;
+  display: inline-block;
+  font-family: Ubuntu, verdana, helvetica, sans-serif;
+  text-decoration: none;
+  color: #5b5b5b;
+  height: 52px;
+  line-height: 52px;
+  padding: 0 18px;
 }
 
-.main-nav .tab--help, .main-nav .tab--group-name {
+.main-nav .tab--help,
+.main-nav .tab--group-name {
   position: relative;
 }
-
-
 
 .menuitem[_ngcontent-urs-c43] {
   text-align: center;
@@ -247,25 +252,13 @@
   position: relative;
 }
 
-.main-nav .tab {
-  font-size: 13px;
-  display: inline-block;
-  font-family: Ubuntu,verdana,helvetica,sans-serif;
-  text-decoration: none;
-  color: #5b5b5b;
-  height: 52px;
-  line-height: 52px;
-  padding: 0 18px;
-}
-
-
 .main-nav .tab:hover {
   background: #f5fafa;
 }
 
-
 .main-nav .tab--help:before {
-  background: url(https://circabc.acceptance.europa.eu/ui/img/icon-help-grey.png) no-repeat;
+  background: url(https://circabc.acceptance.europa.eu/ui/img/icon-help-grey.png)
+    no-repeat;
 }
 
 .labelhelp {
