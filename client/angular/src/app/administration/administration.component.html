@@ -52,7 +52,7 @@
         <div>
           <label class="label">{{ "user.info" | transloco }}</label>
           <p *ngIf="!isChangePermissions && !selectedUserInfo.isAdmin">
-            Internal user: {{ selectedUserInfo.givenName }}
+            {{ 'internal.user' | transloco }} : {{ selectedUserInfo.givenName }}
             <fa-icon [icon]="faUser"></fa-icon>
           </p>
           <p *ngIf="!isChangePermissions && selectedUserInfo.isAdmin">
@@ -61,8 +61,8 @@
           </p>
           <div class="select" *ngIf="isChangePermissions">
             <select [(ngModel)]="selectedIsAdminValue">
-              <option [ngValue]="false">Internal user</option>
-              <option [ngValue]="true" selected>Admin user</option>
+              <option [ngValue]="false">{{ 'internal.user' | transloco }}</option>
+              <option [ngValue]="true" selected>{{ "admin.user" | transloco }}</option>
             </select>
           </div>
           <br *ngIf="isChangePermissions" />

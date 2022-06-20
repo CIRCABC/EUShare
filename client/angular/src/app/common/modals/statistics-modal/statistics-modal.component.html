@@ -4,7 +4,7 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        File Downloads <br />
+        {{ 'file.downloads' | transloco }} <br />
         <strong> {{ modalFileName }}</strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
@@ -14,8 +14,8 @@
         <!-- Left side -->
         <div class="level-item has-text-centered">
           <p>
-            <strong>{{ modalFileName }}</strong> has been downloaded
-            <strong>{{ fileLogs.length }}</strong> time(s)
+            <strong>{{ modalFileName }}</strong> {{ 'has.been.downloaded' | transloco }}
+            <strong>{{ fileLogs.length }}</strong> {{'times' | transloco }}
           </p>
         </div>
       </div>
@@ -26,13 +26,13 @@
 
       <table class="table">
         <caption>
-          Statistics
+          {{ 'statistics' | transloco }}
         </caption>
         <thead>
           <tr>
-            <th><abbr title="Downloader">Downloader</abbr></th>
-            <th><abbr title="Date">Date</abbr></th>
-            <th><abbr title="Link">Download Link</abbr></th>
+            <th><abbr title="Downloader">{{ 'downloader' | transloco }}</abbr></th>
+            <th><abbr title="Date">{{ 'date' | transloco }}</abbr></th>
+            <th><abbr title="Link">{{ 'download.link' | transloco }}</abbr></th>
           </tr>
         </thead>
         <tbody>

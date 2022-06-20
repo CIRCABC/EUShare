@@ -33,7 +33,7 @@
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
-        </a>
+        </a>a
       </div>
 
       <div *ngIf="loggedIn" class="navbar-start">
@@ -115,49 +115,49 @@
         </div>
       </div>
 
-      <div _ngcontent-urs-c43="" class="main-nav menu2">
+      <div class="main-nav menu2">
         <!---->
 
-        <div _ngcontent-urs-c43="" class="menuitem">
-          <div _ngcontent-urs-c43="" class="personal-menu-help">
-            <a _ngcontent-urs-c43="" data-cy="help" class="tab tab--help">
-              <span _ngcontent-urs-c43="" class="labelhelp">Help</span>
+        <div class="menuitem">
+          <div class="personal-menu-help">
+            <a data-cy="help" class="tab tab--help">
+              <span class="labelhelp">{{ "help" | transloco }}</span>
             </a>
 
             <div
-              _ngcontent-urs-c43=""
+             
               class="dropdown-help dropdown--personal-menu-help"
             >
               <section
-                _ngcontent-urs-c43=""
+               
                 class="dropdown--personal-menu__sidebar"
               >
                 <nav
-                  _ngcontent-urs-c43=""
+                 
                   [attr.aria-label]="'help.menu' | transloco"
                 >
-                  <div _ngcontent-urs-c43="" class="links-group">
-                    <a _ngcontent-urs-c43="" href="{{ circabc_url }}/ui/help"
-                      >Help Center</a
+                  <div class="links-group">
+                    <a href="{{ circabc_url }}/ui/help"
+                      >{{ 'help.center' | transloco }}</a
                     >
 
                     <a
-                      _ngcontent-urs-c43=""
+                     
                       href="{{ circabc_url }}/ui/help/contact"
-                      >Contact Support</a
+                      >{{ 'contact.support.menu' | transloco }}</a
                     >
 
                     <a
-                      _ngcontent-urs-c43=""
+                     
                       target="_blank"
                       href="https://github.com/CIRCABC/Circabc-OSS"
-                      >Download Source</a
+                      >{{ 'download.source' | transloco }}</a
                     >
 
                     <a
-                      _ngcontent-urs-c43=""
+                     
                       href="{{ circabc_url }}/ui/help/about"
-                      >About CIRCABC</a
+                      >{{ 'about.circabc' | transloco }}</a
                     >
 
                     <!---->

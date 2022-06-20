@@ -35,7 +35,7 @@
             <label class="label error" *ngIf="
                 uf['fileFromDisk'].errors &&
                 uf['fileFromDisk'].errors['forbiddenFileSize']
-              ">File size bigger than
+              ">{{ 'file.size.bigger' | transloco }}
               {{ uf["fileFromDisk"].errors['forbiddenFileSize'].value }} bytes
             </label>
           </div>

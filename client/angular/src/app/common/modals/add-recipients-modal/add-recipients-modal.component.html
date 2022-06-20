@@ -23,7 +23,7 @@
         <div>
           <button class="button" [class.is-loading]="uploadInProgress" type="submit"
             [disabled]="!sharedWithFormGroup.valid">
-            Submit
+            {{ "submit" | transloco }}
           </button>
         </div>
       </form>

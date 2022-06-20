@@ -151,7 +151,7 @@
 
 /////////////////////
 
-.menu2[_ngcontent-urs-c43] {
+.menu2 {
   right: 0;
   display: flex;
   align-items: center;
@@ -161,34 +161,34 @@
   box-shadow: unset;
 }
 
-.dropdown--personal-menu-help[_ngcontent-urs-c43]
-  .dropdown--personal-menu__sidebar[_ngcontent-urs-c43]
-  .links-group[_ngcontent-urs-c43]
-  a[_ngcontent-urs-c43] {
+.dropdown--personal-menu-help
+  .dropdown--personal-menu__sidebar
+  .links-group
+  a {
   display: block;
   margin-bottom: 10px;
   font-size: 12px;
 }
 
-.dropdown--personal-menu-help[_ngcontent-urs-c43]
-  .dropdown--personal-menu__sidebar[_ngcontent-urs-c43]
-  .links-group[_ngcontent-urs-c43]:last-of-type {
+.dropdown--personal-menu-help
+  .dropdown--personal-menu__sidebar
+  .links-group:last-of-type {
   border: none;
 }
 
-.dropdown--personal-menu-help[_ngcontent-urs-c43]
-  .dropdown--personal-menu__sidebar[_ngcontent-urs-c43]
-  .links-group[_ngcontent-urs-c43] {
+.dropdown--personal-menu-help
+  .dropdown--personal-menu__sidebar
+  .links-group {
   padding: 15px;
   border-bottom: 2px solid #f5fafa;
 }
 
-.personal-menu-help[_ngcontent-urs-c43]:hover
-  .dropdown--personal-menu-help[_ngcontent-urs-c43] {
+.personal-menu-help:hover
+  .dropdown--personal-menu-help {
   display: block;
 }
 
-.dropdown--personal-menu-help[_ngcontent-urs-c43] {
+.dropdown--personal-menu-help {
   top: 62px;
   right: -8px;
   display: none;
@@ -241,12 +241,12 @@
   position: relative;
 }
 
-.menuitem[_ngcontent-urs-c43] {
+.menuitem {
   text-align: center;
   width: 50px;
 }
 
-.personal-menu-help[_ngcontent-urs-c43] {
+.personal-menu-help {
   top: 0;
   float: right;
   position: relative;
