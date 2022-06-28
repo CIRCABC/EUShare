@@ -10,7 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { Recipient } from '../../../openapi';
 import { recipientValidator } from '../../validators/recipient-validator';
 import { UploadedFilesService } from '../../../services/uploaded-files.service';
@@ -25,7 +25,7 @@ export class AddRecipientsModalComponent implements OnInit {
   private modalFileId = '';
   public uploadInProgress = false;
 
-  public sharedWithFormGroup!: UntypedFormGroup;
+  public sharedWithFormGroup!: FormGroup;
 
   public get email(): string {
     return this.sharedWithFormGroup.controls['email'].value;
@@ -37,12 +37,12 @@ export class AddRecipientsModalComponent implements OnInit {
 
   constructor(
     private modalService: ModalsService,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private uploadedFileService: UploadedFilesService
   ) {}
 
   ngOnInit() {
-    this.sharedWithFormGroup = this.fb.group(
+    this.sharedWithFormGroup = this.fb.nonNullable.group(
       {
         message: [''],
         email: [''],

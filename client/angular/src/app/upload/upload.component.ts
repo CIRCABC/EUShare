@@ -10,11 +10,11 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import {
-  UntypedFormArray,
-  UntypedFormGroup,
+  FormArray,
+  FormGroup,
   Validators,
-  UntypedFormBuilder,
-  UntypedFormControl,
+  FormBuilder,
+  FormControl,
 } from '@angular/forms';
 import { faUpload, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -44,18 +44,18 @@ export class UploadComponent implements OnInit {
   public faUpload = faUpload;
   public moreOptions = false;
   public uploadInProgress = false;
-  public uploadform!: UntypedFormGroup;
+  public uploadform!: FormGroup;
   public shareWithUser = '';
   public leftSpaceInBytes = 0;
   public totalSpaceInBytes = 0;
   public percentageUploaded = 0;
 
-  public emailControl!: UntypedFormControl;
+  public emailControl!: FormControl;
   public isShowEmailControl = true;
 
   constructor(
     private router: Router,
-    private fb: UntypedFormBuilder,
+    private fb: FormBuilder,
     private sessionApi: SessionStorageService,
     private userApi: UsersService,
     private fileApi: FileService,
@@ -107,8 +107,8 @@ export class UploadComponent implements OnInit {
   }
 
   initializeForm() {
-    this.emailControl = this.fb.control('');
-    this.uploadform = this.fb.group({
+    this.emailControl = this.fb.nonNullable.control('');
+    this.uploadform = this.fb.nonNullable.group({
       fileFromDisk: [
         undefined,
         Validators.compose([
@@ -116,12 +116,8 @@ export class UploadComponent implements OnInit {
           fileSizeValidator(this.leftSpaceInBytes),
         ]),
       ],
-      emailMessageArray: this.fb.array([
-        // this.initializeEmailMessageFormGroup()
-      ]),
-      linkArray: this.fb.array([
-        // this.initializeLinkFormGroup()
-      ]),
+      emailMessageArray: this.fb.nonNullable.array([]),
+      linkArray: this.fb.nonNullable.array([]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
       password: [undefined],
     });
@@ -129,35 +125,35 @@ export class UploadComponent implements OnInit {
     this.addEmailMessageFormGroup();
   }
 
-  getEmailMessageFormGroup(i: number): UntypedFormGroup {
-    const emailMessageArray: UntypedFormArray = this.emailMessageArray;
-    return <UntypedFormGroup>emailMessageArray.controls[i];
+  getEmailMessageFormGroup(i: number): FormGroup {
+    const emailMessageArray: FormArray = this.emailMessageArray;
+    return <FormGroup>emailMessageArray.controls[i];
   }
 
-  getEmailMessageFormGroupEmailsArray(i: number): UntypedFormArray {
-    return <UntypedFormArray>this.getEmailMessageFormGroup(i).controls['emailArray'];
+  getEmailMessageFormGroupEmailsArray(i: number): FormArray {
+    return <FormArray>this.getEmailMessageFormGroup(i).controls['emailArray'];
   }
 
-  initializeEmailMessageFormGroup(): UntypedFormGroup {
-    return this.fb.group({
-      emailArray: this.fb.array([]),
+  initializeEmailMessageFormGroup(): FormGroup {
+    return this.fb.nonNullable.group({
+      emailArray: this.fb.nonNullable.array([]),
       message: [''],
     });
   }
 
-  initializedEmailFormGroup(): UntypedFormGroup {
-    return this.fb.group(
+  initializedEmailFormGroup(): FormGroup {
+    return this.fb.nonNullable.group(
       {
-        email: new UntypedFormControl('', Validators.required),
+        email: new FormControl('', Validators.required),
       },
       { updateOn: 'change' }
     );
   }
 
-  initializedEmailFormGroupValue(value: any): UntypedFormGroup {
-    return this.fb.group(
+  initializedEmailFormGroupValue(value: any): FormGroup {
+    return this.fb.nonNullable.group(
       {
-        email: new UntypedFormControl(value),
+        email: new FormControl(value),
       },
       { updateOn: 'change' }
     );
@@ -204,7 +200,7 @@ export class UploadComponent implements OnInit {
 
   // EMAIL WITH MESSAGES
   get emailMessageArray() {
-    return this.uploadform.get('emailMessageArray') as UntypedFormArray;
+    return this.uploadform.get('emailMessageArray') as FormArray;
   }
 
   getEmailArrayOnForm(form: any) {
@@ -212,11 +208,11 @@ export class UploadComponent implements OnInit {
   }
 
   addEmailFormGroup(emailMessageFormArrayIndex: number) {
-    const formGroupOrNull = <UntypedFormGroup | null>(
+    const formGroupOrNull = <FormGroup | null>(
       this.emailMessageArray.controls[emailMessageFormArrayIndex]
     );
     if (formGroupOrNull) {
-      const emailArray = <UntypedFormArray | null>(
+      const emailArray = <FormArray | null>(
         formGroupOrNull.controls['emailArray']
       );
       if (emailArray) {
@@ -232,18 +228,18 @@ export class UploadComponent implements OnInit {
           emailArray.push(addEmail);
         }
         this.isShowEmailControl = false;
-        this.emailControl = this.fb.control('');
+        this.emailControl = this.fb.nonNullable.control('');
         setTimeout(() => (this.isShowEmailControl = true));
       }
     }
   }
 
-  getEmailArray(emailMessageArrayIndex: number): UntypedFormArray | null {
-    const formGroupOrNull = <UntypedFormGroup | null>(
+  getEmailArray(emailMessageArrayIndex: number): FormArray | null {
+    const formGroupOrNull = <FormGroup | null>(
       this.emailMessageArray.controls[emailMessageArrayIndex]
     );
     if (formGroupOrNull) {
-      return <UntypedFormArray | null>formGroupOrNull.controls['emailArray'];
+      return <FormArray | null>formGroupOrNull.controls['emailArray'];
     }
     return null;
   }
@@ -251,10 +247,10 @@ export class UploadComponent implements OnInit {
   getEmailFormGroup(
     emailMessageArrayIndex: number,
     emailArrayIndex: number
-  ): UntypedFormGroup | null {
+  ): FormGroup | null {
     const emailArray = this.getEmailArray(emailMessageArrayIndex);
     if (emailArray) {
-      return <UntypedFormGroup | null>emailArray.controls[emailArrayIndex];
+      return <FormGroup | null>emailArray.controls[emailArrayIndex];
     }
     return null;
   }
@@ -294,23 +290,23 @@ export class UploadComponent implements OnInit {
   getEmailControl(
     emailMessageArrayIndex: number,
     emailArrayIndex: number
-  ): UntypedFormControl | null {
+  ): FormControl | null {
     const emailFormGroup = this.getEmailFormGroup(
       emailMessageArrayIndex,
       emailArrayIndex
     );
     if (emailFormGroup) {
-      return <UntypedFormControl | null>emailFormGroup.controls['email'];
+      return <FormControl | null>emailFormGroup.controls['email'];
     }
     return null;
   }
 
-  getMessageControl(emailMessageArrayIndex: number): UntypedFormControl | null {
-    const formGroupOrNull = <UntypedFormGroup | null>(
+  getMessageControl(emailMessageArrayIndex: number): FormControl | null {
+    const formGroupOrNull = <FormGroup | null>(
       this.emailMessageArray.controls[emailMessageArrayIndex]
     );
     if (formGroupOrNull) {
-      return <UntypedFormControl | null>formGroupOrNull.controls['message'];
+      return <FormControl | null>formGroupOrNull.controls['message'];
     }
     return null;
   }
@@ -330,15 +326,15 @@ export class UploadComponent implements OnInit {
     this.emailMessageArray.removeAt(i);
   }
   resetEmailMessageArray() {
-    const formArray: UntypedFormArray = this.emailMessageArray;
+    const formArray: FormArray = this.emailMessageArray;
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
-    this.emailControl = this.fb.control('');
+    this.emailControl = this.fb.nonNullable.control('');
   }
 
   getEmailMessageArrayLength(): number {
-    const formArray: UntypedFormArray = this.emailMessageArray;
+    const formArray: FormArray = this.emailMessageArray;
     if (formArray) {
       return formArray.controls.length;
     }
@@ -385,7 +381,7 @@ export class UploadComponent implements OnInit {
         const recipientArray = new Array<Recipient>();
 
         for (let i = 0; i < this.getEmailMessageArrayLength(); i++) {
-          const formGroupOrNull: UntypedFormGroup | null =
+          const formGroupOrNull: FormGroup | null =
             this.getEmailMessageFormGroup(i);
           if (formGroupOrNull) {
             const messageOrNull: string | null = this.getMessageControlValue(i);
