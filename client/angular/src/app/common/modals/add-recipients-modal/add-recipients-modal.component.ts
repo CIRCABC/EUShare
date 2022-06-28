@@ -10,7 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Recipient } from '../../../openapi';
 import { recipientValidator } from '../../validators/recipient-validator';
 import { UploadedFilesService } from '../../../services/uploaded-files.service';
@@ -25,7 +25,7 @@ export class AddRecipientsModalComponent implements OnInit {
   private modalFileId = '';
   public uploadInProgress = false;
 
-  public sharedWithFormGroup!: FormGroup;
+  public sharedWithFormGroup!: UntypedFormGroup;
 
   public get email(): string {
     return this.sharedWithFormGroup.controls['email'].value;
@@ -37,7 +37,7 @@ export class AddRecipientsModalComponent implements OnInit {
 
   constructor(
     private modalService: ModalsService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private uploadedFileService: UploadedFilesService
   ) {}
 
