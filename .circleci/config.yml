@@ -51,7 +51,7 @@ jobs:
     # see https://circleci.com/docs/2.0/circleci-images/#nodejs
     working_directory: ~/EasyShare/client/angular
     docker: # run the steps with Docker
-      - image: circleci/node:16.15.1  
+      - image: circleci/node:12.22.5  
     steps: 
       - checkout: 
           path: ~/EasyShare # check out source code to working directory    
