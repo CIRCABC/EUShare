@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
 
@@ -21,14 +21,17 @@ export class LoginCircabcComponent implements OnInit {
   constructor(
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
-  ) {}
+  ) { }
 
+  @ViewChild('aClick', { read: ElementRef }) aClick: ElementRef<HTMLElement> | undefined;
   ngOnInit() {
-    // your other code
     setTimeout(() => {
-      this.login();
-    }, 1000);
+      if (this.aClick) {
+        this.aClick.nativeElement.click();
+      }
+    }, 200);
   }
+
 
   login() {
     this.keyStoreService.prepareKeyStore();

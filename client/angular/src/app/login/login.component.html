@@ -27,11 +27,11 @@
     </h2>
 
     <div class="control">
-      <a (click)="login()" class="cta cta--homepage">
+      <a #aClick (click)="login()" class="cta cta--homepage">
         {{ "login.with.eulogin" | transloco }}
       </a>
     </div>
-
+ 
     <br />
     <span class="spacing">or</span>
     <br />
