@@ -27,7 +27,7 @@ export class LoginCircabcComponent implements OnInit {
     // your other code
     setTimeout(() => {
       this.login();
-    }, 500);
+    }, 1000);
   }
 
   login() {
