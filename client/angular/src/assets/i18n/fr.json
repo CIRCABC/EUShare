@@ -94,7 +94,7 @@
   "not.authorized": "Vous n'êtes pas autorisé",
   "notification.link": "Vous pouvez maintenant partager le lien suivant vers votre fichier.",
   "notification.links": "Notifications envoyées aux destinataires suivants avec les liens suivants vers votre fichier : ",
-  "notifications": "Les notifications",
+  "notifications": "Notifications",
   "oidc.error": "Une erreur OIDC de type {{type}} a été rencontrée",
   "ok": "OK.",
   "password.on.file.download": "Mot de passe pour le téléchargement",
