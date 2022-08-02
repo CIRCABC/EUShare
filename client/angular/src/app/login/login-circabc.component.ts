@@ -32,7 +32,7 @@ export class LoginCircabcComponent implements OnInit {
     if (
       this.sessionService.getStoredUserInfo() !== null
     ) {
-      this.router.navigate(['upload']);
+      this.router.navigate(['home']);
     }
     else {
       setTimeout(() => {
