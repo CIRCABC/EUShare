@@ -24,7 +24,10 @@
             value="userInfo.id"
             (click)="displayUserInfoNumber(i)"
           >
-            <a> {{ userInfo.givenName }}</a>
+            <a *ngIf="userInfo.usedSpace > 0">
+              <strong> {{ userInfo.givenName }} </strong></a
+            >
+            <a *ngIf="userInfo.usedSpace === 0"> {{ userInfo.givenName }} </a>
           </li>
         </ul>
         <nav
@@ -52,7 +55,7 @@
         <div>
           <label class="label">{{ "user.info" | transloco }}</label>
           <p *ngIf="!isChangePermissions && !selectedUserInfo.isAdmin">
-            {{ 'internal.user' | transloco }} : {{ selectedUserInfo.givenName }}
+            {{ "internal.user" | transloco }} : {{ selectedUserInfo.givenName }}
             <fa-icon [icon]="faUser"></fa-icon>
           </p>
           <p *ngIf="!isChangePermissions && selectedUserInfo.isAdmin">
@@ -61,8 +64,12 @@
           </p>
           <div class="select" *ngIf="isChangePermissions">
             <select [(ngModel)]="selectedIsAdminValue">
-              <option [ngValue]="false">{{ 'internal.user' | transloco }}</option>
-              <option [ngValue]="true" selected>{{ "admin.user" | transloco }}</option>
+              <option [ngValue]="false">
+                {{ "internal.user" | transloco }}
+              </option>
+              <option [ngValue]="true" selected>
+                {{ "admin.user" | transloco }}
+              </option>
             </select>
           </div>
           <br *ngIf="isChangePermissions" />
