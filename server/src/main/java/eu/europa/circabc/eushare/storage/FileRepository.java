@@ -38,7 +38,7 @@ public interface FileRepository extends PagingAndSortingRepository<DBFile, Strin
     List<DBFile> findByStatusAndUploaderId(DBFile.Status status, String id, Pageable page);
 
     // get the files an uploader has uploaded with ordering by expiration date and file name
-    List<DBFile> findByStatusAndUploaderIdOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
+    List<DBFile> findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(List<DBFile.Status> status, String id, Pageable page);
 
-
+    
 }

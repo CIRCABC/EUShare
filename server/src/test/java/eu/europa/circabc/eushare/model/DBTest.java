@@ -32,6 +32,7 @@ import eu.europa.circabc.eushare.storage.ShareRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 @RunWith(SpringRunner.class)
@@ -191,9 +192,10 @@ public class DBTest {
         DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message");
         dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
-
-        List<DBFile> shareUsersFiles = fileRepository.findByStatusAndUploaderIdOrderByExpirationDateAscFilenameAsc(
-                DBFile.Status.AVAILABLE, uploader.getId(), PageRequest.of(0, 10));
+        List<DBFile.Status> status = new ArrayList<DBFile.Status>();
+        status.add(DBFile.Status.AVAILABLE);
+        List<DBFile> shareUsersFiles = fileRepository.findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(
+                status, uploader.getId(), PageRequest.of(0, 10));
 
         DBFile[] expectedShareUsersFiles = { dbFile, dbFile2, dbFile3 };
         assertEquals(3, shareUsersFiles.size());
