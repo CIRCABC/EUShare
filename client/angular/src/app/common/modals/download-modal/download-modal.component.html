@@ -3,13 +3,18 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        {{ "download" | transloco }} <br> <strong>{{ modalFileName }}
-        </strong>
+        {{ "download" | transloco }} <br />
+        <strong>{{ modalFileName }} </strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
-      <app-download-button [fileName]="modalFileName" [fileId]="modalFileId" [isFileHasPassword]="modalHasPassword"></app-download-button>
+      <app-download-button
+        [fileName]="modalFileName"
+        [fileId]="modalFileId"
+        [isFileHasPassword]="modalHasPassword"
+        (ok)="closeModal()"
+      ></app-download-button>
     </section>
     <footer class="modal-card-foot">
       <button
