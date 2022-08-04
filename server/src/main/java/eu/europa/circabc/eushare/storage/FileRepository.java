@@ -10,6 +10,7 @@
 package eu.europa.circabc.eushare.storage;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
@@ -40,5 +41,6 @@ public interface FileRepository extends PagingAndSortingRepository<DBFile, Strin
     // get the files an uploader has uploaded with ordering by expiration date and file name
     List<DBFile> findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(List<DBFile.Status> status, String id, Pageable page);
 
+    List<DBFile> findByStatusAndLastModifiedBefore(DBFile.Status status,LocalDateTime time);
     
 }

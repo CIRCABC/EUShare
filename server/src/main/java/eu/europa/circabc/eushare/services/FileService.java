@@ -158,6 +158,18 @@ public class FileService implements FileServiceInterface {
     }
 
     /**
+     * Marks all lost allocated files older than one day as deleted.
+     */
+    @Scheduled(fixedDelay = 3600000) // Every hour
+    void markAllocatedLostFiles() {
+        for (DBFile file : fileRepository.findByStatusAndLastModifiedBefore(eu.europa.circabc.eushare.storage.DBFile.Status.ALLOCATED,LocalDateTime.now().minusDays(1))) {
+            log.info("DBFile %s allocated is lost{}", file.getId());
+            file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
+            fileRepository.save(file);
+        }
+    }
+
+    /**
      * A copy of the {@code mountPoints} property.
      */
     private List<MountPoint> getMountPoints() {
