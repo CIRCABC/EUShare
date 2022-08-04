@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
@@ -153,6 +156,27 @@ public class FileApiController implements FileApi {
 
     }
 
+    @RequestMapping(value = "/file/{fileID}", method = RequestMethod.HEAD)
+    public ResponseEntity<String> headFile(@PathVariable("fileID") String fileID,
+    @RequestParam(value = "password", required = false) String password) {
+      HttpHeaders responseHeaders = new HttpHeaders();
+      try {
+        DownloadReturn downloadReturn = fileService.downloadFile(fileID, password);
+        ContentDisposition cd = ContentDisposition.builder("attachment")
+                .filename(downloadReturn.getFilename(),StandardCharsets.UTF_8).build();
+        responseHeaders.setContentDisposition(cd);
+        responseHeaders.set(HttpHeaders.CONTENT_LENGTH, downloadReturn.getFileSizeInBytes().toString());
+        return new ResponseEntity<String>(null, responseHeaders, HttpStatus.OK);
+    } catch (UnknownFileException exc3) {
+        log.warn(exc3.getMessage(), exc3);
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND, HttpErrorAnswerBuilder.build404EmptyToString(),
+                exc3);
+    } catch (WrongPasswordException exc4) {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, HttpErrorAnswerBuilder.build401EmptyToString(),
+                exc4);
+    }
+    }
+
     @Override
     public ResponseEntity<Resource> getFile(@PathVariable("fileID") String fileID,
             @RequestParam(value = "password", required = false) String password) {
@@ -162,6 +186,9 @@ public class FileApiController implements FileApi {
             InputStream stream = new FileInputStream(file);
             InputStreamResource inputStreamResource = new InputStreamResource(stream);
             HttpHeaders responseHeaders = new HttpHeaders();
+            ContentDisposition cd = ContentDisposition.builder("attachment")
+                    .filename(downloadReturn.getFilename(),StandardCharsets.UTF_8).build();
+            responseHeaders.setContentDisposition(cd);
             responseHeaders.set(HttpHeaders.CONTENT_LENGTH, downloadReturn.getFileSizeInBytes().toString());
 
             ResponseEntity<Resource> responseEntity = new ResponseEntity<>(inputStreamResource, responseHeaders,
