@@ -486,7 +486,7 @@ export class UploadComponent implements OnInit {
         const percentDone = Math.round(
           (event.loaded * 100) / eventTotalOrUndefined
         );
-        this.percentageUploaded = percentDone;
+        this.percentageUploaded = percentDone == 100 ? 99 : percentDone;
         return;
 
       case HttpEventType.Response:
