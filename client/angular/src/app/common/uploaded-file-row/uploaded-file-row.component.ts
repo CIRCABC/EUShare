@@ -16,7 +16,6 @@ import { DownloadsService } from '../../services/downloads.service';
 import { UploadedFilesService } from '../../services/uploaded-files.service';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-uploaded-file-row',
   templateUrl: './uploaded-file-row.component.html',
@@ -50,11 +49,11 @@ export class UploadedFileRowComponent implements OnInit {
     private downloadsService: DownloadsService,
     private uploadService: UploadedFilesService,
     private router: Router
-  ) {  }
+  ) {}
 
   ngOnInit() {
-    if(this.router.url.startsWith("/administration/")) {
-      this.isAdminPage=true;
+    if (this.router.url.startsWith('/administration/')) {
+      this.isAdminPage = true;
     }
   }
 
