@@ -8,9 +8,11 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
+import { SessionStorageService } from '../services/session-storage.service';
 
 @Component({
   selector: 'app-logincircabc',
@@ -19,16 +21,30 @@ import { KeyStoreService } from '../services/key-store.service';
 })
 export class LoginCircabcComponent implements OnInit {
   constructor(
+    private router: Router,
     private oauthService: OAuthService,
-    private keyStoreService: KeyStoreService
-  ) {}
+    private keyStoreService: KeyStoreService,
+    private sessionService: SessionStorageService
+  ) { }
 
+  @ViewChild('aClick', { read: ElementRef }) aClick: ElementRef<HTMLElement> | undefined;
   ngOnInit() {
-    // your other code
-    setTimeout(() => {
-      this.login();
-    }, 200);
+    if (
+      this.sessionService.getStoredUserInfo() !== null
+    ) {
+      this.router.navigate(['home']);
+    }
+    else {
+      setTimeout(() => {
+        if (this.aClick) {
+
+
+          this.aClick.nativeElement.click();
+        }
+      }, 200);
+    }
   }
+
 
   login() {
     this.keyStoreService.prepareKeyStore();

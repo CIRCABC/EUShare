@@ -7,7 +7,7 @@ eushare:
   expirationdays: 7
   defaultuserspace: 5368709120
   # 4Gb
-  maxSizeAllowedInBytes: 4294967296 
+  maxSizeAllowedInBytes: 5368709120 
   activateMailService: false
   disks:
     - tmp

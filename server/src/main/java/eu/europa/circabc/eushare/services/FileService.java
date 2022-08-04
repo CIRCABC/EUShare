@@ -500,10 +500,16 @@ public class FileService implements FileServiceInterface {
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             if (userService.isUserExists(userId)) {
+                List<DBFile.Status> status = new ArrayList<DBFile.Status>();
+                status.add(DBFile.Status.AVAILABLE);
+                if(userService.isAdmin(requesterId) && userId!=requesterId ) {
+                    status.add(DBFile.Status.ALLOCATED);
+                }
                 return fileRepository
-                        .findByStatusAndUploaderIdOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE, userId,
+                        .findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(status, userId,
                                 PageRequest.of(pageNumber, pageSize))
                         .stream().map(DBFile::toFileInfoUploader).collect(Collectors.toList());
+                
             } else {
                 throw new UnknownUserException();
             }
