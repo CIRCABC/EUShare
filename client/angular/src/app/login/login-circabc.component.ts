@@ -25,26 +25,22 @@ export class LoginCircabcComponent implements OnInit {
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService,
     private sessionService: SessionStorageService
-  ) { }
+  ) {}
 
-  @ViewChild('aClick', { read: ElementRef }) aClick: ElementRef<HTMLElement> | undefined;
+  @ViewChild('aClick', { read: ElementRef }) aClick:
+    | ElementRef<HTMLElement>
+    | undefined;
   ngOnInit() {
-    if (
-      this.sessionService.getStoredUserInfo() !== null
-    ) {
+    if (this.sessionService.getStoredUserInfo() !== null) {
       this.router.navigate(['home']);
-    }
-    else {
+    } else {
       setTimeout(() => {
         if (this.aClick) {
-
-
           this.aClick.nativeElement.click();
         }
       }, 200);
     }
   }
-
 
   login() {
     this.keyStoreService.prepareKeyStore();

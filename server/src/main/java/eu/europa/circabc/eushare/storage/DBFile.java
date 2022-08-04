@@ -124,6 +124,8 @@ public class DBFile {
         fileInfoRecipient.setName(this.filename);
         fileInfoRecipient.setSize(new BigDecimal(this.size));
         fileInfoRecipient.setUploaderName(this.uploader.getName());
+       
+
         for (DBShare dbShare : this.getSharedWith()) {
             if(dbShare.getEmail().equals(recipientEmail)) {
                 fileInfoRecipient.setFileId(dbShare.getDownloadId());
@@ -146,6 +148,10 @@ public class DBFile {
         fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
         fileInfoUploader.setFileLogs(localFileLogs);
+        if(this.status.toString().equals("AVAILABLE") )
+        fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.AVAILABLE);
+        if(this.status.toString().equals("ALLOCATED") )
+        fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.ALLOCATED);
       
         return fileInfoUploader;
     }

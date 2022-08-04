@@ -12,6 +12,7 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploaderAllOf;
 import eu.europa.circabc.eushare.model.FileLog;
@@ -59,6 +60,46 @@ public class FileInfoUploader   {
   @JsonProperty("fileLogs")
   @Valid
   private List<FileLog> fileLogs = new ArrayList<>();
+
+  /**
+   * Gets or Sets status
+   */
+  public enum StatusEnum {
+    AVAILABLE("AVAILABLE"),
+    
+    ALLOCATED("ALLOCATED"),
+    
+    DELETED("DELETED");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static StatusEnum fromValue(String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  @JsonProperty("status")
+  private StatusEnum status;
 
   public FileInfoUploader expirationDate(LocalDate expirationDate) {
     this.expirationDate = expirationDate;
@@ -222,6 +263,26 @@ public class FileInfoUploader   {
     this.fileLogs = fileLogs;
   }
 
+  public FileInfoUploader status(StatusEnum status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * Get status
+   * @return status
+  */
+  @ApiModelProperty(value = "")
+
+
+  public StatusEnum getStatus() {
+    return status;
+  }
+
+  public void setStatus(StatusEnum status) {
+    this.status = status;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -238,12 +299,13 @@ public class FileInfoUploader   {
         Objects.equals(this.size, fileInfoUploader.size) &&
         Objects.equals(this.fileId, fileInfoUploader.fileId) &&
         Objects.equals(this.sharedWith, fileInfoUploader.sharedWith) &&
-        Objects.equals(this.fileLogs, fileInfoUploader.fileLogs);
+        Objects.equals(this.fileLogs, fileInfoUploader.fileLogs) &&
+        Objects.equals(this.status, fileInfoUploader.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith, fileLogs);
+    return Objects.hash(expirationDate, hasPassword, name, size, fileId, sharedWith, fileLogs, status);
   }
 
   @Override
@@ -258,6 +320,7 @@ public class FileInfoUploader   {
     sb.append("    fileId: ").append(toIndentedString(fileId)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
     sb.append("    fileLogs: ").append(toIndentedString(fileLogs)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

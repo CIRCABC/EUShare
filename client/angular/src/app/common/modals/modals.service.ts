@@ -16,7 +16,6 @@ import { FileLog, Recipient } from '../../openapi';
   providedIn: 'root',
 })
 export class ModalsService {
- 
   private possibleActiveModals: string[] = [
     'download',
     'fileLink',
@@ -25,7 +24,7 @@ export class ModalsService {
     'deleteConfirm',
     'statistics',
     'changeExpirationDate',
-    'overwriteConfirm'
+    'overwriteConfirm',
   ];
   private activeModal!: string;
 
@@ -56,13 +55,10 @@ export class ModalsService {
   public activateDeleteConfirmModal$: Observable<DeleteConfirmModalValue> =
     this.activateDeleteConfirmModalSubject.asObservable();
 
-
-    private activateOverwriteConfirmModalSubject =
+  private activateOverwriteConfirmModalSubject =
     new Subject<OverwriteConfirmModalValue>();
   public activateOverwriteConfirmModal$: Observable<OverwriteConfirmModalValue> =
     this.activateOverwriteConfirmModalSubject.asObservable();
-
-
 
   private activateChangeExpirationDateModalSubject =
     new Subject<ChangeExpirationDateModalValue>();
@@ -145,8 +141,6 @@ export class ModalsService {
       modalFileId,
     });
   }
-
-
 
   public activateStatisticsModal(
     modalFileName: string,

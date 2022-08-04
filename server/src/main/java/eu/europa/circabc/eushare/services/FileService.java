@@ -502,7 +502,7 @@ public class FileService implements FileServiceInterface {
             if (userService.isUserExists(userId)) {
                 List<DBFile.Status> status = new ArrayList<DBFile.Status>();
                 status.add(DBFile.Status.AVAILABLE);
-                if(userService.isAdmin(requesterId) && userId!=requesterId ) {
+                if(userService.isAdmin(requesterId)  ) {
                     status.add(DBFile.Status.ALLOCATED);
                 }
                 return fileRepository

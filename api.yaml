@@ -849,11 +849,18 @@ components:
               description: File logs
               type: array
               items:
-                $ref: '#/components/schemas/FileLog'
+                $ref: '#/components/schemas/FileLog' 
+            status:
+              type: string
+              enum: 
+                - "AVAILABLE"
+                - "ALLOCATED"
+                - "DELETED" 
           required:
             - sharedWith
             - fileLogs
             - fileId
+
     FileInfoRecipient:
       allOf:
         - $ref: '#/components/schemas/FileBasics'
@@ -865,6 +872,7 @@ components:
             fileId:
               description: download file id
               type: string
+
           required:
             - uploaderName
             - fileId
