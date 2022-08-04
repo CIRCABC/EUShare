@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Modificarea datei de expirare",
   "file.shares": "Acțiuni de fișiere",
   "file.size.bigger": "Dimensiunea fișierului mai mare decât",
+  "file.size.bigger.quota": "Avertisment, dimensiunea fișierului mai mare decât {{fileSizeMax}}. Cota dvs. este depășită.",
   "file.upload.change.message": "Fișierul „{{file1}}” va fi încărcat în loc de „{{file2}}”",
   "file.upload.change.title": "Atenție, puteți partaja un singur fișier la un moment dat!",
   "file.will.expire": "Fișierul va expira pe {{date}}",

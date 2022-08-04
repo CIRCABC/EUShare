@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Change expiration date",
   "file.shares": "File shares",
   "file.size.bigger": "File size bigger than",
+  "file.size.bigger.quota": "Warning, file size bigger than {{fileSizeMax}}. Your Quota is exceeded.",
   "file.upload.change.message": "File \"{{file1}}\" will be uploaded instead of \"{{file2}}\"",
   "file.upload.change.title": "Warning, you can only share one file at a time!",
   "file.will.expire": "The file will expire on the {{date}}",

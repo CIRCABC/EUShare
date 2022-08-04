@@ -33,6 +33,8 @@ import { I18nService } from '../common/i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
 import { ModalsService } from '../common/modals/modals.service';
+import { translocoConfig, TranslocoDirective } from '@ngneat/transloco';
+import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
 
 @Component({
   selector: 'app-upload',
@@ -61,7 +63,9 @@ export class UploadComponent implements OnInit {
     private fileApi: FileService,
     private notificationService: NotificationService,
     private i18nService: I18nService,
-    private modalService: ModalsService
+    private modalService: ModalsService,
+    private fileSizePipe: FileSizeFormatPipe
+
   ) {
     this.initializeForm();
   }
@@ -108,12 +112,22 @@ export class UploadComponent implements OnInit {
 
   initializeForm() {
     this.emailControl = this.fb.control('');
+
+    const message = this.i18nService.translate(
+      'file.size.bigger.quota', { fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes) }
+    );
+
+    `${this.i18nService.translate(
+      'error.occurred.download'
+    )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}`
+
     this.uploadform = this.fb.group({
       fileFromDisk: [
         undefined,
         Validators.compose([
           Validators.required,
-          fileSizeValidator(this.leftSpaceInBytes),
+          fileSizeValidator(this.leftSpaceInBytes, this.notificationService, message)
+          ,
         ]),
       ],
       emailMessageArray: this.fb.array([
@@ -451,6 +465,7 @@ export class UploadComponent implements OnInit {
       }
     }
     this.uploadInProgress = false;
+
     this.initializeForm();
   }
 

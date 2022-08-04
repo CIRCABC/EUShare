@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Vervaldatum wijzigen",
   "file.shares": "Shares van bestanden",
   "file.size.bigger": "Bestandsgrootte groter dan",
+  "file.size.bigger.quota": "Waarschuwing, bestandsgrootte groter dan {{fileSizeMax}}. Je quotum is overschreden.",
   "file.upload.change.message": "Bestand „{{file1}}” wordt geüpload in plaats van „{{file2}}”",
   "file.upload.change.title": "Waarschuwing, je kunt maar één bestand tegelijk delen!",
   "file.will.expire": "Het bestand verloopt op de {{date}}",

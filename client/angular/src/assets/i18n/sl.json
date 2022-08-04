@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Spremeni datum poteka",
   "file.shares": "Delež datotek",
   "file.size.bigger": "Velikost datoteke večja od",
+  "file.size.bigger.quota": "Opozorilo, velikost datoteke je večja od {{fileSizeMax}}. Vaša kvota je presežena.",
   "file.upload.change.message": "Datoteka »{{file1}}« bo naložena namesto »{{file2}}«",
   "file.upload.change.title": "Opozorilo, lahko delite samo eno datoteko naenkrat!",
   "file.will.expire": "Datoteka bo potekla na {{date}}",

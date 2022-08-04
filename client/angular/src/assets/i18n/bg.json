@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Промяна на срока на годност",
   "file.shares": "Споделяне на файлове",
   "file.size.bigger": "Размер на файла по-голям от",
+  "file.size.bigger.quota": "Предупреждение, размер на файла по-голям от {{fileSizeMax}}. Вашата квота е превишена.",
   "file.upload.change.message": "Файлът „{{file1}}“ ще бъде качен вместо „{{file2}}“",
   "file.upload.change.title": "Внимание, можете да споделяте само един файл наведнъж!",
   "file.will.expire": "Файлът ще изтече на {{date}}",

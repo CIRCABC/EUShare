@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Athraigh an dáta éaga",
   "file.shares": "Scaireanna a chomhdú",
   "file.size.bigger": "Méid comhaid níos mó ná",
+  "file.size.bigger.quota": "Rabhadh, méid comhaid níos mó ná {{fileSizeMax}}. Sáraítear do chuóta.",
   "file.upload.change.message": "Comhad “{{file1}}” a uaslódáil in ionad “{{file2}}”",
   "file.upload.change.title": "Rabhadh, is féidir leat a roinnt ach amháin comhad ag an am!",
   "file.will.expire": "Rachaidh an comhad in éag ar an {{date}}",

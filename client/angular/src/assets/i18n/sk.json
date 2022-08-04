@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Zmeniť dátum vypršania platnosti",
   "file.shares": "Zdieľanie súborov",
   "file.size.bigger": "Veľkosť súboru väčšia ako",
+  "file.size.bigger.quota": "Upozornenie, veľkosť súboru je väčšia ako {{fileSizeMax}}. Vaša kvóta je prekročená.",
   "file.upload.change.message": "Súbor „{{file1}}“ bude nahraný namiesto „{{file2}}“",
   "file.upload.change.title": "Upozornenie, môžete zdieľať iba jeden súbor naraz!",
   "file.will.expire": "Platnosť súboru vyprší na {{date}}",

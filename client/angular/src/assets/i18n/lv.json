@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Mainīt derīguma termiņu",
   "file.shares": "Failu akcijas",
   "file.size.bigger": "Faila lielums lielāks par",
+  "file.size.bigger.quota": "Brīdinājums, faila lielums lielāks par {{fileSizeMax}}. Jūsu kvota ir pārsniegta.",
   "file.upload.change.message": "Fails “{{file1}}” tiks augšupielādēts “{{file2}}” vietā",
   "file.upload.change.title": "Brīdinājums, jūs varat koplietot tikai vienu failu vienlaikus!",
   "file.will.expire": "Faila derīguma termiņš beigsies {{date}}",
