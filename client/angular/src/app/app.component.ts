@@ -47,9 +47,7 @@ export class AppComponent {
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-      this.oauthService.initImplicitFlow();
-    });
+    this.oauthService.loadDiscoveryDocumentAndTryLogin();
 
 
 
