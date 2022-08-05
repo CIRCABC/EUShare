@@ -34,6 +34,7 @@ import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.UserInfo;
+import eu.europa.circabc.eushare.model.FileInfoUploader.StatusEnum;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.DBShare;
@@ -976,6 +977,9 @@ public class ApiControllerITest {
     ResponseEntity<FileInfoUploader> entity = this.testRestTemplate
         .postForEntity("/file/" + dbFile.getId() + "/fileRequest/fileContent", httpEntity, FileInfoUploader.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
+
+    // after post status is availible
+    fileInfoUploader.setStatus(StatusEnum.AVAILABLE);
     assertEquals(fileInfoUploader, entity.getBody());
   }
 
