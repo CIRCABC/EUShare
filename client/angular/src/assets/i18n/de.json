@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Verfallsdatum ändern",
   "file.shares": "Dateifreigaben",
   "file.size.bigger": "Dateigröße größer als",
+  "file.size.bigger.quota": "Warnung, Dateigröße größer als {{fileSizeMax}}. Ihr Kontingent ist überschritten.",
   "file.upload.change.message": "Datei „{{file1}}“ wird statt „{{file2}}“ hochgeladen",
   "file.upload.change.title": "Achtung, du kannst immer nur eine Datei auf einmal teilen!",
   "file.will.expire": "Die Datei läuft am {{date}} ab",

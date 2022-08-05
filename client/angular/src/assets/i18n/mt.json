@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Bidla data ta 'skadenza",
   "file.shares": "Ishma tal-fajl",
   "file.size.bigger": "Daqs tal-fajl akbar minn",
+  "file.size.bigger.quota": "Twissija, daqs tal-fajl akbar minn {{fileSizeMax}}. Kwota tiegħek tinqabeż.",
   "file.upload.change.message": "Fajl “{{file1}}” se jittella' minflok “{{file2}}”",
   "file.upload.change.title": "Twissija, tista 'taqsam fajl wieħed biss kull darba!",
   "file.will.expire": "Il-fajl jiskadi fuq il- {{date}}",

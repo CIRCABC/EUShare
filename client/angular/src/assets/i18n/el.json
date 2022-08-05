@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Αλλαγή ημερομηνίας λήξης",
   "file.shares": "Κοινόχρηστοι αρχείων",
   "file.size.bigger": "Μέγεθος αρχείου μεγαλύτερο από",
+  "file.size.bigger.quota": "Προειδοποίηση, μέγεθος αρχείου μεγαλύτερο από {{fileSizeMax}}. Υπέρβαση του Ποσοστού σας.",
   "file.upload.change.message": "Το αρχείο «{{file1}}» θα μεταφορτωθεί αντί για το «{{file2}}»",
   "file.upload.change.title": "Προειδοποίηση, μπορείτε να κάνετε κοινή χρήση μόνο ένα αρχείο κάθε φορά!",
   "file.will.expire": "Το αρχείο θα λήξει στον {{date}}",

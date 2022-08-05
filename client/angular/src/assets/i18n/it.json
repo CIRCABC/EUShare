@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Modifica la data di scadenza",
   "file.shares": "Condivisioni di file",
   "file.size.bigger": "Dimensione del file superiore a",
+  "file.size.bigger.quota": "Attenzione, dimensione del file maggiore di {{fileSizeMax}}. La tua quota è stata superata.",
   "file.upload.change.message": "Il file «{{file1}}» verrà caricato al posto di «{{file2}}»",
   "file.upload.change.title": "Attenzione, puoi condividere un solo file alla volta!",
   "file.will.expire": "Il file scadrà il {{date}}",

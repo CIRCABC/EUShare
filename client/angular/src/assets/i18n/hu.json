@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "A lejárati dátum módosítása",
   "file.shares": "Fájl megosztások",
   "file.size.bigger": "A fájlméret nagyobb, mint",
+  "file.size.bigger.quota": "Figyelmeztetés, a fájl mérete nagyobb, mint {{fileSizeMax}}. Túllépték a kvótát.",
   "file.upload.change.message": "A (z) „{{file2}}” helyett „{{file1}}” fájl kerül feltöltésre",
   "file.upload.change.title": "Figyelem, egyszerre csak egy fájlt oszthat meg!",
   "file.will.expire": "A fájl lejár a {{date}}",

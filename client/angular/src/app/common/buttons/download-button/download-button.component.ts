@@ -8,8 +8,9 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DownloadsService } from '../../../services/downloads.service';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
   selector: 'app-download-button',
@@ -29,27 +30,30 @@ export class DownloadButtonComponent {
   @Input('isFileHasPassword')
   public isFileHasPassword = false;
 
-  public isLoading = false;
-  public percentageDownloaded = 0;
+  @Output() ok = new EventEmitter<void>();
+
   public inputPassword = '';
 
-  constructor(private downloadsService: DownloadsService) {}
+  constructor(
+    private downloadsService: DownloadsService,
+    private notificationService: NotificationService
+  ) {}
 
-  public download() {
-    this.isLoading = true;
-
-    this.downloadsService
-      .downloadAFile(this.fileId, this.fileName, this.inputPassword)
-      .subscribe({
-        next: (next) => {
-          this.percentageDownloaded = next.percentage;
-          if (next.percentage === 100) {
-            this.isLoading = false;
-          }
-        },
-        error: (_error) => {
-          this.isLoading = false;
-        },
-      });
+  public async download() {
+    const result = await this.downloadsService.download(
+      this.fileId,
+      this.fileName,
+      this.inputPassword
+    );
+    if (result === 'WRONG_PASSWORD') {
+      this.notificationService.addErrorMessageTranslation(
+        'wrong.password',
+        undefined,
+        true
+      );
+    }
+    if (result === 'OK') {
+      this.ok.emit();
+    }
   }
 }

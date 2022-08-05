@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Zmień datę wygaśnięcia",
   "file.shares": "Udostępnianie plików",
   "file.size.bigger": "Rozmiar pliku większy niż",
+  "file.size.bigger.quota": "Ostrzeżenie, rozmiar pliku większy niż {{fileSizeMax}}. Twój limit został przekroczony.",
   "file.upload.change.message": "Plik „{{file1}}” zostanie przesłany zamiast „{{file2}}”",
   "file.upload.change.title": "Ostrzeżenie, możesz udostępnić tylko jeden plik naraz!",
   "file.will.expire": "Plik wygaśnie na {{date}}",

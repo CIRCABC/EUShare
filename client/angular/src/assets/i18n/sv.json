@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Ändra utgångsdatum",
   "file.shares": "Arkivera resurser",
   "file.size.bigger": "Filstorlek större än",
+  "file.size.bigger.quota": "Varning, filstorlek större än {{fileSizeMax}}. Din kvot överskrids.",
   "file.upload.change.message": "Filen ”{{file1}}” kommer att laddas upp istället för ”{{file2}}”",
   "file.upload.change.title": "Varning, du kan bara dela en fil åt gången!",
   "file.will.expire": "Filen förfaller på {{date}}",

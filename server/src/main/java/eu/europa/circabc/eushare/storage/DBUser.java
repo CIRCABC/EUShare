@@ -113,7 +113,6 @@ public class DBUser {
     private long getUsedSpace() {
         return this.filesUploaded.stream()
                 .filter(dbFile -> dbFile.getStatus().equals(DBFile.Status.AVAILABLE)
-                        || dbFile.getStatus().equals(DBFile.Status.ALLOCATED)
                         || dbFile.getStatus().equals(DBFile.Status.UPLOADING))
                 .mapToLong(DBFile::getSize).sum();
     }

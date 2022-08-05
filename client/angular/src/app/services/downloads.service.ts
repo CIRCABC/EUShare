@@ -9,111 +9,42 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators';
 
-import { FileService } from '../openapi';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { NotificationService } from '../common/notification/notification.service';
-import { Observable } from 'rxjs';
-import { saveAs } from 'file-saver';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DownloadsService {
-  constructor(
-    private fileApi: FileService,
-    private notificationService: NotificationService
-  ) {}
-
-  public downloadAFile(
+  public async download(
     fileId: string,
     fileName: string,
     inputPassword?: string
-  ): Observable<DownloadInProgress> {
-    return this.fileApi
-      .getFile(fileId, inputPassword, 'events', true)
-      .pipe(map((event) => this.manageEventMessage(event, fileName, fileId)));
-  }
+  ): Promise<'OK' | 'WRONG_PASSWORD'> {
+    const url = `${environment.backend_url}/file/${fileId}${
+      inputPassword === undefined ? '' : `?password=${inputPassword}`
+    }`;
+    if (inputPassword !== undefined) {
+      const result = await fetch(url, {
+        method: 'HEAD',
+      });
 
-  private error(fileId: string): Error {
-    // notification sent in the interceptor
-    return new Error(fileId);
-  }
-
-  private manageEventMessage(
-    event: HttpEvent<any>,
-    fileName: string,
-    fileId: string
-  ): DownloadInProgress {
-    const downloadValueToReturn: DownloadInProgress = {
-      name: fileName,
-      fileId,
-      percentage: 0,
-    };
-
-    switch (event.type) {
-      case HttpEventType.UploadProgress:
-      case HttpEventType.Sent:
-        return downloadValueToReturn;
-      case HttpEventType.ResponseHeader:
-        if (event.status === 200) {
-          return downloadValueToReturn;
-        }
-        if (event.status === 400) {
-          throw this.error(fileId);
-        }
-        if (event.status === 401) {
-          this.notificationService.addErrorMessageTranslation(
-            'wrong.password',
-            undefined,
-            true
-          );
-          throw this.error(fileId);
-        }
-        if (event.status === 403) {
-          throw this.error(fileId);
-        }
-        if (event.status === 404) {
-          throw this.error(fileId);
-        }
-        if (event.status === 500) {
-          throw this.error(fileId);
-        }
-        throw this.error(fileId);
-
-      case HttpEventType.DownloadProgress:
-        let eventTotalOrUndefined = event.total;
-        if (eventTotalOrUndefined === undefined) {
-          eventTotalOrUndefined = 1;
-        }
-        const percentDone = Math.round(
-          (event.loaded * 100) / eventTotalOrUndefined
-        );
-        downloadValueToReturn.percentage = percentDone;
-        return downloadValueToReturn;
-
-      case HttpEventType.Response:
-        if (event.status === 200) {
-          const file = event.body as Blob;
-          saveAs(file, fileName);
-          downloadValueToReturn.percentage = 100;
-
-          return downloadValueToReturn;
-        } else {
-          // notification sent in error interceptor
-          throw new Error(fileId);
-        }
-
-      default: {
-        throw this.error(fileId);
+      if (result.status === 401) {
+        console.log('WRONG_PASSWORD');
+        return 'WRONG_PASSWORD';
       }
     }
-  }
-}
+    if (fileId && fileName) {
+      const link = document.createElement('a');
 
-export interface DownloadInProgress {
-  name: string;
-  fileId: string;
-  percentage: number;
+      link.style.display = 'none';
+      link.download = fileName;
+      link.href = url;
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    return 'OK';
+  }
 }

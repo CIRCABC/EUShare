@@ -35,5 +35,15 @@ export interface FileInfoUploaderAllOf {
      * File logs
      */
     fileLogs: Array<FileLog>;
+    status?: FileInfoUploaderAllOf.StatusEnum;
 }
+export namespace FileInfoUploaderAllOf {
+    export type StatusEnum = 'AVAILABLE' | 'ALLOCATED' | 'DELETED';
+    export const StatusEnum = {
+        AVAILABLE: 'AVAILABLE' as StatusEnum,
+        ALLOCATED: 'ALLOCATED' as StatusEnum,
+        DELETED: 'DELETED' as StatusEnum
+    };
+}
+
 

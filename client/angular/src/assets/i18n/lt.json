@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Keisti galiojimo datą",
   "file.shares": "Failų akcijos",
   "file.size.bigger": "Failo dydis didesnis nei",
+  "file.size.bigger.quota": "Įspėjimas, failo dydis didesnis nei {{fileSizeMax}}. Jūsų kvota viršijama.",
   "file.upload.change.message": "Failas “{{file1}}” bus įkeltas vietoj “{{file2}}”",
   "file.upload.change.title": "Įspėjimas, vienu metu galite bendrinti tik vieną failą!",
   "file.will.expire": "Failas nustos galioti {{date}}",

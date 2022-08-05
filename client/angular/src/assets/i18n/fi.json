@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Muuta viimeistä käyttöpäivää",
   "file.shares": "Tiedostojen osakkeet",
   "file.size.bigger": "Tiedoston koko suurempi kuin",
+  "file.size.bigger.quota": "Varoitus, tiedostokoko suurempi kuin {{fileSizeMax}}. Kiintiösi ylittyy.",
   "file.upload.change.message": "Tiedosto ”{{file1}}” ladataan ”{{file2}}” sijaan",
   "file.upload.change.title": "Varoitus, voit jakaa vain yhden tiedoston kerrallaan!",
   "file.will.expire": "Tiedosto vanhenee {{date}}",

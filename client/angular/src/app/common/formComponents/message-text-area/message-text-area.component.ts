@@ -17,11 +17,7 @@ import {
   OnInit,
   Input,
 } from '@angular/core';
-import {
-  ControlValueAccessor,
-  NgControl,
-  Validators,
-} from '@angular/forms';
+import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 import { I18nService } from '../../i18n/i18n.service';
 
 @Component({

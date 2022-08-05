@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Muuda aegumiskuupäeva",
   "file.shares": "Faili aktsiad",
   "file.size.bigger": "Faili suurus on suurem kui",
+  "file.size.bigger.quota": "Hoiatus: faili suurus on suurem kui {{fileSizeMax}}. Teie kvoot on ületatud.",
   "file.upload.change.message": "„{{file2}}}” asemel laaditakse üles fail „{{file1}}”",
   "file.upload.change.title": "Hoiatus, saate jagada ainult ühte faili korraga!",
   "file.will.expire": "Fail aegub {{date}}",

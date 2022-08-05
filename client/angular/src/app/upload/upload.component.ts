@@ -33,6 +33,7 @@ import { I18nService } from '../common/i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
 import { ModalsService } from '../common/modals/modals.service';
+import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
 
 @Component({
   selector: 'app-upload',
@@ -61,7 +62,9 @@ export class UploadComponent implements OnInit {
     private fileApi: FileService,
     private notificationService: NotificationService,
     private i18nService: I18nService,
-    private modalService: ModalsService
+    private modalService: ModalsService,
+    private fileSizePipe: FileSizeFormatPipe
+
   ) {
     this.initializeForm();
   }
@@ -113,7 +116,8 @@ export class UploadComponent implements OnInit {
         undefined,
         Validators.compose([
           Validators.required,
-          fileSizeValidator(this.leftSpaceInBytes),
+          fileSizeValidator(this.leftSpaceInBytes, this.notificationService, message)
+          ,
         ]),
       ],
       emailMessageArray: this.fb.nonNullable.array([]),
@@ -447,6 +451,7 @@ export class UploadComponent implements OnInit {
       }
     }
     this.uploadInProgress = false;
+
     this.initializeForm();
   }
 
@@ -467,7 +472,7 @@ export class UploadComponent implements OnInit {
         const percentDone = Math.round(
           (event.loaded * 100) / eventTotalOrUndefined
         );
-        this.percentageUploaded = percentDone;
+        this.percentageUploaded = percentDone === 100 ? 99 : percentDone;
         return;
 
       case HttpEventType.Response:

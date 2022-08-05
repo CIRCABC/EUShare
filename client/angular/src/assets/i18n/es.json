@@ -53,6 +53,7 @@
   "file.request.change.expirationdate": "Cambiar fecha de caducidad",
   "file.shares": "Recursos compartidos de archivos",
   "file.size.bigger": "Tamaño de archivo superior a",
+  "file.size.bigger.quota": "Advertencia, el tamaño del archivo es superior a {{fileSizeMax}}. Se ha superado tu cuota.",
   "file.upload.change.message": "Se cargará el archivo «{{file1}}» en lugar de «{{file2}}»",
   "file.upload.change.title": "Advertencia, ¡solo puedes compartir un archivo a la vez!",
   "file.will.expire": "El archivo caducará el {{date}}",
