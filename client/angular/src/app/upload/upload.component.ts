@@ -116,10 +116,6 @@ export class UploadComponent implements OnInit {
       'file.size.bigger.quota', { fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes) }
     );
 
-    `${this.i18nService.translate(
-      'error.occurred.download'
-    )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}`
-
     this.uploadform = this.fb.group({
       fileFromDisk: [
         undefined,
