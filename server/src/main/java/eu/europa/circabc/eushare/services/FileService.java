@@ -11,7 +11,6 @@ package eu.europa.circabc.eushare.services;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.ConnectException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -394,7 +393,7 @@ public class FileService implements FileServiceInterface {
         if (reason != null) {
             try {
                 emailService.sendFileDeletedNotification(f.getUploader().getEmail(), f.toFileBasics(), reason);
-            } catch (MessagingException ignored) {
+            } catch (Exception ignored) {
                 log.warn("Error while sending file deleted mail", ignored);
             }
         }
@@ -463,7 +462,7 @@ public class FileService implements FileServiceInterface {
             try {
                 this.emailService.sendDownloadNotification(dbFile.getUploader().getEmail(), userIdentifier,
                         dbFile.toFileBasics());
-            } catch (MessagingException | ConnectException e) {
+            } catch (Exception e) {
                 log.error("Error happened when sending download notification for file " + fileId, e);
             }
         }
