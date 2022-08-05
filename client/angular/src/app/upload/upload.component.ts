@@ -111,6 +111,9 @@ export class UploadComponent implements OnInit {
 
   initializeForm() {
     this.emailControl = this.fb.nonNullable.control('');
+    const message = this.i18nService.translate(
+      'file.size.bigger.quota', { fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes) }
+    );
     this.uploadform = this.fb.nonNullable.group({
       fileFromDisk: [
         undefined,
