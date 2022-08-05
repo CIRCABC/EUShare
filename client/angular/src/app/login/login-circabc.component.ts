@@ -48,9 +48,7 @@ export class LoginCircabcComponent implements OnInit {
     customQueryParams['req_cnf'] =
       this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;
-    this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
-      this.oauthService.initImplicitFlow();
-    });
+    this.oauthService.initImplicitFlow();
   }
 
   euLoginCreate() {

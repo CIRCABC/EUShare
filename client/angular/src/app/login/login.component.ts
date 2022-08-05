@@ -29,7 +29,10 @@ export class LoginComponent {
     customQueryParams['req_cnf'] =
       this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;
+<<<<<<< HEAD
     
+=======
+>>>>>>> 15b356f20fc965e26f6e6f43c928822a4bc8c46f
     this.oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {
       this.oauthService.initImplicitFlow();
     });
