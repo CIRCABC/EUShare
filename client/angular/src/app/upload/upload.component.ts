@@ -33,7 +33,6 @@ import { I18nService } from '../common/i18n/i18n.service';
 import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
 import { ModalsService } from '../common/modals/modals.service';
-import { translocoConfig, TranslocoDirective } from '@ngneat/transloco';
 import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
 
 @Component({
@@ -486,7 +485,7 @@ export class UploadComponent implements OnInit {
         const percentDone = Math.round(
           (event.loaded * 100) / eventTotalOrUndefined
         );
-        this.percentageUploaded = percentDone == 100 ? 99 : percentDone;
+        this.percentageUploaded = percentDone === 100 ? 99 : percentDone;
         return;
 
       case HttpEventType.Response:
