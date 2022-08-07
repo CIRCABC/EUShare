@@ -22,12 +22,6 @@ export class LoginComponent implements OnInit {
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
   ) {
-    localStorage.removeItem("ES_USERINFO");
-    localStorage.removeItem("id_token");
-    localStorage.removeItem("id_token_claims_obj");
-    localStorage.removeItem("id_token_expires_at");
-    localStorage.removeItem("nonce");
-    localStorage.removeItem("session_state");
   }
 
   ngOnInit() {
