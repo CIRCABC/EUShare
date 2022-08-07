@@ -44,6 +44,8 @@ export class AppComponent {
   }
 
   private async configureOAuth() {
+   
+    this.oauthService.setStorage(localStorage);
     this.oauthService.configure(authCodeFlowConfig);
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
     

@@ -24,6 +24,8 @@ export class LoginComponent {
   ) { }
 
   login() {
+    
+   
     this.keyStoreService.prepareKeyStore();
     const customQueryParams: { [key: string]: any } = {};
     customQueryParams['req_cnf'] =
