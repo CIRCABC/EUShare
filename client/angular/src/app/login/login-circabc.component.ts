@@ -34,9 +34,9 @@ export class LoginCircabcComponent implements OnInit {
     | undefined;
   ngOnInit() {
 
-    if (this.sessionService.getStoredUserInfo() !== null) {
+   /* if (this.sessionService.getStoredUserInfo() !== null) {
       this.router.navigate(['home']);
-    } else {
+    } else {*/
       setTimeout(() => {
 
         localStorage.removeItem("ES_USERINFO");
@@ -50,7 +50,7 @@ export class LoginCircabcComponent implements OnInit {
           this.aClick.nativeElement.click();
         }
       }, 200);
-    }
+   // }
   }
 
   login() {
