@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
 
@@ -17,11 +17,20 @@ import { KeyStoreService } from '../services/key-store.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   constructor(
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
   ) {
+    localStorage.removeItem("ES_USERINFO");
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("id_token_claims_obj");
+    localStorage.removeItem("id_token_expires_at");
+    localStorage.removeItem("nonce");
+    localStorage.removeItem("session_state");
+  }
+
+  ngOnInit() {
     localStorage.removeItem("ES_USERINFO");
     localStorage.removeItem("id_token");
     localStorage.removeItem("id_token_claims_obj");
