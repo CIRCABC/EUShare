@@ -1,4 +1,4 @@
-<div class="level filecontainer">
+<div *ngIf="file.status == 'AVAILABLE' || (  isAdminPage && file.status == 'ALLOCATED') " class="level filecontainer" >
   <!-- Left side -->
   <div class="level-left">
     <div class="level-item has-text-centered">
@@ -43,6 +43,7 @@
       <a *ngIf="displayAsUploader" (click)="displayRecipients()">
         {{ "shared.times" | transloco: { count: file.sharedWith.length } }}
       </a>
+     <span   [ngClass]="[ file.status === 'AVAILABLE' ? 'status-available' : 'status-fail-or-pending']" >( {{ file.status }} ) </span>
     </div>
 
     <div class="level-item">
@@ -75,4 +76,9 @@
 
   </div>
 
+</div>
+<div *ngIf="isLoading">
+  {{ percentageDownloaded }}%
+  <progress class="progress is-success" value="{{ percentageDownloaded }}" max="100">{{ percentageDownloaded
+    }}%</progress>
 </div>

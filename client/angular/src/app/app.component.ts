@@ -9,6 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   AuthConfig,
   NullValidationHandler,
@@ -39,19 +40,26 @@ const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  constructor(private oauthService: OAuthService) {
+  constructor(private oauthService: OAuthService, private router: Router) {
     this.configureOAuth();
   }
 
   private async configureOAuth() {
-   
-    this.oauthService.setStorage(localStorage);
+
+    if (this.router.url.startsWith('/login')) {
+      localStorage.removeItem("ES_USERINFO");
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("id_token_claims_obj");
+      localStorage.removeItem("id_token_expires_at");
+      localStorage.removeItem("nonce");
+      localStorage.removeItem("session_state");
+    }
+
     this.oauthService.configure(authCodeFlowConfig);
+
     this.oauthService.tokenValidationHandler = new NullValidationHandler();
-    
+
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
-
-
 
   }
 }
