@@ -29,18 +29,21 @@ export class LoginCircabcComponent implements OnInit {
     | ElementRef<HTMLElement>
     | undefined;
   ngOnInit() {
-      setTimeout(() => {
-        localStorage.removeItem("ES_USERINFO");
-        localStorage.removeItem("id_token");
-        localStorage.removeItem("id_token_claims_obj");
-        localStorage.removeItem("id_token_expires_at");
-        localStorage.removeItem("nonce");
-        localStorage.removeItem("session_state");
-        if (this.aClick) {
-          this.aClick.nativeElement.click();
-        }
-      }, 500);
-   
+    setTimeout(() => {
+      localStorage.removeItem("ES_USERINFO");
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("id_token_claims_obj");
+      localStorage.removeItem("id_token_expires_at");
+      localStorage.removeItem("nonce");
+      localStorage.removeItem("session_state");
+    }, 200);
+
+    setTimeout(() => {
+      if (this.aClick) {
+        this.aClick.nativeElement.click();
+      }
+    }, 500);
+
   }
 
   login() {
