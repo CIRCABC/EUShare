@@ -22,28 +22,22 @@ export class LoginCircabcComponent implements OnInit {
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
   ) {
-
+    localStorage.removeItem("ES_USERINFO");
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("id_token_claims_obj");
+    localStorage.removeItem("id_token_expires_at");
+    localStorage.removeItem("nonce");
+    localStorage.removeItem("session_state");
+    localStorage.removeItem("id_token_stored_at");
+    localStorage.removeItem("pubKey");
+    localStorage.removeItem("prvKey");
   }
 
   @ViewChild('aClick', { read: ElementRef }) aClick:
     | ElementRef<HTMLElement>
     | undefined;
   ngOnInit() {
-    sessionStorage.clear();
-    setTimeout(() => {
-      if (this.aClick) {
-        this.aClick.nativeElement.focus();
-        localStorage.removeItem("ES_USERINFO");
-        localStorage.removeItem("id_token");
-        localStorage.removeItem("id_token_claims_obj");
-        localStorage.removeItem("id_token_expires_at");
-        localStorage.removeItem("nonce");
-        localStorage.removeItem("session_state");
-        localStorage.removeItem("id_token_stored_at");
-        localStorage.removeItem("pubKey");
-        localStorage.removeItem("prvKey");
-      }
-    }, 500);
+    
 
     setTimeout(() => {
       if (this.aClick) {
