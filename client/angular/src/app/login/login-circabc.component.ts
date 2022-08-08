@@ -34,23 +34,24 @@ export class LoginCircabcComponent implements OnInit {
     | undefined;
   ngOnInit() {
 
-   /* if (this.sessionService.getStoredUserInfo() !== null) {
-      this.router.navigate(['home']);
-    } else {*/
-      setTimeout(() => {
+    setTimeout(() => {
 
-        localStorage.removeItem("ES_USERINFO");
-        localStorage.removeItem("id_token");
-        localStorage.removeItem("id_token_claims_obj");
-        localStorage.removeItem("id_token_expires_at");
-        localStorage.removeItem("nonce");
-        localStorage.removeItem("session_state");
+      localStorage.removeItem("ES_USERINFO");
+      localStorage.removeItem("id_token");
+      localStorage.removeItem("id_token_claims_obj");
+      localStorage.removeItem("id_token_expires_at");
+      localStorage.removeItem("nonce");
+      localStorage.removeItem("session_state");
+
+    }, 200);
+  
+      setTimeout(() => {
 
         if (this.aClick) {
           this.aClick.nativeElement.click();
         }
       }, 200);
-   // }
+   
   }
 
   login() {
