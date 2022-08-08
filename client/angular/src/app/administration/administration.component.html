@@ -94,7 +94,7 @@
             {{ selectedUserInfo.usedSpace | fileSizeFormat }}
           </p>
           <p>
-            {{ "free.space" | transloco }}::
+            {{ "free.space" | transloco }}:
             {{
               selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
                 | fileSizeFormat
