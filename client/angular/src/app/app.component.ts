@@ -40,20 +40,17 @@ const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  constructor(private oauthService: OAuthService, private router: Router) {
+  constructor(private oauthService: OAuthService) {
     this.configureOAuth();
   }
 
   private async configureOAuth() {
-    console.log("url:"+this.router.url);
-
-    if (this.router.url.indexOf('/login')!=-1) {
+ 
       localStorage.removeItem('ES_AUTH');
       localStorage.removeItem("ES_USERINFO");
       localStorage.removeItem("id_token");
       localStorage.removeItem("id_token_claims_obj");
-      console.log("localstorage clean");
-    }
+     
 
     this.oauthService.configure(authCodeFlowConfig);
 
