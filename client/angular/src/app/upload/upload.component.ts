@@ -64,7 +64,6 @@ export class UploadComponent implements OnInit {
     private i18nService: I18nService,
     private modalService: ModalsService,
     private fileSizePipe: FileSizeFormatPipe
-
   ) {
     this.initializeForm();
   }
@@ -112,17 +111,20 @@ export class UploadComponent implements OnInit {
   initializeForm() {
     this.emailControl = this.fb.control('');
 
-    const message = this.i18nService.translate(
-      'file.size.bigger.quota', { fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes) }
-    );
+    const message = this.i18nService.translate('file.size.bigger.quota', {
+      fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes),
+    });
 
     this.uploadform = this.fb.group({
       fileFromDisk: [
         undefined,
         Validators.compose([
           Validators.required,
-          fileSizeValidator(this.leftSpaceInBytes, this.notificationService, message)
-          ,
+          fileSizeValidator(
+            this.leftSpaceInBytes,
+            this.notificationService,
+            message
+          ),
         ]),
       ],
       emailMessageArray: this.fb.array([

@@ -52,7 +52,7 @@ export class UploadedFileRowComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.router.url.indexOf('/administration/')!=-1) {
+    if (this.router.url.indexOf('/administration/') !== -1) {
       this.isAdminPage = true;
     }
   }

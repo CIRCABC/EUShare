@@ -144,7 +144,7 @@ import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confir
       useClass: HttpErrorInterceptor,
       multi: true,
     },
-    FileSizeFormatPipe
+    FileSizeFormatPipe,
   ],
   bootstrap: [AppComponent],
 })

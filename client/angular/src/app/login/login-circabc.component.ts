@@ -21,20 +21,17 @@ export class LoginCircabcComponent implements OnInit {
   constructor(
     private oauthService: OAuthService,
     private keyStoreService: KeyStoreService
-  ) {
-  }
+  ) {}
 
   @ViewChild('aClick', { read: ElementRef }) aClick:
     | ElementRef<HTMLElement>
     | undefined;
-  ngOnInit() { 
-
+  ngOnInit() {
     setTimeout(() => {
       if (this.aClick) {
         this.aClick.nativeElement.click();
       }
     }, 200);
-
   }
 
   login() {

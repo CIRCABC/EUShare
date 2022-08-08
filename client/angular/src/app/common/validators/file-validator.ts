@@ -12,15 +12,17 @@ import { ValidatorFn, AbstractControl } from '@angular/forms';
 import { NotificationService } from '../notification/notification.service';
 
 // FILE VALIDATION
-export function fileSizeValidator(notMoreThanInBytes: number, notificationService: NotificationService, message: string): ValidatorFn {
+export function fileSizeValidator(
+  notMoreThanInBytes: number,
+  notificationService: NotificationService,
+  message: string
+): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const file: File = control.value;
     if (file) {
       const forbidden = file.size >= notMoreThanInBytes;
       if (forbidden) {
-        notificationService.addErrorMessage(
-          message
-        );
+        notificationService.addErrorMessage(message);
       }
       return forbidden
         ? { forbiddenFileSize: { value: notMoreThanInBytes } }
