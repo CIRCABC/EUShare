@@ -29,17 +29,12 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-
-
-
     this.keyStoreService.prepareKeyStore();
     const customQueryParams: { [key: string]: any } = {};
     customQueryParams['req_cnf'] =
       this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;
-
     this.oauthService.initImplicitFlow();
-
   }
 
   euLoginCreate() {

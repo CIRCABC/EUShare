@@ -45,12 +45,13 @@ export class AppComponent {
   }
 
   private async configureOAuth() {
- 
-      localStorage.removeItem('ES_AUTH');
-      localStorage.removeItem("ES_USERINFO");
-      localStorage.removeItem("id_token");
-      localStorage.removeItem("id_token_claims_obj");
-     
+
+    localStorage.removeItem('ES_AUTH');
+    localStorage.removeItem("ES_USERINFO");
+    localStorage.removeItem("id_token");
+    localStorage.removeItem("id_token_claims_obj");
+
+    this.oauthService.setStorage(localStorage);
 
     this.oauthService.configure(authCodeFlowConfig);
 
