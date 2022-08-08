@@ -45,14 +45,14 @@ export class AppComponent {
   }
 
   private async configureOAuth() {
+    console.log("url:"+this.router.url);
 
     if (this.router.url.indexOf('/login')!=-1) {
+      localStorage.removeItem('ES_AUTH');
       localStorage.removeItem("ES_USERINFO");
       localStorage.removeItem("id_token");
       localStorage.removeItem("id_token_claims_obj");
-      localStorage.removeItem("id_token_expires_at");
-      localStorage.removeItem("nonce");
-      localStorage.removeItem("session_state");
+      console.log("localstorage clean");
     }
 
     this.oauthService.configure(authCodeFlowConfig);
