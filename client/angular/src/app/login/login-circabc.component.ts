@@ -29,7 +29,7 @@ export class LoginCircabcComponent implements OnInit {
     | ElementRef<HTMLElement>
     | undefined;
   ngOnInit() {
-
+    sessionStorage.clear();
     setTimeout(() => {
       if (this.aClick) {
         this.aClick.nativeElement.focus();
@@ -39,6 +39,9 @@ export class LoginCircabcComponent implements OnInit {
         localStorage.removeItem("id_token_expires_at");
         localStorage.removeItem("nonce");
         localStorage.removeItem("session_state");
+        localStorage.removeItem("id_token_stored_at");
+        localStorage.removeItem("pubKey");
+        localStorage.removeItem("prvKey");
       }
     }, 500);
 
