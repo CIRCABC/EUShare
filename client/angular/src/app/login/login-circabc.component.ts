@@ -46,7 +46,7 @@ export class LoginCircabcComponent implements OnInit {
         if (this.aClick) {
           this.aClick.nativeElement.click();
         }
-      }, 1000);
+      }, 250);
    
   }
 
