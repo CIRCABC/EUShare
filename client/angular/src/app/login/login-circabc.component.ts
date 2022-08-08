@@ -35,7 +35,6 @@ export class LoginCircabcComponent implements OnInit {
     localStorage.removeItem("id_token_expires_at");
     localStorage.removeItem("nonce");
     localStorage.removeItem("session_state");
-    this.oauthService.logOut();
 
     setTimeout(() => {
       if (this.aClick) {
