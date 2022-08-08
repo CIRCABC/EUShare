@@ -46,7 +46,7 @@ export class AppComponent {
 
   private async configureOAuth() {
 
-    if (this.router.url.startsWith('/login')) {
+    if (this.router.url.indexOf('/login')!=-1) {
       localStorage.removeItem("ES_USERINFO");
       localStorage.removeItem("id_token");
       localStorage.removeItem("id_token_claims_obj");
