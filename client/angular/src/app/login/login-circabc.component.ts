@@ -9,10 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
-import { SessionStorageService } from '../services/session-storage.service';
 
 @Component({
   selector: 'app-logincircabc',
@@ -21,10 +19,8 @@ import { SessionStorageService } from '../services/session-storage.service';
 })
 export class LoginCircabcComponent implements OnInit {
   constructor(
-    private router: Router,
     private oauthService: OAuthService,
-    private keyStoreService: KeyStoreService,
-    private sessionService: SessionStorageService
+    private keyStoreService: KeyStoreService
   ) {
 
   }
@@ -34,7 +30,7 @@ export class LoginCircabcComponent implements OnInit {
     | undefined;
   ngOnInit() {
 
-    setTimeout(() => {
+    
 
       localStorage.removeItem("ES_USERINFO");
       localStorage.removeItem("id_token");
@@ -43,14 +39,14 @@ export class LoginCircabcComponent implements OnInit {
       localStorage.removeItem("nonce");
       localStorage.removeItem("session_state");
 
-    }, 200);
+  
   
       setTimeout(() => {
 
         if (this.aClick) {
           this.aClick.nativeElement.click();
         }
-      }, 200);
+      }, 1000);
    
   }
 
