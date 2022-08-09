@@ -11,17 +11,17 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
+import { LoginComponent } from './login.component';
 
 @Component({
   selector: 'app-logincircabc',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginCircabcComponent implements OnInit {
-  constructor(
-    private oauthService: OAuthService,
-    private keyStoreService: KeyStoreService
-  ) {}
+export class LoginCircabcComponent extends LoginComponent implements OnInit {
+  constructor(oauthService: OAuthService, keyStoreService: KeyStoreService) {
+    super(oauthService, keyStoreService);
+  }
 
   @ViewChild('aClick', { read: ElementRef }) aClick:
     | ElementRef<HTMLElement>
@@ -32,19 +32,5 @@ export class LoginCircabcComponent implements OnInit {
         this.aClick.nativeElement.click();
       }
     }, 200);
-  }
-
-  login() {
-    this.keyStoreService.prepareKeyStore();
-    const customQueryParams: { [key: string]: any } = {};
-    customQueryParams['req_cnf'] =
-      this.keyStoreService.publicJWKBase64UrlEncoded();
-    this.oauthService.customQueryParams = customQueryParams;
-    this.oauthService.initImplicitFlow();
-  }
-
-  euLoginCreate() {
-    window.location.href =
-      'https://ecas.cc.cec.eu.int:7002/cas/eim/external/register.cgi';
   }
 }
