@@ -29,6 +29,7 @@
     ".angular/cache/**",
     ".scannerwork/**",
     ".cache/**",
-    "**/src/app/openapi/.openapi-generator/VERSION"
+    "**/src/app/openapi/.openapi-generator/VERSION",
+    "cypress/**"
   ]
 }
