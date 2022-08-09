@@ -148,10 +148,11 @@ public class DBFile {
         fileInfoUploader.setFileId(this.getId());
         fileInfoUploader.setSharedWith(sharedWithRecipients);
         fileInfoUploader.setFileLogs(localFileLogs);
-        if(this.status.toString().equals("AVAILABLE") )
-        fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.AVAILABLE);
-        if(this.status.toString().equals("ALLOCATED") )
-        fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.ALLOCATED);
+        if(this.status.toString().equals("AVAILABLE") ){
+            fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.AVAILABLE);
+        }else if(this.status.toString().equals("ALLOCATED") ){
+            fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.ALLOCATED);
+        }
       
         return fileInfoUploader;
     }

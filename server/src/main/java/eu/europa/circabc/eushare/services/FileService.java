@@ -511,7 +511,7 @@ public class FileService implements FileServiceInterface {
             String requesterId) throws UserUnauthorizedException, UnknownUserException {
         if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
             if (userService.isUserExists(userId)) {
-                List<DBFile.Status> status = new ArrayList<DBFile.Status>();
+                List<DBFile.Status> status = new ArrayList<>();
                 status.add(DBFile.Status.AVAILABLE);
                 if(userService.isAdmin(requesterId)  ) {
                     status.add(DBFile.Status.ALLOCATED);
