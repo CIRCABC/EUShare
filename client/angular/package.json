@@ -64,7 +64,6 @@
     "bulma": "0.9.4",
     "bulma-extensions": "6.2.7",
     "core-js": "3.22.5",
-    "file-saver": "2.0.5",
     "hammerjs": "2.0.8",
     "jsrsasign": "10.5.20",
     "license-check-and-add": "4.0.5",
