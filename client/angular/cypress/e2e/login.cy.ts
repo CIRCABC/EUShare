@@ -5,5 +5,6 @@ describe('My First Test', () => {
 
   it('Visits the initial project page', () => {
     cy.contains('Administration').should('not.exist');
+    cy.contains('Chuck NORRIS');
   });
 });
