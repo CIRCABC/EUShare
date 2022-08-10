@@ -96,6 +96,7 @@
     "cspell": "5.21.0",
     "cypress": "^10.4.0",
     "cypress-axe": "^1.0.0",
+    "cypress-file-upload": "5.0.8",
     "eslint": "8.15.0",
     "eslint-plugin-import": "latest",
     "eslint-plugin-jsdoc": "latest",

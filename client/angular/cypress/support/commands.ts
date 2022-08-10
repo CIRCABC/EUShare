@@ -41,3 +41,18 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('login', (username, password) => {
+  // Remember to pass in dependencies via `args`
+  const args = { username, password };
+  cy.visit('/');
+  cy.contains('CIRCABC Share');
+  cy.get('.cta').click();
+
+  cy.origin('localhost:7002', { args }, ({ username, password }) => {
+    cy.get('#username').type(username);
+    cy.contains('Next').click();
+    cy.get('#password').type(password);
+    cy.get('.btn').click();
+  });
+});
