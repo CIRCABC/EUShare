@@ -4,9 +4,10 @@ describe('My First Test', () => {
   });
 
   it('Visits the initial project page', () => {
-    cy.contains('Administration');
+    cy.contains('Administration').should('be.visible');
     cy.contains('Jason BOURNE');
-    // cy.injectAxe();
-    // cy.checkA11y();
+    cy.get('.administration > .spanlabel').click();
+    cy.injectAxe();
+    cy.checkA11y();
   });
 });
