@@ -177,7 +177,8 @@
           </li>
         </ul>
         <span class="ng-untouched ng-pristine ng-valid">
-          <select (change)="selectLanguage($event.target.value)" formcontrolname="lang"
+          <label for="language">{{ 'select.language' | transloco }}</label>
+          <select id="language" (change)="selectLanguage($event.target.value)" formcontrolname="lang"
             class="ng-untouched ng-pristine ng-valid">
             <option value="en">
 
