@@ -1,4 +1,4 @@
-describe('My First Test', () => {
+describe('EUlogin', () => {
   it('EULogin', () => {
     cy.visit(`https://${Cypress.env('euloginServer')}/cas`);
     cy.get('#username').type('bournja');

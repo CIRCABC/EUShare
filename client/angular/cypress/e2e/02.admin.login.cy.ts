@@ -1,4 +1,4 @@
-describe('My First Test', () => {
+describe('Admin login', () => {
   beforeEach(function () {
     cy.login('bournja', 'Admin123');
   });
@@ -7,7 +7,7 @@ describe('My First Test', () => {
     cy.contains('Administration').should('be.visible');
     cy.contains('Jason BOURNE');
     cy.get('.administration > .spanlabel').click();
-    cy.injectAxe();
-    cy.checkA11y();
+    // cy.injectAxe();
+    // cy.checkA11y();
   });
 });

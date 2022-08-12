@@ -39,7 +39,7 @@
     "spellcheck": "cspell /src/**/*.ts",
     "circleci": "npm run build && npm run licchkchk && npm run lint ",
     "cypress:open": "cypress open",
-    "cypress:run": "cypress run"
+    "cypress:run": "cypress run --browser firefox:dev"
   },
   "private": true,
   "dependencies": {

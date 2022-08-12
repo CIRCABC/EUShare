@@ -6,7 +6,8 @@ export default defineConfig({
     experimentalSessionAndOrigin: true,
     viewportHeight: 768,
     viewportWidth: 1280,
-    chromeWebSecurity: false,
+    chromeWebSecurity: true,
+    defaultCommandTimeout: 8000
   },
   env: {
     euloginServer: 'localhost:7002',

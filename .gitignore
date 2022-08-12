@@ -62,3 +62,5 @@ server/ENVIRONMENTNAME_TST-1.0.0.zip
 docker/client-tomcat/dist/eushareclient.war
 docker/server-tomcat/dist/eushareserver.war
 
+client/angular/cypress/screenshots/
+client/angular/cypress/videos/

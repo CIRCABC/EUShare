@@ -1,4 +1,4 @@
-describe('My First Test', () => {
+describe('Upload and Download', () => {
   beforeEach(function () {
     cy.login('bournja', 'Admin123');
   });
