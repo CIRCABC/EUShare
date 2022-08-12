@@ -55,4 +55,5 @@ Cypress.Commands.add('login', (username, password) => {
     cy.get('#password').type(password);
     cy.get('.btn').click();
   });
+  cy.url().should('contain', '/upload')
 });
