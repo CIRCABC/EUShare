@@ -49,7 +49,7 @@ Cypress.Commands.add('login', (username, password) => {
   cy.contains('CIRCABC Share');
   cy.get('.cta').click();
 
-  cy.origin('localhost:7002', { args }, ({ username, password }) => {
+  cy.origin(Cypress.env('euloginServer') , { args }, ({ username, password }) => {
     cy.get('#username').type(username);
     cy.contains('Next').click();
     cy.get('#password').type(password);

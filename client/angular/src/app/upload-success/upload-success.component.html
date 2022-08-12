@@ -69,7 +69,12 @@
                 </span>
               </td>
               <td class="shorturl">
-                <input class="input" type="text" value="{{ formatLink(i) }}" />
+                <input
+                  data-cy="short-url"
+                  class="input"
+                  type="text"
+                  value="{{ formatLink(i) }}"
+                />
               </td>
               <td>
                 <a class="button" (click)="copyLink(i)">Copy</a>

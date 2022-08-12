@@ -1,6 +1,6 @@
 describe('My First Test', () => {
   it('EULogin', () => {
-    cy.visit('https://localhost:7002/cas');
+    cy.visit(`https://${Cypress.env('euloginServer')}/cas`);
     cy.get('#username').type('bournja');
     cy.contains('Next').click();
     cy.get('#password').type('Admin123');

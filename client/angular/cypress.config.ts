@@ -8,4 +8,8 @@ export default defineConfig({
     viewportWidth: 1280,
     chromeWebSecurity: false,
   },
+  env: {
+    euloginServer: 'localhost:7002',
+    mailDevServer: 'localhost:1080',
+  },
 });

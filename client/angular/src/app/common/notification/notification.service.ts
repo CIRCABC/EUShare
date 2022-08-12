@@ -57,7 +57,7 @@ export class NotificationService {
   public addSuccessMessageTranslation(
     key: string,
     params?: HashMap,
-    autoclose = false,
+    autoclose = true,
     displayTime?: number
   ): void {
     this.addMessageTranslation(
