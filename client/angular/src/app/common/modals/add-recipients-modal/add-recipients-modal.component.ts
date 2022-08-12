@@ -42,7 +42,7 @@ export class AddRecipientsModalComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sharedWithFormGroup = this.fb.group(
+    this.sharedWithFormGroup = this.fb.nonNullable.group(
       {
         message: [''],
         email: [''],

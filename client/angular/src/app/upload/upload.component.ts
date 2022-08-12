@@ -109,13 +109,13 @@ export class UploadComponent implements OnInit {
   }
 
   initializeForm() {
-    this.emailControl = this.fb.control('');
+    this.emailControl = this.fb.nonNullable.control('');
 
     const message = this.i18nService.translate('file.size.bigger.quota', {
       fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes),
     });
 
-    this.uploadform = this.fb.group({
+    this.uploadform = this.fb.nonNullable.group({
       fileFromDisk: [
         undefined,
         Validators.compose([
@@ -127,10 +127,10 @@ export class UploadComponent implements OnInit {
           ),
         ]),
       ],
-      emailMessageArray: this.fb.array([
+      emailMessageArray: this.fb.nonNullable.array([
         // this.initializeEmailMessageFormGroup()
       ]),
-      linkArray: this.fb.array([
+      linkArray: this.fb.nonNullable.array([
         // this.initializeLinkFormGroup()
       ]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
@@ -150,14 +150,14 @@ export class UploadComponent implements OnInit {
   }
 
   initializeEmailMessageFormGroup(): FormGroup {
-    return this.fb.group({
-      emailArray: this.fb.array([]),
+    return this.fb.nonNullable.group({
+      emailArray: this.fb.nonNullable.array([]),
       message: [''],
     });
   }
 
   initializedEmailFormGroup(): FormGroup {
-    return this.fb.group(
+    return this.fb.nonNullable.group(
       {
         email: new FormControl('', Validators.required),
       },
@@ -166,7 +166,7 @@ export class UploadComponent implements OnInit {
   }
 
   initializedEmailFormGroupValue(value: any): FormGroup {
-    return this.fb.group(
+    return this.fb.nonNullable.group(
       {
         email: new FormControl(value),
       },
@@ -243,7 +243,7 @@ export class UploadComponent implements OnInit {
           emailArray.push(addEmail);
         }
         this.isShowEmailControl = false;
-        this.emailControl = this.fb.control('');
+        this.emailControl = this.fb.nonNullable.control('');
         setTimeout(() => (this.isShowEmailControl = true));
       }
     }
@@ -345,7 +345,7 @@ export class UploadComponent implements OnInit {
     while (formArray.length !== 0) {
       formArray.removeAt(0);
     }
-    this.emailControl = this.fb.control('');
+    this.emailControl = this.fb.nonNullable.control('');
   }
 
   getEmailMessageArrayLength(): number {
