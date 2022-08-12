@@ -6,6 +6,7 @@ describe('My First Test', () => {
     cy.get('#password').type('Admin123');
     cy.get('.btn').click();
     cy.contains('Successful login');
-    
+    // cy.injectAxe();
+    // cy.checkA11y();
   });
 });
