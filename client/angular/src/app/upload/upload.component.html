@@ -3,7 +3,7 @@
   <h2 class="subtitle is-family-secondary is-uppercase">
     {{ "you.can.upload.up.to" | transloco }}
     {{ leftSpaceInBytes | fileSizeFormat }} ({{
-    totalSpaceInBytes | fileSizeFormat
+      totalSpaceInBytes | fileSizeFormat
     }}
     {{ "quota" | transloco }})
   </h2>
@@ -13,11 +13,21 @@
         <!-- DRAG AND DROP-->
         <div class="field">
           <label class="label">{{ "file" | transloco }}</label>
-          <div class="file has-name is-boxed" [class.has-name]="getFileFromDisk() !== undefined">
+          <div
+            class="file has-name is-boxed"
+            [class.has-name]="getFileFromDisk() !== undefined"
+          >
             <label class="file-label">
               <!-- INPUT -->
-              <input appEsFileInput id="fileFromDisk" class="file-input" type="file" formControlName="fileFromDisk"
-                (change)="checkExistingFile($event.target.files[0])" />
+              <input
+                appEsFileInput
+                id="fileFromDisk"
+                data-cy="file-input"
+                class="file-input"
+                type="file"
+                formControlName="fileFromDisk"
+                (change)="checkExistingFile($event.target.files[0])"
+              />
               <span class="button cta--plus is-bigger">
                 <span class="file-label">
                   {{ "add.file" | transloco }}
@@ -29,9 +39,7 @@
                 {{ getFileFromDisk()?.name }}
                 ({{ getFileFromDisk()?.size }} Bytes)
               </span>
-
             </label>
-
           </div>
         </div>
         <div class="field">
@@ -45,8 +53,6 @@
       </div>
       <br />
 
-
-
       <div (click)="toggleMoreOptions()" class="is-info">
         <span class="button cta--dots is-bigger">
           <span class="file-label">
@@ -55,65 +61,103 @@
         </span>
       </div>
 
-
-
       <!-- EMAILS AND USER NAMES -->
       <div class="field" *ngIf="moreOptions">
         <br />
-        <div class="field fieldset" >
-          <label class="label legend">{{ "how.to.share.file" | transloco }}</label>
+        <div class="field fieldset">
+          <label class="label legend">{{
+            "how.to.share.file" | transloco
+          }}</label>
           <div class="field-body">
-            <div class="field is-narrow">
-
-            </div>
+            <div class="field is-narrow"></div>
           </div>
-          <div formArrayName="emailMessageArray" class="column is-half-desktop emailColumn">
-            <div [formGroupName]="i" *ngFor="
-              let emailAndMessageFg of emailMessageArray.controls;
-              let i = index
-            " class="media">
+          <div
+            formArrayName="emailMessageArray"
+            class="column is-half-desktop emailColumn"
+          >
+            <div
+              [formGroupName]="i"
+              *ngFor="
+                let emailAndMessageFg of emailMessageArray.controls;
+                let i = index
+              "
+              class="media"
+            >
               <div class="media-content">
                 <!-- EMAIL ARRAY -->
                 <div formArrayName="emailArray">
-                  <div [formGroupName]="j" *ngFor="
-                    let emailIndexed of getEmailArrayOnForm(emailAndMessageFg);
-                    let j = index
-                  ">
+                  <div
+                    [formGroupName]="j"
+                    *ngFor="
+                      let emailIndexed of getEmailArrayOnForm(
+                        emailAndMessageFg
+                      );
+                      let j = index
+                    "
+                  >
                     <!-- DISPLAYED EMAILS -->
                     <div class="displayedEmail">
                       {{ getEmailControlValue(i, j) }}
                       <a (click)="deleteEmailFormGroup(i, j)">
-                        <fa-icon class="icon is-small" [icon]="faUserSlash"></fa-icon>
+                        <fa-icon
+                          class="icon is-small"
+                          [icon]="faUserSlash"
+                        ></fa-icon>
                       </a>
                     </div>
-                    <div class="emailContainer" *ngIf="j === getEmailArrayLength(i) - 1"></div>
+                    <div
+                      class="emailContainer"
+                      *ngIf="j === getEmailArrayLength(i) - 1"
+                    ></div>
                   </div>
                 </div>
-                <app-email-input *ngIf="isShowEmailControl" (downClick)="addEmailFormGroup(i)"
-                  [formControl]="emailControl"></app-email-input>
-                <app-message-text-area formControlName="message"></app-message-text-area>
+                <app-email-input
+                  *ngIf="isShowEmailControl"
+                  (downClick)="addEmailFormGroup(i)"
+                  [formControl]="emailControl"
+                ></app-email-input>
+                <app-message-text-area
+                  formControlName="message"
+                ></app-message-text-area>
               </div>
             </div>
           </div>
         </div>
         <!-- EMAIL AND MESSAGES -->
-
       </div>
-      <p></p><br>
-      <div class="field  fieldset media-content" *ngIf="moreOptions">
-        <label class="label legend">{{ "file.password.optional" | transloco }}</label>
-        <input id="password" formControlName="password" class="input" [attr.placeholder]="'password.on.file.download' | transloco"
-          value="" />
+      <p></p>
+      <br />
+      <div class="field fieldset media-content" *ngIf="moreOptions">
+        <label class="label legend">{{
+          "file.password.optional" | transloco
+        }}</label>
+        <input
+          id="password"
+          formControlName="password"
+          class="input"
+          [attr.placeholder]="'password.on.file.download' | transloco"
+          value=""
+        />
       </div>
       <br />
       <div class="field">
-        <button class="button" [class.is-loading]="uploadInProgress" type="submit" [disabled]="!uploadform.valid">
+        <button
+          class="button"
+          [class.is-loading]="uploadInProgress"
+          type="submit"
+          [disabled]="!uploadform.valid"
+          data-cy="submit"
+        >
           {{ "submit" | transloco }}
         </button>
       </div>
       <div *ngIf="uploadInProgress">
         {{ percentageUploaded }}%
-        <progress class="progress is-success" value="{{ percentageUploaded }}" max="100">
+        <progress
+          class="progress is-success"
+          value="{{ percentageUploaded }}"
+          max="100"
+        >
           {{ percentageUploaded }}%
         </progress>
       </div>
