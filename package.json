@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@openapitools/openapi-generator-cli": "^2.4.15",
+    "@openapitools/openapi-generator-cli": "^2.5.1",
     "gulp": "^4.0.2",
     "gulp-prettier": "^4.0.0"
   }
