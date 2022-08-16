@@ -49,11 +49,20 @@ Cypress.Commands.add('login', (username, password) => {
   cy.contains('CIRCABC Share');
   cy.get('.cta').click();
 
-  cy.origin(Cypress.env('euloginServer') , { args }, ({ username, password }) => {
-    cy.get('#username').type(username);
-    cy.contains('Next').click();
-    cy.get('#password').type(password);
-    cy.get('.btn').click();
-  });
-  cy.url().should('contain', '/upload')
+  cy.origin(
+    Cypress.env('euloginServer'),
+    { args },
+    ({ username, password }) => {
+      cy.get('#username').type(username);
+      cy.contains('Next').click();
+      cy.get('#password').type(password);
+      cy.get('.btn').click();
+    }
+  );
+  cy.url().should('be.oneOf', [
+    `${Cypress.config('baseUrl')}/login`,
+    `${Cypress.config('baseUrl')}/callback`,
+    `${Cypress.config('baseUrl')}/upload`,
+  ]);
+  
 });
