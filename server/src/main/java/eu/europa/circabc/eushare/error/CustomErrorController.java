@@ -28,8 +28,5 @@ public class CustomErrorController implements ErrorController {
         + "<div>Exception Message: <b>%s</b></div><body></html>",
         statusCode, exception == null ? "N/A" : exception.getMessage());
   }
-  // Just return null as it is anyway going to be ignored. Do not use @Override annotation if you want to prevent future compilation error
-  public String getErrorPath() {
-    return null;
-  }
+  
 }
