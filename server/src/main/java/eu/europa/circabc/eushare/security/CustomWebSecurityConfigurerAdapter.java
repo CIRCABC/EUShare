@@ -13,12 +13,15 @@ package eu.europa.circabc.eushare.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -35,16 +38,19 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         .antMatchers(HttpMethod.HEAD,"/file/{.+}").anonymous()                      // Authorizing login by anyone, after authentication or not
         .antMatchers(HttpMethod.GET,"/file/{.+}").anonymous()      
         .antMatchers(HttpMethod.GET,"/file/{.+}/fileInfo").anonymous()                 // If an Authorization Header is present, will return 403
-        //.antMatchers(HttpMethod.GET,"/users/userInfo").hasAuthority("ROLE_ADMIN") // For later use, when opaqueToken will support authentication converter
         .antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
         .anyRequest().authenticated()     
         .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())                          // Forces successful authentication for the rest of the mapping
         .and()
             .oauth2ResourceServer()                                 // Set up of a OAuth Resource server
+            .withObjectPostProcessor(new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
+                @Override 
+                public <O extends BearerTokenAuthenticationFilter> O postProcess(O object) {
+                    object.setAuthenticationFailureHandler(authenticationFailureHandler());
+                    return object;
+                }})
             .authenticationEntryPoint(authenticationEntryPoint())
             .opaqueToken();
-            //.jwt().jwtAuthenticationConverter(jwtAuthenticationConverter())// Conversion of the token to a DB user
-            //.and()
         //@formatter:on
     }
 
@@ -58,4 +64,7 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
     AccessDeniedHandler accessDeniedHandler() {
         return new CustomAccessDeniedHandler();
     }
+
+    @Bean
+    AuthenticationFailureHandler authenticationFailureHandler() {return new CustomAuthenticationHandler(); }
 }
