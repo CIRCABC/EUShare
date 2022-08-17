@@ -24,7 +24,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
 
@@ -59,9 +59,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException {
         if (authentication != null && authentication.isAuthenticated()
                 && (authentication instanceof BearerTokenAuthentication)
-                && (authentication.getPrincipal() instanceof DefaultOAuth2AuthenticatedPrincipal)) {
+                && (authentication.getPrincipal() instanceof OAuth2AuthenticatedPrincipal) ) {
+                 
             BearerTokenAuthentication bearerTokenAuthentication = (BearerTokenAuthentication) authentication;
-            DefaultOAuth2AuthenticatedPrincipal principal = (DefaultOAuth2AuthenticatedPrincipal) bearerTokenAuthentication
+            OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) bearerTokenAuthentication
                     .getPrincipal();
             String email = principal.getAttribute("email");
             String givenName = principal.getAttribute("name");
