@@ -11,21 +11,21 @@ package eu.europa.circabc.eushare.exceptions;
 
 public class WrongAuthenticationException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 
-    public WrongAuthenticationException() {
-        super();
-    }
+  public WrongAuthenticationException() {
+    super();
+  }
 
-    public WrongAuthenticationException(String message) {
-        super(message);
-    }
+  public WrongAuthenticationException(String message) {
+    super(message);
+  }
 
-    public WrongAuthenticationException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  public WrongAuthenticationException(String message, Throwable cause) {
+    super(message, cause);
+  }
 
-    public WrongAuthenticationException(Throwable cause) {
-        super(cause);
-    }
+  public WrongAuthenticationException(Throwable cause) {
+    super(cause);
+  }
 }

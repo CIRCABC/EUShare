@@ -22,11 +22,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 @EnableWebMvc
 public class UploadConfiguration extends WebMvcConfigurationSupport {
 
-    @Bean(name = "multipartResolver")
-    public MultipartResolver multipartResolver(EushareConfiguration esConfig) {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(esConfig.getMaxSizeAllowedInBytes());
-        multipartResolver.setMaxUploadSizePerFile(esConfig.getMaxSizeAllowedInBytes());
-        return multipartResolver;
-    }
+  @Bean(name = "multipartResolver")
+  public MultipartResolver multipartResolver(EushareConfiguration esConfig) {
+    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+    multipartResolver.setMaxUploadSize(esConfig.getMaxSizeAllowedInBytes());
+    multipartResolver.setMaxUploadSizePerFile(
+      esConfig.getMaxSizeAllowedInBytes()
+    );
+    return multipartResolver;
+  }
 }

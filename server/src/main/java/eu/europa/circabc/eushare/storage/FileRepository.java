@@ -12,35 +12,59 @@ package eu.europa.circabc.eushare.storage;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface FileRepository extends PagingAndSortingRepository<DBFile, String> {
-    List<DBFile> findByExpirationDateBefore(LocalDate date);
+public interface FileRepository
+  extends PagingAndSortingRepository<DBFile, String> {
+  List<DBFile> findByExpirationDateBefore(LocalDate date);
 
-    DBFile findByStatusAndSharedWithDownloadId(DBFile.Status status, String downloadId);
+  DBFile findByStatusAndSharedWithDownloadId(
+    DBFile.Status status,
+    String downloadId
+  );
 
-    DBFile findByStatusAndSharedWithShorturl(DBFile.Status status, String shortUrl);
+  DBFile findByStatusAndSharedWithShorturl(
+    DBFile.Status status,
+    String shortUrl
+  );
 
-    DBFile findByStatusAndId(DBFile.Status status, String id);
+  DBFile findByStatusAndId(DBFile.Status status, String id);
 
-    DBFile findOneById(String id);
+  DBFile findOneById(String id);
 
-    List<DBFile> findByStatus(DBFile.Status status, Pageable page);
+  List<DBFile> findByStatus(DBFile.Status status, Pageable page);
 
-    // get the files a receiver can retrieve
-    List<DBFile> findByStatusAndSharedWithEmail(DBFile.Status status, String id, Pageable page);
+  // get the files a receiver can retrieve
+  List<DBFile> findByStatusAndSharedWithEmail(
+    DBFile.Status status,
+    String id,
+    Pageable page
+  );
 
-    // get the files a receiver can retrieve with ordering by expiration date and file name
-    List<DBFile> findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(DBFile.Status status, String id, Pageable page);
+  // get the files a receiver can retrieve with ordering by expiration date and file name
+  List<DBFile> findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(
+    DBFile.Status status,
+    String id,
+    Pageable page
+  );
 
-    // get the files an uploader has uploaded
-    List<DBFile> findByStatusAndUploaderId(DBFile.Status status, String id, Pageable page);
+  // get the files an uploader has uploaded
+  List<DBFile> findByStatusAndUploaderId(
+    DBFile.Status status,
+    String id,
+    Pageable page
+  );
 
-    // get the files an uploader has uploaded with ordering by expiration date and file name
-    List<DBFile> findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(List<DBFile.Status> status, String id, Pageable page);
+  // get the files an uploader has uploaded with ordering by expiration date and file name
+  List<DBFile> findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(
+    List<DBFile.Status> status,
+    String id,
+    Pageable page
+  );
 
-    List<DBFile> findByStatusAndLastModifiedBefore(DBFile.Status status,LocalDateTime time);
-    
+  List<DBFile> findByStatusAndLastModifiedBefore(
+    DBFile.Status status,
+    LocalDateTime time
+  );
 }

@@ -9,27 +9,27 @@
  */
 package eu.europa.circabc.eushare.security;
 
+import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
-
 @Component
-public class CustomAuthenticationHandler implements AuthenticationFailureHandler {
+public class CustomAuthenticationHandler
+  implements AuthenticationFailureHandler {
 
-    @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(401);
-        response.getWriter().write(HttpErrorAnswerBuilder.build401EmptyToString());
-        response.flushBuffer();
-    }
-
+  @Override
+  public void onAuthenticationFailure(
+    HttpServletRequest request,
+    HttpServletResponse response,
+    AuthenticationException exception
+  ) throws IOException, ServletException {
+    response.setStatus(401);
+    response.getWriter().write(HttpErrorAnswerBuilder.build401EmptyToString());
+    response.flushBuffer();
+  }
 }

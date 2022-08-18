@@ -9,12 +9,9 @@
  */
 package eu.europa.circabc.eushare;
 
-import javax.annotation.PostConstruct;
-
 import com.fasterxml.jackson.databind.Module;
-
 import eu.europa.circabc.eushare.services.UserService;
-
+import javax.annotation.PostConstruct;
 import org.openapitools.jackson.nullable.JsonNullableModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,45 +26,46 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class EushareApplication extends SpringBootServletInitializer {
 
-    private Logger log = LoggerFactory.getLogger(EushareApplication.class);
+  private Logger log = LoggerFactory.getLogger(EushareApplication.class);
+
+  @Override
+  protected SpringApplicationBuilder configure(
+    SpringApplicationBuilder builder
+  ) {
+    return builder.sources(EushareApplication.class);
+  }
+
+  @Autowired
+  UserService userService;
+
+  @PostConstruct
+  public void initUsers() {
+    userService.setAdminUsers();
+  }
+
+  public void run(String... arg0) throws ExitException {
+    log.info("Starting EUSHARE");
+    if (arg0.length > 0 && arg0[0].equals("exitcode")) {
+      throw new ExitException();
+    }
+  }
+
+  public static void main(String[] args) throws ExitException {
+    new SpringApplication(EushareApplication.class).run(args);
+  }
+
+  class ExitException extends RuntimeException implements ExitCodeGenerator {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(EushareApplication.class);
+    public int getExitCode() {
+      return 10;
     }
+  }
 
-    @Autowired
-    UserService userService;
-
-    @PostConstruct
-    public void initUsers() {
-        userService.setAdminUsers();
-    }
-
-    public void run(String... arg0) throws ExitException {
-        log.info("Starting EUSHARE");
-        if (arg0.length > 0 && arg0[0].equals("exitcode")) {
-            throw new ExitException();
-        }
-    }
-
-    public static void main(String[] args) throws ExitException {
-        new SpringApplication(EushareApplication.class).run(args);
-    }
-
-    class ExitException extends RuntimeException implements ExitCodeGenerator {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public int getExitCode() {
-            return 10;
-        }
-
-    }
-
-    @Bean
-    public Module jsonNullableModule() {
-        return new JsonNullableModule();
-    }
-
+  @Bean
+  public Module jsonNullableModule() {
+    return new JsonNullableModule();
+  }
 }

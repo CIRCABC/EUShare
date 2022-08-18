@@ -9,21 +9,30 @@
  */
 package eu.europa.circabc.eushare.services;
 
-import java.net.ConnectException;
-import java.time.LocalDate;
-
-import javax.mail.MessagingException;
-
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
+import java.net.ConnectException;
+import java.time.LocalDate;
+import javax.mail.MessagingException;
 
 public interface EmailServiceInterface {
-    public void sendDownloadNotification(String recipient, String downloaderId, FileBasics fileInfo)
-            throws MessagingException, ConnectException;
+  public void sendDownloadNotification(
+    String recipient,
+    String downloaderId,
+    FileBasics fileInfo
+  ) throws MessagingException, ConnectException;
 
-    public void sendFileDeletedNotification(String recipient, FileBasics fileInfo, String reason)
-            throws MessagingException;
+  public void sendFileDeletedNotification(
+    String recipient,
+    FileBasics fileInfo,
+    String reason
+  ) throws MessagingException;
 
-    public void sendShareNotification(String recipient, FileInfoRecipient fileInfo, String message, String shorturl, LocalDate expDate)
-            throws MessagingException;
+  public void sendShareNotification(
+    String recipient,
+    FileInfoRecipient fileInfo,
+    String message,
+    String shorturl,
+    LocalDate expDate
+  ) throws MessagingException;
 }

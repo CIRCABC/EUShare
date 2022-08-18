@@ -22,32 +22,31 @@ package eu.europa.circabc.eushare.model.validation;
 import eu.europa.circabc.eushare.model.UserInfo;
 
 public class UserInfoValidator {
-    private UserInfoValidator() {
 
-    }
+  private UserInfoValidator() {}
 
-    public static boolean validate(UserInfo userInfo) {
-        if (userInfo == null) {
-            return false;
-        }
-        if (userInfo.getTotalSpace() == null) {// NOSONAR
-            return false;
-        }
-        if (userInfo.getUsedSpace() == null) {// NOSONAR
-            return false;
-        }
-        if (userInfo.getId() == null) {// NOSONAR
-            return false;
-        }
-        if (userInfo.getLoginUsername() == null) {// NOSONAR
-            return false;
-        }
-        if (userInfo.getGivenName() == null) {// NOSONAR
-            return false;
-        }
-        if (userInfo.getIsAdmin() == null) {// NOSONAR
-            return false;
-        }
-        return true;
+  public static boolean validate(UserInfo userInfo) {
+    if (userInfo == null) {
+      return false;
     }
+    if (userInfo.getTotalSpace() == null) { // NOSONAR
+      return false;
+    }
+    if (userInfo.getUsedSpace() == null) { // NOSONAR
+      return false;
+    }
+    if (userInfo.getId() == null) { // NOSONAR
+      return false;
+    }
+    if (userInfo.getLoginUsername() == null) { // NOSONAR
+      return false;
+    }
+    if (userInfo.getGivenName() == null) { // NOSONAR
+      return false;
+    }
+    if (userInfo.getIsAdmin() == null) { // NOSONAR
+      return false;
+    }
+    return true;
+  }
 }

@@ -12,7 +12,6 @@ package eu.europa.circabc.eushare.configuration;
 import static org.junit.Assert.assertEquals;
 
 import java.net.URI;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,23 +27,30 @@ import org.springframework.test.context.junit4.SpringRunner;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CORSEnabledTest {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+  @Autowired
+  private TestRestTemplate restTemplate;
 
-    @Test
-    public void corsWithAnnotationTest() throws Exception {
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        httpHeaders.setOrigin("http://localhost:8080");
-        httpHeaders.setBearerAuth("token");
-        HttpEntity httpEntity = new HttpEntity<String>("", httpHeaders);
-        ResponseEntity<String> response = restTemplate.postForEntity(uri("/login"), httpEntity, String.class);
-        assertEquals("http://localhost:8080", response.getHeaders().getAccessControlAllowOrigin());
-        String responseBody = response.getBody();
-        assertEquals(String.class, responseBody.getClass());
-    }
+  @Test
+  public void corsWithAnnotationTest() throws Exception {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    httpHeaders.setOrigin("http://localhost:8080");
+    httpHeaders.setBearerAuth("token");
+    HttpEntity httpEntity = new HttpEntity<String>("", httpHeaders);
+    ResponseEntity<String> response = restTemplate.postForEntity(
+      uri("/login"),
+      httpEntity,
+      String.class
+    );
+    assertEquals(
+      "http://localhost:8080",
+      response.getHeaders().getAccessControlAllowOrigin()
+    );
+    String responseBody = response.getBody();
+    assertEquals(String.class, responseBody.getClass());
+  }
 
-    private URI uri(String path) {
-        return restTemplate.getRestTemplate().getUriTemplateHandler().expand(path);
-    }
+  private URI uri(String path) {
+    return restTemplate.getRestTemplate().getUriTemplateHandler().expand(path);
+  }
 }

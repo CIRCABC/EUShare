@@ -9,7 +9,6 @@
  */
 package eu.europa.circabc.eushare.security;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,11 +24,12 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 @Configuration
 @EnableWebSecurity(debug = true)
-public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+public class CustomWebSecurityConfigurerAdapter
+  extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        //@formatter:off
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    //@formatter:off
         http.cors().and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and().csrf().disable()                                                // Disabling CSRF verification, a user can modify the content
@@ -51,20 +51,21 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 }})
             .authenticationEntryPoint(authenticationEntryPoint())
             .opaqueToken();
-        //@formatter:on
-    }
+    //@formatter:on
+  }
 
-    
-    @Bean
-    AuthenticationEntryPoint authenticationEntryPoint() {
-        return new CustomAuthenticationEntryPoint();
-    }
+  @Bean
+  AuthenticationEntryPoint authenticationEntryPoint() {
+    return new CustomAuthenticationEntryPoint();
+  }
 
-    @Bean
-    AccessDeniedHandler accessDeniedHandler() {
-        return new CustomAccessDeniedHandler();
-    }
+  @Bean
+  AccessDeniedHandler accessDeniedHandler() {
+    return new CustomAccessDeniedHandler();
+  }
 
-    @Bean
-    AuthenticationFailureHandler authenticationFailureHandler() {return new CustomAuthenticationHandler(); }
+  @Bean
+  AuthenticationFailureHandler authenticationFailureHandler() {
+    return new CustomAuthenticationHandler();
+  }
 }

@@ -9,34 +9,6 @@
  */
 package eu.europa.circabc.eushare.services;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
-import javax.transaction.Transactional;
-
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.CouldNotAllocateFileException;
 import eu.europa.circabc.eushare.exceptions.CouldNotSaveFileException;
@@ -58,15 +30,40 @@ import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBFileLog;
-import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.FileLogsRepository;
 import eu.europa.circabc.eushare.storage.DBShare;
+import eu.europa.circabc.eushare.storage.DBUser;
+import eu.europa.circabc.eushare.storage.DBUser.Role;
+import eu.europa.circabc.eushare.storage.FileLogsRepository;
 import eu.europa.circabc.eushare.storage.FileRepository;
 import eu.europa.circabc.eushare.storage.MountPoint;
 import eu.europa.circabc.eushare.storage.ShareRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
-import eu.europa.circabc.eushare.storage.DBUser.Role;
 import eu.europa.circabc.eushare.utils.StringUtils;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
+import javax.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Service for managing all files that are available in the application. Use
@@ -75,594 +72,710 @@ import eu.europa.circabc.eushare.utils.StringUtils;
 @Service
 public class FileService implements FileServiceInterface {
 
-    private Logger log = LoggerFactory.getLogger(FileService.class);
+  private Logger log = LoggerFactory.getLogger(FileService.class);
 
-    private final List<MountPoint> mountPoints = new ArrayList<>();
+  private final List<MountPoint> mountPoints = new ArrayList<>();
 
-    @Autowired
-    private EushareConfiguration esConfig;
+  @Autowired
+  private EushareConfiguration esConfig;
 
-    @Autowired
-    private EmailService emailService;
+  @Autowired
+  private EmailService emailService;
 
-    @Autowired
-    private FileRepository fileRepository;
+  @Autowired
+  private FileRepository fileRepository;
 
-    @Autowired
-    private FileLogsRepository fileLogsRepository;
+  @Autowired
+  private FileLogsRepository fileLogsRepository;
 
-    @Autowired
-    private ShareRepository shareRepository;
+  @Autowired
+  private ShareRepository shareRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private UserRepository userRepository;
 
-    @Autowired
-    private UserService userService;
+  @Autowired
+  private UserService userService;
 
-    /**
-     * Prepare all given paths.
-     */
-    @PostConstruct
-    private void initialize() throws IOException {
-        for (String path : esConfig.getDisks()) {
-            MountPoint mountPoint = new MountPoint(Paths.get(path));
-            this.mountPoints.add(mountPoint);
+  /**
+   * Prepare all given paths.
+   */
+  @PostConstruct
+  private void initialize() throws IOException {
+    for (String path : esConfig.getDisks()) {
+      MountPoint mountPoint = new MountPoint(Paths.get(path));
+      this.mountPoints.add(mountPoint);
+    }
+  }
+
+  /**
+   * Retrieve all files that are marked as deleted and physically removes them
+   * from the file system.
+   */
+  @Scheduled(fixedDelay = 1800000) // Every 30 minutes
+  @Transactional
+  void cleanupFiles() {
+    for (DBFile file : fileRepository.findByStatus(
+      DBFile.Status.DELETED,
+      PageRequest.of(0, Integer.MAX_VALUE)
+    )) {
+      log.info("Launching deletion of file id {}", file.getId());
+      boolean fileDeletion = false;
+      Path path = Paths.get(file.getPath());
+      try {
+        fileDeletion = Files.deleteIfExists(path);
+        if (fileDeletion) {
+          for (DBShare dbShare : shareRepository.findByFileId(file.getId())) {
+            shareRepository.delete(dbShare);
+          }
+          for (DBFileLog dbFileLog : fileLogsRepository.findByFileId(
+            file.getId()
+          )) {
+            fileLogsRepository.delete(dbFileLog);
+          }
+          fileRepository.delete(file);
         }
+      } catch (IOException e) {
+        log.error("Could not delete DBFile, try again in next run", e);
+      } finally {
+        if (!fileDeletion) {
+          log.error("Could not delete file at path {}", path.toAbsolutePath());
+        }
+      }
+    }
+  }
+
+  /**
+   * Marks all expired files as deleted in the database.
+   */
+  @Scheduled(fixedDelay = 3600000) // Every hour
+  @Transactional
+  void markExpiredFiles() {
+    for (DBFile file : fileRepository.findByExpirationDateBefore(
+      LocalDate.now()
+    )) {
+      log.info("DBFile %s expired{}", file.getId());
+      file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
+      fileRepository.save(file);
+    }
+  }
+
+  /**
+   * Marks all lost allocated files older than one day as deleted.
+   */
+  @Scheduled(fixedDelay = 3600000) // Every hour
+  void markAllocatedLostFiles() {
+    for (DBFile file : fileRepository.findByStatusAndLastModifiedBefore(
+      eu.europa.circabc.eushare.storage.DBFile.Status.ALLOCATED,
+      LocalDateTime.now().minusDays(1)
+    )) {
+      log.info("DBFile %s allocated is lost{}", file.getId());
+      file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
+      fileRepository.save(file);
+    }
+  }
+
+  /**
+   * A copy of the {@code mountPoints} property.
+   */
+  private List<MountPoint> getMountPoints() {
+    return new ArrayList<>(this.mountPoints);
+  }
+
+  /**
+   * Tries to reserve space on any disk for the given file with size
+   * {@code filesize}. On success, the path to this file will be returned,
+   * otherwise {@code Optional.empty()}.
+   */
+  private Optional<String> tryReserveSpace(String id, long filesize) {
+    List<MountPoint> mounts = this.getMountPoints();
+    mounts.sort(Comparator.comparingLong(MountPoint::getTotalSpace));
+
+    for (MountPoint m : mounts) {
+      Optional<String> path = m.tryReserveSpace(id, filesize);
+
+      if (path.isPresent()) {
+        return path;
+      }
     }
 
-    /**
-     * Retrieve all files that are marked as deleted and physically removes them
-     * from the file system.
-     */
-    @Scheduled(fixedDelay = 1800000) // Every 30 minutes
-    @Transactional
-    void cleanupFiles() {
-        for (DBFile file : fileRepository.findByStatus(DBFile.Status.DELETED, PageRequest.of(0, Integer.MAX_VALUE))) {
-            log.info("Launching deletion of file id {}", file.getId());
-            boolean fileDeletion = false;
-            Path path = Paths.get(file.getPath());
-            try {
-                fileDeletion = Files.deleteIfExists(path);
-                if (fileDeletion) {
-                    for (DBShare dbShare : shareRepository.findByFileId(file.getId())) {
-                        shareRepository.delete(dbShare);
-                    }
-                    for (DBFileLog dbFileLog : fileLogsRepository.findByFileId(file.getId())) {
-                        fileLogsRepository.delete(dbFileLog);
-                    }
-                    fileRepository.delete(file);
-                }
-            } catch (IOException e) {
-                log.error("Could not delete DBFile, try again in next run", e);
-            } finally {
-                if (!fileDeletion) {
-                    log.error("Could not delete file at path {}", path.toAbsolutePath());
-                }
-            }
-        }
+    return Optional.empty();
+  }
+
+  @Override
+  @Transactional
+  public void removeShareOnFileOnBehalfOf(
+    String fileId,
+    String userEmail,
+    String requesterId
+  )
+    throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
+    if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
+      shareRepository.deleteByEmailAndFileId(userEmail, fileId);
+    } else {
+      throw new UserUnauthorizedException();
+    }
+  }
+
+  private boolean isRequesterTheOwnerOfTheFileOrIsAnAdmin(
+    String fileId,
+    String requesterId
+  ) throws UnknownFileException, UnknownUserException {
+    DBFile dbFile = findFile(fileId);
+    return (
+      dbFile.getUploader().getId().equals(requesterId) ||
+      userService.isAdmin(requesterId)
+    );
+  }
+
+  @Transactional
+  @Override
+  public Recipient addShareOnFileOnBehalfOf(
+    String fileId,
+    Recipient recipient,
+    String requesterId
+  )
+    throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException {
+    if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
+      if (!StringUtils.validateMessage(recipient.getMessage())) {
+        throw new MessageTooLongException();
+      }
+      DBFile dbFile = findAvailableFile(fileId, false);
+
+      DBShare dbShare = new DBShare(
+        recipient.getEmail().toLowerCase(),
+        dbFile,
+        recipient.getMessage()
+      );
+
+      String shortUrl;
+      do {
+        shortUrl = dbShare.generateShortUrl();
+      } while (shareRepository.findOneByShorturl(shortUrl) != null);
+      dbShare.setShorturl(shortUrl);
+
+      shareRepository.save(dbShare);
+
+      emailService.sendShareNotification(
+        recipient.getEmail(),
+        dbFile.toFileInfoRecipient(recipient.getEmail()),
+        recipient.getMessage(),
+        shortUrl,
+        dbFile.getExpirationDate()
+      );
+
+      return dbShare.toRecipient();
+    } else {
+      throw new UserUnauthorizedException();
+    }
+  }
+
+  public void reminderShareOnFileOnBehalfOf(
+    String fileId,
+    String userEmail,
+    String requesterId
+  )
+    throws UserUnauthorizedException, UnknownUserException, UnknownFileException, MessagingException {
+    if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
+      DBFile dbFile = findAvailableFile(fileId, false);
+
+      DBShare dbShare = shareRepository.findOneByEmailAndFileId(
+        userEmail,
+        fileId
+      );
+
+      emailService.sendShareNotification(
+        userEmail,
+        dbFile.toFileInfoRecipient(userEmail),
+        dbShare.getMessage(),
+        dbShare.getShorturl(),
+        dbFile.getExpirationDate()
+      );
+    } else {
+      throw new UserUnauthorizedException();
+    }
+  }
+
+  /**
+   * Tries to allocate space on disk for file with given size. If the allocation
+   * fails, throws a corresponding Exception
+   *
+   * @return File ID if allocation successful
+   * @throws WrongNameStructureException
+   */
+  @Override
+  @Transactional
+  public String allocateFileOnBehalfOf(
+    LocalDate expirationDate,
+    String fileName,
+    String password,
+    String uploaderId,
+    List<Recipient> recipientList,
+    long filesize,
+    String requesterId
+  )
+    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException {
+    // Validate uploader rights
+    if (!uploaderId.equals(requesterId)) {
+      DBUser possibleAdminUser = userService.getDbUser(requesterId);
+      if (!possibleAdminUser.getRole().equals(Role.ADMIN)) {
+        throw new UserUnauthorizedException();
+      }
     }
 
-    /**
-     * Marks all expired files as deleted in the database.
-     */
-    @Scheduled(fixedDelay = 3600000) // Every hour
-    @Transactional
-    void markExpiredFiles() {
-        for (DBFile file : fileRepository.findByExpirationDateBefore(LocalDate.now())) {
-            log.info("DBFile %s expired{}", file.getId());
-            file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
-            fileRepository.save(file);
-        }
+    if (fileName == null) {
+      throw new EmptyFilenameException();
     }
 
-    /**
-     * Marks all lost allocated files older than one day as deleted.
-     */
-    @Scheduled(fixedDelay = 3600000) // Every hour
-    void markAllocatedLostFiles() {
-        for (DBFile file : fileRepository.findByStatusAndLastModifiedBefore(eu.europa.circabc.eushare.storage.DBFile.Status.ALLOCATED,LocalDateTime.now().minusDays(1))) {
-            log.info("DBFile %s allocated is lost{}", file.getId());
-            file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
-            fileRepository.save(file);
-        }
+    // Validate fileSize and actual size
+    if (filesize < 1) {
+      throw new IllegalFileSizeException();
     }
 
-    /**
-     * A copy of the {@code mountPoints} property.
-     */
-    private List<MountPoint> getMountPoints() {
-        return new ArrayList<>(this.mountPoints);
+    // Validate expirationDate
+    if (expirationDate.isBefore(LocalDate.now())) {
+      throw new DateLiesInPastException();
     }
 
-    /**
-     * Tries to reserve space on any disk for the given file with size
-     * {@code filesize}. On success, the path to this file will be returned,
-     * otherwise {@code Optional.empty()}.
-     */
-    private Optional<String> tryReserveSpace(String id, long filesize) {
-        List<MountPoint> mounts = this.getMountPoints();
-        mounts.sort(Comparator.comparingLong(MountPoint::getTotalSpace));
+    DBUser uploader = userService.getDbUser(uploaderId);
 
-        for (MountPoint m : mounts) {
-            Optional<String> path = m.tryReserveSpace(id, filesize);
+    if (uploader.getFreeSpace() < filesize) {
+      throw new UserHasInsufficientSpaceException();
+    }
 
-            if (path.isPresent()) {
-                return path;
-            }
+    List<DBShare> recipientDBUserList = new LinkedList<>();
+    DBFile dbFile = new DBFile(
+      uploader,
+      new HashSet<>(recipientDBUserList),
+      fileName,
+      filesize,
+      expirationDate,
+      "path",
+      password
+    );
+    fileRepository.save(dbFile);
+    String generatedFileId = dbFile.getId();
+
+    String path = this.tryReserveSpace(generatedFileId, filesize).orElse(null);
+    if (path == null) {
+      fileRepository.delete(dbFile);
+      throw new CouldNotAllocateFileException();
+    }
+
+    dbFile.setPath(path);
+    fileRepository.save(dbFile);
+
+    for (Recipient recipient : recipientList) {
+      if (!StringUtils.validateMessage(recipient.getMessage())) {
+        throw new MessageTooLongException();
+      }
+      DBShare dbShare = new DBShare(
+        recipient.getEmail().toLowerCase(),
+        dbFile,
+        recipient.getMessage()
+      );
+
+      String shortUrl;
+      do {
+        shortUrl = dbShare.generateShortUrl();
+      } while (shareRepository.findOneByShorturl(shortUrl) != null);
+      dbShare.setShorturl(shortUrl);
+
+      shareRepository.save(dbShare);
+    }
+    return generatedFileId;
+  }
+
+  private DBFile findFile(String fileId) throws UnknownFileException {
+    DBFile f = fileRepository.findById(fileId).orElse(null);
+    if (f == null || f.getStatus() == DBFile.Status.DELETED) {
+      throw new UnknownFileException();
+    }
+    return f;
+  }
+
+  private DBFile findAvailableFile(String fileId, boolean isNotUploaderOrAdmin)
+    throws UnknownFileException {
+    DBFile f;
+    if (!isNotUploaderOrAdmin) {
+      f = fileRepository.findByStatusAndId(DBFile.Status.AVAILABLE, fileId);
+    } else {
+      f =
+        fileRepository.findByStatusAndSharedWithDownloadId(
+          DBFile.Status.AVAILABLE,
+          fileId
+        );
+    }
+    if (f == null) {
+      throw new UnknownFileException();
+    }
+    return f;
+  }
+
+  public DBFile findAvailableFileByShortUrl(String shortUrl)
+    throws UnknownFileException {
+    DBFile f;
+
+    f =
+      fileRepository.findByStatusAndSharedWithShorturl(
+        DBFile.Status.AVAILABLE,
+        shortUrl
+      );
+
+    if (f == null) {
+      throw new UnknownFileException();
+    }
+    return f;
+  }
+
+  /**
+   * Mark a file as deleted, sends a mail with the reason if {@code reason} is not
+   * null to {@code requesterId}
+   */
+  @Override
+  @Transactional
+  public void deleteFileOnBehalfOf(
+    String fileId,
+    String reason,
+    String requesterId
+  )
+    throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
+    DBFile f = fileRepository.findById(fileId).orElse(null);
+
+    if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
+      throw new UnknownFileException();
+    }
+
+    if (
+      !requesterId.equals(f.getUploader().getId()) &&
+      !userService.isAdmin(requesterId)
+    ) {
+      throw new UserUnauthorizedException();
+    }
+
+    f.setStatus(DBFile.Status.DELETED);
+    fileRepository.save(f);
+
+    if (reason != null) {
+      try {
+        emailService.sendFileDeletedNotification(
+          f.getUploader().getEmail(),
+          f.toFileBasics(),
+          reason
+        );
+      } catch (Exception ignored) {
+        log.warn("Error while sending file deleted mail", ignored);
+      }
+    }
+  }
+
+  @Override
+  @Transactional
+  public void updateFileOnBehalfOf(
+    String fileId,
+    LocalDate expirationDate,
+    String requesterId
+  )
+    throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
+    DBFile f = fileRepository.findById(fileId).orElse(null);
+
+    if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
+      throw new UnknownFileException();
+    }
+
+    if (
+      !requesterId.equals(f.getUploader().getId()) &&
+      !userService.isAdmin(requesterId)
+    ) {
+      throw new UserUnauthorizedException();
+    }
+    f.setExpirationDate(expirationDate);
+
+    fileRepository.save(f);
+  }
+
+  /**
+   * Download the given file via the given session. Fails if the user may not
+   * access the file, the file is unknown or the given password is wrong.
+   *
+   * @throws UnknownFileException
+   * @throws WrongPasswordException
+   */
+  @Override
+  @Transactional
+  public DownloadReturn downloadFile(String fileId, String password)
+    throws WrongPasswordException, UnknownFileException {
+    DBFile dbFile;
+
+    DBShare dbShare;
+    if (fileId.length() < 10) {
+      dbShare = shareRepository.findOneByShorturl(fileId);
+    } else {
+      dbShare = shareRepository.findOneByDownloadId(fileId);
+    }
+
+    if (dbShare == null) {
+      // File is downloaded by its uploader
+
+      if (fileId.length() < 10) {
+        dbFile = findAvailableFileByShortUrl(fileId);
+      } else {
+        dbFile = findAvailableFile(fileId, false);
+      }
+    } else {
+      // File is downloaded by a user it is shared with
+      dbFile = dbShare.getFile();
+      if (!dbFile.getStatus().equals(DBFile.Status.AVAILABLE)) {
+        throw new UnknownFileException();
+      }
+      String userIdentifier = dbShare.getEmail();
+
+      try {
+        this.emailService.sendDownloadNotification(
+            dbFile.getUploader().getEmail(),
+            userIdentifier,
+            dbFile.toFileBasics()
+          );
+      } catch (Exception e) {
+        log.error(
+          "Error happened when sending download notification for file " +
+          fileId,
+          e
+        );
+      }
+    }
+    if (
+      dbFile.getPassword() != null &&
+      !BCrypt.checkpw(password, dbFile.getPassword())
+    ) {
+      throw new WrongPasswordException();
+    }
+    File file = Paths.get(dbFile.getPath()).toFile();
+
+    DBFileLog fileLogs;
+    if (dbShare == null) {
+      fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(), "");
+    } else {
+      fileLogs =
+        new DBFileLog(
+          dbFile,
+          dbShare.getEmail(),
+          LocalDateTime.now(),
+          dbShare.getShorturl()
+        );
+    }
+    fileLogsRepository.save(fileLogs);
+
+    return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
+  }
+
+  @Override
+  @Transactional
+  public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(
+    int pageSize,
+    int pageNumber,
+    String userId,
+    String requesterId
+  ) throws UserUnauthorizedException, UnknownUserException {
+    if (
+      userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)
+    ) {
+      if (userService.isUserExists(userId)) {
+        DBUser user = userRepository.findOneById(userId);
+        DBUser recipient = userRepository.findOneById(requesterId);
+        String email = user.getEmail();
+        return fileRepository
+          .findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(
+            DBFile.Status.AVAILABLE,
+            email,
+            PageRequest.of(pageNumber, pageSize)
+          )
+          .stream()
+          .map(dbFile -> dbFile.toFileInfoRecipient(recipient.getEmail()))
+          .collect(Collectors.toList());
+      } else {
+        throw new UnknownUserException();
+      }
+    } else {
+      throw new UserUnauthorizedException();
+    }
+  }
+
+  @Override
+  @Transactional
+  public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(
+    int pageSize,
+    int pageNumber,
+    String userId,
+    String requesterId
+  ) throws UserUnauthorizedException, UnknownUserException {
+    if (
+      userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)
+    ) {
+      if (userService.isUserExists(userId)) {
+        List<DBFile.Status> status = new ArrayList<>();
+        status.add(DBFile.Status.AVAILABLE);
+        if (userService.isAdmin(requesterId)) {
+          status.add(DBFile.Status.ALLOCATED);
         }
+        return fileRepository
+          .findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(
+            status,
+            userId,
+            PageRequest.of(pageNumber, pageSize)
+          )
+          .stream()
+          .map(DBFile::toFileInfoUploader)
+          .collect(Collectors.toList());
+      } else {
+        throw new UnknownUserException();
+      }
+    } else {
+      throw new UserUnauthorizedException();
+    }
+  }
 
-        return Optional.empty();
+  @Override
+  @Transactional
+  public FileInfoUploader saveOnBehalfOf(
+    String fileId,
+    MultipartFile resource,
+    String requesterId
+  )
+    throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException, UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
+    DBFile f = findFile(fileId);
+
+    if (requesterId.equals(f.getUploader().getId())) {
+      this.save(f, resource);
+      return f.toFileInfoUploader();
+    } else {
+      throw new UserUnauthorizedException();
+    }
+  }
+
+  /**
+   * Saves a file the file will not be saved.
+   */
+  private void save(DBFile dbFile, MultipartFile file)
+    throws IllegalFileStateException, FileLargerThanAllocationException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
+    if (dbFile == null) {
+      throw new NullPointerException("dbFile is null");
+    }
+    if (file == null) {
+      throw new NullPointerException("file is null");
+    }
+    if (dbFile.getStatus() != DBFile.Status.ALLOCATED) {
+      throw new IllegalFileStateException();
+    }
+
+    if (file.getSize() > dbFile.getSize()) {
+      throw new FileLargerThanAllocationException();
+    }
+
+    if (file.getSize() > esConfig.getMaxSizeAllowedInBytes()) {
+      throw new IllegalFileSizeException();
+    }
+
+    dbFile.setStatus(DBFile.Status.UPLOADING);
+
+    dbFile.setSize(file.getSize());
+
+    fileRepository.save(dbFile);
+
+    Path p = Paths.get(dbFile.getPath());
+
+    try {
+      file.transferTo(p.toFile());
+    } catch (IOException e) {
+      throw new CouldNotSaveFileException(e);
+    }
+    dbFile.setStatus(DBFile.Status.AVAILABLE);
+    fileRepository.save(dbFile);
+    for (DBShare recipient : dbFile.getSharedWith()) {
+      if (recipient != null) {
+        String recipientEmail = recipient.getEmail();
+        if (StringUtils.validateEmailAddress(recipientEmail)) {
+          FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(
+            recipientEmail
+          );
+          this.emailService.sendShareNotification(
+              recipientEmail,
+              fileInfoRecipient,
+              recipient.getMessage(),
+              recipient.getShorturl(),
+              dbFile.getExpirationDate()
+            );
+        }
+      }
+    }
+  }
+
+  public static class DownloadReturn {
+
+    private final File file; // NOSONAR
+    private final String filename; // NOSONAR
+    private final Long fileSizeInBytes; // NOSONAR
+
+    public DownloadReturn(File file, String filename, Long fileSizeInBytes) {
+      this.file = file;
+      this.filename = filename;
+      this.fileSizeInBytes = fileSizeInBytes;
+    }
+
+    public File getFile() {
+      return file;
+    }
+
+    public String getFilename() {
+      return filename;
+    }
+
+    public Long getFileSizeInBytes() {
+      return fileSizeInBytes;
     }
 
     @Override
-    @Transactional
-    public void removeShareOnFileOnBehalfOf(String fileId, String userEmail, String requesterId)
-            throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
-        if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            shareRepository.deleteByEmailAndFileId(userEmail, fileId);
-        } else {
-            throw new UserUnauthorizedException();
-        }
-    }
-
-    private boolean isRequesterTheOwnerOfTheFileOrIsAnAdmin(String fileId, String requesterId)
-            throws UnknownFileException, UnknownUserException {
-        DBFile dbFile = findFile(fileId);
-        return dbFile.getUploader().getId().equals(requesterId) || userService.isAdmin(requesterId);
-    }
-
-    @Transactional
-    @Override
-    public Recipient addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
-            throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException,
-            WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException {
-        if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            if (!StringUtils.validateMessage(recipient.getMessage())) {
-                throw new MessageTooLongException();
-            }
-            DBFile dbFile = findAvailableFile(fileId, false);
-
-            DBShare dbShare = new DBShare(recipient.getEmail().toLowerCase(), dbFile, recipient.getMessage());
-
-            String shortUrl;
-            do {
-                shortUrl = dbShare.generateShortUrl();
-            } while (shareRepository.findOneByShorturl(shortUrl) != null);
-            dbShare.setShorturl(shortUrl);
-
-            shareRepository.save(dbShare);
-
-            emailService.sendShareNotification(recipient.getEmail(), dbFile.toFileInfoRecipient(recipient.getEmail()), 
-                    recipient.getMessage(),shortUrl,dbFile.getExpirationDate());
-
-            return dbShare.toRecipient();
-        } else {
-            throw new UserUnauthorizedException();
-        }
-    }
-
-
-    public void reminderShareOnFileOnBehalfOf(String fileId, String userEmail, String requesterId) 
-        throws UserUnauthorizedException, UnknownUserException,
-            UnknownFileException, MessagingException {
-        if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
-            
-            DBFile dbFile = findAvailableFile(fileId, false);
-
-            DBShare dbShare = shareRepository.findOneByEmailAndFileId(userEmail, fileId);
-            
-            emailService.sendShareNotification(userEmail, dbFile.toFileInfoRecipient(userEmail),
-            dbShare.getMessage(),dbShare.getShorturl(),dbFile.getExpirationDate());
-          
-        } else {
-            throw new UserUnauthorizedException();
-        }
-    }
-
-    /**
-     * Tries to allocate space on disk for file with given size. If the allocation
-     * fails, throws a corresponding Exception
-     * 
-     * @return File ID if allocation successful
-     * @throws WrongNameStructureException
-     */
-    @Override
-    @Transactional
-    public String allocateFileOnBehalfOf(LocalDate expirationDate, String fileName, String password, String uploaderId,
-            List<Recipient> recipientList, long filesize, String requesterId)
-            throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
-            UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException,
-            EmptyFilenameException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException {
-
-        // Validate uploader rights
-        if (!uploaderId.equals(requesterId)) {
-            DBUser possibleAdminUser = userService.getDbUser(requesterId);
-            if (!possibleAdminUser.getRole().equals(Role.ADMIN)) {
-                throw new UserUnauthorizedException();
-            }
-        }
-
-        if (fileName == null) {
-            throw new EmptyFilenameException();
-        }
-
-        // Validate fileSize and actual size
-        if (filesize < 1) {
-            throw new IllegalFileSizeException();
-        }
-
-        // Validate expirationDate
-        if (expirationDate.isBefore(LocalDate.now())) {
-            throw new DateLiesInPastException();
-        }
-
-        DBUser uploader = userService.getDbUser(uploaderId);
-
-        if (uploader.getFreeSpace() < filesize) {
-            throw new UserHasInsufficientSpaceException();
-        }
-
-        List<DBShare> recipientDBUserList = new LinkedList<>();
-        DBFile dbFile = new DBFile(uploader, new HashSet<>(recipientDBUserList), fileName, filesize, expirationDate,
-                "path", password);
-        fileRepository.save(dbFile);
-        String generatedFileId = dbFile.getId();
-
-        String path = this.tryReserveSpace(generatedFileId, filesize).orElse(null);
-        if (path == null) {
-            fileRepository.delete(dbFile);
-            throw new CouldNotAllocateFileException();
-        }
-
-        dbFile.setPath(path);
-        fileRepository.save(dbFile);
-
-        for (Recipient recipient : recipientList) {
-
-            if (!StringUtils.validateMessage(recipient.getMessage())) {
-                throw new MessageTooLongException();
-            }
-            DBShare dbShare = new DBShare(recipient.getEmail().toLowerCase(), dbFile, recipient.getMessage());
-
-            String shortUrl;
-            do {
-                shortUrl = dbShare.generateShortUrl();
-            } while (shareRepository.findOneByShorturl(shortUrl) != null);
-            dbShare.setShorturl(shortUrl);
-
-            shareRepository.save(dbShare);
-        }
-        return generatedFileId;
-    }
-
-    private DBFile findFile(String fileId) throws UnknownFileException {
-        DBFile f = fileRepository.findById(fileId).orElse(null);
-        if (f == null || f.getStatus() == DBFile.Status.DELETED) {
-            throw new UnknownFileException();
-        }
-        return f;
-    }
-
-    private DBFile findAvailableFile(String fileId, boolean isNotUploaderOrAdmin) throws UnknownFileException {
-        DBFile f;
-        if (!isNotUploaderOrAdmin) {
-            f = fileRepository.findByStatusAndId(DBFile.Status.AVAILABLE, fileId);
-        } else {
-            f = fileRepository.findByStatusAndSharedWithDownloadId(DBFile.Status.AVAILABLE, fileId);
-        }
-        if (f == null) {
-            throw new UnknownFileException();
-        }
-        return f;
-    }
-
-    public DBFile findAvailableFileByShortUrl(String shortUrl)
-            throws UnknownFileException {
-        DBFile f;
-
-        f = fileRepository.findByStatusAndSharedWithShorturl(DBFile.Status.AVAILABLE, shortUrl);
-
-        if (f == null) {
-            throw new UnknownFileException();
-        }
-        return f;
-    }
-
-    /**
-     * Mark a file as deleted, sends a mail with the reason if {@code reason} is not
-     * null to {@code requesterId}
-     */
-    @Override
-    @Transactional
-    public void deleteFileOnBehalfOf(String fileId, String reason, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
-        DBFile f = fileRepository.findById(fileId).orElse(null);
-
-        if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
-            throw new UnknownFileException();
-        }
-
-        if (!requesterId.equals(f.getUploader().getId()) && !userService.isAdmin(requesterId)) {
-            throw new UserUnauthorizedException();
-        }
-
-        f.setStatus(DBFile.Status.DELETED);
-        fileRepository.save(f);
-
-        if (reason != null) {
-            try {
-                emailService.sendFileDeletedNotification(f.getUploader().getEmail(), f.toFileBasics(), reason);
-            } catch (Exception ignored) {
-                log.warn("Error while sending file deleted mail", ignored);
-            }
-        }
-    }
-
-
-    @Override
-    @Transactional
-    public void updateFileOnBehalfOf(String fileId, LocalDate expirationDate, String requesterId)
-            throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
-        DBFile f = fileRepository.findById(fileId).orElse(null);
-
-        if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
-            throw new UnknownFileException();
-        }
-
-        if (!requesterId.equals(f.getUploader().getId()) && !userService.isAdmin(requesterId)) {
-            throw new UserUnauthorizedException();
-        }
-        f.setExpirationDate(expirationDate);
-    
-        fileRepository.save(f);
-
-       
-    }
-    
-
-    /**
-     * Download the given file via the given session. Fails if the user may not
-     * access the file, the file is unknown or the given password is wrong.
-     * 
-     * @throws UnknownFileException
-     * @throws WrongPasswordException
-     */
-    @Override
-    @Transactional
-    public DownloadReturn downloadFile(String fileId, String password)
-            throws WrongPasswordException, UnknownFileException {
-
-        DBFile dbFile;
-
-        DBShare dbShare;
-        if (fileId.length() < 10) {
-            dbShare = shareRepository.findOneByShorturl(fileId);
-        } else {
-            dbShare = shareRepository.findOneByDownloadId(fileId);
-        }
-
-        if (dbShare == null) {
-            // File is downloaded by its uploader
-
-            if (fileId.length() < 10) {
-                dbFile = findAvailableFileByShortUrl(fileId);
-            } else {
-                dbFile = findAvailableFile(fileId, false);
-            }
-
-        } else {
-            // File is downloaded by a user it is shared with
-            dbFile = dbShare.getFile();
-            if (!dbFile.getStatus().equals(DBFile.Status.AVAILABLE)) {
-                throw new UnknownFileException();
-            }
-            String userIdentifier = dbShare.getEmail();
-
-            try {
-                this.emailService.sendDownloadNotification(dbFile.getUploader().getEmail(), userIdentifier,
-                        dbFile.toFileBasics());
-            } catch (Exception e) {
-                log.error("Error happened when sending download notification for file " + fileId, e);
-            }
-        }
-        if (dbFile.getPassword() != null && !BCrypt.checkpw(password, dbFile.getPassword())) {
-            throw new WrongPasswordException();
-        }
-        File file = Paths.get(dbFile.getPath()).toFile();
-
-        DBFileLog fileLogs;
-        if(dbShare==null) {
-         fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(),"");
-        }
-        else{
-         fileLogs = new DBFileLog(dbFile, dbShare.getEmail(), LocalDateTime.now(), dbShare.getShorturl());
-        }
-        fileLogsRepository.save(fileLogs);
-
-
-        return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
+    public String toString() {
+      return (
+        "DownloadReturn [file=" +
+        file +
+        ", fileSizeInBytes=" +
+        fileSizeInBytes +
+        ", filename=" +
+        filename +
+        "]"
+      );
     }
 
     @Override
-    @Transactional
-    public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(int pageSize, int pageNumber, String userId,
-            String requesterId) throws UserUnauthorizedException, UnknownUserException {
-        if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
-            if (userService.isUserExists(userId)) {
-                DBUser user = userRepository.findOneById(userId);
-                DBUser recipient = userRepository.findOneById(requesterId);
-                String email = user.getEmail();
-                return fileRepository
-                        .findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(DBFile.Status.AVAILABLE,
-                                email, PageRequest.of(pageNumber, pageSize))
-                        .stream().map(dbFile -> dbFile.toFileInfoRecipient(recipient.getEmail())).collect(Collectors.toList());
-            } else {
-                throw new UnknownUserException();
-            }
-        } else {
-            throw new UserUnauthorizedException();
-        }
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result + ((file == null) ? 0 : file.hashCode());
+      result =
+        prime *
+        result +
+        ((fileSizeInBytes == null) ? 0 : fileSizeInBytes.hashCode());
+      result = prime * result + ((filename == null) ? 0 : filename.hashCode());
+      return result;
     }
 
     @Override
-    @Transactional
-    public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(int pageSize, int pageNumber, String userId,
-            String requesterId) throws UserUnauthorizedException, UnknownUserException {
-        if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
-            if (userService.isUserExists(userId)) {
-                List<DBFile.Status> status = new ArrayList<>();
-                status.add(DBFile.Status.AVAILABLE);
-                if(userService.isAdmin(requesterId)  ) {
-                    status.add(DBFile.Status.ALLOCATED);
-                }
-                return fileRepository
-                        .findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(status, userId,
-                                PageRequest.of(pageNumber, pageSize))
-                        .stream().map(DBFile::toFileInfoUploader).collect(Collectors.toList());
-                
-            } else {
-                throw new UnknownUserException();
-            }
-        } else {
-            throw new UserUnauthorizedException();
-        }
+    public boolean equals(Object obj) {
+      if (this == obj) return true;
+      if (obj == null) return false;
+      if (getClass() != obj.getClass()) return false;
+      DownloadReturn other = (DownloadReturn) obj;
+      if (file == null) {
+        if (other.file != null) return false;
+      } else if (!file.equals(other.file)) return false;
+      if (fileSizeInBytes == null) {
+        if (other.fileSizeInBytes != null) return false;
+      } else if (!fileSizeInBytes.equals(other.fileSizeInBytes)) return false;
+      if (filename == null) {
+        if (other.filename != null) return false;
+      } else if (!filename.equals(other.filename)) return false;
+      return true;
     }
-
-    @Override
-    @Transactional
-    public FileInfoUploader saveOnBehalfOf(String fileId, MultipartFile resource, String requesterId)
-            throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
-            UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
-        DBFile f = findFile(fileId);
-
-        if (requesterId.equals(f.getUploader().getId())) {
-            this.save(f, resource);
-            return f.toFileInfoUploader();
-        } else {
-            throw new UserUnauthorizedException();
-        }
-    }
-
-    /**
-     * Saves a file the file will not be saved.
-     */
-    private void save(DBFile dbFile, MultipartFile file)
-            throws IllegalFileStateException, FileLargerThanAllocationException,
-            CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
-
-        if (dbFile == null) {
-            throw new NullPointerException("dbFile is null");
-        }
-        if (file == null) {
-            throw new NullPointerException("file is null");
-        }
-        if (dbFile.getStatus() != DBFile.Status.ALLOCATED) {
-            throw new IllegalFileStateException();
-        }
-
-        if (file.getSize() > dbFile.getSize()) {
-            throw new FileLargerThanAllocationException();
-        }
-
-        if (file.getSize() > esConfig.getMaxSizeAllowedInBytes()) {
-            throw new IllegalFileSizeException();
-        }
-
-        dbFile.setStatus(DBFile.Status.UPLOADING);
-
-        dbFile.setSize(file.getSize());
-
-        fileRepository.save(dbFile);
-
-        Path p = Paths.get(dbFile.getPath());
-
-        try {
-            file.transferTo(p.toFile());
-        } catch (IOException e) {
-            throw new CouldNotSaveFileException(e);
-        }
-        dbFile.setStatus(DBFile.Status.AVAILABLE);
-        fileRepository.save(dbFile);
-        for (DBShare recipient : dbFile.getSharedWith()) {
-            if (recipient != null) {
-                String recipientEmail = recipient.getEmail();
-                if (StringUtils.validateEmailAddress(recipientEmail)) {
-                    FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(recipientEmail);
-                    this.emailService.sendShareNotification(recipientEmail, fileInfoRecipient, recipient.getMessage(),
-                            recipient.getShorturl(),dbFile.getExpirationDate());
-                }
-            }
-        }
-
-    }
-
-    public static class DownloadReturn {
-        private final File file;// NOSONAR
-        private final String filename;// NOSONAR
-        private final Long fileSizeInBytes;// NOSONAR
-
-        public DownloadReturn(File file, String filename, Long fileSizeInBytes) {
-            this.file = file;
-            this.filename = filename;
-            this.fileSizeInBytes = fileSizeInBytes;
-        }
-
-        public File getFile() {
-            return file;
-        }
-
-        public String getFilename() {
-            return filename;
-        }
-
-        public Long getFileSizeInBytes() {
-            return fileSizeInBytes;
-        }
-
-        @Override
-        public String toString() {
-            return "DownloadReturn [file=" + file + ", fileSizeInBytes=" + fileSizeInBytes + ", filename=" + filename
-                    + "]";
-        }
-
-        @Override
-        public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((file == null) ? 0 : file.hashCode());
-            result = prime * result + ((fileSizeInBytes == null) ? 0 : fileSizeInBytes.hashCode());
-            result = prime * result + ((filename == null) ? 0 : filename.hashCode());
-            return result;
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj)
-                return true;
-            if (obj == null)
-                return false;
-            if (getClass() != obj.getClass())
-                return false;
-            DownloadReturn other = (DownloadReturn) obj;
-            if (file == null) {
-                if (other.file != null)
-                    return false;
-            } else if (!file.equals(other.file))
-                return false;
-            if (fileSizeInBytes == null) {
-                if (other.fileSizeInBytes != null)
-                    return false;
-            } else if (!fileSizeInBytes.equals(other.fileSizeInBytes))
-                return false;
-            if (filename == null) {
-                if (other.filename != null)
-                    return false;
-            } else if (!filename.equals(other.filename))
-                return false;
-            return true;
-        }
-
-    }
-
+  }
 }

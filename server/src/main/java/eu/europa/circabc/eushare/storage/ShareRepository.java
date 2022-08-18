@@ -10,15 +10,14 @@
 package eu.europa.circabc.eushare.storage;
 
 import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
 public interface ShareRepository extends CrudRepository<DBShare, String> {
-    DBShare findOneByDownloadId(String downloadId);
-    DBShare findOneByShorturl(String shortUrl);
-    List<DBShare> findByFileId(String fileId);
-    List<DBShare> findByEmail(String email);
-    void deleteByDownloadId(String downloadId);
-    void deleteByEmailAndFileId(String email, String fileId);
-    DBShare findOneByEmailAndFileId(String email, String fileId);
+  DBShare findOneByDownloadId(String downloadId);
+  DBShare findOneByShorturl(String shortUrl);
+  List<DBShare> findByFileId(String fileId);
+  List<DBShare> findByEmail(String email);
+  void deleteByDownloadId(String downloadId);
+  void deleteByEmailAndFileId(String email, String fileId);
+  DBShare findOneByEmailAndFileId(String email, String fileId);
 }

@@ -9,39 +9,40 @@
  */
 package eu.europa.circabc.eushare.services;
 
-import java.util.List;
-
-import org.springframework.security.core.Authentication;
-
 import eu.europa.circabc.eushare.exceptions.IllegalSpaceException;
 import eu.europa.circabc.eushare.exceptions.NonInternalUsersCannotBecomeAdminException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.UserInfo;
+import java.util.List;
+import org.springframework.security.core.Authentication;
 
 public interface UserServiceInterface {
+  public String getAuthenticatedUserId(Authentication authentication)
+    throws WrongAuthenticationException;
 
-    public String getAuthenticatedUserId(Authentication authentication) throws WrongAuthenticationException;
+  public UserInfo getUserInfoOnBehalfOf(String userId, String requesterId)
+    throws UnknownUserException, UserUnauthorizedException;
 
-    public UserInfo getUserInfoOnBehalfOf(String userId, String requesterId)
-            throws UnknownUserException, UserUnauthorizedException;
+  public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId)
+    throws UnknownUserException, UserUnauthorizedException, NonInternalUsersCannotBecomeAdminException, IllegalSpaceException;
 
-    public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId) throws UnknownUserException,
-            UserUnauthorizedException, NonInternalUsersCannotBecomeAdminException, IllegalSpaceException;
+  public List<UserInfo> getUsersUserInfoOnBehalfOf(
+    int pageSize,
+    int pageNumber,
+    String searchString,
+    String requesterId
+  ) throws UnknownUserException, UserUnauthorizedException;
 
-    public List<UserInfo> getUsersUserInfoOnBehalfOf(int pageSize, int pageNumber, String searchString,
-            String requesterId) throws UnknownUserException, UserUnauthorizedException;
+  public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
+    throws UnknownUserException, NonInternalUsersCannotBecomeAdminException, UserUnauthorizedException;
 
-    public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
-            throws UnknownUserException, NonInternalUsersCannotBecomeAdminException, UserUnauthorizedException;
+  public void revokeAdminRightsOnBehalfOf(String userId, String requesterId)
+    throws UnknownUserException, UserUnauthorizedException;
 
-    public void revokeAdminRightsOnBehalfOf(String userId, String requesterId)
-            throws UnknownUserException, UserUnauthorizedException;
+  public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
+    throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException;
 
-    public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
-            throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException;
-
-    public void setAdminUsers();
-
+  public void setAdminUsers();
 }

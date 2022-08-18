@@ -9,24 +9,25 @@
  */
 package eu.europa.circabc.eushare.security;
 
+import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
-import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
+public class CustomAuthenticationEntryPoint
+  implements AuthenticationEntryPoint {
 
-public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
-
-    @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response,
-            AuthenticationException authException) throws IOException, ServletException {
-        response.setStatus(401);
-        response.getWriter().write(HttpErrorAnswerBuilder.build401EmptyToString());
-        response.flushBuffer();
-    }
+  @Override
+  public void commence(
+    HttpServletRequest request,
+    HttpServletResponse response,
+    AuthenticationException authException
+  ) throws IOException, ServletException {
+    response.setStatus(401);
+    response.getWriter().write(HttpErrorAnswerBuilder.build401EmptyToString());
+    response.flushBuffer();
+  }
 }

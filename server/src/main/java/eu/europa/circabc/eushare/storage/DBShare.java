@@ -9,8 +9,8 @@
  */
 package eu.europa.circabc.eushare.storage;
 
+import eu.europa.circabc.eushare.model.Recipient;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -20,113 +20,114 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import eu.europa.circabc.eushare.model.Recipient;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "shares", indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl"))
+@Table(
+  name = "shares",
+  indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl")
+)
 public class DBShare {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    private String downloadId;
+  @Id
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+  private String downloadId;
 
-    @Column(nullable = false)
-    private String email;
+  @Column(nullable = false)
+  private String email;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(foreignKey = @ForeignKey(name = "Share_to_file"))
-    private DBFile file;
+  @ManyToOne(optional = false)
+  @JoinColumn(foreignKey = @ForeignKey(name = "Share_to_file"))
+  private DBFile file;
 
-    @Column(nullable = false, unique = true, length = 10)
-    private String shorturl;
+  @Column(nullable = false, unique = true, length = 10)
+  private String shorturl;
 
-    private String message;
+  private String message;
 
-    public DBShare() {
+  public DBShare() {}
 
+  public DBShare(String email, DBFile file, String message) {
+    this.email = email;
+    this.file = file;
+    if (message != null) {
+      this.message = message;
     }
+  }
 
-    public DBShare(String email, DBFile file, String message) {
-
-        this.email = email;
-        this.file = file;
-        if (message != null) {
-            this.message = message;
-        }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof DBShare)) {
-            return false;
-        }
-        DBShare other = (DBShare) o;
-        return (downloadId != null && downloadId.equals(other.getDownloadId()));
+    if (!(o instanceof DBShare)) {
+      return false;
     }
+    DBShare other = (DBShare) o;
+    return (downloadId != null && downloadId.equals(other.getDownloadId()));
+  }
 
-    @Override
-    public int hashCode() {
-        return downloadId.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return downloadId.hashCode();
+  }
 
-    public Recipient toRecipient() {
-        Recipient recipient = new Recipient();
-        recipient.setEmail(this.getEmail());
-        recipient.setShortUrl(this.getShorturl());
-        recipient.setMessage(this.getMessage());
-        return recipient;
-    }
+  public Recipient toRecipient() {
+    Recipient recipient = new Recipient();
+    recipient.setEmail(this.getEmail());
+    recipient.setShortUrl(this.getShorturl());
+    recipient.setMessage(this.getMessage());
+    return recipient;
+  }
 
-    public String getDownloadId() {
-        return downloadId;
-    }
+  public String getDownloadId() {
+    return downloadId;
+  }
 
-    public void setDownloadId(String downloadId) {
-        this.downloadId = downloadId;
-    }
+  public void setDownloadId(String downloadId) {
+    this.downloadId = downloadId;
+  }
 
-    public String getEmail() {
-        return email;
-    }
+  public String getEmail() {
+    return email;
+  }
 
-    public void setEmail(String receiver) {
-        this.email = receiver;
-    }
+  public void setEmail(String receiver) {
+    this.email = receiver;
+  }
 
-    public DBFile getFile() {
-        return file;
-    }
+  public DBFile getFile() {
+    return file;
+  }
 
-    public void setFile(DBFile file) {
-        this.file = file;
-    }
+  public void setFile(DBFile file) {
+    this.file = file;
+  }
 
-    public String getMessage() {
-        return message;
-    }
+  public String getMessage() {
+    return message;
+  }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+  public void setMessage(String message) {
+    this.message = message;
+  }
 
-    public String getShorturl() {
-        return shorturl;
-    }
+  public String getShorturl() {
+    return shorturl;
+  }
 
-    public void setShorturl(String shorturl) {
-        this.shorturl = shorturl;
-    }
+  public void setShorturl(String shorturl) {
+    this.shorturl = shorturl;
+  }
 
-    public String generateShortUrl() {
-
-        UUID uuid = UUID.randomUUID();
-        return uuid.toString().replace("-", "").replace("0", "").replace("o", "").substring(0, 6);
-
-    }
-
+  public String generateShortUrl() {
+    UUID uuid = UUID.randomUUID();
+    return uuid
+      .toString()
+      .replace("-", "")
+      .replace("0", "")
+      .replace("o", "")
+      .substring(0, 6);
+  }
 }

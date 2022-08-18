@@ -11,5 +11,5 @@ package eu.europa.circabc.eushare.exceptions;
 
 public class IllegalFileSizeException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 }

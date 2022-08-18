@@ -10,21 +10,22 @@
 package eu.europa.circabc.eushare.exceptions;
 
 public class CouldNotSaveFileException extends Exception {
-    private static final long serialVersionUID = 1L;
 
-    public CouldNotSaveFileException() {
-        super();
-    }
+  private static final long serialVersionUID = 1L;
 
-    public CouldNotSaveFileException(String message) {
-        super(message);
-    }
+  public CouldNotSaveFileException() {
+    super();
+  }
 
-    public CouldNotSaveFileException(String message, Throwable cause) {
-        super(message, cause);
-    }
+  public CouldNotSaveFileException(String message) {
+    super(message);
+  }
 
-    public CouldNotSaveFileException(Throwable cause) {
-        super(cause);
-    }
+  public CouldNotSaveFileException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
+  public CouldNotSaveFileException(Throwable cause) {
+    super(cause);
+  }
 }

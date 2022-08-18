@@ -22,18 +22,17 @@ package eu.europa.circabc.eushare.model.validation;
 import eu.europa.circabc.eushare.model.Recipient;
 
 public class RecipientValidator {
-    private RecipientValidator() {
 
+  private RecipientValidator() {}
+
+  public static boolean validate(Recipient recipient) {
+    if (recipient == null) { // NOSONAR
+      return false;
+    }
+    if (recipient.getEmail() == null) { // NOSONAR
+      return false;
     }
 
-    public static boolean validate(Recipient recipient) {
-        if (recipient == null) { // NOSONAR
-            return false;
-        }
-        if (recipient.getEmail() == null) { // NOSONAR
-            return false;
-        }
- 
-        return true;
-    }
+    return true;
+  }
 }

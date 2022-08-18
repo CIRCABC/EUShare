@@ -8,11 +8,11 @@
  * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
  */
 package eu.europa.circabc.eushare.utils;
+
+import java.io.*;
 import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.*;
 
 /**
  * Inspired from https://github.com/lfridael/spring-file-upload-storage/blob/master/core/src/main/java/nl/runnable/spring/fileupload/util/ResourceMultipartFile.java
@@ -29,7 +29,12 @@ public class ResourceMultipartFile implements MultipartFile {
 
   private final int size;
 
-  public ResourceMultipartFile(Resource resource, String name, String contentType, long size) {
+  public ResourceMultipartFile(
+    Resource resource,
+    String name,
+    String contentType,
+    long size
+  ) {
     this.resource = resource;
     this.name = name;
     this.contentType = contentType;

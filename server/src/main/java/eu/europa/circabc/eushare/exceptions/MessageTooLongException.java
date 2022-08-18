@@ -8,7 +8,8 @@
  * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
  */
 package eu.europa.circabc.eushare.exceptions;
+
 public class MessageTooLongException extends Exception {
 
-    private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 1L;
 }

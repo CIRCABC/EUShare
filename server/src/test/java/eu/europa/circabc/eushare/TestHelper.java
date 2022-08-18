@@ -14,18 +14,18 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class TestHelper {
-    private TestHelper() {
-        
+
+  private TestHelper() {}
+
+  public static String asJsonString(final Object obj) {
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.registerModule(new JavaTimeModule());
+      mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+      final String jsonContent = mapper.writeValueAsString(obj);
+      return jsonContent;
+    } catch (Exception e) {
+      throw new RuntimeException(e); // NOSONAR
     }
-    public static String asJsonString(final Object obj) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.registerModule(new JavaTimeModule());
-            mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-            final String jsonContent = mapper.writeValueAsString(obj);
-            return jsonContent;
-        } catch (Exception e) {
-            throw new RuntimeException(e);// NOSONAR
-        }
-    } 
+  }
 }

@@ -11,9 +11,7 @@ package eu.europa.circabc.eushare.configuration;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import javax.validation.constraints.NotNull;
-
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,91 +19,93 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
 @Configuration
 @ConfigurationProperties("eushare")
 @EnableScheduling
 public class EushareConfiguration {
-    @NotNull
-    private long defaultUserSpace;
 
-    @NotNull
-    private List<String> disks;
+  @NotNull
+  private long defaultUserSpace;
 
-    @NotNull
-    private int expirationDays;
+  @NotNull
+  private List<String> disks;
 
-    @NotNull
-    private boolean activateMailService;
+  @NotNull
+  private int expirationDays;
 
-    @NotNull
-    private long maxSizeAllowedInBytes;
+  @NotNull
+  private boolean activateMailService;
 
-    @NotNull
-    private String clientHttpAddress;
+  @NotNull
+  private long maxSizeAllowedInBytes;
 
-    public LocalDate defaultExpirationDate() {
-        return LocalDate.now().plusDays(expirationDays);
-    }
+  @NotNull
+  private String clientHttpAddress;
 
-    @Bean
-    public WebMvcConfigurer webConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedOriginPatterns("*")
-                        .allowedMethods("*").allowedHeaders("*").allowCredentials(true);
-            }
-        };
-    }
+  public LocalDate defaultExpirationDate() {
+    return LocalDate.now().plusDays(expirationDays);
+  }
 
-    public long getDefaultUserSpace() {
-        return defaultUserSpace;
-    }
+  @Bean
+  public WebMvcConfigurer webConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry
+          .addMapping("/**")
+          .allowedOriginPatterns("*")
+          .allowedMethods("*")
+          .allowedHeaders("*")
+          .allowCredentials(true);
+      }
+    };
+  }
 
-    public void setDefaultUserSpace(long defaultUserSpace) {
-        this.defaultUserSpace = defaultUserSpace;
-    }
+  public long getDefaultUserSpace() {
+    return defaultUserSpace;
+  }
 
-    public List<String> getDisks() {
-        return disks;
-    }
+  public void setDefaultUserSpace(long defaultUserSpace) {
+    this.defaultUserSpace = defaultUserSpace;
+  }
 
-    public void setDisks(List<String> disks) {
-        this.disks = disks;
-    }
+  public List<String> getDisks() {
+    return disks;
+  }
 
-    public int getExpirationDays() {
-        return expirationDays;
-    }
+  public void setDisks(List<String> disks) {
+    this.disks = disks;
+  }
 
-    public void setExpirationDays(int expirationDays) {
-        this.expirationDays = expirationDays;
-    }
+  public int getExpirationDays() {
+    return expirationDays;
+  }
 
-    public boolean isActivateMailService() {
-        return activateMailService;
-    }
+  public void setExpirationDays(int expirationDays) {
+    this.expirationDays = expirationDays;
+  }
 
-    public void setActivateMailService(boolean activateMailService) {
-        this.activateMailService = activateMailService;
-    }
+  public boolean isActivateMailService() {
+    return activateMailService;
+  }
 
-    public long getMaxSizeAllowedInBytes() {
-        return maxSizeAllowedInBytes;
-    }
+  public void setActivateMailService(boolean activateMailService) {
+    this.activateMailService = activateMailService;
+  }
 
-    public void setMaxSizeAllowedInBytes(long maxSizeAllowedInBytes) {
-        this.maxSizeAllowedInBytes = maxSizeAllowedInBytes;
-    }
+  public long getMaxSizeAllowedInBytes() {
+    return maxSizeAllowedInBytes;
+  }
 
-    public String getClientHttpAddress() {
-        return clientHttpAddress;
-    }
+  public void setMaxSizeAllowedInBytes(long maxSizeAllowedInBytes) {
+    this.maxSizeAllowedInBytes = maxSizeAllowedInBytes;
+  }
 
-    public void setClientHttpAddress(String clientHttpAddress) {
-        this.clientHttpAddress = clientHttpAddress;
-    }
-    
+  public String getClientHttpAddress() {
+    return clientHttpAddress;
+  }
+
+  public void setClientHttpAddress(String clientHttpAddress) {
+    this.clientHttpAddress = clientHttpAddress;
+  }
 }

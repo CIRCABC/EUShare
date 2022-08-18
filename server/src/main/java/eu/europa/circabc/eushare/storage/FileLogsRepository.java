@@ -10,12 +10,8 @@
 package eu.europa.circabc.eushare.storage;
 
 import java.util.List;
-
 import org.springframework.data.repository.CrudRepository;
 
 public interface FileLogsRepository extends CrudRepository<DBFileLog, String> {
-
-    List<DBFileLog> findByFileId(String fileId);
-
-
+  List<DBFileLog> findByFileId(String fileId);
 }

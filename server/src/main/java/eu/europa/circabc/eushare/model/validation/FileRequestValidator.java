@@ -13,41 +13,39 @@ import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.Recipient;
 
 public class FileRequestValidator {
-    private FileRequestValidator() {
 
+  private FileRequestValidator() {}
+
+  public static boolean validate(FileRequest fileRequest) { // NOSONAR
+    if (fileRequest == null) { // NOSONAR
+      return false;
     }
-
-    public static boolean validate(FileRequest fileRequest) { // NOSONAR
-        if (fileRequest == null) {// NOSONAR
-            return false;
-        }
-        if (fileRequest.getExpirationDate() == null) { // NOSONAR
-            return false;
-        }
-        if (fileRequest.getHasPassword() == null) {// NOSONAR
-            return false;
-        }
-        if (fileRequest.getHasPassword() && fileRequest.getPassword() == null) {// NOSONAR
-            return false;
-        }
-        if (fileRequest.getName() == null) {// NOSONAR
-            return false;
-        }
-        if (fileRequest.getSize() == null) { // NOSONAR
-            return false;
-        }
-        if (fileRequest.getSharedWith() == null) {// NOSONAR
-            return false;
-        }
-        if (fileRequest.getSharedWith().isEmpty()) { // NOSONAR
-            return false;
-        }
-        for (Recipient recipient : fileRequest.getSharedWith()) { // NOSONAR
-            if (!RecipientValidator.validate(recipient)) { // NOSONAR
-                return false;
-            }
-        }
-        return true;
+    if (fileRequest.getExpirationDate() == null) { // NOSONAR
+      return false;
     }
-
+    if (fileRequest.getHasPassword() == null) { // NOSONAR
+      return false;
+    }
+    if (fileRequest.getHasPassword() && fileRequest.getPassword() == null) { // NOSONAR
+      return false;
+    }
+    if (fileRequest.getName() == null) { // NOSONAR
+      return false;
+    }
+    if (fileRequest.getSize() == null) { // NOSONAR
+      return false;
+    }
+    if (fileRequest.getSharedWith() == null) { // NOSONAR
+      return false;
+    }
+    if (fileRequest.getSharedWith().isEmpty()) { // NOSONAR
+      return false;
+    }
+    for (Recipient recipient : fileRequest.getSharedWith()) { // NOSONAR
+      if (!RecipientValidator.validate(recipient)) { // NOSONAR
+        return false;
+      }
+    }
+    return true;
+  }
 }

@@ -9,13 +9,6 @@
  */
 package eu.europa.circabc.eushare.services;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import javax.mail.MessagingException;
-
-import org.springframework.web.multipart.MultipartFile;
-
 import eu.europa.circabc.eushare.exceptions.CouldNotAllocateFileException;
 import eu.europa.circabc.eushare.exceptions.CouldNotSaveFileException;
 import eu.europa.circabc.eushare.exceptions.DateLiesInPastException;
@@ -35,40 +28,72 @@ import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
+import java.time.LocalDate;
+import java.util.List;
+import javax.mail.MessagingException;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface FileServiceInterface {
-        public void removeShareOnFileOnBehalfOf(String fileId, String userId, String requesterId)
-                        throws UnknownUserException, UnknownFileException, UserUnauthorizedException;
+  public void removeShareOnFileOnBehalfOf(
+    String fileId,
+    String userId,
+    String requesterId
+  )
+    throws UnknownUserException, UnknownFileException, UserUnauthorizedException;
 
-        public Recipient addShareOnFileOnBehalfOf(String fileId, Recipient recipient, String requesterId)
-                        throws UnknownFileException, UserUnauthorizedException, UnknownUserException,
-                        WrongNameStructureException, WrongEmailStructureException, MessageTooLongException, MessagingException;
+  public Recipient addShareOnFileOnBehalfOf(
+    String fileId,
+    Recipient recipient,
+    String requesterId
+  )
+    throws UnknownFileException, UserUnauthorizedException, UnknownUserException, WrongNameStructureException, WrongEmailStructureException, MessageTooLongException, MessagingException;
 
-        public DownloadReturn downloadFile(String fileId, String password) throws UnknownFileException,
-                        WrongPasswordException, UserUnauthorizedException, UnknownUserException;
+  public DownloadReturn downloadFile(String fileId, String password)
+    throws UnknownFileException, WrongPasswordException, UserUnauthorizedException, UnknownUserException;
 
-        public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(int pageSize, int pageNumber, String userId,
-                        String requesterId) throws UserUnauthorizedException, UnknownUserException;
+  public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(
+    int pageSize,
+    int pageNumber,
+    String userId,
+    String requesterId
+  ) throws UserUnauthorizedException, UnknownUserException;
 
-        public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(int pageSize, int pageNumber, String userId,
-                        String requesterId) throws UserUnauthorizedException, UnknownUserException;
+  public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(
+    int pageSize,
+    int pageNumber,
+    String userId,
+    String requesterId
+  ) throws UserUnauthorizedException, UnknownUserException;
 
-        public String allocateFileOnBehalfOf(LocalDate expirationDate, String fileName, String password,
-                        String uploaderId, List<Recipient> recipientList, long filesize, String requesterId)
-                        throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
-                        UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException,
-                        EmptyFilenameException, WrongNameStructureException, WrongEmailStructureException, MessageTooLongException;
+  public String allocateFileOnBehalfOf(
+    LocalDate expirationDate,
+    String fileName,
+    String password,
+    String uploaderId,
+    List<Recipient> recipientList,
+    long filesize,
+    String requesterId
+  )
+    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, WrongNameStructureException, WrongEmailStructureException, MessageTooLongException;
 
-        public FileInfoUploader saveOnBehalfOf(String fileId, MultipartFile multipartFile, String requesterId)
-                        throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
-                        UserUnauthorizedException, CouldNotSaveFileException, EmptyFilenameException,
-                        IllegalFileSizeException, MessagingException;
+  public FileInfoUploader saveOnBehalfOf(
+    String fileId,
+    MultipartFile multipartFile,
+    String requesterId
+  )
+    throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException, UserUnauthorizedException, CouldNotSaveFileException, EmptyFilenameException, IllegalFileSizeException, MessagingException;
 
-        public void deleteFileOnBehalfOf(String fileId, String reason, String requesterId)
-                        throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
+  public void deleteFileOnBehalfOf(
+    String fileId,
+    String reason,
+    String requesterId
+  )
+    throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
 
-        public void updateFileOnBehalfOf(String fileId, LocalDate expirationDate, String requesterId)
-                        throws UnknownFileException, UserUnauthorizedException, UnknownUserException ;
-
- 
+  public void updateFileOnBehalfOf(
+    String fileId,
+    LocalDate expirationDate,
+    String requesterId
+  )
+    throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
 }
