@@ -1,0 +1,6 @@
+**/FileApi.java
+**/LoginApi.java
+**/UserApi.java
+**/UsersApi.java
+**/model/*.java
+**/RFC3339DateFormat.java
