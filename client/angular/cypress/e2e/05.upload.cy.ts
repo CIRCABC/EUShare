@@ -5,8 +5,6 @@ describe('Upload', () => {
 
   it('Visits the initial project page', () => {
     cy.contains('My shared files').should('be.visible');
-    // cy.injectAxe();
-    // cy.checkA11y();
     const fileName = 'files/CIRCABC_Leader_Guide.pdf';
     cy.fixture(fileName, 'binary')
       .then(Cypress.Blob.binaryStringToBlob)
@@ -21,9 +19,6 @@ describe('Upload', () => {
       .then(() => {
         cy.get('[data-cy="submit"]').click({ force: true });
       });
-      cy.contains('CIRCABC_Leader_Guide.pdf');
-      // cy.injectAxe();
-      // cy.checkA11y();
+    cy.contains('CIRCABC_Leader_Guide.pdf');
   });
-
 });

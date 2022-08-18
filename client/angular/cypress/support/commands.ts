@@ -52,10 +52,10 @@ Cypress.Commands.add('login', (username, password) => {
   cy.origin(
     Cypress.env('euloginServer'),
     { args },
-    ({ username, password }) => {
-      cy.get('#username').type(username);
+    ({ username: user, password: pass }) => {
+      cy.get('#username').type(user);
       cy.contains('Next').click();
-      cy.get('#password').type(password);
+      cy.get('#password').type(pass);
       cy.get('.btn').click();
     }
   );
@@ -64,5 +64,5 @@ Cypress.Commands.add('login', (username, password) => {
     `${Cypress.config('baseUrl')}/callback`,
     `${Cypress.config('baseUrl')}/upload`,
   ]);
-  
+
 });

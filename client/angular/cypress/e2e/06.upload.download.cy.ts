@@ -5,8 +5,6 @@ describe('Upload and Download', () => {
 
   it('Visits the initial project page', () => {
     cy.contains('My shared files').should('be.visible');
-    // cy.injectAxe();
-    // cy.checkA11y();
     const fileName = 'files/CIRCABC_Leader_Guide.pdf';
     cy.fixture(fileName, 'binary')
       .then(Cypress.Blob.binaryStringToBlob)
@@ -31,7 +29,5 @@ describe('Upload and Download', () => {
         });
       });
 
-    // cy.injectAxe();
-    // cy.checkA11y();
   });
 });
