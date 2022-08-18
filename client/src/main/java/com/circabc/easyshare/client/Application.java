@@ -9,7 +9,6 @@
  */
 package com.circabc.easyshare.client;
 
-
 import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,27 +18,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
-
 @SpringBootApplication
 @Controller
 public class Application extends SpringBootServletInitializer {
-     
+
+  @Override
+  protected SpringApplicationBuilder configure(
+    SpringApplicationBuilder builder
+  ) {
+    return builder.sources(Application.class);
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
+
+  class ExitException extends RuntimeException implements ExitCodeGenerator {
+
+    private static final long serialVersionUID = 1L;
+
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Application.class);
+    public int getExitCode() {
+      return 10;
     }
-
-    public static void main(String[] args) {
-		SpringApplication.run(Application.class, args);
-	}
-
-    class ExitException extends RuntimeException implements ExitCodeGenerator {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public int getExitCode() {
-            return 10;
-        }
-    }
-
+  }
 }

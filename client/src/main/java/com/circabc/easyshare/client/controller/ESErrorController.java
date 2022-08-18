@@ -15,17 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class ESErrorController implements ErrorController {
-    private static final String ERROR_PATH = "/error";
-    
 
-    @RequestMapping(value = ERROR_PATH)
-    public String error() {
-        return "forward:index.html";
-    }
+  private static final String ERROR_PATH = "/error";
 
-    @Override
-    public String getErrorPath() {
-        return ERROR_PATH;
-    }
+  @RequestMapping(value = ERROR_PATH)
+  public String error() {
+    return "forward:index.html";
+  }
+
+  @Override
+  public String getErrorPath() {
+    return ERROR_PATH;
+  }
 }
-
