@@ -119,11 +119,9 @@ public class DBUser {
   public UserInfo toUserInfo() {
     UserInfo userInfo = new UserInfo();
     userInfo.setTotalSpace(new BigDecimal(this.totalSpace));
-    List<String> uploadedFiles = new ArrayList<>();
     long totalSize = 0;
     for (DBFile upload : this.filesUploaded) {
       if (upload.getStatus() == DBFile.Status.AVAILABLE) {
-        uploadedFiles.add(upload.getId());
         totalSize = totalSize + upload.getSize();
       }
     }
