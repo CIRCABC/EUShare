@@ -47,9 +47,8 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -343,10 +342,9 @@ public class FileService implements FileServiceInterface {
       throw new UserHasInsufficientSpaceException();
     }
 
-    List<DBShare> recipientDBUserList = new LinkedList<>();
     DBFile dbFile = new DBFile(
       uploader,
-      new HashSet<>(recipientDBUserList),
+      Collections.emptySet(),
       fileName,
       filesize,
       expirationDate,
