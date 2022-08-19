@@ -1074,60 +1074,6 @@ public class FileApiControllerTest {
   }
 
   @Test
-  public void postFileFileRequest403WrongEmailStructure() throws Exception { // NOSONAR
-    Status status = new Status();
-    status.setCode(403);
-    status.setMessage("WrongEmailStructure");
-
-    String token = "StupidToken";
-
-    Map<String, Object> attributes = new HashMap<>();
-    attributes.put("email", "email@email.com");
-    attributes.put("username", "username");
-    SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
-    Collection<GrantedAuthority> collection = new LinkedList();
-
-    collection.add(grantedAuthority);
-    OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
-    when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
-    when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
-
-    doThrow(new WrongEmailStructureException())
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString()
-      );
-    this.mockMvc.perform(
-        MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
-  }
-
-  @Test
   public void postFileFileRequest500() throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(500);
