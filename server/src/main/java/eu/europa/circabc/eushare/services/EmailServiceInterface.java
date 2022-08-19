@@ -11,7 +11,6 @@ package eu.europa.circabc.eushare.services;
 
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
-import java.net.ConnectException;
 import java.time.LocalDate;
 import javax.mail.MessagingException;
 

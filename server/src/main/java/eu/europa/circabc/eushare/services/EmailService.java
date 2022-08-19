@@ -12,7 +12,6 @@ package eu.europa.circabc.eushare.services;
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
-import java.net.ConnectException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;

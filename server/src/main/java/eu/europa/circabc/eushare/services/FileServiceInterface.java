@@ -21,8 +21,6 @@ import eu.europa.circabc.eushare.exceptions.UnknownFileException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
-import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
-import eu.europa.circabc.eushare.exceptions.WrongNameStructureException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;

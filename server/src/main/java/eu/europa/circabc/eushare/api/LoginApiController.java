@@ -11,7 +11,6 @@ package eu.europa.circabc.eushare.api;
 
 import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
-import eu.europa.circabc.eushare.model.User;
 import eu.europa.circabc.eushare.model.UserResult;
 import eu.europa.circabc.eushare.services.UserService;
 import java.util.Optional;
