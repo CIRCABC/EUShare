@@ -64,3 +64,4 @@ docker/server-tomcat/dist/eushareserver.war
 
 client/angular/cypress/screenshots/
 client/angular/cypress/videos/
+client/angular/cypress/downloads/
