@@ -46,10 +46,10 @@ public interface FileServiceInterface {
     Recipient recipient,
     String requesterId
   )
-    throws UnknownFileException, UserUnauthorizedException, UnknownUserException, WrongNameStructureException, WrongEmailStructureException, MessageTooLongException, MessagingException;
+    throws UnknownFileException, UserUnauthorizedException, UnknownUserException, MessageTooLongException, MessagingException;
 
   public DownloadReturn downloadFile(String fileId, String password)
-    throws UnknownFileException, WrongPasswordException, UserUnauthorizedException, UnknownUserException;
+    throws UnknownFileException, WrongPasswordException;
 
   public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(
     int pageSize,
@@ -74,14 +74,14 @@ public interface FileServiceInterface {
     long filesize,
     String requesterId
   )
-    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, WrongNameStructureException, WrongEmailStructureException, MessageTooLongException;
+    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, MessageTooLongException;
 
   public FileInfoUploader saveOnBehalfOf(
     String fileId,
     MultipartFile multipartFile,
     String requesterId
   )
-    throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException, UserUnauthorizedException, CouldNotSaveFileException, EmptyFilenameException, IllegalFileSizeException, MessagingException;
+    throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException, UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException;
 
   public void deleteFileOnBehalfOf(
     String fileId,

@@ -25,7 +25,7 @@ public class CustomAuthenticationEntryPoint
     HttpServletRequest request,
     HttpServletResponse response,
     AuthenticationException authException
-  ) throws IOException, ServletException {
+  ) throws IOException {
     response.setStatus(401);
     response.getWriter().write(HttpErrorAnswerBuilder.build401EmptyToString());
     response.flushBuffer();

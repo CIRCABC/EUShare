@@ -27,7 +27,7 @@ public class CustomAuthenticationHandler
     HttpServletRequest request,
     HttpServletResponse response,
     AuthenticationException exception
-  ) throws IOException, ServletException {
+  ) throws IOException {
     response.setStatus(401);
     response.getWriter().write(HttpErrorAnswerBuilder.build401EmptyToString());
     response.flushBuffer();

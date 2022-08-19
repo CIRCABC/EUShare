@@ -76,7 +76,7 @@ public class EmailService implements EmailServiceInterface {
     String recipient,
     String downloaderId,
     FileBasics fileInfo
-  ) throws MessagingException, ConnectException {
+  ) throws MessagingException {
     Context ctx = new Context();
 
     if (downloaderId == null || downloaderId.equals("")) {

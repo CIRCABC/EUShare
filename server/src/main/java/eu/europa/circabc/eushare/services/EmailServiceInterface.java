@@ -20,7 +20,7 @@ public interface EmailServiceInterface {
     String recipient,
     String downloaderId,
     FileBasics fileInfo
-  ) throws MessagingException, ConnectException;
+  ) throws MessagingException;
 
   public void sendFileDeletedNotification(
     String recipient,

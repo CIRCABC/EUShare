@@ -234,7 +234,7 @@ public class FileService implements FileServiceInterface {
     Recipient recipient,
     String requesterId
   )
-    throws UserUnauthorizedException, UnknownUserException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException {
+    throws UserUnauthorizedException, UnknownUserException, MessageTooLongException, UnknownFileException, MessagingException {
     if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
       if (!StringUtils.validateMessage(recipient.getMessage())) {
         throw new MessageTooLongException();
@@ -300,7 +300,6 @@ public class FileService implements FileServiceInterface {
    * fails, throws a corresponding Exception
    *
    * @return File ID if allocation successful
-   * @throws WrongNameStructureException
    */
   @Override
   @Transactional
@@ -313,7 +312,7 @@ public class FileService implements FileServiceInterface {
     long filesize,
     String requesterId
   )
-    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException {
+    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, MessageTooLongException {
     // Validate uploader rights
     if (!uploaderId.equals(requesterId)) {
       DBUser possibleAdminUser = userService.getDbUser(requesterId);

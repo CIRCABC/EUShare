@@ -352,18 +352,6 @@ public class FileApiController implements FileApi {
         HttpErrorAnswerBuilder.build403EmptyFileNameToString(),
         exc
       );
-    } catch (WrongEmailStructureException e) {
-      throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403WrongEmailStructureToString(),
-        e
-      );
-    } catch (WrongNameStructureException e) {
-      throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403WrongNameStructureToString(),
-        e
-      );
     } catch (MessageTooLongException e) {
       throw new ResponseStatusException(
         HttpStatus.FORBIDDEN,
@@ -499,18 +487,6 @@ public class FileApiController implements FileApi {
       throw new ResponseStatusException(
         HttpStatus.FORBIDDEN,
         HttpErrorAnswerBuilder.build403MessageTooLongToString(),
-        e
-      );
-    } catch (WrongNameStructureException e) {
-      throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403WrongNameStructureToString(),
-        e
-      );
-    } catch (WrongEmailStructureException e) {
-      throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403WrongEmailStructureToString(),
         e
       );
     } catch (MessagingException e) {
