@@ -30,7 +30,6 @@ import eu.europa.circabc.eushare.storage.DBShare;
 import eu.europa.circabc.eushare.storage.FileRepository;
 import eu.europa.circabc.eushare.storage.ShareRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
-import eu.europa.circabc.eushare.utils.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

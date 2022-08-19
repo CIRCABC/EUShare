@@ -16,7 +16,6 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
@@ -30,7 +29,7 @@ import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.FileRepository;
 import eu.europa.circabc.eushare.storage.ShareRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
-import eu.europa.circabc.eushare.utils.ResourceMultipartFile;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -40,9 +39,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import org.apache.commons.io.IOUtils;
+
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +49,8 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -69,11 +63,9 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.multipart.MultipartFile;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
