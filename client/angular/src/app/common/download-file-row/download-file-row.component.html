@@ -53,7 +53,9 @@
           <a class="navbar-link"> {{ "actions" | transloco }} </a>
 
           <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
-            <a class="navbar-item" (click)="tryDownload()"> Download </a>
+            <a class="navbar-item" (click)="tryDownload()">
+              {{ "download" | transloco }}
+            </a>
           </div>
         </div>
       </div>
