@@ -135,7 +135,7 @@ public class DBFile {
     fileInfoRecipient.setUploaderName(this.uploader.getName());
 
     for (DBShare dbShare : this.getSharedWith()) {
-      if (dbShare.getEmail().equals(recipientEmail)) {
+      if (dbShare.getEmail().equalsIgnoreCase(recipientEmail)) {
         fileInfoRecipient.setFileId(dbShare.getDownloadId());
       }
     }
