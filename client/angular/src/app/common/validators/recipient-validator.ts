@@ -12,20 +12,11 @@ import { ValidatorFn, AbstractControl } from '@angular/forms';
 
 export function recipientValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    const sendEmail = control.get('sendEmail');
     const email = control.get('email');
     const message = control.get('message');
-    const name = control.get('name');
 
-    if (sendEmail && sendEmail.value === 'True') {
-      if (!(email && email.value && message && message.value)) {
-        return { recipientValidationError: { value: true } };
-      }
-    }
-    if (sendEmail && sendEmail.value === 'False') {
-      if (!(name && name.value)) {
-        return { recipientValidationError: { value: true } };
-      }
+    if (!(email && email.value && message && message.value)) {
+      return { recipientValidationError: { value: true } };
     }
     return null;
   };
