@@ -10,7 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component } from '@angular/core';
 import { environment } from '../../environments/environment';
-
+import buildInfo  from "../../build";
 @Component({
   selector: 'cbc-footer',
   templateUrl: './footer.component.html',
@@ -23,4 +23,15 @@ export class FooterComponent {
   public nodeName = '';
   public buildDate = '';
   public circabc_url: string = environment.circabc_url;
+  public buildVersion: string;
+  public buildCommit: string;
+  public buildTimestamp: string;
+  constructor(){
+    this.buildVersion = buildInfo.version;
+    this.buildCommit = "";
+    if(buildInfo.git.fullHash !=null) {
+     this.buildCommit = (buildInfo.git.fullHash+"").substring(0,6);
+    }
+    this.buildTimestamp = buildInfo.timestamp
+  }
 }
