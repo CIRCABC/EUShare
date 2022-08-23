@@ -83,7 +83,7 @@ body {
 
 .main-header {
   height: 65px;
-  min-width: 1024px;
+
   background: #1f3341;
   background: url("assets/img/header.jpg") no-repeat center bottom;
 
@@ -289,7 +289,6 @@ body {
   background: #fff;
   box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
   height: 52px;
-  min-width: 1024px;
 
   @media screen and (max-width: $break-medium) {
     width: 100%;

@@ -10,6 +10,10 @@
   line-height: $navbar-height;
 }
 
+.navbar-menu {
+  display: flex;
+}
+
 .circabc-link-dashboard::before {
   background: url("../../img/icon-info-grey.png") no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
@@ -143,9 +147,8 @@
 }
 
 .movedownbutton {
-  margin-top: 125px;
-  left: -100px;
-  position: absolute;
+  top: 75px;
+  position: relative;
   font-weight: 500;
 }
 

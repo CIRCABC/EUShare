@@ -5,15 +5,13 @@
 }
 
 .main {
-  min-width: 1024px;
   background: url(../../img/background-home.jpg) no-repeat center center;
   background-size: cover;
   color: #fff;
   font-family: "Ubuntu", verdana, helvetica, sans-serif;
   font-size: 15px;
   padding: 7vw 33px;
-  margin-left: calc(-100vw / 2 + 1200px / 2);
-  margin-right: calc(-100vw / 2 + 1200px / 2);
+ 
 }
 
 h1 {
@@ -47,14 +45,12 @@ html {
 .main h1 {
   font-weight: 300;
   font-size: 24px;
-  width: 475px;
   text-align: left;
 }
 
 .main h2 {
   font-weight: 300;
   font-size: 15px;
-  width: 380px;
   text-align: left;
   line-height: 23px;
 }
@@ -63,7 +59,6 @@ html {
   display: flex;
   justify-content: center;
   height: 50px;
-  min-width: 1024px;
   padding: 0 32px;
   margin: 0 auto;
 }
@@ -104,7 +99,6 @@ a {
 }
 
 .wrap {
-  min-width: 1024px;
   max-width: 1024px;
   padding: 0 32px;
   margin: 0 auto;
