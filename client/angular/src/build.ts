@@ -6,7 +6,8 @@ const build = {
     git: {
         user: null,
         branch: null,
-        fullHash: "1234567"
+        hash: "e3f9b4",
+        fullHash: "e3f9b4e562623c8a69a85d8516afe368c85348f7"
     }
 };
 

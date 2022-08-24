@@ -29,8 +29,8 @@ export class FooterComponent {
   constructor(){
     this.buildVersion = buildInfo.version;
     this.buildCommit = "";
-    if(buildInfo.git.fullHash !=null) {
-     this.buildCommit = (buildInfo.git.fullHash+"").substring(0,6);
+    if(buildInfo.git.hash) {
+     this.buildCommit = buildInfo.git.hash;
     }
     this.buildTimestamp = buildInfo.timestamp
   }
