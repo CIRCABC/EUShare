@@ -32,6 +32,9 @@ public class UserSpace   {
   @JsonProperty("usedSpace")
   private BigDecimal usedSpace;
 
+  @JsonProperty("filesCount")
+  private BigDecimal filesCount;
+
   public UserSpace totalSpace(BigDecimal totalSpace) {
     this.totalSpace = totalSpace;
     return this;
@@ -78,6 +81,28 @@ public class UserSpace   {
     this.usedSpace = usedSpace;
   }
 
+  public UserSpace filesCount(BigDecimal filesCount) {
+    this.filesCount = filesCount;
+    return this;
+  }
+
+  /**
+   * Number of files
+   * minimum: 0
+   * @return filesCount
+  */
+  @ApiModelProperty(value = "Number of files")
+
+  @Valid
+@DecimalMin("0")
+  public BigDecimal getFilesCount() {
+    return filesCount;
+  }
+
+  public void setFilesCount(BigDecimal filesCount) {
+    this.filesCount = filesCount;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -89,12 +114,13 @@ public class UserSpace   {
     }
     UserSpace userSpace = (UserSpace) o;
     return Objects.equals(this.totalSpace, userSpace.totalSpace) &&
-        Objects.equals(this.usedSpace, userSpace.usedSpace);
+        Objects.equals(this.usedSpace, userSpace.usedSpace) &&
+        Objects.equals(this.filesCount, userSpace.filesCount);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalSpace, usedSpace);
+    return Objects.hash(totalSpace, usedSpace, filesCount);
   }
 
   @Override
@@ -104,6 +130,7 @@ public class UserSpace   {
     
     sb.append("    totalSpace: ").append(toIndentedString(totalSpace)).append("\n");
     sb.append("    usedSpace: ").append(toIndentedString(usedSpace)).append("\n");
+    sb.append("    filesCount: ").append(toIndentedString(filesCount)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -10,7 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component } from '@angular/core';
 import { environment } from '../../environments/environment';
-import buildInfo  from "../../build";
+import buildInfo from '../../build';
 @Component({
   selector: 'cbc-footer',
   templateUrl: './footer.component.html',
@@ -26,12 +26,12 @@ export class FooterComponent {
   public buildVersion: string;
   public buildCommit: string;
   public buildTimestamp: string;
-  constructor(){
+  constructor() {
     this.buildVersion = buildInfo.version;
-    this.buildCommit = "";
-    if(buildInfo.git.hash) {
-     this.buildCommit = buildInfo.git.hash;
+    this.buildCommit = '';
+    if (buildInfo.git.hash) {
+      this.buildCommit = buildInfo.git.hash;
     }
-    this.buildTimestamp = buildInfo.timestamp
+    this.buildTimestamp = buildInfo.timestamp;
   }
 }

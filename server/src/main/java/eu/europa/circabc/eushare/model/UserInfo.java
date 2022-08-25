@@ -34,6 +34,9 @@ public class UserInfo   {
   @JsonProperty("usedSpace")
   private BigDecimal usedSpace;
 
+  @JsonProperty("filesCount")
+  private BigDecimal filesCount;
+
   @JsonProperty("id")
   private String id;
 
@@ -93,6 +96,28 @@ public class UserInfo   {
 
   public void setUsedSpace(BigDecimal usedSpace) {
     this.usedSpace = usedSpace;
+  }
+
+  public UserInfo filesCount(BigDecimal filesCount) {
+    this.filesCount = filesCount;
+    return this;
+  }
+
+  /**
+   * Number of files
+   * minimum: 0
+   * @return filesCount
+  */
+  @ApiModelProperty(value = "Number of files")
+
+  @Valid
+@DecimalMin("0")
+  public BigDecimal getFilesCount() {
+    return filesCount;
+  }
+
+  public void setFilesCount(BigDecimal filesCount) {
+    this.filesCount = filesCount;
   }
 
   public UserInfo id(String id) {
@@ -211,6 +236,7 @@ public class UserInfo   {
     UserInfo userInfo = (UserInfo) o;
     return Objects.equals(this.totalSpace, userInfo.totalSpace) &&
         Objects.equals(this.usedSpace, userInfo.usedSpace) &&
+        Objects.equals(this.filesCount, userInfo.filesCount) &&
         Objects.equals(this.id, userInfo.id) &&
         Objects.equals(this.loginUsername, userInfo.loginUsername) &&
         Objects.equals(this.givenName, userInfo.givenName) &&
@@ -220,7 +246,7 @@ public class UserInfo   {
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalSpace, usedSpace, id, loginUsername, givenName, email, isAdmin);
+    return Objects.hash(totalSpace, usedSpace, filesCount, id, loginUsername, givenName, email, isAdmin);
   }
 
   @Override
@@ -230,6 +256,7 @@ public class UserInfo   {
     
     sb.append("    totalSpace: ").append(toIndentedString(totalSpace)).append("\n");
     sb.append("    usedSpace: ").append(toIndentedString(usedSpace)).append("\n");
+    sb.append("    filesCount: ").append(toIndentedString(filesCount)).append("\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    loginUsername: ").append(toIndentedString(loginUsername)).append("\n");
     sb.append("    givenName: ").append(toIndentedString(givenName)).append("\n");

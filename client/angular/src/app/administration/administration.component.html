@@ -3,50 +3,45 @@
   <div class="columns">
     <div class="column is-one-half">
       <label class="label">{{ "user.search" | transloco }}</label>
-      <input
-        [(ngModel)]="searchString"
-        class="input"
-        type="text"
-        [attr.placeholder]="'user.name.or.email' | transloco"
-      />
-      <a
-        class="button"
-        [class.is-loading]="searchIsLoading"
-        (click)="search()"
-        >{{ "search" | transloco }}</a
-      >
+      <input [(ngModel)]="searchString" class="input" type="text"
+        [attr.placeholder]="'user.name.or.email' | transloco" />
+
+
+      <a class="button" [class.is-loading]="searchIsLoading" (click)="search()">{{ "search" | transloco }}</a>
       <div *ngIf="isAfterSearch">
-        <label class="label">{{ "results" | transloco }}</label>
+        <label class="alignleft" class="label">{{ "results" | transloco }}</label>
+        <div class="alignright">
+          Sort By :
+          <select [(ngModel)]="sortBy" (change)="search()">
+            <option *ngFor="let c of sortByOptions" [ngValue]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+        <div style="clear: both;"></div>
         <ul class="menu-list">
-          <li
-            *ngFor="let userInfo of userInfoArray; let i = index"
-            [attr.data-index]="i"
-            value="userInfo.id"
-            (click)="displayUserInfoNumber(i)"
-          >
+          <li *ngFor="let userInfo of userInfoArray; let i = index" [attr.data-index]="i" value="userInfo.id"
+            (click)="displayUserInfoNumber(i)">
+            <a *ngIf="i==0">
+              <strong class="alignleft"> Name </strong><strong class="alignright">Files </strong> <strong
+                class="alignright">Usage </strong>
+              <div style="clear: both;"></div>
+            </a>
+
+            <a *ngIf="userInfo.usedSpace === 0"> {{ userInfo.givenName }} </a>
+
             <a *ngIf="userInfo.usedSpace > 0">
-              <strong> {{ userInfo.givenName }} </strong></a
-            >
+              <strong class="alignleft"> {{ userInfo.givenName }} </strong><strong class="alignright"> {{
+                userInfo.filesCount }}</strong><strong class="alignright">{{ userInfo.usedSpace | fileSizeFormat }}
+              </strong>
+              <div style="clear: both;"></div>
+            </a>
+
             <a *ngIf="userInfo.usedSpace === 0"> {{ userInfo.givenName }} </a>
           </li>
         </ul>
-        <nav
-          class="pagination is-centered"
-          role="navigation"
-          aria-label="pagination"
-        >
-          <a
-            *ngIf="pageNumber > 0"
-            class="pagination-previous button"
-            (click)="resultsPreviousPage()"
-            >{{ "previous" | transloco }}</a
-          >
-          <a
-            *ngIf="hasNextPage"
-            class="pagination-next button"
-            (click)="resultsNextPage()"
-            >{{ "next" | transloco }}</a
-          >
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          <a *ngIf="pageNumber > 0" class="pagination-previous button" (click)="resultsPreviousPage()">{{ "previous" |
+            transloco }}</a>
+          <a *ngIf="hasNextPage" class="pagination-next button" (click)="resultsNextPage()">{{ "next" | transloco }}</a>
         </nav>
       </div>
     </div>
@@ -79,12 +74,8 @@
           </p>
           <div class="select" *ngIf="isChangePermissions">
             <select [(ngModel)]="selectedValueInGigaBytes">
-              <option
-                *ngFor="let valueInGig of valuesInGigaBytes; let i = index"
-                [attr.data-index]="i"
-                [selected]="i === selectedValueInGigaBytesIndex"
-                [ngValue]="valueInGig"
-              >
+              <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
+                [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
                 {{ "total.space" | transloco }}: {{ valueInGig }} GB
               </option>
             </select>
@@ -96,36 +87,19 @@
           <p>
             {{ "free.space" | transloco }}:
             {{
-              selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
-                | fileSizeFormat
+            selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
+            | fileSizeFormat
             }}
           </p>
         </div>
-        <a
-          *ngIf="isChangePermissions"
-          class="button"
-          [class.is-loading]="changeIsLoading"
-          (click)="changePermissions()"
-          >{{ "done" | transloco }}</a
-        >
-        <a
-          *ngIf="isChangePermissions"
-          class="button buttonMargin"
-          (click)="toggleChangePermissions()"
-          >{{ "cancel" | transloco }}</a
-        >
-        <a
-          *ngIf="!isChangePermissions"
-          class="button"
-          (click)="toggleChangePermissions()"
-          >{{ "change.permissions" | transloco }}</a
-        >
-        <a
-          *ngIf="!isChangePermissions"
-          class="button buttonMargin"
-          (click)="goToUserUploadedFiles()"
-          >{{ "display.shared.files" | transloco }}</a
-        >
+        <a *ngIf="isChangePermissions" class="button" [class.is-loading]="changeIsLoading"
+          (click)="changePermissions()">{{ "done" | transloco }}</a>
+        <a *ngIf="isChangePermissions" class="button buttonMargin" (click)="toggleChangePermissions()">{{ "cancel" |
+          transloco }}</a>
+        <a *ngIf="!isChangePermissions" class="button" (click)="toggleChangePermissions()">{{ "change.permissions" |
+          transloco }}</a>
+        <a *ngIf="!isChangePermissions" class="button buttonMargin" (click)="goToUserUploadedFiles()">{{
+          "display.shared.files" | transloco }}</a>
       </div>
     </div>
   </div>

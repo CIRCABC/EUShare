@@ -18,6 +18,8 @@ import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.DBUser;
+import eu.europa.circabc.eushare.storage.DBUserInfoProjection;
+import eu.europa.circabc.eushare.storage.UserInfoRepository;
 import eu.europa.circabc.eushare.storage.DBUser.Role;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
@@ -29,6 +31,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,6 +41,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
 
+
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
 @Service
 public class UserService implements UserServiceInterface, UserDetailsService {
 
@@ -45,6 +51,9 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private UserInfoRepository userInfoRepository;
 
   @Autowired
   private EushareConfiguration esConfig;
@@ -177,10 +186,24 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     int pageSize,
     int pageNumber,
     String searchString,
+    String sortBy,
     String requesterId
   ) throws UnknownUserException, UserUnauthorizedException {
     if (isAdmin(requesterId)) {
-      return userRepository
+      Direction dir = Direction.DESC; 
+      if(sortBy.equals("name")){
+        dir = Direction.ASC; 
+      }
+      return userInfoRepository
+      .findByEmailRoleInternalOrAdmin(
+        searchString,sortBy,
+        PageRequest.of(pageNumber, pageSize,dir,sortBy)
+      )
+      .stream()
+      .map(DBUserInfoProjection::toUserInfo)
+      .collect(Collectors.toList());
+   
+     /*  return userRepository
         .findByEmailRoleInternalOrAdmin(
           searchString,
           PageRequest.of(pageNumber, pageSize)
@@ -188,6 +211,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         .stream()
         .map(DBUser::toUserInfo)
         .collect(Collectors.toList());
+*/
+
     } else {
       throw new UserUnauthorizedException();
     }

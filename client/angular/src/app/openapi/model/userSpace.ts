@@ -29,5 +29,9 @@ export interface UserSpace {
      * Space the user already used (Bytes)
      */
     usedSpace: number;
+    /**
+     * Number of files
+     */
+    filesCount?: number;
 }
 

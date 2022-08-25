@@ -32,6 +32,10 @@ export interface UserInfo {
      */
     usedSpace: number;
     /**
+     * Number of files
+     */
+    filesCount?: number;
+    /**
      * User ID
      */
     id: string;

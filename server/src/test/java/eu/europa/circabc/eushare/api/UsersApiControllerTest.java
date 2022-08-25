@@ -118,6 +118,7 @@ public class UsersApiControllerTest {
         anyInt(),
         anyInt(),
         anyString(),
+        anyString(),
         anyString()
       )
     )
@@ -267,6 +268,7 @@ public class UsersApiControllerTest {
         anyInt(),
         anyInt(),
         anyString(),
+        anyString(),
         anyString()
       )
     )
@@ -321,6 +323,7 @@ public class UsersApiControllerTest {
       service.getUsersUserInfoOnBehalfOf(
         anyInt(),
         anyInt(),
+        anyString(),
         anyString(),
         anyString()
       )

@@ -49,18 +49,21 @@ public class UsersApiController implements UsersApi {
   public ResponseEntity<List<UserInfo>> getUsersUserInfo(
     @RequestParam(value = "pageSize") Integer pageSize,
     @RequestParam(value = "pageNumber") Integer pageNumber,
-    @RequestParam(value = "searchString") String searchString
+    @RequestParam(value = "searchString") String searchString,
+    @RequestParam(value = "sortBy") String sortBy
   ) {
     try {
       Authentication authentication = SecurityContextHolder
         .getContext()
         .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
+   
       return new ResponseEntity<>(
         userService.getUsersUserInfoOnBehalfOf(
           pageSize,
           pageNumber,
           searchString,
+          sortBy,
           requesterId
         ),
         HttpStatus.OK

@@ -32,6 +32,7 @@ public interface UserServiceInterface {
     int pageSize,
     int pageNumber,
     String searchString,
+    String sortBy,
     String requesterId
   ) throws UnknownUserException, UserUnauthorizedException;
 

@@ -64,6 +64,12 @@ paths:
         required: true
         schema:
           type: string
+      - name: sortBy
+        in: query
+        description: Sort by criteria
+        required: false
+        schema:
+          type: string
     get:
       description: Used by the administrators in order to search for INTERNAL users' UserInfo
       operationId: getUsersUserInfo
@@ -986,6 +992,10 @@ components:
           minimum: 0
         usedSpace:
           description: Space the user already used (Bytes)
+          type: number
+          minimum: 0
+        filesCount:
+          description: Number of files
           type: number
           minimum: 0
       required:
