@@ -196,7 +196,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       }
       return userInfoRepository
       .findByEmailRoleInternalOrAdmin(
-        searchString,sortBy,
+        searchString,
         PageRequest.of(pageNumber, pageSize,dir,sortBy)
       )
       .stream()
