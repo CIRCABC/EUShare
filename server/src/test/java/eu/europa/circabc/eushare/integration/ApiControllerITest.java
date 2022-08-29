@@ -169,7 +169,9 @@ public class ApiControllerITest {
     HttpEntity httpEntity = httpEntityAsAdmin("");
     int pageSize = 1;
     int pageNumber = 0;
+    String sortBy = "name";
     String searchString = "email@email.com";
+    
     UserInfo expectedUserInfo = userRepository
       .findOneByEmailIgnoreCase("email@email.com")
       .toUserInfo();
@@ -177,13 +179,14 @@ public class ApiControllerITest {
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}",
+          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&sortBy={sortBy}",
           HttpMethod.GET,
           httpEntity,
           String.class,
           pageSize,
           pageNumber,
-          searchString
+          searchString,
+          sortBy
         );
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
@@ -200,17 +203,21 @@ public class ApiControllerITest {
     int pageSize = 0;
     int pageNumber = 0;
     String searchString = "email@email.com";
+    String sortBy  ="name";
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}",
+          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&sortBy={sortBy}",
           HttpMethod.GET,
           httpEntity,
           String.class,
           pageSize,
           pageNumber,
-          searchString
+          searchString,          
+          sortBy
         );
+
+   
     assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     assertEquals(
       HttpErrorAnswerBuilder.build400EmptyToString(),
@@ -243,17 +250,19 @@ public class ApiControllerITest {
     int pageSize = 1;
     int pageNumber = 0;
     String searchString = "email@email.com";
+    String sortBy = "name";
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(searchString);
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}",
+          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&sortBy={sortBy}&searchString={searchString}",
           HttpMethod.GET,
           httpEntity,
           String.class,
           pageSize,
           pageNumber,
+          sortBy,
           searchString
         );
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
