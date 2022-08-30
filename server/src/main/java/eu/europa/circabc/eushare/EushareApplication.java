@@ -22,11 +22,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
+@EnableSwagger2
 public class EushareApplication extends SpringBootServletInitializer {
-
-  private Logger log = LoggerFactory.getLogger(EushareApplication.class);
 
   @Override
   protected SpringApplicationBuilder configure(
@@ -43,25 +43,8 @@ public class EushareApplication extends SpringBootServletInitializer {
     userService.setAdminUsers();
   }
 
-  public void run(String... arg0) throws ExitException {
-    log.info("Starting EUSHARE");
-    if (arg0.length > 0 && arg0[0].equals("exitcode")) {
-      throw new ExitException();
-    }
-  }
-
-  public static void main(String[] args) throws ExitException {
+  public static void main(String[] args) {
     new SpringApplication(EushareApplication.class).run(args);
-  }
-
-  class ExitException extends RuntimeException implements ExitCodeGenerator {
-
-    private static final long serialVersionUID = 1L;
-
-    @Override
-    public int getExitCode() {
-      return 10;
-    }
   }
 
   @Bean

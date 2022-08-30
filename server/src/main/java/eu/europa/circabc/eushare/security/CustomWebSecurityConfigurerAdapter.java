@@ -25,33 +25,59 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @Configuration
 @EnableWebSecurity(debug = true)
 public class CustomWebSecurityConfigurerAdapter
-  extends WebSecurityConfigurerAdapter {
+    extends WebSecurityConfigurerAdapter {
+
+  private static final String[] AUTH_WHITELIST = {
+      "/api-docs",
+      "/api-docs/**",
+      "/swagger-resources",
+      "/swagger-resources/**",
+      "/swagger-ui",
+      "/swagger-ui/**",
+  };
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    //@formatter:off
-        http.cors().and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and().csrf().disable()                                                // Disabling CSRF verification, a user can modify the content
-        .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-        .antMatchers(HttpMethod.HEAD,"/file/{.+}").anonymous()                      // Authorizing login by anyone, after authentication or not
-        .antMatchers(HttpMethod.GET,"/file/{.+}").anonymous()      
-        .antMatchers(HttpMethod.GET,"/file/{.+}/fileInfo").anonymous()                 // If an Authorization Header is present, will return 403
-        .antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
-        .anyRequest().authenticated()     
-        .and().exceptionHandling().accessDeniedHandler(accessDeniedHandler())                          // Forces successful authentication for the rest of the mapping
+    http
+        .cors()
         .and()
-            .oauth2ResourceServer()                                 // Set up of a OAuth Resource server
-            .withObjectPostProcessor(new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
-                @Override 
-                public <O extends BearerTokenAuthenticationFilter> O postProcess(O object) {
-                    object.setAuthenticationFailureHandler(authenticationFailureHandler());
-                    return object;
-                }})
-            .authenticationEntryPoint(authenticationEntryPoint())
-            .opaqueToken();
-    //@formatter:on
+        .sessionManagement()
+        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and()
+        .csrf()
+        .disable()
+        .authorizeRequests()
+        .antMatchers(HttpMethod.OPTIONS, "/**")
+        .permitAll()
+        .antMatchers(AUTH_WHITELIST)
+        .permitAll()
+        .antMatchers(HttpMethod.HEAD, "/file/{.+}")
+        .anonymous()
+        .antMatchers(HttpMethod.GET, "/file/{.+}")
+        .anonymous()
+        .antMatchers(HttpMethod.GET, "/file/{.+}/fileInfo")
+        .anonymous()
+        .antMatchers(HttpMethod.PUT, "/user/userInfo")
+        .hasAuthority("ROLE_ADMIN")
+        .anyRequest()
+        .authenticated()
+        .and()
+        .exceptionHandling()
+        .accessDeniedHandler(accessDeniedHandler())
+        .and()
+        .oauth2ResourceServer()
+        .withObjectPostProcessor(
+            new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
+              @Override
+              public <O extends BearerTokenAuthenticationFilter> O postProcess(
+                  O object) {
+                object.setAuthenticationFailureHandler(
+                    authenticationFailureHandler());
+                return object;
+              }
+            })
+        .authenticationEntryPoint(authenticationEntryPoint())
+        .opaqueToken();
   }
 
   @Bean

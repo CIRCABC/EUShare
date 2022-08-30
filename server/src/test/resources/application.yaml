@@ -24,6 +24,20 @@ spring:
          client-id: VtwvhHcuGQFNUV519SdUj7ZXFztOqUqKyizqyusEHYyeq4zWWg0wlrsCH2C2k2UOdRP7BSzgl5ZCxpC8YsaRQRy-l0EvyMANoKy8j6knSKYyfa
          client_secret: WMq48iaCiYMh2qWTbibco_zQ9afXy4peIlk4NlM9htGrKYPhAQ1mR5JesbWVaxacAkiUagbXDTwMWCN3YP8vJbYRXWMFV1nZkGTj3fiDKSY95Dkw__aTAIcaUcyAn_hobZE6nnMvSO84AO1706yK5YnvObzCsTO6DFyeCtApAlM
     adminusers: dummy
+  
+  # datasource:
+  #   url: jdbc:mysql://localhost:3306/easysharetest
+  #   username: easyshare
+  #   password: easyshare
+  #   driverClassName: com.mysql.cj.jdbc.Driver 
+  # jpa:
+  #   show-sql: true
+  #   properties:
+  #     hibernate:
+  #       format_sql: true
+  #   database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  #   hibernate:
+  #     ddl-auto: create-drop
   h2:
     console:
       enabled: true
@@ -51,3 +65,7 @@ spring:
       enabled: false
       max-file-size: 256MB
       max-request-size: 256MB
+springfox:
+  documentation:
+    enabled: false
+    auto-startup: false

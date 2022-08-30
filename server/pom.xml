@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>server</artifactId>
     <packaging>${packaging.type}</packaging>
@@ -95,27 +94,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- plugin>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>deploy-file</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>deploy-file</goal>
-                                </goals>
-                                <configuration>
-                                    <file>./ENVIRONMENTNAME_TST-1.0.0.zip</file>
-                                    <repositoryId>tomcat-DIGIT-CIRCABC-SHARE</repositoryId>
-                                    <url>https://tomcat-nexus.devops.tech.ec.europa.eu/repository/tomcat-DIGIT-CIRCABC-SHARE</url>
-                                    <groupId>groupId</groupId>
-                                    <artifactId>artifactId</artifactId>
-                                    <version>1.0</version>
-                                    <packaging>zip</packaging>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin -->
+
                 </plugins>
             </build>
             <dependencies>
@@ -160,27 +139,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!-- plugin>
-                        <artifactId>maven-deploy-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>deploy-file</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>deploy-file</goal>
-                                </goals>
-                                <configuration>
-                                    <file>./ENVIRONMENTNAME_TST-1.0.0.zip</file>
-                                    <repositoryId>tomcat-DIGIT-CIRCABC-SHARE</repositoryId>
-                                    <url>https://tomcat-nexus.devops.tech.ec.europa.eu/repository/tomcat-DIGIT-CIRCABC-SHARE</url>
-                                    <groupId>groupId</groupId>
-                                    <artifactId>artifactId</artifactId>
-                                    <version>1.0</version>
-                                    <packaging>zip</packaging>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin -->
+
                 </plugins>
             </build>
             <dependencies>
@@ -241,7 +200,6 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.2</version>
     </parent>
-
 
 
     <build>
@@ -458,8 +416,6 @@
         </plugins>
     </build>
     <dependencies>
-
-
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -535,9 +491,15 @@
         <!--SpringFox dependencies -->
         <dependency>
             <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
+            <artifactId>springfox-boot-starter</artifactId>
             <version>${springfox-version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-version}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
@@ -591,7 +553,6 @@
             <artifactId>guava</artifactId>
             <version>31.1-jre</version>
         </dependency>
-
     </dependencies>
 
     <reporting>
