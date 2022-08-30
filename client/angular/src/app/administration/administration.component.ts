@@ -30,22 +30,21 @@ export class AdministrationComponent {
 
   public searchString = '';
 
-  public sortBy='name';
-  public sortByOptions  = [
+  public sortBy = 'name';
+  public sortByOptions = [
     {
-      id: "name",
-      name: "Name"
+      id: 'name',
+      name: 'Name',
     },
     {
-      id: "used_space",
-      name: "Usage"
+      id: 'used_space',
+      name: 'Usage',
     },
     {
-      id: "files_count",
-      name: "Files"
-    }
+      id: 'files_count',
+      name: 'Files',
+    },
   ];
- 
 
   private pageSize = 10;
   public pageNumber = 0;
@@ -85,7 +84,8 @@ export class AdministrationComponent {
       this.usersApi.getUsersUserInfo(
         this.pageSize,
         this.pageNumber,
-        this.searchString
+        this.searchString,
+        this.sortBy
       )
     );
     this.hasNextPage = !(await this.isLastPage());
