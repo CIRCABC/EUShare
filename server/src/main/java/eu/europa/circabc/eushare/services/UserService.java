@@ -41,9 +41,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
 
-
-import static org.springframework.data.domain.Sort.Direction.DESC;
-
 @Service
 public class UserService implements UserServiceInterface, UserDetailsService {
 
