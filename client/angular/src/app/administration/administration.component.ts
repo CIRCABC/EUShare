@@ -11,7 +11,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component } from '@angular/core';
 import { UsersService, UserInfo } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
-import { faUser, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faUserTie, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 @Component({
@@ -22,6 +22,7 @@ import { firstValueFrom } from 'rxjs';
 export class AdministrationComponent {
   public faUser = faUser;
   public faUserTie = faUserTie;
+  public faArrowDownWideShort = faArrowDownWideShort;
 
   public searchIsLoading = false;
   public isAfterSearch = false;
@@ -31,20 +32,6 @@ export class AdministrationComponent {
   public searchString = '';
 
   public sortBy = 'name';
-  public sortByOptions = [
-    {
-      id: 'name',
-      name: 'Name',
-    },
-    {
-      id: 'used_space',
-      name: 'Usage',
-    },
-    {
-      id: 'files_count',
-      name: 'Files',
-    },
-  ];
 
   private pageSize = 10;
   public pageNumber = 0;
@@ -130,6 +117,20 @@ export class AdministrationComponent {
     } finally {
       this.searchIsLoading = false;
     }
+  }
+
+  public sortByName() {
+    this.sortBy = 'name';
+    this.search();
+
+  }
+  public sortByFiles() {
+    this.sortBy = 'files_count';
+    this.search();
+  }
+  public sortByUsage(){
+    this.sortBy = 'used_space';
+    this.search();
   }
 
   public displayUserInfoNumber(i: number) {
