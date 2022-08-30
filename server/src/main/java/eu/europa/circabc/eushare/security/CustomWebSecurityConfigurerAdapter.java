@@ -25,59 +25,62 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 @Configuration
 @EnableWebSecurity(debug = true)
 public class CustomWebSecurityConfigurerAdapter
-    extends WebSecurityConfigurerAdapter {
+  extends WebSecurityConfigurerAdapter {
 
   private static final String[] AUTH_WHITELIST = {
-      "/api-docs",
-      "/api-docs/**",
-      "/swagger-resources",
-      "/swagger-resources/**",
-      "/swagger-ui",
-      "/swagger-ui/**",
+    "/api-docs",
+    "/api-docs/**",
+    "/swagger-resources",
+    "/swagger-resources/**",
+    "/swagger-ui",
+    "/swagger-ui/**",
   };
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
-        .cors()
-        .and()
-        .sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
-        .csrf()
-        .disable()
-        .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS, "/**")
-        .permitAll()
-        .antMatchers(AUTH_WHITELIST)
-        .permitAll()
-        .antMatchers(HttpMethod.HEAD, "/file/{.+}")
-        .anonymous()
-        .antMatchers(HttpMethod.GET, "/file/{.+}")
-        .anonymous()
-        .antMatchers(HttpMethod.GET, "/file/{.+}/fileInfo")
-        .anonymous()
-        .antMatchers(HttpMethod.PUT, "/user/userInfo")
-        .hasAuthority("ROLE_ADMIN")
-        .anyRequest()
-        .authenticated()
-        .and()
-        .exceptionHandling()
-        .accessDeniedHandler(accessDeniedHandler())
-        .and()
-        .oauth2ResourceServer()
-        .withObjectPostProcessor(
-            new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
-              @Override
-              public <O extends BearerTokenAuthenticationFilter> O postProcess(
-                  O object) {
-                object.setAuthenticationFailureHandler(
-                    authenticationFailureHandler());
-                return object;
-              }
-            })
-        .authenticationEntryPoint(authenticationEntryPoint())
-        .opaqueToken();
+      .cors()
+      .and()
+      .sessionManagement()
+      .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+      .and()
+      .csrf()
+      .disable()
+      .authorizeRequests()
+      .antMatchers(HttpMethod.OPTIONS, "/**")
+      .permitAll()
+      .antMatchers(AUTH_WHITELIST)
+      .permitAll()
+      .antMatchers(HttpMethod.HEAD, "/file/{.+}")
+      .anonymous()
+      .antMatchers(HttpMethod.GET, "/file/{.+}")
+      .anonymous()
+      .antMatchers(HttpMethod.GET, "/file/{.+}/fileInfo")
+      .anonymous()
+      .antMatchers(HttpMethod.PUT, "/user/userInfo")
+      .hasAuthority("ROLE_ADMIN")
+      .anyRequest()
+      .authenticated()
+      .and()
+      .exceptionHandling()
+      .accessDeniedHandler(accessDeniedHandler())
+      .and()
+      .oauth2ResourceServer()
+      .withObjectPostProcessor(
+        new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
+          @Override
+          public <O extends BearerTokenAuthenticationFilter> O postProcess(
+            O object
+          ) {
+            object.setAuthenticationFailureHandler(
+              authenticationFailureHandler()
+            );
+            return object;
+          }
+        }
+      )
+      .authenticationEntryPoint(authenticationEntryPoint())
+      .opaqueToken();
   }
 
   @Bean

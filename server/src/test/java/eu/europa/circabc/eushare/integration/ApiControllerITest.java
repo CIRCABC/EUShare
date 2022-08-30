@@ -29,7 +29,6 @@ import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.FileRepository;
 import eu.europa.circabc.eushare.storage.ShareRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
-
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,7 +38,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -171,10 +169,10 @@ public class ApiControllerITest {
     int pageNumber = 0;
     String sortBy = "name";
     String searchString = "email@email.com";
-    
+
     // because user did not share any file  we do not expect to find her via search
-    // even if she  exists  
-    UserInfo[] expectedUserInfos = { }; 
+    // even if she  exists
+    UserInfo[] expectedUserInfos = {};
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
@@ -203,7 +201,7 @@ public class ApiControllerITest {
     int pageSize = 0;
     int pageNumber = 0;
     String searchString = "email@email.com";
-    String sortBy  ="name";
+    String sortBy = "name";
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
@@ -213,11 +211,10 @@ public class ApiControllerITest {
           String.class,
           pageSize,
           pageNumber,
-          searchString,          
+          searchString,
           sortBy
         );
 
-   
     assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     assertEquals(
       HttpErrorAnswerBuilder.build400EmptyToString(),

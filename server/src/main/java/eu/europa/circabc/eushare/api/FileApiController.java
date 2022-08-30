@@ -35,8 +35,6 @@ import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.DBFile;
-import springfox.documentation.annotations.ApiIgnore;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -67,6 +65,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import springfox.documentation.annotations.ApiIgnore;
 
 @javax.annotation.Generated(
   value = "org.openapitools.codegen.languages.SpringCodegen"

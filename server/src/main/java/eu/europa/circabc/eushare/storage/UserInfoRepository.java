@@ -16,19 +16,18 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 public interface UserInfoRepository
-    extends PagingAndSortingRepository<DBUserInfoProjection, String> {
-
+  extends PagingAndSortingRepository<DBUserInfoProjection, String> {
   // @Query(value = "SELECT id, role, username, name, email, total_space,
   // sum(files.file_size) as used_space, count(files.file_id) as files_count FROM
   // users, FILES WHERE files.uploader_id=users.id and email like
   // lower(concat(:start,'%')) order by used_space desc", nativeQuery = true)
 
-
-  
-
-  @Query(value = "SELECT id, role, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count FROM users, files WHERE files.uploader_id=users.id and (files.status='AVAILABLE' or files.status='ALLOCATED') and ( email like lower(concat(:start,'%')) or name like lower(concat(:start,'%')) ) GROUP BY username ", nativeQuery = true)
+  @Query(
+    value = "SELECT id, role, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count FROM users, files WHERE files.uploader_id=users.id and (files.status='AVAILABLE' or files.status='ALLOCATED') and ( email like lower(concat(:start,'%')) or name like lower(concat(:start,'%')) ) GROUP BY username ",
+    nativeQuery = true
+  )
   public List<DBUserInfoProjection> findByEmailRoleInternalOrAdmin(
-      @Param("start") String start,
-      Pageable page);
-
+    @Param("start") String start,
+    Pageable page
+  );
 }

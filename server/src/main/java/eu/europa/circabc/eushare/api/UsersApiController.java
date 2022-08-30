@@ -57,7 +57,7 @@ public class UsersApiController implements UsersApi {
         .getContext()
         .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
-   
+
       return new ResponseEntity<>(
         userService.getUsersUserInfoOnBehalfOf(
           pageSize,

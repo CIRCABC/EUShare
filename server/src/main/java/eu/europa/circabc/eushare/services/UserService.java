@@ -18,9 +18,9 @@ import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.DBUser;
+import eu.europa.circabc.eushare.storage.DBUser.Role;
 import eu.europa.circabc.eushare.storage.DBUserInfoProjection;
 import eu.europa.circabc.eushare.storage.UserInfoRepository;
-import eu.europa.circabc.eushare.storage.DBUser.Role;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 import java.util.List;
@@ -187,20 +187,19 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     String requesterId
   ) throws UnknownUserException, UserUnauthorizedException {
     if (isAdmin(requesterId)) {
-      Direction dir = Direction.DESC; 
-      if(sortBy.equals("name")){
-        dir = Direction.ASC; 
+      Direction dir = Direction.DESC;
+      if (sortBy.equals("name")) {
+        dir = Direction.ASC;
       }
       return userInfoRepository
-      .findByEmailRoleInternalOrAdmin(
-        searchString,
-        PageRequest.of(pageNumber, pageSize,dir,sortBy)
-      )
-      .stream()
-      .map(DBUserInfoProjection::toUserInfo)
-      .collect(Collectors.toList());
-   
-     /*  return userRepository
+        .findByEmailRoleInternalOrAdmin(
+          searchString,
+          PageRequest.of(pageNumber, pageSize, dir, sortBy)
+        )
+        .stream()
+        .map(DBUserInfoProjection::toUserInfo)
+        .collect(Collectors.toList());
+      /*  return userRepository
         .findByEmailRoleInternalOrAdmin(
           searchString,
           PageRequest.of(pageNumber, pageSize)

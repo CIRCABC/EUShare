@@ -9,16 +9,14 @@
  */
 package eu.europa.circabc.eushare.storage;
 
+import eu.europa.circabc.eushare.model.UserInfo;
+import eu.europa.circabc.eushare.model.UserSpace;
+import eu.europa.circabc.eushare.storage.DBUser.Role;
 import java.math.BigDecimal;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-
-import eu.europa.circabc.eushare.model.UserInfo;
-import eu.europa.circabc.eushare.model.UserSpace;
-import eu.europa.circabc.eushare.storage.DBUser.Role;
 
 // Use JPA projection : https://github.com/spring-projects/spring-data-examples/tree/main/jpa/jpa21/src/main/java/example/springdata/jpa/resultsetmappings
 
@@ -27,8 +25,10 @@ public class DBUserInfoProjection {
 
   @Id
   private String id;
+
   @Enumerated(value = EnumType.STRING)
-  private Role role ;
+  private Role role;
+
   private String username;
   private String email;
   private String name;
@@ -36,8 +36,6 @@ public class DBUserInfoProjection {
   private long usedSpace;
 
   private long filesCount;
-
- 
 
   private DBUserInfoProjection() {}
 
@@ -50,7 +48,7 @@ public class DBUserInfoProjection {
     userInfo.setUsedSpace(new BigDecimal(this.usedSpace));
     userInfo.setFilesCount(new BigDecimal(this.filesCount));
     userInfo.setId(this.getId());
-   
+
     userInfo.setGivenName(this.getName());
     userInfo.setLoginUsername(this.getUsername());
     userInfo.isAdmin(this.role.equals(Role.ADMIN));
@@ -65,7 +63,6 @@ public class DBUserInfoProjection {
     return userSpace;
   }
 
-
   public long getFilesCount() {
     return filesCount;
   }
@@ -78,85 +75,55 @@ public class DBUserInfoProjection {
     return id;
   }
 
-
-
   public void setId(String id) {
     this.id = id;
   }
-
-
 
   public Role getRole() {
     return role;
   }
 
-
-
   public void setRole(Role role) {
     this.role = role;
   }
-
-
 
   public String getUsername() {
     return username;
   }
 
-
-
   public void setUsername(String username) {
     this.username = username;
   }
-
-
 
   public String getEmail() {
     return email;
   }
 
-
-
   public void setEmail(String email) {
     this.email = email;
   }
-
-
 
   public String getName() {
     return name;
   }
 
-
-
   public void setName(String name) {
     this.name = name;
   }
-
-
 
   public long getTotalSpace() {
     return totalSpace;
   }
 
-
-
   public void setTotalSpace(long totalSpace) {
     this.totalSpace = totalSpace;
   }
-
-
 
   public long getUsedSpace() {
     return usedSpace;
   }
 
-
-
   public void setUsedSpace(long usedSpace) {
     this.usedSpace = usedSpace;
   }
-
-
-
-
 }
