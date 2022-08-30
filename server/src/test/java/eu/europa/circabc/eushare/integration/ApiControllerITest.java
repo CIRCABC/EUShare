@@ -166,16 +166,15 @@ public class ApiControllerITest {
 
   @Test
   public void getUsersInfo200() throws Exception {
-    HttpEntity httpEntity = httpEntityAsAdmin("");
+    HttpEntity<String> httpEntity = httpEntityAsAdmin("");
     int pageSize = 1;
     int pageNumber = 0;
     String sortBy = "name";
     String searchString = "email@email.com";
     
-    UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("email@email.com")
-      .toUserInfo();
-    UserInfo[] expectedUserInfos = { expectedUserInfo };
+    // because user did not share any file  we do not expect to find her via search
+    // even if she  exists  
+    UserInfo[] expectedUserInfos = { }; 
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
@@ -190,6 +189,7 @@ public class ApiControllerITest {
         );
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
+
     assertEquals(
       ApiControllerITest.asJsonString(expectedUserInfos),
       entity.getBody()
