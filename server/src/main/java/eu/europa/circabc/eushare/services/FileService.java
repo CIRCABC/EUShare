@@ -121,7 +121,7 @@ public class FileService implements FileServiceInterface {
       Path path = Paths.get(file.getPath());
       try {
         fileDeletion = Files.deleteIfExists(path);
-        if (fileDeletion) {
+       
           for (DBShare dbShare : shareRepository.findByFileId(file.getId())) {
             shareRepository.delete(dbShare);
           }
@@ -131,12 +131,12 @@ public class FileService implements FileServiceInterface {
             fileLogsRepository.delete(dbFileLog);
           }
           fileRepository.delete(file);
-        }
+        
       } catch (IOException e) {
         log.error("Could not delete DBFile, try again in next run", e);
       } finally {
         if (!fileDeletion) {
-          log.error("Could not delete file at path {}", path.toAbsolutePath());
+          log.error("Warning !! Lost file could not be deleted at path {}. File has been deleted from DB.", path.toAbsolutePath());
         }
       }
     }
