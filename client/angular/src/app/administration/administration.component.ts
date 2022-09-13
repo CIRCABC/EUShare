@@ -8,18 +8,23 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component } from '@angular/core';
-import { UsersService, UserInfo } from '../openapi';
+import { Component, OnInit } from '@angular/core';
+import { UsersService, UserInfo, MountPointSpace, AdminService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
-import { faUser, faUserTie, faArrowDownWideShort } from '@fortawesome/free-solid-svg-icons';
+import {
+  faUser,
+  faUserTie,
+  faArrowDownWideShort,
+} from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { first, firstValueFrom } from 'rxjs';
+
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
   styleUrls: ['./administration.component.scss'],
 })
-export class AdministrationComponent {
+export class AdministrationComponent implements OnInit{
   public faUser = faUser;
   public faUserTie = faUserTie;
   public faArrowDownWideShort = faArrowDownWideShort;
@@ -40,6 +45,8 @@ export class AdministrationComponent {
 
   public userInfoArray: Array<UserInfo> = [];
 
+  public mountPointSpaces: Array<MountPointSpace> = [];
+
   private selectedUserInfoIndex = 0;
 
   public valuesInGigaBytes = [
@@ -53,11 +60,22 @@ export class AdministrationComponent {
   public selectedIsAdminValue = false;
   public changeIsLoading = false;
 
+  public math = Math;
+
   constructor(
     private router: Router,
     private usersApi: UsersService,
+    private adminService: AdminService,
     private notificationService: NotificationService
   ) {}
+
+  ngOnInit(): void {
+    this.getMountPointSpaces();
+  }
+
+  public async getMountPointSpaces()  {
+    this.mountPointSpaces =   await firstValueFrom(this.adminService.getDiskSpace());
+  }
 
   public async resultsNextPage() {
     if (await this.isLastPage()) {
@@ -122,13 +140,12 @@ export class AdministrationComponent {
   public sortByName() {
     this.sortBy = 'name';
     this.search();
-
   }
   public sortByFiles() {
     this.sortBy = 'files_count';
     this.search();
   }
-  public sortByUsage(){
+  public sortByUsage() {
     this.sortBy = 'used_space';
     this.search();
   }

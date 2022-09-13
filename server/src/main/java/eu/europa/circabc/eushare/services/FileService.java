@@ -175,7 +175,7 @@ public class FileService implements FileServiceInterface {
   /**
    * A copy of the {@code mountPoints} property.
    */
-  private List<MountPoint> getMountPoints() {
+  public List<MountPoint> getMountPoints() {
     return new ArrayList<>(this.mountPoints);
   }
 

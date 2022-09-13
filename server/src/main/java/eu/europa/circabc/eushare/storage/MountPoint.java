@@ -44,6 +44,10 @@ public class MountPoint {
     return root.resolve(String.valueOf(firstChar)).resolve(id).toAbsolutePath();
   }
 
+  public String getPath() {
+    return root.toString();
+  }
+
   /**
    * Returns either 0 or the total space available minus 128Mib
    */

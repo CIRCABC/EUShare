@@ -782,8 +782,55 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+  
+  '/admin/diskspace':
+    get:
+      operationId: getDiskSpace
+      description: ''
+      tags:
+      - Admin
+      parameters: []
+      responses:
+        200:
+            description: SUCCESS Returns space on mounted disks 
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/MountPointSpace'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  
 
- 
 components:
   securitySchemes:
     OpenID:   # <--- Arbitrary name for the security scheme. Used to refer to it from elsewhere.
@@ -1017,3 +1064,15 @@ components:
           type: string
       required:
       - fileId
+    MountPointSpace:
+      type: object
+      properties:
+        path: 
+          description: disk mount path
+          type: string
+        totalSpace:
+          description: total space on disk
+          type: number
+        usableSpace:
+          description: usable space on disk
+          type: number

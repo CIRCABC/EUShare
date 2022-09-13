@@ -17,9 +17,11 @@ export * from './fileRequest';
 export * from './fileRequestAllOf';
 export * from './fileResult';
 export * from './inlineObject';
+export * from './mountPointSpace';
 export * from './recipient';
 export * from './status';
 export * from './userInfo';
 export * from './userInfoAllOf';
 export * from './userResult';
 export * from './userSpace';
+

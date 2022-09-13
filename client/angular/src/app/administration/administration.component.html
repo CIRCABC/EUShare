@@ -11,14 +11,17 @@
         <label class="alignleft" class="label">{{
           "results" | transloco
           }}</label>
-    
+
         <div style="clear: both"></div>
         <ul class="menu-list">
           <li class="titletable">
             <a>
-              <strong class="alignleft"> Name  <fa-icon  (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon></strong>
-              <strong class="alignright">Files  <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon></strong>
-              <strong class="alignright">Usage  <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon></strong>
+              <strong class="alignleft"> Name <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
+                </strong>
+              <strong class="alignright">Files <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
+                </strong>
+              <strong class="alignright">Usage <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
+                </strong>
               <div style="clear: both"></div>
             </a>
           </li>
@@ -100,5 +103,24 @@
           "display.shared.files" | transloco }}</a>
       </div>
     </div>
+
+
   </div>
+  <p></p><br><p></p>
+  <h1 class="title">Disk usage</h1>
+  <table>
+    <tr>
+    <th>Mount path</th>
+    <th>Total size</th>
+    <th>Free space</th>
+    <th>Used (in %)</th>
+    </tr>
+    <tr *ngFor="let mp of mountPointSpaces">
+      <td>{{ mp.path }}</td>
+      <td>{{ mp.totalSpace | fileSizeFormat }}</td>
+      <td>{{mp.usableSpace | fileSizeFormat}}</td>
+      <td>{{ math.round( ((mp.totalSpace - mp.usableSpace) /mp.totalSpace ) /100 *10000) }} %</td>
+    </tr>
+  </table>
+
 </div>
