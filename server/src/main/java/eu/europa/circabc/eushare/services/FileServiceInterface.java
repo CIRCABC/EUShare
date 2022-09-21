@@ -46,7 +46,7 @@ public interface FileServiceInterface {
   )
     throws UnknownFileException, UserUnauthorizedException, UnknownUserException, MessageTooLongException, MessagingException;
 
-  public DownloadReturn downloadFile(String fileId, String password)
+  public DownloadReturn downloadFile(String fileId, String password, boolean notification)
     throws UnknownFileException, WrongPasswordException;
 
   public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(

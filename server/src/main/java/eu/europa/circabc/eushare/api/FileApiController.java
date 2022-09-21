@@ -204,7 +204,7 @@ public class FileApiController implements FileApi {
     try {
       DownloadReturn downloadReturn = fileService.downloadFile(
         fileID,
-        password
+        password,false
       );
       ContentDisposition cd = ContentDisposition
         .builder("attachment")
@@ -240,7 +240,7 @@ public class FileApiController implements FileApi {
     try {
       DownloadReturn downloadReturn = fileService.downloadFile(
         fileID,
-        password
+        password,true
       );
       File file = downloadReturn.getFile();
       InputStream stream = new FileInputStream(file);

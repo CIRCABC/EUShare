@@ -498,24 +498,24 @@ public class FileService implements FileServiceInterface {
    */
   @Override
   @Transactional
-  public DownloadReturn downloadFile(String fileId, String password)
+  public DownloadReturn downloadFile(String downloadId, String password, boolean notification)
     throws WrongPasswordException, UnknownFileException {
     DBFile dbFile;
 
     DBShare dbShare;
-    if (fileId.length() < 10) {
-      dbShare = shareRepository.findOneByShorturl(fileId);
+    if (downloadId.length() < 10) {
+      dbShare = shareRepository.findOneByShorturl(downloadId);
     } else {
-      dbShare = shareRepository.findOneByDownloadId(fileId);
+      dbShare = shareRepository.findOneByDownloadId(downloadId);
     }
 
     if (dbShare == null) {
       // File is downloaded by its uploader
 
-      if (fileId.length() < 10) {
-        dbFile = findAvailableFileByShortUrl(fileId);
+      if (downloadId.length() < 10) {
+        dbFile = findAvailableFileByShortUrl(downloadId);
       } else {
-        dbFile = findAvailableFile(fileId, false);
+        dbFile = findAvailableFile(downloadId, false);
       }
     } else {
       // File is downloaded by a user it is shared with
@@ -526,15 +526,16 @@ public class FileService implements FileServiceInterface {
       String userIdentifier = dbShare.getEmail();
 
       try {
+        if(notification) {
         this.emailService.sendDownloadNotification(
             dbFile.getUploader().getEmail(),
             userIdentifier,
             dbFile.toFileBasics()
-          );
+          );}
       } catch (Exception e) {
         log.error(
-          "Error happened when sending download notification for file " +
-          fileId,
+          "Error happened when sending download notification for share " +
+          downloadId,
           e
         );
       }
