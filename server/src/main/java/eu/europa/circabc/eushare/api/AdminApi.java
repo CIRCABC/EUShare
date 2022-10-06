@@ -17,6 +17,11 @@ package eu.europa.circabc.eushare.api;
 import eu.europa.circabc.eushare.model.MountPointSpace;
 import eu.europa.circabc.eushare.model.Status;
 import io.swagger.annotations.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,54 +31,90 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@javax.annotation.Generated(
+  value = "org.openapitools.codegen.languages.SpringCodegen"
+)
 @Validated
 @Api(value = "admin", description = "the admin API")
 public interface AdminApi {
+  default Optional<NativeWebRequest> getRequest() {
+    return Optional.empty();
+  }
 
-    default Optional<NativeWebRequest> getRequest() {
-        return Optional.empty();
+  /**
+   * GET /admin/diskspace
+   *
+   * @return SUCCESS Returns space on mounted disks (status code 200)
+   *         or BAD REQUEST the Error Message will be empty (status code 400)
+   *         or UNAUTHORIZED the Error message will be empty (status code 401)
+   *         or FORBIDDEN the Error message will be NotAuthorized (status code 403)
+   *         or NOT FOUND the Error Message will be empty (status code 404)
+   *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
+   */
+  @ApiOperation(
+    value = "",
+    nickname = "getDiskSpace",
+    notes = "",
+    response = MountPointSpace.class,
+    responseContainer = "List",
+    tags = { "Admin" }
+  )
+  @ApiResponses(
+    value = {
+      @ApiResponse(
+        code = 200,
+        message = "SUCCESS Returns space on mounted disks",
+        response = MountPointSpace.class,
+        responseContainer = "List"
+      ),
+      @ApiResponse(
+        code = 400,
+        message = "BAD REQUEST the Error Message will be empty",
+        response = Status.class
+      ),
+      @ApiResponse(
+        code = 401,
+        message = "UNAUTHORIZED the Error message will be empty",
+        response = Status.class
+      ),
+      @ApiResponse(
+        code = 403,
+        message = "FORBIDDEN the Error message will be NotAuthorized",
+        response = Status.class
+      ),
+      @ApiResponse(
+        code = 404,
+        message = "NOT FOUND the Error Message will be empty",
+        response = Status.class
+      ),
+      @ApiResponse(
+        code = 500,
+        message = "INTERNAL SERVER ERROR the Error Message will be empty",
+        response = Status.class
+      ),
     }
-
-    /**
-     * GET /admin/diskspace
-     *
-     * @return SUCCESS Returns space on mounted disks (status code 200)
-     *         or BAD REQUEST the Error Message will be empty (status code 400)
-     *         or UNAUTHORIZED the Error message will be empty (status code 401)
-     *         or FORBIDDEN the Error message will be NotAuthorized (status code 403)
-     *         or NOT FOUND the Error Message will be empty (status code 404)
-     *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
-     */
-    @ApiOperation(value = "", nickname = "getDiskSpace", notes = "", response = MountPointSpace.class, responseContainer = "List", tags={ "Admin", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "SUCCESS Returns space on mounted disks", response = MountPointSpace.class, responseContainer = "List"),
-        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
-        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
-        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
-        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
-        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
-    @GetMapping(
-        value = "/admin/diskspace",
-        produces = { "application/json" }
-    )
-    default ResponseEntity<List<MountPointSpace>> getDiskSpace() {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"path\" : \"path\", \"totalSpace\" : 0.8008281904610115, \"usableSpace\" : 6.027456183070403 }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
+  )
+  @GetMapping(value = "/admin/diskspace", produces = { "application/json" })
+  default ResponseEntity<List<MountPointSpace>> getDiskSpace() {
+    getRequest()
+      .ifPresent(request -> {
+        for (MediaType mediaType : MediaType.parseMediaTypes(
+          request.getHeader("Accept")
+        )) {
+          if (
+            mediaType.isCompatibleWith(MediaType.valueOf("application/json"))
+          ) {
+            String exampleString =
+              "{ \"path\" : \"path\", \"totalSpace\" : 0.8008281904610115, \"usableSpace\" : 6.027456183070403 }";
+            ApiUtil.setExampleResponse(
+              request,
+              "application/json",
+              exampleString
+            );
+            break;
+          }
+        }
+      });
+    return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+  }
 }

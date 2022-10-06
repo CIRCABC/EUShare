@@ -121,22 +121,24 @@ public class FileService implements FileServiceInterface {
       Path path = Paths.get(file.getPath());
       try {
         fileDeletion = Files.deleteIfExists(path);
-       
-          for (DBShare dbShare : shareRepository.findByFileId(file.getId())) {
-            shareRepository.delete(dbShare);
-          }
-          for (DBFileLog dbFileLog : fileLogsRepository.findByFileId(
-            file.getId()
-          )) {
-            fileLogsRepository.delete(dbFileLog);
-          }
-          fileRepository.delete(file);
-        
+
+        for (DBShare dbShare : shareRepository.findByFileId(file.getId())) {
+          shareRepository.delete(dbShare);
+        }
+        for (DBFileLog dbFileLog : fileLogsRepository.findByFileId(
+          file.getId()
+        )) {
+          fileLogsRepository.delete(dbFileLog);
+        }
+        fileRepository.delete(file);
       } catch (IOException e) {
         log.error("Could not delete DBFile, try again in next run", e);
       } finally {
         if (!fileDeletion) {
-          log.error("Warning !! Lost file could not be deleted at path {}. File has been deleted from DB.", path.toAbsolutePath());
+          log.error(
+            "Warning !! Lost file could not be deleted at path {}. File has been deleted from DB.",
+            path.toAbsolutePath()
+          );
         }
       }
     }
@@ -498,8 +500,11 @@ public class FileService implements FileServiceInterface {
    */
   @Override
   @Transactional
-  public DownloadReturn downloadFile(String downloadId, String password, boolean notification)
-    throws WrongPasswordException, UnknownFileException {
+  public DownloadReturn downloadFile(
+    String downloadId,
+    String password,
+    boolean notification
+  ) throws WrongPasswordException, UnknownFileException {
     DBFile dbFile;
 
     DBShare dbShare;
@@ -526,12 +531,13 @@ public class FileService implements FileServiceInterface {
       String userIdentifier = dbShare.getEmail();
 
       try {
-        if(notification) {
-        this.emailService.sendDownloadNotification(
-            dbFile.getUploader().getEmail(),
-            userIdentifier,
-            dbFile.toFileBasics()
-          );}
+        if (notification) {
+          this.emailService.sendDownloadNotification(
+              dbFile.getUploader().getEmail(),
+              userIdentifier,
+              dbFile.toFileBasics()
+            );
+        }
       } catch (Exception e) {
         log.error(
           "Error happened when sending download notification for share " +
