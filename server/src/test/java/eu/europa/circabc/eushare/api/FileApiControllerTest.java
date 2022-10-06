@@ -11,6 +11,7 @@ package eu.europa.circabc.eushare.api;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -610,7 +611,7 @@ public class FileApiControllerTest {
 
     doReturn(new DownloadReturn(file, "filename", 256L))
       .when(fileService)
-      .downloadFile(anyString(), anyString(),true);
+      .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .get("/file/" + fakeSearchedFileId) // NOSONAR
@@ -629,7 +630,7 @@ public class FileApiControllerTest {
     status.setCode(401);
     doThrow(new WrongPasswordException())
       .when(fileService)
-      .downloadFile(anyString(), anyString(),true);
+      .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .get("/file/" + fakeSearchedFileId) // NOSONAR
@@ -650,7 +651,7 @@ public class FileApiControllerTest {
     status.setCode(404);
     doThrow(new UnknownFileException())
       .when(fileService)
-      .downloadFile(anyString(), anyString(),true);
+      .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .get("/file/" + fakeSearchedFileId) // NOSONAR
@@ -671,7 +672,7 @@ public class FileApiControllerTest {
     status.setCode(500);
     doThrow(new NullPointerException())
       .when(fileService)
-      .downloadFile(anyString(), anyString(),true);
+      .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .get("/file/" + fakeSearchedFileId) // NOSONAR
