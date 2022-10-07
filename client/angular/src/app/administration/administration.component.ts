@@ -17,7 +17,7 @@ import {
   faArrowDownWideShort,
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
-import { first, firstValueFrom } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-administration',
