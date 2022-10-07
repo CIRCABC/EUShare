@@ -53,12 +53,17 @@ Cypress.Commands.add('login', (username, password) => {
     Cypress.env('euloginServer'),
     { args },
     ({ username: user, password: pass }) => {
+      cy.on('uncaught:exception', (e) => {
+        return false
+      });
       cy.get('#username').type(user);
       cy.contains('Next').click();
       cy.get('#password').type(pass);
       cy.get('.btn').click();
     }
   );
+
+
   cy.url().should('be.oneOf', [
     `${Cypress.config('baseUrl')}/login`,
     `${Cypress.config('baseUrl')}/callback`,
