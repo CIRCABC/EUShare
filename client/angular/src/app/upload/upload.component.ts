@@ -387,9 +387,9 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['password'].value;
   }
   getDownloadNotification(): boolean {
-    let downloadNotificationVal =
+    const downloadNotificationVal =
       this.uploadform.controls['download_notification'].value;
-    if (downloadNotificationVal != null && downloadNotificationVal == 1) {
+    if (downloadNotificationVal !== null && downloadNotificationVal === 1) {
       return true;
     } else {
       return false;
