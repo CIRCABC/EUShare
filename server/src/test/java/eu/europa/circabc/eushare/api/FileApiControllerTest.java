@@ -106,9 +106,11 @@ public class FileApiControllerTest {
     fileRequest.setPassword("password"); // NOSONAR
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
+    fileRequest.setDownloadNotification(true);
     Recipient recipient = new Recipient();
     recipient.setEmail("email@email.com");
     recipient.setMessage("message");
+    recipient.setDownloadNotification(true);
     validRecipient = FileApiControllerTest.asJsonString(recipient);
     fileRequest.setSharedWith(Arrays.asList(recipient));
     validFileRequestContent = FileApiControllerTest.asJsonString(fileRequest);
