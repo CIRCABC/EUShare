@@ -112,7 +112,7 @@ public class DBTest {
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
 
-        DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message");
+        DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message",true);
         dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
@@ -144,7 +144,7 @@ public class DBTest {
         dbFile.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile);
 
-        DBShare dbShare = new DBShare("email2@email.com", dbFile,"message");
+        DBShare dbShare = new DBShare("email2@email.com", dbFile,"message",true);
         dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
 
@@ -188,7 +188,7 @@ public class DBTest {
         dbFile3.setStatus(DBFile.Status.AVAILABLE);
         fileRepository.save(dbFile3);
 
-        DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message");
+        DBShare dbShare = new DBShare( "email2@email.com", dbFile,"message",true);
         dbShare.setShorturl("AAAAAA");
         shareRepository.save(dbShare);
         List<DBFile.Status> status = new ArrayList<DBFile.Status>();

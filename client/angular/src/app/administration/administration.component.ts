@@ -9,7 +9,12 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
-import { UsersService, UserInfo, MountPointSpace, AdminService } from '../openapi';
+import {
+  UsersService,
+  UserInfo,
+  MountPointSpace,
+  AdminService,
+} from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import {
   faUser,
@@ -24,7 +29,7 @@ import { firstValueFrom } from 'rxjs';
   templateUrl: './administration.component.html',
   styleUrls: ['./administration.component.scss'],
 })
-export class AdministrationComponent implements OnInit{
+export class AdministrationComponent implements OnInit {
   public faUser = faUser;
   public faUserTie = faUserTie;
   public faArrowDownWideShort = faArrowDownWideShort;
@@ -73,8 +78,10 @@ export class AdministrationComponent implements OnInit{
     this.getMountPointSpaces();
   }
 
-  public async getMountPointSpaces()  {
-    this.mountPointSpaces =   await firstValueFrom(this.adminService.getDiskSpace());
+  public async getMountPointSpaces() {
+    this.mountPointSpaces = await firstValueFrom(
+      this.adminService.getDiskSpace()
+    );
   }
 
   public async resultsNextPage() {

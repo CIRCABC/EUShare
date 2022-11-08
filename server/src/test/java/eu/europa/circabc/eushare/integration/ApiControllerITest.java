@@ -665,7 +665,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message");
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
@@ -725,7 +725,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message");
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
@@ -787,7 +787,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message");
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
@@ -1789,7 +1789,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message");
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
@@ -1840,7 +1840,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message");
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
@@ -1894,7 +1894,7 @@ public class ApiControllerITest {
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message");
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());

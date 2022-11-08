@@ -14,6 +14,7 @@ import {
   NullValidationHandler,
   OAuthService,
 } from 'angular-oauth2-oidc';
+import { Location } from '@angular/common';
 import { environment } from '../environments/environment';
 
 const authCodeFlowConfig: AuthConfig = {
@@ -39,8 +40,13 @@ const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  constructor(private oauthService: OAuthService) {
-    this.configureOAuth();
+  constructor(
+    private oauthService: OAuthService,
+    private readonly location: Location
+  ) {
+    if (!this.location.path().startsWith('/fs')) {
+      this.configureOAuth();
+    }
   }
 
   private async configureOAuth() {

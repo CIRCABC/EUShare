@@ -669,7 +669,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
- 
+
+  '/file/{fileID}/fileRequest/sharedWithDownloadNotification':
+    parameters:
+      - name: fileID
+        in: path
+        description: The id of the file
+        required: true
+        schema:
+          type: string
+      - name: userEmail
+        in: query
+        description: The email of the user
+        required: true
+        schema:
+          type: string 
+      - name: downloadNotification
+        in: query
+        description: true if download notification has to be sent
+        required: true
+        schema:
+          type: boolean
+    post:
+      operationId: postFileSharedWithDownloadNotification
+      tags:
+      - File
+      security:
+        - OpenID:
+          - email
+      responses:
+        200:
+          description: SUCCESS
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be either FileNotFound or UserNotFound 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+
   '/file/{fileID}/fileRequest/sharedWithReminder':
     parameters:
       - name: fileID
@@ -980,6 +1035,9 @@ components:
               description: Password protecting the file
               type: string
               format: base64
+            downloadNotification:
+              description: Email notification sent after download if set to true
+              type: boolean
             sharedWith:
               description: User IDs this file is shared with
               type: array
@@ -1004,6 +1062,9 @@ components:
         shortUrl:
           description: Short link to a specific file
           type: string
+        downloadNotification:
+          description: Email notification sent after download if set to true
+          type: boolean
 
     UserInfo:
       allOf:

@@ -719,7 +719,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -785,7 +786,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -839,7 +841,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -893,7 +896,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -947,7 +951,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -1002,7 +1007,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -1056,7 +1062,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -1109,7 +1116,8 @@ public class FileApiControllerTest {
         anyString(),
         anyList(),
         anyLong(),
-        anyString()
+        anyString(),
+        anyBoolean()
       );
     this.mockMvc.perform(
         MockMvcRequestBuilders
@@ -1158,7 +1166,8 @@ public class FileApiControllerTest {
       fileService.addShareOnFileOnBehalfOf(
         anyString(),
         any(Recipient.class),
-        anyString()
+        anyString(),
+        anyBoolean()
       )
     )
       .thenReturn(recipientWithLink);
@@ -1209,7 +1218,8 @@ public class FileApiControllerTest {
       fileService.addShareOnFileOnBehalfOf(
         anyString(),
         any(Recipient.class),
-        anyString()
+        anyString(),
+        anyBoolean()
       )
     )
       .thenReturn(recipientWithLink);
@@ -1242,7 +1252,8 @@ public class FileApiControllerTest {
       fileService.addShareOnFileOnBehalfOf(
         anyString(),
         any(Recipient.class),
-        anyString()
+        anyString(),
+        anyBoolean()
       )
     )
       .thenReturn(recipientWithLink);
@@ -1279,7 +1290,8 @@ public class FileApiControllerTest {
       fileService.addShareOnFileOnBehalfOf(
         anyString(),
         any(Recipient.class),
-        anyString()
+        anyString(),
+        anyBoolean()
       )
     )
       .thenReturn(recipientWithLink);
@@ -1329,7 +1341,7 @@ public class FileApiControllerTest {
 
     doThrow(new UserUnauthorizedException())
       .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString());
+      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
@@ -1375,7 +1387,7 @@ public class FileApiControllerTest {
 
     doThrow(new UnknownUserException())
       .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString());
+      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(),anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
@@ -1421,7 +1433,7 @@ public class FileApiControllerTest {
 
     doThrow(new UnknownFileException())
       .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString());
+      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(),anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
@@ -1467,7 +1479,7 @@ public class FileApiControllerTest {
 
     doThrow(new NullPointerException())
       .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString());
+      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(),anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
           .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR

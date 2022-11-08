@@ -45,6 +45,10 @@ export interface FileRequest {
      */
     password?: string;
     /**
+     * Email notification sent after download if set to true
+     */
+    downloadNotification?: boolean;
+    /**
      * User IDs this file is shared with
      */
     sharedWith: Array<Recipient>;

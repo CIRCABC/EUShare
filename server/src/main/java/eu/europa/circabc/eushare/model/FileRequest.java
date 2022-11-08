@@ -51,6 +51,9 @@ public class FileRequest   {
   @JsonProperty("password")
   private String password;
 
+  @JsonProperty("downloadNotification")
+  private Boolean downloadNotification;
+
   @JsonProperty("sharedWith")
   @Valid
   private List<Recipient> sharedWith = new ArrayList<>();
@@ -162,6 +165,26 @@ public class FileRequest   {
     this.password = password;
   }
 
+  public FileRequest downloadNotification(Boolean downloadNotification) {
+    this.downloadNotification = downloadNotification;
+    return this;
+  }
+
+  /**
+   * Email notification sent after download if set to true
+   * @return downloadNotification
+  */
+  @ApiModelProperty(value = "Email notification sent after download if set to true")
+
+
+  public Boolean getDownloadNotification() {
+    return downloadNotification;
+  }
+
+  public void setDownloadNotification(Boolean downloadNotification) {
+    this.downloadNotification = downloadNotification;
+  }
+
   public FileRequest sharedWith(List<Recipient> sharedWith) {
     this.sharedWith = sharedWith;
     return this;
@@ -204,12 +227,13 @@ public class FileRequest   {
         Objects.equals(this.name, fileRequest.name) &&
         Objects.equals(this.size, fileRequest.size) &&
         Objects.equals(this.password, fileRequest.password) &&
+        Objects.equals(this.downloadNotification, fileRequest.downloadNotification) &&
         Objects.equals(this.sharedWith, fileRequest.sharedWith);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(expirationDate, hasPassword, name, size, password, sharedWith);
+    return Objects.hash(expirationDate, hasPassword, name, size, password, downloadNotification, sharedWith);
   }
 
   @Override
@@ -222,6 +246,7 @@ public class FileRequest   {
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    downloadNotification: ").append(toIndentedString(downloadNotification)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
     sb.append("}");
     return sb.toString();

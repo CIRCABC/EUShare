@@ -20,12 +20,17 @@
           <app-email-input formControlName="email" [showAddRecipient]="false"></app-email-input>
           <app-message-text-area [isOptional]="false" formControlName="message"></app-message-text-area>
         </div>
+        <div class="column is-half-desktop emailColumn">
+          <input type="checkbox" id="downloadNotification" formControlName="downloadNotification" class="checkbox"
+            value="true" /> {{ 'download.notification.help' | transloco }}
+        </div>
         <div>
           <button class="button" [class.is-loading]="uploadInProgress" type="submit"
             [disabled]="!sharedWithFormGroup.valid">
             {{ "submit" | transloco }}
           </button>
         </div>
+
       </form>
     </section>
     <footer class="modal-card-foot">

@@ -505,6 +505,71 @@ export class FileService {
     /**
      * @param fileID The id of the file
      * @param userEmail The email of the user
+     * @param downloadNotification true if download notification has to be sent
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public postFileSharedWithDownloadNotification(fileID: string, userEmail: string, downloadNotification: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<any>;
+    public postFileSharedWithDownloadNotification(fileID: string, userEmail: string, downloadNotification: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<any>>;
+    public postFileSharedWithDownloadNotification(fileID: string, userEmail: string, downloadNotification: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<any>>;
+    public postFileSharedWithDownloadNotification(fileID: string, userEmail: string, downloadNotification: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+        if (fileID === null || fileID === undefined) {
+            throw new Error('Required parameter fileID was null or undefined when calling postFileSharedWithDownloadNotification.');
+        }
+        if (userEmail === null || userEmail === undefined) {
+            throw new Error('Required parameter userEmail was null or undefined when calling postFileSharedWithDownloadNotification.');
+        }
+        if (downloadNotification === null || downloadNotification === undefined) {
+            throw new Error('Required parameter downloadNotification was null or undefined when calling postFileSharedWithDownloadNotification.');
+        }
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (userEmail !== undefined && userEmail !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>userEmail, 'userEmail');
+        }
+        if (downloadNotification !== undefined && downloadNotification !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>downloadNotification, 'downloadNotification');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // authentication (OpenID) required
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.post<any>(`${this.configuration.basePath}/file/${encodeURIComponent(String(fileID))}/fileRequest/sharedWithDownloadNotification`,
+            null,
+            {
+                params: queryParameters,
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param fileID The id of the file
+     * @param userEmail The email of the user
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */

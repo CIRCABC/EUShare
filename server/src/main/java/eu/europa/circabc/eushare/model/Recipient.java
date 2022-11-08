@@ -37,6 +37,9 @@ public class Recipient   {
   @JsonProperty("shortUrl")
   private String shortUrl;
 
+  @JsonProperty("downloadNotification")
+  private Boolean downloadNotification;
+
   public Recipient email(String email) {
     this.email = email;
     return this;
@@ -117,6 +120,26 @@ public class Recipient   {
     this.shortUrl = shortUrl;
   }
 
+  public Recipient downloadNotification(Boolean downloadNotification) {
+    this.downloadNotification = downloadNotification;
+    return this;
+  }
+
+  /**
+   * Email notification sent after download if set to true
+   * @return downloadNotification
+  */
+  @ApiModelProperty(value = "Email notification sent after download if set to true")
+
+
+  public Boolean getDownloadNotification() {
+    return downloadNotification;
+  }
+
+  public void setDownloadNotification(Boolean downloadNotification) {
+    this.downloadNotification = downloadNotification;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -130,12 +153,13 @@ public class Recipient   {
     return Objects.equals(this.email, recipient.email) &&
         Objects.equals(this.message, recipient.message) &&
         Objects.equals(this.downloadLink, recipient.downloadLink) &&
-        Objects.equals(this.shortUrl, recipient.shortUrl);
+        Objects.equals(this.shortUrl, recipient.shortUrl) &&
+        Objects.equals(this.downloadNotification, recipient.downloadNotification);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(email, message, downloadLink, shortUrl);
+    return Objects.hash(email, message, downloadLink, shortUrl, downloadNotification);
   }
 
   @Override
@@ -147,6 +171,7 @@ public class Recipient   {
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("    downloadLink: ").append(toIndentedString(downloadLink)).append("\n");
     sb.append("    shortUrl: ").append(toIndentedString(shortUrl)).append("\n");
+    sb.append("    downloadNotification: ").append(toIndentedString(downloadNotification)).append("\n");
     sb.append("}");
     return sb.toString();
   }

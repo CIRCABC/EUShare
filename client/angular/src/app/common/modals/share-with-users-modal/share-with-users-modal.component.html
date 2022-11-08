@@ -27,7 +27,12 @@
           <tr>
             <th>
               <abbr title="Notifications">
-                {{ "notifications" | transloco }}
+                Upload notification
+              </abbr>
+            </th>
+            <th>
+              <abbr title="Upload">
+                Download notification
               </abbr>
             </th>
             <th>
@@ -50,6 +55,14 @@
                     : (recipient.email | lowercase)
                 }}
               </span>
+            </td>
+            <td>
+                  <input type="checkbox"
+              id="download_notification"
+              class="checkbox"
+              [checked]="recipient.downloadNotification"
+              (change)="modifyDownloadNotification(recipient, $event.target.checked);"
+            /> 
             </td>
             <td class="shorturl">
               <input class="input" type="text" value="{{ formatLink(i) }}" />

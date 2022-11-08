@@ -309,7 +309,8 @@ public class FileApiController implements FileApi {
         requesterId,
         fileRequest.getSharedWith(),
         fileRequest.getSize().longValue(),
-        requesterId
+        requesterId,
+        fileRequest.getDownloadNotification()
       );
       return new ResponseEntity<>(
         (new FileResult()).fileId(fileId),
@@ -440,7 +441,7 @@ public class FileApiController implements FileApi {
     @PathVariable("fileID") String fileID,
     @RequestBody Recipient recipient
   ) {
-    if (!RecipientValidator.validate(recipient)) {
+     if (!RecipientValidator.validate(recipient)) {
       throw new ResponseStatusException(
         HttpStatus.BAD_REQUEST,
         HttpErrorAnswerBuilder.build400EmptyToString()
@@ -454,10 +455,11 @@ public class FileApiController implements FileApi {
       Recipient recipientWithLink = fileService.addShareOnFileOnBehalfOf(
         fileID,
         recipient,
-        requesterId
+        requesterId,
+        recipient.getDownloadNotification()
       );
       return new ResponseEntity<>(recipientWithLink, HttpStatus.OK);
-    } catch (WrongAuthenticationException exc) {
+    }catch (WrongAuthenticationException exc) {
       throw new ResponseStatusException(
         HttpStatus.UNAUTHORIZED,
         HttpErrorAnswerBuilder.build401EmptyToString(),
@@ -543,6 +545,54 @@ public class FileApiController implements FileApi {
         e
       );
     }
+  }
+
+
+  
+
+  @Override
+  public ResponseEntity<Void> postFileSharedWithDownloadNotification(String fileID, @NotNull @Valid String userEmail,
+      Boolean downloadNotification) {
+        try {
+          Authentication authentication = SecurityContextHolder
+            .getContext()
+            .getAuthentication();
+          String requesterId = userService.getAuthenticatedUserId(authentication);
+          fileService.changeDownloadNotificationShareOnFileOnBehalfOf(fileID, userEmail, requesterId,downloadNotification);
+          return new ResponseEntity<>(HttpStatus.OK);
+        } catch (WrongAuthenticationException exc) {
+          throw new ResponseStatusException(
+            HttpStatus.UNAUTHORIZED,
+            HttpErrorAnswerBuilder.build401EmptyToString(),
+            exc
+          );
+        } catch (UserUnauthorizedException exc) {
+          throw new ResponseStatusException(
+            HttpStatus.FORBIDDEN,
+            HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+            exc
+          );
+        } catch (UnknownFileException exc2) {
+          log.warn(exc2.getMessage(), exc2);
+          throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            HttpErrorAnswerBuilder.build404EmptyToString(),
+            exc2
+          );
+        } catch (UnknownUserException exc3) {
+          log.warn(exc3.getMessage(), exc3);
+          throw new ResponseStatusException(
+            HttpStatus.NOT_FOUND,
+            HttpErrorAnswerBuilder.build404EmptyToString(),
+            exc3
+          );
+        } catch (MessagingException e) {
+          throw new ResponseStatusException(
+            HttpStatus.INTERNAL_SERVER_ERROR,
+            HttpErrorAnswerBuilder.build500EmptyToString(),
+            e
+          );
+        }
   }
 
   @Override

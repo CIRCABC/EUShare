@@ -42,7 +42,8 @@ public interface FileServiceInterface {
   public Recipient addShareOnFileOnBehalfOf(
     String fileId,
     Recipient recipient,
-    String requesterId
+    String requesterId,
+    Boolean downloadNotification
   )
     throws UnknownFileException, UserUnauthorizedException, UnknownUserException, MessageTooLongException, MessagingException;
 
@@ -73,7 +74,8 @@ public interface FileServiceInterface {
     String uploaderId,
     List<Recipient> recipientList,
     long filesize,
-    String requesterId
+    String requesterId,
+    Boolean downloadNotification
   )
     throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, MessageTooLongException;
 

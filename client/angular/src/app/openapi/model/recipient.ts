@@ -37,5 +37,9 @@ export interface Recipient {
      * Short link to a specific file
      */
     shortUrl?: string;
+    /**
+     * Email notification sent after download if set to true
+     */
+    downloadNotification?: boolean;
 }
 

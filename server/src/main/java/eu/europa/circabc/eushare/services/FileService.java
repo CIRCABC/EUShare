@@ -53,6 +53,9 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,9 +116,8 @@ public class FileService implements FileServiceInterface {
   @Transactional
   void cleanupFiles() {
     for (DBFile file : fileRepository.findByStatus(
-      DBFile.Status.DELETED,
-      PageRequest.of(0, Integer.MAX_VALUE)
-    )) {
+        DBFile.Status.DELETED,
+        PageRequest.of(0, Integer.MAX_VALUE))) {
       log.info("Launching deletion of file id {}", file.getId());
       boolean fileDeletion = false;
       Path path = Paths.get(file.getPath());
@@ -126,8 +128,7 @@ public class FileService implements FileServiceInterface {
           shareRepository.delete(dbShare);
         }
         for (DBFileLog dbFileLog : fileLogsRepository.findByFileId(
-          file.getId()
-        )) {
+            file.getId())) {
           fileLogsRepository.delete(dbFileLog);
         }
         fileRepository.delete(file);
@@ -136,9 +137,8 @@ public class FileService implements FileServiceInterface {
       } finally {
         if (!fileDeletion) {
           log.error(
-            "Warning !! Lost file could not be deleted at path {}. File has been deleted from DB.",
-            path.toAbsolutePath()
-          );
+              "Warning !! Lost file could not be deleted at path {}. File has been deleted from DB.",
+              path.toAbsolutePath());
         }
       }
     }
@@ -151,8 +151,7 @@ public class FileService implements FileServiceInterface {
   @Transactional
   void markExpiredFiles() {
     for (DBFile file : fileRepository.findByExpirationDateBefore(
-      LocalDate.now()
-    )) {
+        LocalDate.now())) {
       log.info("DBFile %s expired{}", file.getId());
       file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
       fileRepository.save(file);
@@ -165,9 +164,8 @@ public class FileService implements FileServiceInterface {
   @Scheduled(fixedDelay = 3600000) // Every hour
   void markAllocatedLostFiles() {
     for (DBFile file : fileRepository.findByStatusAndLastModifiedBefore(
-      eu.europa.circabc.eushare.storage.DBFile.Status.ALLOCATED,
-      LocalDateTime.now().minusDays(1)
-    )) {
+        eu.europa.circabc.eushare.storage.DBFile.Status.ALLOCATED,
+        LocalDateTime.now().minusDays(1))) {
       log.info("DBFile %s allocated is lost{}", file.getId());
       file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
       fileRepository.save(file);
@@ -204,11 +202,10 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public void removeShareOnFileOnBehalfOf(
-    String fileId,
-    String userEmail,
-    String requesterId
-  )
-    throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
+      String fileId,
+      String userEmail,
+      String requesterId)
+      throws UnknownUserException, UnknownFileException, UserUnauthorizedException {
     if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
       shareRepository.deleteByEmailAndFileId(userEmail, fileId);
     } else {
@@ -217,24 +214,22 @@ public class FileService implements FileServiceInterface {
   }
 
   private boolean isRequesterTheOwnerOfTheFileOrIsAnAdmin(
-    String fileId,
-    String requesterId
-  ) throws UnknownFileException, UnknownUserException {
+      String fileId,
+      String requesterId) throws UnknownFileException, UnknownUserException {
     DBFile dbFile = findFile(fileId);
-    return (
-      dbFile.getUploader().getId().equals(requesterId) ||
-      userService.isAdmin(requesterId)
-    );
+    return (dbFile.getUploader().getId().equals(requesterId) ||
+        userService.isAdmin(requesterId));
   }
 
   @Transactional
   @Override
   public Recipient addShareOnFileOnBehalfOf(
-    String fileId,
-    Recipient recipient,
-    String requesterId
-  )
-    throws UserUnauthorizedException, UnknownUserException, MessageTooLongException, UnknownFileException, MessagingException {
+      String fileId,
+      Recipient recipient,
+      String requesterId,
+      Boolean downloadNotification)
+      throws UserUnauthorizedException, UnknownUserException, MessageTooLongException, UnknownFileException,
+      MessagingException {
     if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
       if (!StringUtils.validateMessage(recipient.getMessage())) {
         throw new MessageTooLongException();
@@ -242,10 +237,10 @@ public class FileService implements FileServiceInterface {
       DBFile dbFile = findAvailableFile(fileId, false);
 
       DBShare dbShare = new DBShare(
-        recipient.getEmail().toLowerCase(),
-        dbFile,
-        recipient.getMessage()
-      );
+          recipient.getEmail().toLowerCase(),
+          dbFile,
+          recipient.getMessage(),
+          downloadNotification);
 
       String shortUrl;
       do {
@@ -256,12 +251,11 @@ public class FileService implements FileServiceInterface {
       shareRepository.save(dbShare);
 
       emailService.sendShareNotification(
-        recipient.getEmail(),
-        dbFile.toFileInfoRecipient(recipient.getEmail()),
-        recipient.getMessage(),
-        shortUrl,
-        dbFile.getExpirationDate()
-      );
+          recipient.getEmail(),
+          dbFile.toFileInfoRecipient(recipient.getEmail()),
+          recipient.getMessage(),
+          shortUrl,
+          dbFile.getExpirationDate());
 
       return dbShare.toRecipient();
     } else {
@@ -270,26 +264,23 @@ public class FileService implements FileServiceInterface {
   }
 
   public void reminderShareOnFileOnBehalfOf(
-    String fileId,
-    String userEmail,
-    String requesterId
-  )
-    throws UserUnauthorizedException, UnknownUserException, UnknownFileException, MessagingException {
+      String fileId,
+      String userEmail,
+      String requesterId)
+      throws UserUnauthorizedException, UnknownUserException, UnknownFileException, MessagingException {
     if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
       DBFile dbFile = findAvailableFile(fileId, false);
 
       DBShare dbShare = shareRepository.findOneByEmailAndFileId(
-        userEmail,
-        fileId
-      );
+          userEmail,
+          fileId);
 
       emailService.sendShareNotification(
-        userEmail,
-        dbFile.toFileInfoRecipient(userEmail),
-        dbShare.getMessage(),
-        dbShare.getShorturl(),
-        dbFile.getExpirationDate()
-      );
+          userEmail,
+          dbFile.toFileInfoRecipient(userEmail),
+          dbShare.getMessage(),
+          dbShare.getShorturl(),
+          dbFile.getExpirationDate());
     } else {
       throw new UserUnauthorizedException();
     }
@@ -304,15 +295,17 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public String allocateFileOnBehalfOf(
-    LocalDate expirationDate,
-    String fileName,
-    String password,
-    String uploaderId,
-    List<Recipient> recipientList,
-    long filesize,
-    String requesterId
-  )
-    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, MessageTooLongException {
+      LocalDate expirationDate,
+      String fileName,
+      String password,
+      String uploaderId,
+      List<Recipient> recipientList,
+      long filesize,
+      String requesterId,
+      Boolean downloadNotification)
+      throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
+      UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException,
+      MessageTooLongException {
     // Validate uploader rights
     if (!uploaderId.equals(requesterId)) {
       DBUser possibleAdminUser = userService.getDbUser(requesterId);
@@ -342,14 +335,13 @@ public class FileService implements FileServiceInterface {
     }
 
     DBFile dbFile = new DBFile(
-      uploader,
-      Collections.emptySet(),
-      fileName,
-      filesize,
-      expirationDate,
-      "path",
-      password
-    );
+        uploader,
+        Collections.emptySet(),
+        fileName,
+        filesize,
+        expirationDate,
+        "path",
+        password);
     fileRepository.save(dbFile);
     String generatedFileId = dbFile.getId();
 
@@ -367,10 +359,10 @@ public class FileService implements FileServiceInterface {
         throw new MessageTooLongException();
       }
       DBShare dbShare = new DBShare(
-        recipient.getEmail().toLowerCase(),
-        dbFile,
-        recipient.getMessage()
-      );
+          recipient.getEmail().toLowerCase(),
+          dbFile,
+          recipient.getMessage(),
+          downloadNotification);
 
       String shortUrl;
       do {
@@ -392,16 +384,14 @@ public class FileService implements FileServiceInterface {
   }
 
   private DBFile findAvailableFile(String fileId, boolean isNotUploaderOrAdmin)
-    throws UnknownFileException {
+      throws UnknownFileException {
     DBFile f;
     if (!isNotUploaderOrAdmin) {
       f = fileRepository.findByStatusAndId(DBFile.Status.AVAILABLE, fileId);
     } else {
-      f =
-        fileRepository.findByStatusAndSharedWithDownloadId(
+      f = fileRepository.findByStatusAndSharedWithDownloadId(
           DBFile.Status.AVAILABLE,
-          fileId
-        );
+          fileId);
     }
     if (f == null) {
       throw new UnknownFileException();
@@ -410,14 +400,12 @@ public class FileService implements FileServiceInterface {
   }
 
   public DBFile findAvailableFileByShortUrl(String shortUrl)
-    throws UnknownFileException {
+      throws UnknownFileException {
     DBFile f;
 
-    f =
-      fileRepository.findByStatusAndSharedWithShorturl(
+    f = fileRepository.findByStatusAndSharedWithShorturl(
         DBFile.Status.AVAILABLE,
-        shortUrl
-      );
+        shortUrl);
 
     if (f == null) {
       throw new UnknownFileException();
@@ -432,21 +420,18 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public void deleteFileOnBehalfOf(
-    String fileId,
-    String reason,
-    String requesterId
-  )
-    throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
+      String fileId,
+      String reason,
+      String requesterId)
+      throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
     DBFile f = fileRepository.findById(fileId).orElse(null);
 
     if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
       throw new UnknownFileException();
     }
 
-    if (
-      !requesterId.equals(f.getUploader().getId()) &&
-      !userService.isAdmin(requesterId)
-    ) {
+    if (!requesterId.equals(f.getUploader().getId()) &&
+        !userService.isAdmin(requesterId)) {
       throw new UserUnauthorizedException();
     }
 
@@ -456,10 +441,9 @@ public class FileService implements FileServiceInterface {
     if (reason != null) {
       try {
         emailService.sendFileDeletedNotification(
-          f.getUploader().getEmail(),
-          f.toFileBasics(),
-          reason
-        );
+            f.getUploader().getEmail(),
+            f.toFileBasics(),
+            reason);
       } catch (Exception ignored) {
         log.warn("Error while sending file deleted mail", ignored);
       }
@@ -469,21 +453,18 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public void updateFileOnBehalfOf(
-    String fileId,
-    LocalDate expirationDate,
-    String requesterId
-  )
-    throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
+      String fileId,
+      LocalDate expirationDate,
+      String requesterId)
+      throws UnknownFileException, UserUnauthorizedException, UnknownUserException {
     DBFile f = fileRepository.findById(fileId).orElse(null);
 
     if (f == null || f.getStatus().equals(DBFile.Status.DELETED)) {
       throw new UnknownFileException();
     }
 
-    if (
-      !requesterId.equals(f.getUploader().getId()) &&
-      !userService.isAdmin(requesterId)
-    ) {
+    if (!requesterId.equals(f.getUploader().getId()) &&
+        !userService.isAdmin(requesterId)) {
       throw new UserUnauthorizedException();
     }
     f.setExpirationDate(expirationDate);
@@ -501,10 +482,9 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public DownloadReturn downloadFile(
-    String downloadId,
-    String password,
-    boolean notification
-  ) throws WrongPasswordException, UnknownFileException {
+      String downloadId,
+      String password,
+      boolean notification) throws WrongPasswordException, UnknownFileException {
     DBFile dbFile;
 
     DBShare dbShare;
@@ -532,24 +512,22 @@ public class FileService implements FileServiceInterface {
 
       try {
         if (notification) {
-          this.emailService.sendDownloadNotification(
-              dbFile.getUploader().getEmail(),
-              userIdentifier,
-              dbFile.toFileBasics()
-            );
+          if (dbShare.getDownloadNotification()) {
+            this.emailService.sendDownloadNotification(
+                dbFile.getUploader().getEmail(),
+                userIdentifier,
+                dbFile.toFileBasics());
+          }
         }
       } catch (Exception e) {
         log.error(
-          "Error happened when sending download notification for share " +
-          downloadId,
-          e
-        );
+            "Error happened when sending download notification for share " +
+                downloadId,
+            e);
       }
     }
-    if (
-      dbFile.getPassword() != null &&
-      !BCrypt.checkpw(password, dbFile.getPassword())
-    ) {
+    if (dbFile.getPassword() != null &&
+        !BCrypt.checkpw(password, dbFile.getPassword())) {
       throw new WrongPasswordException();
     }
     File file = Paths.get(dbFile.getPath()).toFile();
@@ -558,13 +536,11 @@ public class FileService implements FileServiceInterface {
     if (dbShare == null) {
       fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(), "");
     } else {
-      fileLogs =
-        new DBFileLog(
+      fileLogs = new DBFileLog(
           dbFile,
           dbShare.getEmail(),
           LocalDateTime.now(),
-          dbShare.getShorturl()
-        );
+          dbShare.getShorturl());
     }
     fileLogsRepository.save(fileLogs);
 
@@ -574,27 +550,23 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(
-    int pageSize,
-    int pageNumber,
-    String userId,
-    String requesterId
-  ) throws UserUnauthorizedException, UnknownUserException {
-    if (
-      userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)
-    ) {
+      int pageSize,
+      int pageNumber,
+      String userId,
+      String requesterId) throws UserUnauthorizedException, UnknownUserException {
+    if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
       if (userService.isUserExists(userId)) {
         DBUser user = userRepository.findOneById(userId);
         DBUser recipient = userRepository.findOneById(requesterId);
         String email = user.getEmail();
         return fileRepository
-          .findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(
-            DBFile.Status.AVAILABLE,
-            email,
-            PageRequest.of(pageNumber, pageSize)
-          )
-          .stream()
-          .map(dbFile -> dbFile.toFileInfoRecipient(recipient.getEmail()))
-          .collect(Collectors.toList());
+            .findByStatusAndSharedWithEmailOrderByExpirationDateAscFilenameAsc(
+                DBFile.Status.AVAILABLE,
+                email,
+                PageRequest.of(pageNumber, pageSize))
+            .stream()
+            .map(dbFile -> dbFile.toFileInfoRecipient(recipient.getEmail()))
+            .collect(Collectors.toList());
       } else {
         throw new UnknownUserException();
       }
@@ -606,14 +578,11 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(
-    int pageSize,
-    int pageNumber,
-    String userId,
-    String requesterId
-  ) throws UserUnauthorizedException, UnknownUserException {
-    if (
-      userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)
-    ) {
+      int pageSize,
+      int pageNumber,
+      String userId,
+      String requesterId) throws UserUnauthorizedException, UnknownUserException {
+    if (userService.isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
       if (userService.isUserExists(userId)) {
         List<DBFile.Status> status = new ArrayList<>();
         status.add(DBFile.Status.AVAILABLE);
@@ -621,14 +590,13 @@ public class FileService implements FileServiceInterface {
           status.add(DBFile.Status.ALLOCATED);
         }
         return fileRepository
-          .findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(
-            status,
-            userId,
-            PageRequest.of(pageNumber, pageSize)
-          )
-          .stream()
-          .map(DBFile::toFileInfoUploader)
-          .collect(Collectors.toList());
+            .findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(
+                status,
+                userId,
+                PageRequest.of(pageNumber, pageSize))
+            .stream()
+            .map(DBFile::toFileInfoUploader)
+            .collect(Collectors.toList());
       } else {
         throw new UnknownUserException();
       }
@@ -640,11 +608,11 @@ public class FileService implements FileServiceInterface {
   @Override
   @Transactional
   public FileInfoUploader saveOnBehalfOf(
-    String fileId,
-    MultipartFile resource,
-    String requesterId
-  )
-    throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException, UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
+      String fileId,
+      MultipartFile resource,
+      String requesterId)
+      throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
+      UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
     DBFile f = findFile(fileId);
 
     if (requesterId.equals(f.getUploader().getId())) {
@@ -659,7 +627,8 @@ public class FileService implements FileServiceInterface {
    * Saves a file the file will not be saved.
    */
   private void save(DBFile dbFile, MultipartFile file)
-    throws IllegalFileStateException, FileLargerThanAllocationException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException {
+      throws IllegalFileStateException, FileLargerThanAllocationException, CouldNotSaveFileException,
+      IllegalFileSizeException, MessagingException {
     if (dbFile == null) {
       throw new NullPointerException("dbFile is null");
     }
@@ -698,15 +667,13 @@ public class FileService implements FileServiceInterface {
         String recipientEmail = recipient.getEmail();
         if (StringUtils.validateEmailAddress(recipientEmail)) {
           FileInfoRecipient fileInfoRecipient = dbFile.toFileInfoRecipient(
-            recipientEmail
-          );
+              recipientEmail);
           this.emailService.sendShareNotification(
               recipientEmail,
               fileInfoRecipient,
               recipient.getMessage(),
               recipient.getShorturl(),
-              dbFile.getExpirationDate()
-            );
+              dbFile.getExpirationDate());
         }
       }
     }
@@ -738,15 +705,13 @@ public class FileService implements FileServiceInterface {
 
     @Override
     public String toString() {
-      return (
-        "DownloadReturn [file=" +
-        file +
-        ", fileSizeInBytes=" +
-        fileSizeInBytes +
-        ", filename=" +
-        filename +
-        "]"
-      );
+      return ("DownloadReturn [file=" +
+          file +
+          ", fileSizeInBytes=" +
+          fileSizeInBytes +
+          ", filename=" +
+          filename +
+          "]");
     }
 
     @Override
@@ -754,30 +719,55 @@ public class FileService implements FileServiceInterface {
       final int prime = 31;
       int result = 1;
       result = prime * result + ((file == null) ? 0 : file.hashCode());
-      result =
-        prime *
-        result +
-        ((fileSizeInBytes == null) ? 0 : fileSizeInBytes.hashCode());
+      result = prime *
+          result +
+          ((fileSizeInBytes == null) ? 0 : fileSizeInBytes.hashCode());
       result = prime * result + ((filename == null) ? 0 : filename.hashCode());
       return result;
     }
 
     @Override
     public boolean equals(Object obj) {
-      if (this == obj) return true;
-      if (obj == null) return false;
-      if (getClass() != obj.getClass()) return false;
+      if (this == obj)
+        return true;
+      if (obj == null)
+        return false;
+      if (getClass() != obj.getClass())
+        return false;
       DownloadReturn other = (DownloadReturn) obj;
       if (file == null) {
-        if (other.file != null) return false;
-      } else if (!file.equals(other.file)) return false;
+        if (other.file != null)
+          return false;
+      } else if (!file.equals(other.file))
+        return false;
       if (fileSizeInBytes == null) {
-        if (other.fileSizeInBytes != null) return false;
-      } else if (!fileSizeInBytes.equals(other.fileSizeInBytes)) return false;
+        if (other.fileSizeInBytes != null)
+          return false;
+      } else if (!fileSizeInBytes.equals(other.fileSizeInBytes))
+        return false;
       if (filename == null) {
-        if (other.filename != null) return false;
-      } else if (!filename.equals(other.filename)) return false;
+        if (other.filename != null)
+          return false;
+      } else if (!filename.equals(other.filename))
+        return false;
       return true;
+    }
+  }
+
+  public void changeDownloadNotificationShareOnFileOnBehalfOf(String fileID, @NotNull @Valid String userEmail,
+      String requesterId, Boolean downloadNotification)
+      throws MessagingException, UnknownFileException, UnknownUserException, UserUnauthorizedException {
+
+    if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileID, requesterId)) {
+
+      DBShare dbShare = shareRepository.findOneByEmailAndFileId(
+          userEmail,
+          fileID);
+      dbShare.setDownloadNotification(downloadNotification);
+
+      shareRepository.save(dbShare);
+    } else {
+      throw new UserUnauthorizedException();
     }
   }
 }

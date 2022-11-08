@@ -20,6 +20,7 @@ import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -44,16 +45,20 @@ public class DBShare {
   @Column(nullable = false, unique = true, length = 10)
   private String shorturl;
 
+  @Column(nullable = false)
+  private Boolean downloadNotification;
+
   private String message;
 
   public DBShare() {}
 
-  public DBShare(String email, DBFile file, String message) {
+  public DBShare(String email, DBFile file, String message,Boolean downloadNotification ) {
     this.email = email;
     this.file = file;
     if (message != null) {
       this.message = message;
     }
+    this.downloadNotification = downloadNotification;
   }
 
   @Override
@@ -78,6 +83,7 @@ public class DBShare {
     recipient.setEmail(this.getEmail());
     recipient.setShortUrl(this.getShorturl());
     recipient.setMessage(this.getMessage());
+    recipient.setDownloadNotification(this.getDownloadNotification());
     return recipient;
   }
 
@@ -121,6 +127,10 @@ public class DBShare {
     this.shorturl = shorturl;
   }
 
+  public Boolean getDownloadNotification() {
+    return downloadNotification;
+  }
+
   public String generateShortUrl() {
     UUID uuid = UUID.randomUUID();
     return uuid
@@ -129,5 +139,9 @@ public class DBShare {
       .replace("0", "")
       .replace("o", "")
       .substring(0, 6);
+  }
+
+  public void setDownloadNotification(Boolean downloadNotification) {
+    this.downloadNotification = downloadNotification;
   }
 }

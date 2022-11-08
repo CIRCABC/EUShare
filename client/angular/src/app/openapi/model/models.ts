@@ -24,4 +24,3 @@ export * from './userInfo';
 export * from './userInfoAllOf';
 export * from './userResult';
 export * from './userSpace';
-

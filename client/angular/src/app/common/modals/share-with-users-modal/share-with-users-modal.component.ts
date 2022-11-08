@@ -62,7 +62,33 @@ export class ShareWithUsersModalComponent implements OnInit {
         this.recipients.splice(shareIndex, 1);
         this.notificationService.addSuccessMessageTranslation(
           'successfully.removed',
-          { fileName: this.modalFileName, shareEmail }
+          { fileName: this.modalFileName, shareName: shareEmail }
+        );
+      })
+      .catch((_error) => {
+        // managed in the interceptor
+      });
+  }
+
+  public modifyDownloadNotification(recipient: Recipient, checked: boolean) {
+    if (recipient.email === undefined) {
+      return;
+    }
+    recipient.downloadNotification = checked;
+
+    firstValueFrom(
+      this.fileApi.postFileSharedWithDownloadNotification(
+        this.modalFileId,
+        recipient.email,
+        checked
+      )
+    )
+      .then((_success) => {
+        this.notificationService.addSuccessMessageTranslation(
+          checked
+            ? 'successfully.set.download.notification'
+            : 'successfully.unset.download.notification',
+          { fileName: this.modalFileName, shareName: recipient.email }
         );
       })
       .catch((_error) => {

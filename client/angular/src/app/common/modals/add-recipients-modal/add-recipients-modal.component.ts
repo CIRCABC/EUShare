@@ -35,6 +35,10 @@ export class AddRecipientsModalComponent implements OnInit {
     return this.sharedWithFormGroup.controls['message'].value;
   }
 
+  public get downloadNotification(): boolean {
+    return this.sharedWithFormGroup.controls['downloadNotification'].value;
+  }
+
   constructor(
     private modalService: ModalsService,
     private fb: FormBuilder,
@@ -46,6 +50,7 @@ export class AddRecipientsModalComponent implements OnInit {
       {
         message: [''],
         email: [''],
+        downloadNotification: [false],
       },
       { validators: recipientValidator(), updateOn: 'change' }
     );
@@ -65,6 +70,7 @@ export class AddRecipientsModalComponent implements OnInit {
   public resetRecipient() {
     this.sharedWithFormGroup.controls['message'].reset();
     this.sharedWithFormGroup.controls['email'].reset();
+    this.sharedWithFormGroup.controls['downloadNotification'].reset();
   }
 
   async onSubmit() {
@@ -72,6 +78,7 @@ export class AddRecipientsModalComponent implements OnInit {
     const recipient: Recipient = {
       email: this.email,
       message: this.message,
+      downloadNotification: this.downloadNotification,
     };
 
     await this.uploadedFileService.addOneRecipient(

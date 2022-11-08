@@ -135,6 +135,7 @@ export class UploadComponent implements OnInit {
       ]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
       password: [undefined],
+      download_notification: [undefined],
     });
     this.resetEmailMessageArray();
     this.addEmailMessageFormGroup();
@@ -385,6 +386,15 @@ export class UploadComponent implements OnInit {
   getPassword(): string {
     return this.uploadform.controls['password'].value;
   }
+  getDownloadNotification(): boolean {
+    let downloadNotificationVal =
+      this.uploadform.controls['download_notification'].value;
+    if (downloadNotificationVal != null && downloadNotificationVal == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   resetPassword(): void {
     this.uploadform.controls['password'].reset();
   }
@@ -433,6 +443,7 @@ export class UploadComponent implements OnInit {
           name: this.getFileFromDisk().name,
           size: this.getFileFromDisk().size,
           sharedWith: recipientArray,
+          downloadNotification: this.getDownloadNotification(),
         };
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
@@ -440,6 +451,7 @@ export class UploadComponent implements OnInit {
         const fileResult = await firstValueFrom(
           this.fileApi.postFileFileRequest(myFileRequest)
         );
+
         // do not use firstValueFrom bellow, because it does not work
         const fileInfoUploader = await this.fileApi
           .postFileContent(

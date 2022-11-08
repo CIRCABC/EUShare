@@ -31,6 +31,9 @@ public class FileRequestAllOf   {
   @JsonProperty("password")
   private String password;
 
+  @JsonProperty("downloadNotification")
+  private Boolean downloadNotification;
+
   @JsonProperty("sharedWith")
   @Valid
   private List<Recipient> sharedWith = new ArrayList<>();
@@ -53,6 +56,26 @@ public class FileRequestAllOf   {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public FileRequestAllOf downloadNotification(Boolean downloadNotification) {
+    this.downloadNotification = downloadNotification;
+    return this;
+  }
+
+  /**
+   * Email notification sent after download if set to true
+   * @return downloadNotification
+  */
+  @ApiModelProperty(value = "Email notification sent after download if set to true")
+
+
+  public Boolean getDownloadNotification() {
+    return downloadNotification;
+  }
+
+  public void setDownloadNotification(Boolean downloadNotification) {
+    this.downloadNotification = downloadNotification;
   }
 
   public FileRequestAllOf sharedWith(List<Recipient> sharedWith) {
@@ -93,12 +116,13 @@ public class FileRequestAllOf   {
     }
     FileRequestAllOf fileRequestAllOf = (FileRequestAllOf) o;
     return Objects.equals(this.password, fileRequestAllOf.password) &&
+        Objects.equals(this.downloadNotification, fileRequestAllOf.downloadNotification) &&
         Objects.equals(this.sharedWith, fileRequestAllOf.sharedWith);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(password, sharedWith);
+    return Objects.hash(password, downloadNotification, sharedWith);
   }
 
   @Override
@@ -107,6 +131,7 @@ public class FileRequestAllOf   {
     sb.append("class FileRequestAllOf {\n");
     
     sb.append("    password: ").append(toIndentedString(password)).append("\n");
+    sb.append("    downloadNotification: ").append(toIndentedString(downloadNotification)).append("\n");
     sb.append("    sharedWith: ").append(toIndentedString(sharedWith)).append("\n");
     sb.append("}");
     return sb.toString();
