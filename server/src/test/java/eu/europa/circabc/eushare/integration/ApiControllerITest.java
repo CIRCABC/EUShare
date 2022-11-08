@@ -1134,10 +1134,11 @@ public class ApiControllerITest {
     fileRequest.setPassword("password"); // NOSONAR
     fileRequest.setName("name");
     fileRequest.setSize(new BigDecimal(1024));
+    fileRequest.downloadNotification(false);
     Recipient recipient = new Recipient();
     recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-
+    
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
     HttpEntity<String> httpEntity =
@@ -1294,6 +1295,7 @@ public class ApiControllerITest {
     Recipient recipient = new Recipient();
     recipient.setEmail("EMAIL@EMAIL.COM");
     recipient.setMessage("message");
+    recipient.setDownloadNotification(false);
 
     HttpEntity<String> httpEntity =
       this.httpEntityAsInternalUser(
