@@ -54,6 +54,7 @@ Cypress.Commands.add('login', (username, password) => {
     { args },
     ({ username: user, password: pass }) => {
       cy.on('uncaught:exception', (e) => {
+        console.error(e);
         return false
       });
       cy.get('#username').type(user);
