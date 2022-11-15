@@ -135,7 +135,7 @@ export class UploadComponent implements OnInit {
       ]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
       password: [undefined],
-      download_notification: [undefined],
+      downloadNotification: [undefined],
     });
     this.resetEmailMessageArray();
     this.addEmailMessageFormGroup();
@@ -387,7 +387,7 @@ export class UploadComponent implements OnInit {
     return this.uploadform.controls['password'].value;
   }
   getDownloadNotification(): boolean {
-    return  this.uploadform.controls['download_notification'].value;
+    return  this.uploadform.controls['downloadNotification'].value;
   }
   resetPassword(): void {
     this.uploadform.controls['password'].reset();
