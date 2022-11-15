@@ -48,9 +48,9 @@ export class AdministrationComponent implements OnInit {
 
   public hasNextPage = false;
 
-  public userInfoArray: Array<UserInfo> = [];
+  public userInfoArray: UserInfo[] = [];
 
-  public mountPointSpaces: Array<MountPointSpace> = [];
+  public mountPointSpaces: MountPointSpace[] = [];
 
   private selectedUserInfoIndex = 0;
 

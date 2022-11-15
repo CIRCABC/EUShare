@@ -45,10 +45,10 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   ngOnInit(): void {
     const control = this.controlDirective.control;
     if (control) {
-      if (!control.validator) {
-        control.setValidators([Validators.maxLength(255)]);
-      } else {
+      if (control.validator) {
         control.setValidators([control.validator, Validators.maxLength(255)]);
+      } else {
+        control.setValidators([Validators.maxLength(255)]);
       }
       setTimeout(() => control.updateValueAndValidity({ emitEvent: true }));
     }
@@ -69,9 +69,7 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
 
   get errorMessage(): string | null {
     if (
-      this.controlDirective.control &&
-      this.controlDirective.control.errors &&
-      this.controlDirective.control.errors['maxlength']
+      this.controlDirective.control?.errors?.['maxlength']
     ) {
       return this.i18nService.translate(
         'validation.maxlength',

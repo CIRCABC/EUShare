@@ -15,7 +15,7 @@ export function recipientValidator(): ValidatorFn {
     const email = control.get('email');
     const message = control.get('message');
 
-    if (!(email && email.value && message && message.value)) {
+    if (!(email?.value && message && message.value)) {
       return { recipientValidationError: { value: true } };
     }
     return null;

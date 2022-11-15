@@ -99,7 +99,7 @@ export class SessionStorageService {
 
   public getStoredName(): string | null {
     const userInfo = this.getStoredUserInfo();
-    if (userInfo && userInfo.givenName) {
+    if (userInfo?.givenName) {
       return userInfo.givenName;
     }
     return null;

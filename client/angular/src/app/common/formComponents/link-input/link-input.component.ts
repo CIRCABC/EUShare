@@ -42,10 +42,10 @@ export class LinkInputComponent implements ControlValueAccessor, OnInit {
   ngOnInit(): void {
     const control = this.controlDirective.control;
     if (control) {
-      if (!control.validator) {
-        control.setValidators([this.linkValidator(1)]);
-      } else {
+      if (control.validator) {
         control.setValidators([control.validator, this.linkValidator(1)]);
+      } else {
+        control.setValidators([this.linkValidator(1)]);
       }
       setTimeout(() => control.updateValueAndValidity({ emitEvent: true }));
     }
@@ -66,9 +66,7 @@ export class LinkInputComponent implements ControlValueAccessor, OnInit {
 
   get errorMessage(): string | null {
     if (
-      this.controlDirective.control &&
-      this.controlDirective.control.errors &&
-      this.controlDirective.control.errors['forbiddenLinkLength']
+      this.controlDirective.control?.errors?.['forbiddenLinkLength']
     ) {
       return `Link should be bigger than ${this.controlDirective.control.errors['forbiddenLinkLength'].value}`;
     }

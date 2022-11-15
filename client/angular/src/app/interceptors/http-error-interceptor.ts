@@ -166,13 +166,13 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
             case 401: {
-              if (!isGetFile) {
+              if (isGetFile) {
                 this.notificationService.addErrorMessageTranslation(
-                  'invalid.token.'
+                  'wrong.password'
                 );
               } else {
                 this.notificationService.addErrorMessageTranslation(
-                  'wrong.password'
+                  'invalid.token.'
                 );
               }
               break;
@@ -254,7 +254,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     for (let i = 0; i < message.length; i++) {
       if (i > 1 && message.charAt(i) === message.charAt(i).toUpperCase()) {
         // eslint-disable-next-line prefer-template
-        returnString += ' ' + message.charAt(i).toLowerCase();
+        returnString += ` ${message.charAt(i).toLowerCase()}`;
       } else {
         returnString += message.charAt(i);
       }

@@ -54,14 +54,14 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   ngOnInit(): void {
     const control = this.controlDirective.control;
     if (control) {
-      if (!control.validator) {
+      if (control.validator) {
         control.setValidators([
+          control.validator,
           Validators.pattern(this.emailRegex),
           Validators.maxLength(254),
         ]);
       } else {
         control.setValidators([
-          control.validator,
           Validators.pattern(this.emailRegex),
           Validators.maxLength(254),
         ]);
@@ -84,7 +84,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
   }
 
   get errorMessage(): string | null {
-    if (this.controlDirective.control && this.controlDirective.control.errors) {
+    if (this.controlDirective.control?.errors) {
       if (this.controlDirective.control.errors['pattern']) {
         return this.i18nService.translate('validation.invalidEmail');
       } else if (this.controlDirective.control.errors['maxlength']) {

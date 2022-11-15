@@ -422,9 +422,8 @@ export class UploadComponent implements OnInit {
           }
         }
         if (this.getEmailArrayLength(0) === 0) {
-          const receiver = '';
           const recipient: Recipient = {
-            email: receiver,
+            email: '',
           };
           recipientArray.push(recipient);
         }
@@ -481,7 +480,7 @@ export class UploadComponent implements OnInit {
       case HttpEventType.Sent:
         return;
 
-      case HttpEventType.UploadProgress:
+      case HttpEventType.UploadProgress: {
         let eventTotalOrUndefined = event.total;
         if (eventTotalOrUndefined === undefined) {
           eventTotalOrUndefined = 1;
@@ -491,8 +490,9 @@ export class UploadComponent implements OnInit {
         );
         this.percentageUploaded = percentDone === 100 ? 99 : percentDone;
         return;
+      }
 
-      case HttpEventType.Response:
+      case HttpEventType.Response: {
         if (event.status === 200) {
           this.uploadInProgress = false;
           this.percentageUploaded = 0;
@@ -503,12 +503,14 @@ export class UploadComponent implements OnInit {
         this.uploadInProgress = false;
         this.percentageUploaded = 0;
         return;
+      }
 
-      case HttpEventType.ResponseHeader:
+      case HttpEventType.ResponseHeader: {
         this.uploadInProgress = false;
         this.percentageUploaded = 0;
         // notification sent in interceptor
         return;
+      }
 
       case HttpEventType.DownloadProgress:
         return;
