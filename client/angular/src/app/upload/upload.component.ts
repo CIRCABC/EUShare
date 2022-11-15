@@ -135,7 +135,7 @@ export class UploadComponent implements OnInit {
       ]),
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
       password: [undefined],
-      downloadNotification: [false],
+      downloadNotification: [true],
     });
     this.resetEmailMessageArray();
     this.addEmailMessageFormGroup();
