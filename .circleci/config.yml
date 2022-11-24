@@ -73,7 +73,7 @@ jobs:
           command: npm run licchkchk
       - run:
           name: check-style
-          command: npm run lint
+          command: npm run lint-rome
       - run:
           name: Install Sonarqube scanner
           command: |
