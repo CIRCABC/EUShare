@@ -29,12 +29,14 @@ import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBFileLog;
 import eu.europa.circabc.eushare.storage.DBShare;
+import eu.europa.circabc.eushare.storage.DBStats;
 import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.DBUser.Role;
 import eu.europa.circabc.eushare.storage.FileLogsRepository;
 import eu.europa.circabc.eushare.storage.FileRepository;
 import eu.europa.circabc.eushare.storage.MountPoint;
 import eu.europa.circabc.eushare.storage.ShareRepository;
+import eu.europa.circabc.eushare.storage.StatsRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 import java.io.File;
@@ -97,6 +99,9 @@ public class FileService implements FileServiceInterface {
   @Autowired
   private UserService userService;
 
+  @Autowired
+  private StatsRepository statsRepository;
+
   /**
    * Prepare all given paths.
    */
@@ -112,9 +117,14 @@ public class FileService implements FileServiceInterface {
    * Retrieve all files that are marked as deleted and physically removes them
    * from the file system.
    */
-  @Scheduled(fixedDelay = 1800000) // Every 30 minutes
+
+  // @Schedule(second = "59", minute = "59", hour = "23", dayOfMonth = "Last",
+  // persistent = false)
+  @Scheduled(fixedDelay = 1800000) // 000) // Every 30 minutes
   @Transactional
   void cleanupFiles() {
+    statsFiles();
+
     for (DBFile file : fileRepository.findByStatus(
         DBFile.Status.DELETED,
         PageRequest.of(0, Integer.MAX_VALUE))) {
@@ -142,6 +152,19 @@ public class FileService implements FileServiceInterface {
         }
       }
     }
+  }
+
+  /**
+   * Record statistics (called before cleanup).
+   */
+
+  void statsFiles() {
+    LocalDate currentdate = LocalDate.now();
+    DBStats stat = statsRepository.findCurrentStats(currentdate.getMonthValue(), currentdate.getYear());
+    DBStats newStat = new DBStats(stat.getYear(), stat.getMonth(), stat.getUsers(), stat.getDownloads(),
+        stat.getUploads(), stat.getDownloadsData(), stat.getUploadsData());
+    statsRepository.save(newStat);
+
   }
 
   /**

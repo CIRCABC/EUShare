@@ -23,6 +23,8 @@ import eu.europa.circabc.eushare.storage.DBUserInfoProjection;
 import eu.europa.circabc.eushare.storage.UserInfoRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.transaction.Transactional;
@@ -353,6 +355,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       dbUser.setUsername(username);
       userRepository.save(dbUser);
     }
+    dbUser.setLastLogged(LocalDateTime.now());
   }
 
   @Override

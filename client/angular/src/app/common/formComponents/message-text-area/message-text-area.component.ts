@@ -68,9 +68,7 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   }
 
   get errorMessage(): string | null {
-    if (
-      this.controlDirective.control?.errors?.['maxlength']
-    ) {
+    if (this.controlDirective.control?.errors?.['maxlength']) {
       return this.i18nService.translate(
         'validation.maxlength',
         this.controlDirective.control.errors['maxlength']

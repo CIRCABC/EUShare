@@ -12,6 +12,7 @@ package eu.europa.circabc.eushare.storage;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.model.UserSpace;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -48,6 +49,11 @@ public class DBUser {
 
   @Column(nullable = true, unique = true)
   private String username;
+
+
+  @Column(nullable = true)
+  private LocalDateTime lastLogged = LocalDateTime.now();
+
 
   // Is the username used for login
 
@@ -93,6 +99,7 @@ public class DBUser {
     dbUser.setName(name);
     dbUser.setTotalSpace(totalSpace);
     dbUser.setUsername(username);
+    dbUser.setLastLogged(LocalDateTime.now());
     return dbUser;
   }
 
@@ -226,4 +233,14 @@ public class DBUser {
   public void setName(String name) {
     this.name = name;
   }
+
+  public LocalDateTime getLastLogged() {
+    return lastLogged;
+  }
+
+  public void setLastLogged(LocalDateTime lastLogged) {
+    this.lastLogged = lastLogged;
+  }
+
+  
 }

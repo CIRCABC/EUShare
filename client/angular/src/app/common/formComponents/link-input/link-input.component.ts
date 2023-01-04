@@ -65,9 +65,7 @@ export class LinkInputComponent implements ControlValueAccessor, OnInit {
   }
 
   get errorMessage(): string | null {
-    if (
-      this.controlDirective.control?.errors?.['forbiddenLinkLength']
-    ) {
+    if (this.controlDirective.control?.errors?.['forbiddenLinkLength']) {
       return `Link should be bigger than ${this.controlDirective.control.errors['forbiddenLinkLength'].value}`;
     }
     return null;

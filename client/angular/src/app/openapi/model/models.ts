@@ -19,6 +19,7 @@ export * from './fileResult';
 export * from './inlineObject';
 export * from './mountPointSpace';
 export * from './recipient';
+export * from './stat';
 export * from './status';
 export * from './userInfo';
 export * from './userInfoAllOf';

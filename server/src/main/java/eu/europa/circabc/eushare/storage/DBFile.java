@@ -73,6 +73,9 @@ public class DBFile {
   @Column(nullable = false)
   private LocalDateTime lastModified = LocalDateTime.now();
 
+  @Column(nullable = false)
+  private LocalDateTime created = LocalDateTime.now(); 
+
   private String password;
 
   @Enumerated(EnumType.STRING)

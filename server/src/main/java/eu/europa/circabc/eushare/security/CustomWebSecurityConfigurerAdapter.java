@@ -34,6 +34,7 @@ public class CustomWebSecurityConfigurerAdapter
     "/swagger-resources/**",
     "/swagger-ui",
     "/swagger-ui/**",
+   
   };
 
   @Override
@@ -60,7 +61,7 @@ public class CustomWebSecurityConfigurerAdapter
       .antMatchers(HttpMethod.PUT, "/user/userInfo")
       .hasAuthority("ROLE_ADMIN")
       .anyRequest()
-      .authenticated()
+      .anonymous()
       .and()
       .exceptionHandling()
       .accessDeniedHandler(accessDeniedHandler())

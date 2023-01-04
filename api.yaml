@@ -884,6 +884,62 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+
+  '/admin/stats':
+    get:
+      operationId: getStats
+      description: ''
+      tags:
+      - Stats
+      parameters:
+      - name: year
+        in: query
+        description: The year of statistic data
+        required: true
+        schema:
+          type: number
+      responses:
+        200:
+            description: SUCCESS Returns statistics
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Stat'
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+
+
+
   
 
 components:
@@ -1137,3 +1193,38 @@ components:
         usableSpace:
           description: usable space on disk
           type: number
+    Stat:
+      type: object
+      properties:
+        statId:
+          description: ID of the statistic record
+          type: string
+        year:
+          description: year 
+          type: number
+        month:
+          description: month
+          type: number
+        users:
+          description: users
+          type: number
+        downloads:
+          description: number of downloads
+          type: number
+        uploads:
+          description: number of uploads
+          type: number
+        downloadsData:
+          description: total size of downloads
+          type: number
+        uploadsData:
+          description: total size of uploads
+          type: number        
+      required:
+      - statId
+      - year
+      - month
+      - downloads
+      - uploads
+      - downloadsData
+      - uploadsData

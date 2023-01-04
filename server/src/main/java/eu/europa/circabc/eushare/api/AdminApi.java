@@ -14,7 +14,9 @@
  */
 package eu.europa.circabc.eushare.api;
 
+import java.math.BigDecimal;
 import eu.europa.circabc.eushare.model.MountPointSpace;
+import eu.europa.circabc.eushare.model.Stat;
 import eu.europa.circabc.eushare.model.Status;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -67,6 +69,44 @@ public interface AdminApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"path\" : \"path\", \"totalSpace\" : 0.8008281904610115, \"usableSpace\" : 6.027456183070403 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /admin/stats
+     *
+     * @param year The year of statistic data (required)
+     * @return SUCCESS Returns statistics (status code 200)
+     *         or BAD REQUEST the Error Message will be empty (status code 400)
+     *         or UNAUTHORIZED the Error message will be empty (status code 401)
+     *         or FORBIDDEN the Error message will be NotAuthorized (status code 403)
+     *         or NOT FOUND the Error Message will be empty (status code 404)
+     *         or INTERNAL SERVER ERROR the Error Message will be empty (status code 500)
+     */
+    @ApiOperation(value = "", nickname = "getStats", notes = "", response = Stat.class, responseContainer = "List", tags={ "Stats", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "SUCCESS Returns statistics", response = Stat.class, responseContainer = "List"),
+        @ApiResponse(code = 400, message = "BAD REQUEST the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 401, message = "UNAUTHORIZED the Error message will be empty", response = Status.class),
+        @ApiResponse(code = 403, message = "FORBIDDEN the Error message will be NotAuthorized", response = Status.class),
+        @ApiResponse(code = 404, message = "NOT FOUND the Error Message will be empty", response = Status.class),
+        @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR the Error Message will be empty", response = Status.class) })
+    @GetMapping(
+        value = "/admin/stats",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<List<Stat>> getStats(@NotNull @ApiParam(value = "The year of statistic data", required = true) @Valid @RequestParam(value = "year", required = true) BigDecimal year) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"statId\" : \"statId\", \"uploadsData\" : 7.061401241503109, \"month\" : 6.027456183070403, \"year\" : 0.8008281904610115, \"downloads\" : 5.962133916683182, \"users\" : 1.4658129805029452, \"uploads\" : 5.637376656633329, \"downloadsData\" : 2.3021358869347655 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

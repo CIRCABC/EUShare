@@ -10,6 +10,8 @@
 package eu.europa.circabc.eushare.api;
 
 import eu.europa.circabc.eushare.model.MountPointSpace;
+import eu.europa.circabc.eushare.model.Stat;
+import eu.europa.circabc.eushare.services.AdminService;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.storage.MountPoint;
 import java.math.BigDecimal;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,10 @@ public class AdminApiController implements AdminApi {
 
   @Autowired
   public FileService fileService;
+
+  @Autowired
+  public AdminService adminService;
+
 
   @org.springframework.beans.factory.annotation.Autowired
   public AdminApiController(NativeWebRequest request) {
@@ -61,4 +68,18 @@ public class AdminApiController implements AdminApi {
     }
     return new ResponseEntity<>(mountPointSpaces, HttpStatus.OK);
   }
+
+  @Override
+  public ResponseEntity<List<Stat>> getStats(BigDecimal year) {
+    HttpHeaders responseHeaders = new HttpHeaders();
+    return new ResponseEntity<List<Stat>>(
+      adminService.getStats(Integer.valueOf(year.intValue())),
+      responseHeaders,
+      HttpStatus.OK
+    );
+    
+  }
+
+
+  
 }
