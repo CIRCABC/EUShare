@@ -36,7 +36,7 @@ export interface Stat {
     /**
      * users
      */
-    users?: number;
+    users: number;
     /**
      * number of downloads
      */

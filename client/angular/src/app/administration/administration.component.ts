@@ -14,6 +14,8 @@ import {
   UserInfo,
   MountPointSpace,
   AdminService,
+  StatsService,
+  Stat,
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import {
@@ -51,6 +53,8 @@ export class AdministrationComponent implements OnInit {
   public userInfoArray: UserInfo[] = [];
 
   public mountPointSpaces: MountPointSpace[] = [];
+  public stats: Stat[] = [];
+  public yearStats = {} as Stat;
 
   private selectedUserInfoIndex = 0;
 
@@ -71,17 +75,45 @@ export class AdministrationComponent implements OnInit {
     private router: Router,
     private usersApi: UsersService,
     private adminService: AdminService,
+    private statsService: StatsService,
     private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.getMountPointSpaces();
+    this.getStats(2023);
+   
   }
 
   public async getMountPointSpaces() {
     this.mountPointSpaces = await firstValueFrom(
       this.adminService.getDiskSpace()
     );
+  }
+
+  public async getStats(year: number) {
+    this.stats = await firstValueFrom(this.statsService.getStats(year));
+
+    this.yearStats.users=0;
+    this.yearStats.downloads=0;
+    this.yearStats.uploads=0;
+    this.yearStats.downloadsData=0;
+    this.yearStats.uploadsData=0;
+    this.stats.forEach((month) => { console.log(month.users);
+      this.yearStats.users += month.users;
+    });
+    this.stats.forEach((month) => { console.log(month.downloads);
+      this.yearStats.downloads += month.downloads;
+    });
+    this.stats.forEach((month) => { console.log(month.downloads);
+      this.yearStats.uploads += month.uploads;
+    });
+    this.stats.forEach((month) => { console.log(month.downloads);
+      this.yearStats.downloadsData += month.downloadsData;
+    });
+    this.stats.forEach((month) => { console.log(month.downloads);
+      this.yearStats.uploadsData += month.uploadsData;
+    });
   }
 
   public async resultsNextPage() {
@@ -228,5 +260,12 @@ export class AdministrationComponent implements OnInit {
       'files',
       { userName: this.selectedUserInfo.givenName },
     ]);
+  }
+
+  public getMonthName(monthNumber: number) {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
+
+    return date.toLocaleString('en-US', { month: 'long' });
   }
 }

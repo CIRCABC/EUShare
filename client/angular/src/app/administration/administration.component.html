@@ -17,11 +17,11 @@
           <li class="titletable">
             <a>
               <strong class="alignleft"> Name <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
-                </strong>
+              </strong>
               <strong class="alignright">Files <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
-                </strong>
+              </strong>
               <strong class="alignright">Usage <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
-                </strong>
+              </strong>
               <div style="clear: both"></div>
             </a>
           </li>
@@ -106,20 +106,52 @@
 
 
   </div>
-  <p></p><br><p></p>
+  <p></p><br>
+  <p></p>
   <h1 class="title">Disk usage</h1>
   <table>
     <tr>
-    <th>Mount path</th>
-    <th>Total size</th>
-    <th>Free space</th>
-    <th>Used (in %)</th>
+      <th>Mount path</th>
+      <th>Total size</th>
+      <th>Free space</th>
+      <th>Used (in %)</th>
     </tr>
     <tr *ngFor="let mp of mountPointSpaces">
       <td>{{ mp.path }}</td>
       <td>{{ mp.totalSpace! | fileSizeFormat }}</td>
       <td>{{mp.usableSpace! | fileSizeFormat }}</td>
       <td>{{ math.round( ((mp.totalSpace! - mp.usableSpace!) /mp.totalSpace! ) /100 *10000) }} %</td>
+    </tr>
+  </table>
+
+
+  <p></p><br>
+  <p></p>
+  <h1 class="title">Statistics</h1>
+  <table>
+    <tr>
+      <th> Month </th>
+      <th> Users </th>
+      <th> Uploads </th>
+      <th> Downloads </th>
+      <th> Uploads Data </th>
+      <th> Downloads Data </th>      
+    </tr>
+    <tr *ngFor="let month of stats">
+      <td>{{ getMonthName(month.month) }}</td>
+      <td>{{ month.users }}</td>
+      <td>{{ month.uploads }} </td>
+      <td>{{ month.downloads }}</td>
+      <td>{{ month.uploadsData!  | fileSizeFormat }}</td>
+      <td>{{ month.downloadsData! | fileSizeFormat }}</td>
+    </tr>
+    <tr>
+      <td><b>Total</b></td>
+      <td><b>{{ yearStats.users }}</b> </td>
+      <td><b>{{ yearStats.uploads }}</b> </td>
+      <td><b>{{ yearStats.downloads }}</b></td>
+      <td><b>{{ yearStats.uploadsData | fileSizeFormat }}</b> </td>
+      <td><b>{{ yearStats.downloadsData | fileSizeFormat}}</b></td>
     </tr>
   </table>
 
