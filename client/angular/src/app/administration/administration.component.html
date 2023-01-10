@@ -144,11 +144,11 @@
   <table>
     <tr>
       <th> Month </th>
-      <th> <a>Users</a> </th>
-      <th> <a  (click)="updateGraph('uploads')">Uploads</a> </th>
-      <th> <a  (click)="updateGraph('downloads')">Downloads</a> </th>
-      <th> <a  (click)="updateGraph('uploadsData')">Uploads Data</a> </th>
-      <th> <a  (click)="updateGraph('downloadsData')">Downloads Data </a></th>      
+      <th> <a  (click)="updateGraph('users','Users')">Users</a> </th>
+      <th> <a  (click)="updateGraph('uploads','Uploads')">Uploads</a> </th>
+      <th> <a  (click)="updateGraph('downloads','Downloads')">Downloads</a> </th>
+      <th> <a  (click)="updateGraph('uploadsData','Uploads Data')">Uploads Data</a> </th>
+      <th> <a  (click)="updateGraph('downloadsData','Downloads Data')">Downloads Data </a></th>      
     </tr>
     <tr *ngFor="let month of stats">
       <td>{{ getMonthName(month.month) }}</td>

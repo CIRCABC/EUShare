@@ -131,15 +131,15 @@ export class AdministrationComponent implements OnInit {
     });
 
 
-    this.updateGraph("users");
+    this.updateGraph("users","Users");
   }
 
-  public updateGraph(column: string){
+  public updateGraph(columnData: string, columnLabel: string){
     console.log(this.stats);
     this.data =  {
       labels: this.monthsLabels,
       datasets: [
-        { data: this.stats.map(stats=>Reflect.get(stats,column)) , label: column }
+        { data: this.stats.map(stats=>Reflect.get(stats,columnData)) , label: columnLabel }
       ]
     };
     console.log(this.data);
