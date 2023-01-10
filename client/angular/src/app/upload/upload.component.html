@@ -26,8 +26,8 @@
               <!-- FILE SIZE AND NAME -->
 
               <span *ngIf="getFileFromDisk()" class="file-name">
-                {{ getFileFromDisk()?.name }}
-                ({{ getFileFromDisk()?.size }} Bytes)
+                {{ getFileFromDisk().name }}
+                ({{ getFileFromDisk().size }} Bytes)
               </span>
             </label>
           </div>
