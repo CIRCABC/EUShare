@@ -10,7 +10,7 @@ export class BarChartComponent implements OnInit {
   @Input() chartData: { labels: string[]; datasets: { data: number[]; label: string; }[] ; } =  {
     labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
     datasets: [
-      { data: [ 0,0,0,0,0,0,0,0,0,0,0,0,0,], label: '' }
+      { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
     ]
   };
 
@@ -19,7 +19,7 @@ export class BarChartComponent implements OnInit {
     this.barChartData = {
       labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
       datasets: [
-        { data: [ 0,0,0,0,0,0,0,0,0,0,0,0,0,], label: '' }
+        { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
       ]
     };
   }
