@@ -312,9 +312,9 @@ export class AdministrationComponent implements OnInit {
 
 
   data =  {
-     labels: [ 'Janv', 'Fev', '2008', '2009', '2010', '2011', '2012','Janv', 'Fev', '2008', '2009', '2010' ],
+     labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
      datasets: [
-       { data: [ 1,2,0,0,0,0,0,0,0,0,0,0,0,], label: 'Series B' }
+       { data: [ 0,0,0,0,0,0,0,0,0,0,0,0,0,], label: '' }
      ]
    };
  

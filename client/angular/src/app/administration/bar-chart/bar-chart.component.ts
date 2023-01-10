@@ -7,11 +7,21 @@ import { ChartConfiguration, ChartType,  } from 'chart.js';
   styleUrls: ['./bar-chart.component.scss']
 })
 export class BarChartComponent implements OnInit {
-  @Input() chartData: { labels: string[]; datasets: { data: number[]; label: string; }[]; }[] = [];
+  @Input() chartData: { labels: string[]; datasets: { data: number[]; label: string; }[] ; } =  {
+    labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
+    datasets: [
+      { data: [ 0,0,0,0,0,0,0,0,0,0,0,0,0,], label: '' }
+    ]
+  };
 
-  barChartData: { labels: string[]; datasets: { data: number[]; label: string; }[]; }[];
+  barChartData: { labels: string[]; datasets: { data: number[]; label: string; }[] ; };
   constructor() { 
-    this.barChartData =  [];
+    this.barChartData = {
+      labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
+      datasets: [
+        { data: [ 0,0,0,0,0,0,0,0,0,0,0,0,0,], label: '' }
+      ]
+    };
   }
 
   ngOnInit(): void {
