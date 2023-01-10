@@ -50,7 +50,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
     @Index(
       name = "INDEX_YEAR",
       columnList = "year",
-      unique = true
+      unique = false
     ),
     @Index(
       name = "INDEX_MONTH",
@@ -59,7 +59,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
     ),
   }
 )
-public class DBStats {
+public class DBStat {
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -92,7 +92,7 @@ public class DBStats {
 
   
 
-  public DBStats( int year, int month, long users, long downloads, long uploads, long downloadsData,
+  public DBStat( int year, int month, long users, long downloads, long uploads, long downloadsData,
       long uploadsData) {
 
     this.year = year;
@@ -106,7 +106,7 @@ public class DBStats {
 
   
 
-  private DBStats() {}
+  private DBStat() {}
 
   public Stat toStat(){
     Stat stat = new Stat();

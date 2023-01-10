@@ -1222,6 +1222,7 @@ components:
           type: number        
       required:
       - statId
+      - users
       - year
       - month
       - downloads

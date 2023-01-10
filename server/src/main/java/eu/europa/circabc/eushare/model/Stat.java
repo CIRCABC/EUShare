@@ -124,7 +124,8 @@ public class Stat   {
    * users
    * @return users
   */
-  @ApiModelProperty(value = "users")
+  @ApiModelProperty(required = true, value = "users")
+  @NotNull
 
   @Valid
 

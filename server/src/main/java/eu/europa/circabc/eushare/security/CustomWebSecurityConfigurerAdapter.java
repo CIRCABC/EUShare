@@ -61,7 +61,7 @@ public class CustomWebSecurityConfigurerAdapter
       .antMatchers(HttpMethod.PUT, "/user/userInfo")
       .hasAuthority("ROLE_ADMIN")
       .anyRequest()
-      .anonymous()
+      .authenticated()
       .and()
       .exceptionHandling()
       .accessDeniedHandler(accessDeniedHandler())

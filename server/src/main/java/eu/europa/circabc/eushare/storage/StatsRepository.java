@@ -15,7 +15,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface StatsRepository extends CrudRepository<DBStats, String> {
+public interface StatsRepository extends CrudRepository<DBStat, String> {
 
 
   @Query(
@@ -32,11 +32,16 @@ public interface StatsRepository extends CrudRepository<DBStats, String> {
     " FROM DUAL",
     nativeQuery = true
   )
-  public DBStats findCurrentStats(
+  public DBStat findCurrentStats(
     @Param("month") Integer month,
     @Param("year") Integer year
   );
 
-  public List<DBStats> findByYear(Integer year);
+  public List<DBStat> findByYear(Integer year);
 
+  public DBStat findByYearAndMonth(Integer year,Integer month);
+
+  // TODO dynamic populate dropdown years // public List<Integer> findDistinctYear();
+
+  // Populate data INSERT INTO  stats (stats_id,year,month,users,downloads,uploads,downloads_data, uploads_data) values (UUID(),2022,12, (FLOOR( 1 + RAND( ) *100 )), (FLOOR( 1 + RAND( ) *300 )), (FLOOR( 1 + RAND( ) *200 )), (FLOOR( 1 + RAND( ) *300*500 )), (FLOOR( 1 + RAND( ) *200*500 )));
 }

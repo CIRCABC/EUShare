@@ -29,7 +29,7 @@ import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.storage.DBFile;
 import eu.europa.circabc.eushare.storage.DBFileLog;
 import eu.europa.circabc.eushare.storage.DBShare;
-import eu.europa.circabc.eushare.storage.DBStats;
+import eu.europa.circabc.eushare.storage.DBStat;
 import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.DBUser.Role;
 import eu.europa.circabc.eushare.storage.FileLogsRepository;
@@ -119,12 +119,11 @@ public class FileService implements FileServiceInterface {
    */
 
   // @Schedule(second = "59", minute = "59", hour = "23", dayOfMonth = "Last",
-  // persistent = false)
+  // persistent = false) // DO NOT CHANGE CLEANUP DELAY, IT WILL BREAK STATISTICS
   @Scheduled(fixedDelay = 1800000) // 000) // Every 30 minutes
   @Transactional
   void cleanupFiles() {
-    statsFiles();
-
+    
     for (DBFile file : fileRepository.findByStatus(
         DBFile.Status.DELETED,
         PageRequest.of(0, Integer.MAX_VALUE))) {
@@ -157,13 +156,22 @@ public class FileService implements FileServiceInterface {
   /**
    * Record statistics (called before cleanup).
    */
-
+  @Scheduled(fixedDelay = 3600000) // Every hour
   void statsFiles() {
     LocalDate currentdate = LocalDate.now();
-    DBStats stat = statsRepository.findCurrentStats(currentdate.getMonthValue(), currentdate.getYear());
-    DBStats newStat = new DBStats(stat.getYear(), stat.getMonth(), stat.getUsers(), stat.getDownloads(),
-        stat.getUploads(), stat.getDownloadsData(), stat.getUploadsData());
-    statsRepository.save(newStat);
+    DBStat newStat = statsRepository.findCurrentStats(currentdate.getMonthValue(), currentdate.getYear());
+    //DBStat newStat = new DBStat(stat.getYear(), stat.getMonth(), stat.getUsers(), stat.getDownloads(),
+      //  stat.getUploads(), stat.getDownloadsData(), stat.getUploadsData());
+    DBStat stat = statsRepository.findByYearAndMonth( currentdate.getYear(),currentdate.getMonthValue());
+    if(stat==null) stat = new DBStat(0, 0, 0, 0, 0, 0, 0);
+    stat.setYear(newStat.getYear());
+    stat.setMonth(newStat.getMonth());
+    stat.setUsers(newStat.getUsers());
+    stat.setDownloads(newStat.getDownloads());
+    stat.setUploads(newStat.getUploads());
+    stat.setDownloadsData(newStat.getDownloadsData());
+
+    statsRepository.save(stat);
 
   }
 
