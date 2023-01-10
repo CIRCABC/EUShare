@@ -92,8 +92,8 @@ export class AdministrationComponent implements OnInit {
     this.getMountPointSpaces();
     this.getStats(this.year);
 
-    for (let i = 0; i <12; i++) {
-      this.monthsLabels[i] = this.getShortMonthName(i); 
+    for (let i = 1; i <=12; i++) {
+      this.monthsLabels[i+1] = this.getShortMonthName(i); 
     }
   }
 
@@ -135,14 +135,14 @@ export class AdministrationComponent implements OnInit {
   }
 
   public updateGraph(columnData: string, columnLabel: string){
-    console.log(this.stats);
+
     this.data =  {
       labels: this.monthsLabels,
       datasets: [
         { data: this.stats.map(stats=>Reflect.get(stats,columnData)) , label: columnLabel }
       ]
     };
-    console.log(this.data);
+   
   }
 
 

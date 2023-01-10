@@ -7,12 +7,11 @@ import { ChartConfiguration, ChartType,  } from 'chart.js';
   styleUrls: ['./bar-chart.component.scss']
 })
 export class BarChartComponent implements OnInit {
-  @Input() chartData: any[] = [];
+  @Input() chartData: { labels: string[]; datasets: { data: number[]; label: string; }[]; }[] = [];
 
-  barChartData: any;
+  barChartData: { labels: string[]; datasets: { data: number[]; label: string; }[]; }[];
   constructor() { 
-    this.barChartData =  {
-    };
+    this.barChartData =  [];
   }
 
   ngOnInit(): void {
