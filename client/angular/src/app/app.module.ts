@@ -67,6 +67,10 @@ import { AppRoutingModule } from './app-routing.module';
 import { ChangeExpirationDateModalComponent } from './common/modals/change-expiration-date-modal/change-expiration-date-modal.component';
 import { APP_BASE_HREF } from '@angular/common';
 import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
+import { NgChartsModule } from 'ng2-charts';
+import { BarChartComponent } from './administration/bar-chart/bar-chart.component';
+
+
 
 @NgModule({
   declarations: [
@@ -110,6 +114,8 @@ import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confir
     CbcHeaderComponent,
     CbcEcLogoAppComponent,
     DeleteButtonComponent,
+    BarChartComponent
+   
   ],
   imports: [
     AppRoutingModule,
@@ -129,6 +135,7 @@ import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confir
     }),
     FontAwesomeModule,
     BrowserAnimationsModule,
+    NgChartsModule
   ],
   providers: [
     KeyStoreService,

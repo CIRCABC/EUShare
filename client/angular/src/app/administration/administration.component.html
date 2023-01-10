@@ -128,14 +128,27 @@
   <p></p><br>
   <p></p>
   <h1 class="title">Statistics</h1>
+
+  <form #yearForm="ngForm">  
+             
+    <div class="form-group">  
+        <label>Year:</label>  
+        <select id="years" name="years" [(ngModel)]="year" (change)="changeYear()" class="form-control">  
+            <option *ngFor="let y of yearList">{{y}}</option>  
+        </select>    
+    </div>  
+     
+   
+</form>  
+
   <table>
     <tr>
       <th> Month </th>
-      <th> Users </th>
-      <th> Uploads </th>
-      <th> Downloads </th>
-      <th> Uploads Data </th>
-      <th> Downloads Data </th>      
+      <th> <a>Users</a> </th>
+      <th> <a  (click)="updateGraph('uploads')">Uploads</a> </th>
+      <th> <a  (click)="updateGraph('downloads')">Downloads</a> </th>
+      <th> <a  (click)="updateGraph('uploadsData')">Uploads Data</a> </th>
+      <th> <a  (click)="updateGraph('downloadsData')">Downloads Data </a></th>      
     </tr>
     <tr *ngFor="let month of stats">
       <td>{{ getMonthName(month.month) }}</td>
@@ -154,5 +167,8 @@
       <td><b>{{ yearStats.downloadsData | fileSizeFormat}}</b></td>
     </tr>
   </table>
+
+
+  <app-bar-chart [chartData]="data"></app-bar-chart>
 
 </div>

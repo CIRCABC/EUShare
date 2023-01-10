@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   UsersService,
   UserInfo,
@@ -16,6 +16,7 @@ import {
   AdminService,
   StatsService,
   Stat,
+  
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import {
@@ -25,13 +26,15 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-
+import { update } from 'cypress/types/lodash';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
   styleUrls: ['./administration.component.scss'],
 })
 export class AdministrationComponent implements OnInit {
+  
+  
   public faUser = faUser;
   public faUserTie = faUserTie;
   public faArrowDownWideShort = faArrowDownWideShort;
@@ -69,7 +72,13 @@ export class AdministrationComponent implements OnInit {
   public selectedIsAdminValue = false;
   public changeIsLoading = false;
 
+  public yearList = [2022, 2023];
+  public year = 2022;
+
   public math = Math;
+
+  public monthsLabels: string[] = new Array();
+
 
   constructor(
     private router: Router,
@@ -77,12 +86,15 @@ export class AdministrationComponent implements OnInit {
     private adminService: AdminService,
     private statsService: StatsService,
     private notificationService: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getMountPointSpaces();
-    this.getStats(2023);
-   
+    this.getStats(this.year);
+
+    for (let i = 0; i <12; i++) {
+      this.monthsLabels[i] = this.getShortMonthName(i); 
+    }
   }
 
   public async getMountPointSpaces() {
@@ -94,27 +106,45 @@ export class AdministrationComponent implements OnInit {
   public async getStats(year: number) {
     this.stats = await firstValueFrom(this.statsService.getStats(year));
 
-    this.yearStats.users=0;
-    this.yearStats.downloads=0;
-    this.yearStats.uploads=0;
-    this.yearStats.downloadsData=0;
-    this.yearStats.uploadsData=0;
-    this.stats.forEach((month) => { console.log(month.users);
+    this.yearStats.users = 0;
+    this.yearStats.downloads = 0;
+    this.yearStats.uploads = 0;
+    this.yearStats.downloadsData = 0;
+    this.yearStats.uploadsData = 0;
+
+   
+
+    this.stats.forEach((month) => {
       this.yearStats.users += month.users;
     });
-    this.stats.forEach((month) => { console.log(month.downloads);
+    this.stats.forEach((month) => {
       this.yearStats.downloads += month.downloads;
     });
-    this.stats.forEach((month) => { console.log(month.downloads);
+    this.stats.forEach((month) => {
       this.yearStats.uploads += month.uploads;
     });
-    this.stats.forEach((month) => { console.log(month.downloads);
+    this.stats.forEach((month) => {
       this.yearStats.downloadsData += month.downloadsData;
     });
-    this.stats.forEach((month) => { console.log(month.downloads);
+    this.stats.forEach((month) => {
       this.yearStats.uploadsData += month.uploadsData;
     });
+
+
+    this.updateGraph("users");
   }
+
+  public updateGraph(column: string){
+    console.log(this.stats);
+    this.data =  {
+      labels: this.monthsLabels,
+      datasets: [
+        { data: this.stats.map(stats=>Reflect.get(stats,column)) , label: column }
+      ]
+    };
+    console.log(this.data);
+  }
+
 
   public async resultsNextPage() {
     if (await this.isLastPage()) {
@@ -268,4 +298,26 @@ export class AdministrationComponent implements OnInit {
 
     return date.toLocaleString('en-US', { month: 'long' });
   }
+
+  public getShortMonthName(monthNumber: number) {
+    const date = new Date();
+    date.setMonth(monthNumber - 1);
+
+    return date.toLocaleString('en-US', { month: 'short' });
+  }
+
+  public changeYear(){
+    this.getStats(this.year);
+  }
+
+
+  data =  {
+     labels: [ 'Janv', 'Fev', '2008', '2009', '2010', '2011', '2012','Janv', 'Fev', '2008', '2009', '2010' ],
+     datasets: [
+       { data: [ 1,2,0,0,0,0,0,0,0,0,0,0,0,], label: 'Series B' }
+     ]
+   };
+ 
+
+
 }
