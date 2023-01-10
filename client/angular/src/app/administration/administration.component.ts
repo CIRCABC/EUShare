@@ -312,9 +312,9 @@ export class AdministrationComponent implements OnInit {
 
 
   data =  {
-     labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
+     labels: [ ],
      datasets: [
-       { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
+       { data: [ ], label: '' }
      ]
    };
  
