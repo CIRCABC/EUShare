@@ -118,9 +118,7 @@ public class FileService implements FileServiceInterface {
    * from the file system.
    */
 
-  // @Schedule(second = "59", minute = "59", hour = "23", dayOfMonth = "Last",
-  // persistent = false) // DO NOT CHANGE CLEANUP DELAY, IT WILL BREAK STATISTICS
-  @Scheduled(fixedDelay = 1800000) // 000) // Every 30 minutes
+  @Scheduled(cron = "0 0 0 L * ?")// DO NOT CHANGE CLEANUP DELAY (last month of the day at midnight), IT WILL BREAK STATISTICS
   @Transactional
   void cleanupFiles() {
     
