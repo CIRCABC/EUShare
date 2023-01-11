@@ -93,7 +93,7 @@ export class AdministrationComponent implements OnInit {
     this.getStats(this.year);
 
     for (let i = 1; i <=12; i++) {
-      this.monthsLabels[i+1] = this.getShortMonthName(i); 
+      this.monthsLabels[i-1] = this.getShortMonthName(i); 
     }
   }
 
@@ -312,9 +312,9 @@ export class AdministrationComponent implements OnInit {
 
 
   data =  {
-     labels: [ ],
+     labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
      datasets: [
-       { data: [ ], label: '' }
+       { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
      ]
    };
  

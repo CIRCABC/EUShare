@@ -8,18 +8,18 @@ import { ChartConfiguration, ChartType,  } from 'chart.js';
 })
 export class BarChartComponent implements OnInit {
   @Input() chartData: { labels: string[]; datasets: { data: number[]; label: string; }[] ; } =  {
-    labels: [  ],
+    labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
     datasets: [
-      { data: [ ], label: '' }
+      { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
     ]
   };
 
   barChartData: { labels: string[]; datasets: { data: number[]; label: string; }[] ; };
   constructor() { 
     this.barChartData = {
-      labels: [  ],
+      labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
       datasets: [
-        { data: [ ], label: '' }
+        { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
       ]
     };
   }
