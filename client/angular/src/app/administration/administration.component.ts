@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   UsersService,
   UserInfo,
@@ -16,7 +16,7 @@ import {
   AdminService,
   StatsService,
   Stat,
-  
+
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import {
@@ -26,15 +26,14 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { update } from 'cypress/types/lodash';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
   styleUrls: ['./administration.component.scss'],
 })
 export class AdministrationComponent implements OnInit {
-  
-  
+
+
   public faUser = faUser;
   public faUserTie = faUserTie;
   public faArrowDownWideShort = faArrowDownWideShort;
@@ -93,7 +92,7 @@ export class AdministrationComponent implements OnInit {
     this.getStats(this.year);
 
     for (let i = 1; i <=12; i++) {
-      this.monthsLabels[i-1] = this.getShortMonthName(i); 
+      this.monthsLabels[i-1] = this.getShortMonthName(i);
     }
   }
 
@@ -112,7 +111,7 @@ export class AdministrationComponent implements OnInit {
     this.yearStats.downloadsData = 0;
     this.yearStats.uploadsData = 0;
 
-   
+
 
     this.stats.forEach((month) => {
       this.yearStats.users += month.users;
@@ -142,7 +141,7 @@ export class AdministrationComponent implements OnInit {
         { data: this.stats.map(stats=>Reflect.get(stats,columnData)) , label: columnLabel }
       ]
     };
-   
+
   }
 
 
@@ -317,7 +316,7 @@ export class AdministrationComponent implements OnInit {
        { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
      ]
    };
- 
+
 
 
 }
