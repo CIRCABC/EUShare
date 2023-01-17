@@ -72,7 +72,7 @@ export class LinkInputComponent implements ControlValueAccessor, OnInit {
   }
 
   public linkValidator(minCharacters: number): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
+    return (control: AbstractControl) => {
       const message: string = control.value;
       if (message) {
         const forbidden = message.length < minCharacters;

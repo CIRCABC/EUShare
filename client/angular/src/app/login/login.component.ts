@@ -25,7 +25,7 @@ export class LoginComponent {
 
   login() {
     this.keyStoreService.prepareKeyStore();
-    const customQueryParams: { [key: string]: any } = {};
+    const customQueryParams: { [key: string]: string } = {};
     customQueryParams['req_cnf'] =
       this.keyStoreService.publicJWKBase64UrlEncoded();
     this.oauthService.customQueryParams = customQueryParams;

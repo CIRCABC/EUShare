@@ -1,20 +1,18 @@
 {
   "formatter": {
-    "ignore": [
-      "./src/app/openapi/api/*.ts",
-      "./src/app/openapi/model/*.ts"
-    ],
+    "ignore": ["./src/app/openapi/api/*.ts", "./src/app/openapi/model/*.ts"],
     "indentStyle": "space"
   },
   "linter": {
-    "ignore": [
-      "./src/app/openapi/api/*.ts",
-      "./src/app/openapi/model/*.ts"
-    ],
+
+    "ignore": ["./src/app/openapi/api/*.ts", "./src/app/openapi/model/*.ts"],
 
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "warn"
+      }
     }
   }
 }
