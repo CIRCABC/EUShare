@@ -43,8 +43,9 @@ export class BarChartComponent implements OnChanges {
     }
   }
   public barChartOptions: ChartOptions = {
+    backgroundColor:'#58c37e',
     responsive: true,
-
+    
     scales: {},
     plugins: {
       legend: {
