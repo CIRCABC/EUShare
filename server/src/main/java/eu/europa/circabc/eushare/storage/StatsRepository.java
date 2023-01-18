@@ -39,7 +39,7 @@ public interface StatsRepository extends CrudRepository<DBStat, String> {
 
   public List<DBStat> findByYear(Integer year);
 
-  public DBStat findByYearAndMonth(Integer year,Integer month);
+  public DBStat findByYearAndMonthOrderByMonthAsc(Integer year,Integer month);
 
   // TODO dynamic populate dropdown years // public List<Integer> findDistinctYear();
 
