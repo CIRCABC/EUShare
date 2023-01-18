@@ -91,8 +91,8 @@ export class AdministrationComponent implements OnInit {
     this.getMountPointSpaces();
     this.getStats(this.year);
 
-    for (let i = 1; i <=12; i++) {
-      this.monthsLabels[i-1] = this.getShortMonthName(i);
+    for (let i = 1; i <= 12; i++) {
+      this.monthsLabels[i - 1] = this.getShortMonthName(i);
     }
   }
 
@@ -104,6 +104,9 @@ export class AdministrationComponent implements OnInit {
 
   public async getStats(year: number) {
     this.stats = await firstValueFrom(this.statsService.getStats(year));
+    this.stats.sort((a: Stat, b: Stat) => {
+      return a.month > b.month ? 1 : -1;
+    });
 
     this.yearStats.users = 0;
     this.yearStats.downloads = 0;
@@ -130,15 +133,15 @@ export class AdministrationComponent implements OnInit {
     });
 
 
-    this.updateGraph("users","Users");
+    this.updateGraph("users", "Users");
   }
 
-  public updateGraph(columnData: string, columnLabel: string){
+  public updateGraph(columnData: string, columnLabel: string) {
 
-    this.data =  {
+    this.data = {
       labels: this.monthsLabels,
       datasets: [
-        { data: this.stats.map(stats=>Reflect.get(stats,columnData)) , label: columnLabel }
+        { data: this.stats.map(stats => Reflect.get(stats, columnData)), label: columnLabel }
       ]
     };
 
@@ -305,17 +308,17 @@ export class AdministrationComponent implements OnInit {
     return date.toLocaleString('en-US', { month: 'short' });
   }
 
-  public changeYear(){
+  public changeYear() {
     this.getStats(this.year);
   }
 
 
-  data =  {
-     labels: [ '', '', '', '', '', '', '','', '', '', '', '' ],
-     datasets: [
-       { data: [ 0,0,0,0,0,0,0,0,0,0,0,0], label: '' }
-     ]
-   };
+  data = {
+    labels: ['', '', '', '', '', '', '', '', '', '', '', ''],
+    datasets: [
+      { data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: '' }
+    ]
+  };
 
 
 
