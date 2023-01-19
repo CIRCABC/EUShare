@@ -31,16 +31,16 @@ export class KeyStoreService {
 
   private load = () => {
     const available =
-      sessionStorage.getItem(this._PRVKEY) !== null &&
-      sessionStorage.getItem(this._PUBKEY) !== null;
+      localStorage.getItem(this._PRVKEY) !== null &&
+      localStorage.getItem(this._PUBKEY) !== null;
 
     if (!available) {
       const keystore = KEYUTIL.generateKeypair('EC', 'secp256r1');
-      sessionStorage.setItem(
+      localStorage.setItem(
         this._PRVKEY,
         JSON.stringify(KEYUTIL.getJWKFromKey(keystore['prvKeyObj']))
       );
-      sessionStorage.setItem(
+      localStorage.setItem(
         this._PUBKEY,
         JSON.stringify(KEYUTIL.getJWKFromKey(keystore['pubKeyObj']))
       );
@@ -51,7 +51,7 @@ export class KeyStoreService {
    * Returns the public key instance from the generate key pair
    */
   private publicKey = () => {
-    const pubKey = sessionStorage.getItem(this._PUBKEY);
+    const pubKey = localStorage.getItem(this._PUBKEY);
     if (pubKey !== null) {
       return KEYUTIL.getKey(JSON.parse(pubKey));
     }
@@ -65,7 +65,7 @@ export class KeyStoreService {
    * Returns the private key instance from the generate key pair
    */
   private privateKey() {
-    const privKey = sessionStorage.getItem(this._PRVKEY);
+    const privKey = localStorage.getItem(this._PRVKEY);
     if (privKey !== null) {
       return KEYUTIL.getKey(JSON.parse(privKey));
     }
@@ -119,8 +119,8 @@ export class KeyStoreService {
    * Remove all entries from the temp storage
    */
   clear = () => {
-    sessionStorage.removeItem(this._PRVKEY);
-    sessionStorage.removeItem(this._PUBKEY);
+    localStorage.removeItem(this._PRVKEY);
+    localStorage.removeItem(this._PUBKEY);
   };
 
   /**
