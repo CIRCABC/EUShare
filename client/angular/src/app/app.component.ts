@@ -44,18 +44,13 @@ export class AppComponent {
     private oauthService: OAuthService,
     private readonly location: Location
   ) {
-    if (!this.location.path().startsWith('/fs')) {
       this.configureOAuth();
-    }
   }
 
   private async configureOAuth() {
-    localStorage.removeItem('ES_AUTH');
-    localStorage.removeItem('ES_USERINFO');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('id_token_claims_obj');
 
-    this.oauthService.setStorage(localStorage);
+
+    this.oauthService.setStorage(sessionStorage);
 
     this.oauthService.configure(authCodeFlowConfig);
 
