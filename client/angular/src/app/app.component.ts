@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import {
   AuthConfig,
   NullValidationHandler,
@@ -40,20 +40,34 @@ const authCodeFlowConfig: AuthConfig = {
   templateUrl: './app.component.html',
 })
 export class AppComponent {
+  timestamp: number;
+
+  @HostListener('window:beforeunload', ['$event'])
+  clearLocalStorage() {
+
+    let timestamp = localStorage.getItem('timestamp');
+    if (timestamp != null && Number(timestamp) !== this.timestamp) {
+      localStorage.removeItem('ES_AUTH');
+      localStorage.removeItem('ES_USERINFO');
+      localStorage.removeItem('id_token');
+      localStorage.removeItem('id_token_claims_obj');
+    }
+  }
+
   constructor(
     private oauthService: OAuthService,
     private readonly location: Location
   ) {
-    if (!this.location.path().startsWith('/fs')) {
-      this.configureOAuth();
-    }
+
+    this.timestamp = new Date().getTime();
+    localStorage.setItem('timestamp', this.timestamp.toString());
+
+    this.configureOAuth();
+
   }
 
   private async configureOAuth() {
-    localStorage.removeItem('ES_AUTH');
-    localStorage.removeItem('ES_USERINFO');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('id_token_claims_obj');
+
 
     this.oauthService.setStorage(localStorage);
 
