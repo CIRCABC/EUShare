@@ -158,9 +158,7 @@ public class FileService implements FileServiceInterface {
   void statsFiles() {
     LocalDate currentdate = LocalDate.now();
     DBStat newStat = statsRepository.findCurrentStats(currentdate.getMonthValue(), currentdate.getYear());
-    //DBStat newStat = new DBStat(stat.getYear(), stat.getMonth(), stat.getUsers(), stat.getDownloads(),
-      //  stat.getUploads(), stat.getDownloadsData(), stat.getUploadsData());
-    DBStat stat = statsRepository.findByYearAndMonthOrderByMonthAsc( currentdate.getYear(),currentdate.getMonthValue());
+    DBStat stat = statsRepository.findByYearAndMonth( currentdate.getYear(),currentdate.getMonthValue());
     if(stat==null) stat = new DBStat(0, 0, 0, 0, 0, 0, 0);
     stat.setYear(newStat.getYear());
     stat.setMonth(newStat.getMonth());

@@ -33,9 +33,9 @@ public class AdminService implements AdminServiceInterface {
     @Override
     public List<Stat> getStats(Integer year)  {
 
-        log.debug("#######"+year);
+       
         return statRepository
-        .findByYear(year)
+        .findByYearOrderByMonthAsc(year)
         .stream()
         .map(dbStat -> dbStat.toStat())
         .collect(Collectors.toList());
