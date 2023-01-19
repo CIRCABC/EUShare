@@ -51,7 +51,7 @@ export class StatisticsModalComponent implements OnInit {
     if (link === '') {
       return link;
     } else {
-      return `${window.location.protocol}//${window.location.host}/fs/${link}`;
+      return `${window.location.protocol}//${window.location.host}/shared/fs/${link}`;
     }
   }
 }
