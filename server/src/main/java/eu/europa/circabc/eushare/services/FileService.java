@@ -538,13 +538,13 @@ public class FileService implements FileServiceInterface {
       String userIdentifier = dbShare.getEmail();
 
       try {
-        if (notification) {
-          if (dbShare.getDownloadNotification()) {
-            this.emailService.sendDownloadNotification(
-                dbFile.getUploader().getEmail(),
-                userIdentifier,
-                dbFile.toFileBasics());
-          }
+        if (notification && Boolean.TRUE.equals(dbShare.getDownloadNotification())) {
+
+          this.emailService.sendDownloadNotification(
+              dbFile.getUploader().getEmail(),
+              userIdentifier,
+              dbFile.toFileBasics());
+
         }
       } catch (Exception e) {
         log.error(

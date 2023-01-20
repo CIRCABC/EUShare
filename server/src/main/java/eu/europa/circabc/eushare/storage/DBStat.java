@@ -9,39 +9,17 @@
  */
 package eu.europa.circabc.eushare.storage;
 
-import eu.europa.circabc.eushare.model.FileBasics;
-import eu.europa.circabc.eushare.model.FileInfoRecipient;
-import eu.europa.circabc.eushare.model.FileInfoUploader;
-import eu.europa.circabc.eushare.model.FileLog;
-import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.Stat;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import org.apache.maven.doxia.site.decoration.Body;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 
 @Entity
 @Table(

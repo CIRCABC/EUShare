@@ -41,7 +41,4 @@ public interface StatsRepository extends CrudRepository<DBStat, String> {
 
   public DBStat findByYearAndMonth(Integer year,Integer month);
 
-  // TODO dynamic populate dropdown years // public List<Integer> findDistinctYear();
-
-  // Populate data INSERT INTO  stats (stats_id,year,month,users,downloads,uploads,downloads_data, uploads_data) values (UUID(),2022,12, (FLOOR( 1 + RAND( ) *100 )), (FLOOR( 1 + RAND( ) *300 )), (FLOOR( 1 + RAND( ) *200 )), (FLOOR( 1 + RAND( ) *300*500 )), (FLOOR( 1 + RAND( ) *200*500 )));
 }
