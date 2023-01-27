@@ -586,12 +586,6 @@ public class FileApiController implements FileApi {
             HttpErrorAnswerBuilder.build404EmptyToString(),
             exc3
           );
-        } catch (MessagingException e) {
-          throw new ResponseStatusException(
-            HttpStatus.INTERNAL_SERVER_ERROR,
-            HttpErrorAnswerBuilder.build500EmptyToString(),
-            e
-          );
         }
   }
 

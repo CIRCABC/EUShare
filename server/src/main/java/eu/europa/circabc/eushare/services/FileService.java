@@ -516,20 +516,12 @@ public class FileService implements FileServiceInterface {
     DBFile dbFile;
 
     DBShare dbShare;
-    if (downloadId.length() < 10) {
-      dbShare = shareRepository.findOneByShorturl(downloadId);
-    } else {
-      dbShare = shareRepository.findOneByDownloadId(downloadId);
-    }
+    boolean isShortLength = downloadId.length() < 10;
+    dbShare = findShare(downloadId, isShortLength);
 
     if (dbShare == null) {
       // File is downloaded by its uploader
-
-      if (downloadId.length() < 10) {
-        dbFile = findAvailableFileByShortUrl(downloadId);
-      } else {
-        dbFile = findAvailableFile(downloadId, false);
-      }
+      dbFile = findFile(downloadId, isShortLength);
     } else {
       // File is downloaded by a user it is shared with
       dbFile = dbShare.getFile();
@@ -539,13 +531,13 @@ public class FileService implements FileServiceInterface {
       String userIdentifier = dbShare.getEmail();
 
       try {
-        if (notification) {
-          if (dbShare.getDownloadNotification()) {
-            this.emailService.sendDownloadNotification(
-                dbFile.getUploader().getEmail(),
-                userIdentifier,
-                dbFile.toFileBasics());
-          }
+        if (notification && Boolean.TRUE.equals(dbShare.getDownloadNotification())) {
+
+          this.emailService.sendDownloadNotification(
+              dbFile.getUploader().getEmail(),
+              userIdentifier,
+              dbFile.toFileBasics());
+
         }
       } catch (Exception e) {
         log.error(
@@ -573,6 +565,26 @@ public class FileService implements FileServiceInterface {
     fileLogsRepository.save(fileLogs);
 
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
+  }
+
+  private DBFile findFile(String downloadId, boolean isShortLength) throws UnknownFileException {
+    DBFile dbFile;
+    if (isShortLength) {
+      dbFile = findAvailableFileByShortUrl(downloadId);
+    } else {
+      dbFile = findAvailableFile(downloadId, false);
+    }
+    return dbFile;
+  }
+
+  private DBShare findShare(String downloadId, boolean isShortLength) {
+    DBShare dbShare;
+    if (isShortLength) {
+      dbShare = shareRepository.findOneByShorturl(downloadId);
+    } else {
+      dbShare = shareRepository.findOneByDownloadId(downloadId);
+    }
+    return dbShare;
   }
 
   @Override
@@ -784,7 +796,7 @@ public class FileService implements FileServiceInterface {
 
   public void changeDownloadNotificationShareOnFileOnBehalfOf(String fileID, @NotNull @Valid String userEmail,
       String requesterId, Boolean downloadNotification)
-      throws MessagingException, UnknownFileException, UnknownUserException, UserUnauthorizedException {
+      throws UnknownFileException, UnknownUserException, UserUnauthorizedException {
 
     if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileID, requesterId)) {
 

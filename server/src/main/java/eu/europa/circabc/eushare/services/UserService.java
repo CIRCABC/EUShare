@@ -201,16 +201,6 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         .stream()
         .map(DBUserInfoProjection::toUserInfo)
         .collect(Collectors.toList());
-      /*  return userRepository
-        .findByEmailRoleInternalOrAdmin(
-          searchString,
-          PageRequest.of(pageNumber, pageSize)
-        )
-        .stream()
-        .map(DBUser::toUserInfo)
-        .collect(Collectors.toList());
-*/
-
     } else {
       throw new UserUnauthorizedException();
     }

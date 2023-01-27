@@ -12,20 +12,15 @@ package eu.europa.circabc.eushare.services;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.europa.circabc.eushare.exceptions.UnknownUserException;
-import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.model.Stat;
+import eu.europa.circabc.eushare.storage.DBStat;
 import eu.europa.circabc.eushare.storage.StatsRepository;
 
 @Service
 public class AdminService implements AdminServiceInterface {
-
-    private Logger log = LoggerFactory.getLogger(FileService.class);
 
     @Autowired
     private StatsRepository statRepository;
@@ -37,7 +32,7 @@ public class AdminService implements AdminServiceInterface {
         return statRepository
         .findByYearOrderByMonthAsc(year)
         .stream()
-        .map(dbStat -> dbStat.toStat())
+        .map(DBStat::toStat)
         .collect(Collectors.toList());
     }
 
