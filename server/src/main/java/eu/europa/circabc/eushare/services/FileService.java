@@ -166,6 +166,7 @@ public class FileService implements FileServiceInterface {
     stat.setDownloads(newStat.getDownloads());
     stat.setUploads(newStat.getUploads());
     stat.setDownloadsData(newStat.getDownloadsData());
+    stat.setUploadsData(newStat.getUploadsData());
 
     statsRepository.save(stat);
 
