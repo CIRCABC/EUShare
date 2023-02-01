@@ -16,6 +16,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { difference } from 'cypress/types/lodash';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { I18nService } from '../common/i18n/i18n.service';
@@ -31,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService
-  ) {}
+  ) { }
 
   intercept(
     req: HttpRequest<any>,
@@ -155,7 +156,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               if (err.error) {
                 const error_msg: string = err.error.error;
                 if (error_msg === 'invalid_request') {
+                  this.notificationService.addErrorMessage(
+                    err.error.error_description + " Please login again."
+                  );
                   this.sessionStorageService.logout();
+                  break;
                 }
               }
               this.notificationService.addErrorMessage(
