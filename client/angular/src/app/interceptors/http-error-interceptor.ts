@@ -157,7 +157,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 const error_msg: string = err.error.error;
                 if (error_msg === 'invalid_request') {
                   this.notificationService.addErrorMessage(
-                    err.error.error_description + " Please login again."
+                    "Token has expired, please login again."
                   );
                   this.sessionStorageService.logout();
                   break;
