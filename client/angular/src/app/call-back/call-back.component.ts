@@ -10,7 +10,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { OAuthService } from 'angular-oauth2-oidc';
+import { EventType as OAuthEventType, OAuthService } from 'angular-oauth2-oidc';
 import { UsersService, SessionService } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 
@@ -33,7 +33,7 @@ export class CallBackComponent implements OnInit {
 
   async ngOnInit() {
     this.oAuthService.events.subscribe((next) => {
-      const nextType: string = next.type;
+      const nextType: OAuthEventType = next.type;
       switch (nextType) {
         case 'token_expires': {
           this.notificationService.addSuccessMessageTranslation(
