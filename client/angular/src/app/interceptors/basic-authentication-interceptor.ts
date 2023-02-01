@@ -49,8 +49,9 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
       });
       return next.handle(req);
     }
-    // If there is no ID token, no need to try getting an Access Token, it will simply not work
-    if (!this.oAuthService.getIdToken()) {
+    // If there is no ID token or it is expired, no need to try getting an Access Token, it will simply not work
+    const idToken = this.oAuthService.getIdToken();
+    if (!idToken || this.idTokenExpired()) {
       return next.handle(req);
     }
     return this.sessionService.getAccessToken().pipe(
@@ -65,5 +66,14 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
         return next.handle(req);
       })
     );
+  }
+
+  private idTokenExpired(): boolean {
+    const idTokenExpiresAt = localStorage.getItem('id_token_expires_at');
+    if (idTokenExpiresAt !== null) {
+      return new Date(+idTokenExpiresAt) < new Date();
+    } else {
+      return false;
+    }
   }
 }
