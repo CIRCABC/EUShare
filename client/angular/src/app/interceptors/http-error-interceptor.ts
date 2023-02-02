@@ -16,13 +16,13 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { difference } from 'cypress/types/lodash';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { I18nService } from '../common/i18n/i18n.service';
 import { NotificationService } from '../common/notification/notification.service';
 import { Status } from '../openapi';
 import { SessionStorageService } from '../services/session-storage.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService
-  ) { }
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -79,6 +79,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
           const isDeleteFileSharedWithUser =
             req.url.includes('/fileRequest/sharedWith') &&
             req.method === 'DELETE';
+          const isECASPost =
+            req.url.startsWith(environment.OIDC_TOKENENDPOINT) &&
+            req.method === 'POST';
 
           let action = `${this.i18nService.to()} ?`;
 
@@ -153,21 +156,16 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
             case 400: {
-              if (err.error) {
-                const error_msg: string = err.error.error;
-                if (error_msg === 'invalid_request') {
-                  this.notificationService.addErrorMessage(
-                    "Token has expired, please login again."
-                  );
-                  this.sessionStorageService.logout();
-                  break;
-                }
+              if (isECASPost) {
+                // post invalid id token ignore error and logout
+                this.sessionStorageService.logout();
+              } else {
+                this.notificationService.addErrorMessage(
+                  `${this.i18nService.translate(
+                    'bad.request'
+                  )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`
+                );
               }
-              this.notificationService.addErrorMessage(
-                `${this.i18nService.translate(
-                  'bad.request'
-                )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`
-              );
               break;
             }
             case 401: {
