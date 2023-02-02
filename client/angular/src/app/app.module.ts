@@ -69,8 +69,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
 import { NgChartsModule } from 'ng2-charts';
 import { BarChartComponent } from './administration/bar-chart/bar-chart.component';
-
-
+import { preLoad } from './transloco/transloco-preload';
 
 @NgModule({
   declarations: [
@@ -114,8 +113,7 @@ import { BarChartComponent } from './administration/bar-chart/bar-chart.componen
     CbcHeaderComponent,
     CbcEcLogoAppComponent,
     DeleteButtonComponent,
-    BarChartComponent
-   
+    BarChartComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -135,7 +133,7 @@ import { BarChartComponent } from './administration/bar-chart/bar-chart.componen
     }),
     FontAwesomeModule,
     BrowserAnimationsModule,
-    NgChartsModule
+    NgChartsModule,
   ],
   providers: [
     KeyStoreService,
@@ -152,6 +150,7 @@ import { BarChartComponent } from './administration/bar-chart/bar-chart.componen
       multi: true,
     },
     FileSizeFormatPipe,
+    preLoad,
   ],
   bootstrap: [AppComponent],
 })
