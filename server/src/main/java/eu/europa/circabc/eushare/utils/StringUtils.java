@@ -58,7 +58,7 @@ public class StringUtils {
   }
 
   public static final Pattern VALID_EMAIL_ADDRESS_REGEX = Pattern.compile(
-    "^[a-z0-9._%-]+@[a-z0-9.-]+\\.[a-z]{2,4}$",
+    "^[a-z0-9._%-]+@[a-z0-9.-]+\\.[a-z]{2,10}$",
     Pattern.CASE_INSENSITIVE
   );
 
