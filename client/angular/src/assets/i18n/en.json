@@ -48,7 +48,7 @@
   "file": "File",
   "file.downloads": "File Downloads",
   "file.is.protected": "The file is protected by a password.",
-  "file.not.found": "File not found",
+  "file.not.found": "File not found (The file may be expired).",
   "file.password.optional": "File password (optional)",
   "file.recipients": "File Recipients",
   "file.request.accepting.deletion": "You are about to delete the file named",

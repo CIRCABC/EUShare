@@ -48,7 +48,7 @@
   "file": "Fichier",
   "file.downloads": "Téléchargements de fichiers",
   "file.is.protected": "Le fichier est protégé par un mot de passe.",
-  "file.not.found": "Fichier non trouvé",
+  "file.not.found": "Fichier non trouvé. (Le fichier est peut-être expiré)",
   "file.password.optional": "Mot de passe du fichier (facultatif)",
   "file.recipients": "Destinataires du fichier",
   "file.request.accepting.deletion": "Vous êtes sur le point de supprimer le fichier dont le nom est",

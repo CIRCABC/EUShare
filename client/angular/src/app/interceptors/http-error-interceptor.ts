@@ -205,14 +205,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               ) {
                 errorMessage += this.i18nService.translate('user.not.found');
               }
-              if (
-                isGetFile ||
-                isDeleteFile ||
-                isPostFileSharedWith ||
-                isPostFileContent
-              ) {
-                errorMessage += this.i18nService.translate('file.not.found');
-              }
+             
               if (isDeleteFileSharedWithUser) {
                 if (err.error) {
                   const status: Status = JSON.parse(err.error);
@@ -222,6 +215,14 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 }
               }
               errorMessage += ` ${this.i18nService.whileTrying()}  ${action}`;
+              if (
+                isGetFile ||
+                isDeleteFile ||
+                isPostFileSharedWith ||
+                isPostFileContent
+              ) {
+                errorMessage = this.i18nService.translate('file.not.found');
+              }
               this.notificationService.addErrorMessage(errorMessage);
               break;
             }
