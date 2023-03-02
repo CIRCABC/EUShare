@@ -71,8 +71,8 @@ export class AdministrationComponent implements OnInit {
   public selectedIsAdminValue = false;
   public changeIsLoading = false;
 
-  public yearList = [2022, 2023];
-  public year = 2022;
+  public yearList : number[] = [];
+  public year : number = 2022;
 
   public math = Math;
 
@@ -88,6 +88,10 @@ export class AdministrationComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.year = new Date().getFullYear();
+    for (let y = 2022; y <= this.year; y++) {
+      this.yearList.push(y);
+    }
     this.getMountPointSpaces();
     this.getStats(this.year);
 
