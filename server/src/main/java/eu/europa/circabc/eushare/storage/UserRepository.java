@@ -40,6 +40,8 @@ public interface UserRepository
 
   public DBUser findOneByNameAndRole(String name, DBUser.Role role);
 
+  public DBUser findOneByApiKey(String apiKey);
+
   public List<DBUser> findByEmailIgnoreCaseStartsWith(
     String start,
     Pageable page

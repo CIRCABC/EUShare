@@ -24,6 +24,7 @@ import eu.europa.circabc.eushare.storage.UserInfoRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,14 +63,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
   @Override
   public String getAuthenticatedUserId(Authentication authentication)
-    throws WrongAuthenticationException {
-    if (
-      authentication != null &&
-      authentication.isAuthenticated() &&
-      (authentication instanceof BearerTokenAuthentication) &&
-      (authentication.getPrincipal() instanceof OAuth2AuthenticatedPrincipal)
-    ) {
+      throws WrongAuthenticationException {
+    if (authentication != null &&
+        authentication.isAuthenticated() &&
+        (authentication instanceof BearerTokenAuthentication) &&
+        (authentication.getPrincipal() instanceof OAuth2AuthenticatedPrincipal)) {
       BearerTokenAuthentication bearerTokenAuthentication = (BearerTokenAuthentication) authentication;
+
       OAuth2AuthenticatedPrincipal principal = (OAuth2AuthenticatedPrincipal) bearerTokenAuthentication.getPrincipal();
       String email = principal.getAttribute("email");
       String givenName = principal.getAttribute("name");
@@ -77,8 +77,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
       if (email == null || username == null) {
         throw new WrongAuthenticationException(
-          "Wrong token, cannot find email or username claim"
-        );
+            "Wrong token, cannot find email or username claim");
       }
 
       DBUser dbUser = null;
@@ -88,31 +87,41 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       } catch (WrongEmailStructureException e) {
         throw new WrongAuthenticationException(e);
       }
+    } else if (authentication != null && authentication.isAuthenticated()
+        && authentication.getAuthorities().contains("ROLE_API-KEY")) {
+      String apiKey = authentication.getPrincipal().toString();
+      DBUser dbUser = null;
+      try {
+        dbUser = userRepository.findOneByApiKey(apiKey);
+
+        return dbUser.getId();
+      } catch (Exception e) {
+        throw new WrongAuthenticationException(e);
+      }
     }
     throw new WrongAuthenticationException();
   }
 
   private DBUser createInternalUser(
-    String email,
-    String givenName,
-    String username
-  ) {
+      String email,
+      String givenName,
+      String username) {
     DBUser user = DBUser.createInternalUser(
-      email,
-      givenName,
-      esConfig.getDefaultUserSpace(),
-      username
-    );
+        email,
+        givenName,
+        esConfig.getDefaultUserSpace(),
+        username);
     for (String admin : adminUsers) {
-      if (admin.equals(username)) user.setRole(DBUser.Role.ADMIN);
+      if (admin.equals(username))
+        user.setRole(DBUser.Role.ADMIN);
     }
     return userRepository.save(user);
   }
 
   DBUser getDbUser(String userId) throws UnknownUserException {
     return userRepository
-      .findById(userId)
-      .orElseThrow(UnknownUserException::new);
+        .findById(userId)
+        .orElseThrow(UnknownUserException::new);
   }
 
   @Override
@@ -137,7 +146,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   @Override
   @Transactional
   public UserInfo getUserInfoOnBehalfOf(String userId, String requesterId)
-    throws UnknownUserException, UserUnauthorizedException {
+      throws UnknownUserException, UserUnauthorizedException {
     if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
       return getUserInfo(userId);
     } else {
@@ -148,17 +157,16 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   @Override
   @Transactional
   public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId)
-    throws UnknownUserException, UserUnauthorizedException, NonInternalUsersCannotBecomeAdminException, IllegalSpaceException {
+      throws UnknownUserException, UserUnauthorizedException, NonInternalUsersCannotBecomeAdminException,
+      IllegalSpaceException {
     String userId = userInfo.getId();
     if (this.isAdmin(requesterId)) {
       UserInfo oldUserInfo = this.getUserInfo(userId);
       // Id, Name, UsedSpace
-      if (
-        !oldUserInfo.getId().equals(userId) ||
-        !oldUserInfo.getGivenName().equals(userInfo.getGivenName()) ||
-        !oldUserInfo.getLoginUsername().equals(userInfo.getLoginUsername()) ||
-        !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())
-      ) {
+      if (!oldUserInfo.getId().equals(userId) ||
+          !oldUserInfo.getGivenName().equals(userInfo.getGivenName()) ||
+          !oldUserInfo.getLoginUsername().equals(userInfo.getLoginUsername()) ||
+          !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
         throw new UserUnauthorizedException();
       }
       // isAdmin
@@ -182,25 +190,23 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   @Override
   @Transactional
   public List<UserInfo> getUsersUserInfoOnBehalfOf(
-    int pageSize,
-    int pageNumber,
-    String searchString,
-    String sortBy,
-    String requesterId
-  ) throws UnknownUserException, UserUnauthorizedException {
+      int pageSize,
+      int pageNumber,
+      String searchString,
+      String sortBy,
+      String requesterId) throws UnknownUserException, UserUnauthorizedException {
     if (isAdmin(requesterId)) {
       Direction dir = Direction.DESC;
       if (sortBy.equals("name")) {
         dir = Direction.ASC;
       }
       return userInfoRepository
-        .findByEmailRoleInternalOrAdmin(
-          searchString,
-          PageRequest.of(pageNumber, pageSize, dir, sortBy)
-        )
-        .stream()
-        .map(DBUserInfoProjection::toUserInfo)
-        .collect(Collectors.toList());
+          .findByEmailRoleInternalOrAdmin(
+              searchString,
+              PageRequest.of(pageNumber, pageSize, dir, sortBy))
+          .stream()
+          .map(DBUserInfoProjection::toUserInfo)
+          .collect(Collectors.toList());
     } else {
       throw new UserUnauthorizedException();
     }
@@ -209,7 +215,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   @Override
   @Transactional
   public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
-    throws UnknownUserException, NonInternalUsersCannotBecomeAdminException, UserUnauthorizedException {
+      throws UnknownUserException, NonInternalUsersCannotBecomeAdminException, UserUnauthorizedException {
     if (isAdmin(requesterId)) {
       grantAdminRights(userId);
     } else {
@@ -218,13 +224,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   }
 
   boolean isRequesterIdEqualsToUserIdOrIsAnAdmin(
-    String userId,
-    String requesterId
-  ) throws UnknownUserException {
-    return (
-      (requesterId.equals(userId)) ||
-      (this.getDbUser(requesterId).getRole().equals(Role.ADMIN))
-    );
+      String userId,
+      String requesterId) throws UnknownUserException {
+    return ((requesterId.equals(userId)) ||
+        (this.getDbUser(requesterId).getRole().equals(Role.ADMIN)));
   }
 
   boolean isUserExists(String requesterId) {
@@ -235,7 +238,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
    * Grant admin rights to the specified user.
    */
   private void grantAdminRights(String userId)
-    throws UnknownUserException, NonInternalUsersCannotBecomeAdminException {
+      throws UnknownUserException, NonInternalUsersCannotBecomeAdminException {
     DBUser user = this.getDbUser(userId);
 
     if (!user.getRole().equals(DBUser.Role.INTERNAL)) {
@@ -269,7 +272,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   @Override
   @Transactional
   public void revokeAdminRightsOnBehalfOf(String userId, String requesterId)
-    throws UnknownUserException, UserUnauthorizedException {
+      throws UnknownUserException, UserUnauthorizedException {
     if (this.isAdmin(requesterId)) {
       this.revokeAdminRights(userId);
     } else {
@@ -281,7 +284,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
    * Sets {@code userId}'s maximum space to {@code space}
    */
   private void setSpace(String userId, long space)
-    throws IllegalSpaceException, UnknownUserException {
+      throws IllegalSpaceException, UnknownUserException {
     if (space < 0) {
       throw new IllegalSpaceException();
     }
@@ -293,7 +296,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   @Override
   @Transactional
   public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
-    throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException {
+      throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException {
     if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
       this.setSpace(userId, space);
     } else {
@@ -309,10 +312,9 @@ public class UserService implements UserServiceInterface, UserDetailsService {
    * @throws WrongEmailStructureException if {@code email} has a wrong structure
    */
   private DBUser getOrCreateInternalUser(
-    String email,
-    String givenName,
-    String username
-  ) throws WrongEmailStructureException {
+      String email,
+      String givenName,
+      String username) throws WrongEmailStructureException {
     DBUser dbUser = null;
     if (StringUtils.validateEmailAddress(email)) {
       dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
@@ -329,11 +331,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   }
 
   private void updateUser(
-    String email,
-    String givenName,
-    String username,
-    DBUser dbUser
-  ) {
+      String email,
+      String givenName,
+      String username,
+      DBUser dbUser) {
     if (dbUser.getName() == null) {
       if (givenName == null || givenName.isEmpty()) {
         givenName = StringUtils.emailToGivenName(email);
@@ -350,7 +351,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String email)
-    throws UsernameNotFoundException {
+      throws UsernameNotFoundException {
     DBUser dbUser = null;
     if (StringUtils.validateEmailAddress(email)) {
       dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
@@ -359,10 +360,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       throw new UsernameNotFoundException("Invalid email adress as username");
     }
     return User
-      .builder()
-      .username(email)
-      .password("n/a")
-      .roles(dbUser.getRole().toString())
-      .build();
+        .builder()
+        .username(email)
+        .password("n/a")
+        .roles(dbUser.getRole().toString())
+        .build();
   }
 }

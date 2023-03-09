@@ -67,6 +67,9 @@ public class DBUser {
 
   // Is the GivenName of the INTERNAL user !!OR!! the link name of the EXTERNAL user
 
+  @Column(nullable = true, unique = true)
+  private String apiKey;
+
   private DBUser() {}
 
   private DBUser(long totalSpace, Role role) {
