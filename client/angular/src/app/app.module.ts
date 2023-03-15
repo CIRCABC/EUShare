@@ -55,7 +55,7 @@ import { CallBackComponent } from './call-back/call-back.component';
 import { KeyStoreService } from './services/key-store.service';
 import { HeaderComponent } from './header/header.component';
 import { FooterComponent } from './footer/footer.component';
-import { MyUserComponent } from './my-user/my-user.component';
+import { MyUserComponent } from './profile/profile.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { UploadSuccessComponent } from './upload-success/upload-success.component';
@@ -70,7 +70,6 @@ import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confir
 import { NgChartsModule } from 'ng2-charts';
 import { BarChartComponent } from './administration/bar-chart/bar-chart.component';
 import { preLoad } from './transloco/transloco-preload';
-
 @NgModule({
   declarations: [
     AppComponent,

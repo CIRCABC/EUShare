@@ -13,6 +13,7 @@ import { HttpClient } from '@angular/common/http';
 
 
 import { AdminService } from './api/admin.service';
+import { ApiKeyService } from './api/apiKey.service';
 import { FileService } from './api/file.service';
 import { SessionService } from './api/session.service';
 import { StatsService } from './api/stats.service';

@@ -39,6 +39,7 @@
           />
         </div>
       </div>
+
       <div class="field">
         <label class="label">{{ "total.space" | transloco }}</label>
         <div class="control">
@@ -51,6 +52,22 @@
           />
         </div>
       </div>
+
+      <div class="field">
+        <label class="label">API Key</label>
+        <div class="control">
+          <div class="button" (click)="getApiKey()">Generate new API key</div>
+          <input
+            readonly="readonly"
+            class="input"
+            type="text"
+            placeholder="Text input"
+            value="{{ apiKey }}"
+          />
+        </div>
+        
+      </div>
+
     </div>
     <div class="column is-one-half"></div>
   </div>

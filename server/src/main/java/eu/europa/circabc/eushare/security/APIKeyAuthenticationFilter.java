@@ -1,3 +1,12 @@
+/*
+ * EUShare - a module of CIRCABC
+ * Copyright (C) 2019-2021 European Commission
+ *
+ * This file is part of the "EUShare" project.
+ *
+ * This code is publicly distributed under the terms of EUPL-V1.2 license,
+ * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+ */
 package eu.europa.circabc.eushare.security;
 
 import java.util.ArrayList;
@@ -40,7 +49,6 @@ public class APIKeyAuthenticationFilter extends AbstractPreAuthenticatedProcessi
         if (authResult != null) {
             List<GrantedAuthority> authorities = new ArrayList<>(authResult.getAuthorities());
             authorities.add(new SimpleGrantedAuthority("ROLE_API-KEY"));
-            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             Authentication newAuth = new UsernamePasswordAuthenticationToken(authResult.getPrincipal(),
                     authResult.getCredentials(), authorities);
             SecurityContextHolder.getContext().setAuthentication(newAuth);

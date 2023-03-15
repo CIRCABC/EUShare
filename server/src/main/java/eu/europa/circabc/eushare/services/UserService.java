@@ -9,6 +9,7 @@
  */
 package eu.europa.circabc.eushare.services;
 
+import eu.europa.circabc.eushare.api.ApiKeyApiController;
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.IllegalSpaceException;
 import eu.europa.circabc.eushare.exceptions.NonInternalUsersCannotBecomeAdminException;
@@ -36,10 +37,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
@@ -88,11 +91,12 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         throw new WrongAuthenticationException(e);
       }
     } else if (authentication != null && authentication.isAuthenticated()
-        && authentication.getAuthorities().contains("ROLE_API-KEY")) {
+        && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_API-KEY"))) {
       String apiKey = authentication.getPrincipal().toString();
+      String encodeApiKey  = ApiKeyApiController.hashApiKey(apiKey);
       DBUser dbUser = null;
       try {
-        dbUser = userRepository.findOneByApiKey(apiKey);
+        dbUser = userRepository.findOneByApiKey(encodeApiKey);
 
         return dbUser.getId();
       } catch (Exception e) {
@@ -118,7 +122,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     return userRepository.save(user);
   }
 
-  DBUser getDbUser(String userId) throws UnknownUserException {
+  public DBUser getDbUser(String userId) throws UnknownUserException {
     return userRepository
         .findById(userId)
         .orElseThrow(UnknownUserException::new);
@@ -347,6 +351,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       userRepository.save(dbUser);
     }
     dbUser.setLastLogged(LocalDateTime.now());
+  }
+
+  public void saveUser(DBUser user){
+    userRepository.save(user);
   }
 
   @Override

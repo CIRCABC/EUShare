@@ -44,8 +44,7 @@ export class AppComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   clearLocalStorage() {
-
-    let timestamp = localStorage.getItem('timestamp');
+    const timestamp = localStorage.getItem('timestamp');
     if (timestamp != null && Number(timestamp) !== this.timestamp) {
       localStorage.removeItem('ES_AUTH');
       localStorage.removeItem('ES_USERINFO');
@@ -58,17 +57,13 @@ export class AppComponent {
     private oauthService: OAuthService,
     private readonly location: Location
   ) {
-
     this.timestamp = new Date().getTime();
     localStorage.setItem('timestamp', this.timestamp.toString());
 
     this.configureOAuth();
-
   }
 
   private async configureOAuth() {
-
-
     this.oauthService.setStorage(localStorage);
 
     this.oauthService.configure(authCodeFlowConfig);

@@ -10,19 +10,22 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
-import { UsersService, UserInfo } from '../openapi';
+import { UsersService, UserInfo, ApiKeyService, ApiKey } from '../openapi';
 import { SessionStorageService } from '../services/session-storage.service';
 
 @Component({
-  selector: 'app-my-user',
-  templateUrl: './my-user.component.html',
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
 })
 export class MyUserComponent implements OnInit {
   public userInfo!: UserInfo;
+  public apiKey: String = '';
+  public apiKeyObj!: ApiKey;
 
   constructor(
     private sessionApi: SessionStorageService,
-    private userApi: UsersService
+    private userApi: UsersService,
+    private apiKeyService: ApiKeyService
   ) {}
 
   async ngOnInit() {
@@ -43,5 +46,9 @@ export class MyUserComponent implements OnInit {
         // managed in the interceptor
       }
     }
+  }
+  async getApiKey() {
+    this.apiKeyObj = await firstValueFrom(this.apiKeyService.getApiKey());
+    this.apiKey = this.apiKeyObj.apikey;
   }
 }

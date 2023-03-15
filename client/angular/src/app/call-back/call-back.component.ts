@@ -34,7 +34,7 @@ export class CallBackComponent implements OnInit {
   async ngOnInit() {
     this.oAuthService.events.subscribe((next) => {
       const nextType: OAuthEventType = next.type;
-   
+
       switch (nextType) {
         case 'token_expires': {
           this.notificationService.addSuccessMessageTranslation(

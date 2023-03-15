@@ -245,5 +245,13 @@ public class DBUser {
     this.lastLogged = lastLogged;
   }
 
+  public String getApiKey() {
+    return apiKey;
+  }
+
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
+  }
+
   
 }
