@@ -12,6 +12,7 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import eu.europa.circabc.eushare.model.UserInfoAllOf;
 import eu.europa.circabc.eushare.model.UserSpace;
 import io.swagger.annotations.ApiModel;
@@ -48,6 +49,46 @@ public class UserInfo   {
 
   @JsonProperty("email")
   private String email;
+
+  /**
+   * role
+   */
+  public enum RoleEnum {
+    ADMIN("ADMIN"),
+    
+    INTERNAL("INTERNAL"),
+    
+    API_KEY("API_KEY");
+
+    private String value;
+
+    RoleEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static RoleEnum fromValue(String value) {
+      for (RoleEnum b : RoleEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  @JsonProperty("role")
+  private RoleEnum role;
 
   @JsonProperty("isAdmin")
   private Boolean isAdmin;
@@ -203,6 +244,26 @@ public class UserInfo   {
     this.email = email;
   }
 
+  public UserInfo role(RoleEnum role) {
+    this.role = role;
+    return this;
+  }
+
+  /**
+   * role
+   * @return role
+  */
+  @ApiModelProperty(value = "role")
+
+
+  public RoleEnum getRole() {
+    return role;
+  }
+
+  public void setRole(RoleEnum role) {
+    this.role = role;
+  }
+
   public UserInfo isAdmin(Boolean isAdmin) {
     this.isAdmin = isAdmin;
     return this;
@@ -241,12 +302,13 @@ public class UserInfo   {
         Objects.equals(this.loginUsername, userInfo.loginUsername) &&
         Objects.equals(this.givenName, userInfo.givenName) &&
         Objects.equals(this.email, userInfo.email) &&
+        Objects.equals(this.role, userInfo.role) &&
         Objects.equals(this.isAdmin, userInfo.isAdmin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalSpace, usedSpace, filesCount, id, loginUsername, givenName, email, isAdmin);
+    return Objects.hash(totalSpace, usedSpace, filesCount, id, loginUsername, givenName, email, role, isAdmin);
   }
 
   @Override
@@ -261,6 +323,7 @@ public class UserInfo   {
     sb.append("    loginUsername: ").append(toIndentedString(loginUsername)).append("\n");
     sb.append("    givenName: ").append(toIndentedString(givenName)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
+    sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    isAdmin: ").append(toIndentedString(isAdmin)).append("\n");
     sb.append("}");
     return sb.toString();

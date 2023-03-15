@@ -16,7 +16,6 @@ import {
   AdminService,
   StatsService,
   Stat,
-
 } from '../openapi';
 import { NotificationService } from '../common/notification/notification.service';
 import {
@@ -32,8 +31,6 @@ import { firstValueFrom } from 'rxjs';
   styleUrls: ['./administration.component.scss'],
 })
 export class AdministrationComponent implements OnInit {
-
-
   public faUser = faUser;
   public faUserTie = faUserTie;
   public faArrowDownWideShort = faArrowDownWideShort;
@@ -68,16 +65,18 @@ export class AdministrationComponent implements OnInit {
 
   public selectedValueInGigaBytes = 0;
 
-  public selectedIsAdminValue = false;
+  public selectedUserRole: UserInfo.RoleEnum = UserInfo.RoleEnum.INTERNAL;
+
+  public roles = Object.values(UserInfo.RoleEnum);
+
   public changeIsLoading = false;
 
-  public yearList : number[] = [];
-  public year : number = 2022;
+  public yearList: number[] = [];
+  public year = 2022;
 
   public math = Math;
 
-  public monthsLabels: string[] = new Array();
-
+  public monthsLabels: string[] = [];
 
   constructor(
     private router: Router,
@@ -85,7 +84,7 @@ export class AdministrationComponent implements OnInit {
     private adminService: AdminService,
     private statsService: StatsService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.year = new Date().getFullYear();
@@ -107,7 +106,9 @@ export class AdministrationComponent implements OnInit {
   }
 
   public async getStats(year: number) {
-    let unsortedStats = await firstValueFrom(this.statsService.getStats(year));
+    const unsortedStats = await firstValueFrom(
+      this.statsService.getStats(year)
+    );
     this.stats = unsortedStats.sort((a: Stat, b: Stat) => {
       return a.month > b.month ? 1 : -1;
     });
@@ -117,8 +118,6 @@ export class AdministrationComponent implements OnInit {
     this.yearStats.uploads = 0;
     this.yearStats.downloadsData = 0;
     this.yearStats.uploadsData = 0;
-
-
 
     this.stats.forEach((month) => {
       this.yearStats.users += month.users;
@@ -136,21 +135,20 @@ export class AdministrationComponent implements OnInit {
       this.yearStats.uploadsData += month.uploadsData;
     });
 
-
-    this.updateGraph("users", "Users");
+    this.updateGraph('users', 'Users');
   }
 
   public updateGraph(columnData: string, columnLabel: string) {
-
     this.data = {
       labels: this.monthsLabels,
       datasets: [
-        { data: this.stats.map(stats => Reflect.get(stats, columnData)), label: columnLabel }
-      ]
+        {
+          data: this.stats.map((stats) => Reflect.get(stats, columnData)),
+          label: columnLabel,
+        },
+      ],
     };
-
   }
-
 
   public async resultsNextPage() {
     if (await this.isLastPage()) {
@@ -230,8 +228,11 @@ export class AdministrationComponent implements OnInit {
     this.selectedValueInGigaBytes = Math.floor(
       this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
     );
-    this.selectedIsAdminValue = this.userInfoArray[i].isAdmin;
+    let role = this.userInfoArray[i].role;
+    this.selectedUserRole = role === undefined ? UserInfo.RoleEnum.INTERNAL : role  ;
+ 
     this.isAfterSelected = true;
+
   }
 
   public get selectedUserInfo(): UserInfo {
@@ -265,7 +266,8 @@ export class AdministrationComponent implements OnInit {
       this.changeIsLoading = true;
       this.selectedUserInfo.totalSpace =
         this.selectedValueInGigaBytes * 1024 * 1024 * 1024;
-      this.selectedUserInfo.isAdmin = this.selectedIsAdminValue;
+      this.selectedUserInfo.isAdmin = (this.selectedUserRole === UserInfo.RoleEnum.ADMIN );
+      this.selectedUserInfo.role = this.selectedUserRole;
       await firstValueFrom(
         this.usersApi.putUserUserInfo(
           this.selectedUserInfo.id,
@@ -316,14 +318,8 @@ export class AdministrationComponent implements OnInit {
     this.getStats(this.year);
   }
 
-
   data = {
     labels: ['', '', '', '', '', '', '', '', '', '', '', ''],
-    datasets: [
-      { data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: '' }
-    ]
+    datasets: [{ data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], label: '' }],
   };
-
-
-
 }

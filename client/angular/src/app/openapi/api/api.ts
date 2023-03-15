@@ -9,6 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 export * from './admin.service';
 import { AdminService } from './admin.service';
+export * from './apiKey.service';
+import { ApiKeyService } from './apiKey.service';
 export * from './file.service';
 import { FileService } from './file.service';
 export * from './session.service';
@@ -17,4 +19,4 @@ export * from './stats.service';
 import { StatsService } from './stats.service';
 export * from './users.service';
 import { UsersService } from './users.service';
-export const APIS = [AdminService, FileService, SessionService, StatsService, UsersService];
+export const APIS = [AdminService, ApiKeyService, FileService, SessionService, StatsService, UsersService];

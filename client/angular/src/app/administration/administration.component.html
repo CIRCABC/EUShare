@@ -50,24 +50,16 @@
       <div *ngIf="isAfterSearch && isAfterSelected">
         <div>
           <label class="label">{{ "user.info" | transloco }}</label>
-          <p *ngIf="!isChangePermissions && !selectedUserInfo.isAdmin">
-            {{ "internal.user" | transloco }} : {{ selectedUserInfo.givenName }}
-            <fa-icon [icon]="faUser"></fa-icon>
-          </p>
-          <p *ngIf="!isChangePermissions && selectedUserInfo.isAdmin">
-            {{ "admin.user" | transloco }}: {{ selectedUserInfo.givenName }}
-            <fa-icon [icon]="faUserTie"></fa-icon>
+          {{ selectedUserInfo.givenName }} :
+          <p *ngIf="!isChangePermissions" >
+            Role : {{selectedUserRole }} <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
           </p>
           <div class="select" *ngIf="isChangePermissions">
-            <select [(ngModel)]="selectedIsAdminValue">
-              <option [ngValue]="false">
-                {{ "internal.user" | transloco }}
-              </option>
-              <option [ngValue]="true" selected>
-                {{ "admin.user" | transloco }}
-              </option>
+             <select [(ngModel)]="selectedUserRole">
+              <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
             </select>
           </div>
+
           <br *ngIf="isChangePermissions" />
           <p *ngIf="!isChangePermissions">
             {{ "total.space" | transloco }}:
@@ -129,33 +121,33 @@
   <p></p>
   <h1 class="title">Statistics</h1>
 
-  <form #yearForm="ngForm">  
-             
-    <div class="form-group">  
-        <label>Year:</label>  
-        <select id="years" name="years" [(ngModel)]="year" (change)="changeYear()" class="form-control">  
-            <option *ngFor="let y of yearList">{{y}}</option>  
-        </select>    
-    </div>  
-     
-   
-</form>  
+  <form #yearForm="ngForm">
+
+    <div class="form-group">
+      <label>Year:</label>
+      <select id="years" name="years" [(ngModel)]="year" (change)="changeYear()" class="form-control">
+        <option *ngFor="let y of yearList">{{y}}</option>
+      </select>
+    </div>
+
+
+  </form>
 
   <table>
     <tr>
       <th> Month </th>
-      <th> <a  (click)="updateGraph('users','Users')">Users</a> </th>
-      <th> <a  (click)="updateGraph('uploads','Uploads')">Uploads</a> </th>
-      <th> <a  (click)="updateGraph('downloads','Downloads')">Downloads</a> </th>
-      <th> <a  (click)="updateGraph('uploadsData','Uploads Data')">Uploads Data</a> </th>
-      <th> <a  (click)="updateGraph('downloadsData','Downloads Data')">Downloads Data </a></th>      
+      <th> <a (click)="updateGraph('users','Users')">Users</a> </th>
+      <th> <a (click)="updateGraph('uploads','Uploads')">Uploads</a> </th>
+      <th> <a (click)="updateGraph('downloads','Downloads')">Downloads</a> </th>
+      <th> <a (click)="updateGraph('uploadsData','Uploads Data')">Uploads Data</a> </th>
+      <th> <a (click)="updateGraph('downloadsData','Downloads Data')">Downloads Data </a></th>
     </tr>
     <tr *ngFor="let month of stats">
       <td>{{ getMonthName(month.month) }}</td>
       <td>{{ month.users }}</td>
       <td>{{ month.uploads }} </td>
       <td>{{ month.downloads }}</td>
-      <td>{{ month.uploadsData!  | fileSizeFormat }}</td>
+      <td>{{ month.uploadsData! | fileSizeFormat }}</td>
       <td>{{ month.downloadsData! | fileSizeFormat }}</td>
     </tr>
     <tr>

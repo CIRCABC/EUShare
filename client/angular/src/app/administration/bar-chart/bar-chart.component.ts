@@ -9,11 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import {
-  ChartData,
-  ChartOptions,
-  ChartType,
-} from 'chart.js';
+import { ChartData, ChartOptions, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-bar-chart',
@@ -43,9 +39,9 @@ export class BarChartComponent implements OnChanges {
     }
   }
   public barChartOptions: ChartOptions = {
-    backgroundColor:'#58c37e',
+    backgroundColor: '#58c37e',
     responsive: true,
-    
+
     scales: {},
     plugins: {
       legend: {

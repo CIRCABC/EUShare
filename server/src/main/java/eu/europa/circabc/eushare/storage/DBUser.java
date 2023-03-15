@@ -137,6 +137,12 @@ public class DBUser {
     userInfo.setId(this.getId());
     userInfo.setGivenName(this.getName());
     userInfo.setLoginUsername(this.getUsername());
+    if(this.role.equals(Role.ADMIN))
+      userInfo.setRole(UserInfo.RoleEnum.ADMIN);
+    if(this.role.equals(Role.INTERNAL))
+      userInfo.setRole(UserInfo.RoleEnum.INTERNAL);
+    if(this.role.equals(Role.API_KEY))
+      userInfo.setRole(UserInfo.RoleEnum.API_KEY);
     userInfo.isAdmin(this.role.equals(Role.ADMIN));
     userInfo.setEmail(this.email);
     return userInfo;
@@ -158,6 +164,7 @@ public class DBUser {
   public enum Role {
     INTERNAL, // An active user. Has an email, a name and a username.
     ADMIN, // An internal user with extra advantage
+    API_KEY
   }
 
   public String toSpringSecurityRole(Role role) {
@@ -243,6 +250,14 @@ public class DBUser {
 
   public void setLastLogged(LocalDateTime lastLogged) {
     this.lastLogged = lastLogged;
+  }
+
+  public String getApiKey() {
+    return apiKey;
+  }
+
+  public void setApiKey(String apiKey) {
+    this.apiKey = apiKey;
   }
 
   

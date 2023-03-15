@@ -19,7 +19,7 @@ import { UploadComponent } from './upload/upload.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { OtherUserSharedFilesComponent } from './files/other-user-shared-files/other-user-shared-files.component';
 import { CallBackComponent } from './call-back/call-back.component';
-import { MyUserComponent } from './my-user/my-user.component';
+import { MyUserComponent } from './profile/profile.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { UploadSuccessComponent } from './upload-success/upload-success.component';
@@ -77,7 +77,7 @@ const appRoutes: Routes = [
     component: CallBackComponent
   },
   {
-    path: 'myUser',
+    path: 'profile',
     component: MyUserComponent
   },
   {

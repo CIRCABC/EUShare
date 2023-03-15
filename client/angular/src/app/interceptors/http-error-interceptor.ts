@@ -205,7 +205,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               ) {
                 errorMessage += this.i18nService.translate('user.not.found');
               }
-             
+
               if (isDeleteFileSharedWithUser) {
                 if (err.error) {
                   const status: Status = JSON.parse(err.error);

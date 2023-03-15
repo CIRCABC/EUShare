@@ -37,7 +37,8 @@ public class DBUserInfoProjection {
 
   private long filesCount;
 
-  private DBUserInfoProjection() {}
+  private DBUserInfoProjection() {
+  }
 
   /**
    * Convert to {@link UserInfo} object
@@ -48,6 +49,12 @@ public class DBUserInfoProjection {
     userInfo.setUsedSpace(new BigDecimal(this.usedSpace));
     userInfo.setFilesCount(new BigDecimal(this.filesCount));
     userInfo.setId(this.getId());
+    if (this.role.equals(Role.ADMIN))
+      userInfo.setRole(UserInfo.RoleEnum.ADMIN);
+    if (this.role.equals(Role.INTERNAL))
+      userInfo.setRole(UserInfo.RoleEnum.INTERNAL);
+    if (this.role.equals(Role.API_KEY))
+      userInfo.setRole(UserInfo.RoleEnum.API_KEY);
 
     userInfo.setGivenName(this.getName());
     userInfo.setLoginUsername(this.getUsername());

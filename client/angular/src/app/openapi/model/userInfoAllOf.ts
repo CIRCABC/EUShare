@@ -38,8 +38,21 @@ export interface UserInfoAllOf {
      */
     email: string;
     /**
+     * role
+     */
+    role?: UserInfoAllOf.RoleEnum;
+    /**
      * True if the user is admin
      */
     isAdmin: boolean;
 }
+export namespace UserInfoAllOf {
+    export type RoleEnum = 'ADMIN' | 'INTERNAL' | 'API_KEY';
+    export const RoleEnum = {
+        ADMIN: 'ADMIN' as RoleEnum,
+        INTERNAL: 'INTERNAL' as RoleEnum,
+        APIKEY: 'API_KEY' as RoleEnum
+    };
+}
+
 

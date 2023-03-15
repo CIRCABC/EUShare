@@ -938,9 +938,50 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
 
-
-
-  
+  '/apikey':
+    get:
+      operationId: getApiKey
+      description: 'Generate an API-Key for user'
+      tags:
+      - ApiKey
+      responses:
+        200:
+            description: SUCCESS Returns ApiKey
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ApiKey'
+                  
+        400:
+          description: BAD REQUEST the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        401:
+          description: UNAUTHORIZED the Error message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        403:
+          description: FORBIDDEN the Error message will be NotAuthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        404:
+          description: NOT FOUND the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+        500:
+          description: INTERNAL SERVER ERROR the Error Message will be empty
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
 
 components:
   securitySchemes:
@@ -1139,6 +1180,13 @@ components:
             email:
               description: Email address 
               type: string
+            role:
+              description: role
+              type: string
+              enum:
+               - ADMIN
+               - INTERNAL
+               - API_KEY
             isAdmin:
               description: True if the user is admin
               type: boolean
@@ -1229,3 +1277,11 @@ components:
       - uploads
       - downloadsData
       - uploadsData
+    ApiKey:
+      type: object
+      properties:
+        apikey:
+          description: API Key
+          type: string
+      required:
+      - apikey
