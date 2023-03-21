@@ -69,7 +69,7 @@ public class ApiKeyApiController implements ApikeyApi {
         try {
             String requesterId = userService.getAuthenticatedUserId(authentication);
             DBUser user = userService.getDbUser(requesterId);
-            if (! (user.getRole().equals(UserInfo.RoleEnum.ADMIN)  ||  user.getRole().equals(UserInfo.RoleEnum.API_KEY))  )
+            if (! (user.getRole().name().equals(UserInfo.RoleEnum.ADMIN.name())  ||  user.getRole().name().equals(UserInfo.RoleEnum.API_KEY.name()))  )
                throw new WrongAuthenticationException("Not allowed")  ;
                   
             String apiKey = generateApiKey();

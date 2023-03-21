@@ -56,7 +56,7 @@ public class LoginApiController implements LoginApi {
       Authentication authentication = SecurityContextHolder
         .getContext()
         .getAuthentication();
-      System.out.println(authentication.getPrincipal().toString());
+      
       String userId = userService.getAuthenticatedUserId(authentication);
       return new ResponseEntity<>(
         (new UserResult()).userId(userId),

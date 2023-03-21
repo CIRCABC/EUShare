@@ -83,8 +83,6 @@ public class CustomWebSecurityConfigurerAdapter
         .hasAuthority("ROLE_ADMIN")
         .antMatchers(HttpMethod.GET, "/admin/**")
         .hasAuthority("ROLE_ADMIN")
-        .antMatchers(HttpMethod.GET, "/apikey/**")
-        .hasAnyAuthority("ROLE_ADMIN", "API_KEY")
         .anyRequest()
         .authenticated()
         .and()
