@@ -11,6 +11,7 @@ package eu.europa.circabc.eushare.api;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -20,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.ser.AnyGetterWriter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import eu.europa.circabc.eushare.api.UsersApiController;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
@@ -118,6 +120,7 @@ public class UsersApiControllerTest {
         anyInt(),
         anyInt(),
         anyString(),
+        anyBoolean(),
         anyString(),
         anyString()
       )
@@ -269,6 +272,7 @@ public class UsersApiControllerTest {
         anyInt(),
         anyInt(),
         anyString(),
+        anyBoolean(),
         anyString(),
         anyString()
       )
@@ -326,6 +330,7 @@ public class UsersApiControllerTest {
         anyInt(),
         anyInt(),
         anyString(),
+        anyBoolean(),
         anyString(),
         anyString()
       )
