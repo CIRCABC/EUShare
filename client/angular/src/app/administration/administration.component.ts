@@ -41,6 +41,7 @@ export class AdministrationComponent implements OnInit {
   public isChangePermissions = false;
 
   public searchString = '';
+  public searchActive = true;
 
   public sortBy = 'name';
 
@@ -163,6 +164,7 @@ export class AdministrationComponent implements OnInit {
         this.pageSize,
         this.pageNumber,
         this.searchString,
+        this.searchActive,
         this.sortBy
       )
     );
@@ -178,6 +180,7 @@ export class AdministrationComponent implements OnInit {
         this.pageSize,
         this.pageNumber,
         this.searchString,
+        this.searchActive,
         this.sortBy
       )
     );
@@ -198,6 +201,7 @@ export class AdministrationComponent implements OnInit {
           this.pageSize,
           this.pageNumber,
           this.searchString,
+          this.searchActive,
           this.sortBy
         )
       );
@@ -228,11 +232,11 @@ export class AdministrationComponent implements OnInit {
     this.selectedValueInGigaBytes = Math.floor(
       this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
     );
-    let role = this.userInfoArray[i].role;
-    this.selectedUserRole = role === undefined ? UserInfo.RoleEnum.INTERNAL : role  ;
- 
-    this.isAfterSelected = true;
+    const role = this.userInfoArray[i].role;
+    this.selectedUserRole =
+      role === undefined ? UserInfo.RoleEnum.INTERNAL : role;
 
+    this.isAfterSelected = true;
   }
 
   public get selectedUserInfo(): UserInfo {
@@ -254,6 +258,7 @@ export class AdministrationComponent implements OnInit {
           this.pageSize,
           this.pageNumber + 1,
           this.searchString,
+          this.searchActive,
           this.sortBy
         )
       );
@@ -266,7 +271,8 @@ export class AdministrationComponent implements OnInit {
       this.changeIsLoading = true;
       this.selectedUserInfo.totalSpace =
         this.selectedValueInGigaBytes * 1024 * 1024 * 1024;
-      this.selectedUserInfo.isAdmin = (this.selectedUserRole === UserInfo.RoleEnum.ADMIN );
+      this.selectedUserInfo.isAdmin =
+        this.selectedUserRole === UserInfo.RoleEnum.ADMIN;
       this.selectedUserInfo.role = this.selectedUserRole;
       await firstValueFrom(
         this.usersApi.putUserUserInfo(

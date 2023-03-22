@@ -278,14 +278,15 @@ export class UsersService {
      * @param pageSize Number of persons returned
      * @param pageNumber Page number
      * @param searchString 
+     * @param active 
      * @param sortBy Sort by criteria
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, sortBy?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<UserInfo>>;
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, sortBy?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<UserInfo>>>;
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, sortBy?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<UserInfo>>>;
-    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, sortBy?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, active: boolean, sortBy?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<UserInfo>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, active: boolean, sortBy?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<UserInfo>>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, active: boolean, sortBy?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<UserInfo>>>;
+    public getUsersUserInfo(pageSize: number, pageNumber: number, searchString: string, active: boolean, sortBy?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
             throw new Error('Required parameter pageSize was null or undefined when calling getUsersUserInfo.');
         }
@@ -294,6 +295,9 @@ export class UsersService {
         }
         if (searchString === null || searchString === undefined) {
             throw new Error('Required parameter searchString was null or undefined when calling getUsersUserInfo.');
+        }
+        if (active === null || active === undefined) {
+            throw new Error('Required parameter active was null or undefined when calling getUsersUserInfo.');
         }
 
         let queryParameters = new HttpParams({encoder: this.encoder});
@@ -312,6 +316,10 @@ export class UsersService {
         if (sortBy !== undefined && sortBy !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>sortBy, 'sortBy');
+        }
+        if (active !== undefined && active !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>active, 'active');
         }
 
         let headers = this.defaultHeaders;

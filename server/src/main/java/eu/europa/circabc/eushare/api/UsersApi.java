@@ -47,6 +47,7 @@ public interface UsersApi {
      * @param pageSize Number of persons returned (required)
      * @param pageNumber Page number (required)
      * @param searchString  (required)
+     * @param active  (required)
      * @param sortBy Sort by criteria (optional)
      * @return SUCCESS Returns a pageSize number of UserInfos corresponding to the searchString and the pageNumber for internal users Users (status code 200)
      *         or BAD REQUEST the Error Message will be empty (status code 400)
@@ -66,7 +67,7 @@ public interface UsersApi {
         value = "/users/userInfo",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<UserInfo>> getUsersUserInfo(@NotNull @ApiParam(value = "Number of persons returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "searchString", required = true) String searchString,@ApiParam(value = "Sort by criteria") @Valid @RequestParam(value = "sortBy", required = false) String sortBy) {
+    default ResponseEntity<List<UserInfo>> getUsersUserInfo(@NotNull @ApiParam(value = "Number of persons returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "searchString", required = true) String searchString,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "active", required = true) Boolean active,@ApiParam(value = "Sort by criteria") @Valid @RequestParam(value = "sortBy", required = false) String sortBy) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

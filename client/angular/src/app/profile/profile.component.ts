@@ -44,8 +44,6 @@ export class MyUserComponent implements OnInit {
     if (id) {
       try {
         this.userInfo = await firstValueFrom(this.userApi.getUserUserInfo(id));
-  
-    
       } catch (error) {
         // managed in the interceptor
       }

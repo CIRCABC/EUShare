@@ -5,7 +5,9 @@
       <label class="label">{{ "user.search" | transloco }}</label>
       <input [(ngModel)]="searchString" class="input" type="text"
         [attr.placeholder]="'user.name.or.email' | transloco" />
-
+      <br />
+      Active users : <input type="checkbox" [(ngModel)]="searchActive" />
+      <br />
       <a class="button" [class.is-loading]="searchIsLoading" (click)="search()">{{ "search" | transloco }}</a>
       <div *ngIf="isAfterSearch">
         <label class="alignleft" class="label">{{
@@ -51,11 +53,11 @@
         <div>
           <label class="label">{{ "user.info" | transloco }}</label>
           {{ selectedUserInfo.givenName }} :
-          <p *ngIf="!isChangePermissions" >
+          <p *ngIf="!isChangePermissions">
             Role : {{selectedUserRole }} <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
           </p>
           <div class="select" *ngIf="isChangePermissions">
-             <select [(ngModel)]="selectedUserRole">
+            <select [(ngModel)]="selectedUserRole">
               <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
             </select>
           </div>

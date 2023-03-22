@@ -17,6 +17,10 @@ import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.services.UserService;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,12 +49,15 @@ public class UsersApiController implements UsersApi {
     this.request = request;
   }
 
+ 
   @Override
   public ResponseEntity<List<UserInfo>> getUsersUserInfo(
     @RequestParam(value = "pageSize") Integer pageSize,
     @RequestParam(value = "pageNumber") Integer pageNumber,
     @RequestParam(value = "searchString") String searchString,
+    @RequestParam(value = "active") Boolean active,
     @RequestParam(value = "sortBy") String sortBy
+    
   ) {
     try {
       Authentication authentication = SecurityContextHolder
@@ -63,6 +70,7 @@ public class UsersApiController implements UsersApi {
           pageSize,
           pageNumber,
           searchString,
+          active,
           sortBy,
           requesterId
         ),
