@@ -26,9 +26,10 @@ import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jwt.JWTClaimsSet;
-import eu.europa.circabc.eushare.api.LoginApiController;
 import eu.europa.circabc.eushare.model.Status;
 import eu.europa.circabc.eushare.services.UserService;
+import eu.europa.circabc.eushare.storage.UserRepository;
+
 import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Date;
@@ -48,11 +49,16 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionException;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 @RunWith(SpringRunner.class)
+@ContextHierarchy({
+  @ContextConfiguration(classes = UserRepository.class)
+})
 @WebMvcTest(LoginApiController.class)
 public class LoginApiControllerTest {
 
