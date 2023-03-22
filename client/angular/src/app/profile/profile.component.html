@@ -53,7 +53,7 @@
         </div>
       </div>
 
-      <div *ngIf="(userInfo.role.toString() === 'API_KEY' ) || ( userInfo.role.toString() === 'ADMIN')" class="field">
+      <div *ngIf="(userInfo.role?.toString() === 'API_KEY' ) || ( userInfo.role?.toString() === 'ADMIN')" class="field">
         <label class="label">API Key</label>
         <div class="control">
           <div class="button" (click)="getApiKey()">Generate new API key</div>
@@ -65,7 +65,7 @@
             value="{{ apiKey }}"
           />
         </div>
-        
+
       </div>
 
     </div>
