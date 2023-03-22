@@ -32,7 +32,7 @@ public interface UserInfoRepository
   );
 
   @Query(
-    value = "SELECT id, role, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count FROM users, files WHERE files.uploader_id=users.id and ( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) GROUP BY username ",
+    value = "SELECT  u.id, u.role, u.username, u.name, u.email, u.total_space, COALESCE(SUM(f.file_size), 0) AS used_space,COALESCE(count(*), 0)  AS files_count FROM users u LEFT JOIN files f ON f.uploader_id = u.id WHERE ( u.email LIKE LOWER(CONCAT(:start, '%')) OR LOWER(u.name) LIKE LOWER(CONCAT(:start, '%')) OR LOWER(u.name) LIKE LOWER(CONCAT('% ', :start, '%')) ) ",
     nativeQuery = true
   )
   public List<DBUserInfoProjection> findAllByEmailRoleInternalOrAdmin(
