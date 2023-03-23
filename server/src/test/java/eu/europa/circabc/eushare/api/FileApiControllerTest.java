@@ -80,17 +80,12 @@ import org.springframework.security.oauth2.core.DefaultOAuth2AuthenticatedPrinci
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.introspection.OAuth2IntrospectionException;
 import org.springframework.security.oauth2.server.resource.introspection.OpaqueTokenIntrospector;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.multipart.MultipartFile;
 
 @RunWith(SpringRunner.class)
-@ContextHierarchy({
-  @ContextConfiguration(classes = UserRepository.class)
-})
 @WebMvcTest(FileApiController.class)
 public class FileApiControllerTest {
 
@@ -126,6 +121,9 @@ public class FileApiControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @MockBean
+  private UserRepository userRepository;
 
   @MockBean
   private UserService service;

@@ -169,6 +169,7 @@ public class ApiControllerITest {
     int pageNumber = 0;
     String sortBy = "name";
     String searchString = "email@email.com";
+    Boolean active = true;
 
     // because user did not share any file  we do not expect to find her via search
     // even if she  exists
@@ -176,13 +177,14 @@ public class ApiControllerITest {
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&sortBy={sortBy}",
+          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&active={active}&sortBy={sortBy}",
           HttpMethod.GET,
           httpEntity,
           String.class,
           pageSize,
           pageNumber,
           searchString,
+          active,
           sortBy
         );
 
@@ -248,19 +250,21 @@ public class ApiControllerITest {
     int pageNumber = 0;
     String searchString = "email@email.com";
     String sortBy = "name";
+    Boolean active = true;
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(searchString);
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&sortBy={sortBy}&searchString={searchString}",
+          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&sortBy={sortBy}&searchString={searchString}&active={active}",
           HttpMethod.GET,
           httpEntity,
           String.class,
           pageSize,
           pageNumber,
           sortBy,
-          searchString
+          searchString,
+          active
         );
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
