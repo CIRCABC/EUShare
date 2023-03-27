@@ -211,6 +211,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       String requesterId) throws UnknownUserException, UserUnauthorizedException {
     if (isAdmin(requesterId)) {
       Direction dir = Direction.DESC;
+     
       if (sortBy.equals("name")) {
         dir = Direction.ASC;
       }
@@ -226,7 +227,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       return userInfoRepository
           .findAllByEmailRoleInternalOrAdmin(
               searchString,
-              PageRequest.of(pageNumber, pageSize, dir, sortBy))
+              PageRequest.of(pageNumber, pageSize))
           .stream()
           .map(DBUserInfoProjection::toUserInfo)
           .collect(Collectors.toList());
