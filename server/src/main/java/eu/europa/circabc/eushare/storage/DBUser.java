@@ -24,6 +24,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -51,7 +53,8 @@ public class DBUser {
   private String username;
 
 
-  @Column(nullable = true, columnDefinition = "DATETIME DEFAULT CURRENT_DATE")
+  @Column(nullable = true)
+  @Temporal(TemporalType.TIMESTAMP)
   private LocalDateTime lastLogged = LocalDateTime.now();
 
 
