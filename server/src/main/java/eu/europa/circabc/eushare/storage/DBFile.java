@@ -73,7 +73,7 @@ public class DBFile {
   @Column(nullable = false)
   private LocalDateTime lastModified = LocalDateTime.now();
 
-  @Column(nullable = true)
+  @Column(nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
   private LocalDateTime created = LocalDateTime.now(); 
 
   private String password;

@@ -51,7 +51,7 @@ public class DBUser {
   private String username;
 
 
-  @Column(nullable = true)
+  @Column(nullable = true, columnDefinition = "DATETIME DEFAULT NULL")
   private LocalDateTime lastLogged = LocalDateTime.now();
 
 
