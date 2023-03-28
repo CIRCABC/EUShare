@@ -53,8 +53,7 @@ public class DBUser {
   private String username;
 
 
-  @Column(nullable = true)
-  @Temporal(TemporalType.TIMESTAMP)
+  @Column(nullable = true, columnDefinition = "DATETIME(0) DEFAULT '1970-01-01T00:00:00'")
   private LocalDateTime lastLogged = LocalDateTime.now();
 
 

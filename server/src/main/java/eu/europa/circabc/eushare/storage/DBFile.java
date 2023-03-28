@@ -76,8 +76,7 @@ public class DBFile {
   @Column(nullable = false)
   private LocalDateTime lastModified = LocalDateTime.now();
 
-  @Column(nullable = true)
-  @Temporal(TemporalType.TIMESTAMP)
+  @Column(nullable = true, columnDefinition = "DATETIME(0) DEFAULT '1970-01-01T00:00:00'")
   private LocalDateTime created = LocalDateTime.now(); 
 
   private String password;
