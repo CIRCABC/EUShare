@@ -30,31 +30,29 @@ public class APIKeyAuthenticationManager implements AuthenticationManager {
     }
 
     @Override
-      public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if (authentication != null &&
-            authentication.isAuthenticated() &&
-            (authentication instanceof BearerTokenAuthentication) &&
-            (authentication.getPrincipal() instanceof OAuth2AuthenticatedPrincipal))
-          return authentication;
-
-        try {
-          String apiKey = authentication.getPrincipal().toString();
-          String encodedApiKey =  ApiKeyApiController.hashApiKey(apiKey);  
-          DBUser dbUser = null;
-
-          dbUser = userRepository.findOneByApiKey(encodedApiKey);
-          if(dbUser!=null){
-           authentication.setAuthenticated(true);
-           return authentication;}
-          else
-           throw new BadCredentialsException("API-KEY is not valid");
-
-        } catch (Exception e) {
-          throw e;
-        }
-
-   
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+      if (authentication != null &&
+          authentication.isAuthenticated() &&
+          (authentication instanceof BearerTokenAuthentication) &&
+          (authentication.getPrincipal() instanceof OAuth2AuthenticatedPrincipal)) {
+        return authentication;
       }
 
+      if (authentication != null) {
+        String apiKey = authentication.getPrincipal().toString();
+        String encodedApiKey = ApiKeyApiController.hashApiKey(apiKey);
+        DBUser dbUser = null;
+
+        dbUser = userRepository.findOneByApiKey(encodedApiKey);
+        if (dbUser != null) {
+          authentication.setAuthenticated(true);
+          return authentication;
+        } else
+          throw new BadCredentialsException("API-KEY is not valid");
+      } else {
+        throw new BadCredentialsException("API-KEY is not valid");
+      }
+
+    }
     
 }
