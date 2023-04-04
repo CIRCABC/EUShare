@@ -213,7 +213,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       if (sortBy.equals("name")) {
         dir = Direction.ASC;
       }
-      if (active)
+      if (Boolean.TRUE.equals(active))
         return userInfoRepository
             .findByEmailRoleInternalOrAdmin(
                 searchString,
