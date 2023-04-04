@@ -25,7 +25,6 @@ import eu.europa.circabc.eushare.storage.UserInfoRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 
-import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,7 +41,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 import org.springframework.stereotype.Service;
@@ -211,26 +209,26 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       String requesterId) throws UnknownUserException, UserUnauthorizedException {
     if (isAdmin(requesterId)) {
       Direction dir = Direction.DESC;
-     
+
       if (sortBy.equals("name")) {
         dir = Direction.ASC;
       }
-      if(active)
-      return userInfoRepository
-          .findByEmailRoleInternalOrAdmin(
-              searchString,
-              PageRequest.of(pageNumber, pageSize, dir, sortBy))
-          .stream()
-          .map(DBUserInfoProjection::toUserInfo)
-          .collect(Collectors.toList());
+      if (active)
+        return userInfoRepository
+            .findByEmailRoleInternalOrAdmin(
+                searchString,
+                PageRequest.of(pageNumber, pageSize, dir, sortBy))
+            .stream()
+            .map(DBUserInfoProjection::toUserInfo)
+            .collect(Collectors.toList());
       else
-      return userInfoRepository
-          .findAllByEmailRoleInternalOrAdmin(
-              searchString,
-              PageRequest.of(pageNumber, pageSize))
-          .stream()
-          .map(DBUserInfoProjection::toUserInfo)
-          .collect(Collectors.toList());
+        return userInfoRepository
+            .findAllByEmailRoleInternalOrAdmin(
+                searchString,
+                PageRequest.of(pageNumber, pageSize))
+            .stream()
+            .map(DBUserInfoProjection::toUserInfo)
+            .collect(Collectors.toList());
     } else {
       throw new UserUnauthorizedException();
     }
