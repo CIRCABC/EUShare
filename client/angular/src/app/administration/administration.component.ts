@@ -302,22 +302,22 @@ export class AdministrationComponent implements OnInit {
       '/administration',
       this.selectedUserInfo.id,
       'files',
-      { userName: this.selectedUserInfo.givenName },
+      { userName: this.selectedUserInfo.givenName , email: this.selectedUserInfo.email},
     ]);
   }
 
   public getMonthName(monthNumber: number) {
     const date = new Date();
+    date.setDate(0);
     date.setMonth(monthNumber - 1);
-
-    return date.toLocaleString('en-US', { month: 'long' });
+    return date.toLocaleString('default', { month: 'long' });
   }
 
   public getShortMonthName(monthNumber: number) {
     const date = new Date();
+    date.setDate(0);
     date.setMonth(monthNumber - 1);
-
-    return date.toLocaleString('en-US', { month: 'short' });
+    return date.toLocaleString('default', { month: 'short' });
   }
 
   public changeYear() {

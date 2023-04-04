@@ -33,7 +33,7 @@
   <!-- Right side -->
   <div class="level">
     <div class="level-item">
-      <a *ngIf="displayAsUploader" (click)="displayDownloads()">
+      <a *ngIf="displayAsUploader || isAdminPage" (click)="displayDownloads()">
         {{ "downloaded.times" | transloco: { count: file.fileLogs.length } }}
       </a>
     </div>
@@ -43,10 +43,10 @@
       <a *ngIf="displayAsUploader" (click)="displayRecipients()">
         {{ "shared.times" | transloco: { count: file.sharedWith.length } }}
       </a>
-     <span *ngIf="isAdminPage"  [ngClass]="[ file.status === 'AVAILABLE' ? 'status-available' : 'status-fail-or-pending']" >( {{ file.status }} ) </span>
+     <span *ngIf="isAdminPage"  [ngClass]="[ file.status === 'AVAILABLE' ? 'status-available' : 'status-fail-or-pending']" >&nbsp;( {{ file.status }} ) </span>
     </div>
 
-    <div class="level-item">
+    <div class="level-item"> 
       <div class="navbar-menu is-active" id="navMenu">
         <div class="navbar-item has-dropdown is-hoverable" (mouseenter)="displayMore()" (tap)="displayMore()"
           (mouseleave)="displayLess()">

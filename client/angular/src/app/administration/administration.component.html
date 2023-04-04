@@ -20,6 +20,7 @@
             <a>
               <strong class="alignleft"> Name <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
               </strong>
+              <span></span>
               <strong class="alignright">Files <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
               </strong>
               <strong class="alignright">Usage <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
@@ -29,16 +30,16 @@
           </li>
           <li *ngFor="let userInfo of userInfoArray; let i = index" [attr.data-index]="i" value="userInfo.id"
             (click)="displayUserInfoNumber(i)">
-            <a *ngIf="userInfo.usedSpace === 0"> {{ userInfo.givenName }} </a>
+            <a *ngIf="userInfo.usedSpace === 0"> {{ userInfo.givenName }}  </a>
 
             <a *ngIf="userInfo.usedSpace > 0">
-              <strong class="alignleft"> {{ userInfo.givenName }} </strong><strong class="alignright"> {{
+              <strong class="alignleft"> {{ userInfo.givenName }}</strong><span> ( {{ userInfo.email }} )</span><strong class="alignright"> {{
                 userInfo.filesCount }}</strong><strong class="alignright">{{ userInfo.usedSpace | fileSizeFormat }}
               </strong>
               <div style="clear: both"></div>
             </a>
 
-            <a *ngIf="userInfo.usedSpace === 0"> {{ userInfo.givenName }} </a>
+      
           </li>
         </ul>
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
@@ -52,7 +53,7 @@
       <div *ngIf="isAfterSearch && isAfterSelected">
         <div>
           <label class="label">{{ "user.info" | transloco }}</label>
-          {{ selectedUserInfo.givenName }} :
+          {{ selectedUserInfo.givenName }} ( {{ selectedUserInfo.email }} ) :
           <p *ngIf="!isChangePermissions">
             Role : {{selectedUserRole }} <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
           </p>
