@@ -118,10 +118,11 @@ public class FileService implements FileServiceInterface {
    * from the file system.
    */
 
-  @Scheduled(cron = "0 0 0 L * ?")// DO NOT CHANGE CLEANUP DELAY (last month of the day at midnight), IT WILL BREAK STATISTICS
+  @Scheduled(cron = "0 0 0 L * ?") // DO NOT CHANGE CLEANUP DELAY (last month of the day at midnight), IT WILL
+                                   // BREAK STATISTICS
   @Transactional
   void cleanupFiles() {
-    
+
     for (DBFile file : fileRepository.findByStatus(
         DBFile.Status.DELETED,
         PageRequest.of(0, Integer.MAX_VALUE))) {
@@ -158,8 +159,9 @@ public class FileService implements FileServiceInterface {
   void statsFiles() {
     LocalDate currentdate = LocalDate.now();
     DBStat newStat = statsRepository.findCurrentStats(currentdate.getMonthValue(), currentdate.getYear());
-    DBStat stat = statsRepository.findByYearAndMonth( currentdate.getYear(),currentdate.getMonthValue());
-    if(stat==null) stat = new DBStat(0, 0, 0, 0, 0, 0, 0);
+    DBStat stat = statsRepository.findByYearAndMonth(currentdate.getYear(), currentdate.getMonthValue());
+    if (stat == null)
+      stat = new DBStat(0, 0, 0, 0, 0, 0, 0);
     stat.setYear(newStat.getYear());
     stat.setMonth(newStat.getMonth());
     stat.setUsers(newStat.getUsers());
@@ -512,7 +514,7 @@ public class FileService implements FileServiceInterface {
   public DownloadReturn downloadFile(
       String downloadId,
       String password,
-      boolean notification) throws WrongPasswordException, UnknownFileException {
+      boolean head) throws WrongPasswordException, UnknownFileException {
     DBFile dbFile;
 
     DBShare dbShare;
@@ -531,7 +533,7 @@ public class FileService implements FileServiceInterface {
       String userIdentifier = dbShare.getEmail();
 
       try {
-        if (notification && Boolean.TRUE.equals(dbShare.getDownloadNotification())) {
+        if (!head && Boolean.TRUE.equals(dbShare.getDownloadNotification())) {
 
           this.emailService.sendDownloadNotification(
               dbFile.getUploader().getEmail(),
@@ -552,18 +554,19 @@ public class FileService implements FileServiceInterface {
     }
     File file = Paths.get(dbFile.getPath()).toFile();
 
-    DBFileLog fileLogs;
-    if (dbShare == null) {
-      fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(), "");
-    } else {
-      fileLogs = new DBFileLog(
-          dbFile,
-          dbShare.getEmail(),
-          LocalDateTime.now(),
-          dbShare.getShorturl());
+    if (!head) {
+      DBFileLog fileLogs;
+      if (dbShare == null) {
+        fileLogs = new DBFileLog(dbFile, "owner", LocalDateTime.now(), "");
+      } else {
+        fileLogs = new DBFileLog(
+            dbFile,
+            dbShare.getEmail(),
+            LocalDateTime.now(),
+            dbShare.getShorturl());
+      }
+      fileLogsRepository.save(fileLogs);
     }
-    fileLogsRepository.save(fileLogs);
-
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
   }
 
