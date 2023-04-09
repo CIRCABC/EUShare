@@ -308,14 +308,14 @@ export class AdministrationComponent implements OnInit {
 
   public getMonthName(monthNumber: number) {
     const date = new Date();
-    date.setDate(0);
+    date.setDate(1);
     date.setMonth(monthNumber - 1);
     return date.toLocaleString('default', { month: 'long' });
   }
 
   public getShortMonthName(monthNumber: number) {
     const date = new Date();
-    date.setDate(0);
+    date.setDate(1);
     date.setMonth(monthNumber - 1);
     return date.toLocaleString('default', { month: 'short' });
   }
