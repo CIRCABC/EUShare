@@ -350,8 +350,12 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
       if (dbUser == null) {
         // Not found in the database
-        throw new WrongEmailStructureException();
-        //dbUser = this.createInternalUser(email, givenName, username);
+        if (username.startsWith("n00"))
+          throw new WrongEmailStructureException();
+        else
+          dbUser = this.createInternalUser(email, givenName, username);
+
+        //
       } else {
         // Found in the database, probably an external
         updateUser(email, givenName, username, dbUser);
