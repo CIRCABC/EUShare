@@ -265,7 +265,6 @@ public class FileApiController implements FileApi {
       );
       return responseEntity;
     } catch (UnknownFileException exc3) {
-      log.warn(exc3.getMessage(), exc3);
       throw new ResponseStatusException(
         HttpStatus.NOT_FOUND,
         HttpErrorAnswerBuilder.build404EmptyToString(),
