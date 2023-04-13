@@ -139,7 +139,7 @@
   "unexpected.error": "An unexpected error occured on server side while ",
   "upload.file": "upload this file",
   "upload.notification": "Upload's notifications",
-  "upload.notification.help" : "Send an email with a link to the file  (a different link for each email)",
+  "upload.notification.help" : "Send an email with the file link (a different link for each recipient).",
   "used.space": "Used space",
   "user.info": "User info ",
   "user.name.or.email": "User's name OR email",

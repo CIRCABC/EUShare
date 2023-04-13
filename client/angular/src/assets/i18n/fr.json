@@ -139,7 +139,7 @@
   "unexpected.error": "Une erreur inattendue s’est produite côté serveur: ",
   "upload.file": "télécharger ce fichier",
   "upload.notification": "Notifications du chargement",
-  "upload.notification.help": "Envoyer un e-mail avec le lien du fichier",
+  "upload.notification.help": "Envoyer un e-mail avec le lien du fichier (un lien différent pour chaque destinataire)",
   "used.space": "Espace utilisé",
   "user.info": "Informations sur l’utilisateur ",
   "user.name.or.email": "Nom OU adresse électronique de l’utilisateur",
