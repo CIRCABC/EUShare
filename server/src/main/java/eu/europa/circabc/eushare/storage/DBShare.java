@@ -11,7 +11,7 @@ package eu.europa.circabc.eushare.storage;
 
 import eu.europa.circabc.eushare.model.Recipient;
 
-import java.util.Random;
+import java.security.SecureRandom;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -30,7 +30,7 @@ public class DBShare {
 
   private static final String CHARACTERS = "abcdefghijkmnpqrstuvwxyz23456789";
   private static final int LENGTH = 6;
-  private static final Random RANDOM = new Random();
+  private static final SecureRandom RANDOM = new SecureRandom();
 
   @Id
   @GeneratedValue(generator = "UUID")
