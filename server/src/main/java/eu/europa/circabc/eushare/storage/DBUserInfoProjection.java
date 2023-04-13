@@ -18,9 +18,13 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.Subselect;
+
+
 // Use JPA projection : https://github.com/spring-projects/spring-data-examples/tree/main/jpa/jpa21/src/main/java/example/springdata/jpa/resultsetmappings
 
 @Entity
+@Subselect(value = "")
 public class DBUserInfoProjection {
 
   @Id
