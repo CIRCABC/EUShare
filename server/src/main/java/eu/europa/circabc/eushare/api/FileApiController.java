@@ -266,7 +266,7 @@ public class FileApiController implements FileApi {
     } catch (UnknownFileException exc3) {
       throw new ResponseStatusException(
         HttpStatus.NOT_FOUND,
-        HttpErrorAnswerBuilder.build404EmptyToString(),
+        HttpErrorAnswerBuilder.build404FileNotFoundToString(),
         exc3
       );
     } catch (WrongPasswordException exc4) {
