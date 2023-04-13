@@ -10,7 +10,8 @@
 package eu.europa.circabc.eushare.storage;
 
 import eu.europa.circabc.eushare.model.Recipient;
-import java.util.UUID;
+
+import java.util.Random;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
@@ -24,11 +25,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(
-  name = "shares",
-  indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl")
-)
+@Table(name = "shares", indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl"))
 public class DBShare {
+
+  private static final String CHARACTERS = "abcdefghijkmnpqrstuvwxyz23456789";
+  private static final int LENGTH = 6;
+  private static final Random RANDOM = new Random();
 
   @Id
   @GeneratedValue(generator = "UUID")
@@ -50,9 +52,10 @@ public class DBShare {
 
   private String message;
 
-  public DBShare() {}
+  public DBShare() {
+  }
 
-  public DBShare(String email, DBFile file, String message,Boolean downloadNotification ) {
+  public DBShare(String email, DBFile file, String message, Boolean downloadNotification) {
     this.email = email;
     this.file = file;
     if (message != null) {
@@ -132,13 +135,11 @@ public class DBShare {
   }
 
   public String generateShortUrl() {
-    UUID uuid = UUID.randomUUID();
-    return uuid
-      .toString()
-      .replace("-", "")
-      .replace("0", "")
-      .replace("o", "")
-      .substring(0, 6);
+    StringBuilder sb = new StringBuilder(LENGTH);
+    for (int i = 0; i < LENGTH; i++) {
+      sb.append(CHARACTERS.charAt(RANDOM.nextInt(CHARACTERS.length())));
+    }
+    return sb.toString();
   }
 
   public void setDownloadNotification(Boolean downloadNotification) {
