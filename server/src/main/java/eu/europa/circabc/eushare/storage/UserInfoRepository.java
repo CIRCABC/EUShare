@@ -15,20 +15,26 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
-public interface UserInfoRepository
-    extends PagingAndSortingRepository<DBUserInfoProjection, String> {
-  // @Query(value = "SELECT id, role, username, name, email, total_space,
-  // sum(files.file_size) as used_space, count(files.file_id) as files_count FROM
-  // users, FILES WHERE files.uploader_id=id and email like
-  // lower(concat(:start,'%')) order by used_space desc", nativeQuery = true)
+public interface UserInfoRepository extends PagingAndSortingRepository<DBUserInfoProjection, String> {
 
-  @Query(value = "SELECT id, role, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count FROM users, files WHERE files.uploader_id=id and (files.status='AVAILABLE') and ( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) GROUP BY id, role, username, name, email, total_space ", nativeQuery = true)
-  public List<DBUserInfoProjection> findByEmailRoleInternalOrAdmin(
-      @Param("start") String start,
-      Pageable page);
+    @Query(value = "SELECT id, role, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count "
+            +
+            "FROM users, files " +
+            "WHERE files.uploader_id=id and (files.status='AVAILABLE') and " +
+            "( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) "
+            +
+            "GROUP BY id, role, username, name, email, total_space ", nativeQuery = true)
+    public List<DBUserInfoProjection> findByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
 
-  @Query(value = "SELECT id, role, username, name, email, total_space, COALESCE(SUM(files.file_size), 0) AS used_space, COALESCE(COUNT(files.file_id), 0) AS files_count FROM users LEFT JOIN files ON files.uploader_id = id WHERE (email LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT('% ',:start,'%'))) GROUP BY id, role, username, name, email, total_space ORDER BY name", nativeQuery = true)
-  public List<DBUserInfoProjection> findAllByEmailRoleInternalOrAdmin(
-      @Param("start") String start,
-      Pageable page);
+    @Query(value = "SELECT id, role, username, name, email, total_space, COALESCE(SUM(files.file_size), 0) AS used_space, COALESCE(COUNT(files.file_id), 0) AS files_count "
+            +
+            "FROM users " +
+            "LEFT JOIN files ON files.uploader_id = id " +
+            "WHERE (email LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT('% ',:start,'%'))) "
+            +
+            "and (files.status='AVAILABLE') " +
+            "GROUP BY id, role, username, name, email, total_space " +
+            "ORDER BY name", nativeQuery = true)
+    public List<DBUserInfoProjection> findAllByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
+
 }
