@@ -174,9 +174,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                   'wrong.password'
                 );
               } else {
-                this.notificationService.addErrorMessageTranslation(
-                  'invalid.token.'
-                );
+                this.notificationService.addErrorMessage("Invalid token.  Your account may not have access rights to CIRCABC-Share, please contact support.");
               }
               break;
             }
