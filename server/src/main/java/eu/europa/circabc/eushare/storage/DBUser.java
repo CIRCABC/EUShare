@@ -131,7 +131,7 @@ public class DBUser {
     userInfo.setTotalSpace(new BigDecimal(this.totalSpace));
     long totalSize = 0;
     for (DBFile upload : this.filesUploaded) {
-      if (upload.getStatus() == DBFile.Status.AVAILABLE) {
+      if (upload.getStatus().equals(DBFile.Status.AVAILABLE)) {
         totalSize = totalSize + upload.getSize();
       }
     }
@@ -155,7 +155,7 @@ public class DBUser {
     userSpace.setTotalSpace(new BigDecimal(this.totalSpace));
     long totalSize = 0;
     for (DBFile upload : this.filesUploaded) {
-      if (upload.getStatus() == DBFile.Status.AVAILABLE) {
+      if (upload.getStatus().equals(DBFile.Status.AVAILABLE)) {
         totalSize = totalSize + upload.getSize();
       }
     }
