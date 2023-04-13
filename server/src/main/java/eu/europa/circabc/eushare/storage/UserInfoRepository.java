@@ -22,7 +22,7 @@ public interface UserInfoRepository
   // users, FILES WHERE files.uploader_id=id and email like
   // lower(concat(:start,'%')) order by used_space desc", nativeQuery = true)
 
-  @Query(value = "SELECT id, role, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count FROM users, files WHERE files.uploader_id=id and (files.status='AVAILABLE' or files.status='ALLOCATED') and ( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) GROUP BY id, role, username, name, email, total_space ", nativeQuery = true)
+  @Query(value = "SELECT id, role, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count FROM users, files WHERE files.uploader_id=id and (files.status='AVAILABLE') and ( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) GROUP BY id, role, username, name, email, total_space ", nativeQuery = true)
   public List<DBUserInfoProjection> findByEmailRoleInternalOrAdmin(
       @Param("start") String start,
       Pageable page);
