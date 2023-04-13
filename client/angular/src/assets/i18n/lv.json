@@ -139,7 +139,7 @@
   "unexpected.error": "Servera pusē radās neparedzēta kļūda: ",
   "upload.file": "augšupielādēt šo datni",
   "upload.notification": "Augšupielādēt paziņojumus",
-  "upload.notification.help": "Nosūtīt paziņojumu pa e-pastu, kad fails ir augšupielādēts",
+  "upload.notification.help": "Sūtiet e-pastu faila saistīto saiti (katram saņēmējam atšķirīga saite).",
   "used.space": "Izmantotā vieta",
   "user.info": "Informācija par lietotāju ",
   "user.name.or.email": "Lietotāja vārds VAI e-pasta adrese",

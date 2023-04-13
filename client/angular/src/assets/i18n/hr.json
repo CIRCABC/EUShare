@@ -139,7 +139,7 @@
   "unexpected.error": "Pojavila se neočekivana pogreška na poslužitelju: ",
   "upload.file": "učitavanje te datoteke.",
   "upload.notification": "Prijenos obavijesti",
-  "upload.notification.help": "Pošaljite obavijest e-poštom kada se datoteka prenese",
+  "upload.notification.help": "Pošaljite e-poštu s vezom na datoteku (različita veza za svakog primatelja).",
   "used.space": "Iskorišteni prostor za pohranu",
   "user.info": "Podaci o korisniku ",
   "user.name.or.email": "Ime ILI e-adresa korisnika",

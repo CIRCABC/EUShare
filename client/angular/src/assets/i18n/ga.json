@@ -139,7 +139,7 @@
   "unexpected.error": "Tharla earráid gan choinne ar thaobh an fhreastalaí: ",
   "upload.file": "an comhad sin a uaslódáil",
   "upload.notification": "Uaslódáil fógraí",
-  "upload.notification.help": "Seol fógra trí ríomhphost nuair a uaslódáiltear an comhad",
+  "upload.notification.help": "Seol ríomhphost le nasc comhad (nasc éagsúil do gach glacadóir).",
   "used.space": "Spás atá á úsáid",
   "user.info": "Faisnéis an úsáideora ",
   "user.name.or.email": "Ainm an úsáideora NÓ seoladh ríomhphoist an úsáideora",

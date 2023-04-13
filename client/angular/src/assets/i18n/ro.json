@@ -139,7 +139,7 @@
   "unexpected.error": "Eroare neprevăzută de server în timpul încercării ",
   "upload.file": "încărcare a acestui fișier",
   "upload.notification": "Încarcă notificările",
-  "upload.notification.help": "Trimiteți o notificare prin e-mail atunci când fișierul este încărcat",
+  "upload.notification.help": "Trimiteți un e-mail cu link-ul fișierului (un link diferit pentru fiecare destinatar).",
   "used.space": "Spațiu utilizat",
   "user.info": "Informații despre utilizator ",
   "user.name.or.email": "Numele SAU e-mailul utilizatorului ",

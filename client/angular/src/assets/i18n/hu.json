@@ -139,7 +139,7 @@
   "unexpected.error": "Váratlan hiba történt a szerveroldalon: ",
   "upload.file": "a fájl feltöltése",
   "upload.notification": "Értesítések feltöltése",
-  "upload.notification.help": "Értesítés küldése e-mailben a fájl feltöltésekor",
+  "upload.notification.help": "Egy e-mail küldése a fájllal kapcsolatos hivatkozással (mindegyik címzettnek más hivatkozás).",
   "used.space": "Felhasznált tárhely",
   "user.info": "Felhasználói adatok ",
   "user.name.or.email": "A felhasználó neve VAGY e-mail-címe",

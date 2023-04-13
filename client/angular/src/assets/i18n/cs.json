@@ -139,7 +139,7 @@
   "unexpected.error": "Na serveru došlo k neočekávané chybě během ",
   "upload.file": "nahrát tento soubor",
   "upload.notification": "Oznámení o nahrání",
-  "upload.notification.help": "Odeslání oznámení e-mailem při nahrání souboru",
+  "upload.notification.help": "Odeslat e-mail s odkazem na soubor (pro každého příjemce jiný odkaz).",
   "used.space": "Použité místo",
   "user.info": "Údaje o uživateli ",
   "user.name.or.email": "Jméno uživatele NEBO e-mail",

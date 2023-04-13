@@ -139,7 +139,7 @@
   "unexpected.error": "Na strane servera došlo k neočakávanej chybe počas ",
   "upload.file": "nahrať tento súbor",
   "upload.notification": "Oznámenia o nahrávať",
-  "upload.notification.help": "Odoslanie oznámenia e-mailom pri nahrávaní súboru",
+  "upload.notification.help": "Pošlite e-mail s odkazom na súbor (odlišný odkaz pre každého príjemcu).",
   "used.space": "Využité miesto",
   "user.info": "Informácie o používateľovi ",
   "user.name.or.email": "Meno ALEBO e-mail používateľa",

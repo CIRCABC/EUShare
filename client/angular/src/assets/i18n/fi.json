@@ -139,7 +139,7 @@
   "unexpected.error": "Odottamaton virhe palvelimella: ",
   "upload.file": "siirtää päivitettyä tiedostoa järjestelmään",
   "upload.notification": "Latauksen ilmoitukset",
-  "upload.notification.help": "Lähetä ilmoitus sähköpostitse, kun tiedosto ladataan",
+  "upload.notification.help": "Lähetä sähköposti, jossa on tiedostolinkki (erilainen linkki jokaiselle vastaanottajalle)",
   "used.space": "Käytetty tila",
   "user.info": "Käyttäjätiedot ",
   "user.name.or.email": "Käyttäjän nimi TAI sähköpostiosoite",

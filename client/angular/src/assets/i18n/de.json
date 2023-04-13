@@ -139,7 +139,7 @@
   "unexpected.error": "Unerwarteter Fehler auf Serverseite aufgetreten während ",
   "upload.file": "diese Datei hochzuladen",
   "upload.notification": "Benachrichtigungen des Uploads",
-  "upload.notification.help": "Senden Sie eine Benachrichtigung per E-Mail, wenn die Datei hochgeladen wurde",
+  "upload.notification.help": "Senden Sie eine E-Mail mit dem Dateilink (einen anderen Link für jeden Empfänger).",
   "used.space": "Genutzte Speicherkapazität",
   "user.info": "Nutzerinformation ",
   "user.name.or.email": "Name ODER E-Mail des Nutzers",

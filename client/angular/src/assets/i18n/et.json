@@ -139,7 +139,7 @@
   "unexpected.error": "Serveris ilmnes ootamatu viga toimingul: ",
   "upload.file": "luba seda faili üles laadida",
   "upload.notification": "Laadi üles teatised",
-  "upload.notification.help": "Saada teade e-posti teel, kui fail on üles laaditud",
+  "upload.notification.help": "Saatke e-kiri faili lingiga (iga saaja jaoks erinev link).",
   "used.space": "Kasutatud maht",
   "user.info": "Kasutajateave ",
   "user.name.or.email": "Kasutaja nimi VÕI e-post",

@@ -139,7 +139,7 @@
   "unexpected.error": "Serveryje įvyko netikėta klaida,  ",
   "upload.file": "įkelti šį failą",
   "upload.notification": "Įkelti pranešimus",
-  "upload.notification.help": "Siųsti pranešimą el. Paštu, kai failas yra įkeltas",
+  "upload.notification.help": "Siųskite el. laišką su failo nuoroda (kiekvienam gavėjui skirtinga nuoroda).",
   "used.space": "Užimta vieta",
   "user.info": "Naudotojo informacija ",
   "user.name.or.email": "Naudotojo vardas ARBA e. paštas",

@@ -139,7 +139,7 @@
   "unexpected.error": "Ett oväntat serverfel inträffade när ",
   "upload.file": "ladda upp filen",
   "upload.notification": "Ladda upp aviseringar",
-  "upload.notification.help": "Skicka ett meddelande via e-post när filen laddas upp",
+  "upload.notification.help": "Skicka ett e-postmeddelande med filens länk (en annan länk för varje mottagare).",
   "used.space": "Använt utrymme",
   "user.info": "Användaruppgifter ",
   "user.name.or.email": "Användarens namn eller e-postadress",

@@ -139,7 +139,7 @@
   "unexpected.error": "Po stronie serwera wystąpił nieoczekiwany błąd: ",
   "upload.file": "załadowania tego pliku",
   "upload.notification": "Powiadomienia o przesyłaniu",
-  "upload.notification.help": "Wyślij powiadomienie e-mailem po przesłaniu pliku",
+  "upload.notification.help": "Wyślij e-mail z linkiem do pliku (inny link dla każdego odbiorcy).",
   "used.space": "Wykorzystane miejsce",
   "user.info": "Informacje o użytkowniku ",
   "user.name.or.email": "Nazwa użytkownika LUB e-mail",

@@ -139,7 +139,7 @@
   "unexpected.error": "Der opstod en uventet serverfejl: ",
   "upload.file": "upload denne fil",
   "upload.notification": "Upload meddelelser",
-  "upload.notification.help": "Send en meddelelse via e-mail, når filen uploades",
+  "upload.notification.help": "Send en e-mail med fil-linket (en forskellig link til hver modtager).",
   "used.space": "Anvendt diskplads",
   "user.info": "Brugeroplysninger ",
   "user.name.or.email": "Brugerens navn ELLER e-mail",

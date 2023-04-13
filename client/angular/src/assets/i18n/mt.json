@@ -139,7 +139,7 @@
   "unexpected.error": "Seħħ żball mhux mistenni fuq in-naħa tas-server waqt ",
   "upload.file": "l-applowdjar ta’ dan il-file",
   "upload.notification": "Notifiki ta 'upload",
-  "upload.notification.help": "Ibgħat notifika bl-email meta jittella 'l-fajl",
+  "upload.notification.help": "Ibgħat email b'link tal-fajl (link differenti għal kull ricevent).",
   "used.space": "Spazju użat",
   "user.info": "Informazzjoni tal-utent ",
   "user.name.or.email": "Isem l-utent JEW email",

@@ -139,7 +139,7 @@
   "unexpected.error": "Ocorreu um erro imprevisto no servidor: ",
   "upload.file": "carregar este ficheiro",
   "upload.notification": "Notificações do upload",
-  "upload.notification.help": "Envie uma notificação por e-mail quando o arquivo for carregado",
+  "upload.notification.help": "Envie um e-mail com o link do arquivo (um link diferente para cada destinatário).",
   "used.space": "Espaço utilizado",
   "user.info": "Dados do utilizador ",
   "user.name.or.email": "Nome OU endereço eletrónico do utilizador",

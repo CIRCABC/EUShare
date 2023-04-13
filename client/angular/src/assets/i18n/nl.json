@@ -139,7 +139,7 @@
   "unexpected.error": "Onverwachte serverfout ",
   "upload.file": "dit bestand te uploaden",
   "upload.notification": "Meldingen van Upload",
-  "upload.notification.help": "Stuur een melding per e-mail wanneer het bestand is geüpload",
+  "upload.notification.help": "Stuur een e-mail met de bestandslink (een andere link voor elke ontvanger).",
   "used.space": "Gebruikte ruimte",
   "user.info": "Gebruikersinformatie ",
   "user.name.or.email": "Naam OF e-mailadres van de gebruiker",

@@ -139,7 +139,7 @@
   "unexpected.error": "Nepričakovana napaka na strani strežnika med: ",
   "upload.file": "naložitev te datoteke",
   "upload.notification": "Naloži obvestila",
-  "upload.notification.help": "Pošljite obvestilo po e-pošti, ko je naložena datoteka",
+  "upload.notification.help": "Pošljite e-pošto z datoteko povezavo (drug URL naslov za vsakega prejemnika).",
   "used.space": "Uporabljeni prostor",
   "user.info": "Podatki o uporabniku ",
   "user.name.or.email": "Ime uporabnika ALI e-naslov",
