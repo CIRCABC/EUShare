@@ -654,6 +654,7 @@ public class FileApiControllerTest {
   public void getFile404() throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(404);
+    status.setMessage("FileNotFound");
     doThrow(new UnknownFileException())
       .when(fileService)
       .downloadFile(anyString(), anyString(), anyBoolean());
