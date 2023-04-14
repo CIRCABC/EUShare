@@ -961,7 +961,7 @@ public class ApiControllerITest {
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
+      HttpErrorAnswerBuilder.build404FileNotFoundToString(),
       entity.getBody()
     );
   }
