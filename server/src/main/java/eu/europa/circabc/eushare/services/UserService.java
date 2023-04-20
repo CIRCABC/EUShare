@@ -347,7 +347,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       String username) throws WrongEmailStructureException {
     DBUser dbUser = null;
     if (StringUtils.validateEmailAddress(email)) {
-      dbUser = this.userRepository.findOneByEmailIgnoreCase(email);
+      dbUser = this.userRepository.findOneByUsername(username);
       if (dbUser == null) {
         // Not found in the database
         if (username.startsWith("n00"))
