@@ -69,3 +69,6 @@ springfox:
   documentation:
     enabled: false
     auto-startup: false
+javamelody:
+  init-parameters:
+    log: true
