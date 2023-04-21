@@ -36,7 +36,8 @@ public class CustomWebSecurityConfigurerAdapter
       "/swagger-resources/**",
       "/swagger-ui",
       "/swagger-ui/**",
-
+      "/monitoring/",
+      "/monitoring/**",
   };
 
   @Autowired
