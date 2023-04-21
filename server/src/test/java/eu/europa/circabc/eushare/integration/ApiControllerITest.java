@@ -1305,7 +1305,7 @@ public class ApiControllerITest {
       this.httpEntityAsInternalUser(
           ApiControllerITest.asJsonString(recipient),
           "emailA@email.com",
-          "stupidUsername"
+          "uniqueUsername"
         );
 
     ResponseEntity<Recipient> entity =
@@ -1555,7 +1555,7 @@ public class ApiControllerITest {
     FileInfoUploader fileInfoUploader = dbFile.toFileInfoUploader();
 
     HttpEntity<MultiValueMap<String, Object>> httpEntity =
-      this.httpEntityAsInternalUser(body, "emailA@email.com", "stupidUsername");
+      this.httpEntityAsInternalUser(body, "emailA@email.com", "uniqueUsername");
 
     ResponseEntity<FileInfoUploader> entity =
       this.testRestTemplate.postForEntity(
@@ -1802,7 +1802,7 @@ public class ApiControllerITest {
     // Done
 
     HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser("", "emailA@email.com", "dummyUsername");
+      this.httpEntityAsInternalUser("", "emailA@email.com", "uniqueUsername");
 
     ResponseEntity<String> entity =
       this.testRestTemplate.exchange(
