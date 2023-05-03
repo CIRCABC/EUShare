@@ -24,11 +24,15 @@ public class UploadConfiguration extends WebMvcConfigurationSupport {
 
   @Bean(name = "multipartResolver")
   public MultipartResolver multipartResolver(EushareConfiguration esConfig) {
-    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+    SafeCommonsMultipartResolver multipartResolver = new SafeCommonsMultipartResolver();
+
+    // prevent Dos attack
+    // we just upload one file
+    multipartResolver.setFileCountMax(1);
+
     multipartResolver.setMaxUploadSize(esConfig.getMaxSizeAllowedInBytes());
     multipartResolver.setMaxUploadSizePerFile(
-      esConfig.getMaxSizeAllowedInBytes()
-    );
+        esConfig.getMaxSizeAllowedInBytes());
     return multipartResolver;
   }
 }
