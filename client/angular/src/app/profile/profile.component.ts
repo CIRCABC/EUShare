@@ -31,7 +31,7 @@ export class MyUserComponent implements OnInit {
   public userInfo!: UserInfo;
   public userInfoRoleEnum!: UserInfo.RoleEnum;
 
-  public apiKey: String = '';
+  public apiKey = '';
   public apiKeyObj!: ApiKey;
 
   constructor(
