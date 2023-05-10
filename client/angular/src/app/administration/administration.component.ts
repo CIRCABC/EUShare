@@ -124,10 +124,10 @@ export class AdministrationComponent implements OnInit {
   }
 
   public async getStats(year: number) {
-    const unsortedStats = await firstValueFrom(
+    this.stats = await firstValueFrom(
       this.statsService.getStats(year)
     );
-    this.stats = unsortedStats.sort((a: Stat, b: Stat) => {
+    this.stats.sort((a: Stat, b: Stat) => {
       return a.month > b.month ? 1 : -1;
     });
 
