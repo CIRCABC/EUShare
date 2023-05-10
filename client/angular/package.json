@@ -19,7 +19,7 @@
     "lint": "ng lint client --format visualstudio",
     "lint-fix": "ng lint client --fix --force --format visualstudio",
     "lint-rome": "rome check ./src",
-    "lint-fix-rome": "rome check ./src --apply-suggested",
+    "lint-fix-rome": "rome check ./src --apply",
     "prettier": "npx gulp prettier",
     "prettier-css": "gulp format:css ",
     "e2e": "ng e2e",

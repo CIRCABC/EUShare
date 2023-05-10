@@ -11,10 +11,6 @@
       "recommended": true,
       "suspicious": {
         "noExplicitAny": "off"
-      },
-      "style": {
-        "useEnumInitializers": "off",
-        "noNonNullAssertion": "off"
       }
     }
   }

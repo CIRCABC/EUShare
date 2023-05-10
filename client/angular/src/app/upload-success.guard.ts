@@ -28,13 +28,9 @@ export class UploadSuccessGuard implements CanActivate {
     _state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     if (
-      this.router.getCurrentNavigation() && // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.router.getCurrentNavigation()!.extras && // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.router.getCurrentNavigation()!.extras.state && // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      this.router.getCurrentNavigation()!.extras.state!['data'] && // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      this.router.getCurrentNavigation()?.extras.state?.['data'] &&
       this.isFileInfoUploader(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        this.router.getCurrentNavigation()!.extras.state!['data']
+        this.router.getCurrentNavigation()?.extras.state?.['data']
       )
     ) {
       return true;

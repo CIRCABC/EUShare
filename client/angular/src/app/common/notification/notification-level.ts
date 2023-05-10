@@ -9,8 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 export enum NotificationLevel {
-  INFO,
-  WARNING,
-  ERROR,
-  SUCCESS,
+  INFO = 0,
+  WARNING = 1,
+  ERROR = 2,
+  SUCCESS = 3,
 }
