@@ -1,4 +1,4 @@
-FROM node:alpine as builder
+FROM node:alpine AS builder
 COPY package.json package-lock.json ./
 RUN npm ci && mkdir /angular && mv ./node_modules ./angular
 WORKDIR /angular

@@ -8,44 +8,36 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Injectable } from '@angular/core';
+import { inject } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   Router,
-  CanActivate,
+  CanActivateFn,
 } from '@angular/router';
-import { Observable } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class UploadSuccessGuard implements CanActivate {
-  constructor(private router: Router) {}
+export const uploadSuccessCanActivate: CanActivateFn = (
+  _next: ActivatedRouteSnapshot,
+  _state: RouterStateSnapshot
+) => {
+  const router = inject(Router);
+  if (
+    router.getCurrentNavigation()?.extras.state?.['data'] &&
+    isFileInfoUploader(router.getCurrentNavigation()?.extras.state?.['data'])
+  ) {
+    return true;
+  } else {
+    return router.navigateByUrl('/upload');
+  }
+};
 
-  canActivate(
-    _next: ActivatedRouteSnapshot,
-    _state: RouterStateSnapshot
-  ): Observable<boolean> | Promise<boolean> | boolean {
-    if (
-      this.router.getCurrentNavigation()?.extras.state?.['data'] &&
-      this.isFileInfoUploader(
-        this.router.getCurrentNavigation()?.extras.state?.['data']
-      )
-    ) {
-      return true;
-    } else {
-      return this.router.navigateByUrl('/upload');
-    }
-  }
-  isFileInfoUploader(object: any): boolean {
-    return (
-      'expirationDate' in object &&
-      'hasPassword' in object &&
-      'name' in object &&
-      'size' in object &&
-      'fileId' in object &&
-      'sharedWith' in object
-    );
-  }
+function isFileInfoUploader(object: any): boolean {
+  return (
+    'expirationDate' in object &&
+    'hasPassword' in object &&
+    'name' in object &&
+    'size' in object &&
+    'fileId' in object &&
+    'sharedWith' in object
+  );
 }
