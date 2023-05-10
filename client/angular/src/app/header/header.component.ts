@@ -9,10 +9,13 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.scss'],
+    standalone: true,
+    imports: [RouterLink],
 })
 export class HeaderComponent {}

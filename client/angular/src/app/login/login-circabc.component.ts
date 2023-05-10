@@ -12,11 +12,14 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
 import { LoginComponent } from './login.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-logincircabc',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+    selector: 'app-logincircabc',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule],
 })
 export class LoginCircabcComponent extends LoginComponent implements OnInit {
   constructor(oauthService: OAuthService, keyStoreService: KeyStoreService) {

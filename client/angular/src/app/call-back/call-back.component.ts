@@ -16,10 +16,13 @@ import { NotificationService } from '../common/notification/notification.service
 
 import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-call-back',
-  templateUrl: './call-back.component.html',
+    selector: 'app-call-back',
+    templateUrl: './call-back.component.html',
+    standalone: true,
+    imports: [TranslocoModule],
 })
 export class CallBackComponent implements OnInit {
   constructor(

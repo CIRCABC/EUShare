@@ -14,11 +14,21 @@ import { FileInfoUploader } from '../openapi';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { I18nService } from '../common/i18n/i18n.service';
 import { environment } from '../../environments/environment';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgIf, NgFor, LowerCasePipe, SlicePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-upload-success',
-  templateUrl: './upload-success.component.html',
-  styleUrls: ['./upload-success.component.scss'],
+    selector: 'app-upload-success',
+    templateUrl: './upload-success.component.html',
+    styleUrls: ['./upload-success.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgFor,
+        TranslocoModule,
+        LowerCasePipe,
+        SlicePipe,
+    ],
 })
 export class UploadSuccessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;

@@ -15,11 +15,24 @@ import { ModalsService } from '../modals/modals.service';
 import { DownloadsService } from '../../services/downloads.service';
 import { UploadedFilesService } from '../../services/uploaded-files.service';
 import { Router } from '@angular/router';
+import { FileSizeFormatPipe } from '../pipes/file-size-format.pipe';
+import { TranslocoModule } from '@ngneat/transloco';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, NgClass, SlicePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-uploaded-file-row',
-  templateUrl: './uploaded-file-row.component.html',
-  styleUrls: ['./uploaded-file-row.component.scss'],
+    selector: 'app-uploaded-file-row',
+    templateUrl: './uploaded-file-row.component.html',
+    styleUrls: ['./uploaded-file-row.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FontAwesomeModule,
+        NgClass,
+        TranslocoModule,
+        SlicePipe,
+        FileSizeFormatPipe,
+    ],
 })
 export class UploadedFileRowComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

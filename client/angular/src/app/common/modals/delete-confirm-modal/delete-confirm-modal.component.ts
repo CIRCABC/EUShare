@@ -10,10 +10,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { DeleteButtonComponent } from '../../buttons/delete-button/delete-button.component';
 
 @Component({
-  selector: 'app-delete-confirm-modal',
-  templateUrl: './delete-confirm-modal.component.html',
+    selector: 'app-delete-confirm-modal',
+    templateUrl: './delete-confirm-modal.component.html',
+    standalone: true,
+    imports: [DeleteButtonComponent, TranslocoModule],
 })
 export class DeleteConfirmModalComponent implements OnInit {
   public modalActive!: boolean;

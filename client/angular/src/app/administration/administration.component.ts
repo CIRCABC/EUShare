@@ -25,10 +25,27 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
+import { TranslocoModule } from '@ngneat/transloco';
+import { BarChartComponent } from './bar-chart/bar-chart.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, NgFor } from '@angular/common';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 @Component({
-  selector: 'app-administration',
-  templateUrl: './administration.component.html',
-  styleUrls: ['./administration.component.scss'],
+    selector: 'app-administration',
+    templateUrl: './administration.component.html',
+    styleUrls: ['./administration.component.scss'],
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        NgIf,
+        FontAwesomeModule,
+        NgFor,
+        BarChartComponent,
+        TranslocoModule,
+        FileSizeFormatPipe,
+    ],
 })
 export class AdministrationComponent implements OnInit {
   public faUser = faUser;

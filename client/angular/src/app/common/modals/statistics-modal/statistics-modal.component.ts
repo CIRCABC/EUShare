@@ -12,12 +12,22 @@ import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
 import { FileService, FileLog } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgFor, NgIf, LowerCasePipe, SlicePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-statistics-modal',
-  templateUrl: './statistics-modal.component.html',
-  styleUrls: ['./statistics-modal.component.scss'],
-  preserveWhitespaces: true,
+    selector: 'app-statistics-modal',
+    templateUrl: './statistics-modal.component.html',
+    styleUrls: ['./statistics-modal.component.scss'],
+    preserveWhitespaces: true,
+    standalone: true,
+    imports: [
+        NgFor,
+        NgIf,
+        TranslocoModule,
+        LowerCasePipe,
+        SlicePipe,
+    ],
 })
 export class StatisticsModalComponent implements OnInit {
   public modalActive = false;

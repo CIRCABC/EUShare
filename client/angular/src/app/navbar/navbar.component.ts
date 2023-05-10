@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import {
   faCloudDownloadAlt,
   faShare,
@@ -21,11 +21,22 @@ import {
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../environments/environment';
 import { SessionStorageService } from '../services/session-storage.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        RouterLink,
+        FontAwesomeModule,
+        RouterLinkActive,
+        TranslocoModule,
+    ],
 })
 export class NavbarComponent implements OnInit {
   public faUsers = faUsers;

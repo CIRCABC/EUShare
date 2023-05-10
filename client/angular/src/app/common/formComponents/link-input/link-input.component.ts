@@ -22,11 +22,15 @@ import {
   ValidatorFn,
   AbstractControl,
 } from '@angular/forms';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-link-input',
-  templateUrl: './link-input.component.html',
-  styleUrls: ['./link-input.component.scss'],
+    selector: 'app-link-input',
+    templateUrl: './link-input.component.html',
+    styleUrls: ['./link-input.component.scss'],
+    standalone: true,
+    imports: [NgIf, TranslocoModule],
 })
 export class LinkInputComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;

@@ -12,10 +12,14 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { NotificationService } from '../../common/notification/notification.service';
 import { I18nService } from '../../common/i18n/i18n.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { FileRowContainerComponent } from '../../common/uploaded-file-row-container/uploaded-file-row-container.component';
 
 @Component({
-  selector: 'app-other-user-shared-files',
-  templateUrl: './other-user-shared-files.component.html',
+    selector: 'app-other-user-shared-files',
+    templateUrl: './other-user-shared-files.component.html',
+    standalone: true,
+    imports: [FileRowContainerComponent, TranslocoModule],
 })
 export class OtherUserSharedFilesComponent implements OnInit {
   public userId!: string;

@@ -16,6 +16,19 @@ import {
 } from 'angular-oauth2-oidc';
 import { Location } from '@angular/common';
 import { environment } from '../environments/environment';
+import { FooterComponent } from './footer/footer.component';
+import { RouterOutlet } from '@angular/router';
+import { NotificationSystemComponent } from './common/notification/notification-system.component';
+import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
+import { ChangeExpirationDateModalComponent } from './common/modals/change-expiration-date-modal/change-expiration-date-modal.component';
+import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
+import { AddRecipientsModalComponent } from './common/modals/add-recipients-modal/add-recipients-modal.component';
+import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
+import { DownloadModalComponent } from './common/modals/download-modal/download-modal.component';
+import { StatisticsModalComponent } from './common/modals/statistics-modal/statistics-modal.component';
+import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
 
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -36,8 +49,24 @@ const authCodeFlowConfig: AuthConfig = {
 };
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    standalone: true,
+    imports: [
+        CbcHeaderComponent,
+        NavbarComponent,
+        ShareWithUsersModalComponent,
+        StatisticsModalComponent,
+        DownloadModalComponent,
+        FileLinkModalComponent,
+        AddRecipientsModalComponent,
+        DeleteConfirmModalComponent,
+        ChangeExpirationDateModalComponent,
+        OverwriteConfirmModalComponent,
+        NotificationSystemComponent,
+        RouterOutlet,
+        FooterComponent,
+    ],
 })
 export class AppComponent {
   timestamp: number;

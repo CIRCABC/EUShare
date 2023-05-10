@@ -10,14 +10,26 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Recipient } from '../../../openapi';
 import { recipientValidator } from '../../validators/recipient-validator';
 import { UploadedFilesService } from '../../../services/uploaded-files.service';
+import { SlicePipe } from '@angular/common';
+import { TranslocoModule } from '@ngneat/transloco';
+import { MessageTextAreaComponent } from '../../formComponents/message-text-area/message-text-area.component';
+import { EmailInputComponent } from '../../formComponents/email-input/email-input.component';
 
 @Component({
-  selector: 'app-add-recipients-modal',
-  templateUrl: './add-recipients-modal.component.html',
+    selector: 'app-add-recipients-modal',
+    templateUrl: './add-recipients-modal.component.html',
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        EmailInputComponent,
+        MessageTextAreaComponent,
+        TranslocoModule,
+        SlicePipe,
+    ],
 })
 export class AddRecipientsModalComponent implements OnInit {
   public modalActive = false;

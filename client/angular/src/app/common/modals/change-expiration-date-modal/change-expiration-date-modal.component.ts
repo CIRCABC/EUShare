@@ -12,11 +12,19 @@ import { Component, OnInit } from '@angular/core';
 import { FileBasics } from '../../../openapi';
 import { UploadedFilesService } from '../../../services/uploaded-files.service';
 import { ModalsService } from '../modals.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-change-expiration-date-modal',
-  templateUrl: './change-expiration-date-modal.component.html',
-  styleUrls: ['./change-expiration-date-modal.component.scss'],
+    selector: 'app-change-expiration-date-modal',
+    templateUrl: './change-expiration-date-modal.component.html',
+    styleUrls: ['./change-expiration-date-modal.component.scss'],
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        TranslocoModule,
+    ],
 })
 export class ChangeExpirationDateModalComponent implements OnInit {
   public modalActive!: boolean;
