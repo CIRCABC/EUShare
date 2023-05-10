@@ -23,6 +23,7 @@ public class SafeCommonsMultipartResolver extends CommonsMultipartResolver {
     this.fileCountMax = fileCountMax;
   }
 
+  @Override
   protected FileUpload prepareFileUpload(@Nullable String encoding) {
     FileUpload actualFileUpload = super.prepareFileUpload(encoding);
     actualFileUpload.setFileCountMax(fileCountMax);

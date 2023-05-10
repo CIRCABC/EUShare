@@ -316,7 +316,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   }
 
   private void setRole(String userId, Role role)
-      throws IllegalSpaceException, UnknownUserException {
+      throws UnknownUserException {
 
     DBUser user = this.getDbUser(userId);
     user.setRole(role);
