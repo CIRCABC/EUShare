@@ -30,6 +30,7 @@ public class CustomWebSecurityConfigurerAdapter
     extends WebSecurityConfigurerAdapter {
 
   private static final String[] AUTH_WHITELIST = {
+      "/index.html",
       "/api-docs",
       "/api-docs/**",
       "/swagger-resources",
