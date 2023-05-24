@@ -29,10 +29,10 @@ public interface UserInfoRepository extends PagingAndSortingRepository<DBUserInf
     @Query(value = "SELECT id, role, username, name, email, total_space, COALESCE(SUM(files.file_size), 0) AS used_space, COALESCE(COUNT(files.file_id), 0) AS files_count "
             +
             "FROM users " +
-            "LEFT JOIN files ON files.uploader_id = id " +
+            "LEFT JOIN files ON users.id =  files.uploader_id and files.status='AVAILABLE' " +
             "WHERE (email LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT('% ',:start,'%'))) "
             +
-            "and (files.status='AVAILABLE') " +
+            " " +
             "GROUP BY id, role, username, name, email, total_space " +
             "ORDER BY name", nativeQuery = true)
     public List<DBUserInfoProjection> findAllByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);

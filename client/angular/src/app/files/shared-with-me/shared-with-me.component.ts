@@ -10,10 +10,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { SessionStorageService } from '../../services/session-storage.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { DownloadFileRowContainerComponent } from '../../common/download-file-row-container/download-file-row-container.component';
 
 @Component({
-  selector: 'app-shared-with-me',
-  templateUrl: './shared-with-me.component.html',
+    selector: 'app-shared-with-me',
+    templateUrl: './shared-with-me.component.html',
+    standalone: true,
+    imports: [DownloadFileRowContainerComponent, TranslocoModule],
 })
 export class SharedWithMeComponent implements OnInit {
   public userId!: string;

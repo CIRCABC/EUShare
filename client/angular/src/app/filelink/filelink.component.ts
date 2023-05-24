@@ -13,11 +13,21 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ModalsService } from '../common/modals/modals.service';
 import { FileService } from '../openapi/api/file.service';
 import { firstValueFrom, map } from 'rxjs';
+import { TranslocoModule } from '@ngneat/transloco';
+import { DownloadButtonComponent } from '../common/buttons/download-button/download-button.component';
+import { NgIf, SlicePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-filelink',
-  templateUrl: './filelink.component.html',
-  styleUrls: ['./filelink.component.scss'],
+    selector: 'app-filelink',
+    templateUrl: './filelink.component.html',
+    styleUrls: ['./filelink.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        DownloadButtonComponent,
+        TranslocoModule,
+        SlicePipe,
+    ],
 })
 export class FilelinkComponent implements OnInit {
   public fileName!: string;

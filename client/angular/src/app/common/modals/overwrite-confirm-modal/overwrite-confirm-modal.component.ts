@@ -10,10 +10,13 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-overwrite-confirm-modal',
-  templateUrl: './overwrite-confirm-modal.component.html',
+    selector: 'app-overwrite-confirm-modal',
+    templateUrl: './overwrite-confirm-modal.component.html',
+    standalone: true,
+    imports: [TranslocoModule],
 })
 export class OverwriteConfirmModalComponent implements OnInit {
   public modalActive!: boolean;

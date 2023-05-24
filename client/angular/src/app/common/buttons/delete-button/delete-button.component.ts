@@ -11,10 +11,13 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, Input } from '@angular/core';
 import { UploadedFilesService } from '../../../services/uploaded-files.service';
 import { ModalsService } from '../../modals/modals.service';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-delete-button',
-  templateUrl: './delete-button.component.html',
+    selector: 'app-delete-button',
+    templateUrl: './delete-button.component.html',
+    standalone: true,
+    imports: [TranslocoModule],
 })
 export class DeleteButtonComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

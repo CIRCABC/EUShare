@@ -11,8 +11,9 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-cbc-ec-logo-app',
-  templateUrl: './cbc-ec-logo-app.component.html',
-  styleUrls: ['./cbc-ec-logo-app.component.scss'],
+    selector: 'app-cbc-ec-logo-app',
+    templateUrl: './cbc-ec-logo-app.component.html',
+    styleUrls: ['./cbc-ec-logo-app.component.scss'],
+    standalone: true,
 })
 export class CbcEcLogoAppComponent {}

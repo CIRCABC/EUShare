@@ -13,7 +13,7 @@ import { NoPreloading, RouterModule, Routes } from '@angular/router';
 import { FilelinkComponent } from './filelink/filelink.component';
 import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
-import { LoginGuard } from './login.guard';
+import { loginCanActivate } from './login.guard';
 import { LoginComponent } from './login/login.component';
 import { UploadComponent } from './upload/upload.component';
 import { AdministrationComponent } from './administration/administration.component';
@@ -23,71 +23,70 @@ import { MyUserComponent } from './profile/profile.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 import { UploadSuccessComponent } from './upload-success/upload-success.component';
-import { UploadSuccessGuard } from './upload-success.guard';
+import { uploadSuccessCanActivate } from './upload-success.guard';
 import { LoginCircabcComponent } from './login/login-circabc.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'logincircabc',
-    component: LoginCircabcComponent
+    component: LoginCircabcComponent,
   },
   {
     path: 'home',
     component: MySharedFilesComponent,
-    canActivate: [LoginGuard]
+    canActivate: [loginCanActivate],
   },
   {
     path: 'upload',
     component: UploadComponent,
-    canActivate: [LoginGuard]
+    canActivate: [loginCanActivate],
   },
   {
     path: 'uploadSuccess',
     component: UploadSuccessComponent,
-    canActivate: [LoginGuard, UploadSuccessGuard]
+    canActivate: [loginCanActivate, uploadSuccessCanActivate],
   },
   {
     path: 'download',
     component: SharedWithMeComponent,
-    canActivate: [LoginGuard]
+    canActivate: [loginCanActivate],
   },
   {
     path: 'fs/:id',
-    component: FilelinkComponent
+    component: FilelinkComponent,
   },
   {
     path: 'administration',
     component: AdministrationComponent,
-    canActivate: [LoginGuard]
-
+    canActivate: [loginCanActivate],
   },
   {
     path: 'administration/:userId/files',
     component: OtherUserSharedFilesComponent,
     data: { userName: 'dummyUserName' },
-    canActivate: [LoginGuard]
+    canActivate: [loginCanActivate],
   },
   {
     path: 'callback',
-    component: CallBackComponent
+    component: CallBackComponent,
   },
   {
     path: 'profile',
-    component: MyUserComponent
+    component: MyUserComponent,
   },
   {
     path: 'privacyStatement',
-    component: PrivacyStatementComponent
+    component: PrivacyStatementComponent,
   },
   {
     path: 'termsOfService',
-    component: TermsOfServiceComponent
-  }
+    component: TermsOfServiceComponent,
+  },
 ];
 
 @NgModule({

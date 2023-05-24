@@ -13,10 +13,22 @@ import { FileInfoRecipient } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
 import { DownloadsService } from '../../services/downloads.service';
+import { FileSizeFormatPipe } from '../pipes/file-size-format.pipe';
+import { TranslocoModule } from '@ngneat/transloco';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, SlicePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-download-file-row',
-  templateUrl: './download-file-row.component.html',
+    selector: 'app-download-file-row',
+    templateUrl: './download-file-row.component.html',
+    standalone: true,
+    imports: [
+        NgIf,
+        FontAwesomeModule,
+        TranslocoModule,
+        SlicePipe,
+        FileSizeFormatPipe,
+    ],
 })
 export class DownloadFileRowComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

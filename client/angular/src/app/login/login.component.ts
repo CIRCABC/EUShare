@@ -11,11 +11,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component } from '@angular/core';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { KeyStoreService } from '../services/key-store.service';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    standalone: true,
+    imports: [TranslocoModule],
 })
 export class LoginComponent {
   constructor(

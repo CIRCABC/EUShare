@@ -9,13 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
-import {
-  FormArray,
-  FormGroup,
-  Validators,
-  FormBuilder,
-  FormControl,
-} from '@angular/forms';
+import { FormArray, FormGroup, Validators, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { faUpload, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import {
   FileService,
@@ -34,11 +28,29 @@ import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
 import { ModalsService } from '../common/modals/modals.service';
 import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
+import { TranslocoModule } from '@ngneat/transloco';
+import { MessageTextAreaComponent } from '../common/formComponents/message-text-area/message-text-area.component';
+import { EmailInputComponent } from '../common/formComponents/email-input/email-input.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, NgFor } from '@angular/common';
+import { FileAccessorDirective } from '../directives/file-accessor.directive';
 
 @Component({
-  selector: 'app-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss'],
+    selector: 'app-upload',
+    templateUrl: './upload.component.html',
+    styleUrls: ['./upload.component.scss'],
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        FileAccessorDirective,
+        NgIf,
+        NgFor,
+        FontAwesomeModule,
+        EmailInputComponent,
+        MessageTextAreaComponent,
+        TranslocoModule,
+        FileSizeFormatPipe,
+    ],
 })
 export class UploadComponent implements OnInit {
   public faUserSlash = faUserSlash;

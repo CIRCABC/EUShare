@@ -33,7 +33,7 @@ public class ExceptionHandlerController {
   @ExceptionHandler(value = ResponseStatusException.class)
   public ResponseEntity<Object> responseStatusException(
       ResponseStatusException exception) {
-    if (!(exception.getRawStatusCode() == HttpStatus.NOT_FOUND.value()))
+    if (exception.getRawStatusCode() != HttpStatus.NOT_FOUND.value())
       log.error(exception.getMessage(), exception);
     
     return new ResponseEntity<>(exception.getReason(), exception.getStatus());

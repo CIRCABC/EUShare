@@ -21,11 +21,15 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 import { I18nService } from '../../i18n/i18n.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-email-input',
-  templateUrl: './email-input.component.html',
-  styleUrls: ['./email-input.component.scss'],
+    selector: 'app-email-input',
+    templateUrl: './email-input.component.html',
+    styleUrls: ['./email-input.component.scss'],
+    standalone: true,
+    imports: [NgIf, TranslocoModule],
 })
 export class EmailInputComponent implements ControlValueAccessor, OnInit {
   private emailRegex = '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\\.[a-zA-Z]{2,10}$';

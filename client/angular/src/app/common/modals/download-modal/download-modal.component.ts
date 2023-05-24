@@ -10,10 +10,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import { ModalsService } from '../modals.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { DownloadButtonComponent } from '../../buttons/download-button/download-button.component';
 
 @Component({
-  selector: 'app-download-modal',
-  templateUrl: './download-modal.component.html',
+    selector: 'app-download-modal',
+    templateUrl: './download-modal.component.html',
+    standalone: true,
+    imports: [DownloadButtonComponent, TranslocoModule],
 })
 export class DownloadModalComponent implements OnInit {
   public modalActive!: boolean;

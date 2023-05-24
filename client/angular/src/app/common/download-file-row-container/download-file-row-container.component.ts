@@ -11,11 +11,21 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit, Input } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { FileInfoRecipient, UsersService } from '../../openapi';
+import { TranslocoModule } from '@ngneat/transloco';
+import { DownloadFileRowComponent } from '../download-file-row/download-file-row.component';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-download-file-row-container',
-  templateUrl: './download-file-row-container.component.html',
-  styleUrls: ['./download-file-row-container.component.scss'],
+    selector: 'app-download-file-row-container',
+    templateUrl: './download-file-row-container.component.html',
+    styleUrls: ['./download-file-row-container.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgFor,
+        DownloadFileRowComponent,
+        TranslocoModule,
+    ],
 })
 export class DownloadFileRowContainerComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

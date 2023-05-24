@@ -11,11 +11,21 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DownloadsService } from '../../../services/downloads.service';
 import { NotificationService } from '../../notification/notification.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-download-button',
-  templateUrl: './download-button.component.html',
-  styleUrls: ['./download-button.component.scss'],
+    selector: 'app-download-button',
+    templateUrl: './download-button.component.html',
+    styleUrls: ['./download-button.component.scss'],
+    standalone: true,
+    imports: [
+        NgIf,
+        ReactiveFormsModule,
+        FormsModule,
+        TranslocoModule,
+    ],
 })
 export class DownloadButtonComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -24,11 +23,15 @@ public class UploadConfiguration extends WebMvcConfigurationSupport {
 
   @Bean(name = "multipartResolver")
   public MultipartResolver multipartResolver(EushareConfiguration esConfig) {
-    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+    SafeCommonsMultipartResolver multipartResolver = new SafeCommonsMultipartResolver();
+
+    // prevent Dos attack
+    // we just upload one file
+    multipartResolver.setFileCountMax(1);
+
     multipartResolver.setMaxUploadSize(esConfig.getMaxSizeAllowedInBytes());
     multipartResolver.setMaxUploadSizePerFile(
-      esConfig.getMaxSizeAllowedInBytes()
-    );
+        esConfig.getMaxSizeAllowedInBytes());
     return multipartResolver;
   }
 }

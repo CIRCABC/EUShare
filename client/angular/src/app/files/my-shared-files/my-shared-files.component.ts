@@ -11,10 +11,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SessionStorageService } from '../../services/session-storage.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { FileRowContainerComponent } from '../../common/uploaded-file-row-container/uploaded-file-row-container.component';
 
 @Component({
-  selector: 'app-my-shared-files',
-  templateUrl: './my-shared-files.component.html',
+    selector: 'app-my-shared-files',
+    templateUrl: './my-shared-files.component.html',
+    standalone: true,
+    imports: [FileRowContainerComponent, TranslocoModule],
 })
 export class MySharedFilesComponent implements OnInit {
   public myId!: string;

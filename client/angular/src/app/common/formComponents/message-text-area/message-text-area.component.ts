@@ -19,11 +19,15 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 import { I18nService } from '../../i18n/i18n.service';
+import { TranslocoModule } from '@ngneat/transloco';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-message-text-area',
-  templateUrl: './message-text-area.component.html',
-  styleUrls: ['./message-text-area.component.scss'],
+    selector: 'app-message-text-area',
+    templateUrl: './message-text-area.component.html',
+    styleUrls: ['./message-text-area.component.scss'],
+    standalone: true,
+    imports: [NgIf, TranslocoModule],
 })
 export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;
