@@ -16,16 +16,11 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-download-button',
-    templateUrl: './download-button.component.html',
-    styleUrls: ['./download-button.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        ReactiveFormsModule,
-        FormsModule,
-        TranslocoModule,
-    ],
+  selector: 'app-download-button',
+  templateUrl: './download-button.component.html',
+  styleUrls: ['./download-button.component.scss'],
+  standalone: true,
+  imports: [NgIf, ReactiveFormsModule, FormsModule, TranslocoModule],
 })
 export class DownloadButtonComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -18,16 +18,11 @@ import { DownloadButtonComponent } from '../common/buttons/download-button/downl
 import { NgIf, SlicePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-filelink',
-    templateUrl: './filelink.component.html',
-    styleUrls: ['./filelink.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        DownloadButtonComponent,
-        TranslocoModule,
-        SlicePipe,
-    ],
+  selector: 'app-filelink',
+  templateUrl: './filelink.component.html',
+  styleUrls: ['./filelink.component.scss'],
+  standalone: true,
+  imports: [NgIf, DownloadButtonComponent, TranslocoModule, SlicePipe],
 })
 export class FilelinkComponent implements OnInit {
   public fileName!: string;

@@ -16,18 +16,12 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NgFor, NgIf, LowerCasePipe, SlicePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-statistics-modal',
-    templateUrl: './statistics-modal.component.html',
-    styleUrls: ['./statistics-modal.component.scss'],
-    preserveWhitespaces: true,
-    standalone: true,
-    imports: [
-        NgFor,
-        NgIf,
-        TranslocoModule,
-        LowerCasePipe,
-        SlicePipe,
-    ],
+  selector: 'app-statistics-modal',
+  templateUrl: './statistics-modal.component.html',
+  styleUrls: ['./statistics-modal.component.scss'],
+  preserveWhitespaces: true,
+  standalone: true,
+  imports: [NgFor, NgIf, TranslocoModule, LowerCasePipe, SlicePipe],
 })
 export class StatisticsModalComponent implements OnInit {
   public modalActive = false;

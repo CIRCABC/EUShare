@@ -14,10 +14,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { DownloadFileRowContainerComponent } from '../../common/download-file-row-container/download-file-row-container.component';
 
 @Component({
-    selector: 'app-shared-with-me',
-    templateUrl: './shared-with-me.component.html',
-    standalone: true,
-    imports: [DownloadFileRowContainerComponent, TranslocoModule],
+  selector: 'app-shared-with-me',
+  templateUrl: './shared-with-me.component.html',
+  standalone: true,
+  imports: [DownloadFileRowContainerComponent, TranslocoModule],
 })
 export class SharedWithMeComponent implements OnInit {
   public userId!: string;

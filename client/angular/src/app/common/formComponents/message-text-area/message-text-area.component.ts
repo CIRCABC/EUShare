@@ -23,11 +23,11 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-message-text-area',
-    templateUrl: './message-text-area.component.html',
-    styleUrls: ['./message-text-area.component.scss'],
-    standalone: true,
-    imports: [NgIf, TranslocoModule],
+  selector: 'app-message-text-area',
+  templateUrl: './message-text-area.component.html',
+  styleUrls: ['./message-text-area.component.scss'],
+  standalone: true,
+  imports: [NgIf, TranslocoModule],
 })
 export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;

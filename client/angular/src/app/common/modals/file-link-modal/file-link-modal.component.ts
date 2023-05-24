@@ -13,9 +13,9 @@ import { NotificationService } from '../../notification/notification.service';
 import { ModalsService } from '../modals.service';
 
 @Component({
-    selector: 'app-file-link-modal',
-    templateUrl: './file-link-modal.component.html',
-    standalone: true,
+  selector: 'app-file-link-modal',
+  templateUrl: './file-link-modal.component.html',
+  standalone: true,
 })
 export class FileLinkModalComponent implements OnInit {
   public modalActive = false;

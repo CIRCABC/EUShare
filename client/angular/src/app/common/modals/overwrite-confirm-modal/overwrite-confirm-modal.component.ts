@@ -13,10 +13,10 @@ import { ModalsService } from '../modals.service';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-overwrite-confirm-modal',
-    templateUrl: './overwrite-confirm-modal.component.html',
-    standalone: true,
-    imports: [TranslocoModule],
+  selector: 'app-overwrite-confirm-modal',
+  templateUrl: './overwrite-confirm-modal.component.html',
+  standalone: true,
+  imports: [TranslocoModule],
 })
 export class OverwriteConfirmModalComponent implements OnInit {
   public modalActive!: boolean;

@@ -14,11 +14,11 @@ import { KeyStoreService } from '../services/key-store.service';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: true,
-    imports: [TranslocoModule],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [TranslocoModule],
 })
 export class LoginComponent {
   constructor(

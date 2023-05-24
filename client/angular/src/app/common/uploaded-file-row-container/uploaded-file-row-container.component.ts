@@ -17,16 +17,11 @@ import { UploadedFileRowComponent } from '../uploaded-file-row/uploaded-file-row
 import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-    selector: 'app-uploaded-file-row-container',
-    templateUrl: './uploaded-file-row-container.component.html',
-    styleUrls: ['./uploaded-file-row-container.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        NgFor,
-        UploadedFileRowComponent,
-        TranslocoModule,
-    ],
+  selector: 'app-uploaded-file-row-container',
+  templateUrl: './uploaded-file-row-container.component.html',
+  styleUrls: ['./uploaded-file-row-container.component.scss'],
+  standalone: true,
+  imports: [NgIf, NgFor, UploadedFileRowComponent, TranslocoModule],
 })
 export class FileRowContainerComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename

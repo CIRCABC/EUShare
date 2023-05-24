@@ -13,12 +13,12 @@ import { environment } from '../../environments/environment';
 import buildInfo from '../../build';
 import { TranslocoModule } from '@ngneat/transloco';
 @Component({
-    selector: 'cbc-footer',
-    templateUrl: './footer.component.html',
-    styleUrls: ['./footer.component.scss'],
-    preserveWhitespaces: true,
-    standalone: true,
-    imports: [TranslocoModule],
+  selector: 'cbc-footer',
+  templateUrl: './footer.component.html',
+  styleUrls: ['./footer.component.scss'],
+  preserveWhitespaces: true,
+  standalone: true,
+  imports: [TranslocoModule],
 })
 export class FooterComponent {
   public appAlfVersion = '';

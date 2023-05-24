@@ -9,7 +9,11 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
-import { getBrowserLang, TranslocoService, TranslocoModule } from '@ngneat/transloco';
+import {
+  getBrowserLang,
+  TranslocoService,
+  TranslocoModule,
+} from '@ngneat/transloco';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';
 import { SessionStorageService } from '../../services/session-storage.service';
@@ -18,16 +22,11 @@ import { CbcEcLogoAppComponent } from '../cbc-ec-logo-app/cbc-ec-logo-app.compon
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-cbc-header',
-    templateUrl: './cbc-header.component.html',
-    styleUrls: ['./cbc-header.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        CbcEcLogoAppComponent,
-        ReactiveFormsModule,
-        TranslocoModule,
-    ],
+  selector: 'app-cbc-header',
+  templateUrl: './cbc-header.component.html',
+  styleUrls: ['./cbc-header.component.scss'],
+  standalone: true,
+  imports: [NgIf, CbcEcLogoAppComponent, ReactiveFormsModule, TranslocoModule],
 })
 export class CbcHeaderComponent implements OnInit {
   public circabc_url: string = environment.circabc_url;

@@ -47,10 +47,12 @@ export interface UserInfoAllOf {
     isAdmin: boolean;
 }
 export namespace UserInfoAllOf {
-    export type RoleEnum = 'ADMIN' | 'INTERNAL' | 'API_KEY';
+    export type RoleEnum = 'ADMIN' | 'INTERNAL' | 'EXTERNAL' | 'TRUSTED_EXTERNAL' | 'API_KEY';
     export const RoleEnum = {
         ADMIN: 'ADMIN' as RoleEnum,
         INTERNAL: 'INTERNAL' as RoleEnum,
+        EXTERNAL: 'EXTERNAL' as RoleEnum,
+        TRUSTEDEXTERNAL: 'TRUSTED_EXTERNAL' as RoleEnum,
         APIKEY: 'API_KEY' as RoleEnum
     };
 }

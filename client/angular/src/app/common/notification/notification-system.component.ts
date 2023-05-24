@@ -16,11 +16,11 @@ import { NotificationComponent } from './notification.component';
 import { NgFor } from '@angular/common';
 
 @Component({
-    selector: 'app-notification-system',
-    templateUrl: './notification-system.component.html',
-    styleUrls: ['./notification-system.component.scss'],
-    standalone: true,
-    imports: [NgFor, NotificationComponent],
+  selector: 'app-notification-system',
+  templateUrl: './notification-system.component.html',
+  styleUrls: ['./notification-system.component.scss'],
+  standalone: true,
+  imports: [NgFor, NotificationComponent],
 })
 export class NotificationSystemComponent implements OnDestroy {
   public messages: NotificationMessage[] = [];

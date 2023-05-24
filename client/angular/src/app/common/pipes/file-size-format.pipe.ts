@@ -11,8 +11,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-    name: 'fileSizeFormat',
-    standalone: true,
+  name: 'fileSizeFormat',
+  standalone: true,
 })
 export class FileSizeFormatPipe implements PipeTransform {
   transform(value: number): string {

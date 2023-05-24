@@ -1191,6 +1191,8 @@ components:
               enum:
                - ADMIN
                - INTERNAL
+               - EXTERNAL
+               - TRUSTED_EXTERNAL
                - API_KEY
             isAdmin:
               description: True if the user is admin

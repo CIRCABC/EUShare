@@ -17,15 +17,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NgIf, LowerCasePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    standalone: true,
-    imports: [
-        NgIf,
-        TranslocoModule,
-        LowerCasePipe,
-        FileSizeFormatPipe,
-    ],
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  standalone: true,
+  imports: [NgIf, TranslocoModule, LowerCasePipe, FileSizeFormatPipe],
 })
 export class MyUserComponent implements OnInit {
   public userInfo!: UserInfo;

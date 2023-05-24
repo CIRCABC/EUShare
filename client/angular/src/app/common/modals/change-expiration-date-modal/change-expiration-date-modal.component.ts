@@ -16,15 +16,11 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'app-change-expiration-date-modal',
-    templateUrl: './change-expiration-date-modal.component.html',
-    styleUrls: ['./change-expiration-date-modal.component.scss'],
-    standalone: true,
-    imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        TranslocoModule,
-    ],
+  selector: 'app-change-expiration-date-modal',
+  templateUrl: './change-expiration-date-modal.component.html',
+  styleUrls: ['./change-expiration-date-modal.component.scss'],
+  standalone: true,
+  imports: [ReactiveFormsModule, FormsModule, TranslocoModule],
 })
 export class ChangeExpirationDateModalComponent implements OnInit {
   public modalActive!: boolean;

@@ -26,17 +26,17 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf } from '@angular/common';
 
 @Component({
-    selector: 'app-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        RouterLink,
-        FontAwesomeModule,
-        RouterLinkActive,
-        TranslocoModule,
-    ],
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    RouterLink,
+    FontAwesomeModule,
+    RouterLinkActive,
+    TranslocoModule,
+  ],
 })
 export class NavbarComponent implements OnInit {
   public faUsers = faUsers;

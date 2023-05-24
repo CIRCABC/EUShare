@@ -11,8 +11,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'app-privacy-statement',
-    templateUrl: './privacy-statement.component.html',
-    standalone: true,
+  selector: 'app-privacy-statement',
+  templateUrl: './privacy-statement.component.html',
+  standalone: true,
 })
 export class PrivacyStatementComponent {}

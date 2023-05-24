@@ -18,18 +18,12 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NgFor, NgIf, LowerCasePipe, SlicePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-share-with-users-modal',
-    templateUrl: './share-with-users-modal.component.html',
-    styleUrls: ['./share-with-users-modal.component.scss'],
-    preserveWhitespaces: true,
-    standalone: true,
-    imports: [
-        NgFor,
-        NgIf,
-        TranslocoModule,
-        LowerCasePipe,
-        SlicePipe,
-    ],
+  selector: 'app-share-with-users-modal',
+  templateUrl: './share-with-users-modal.component.html',
+  styleUrls: ['./share-with-users-modal.component.scss'],
+  preserveWhitespaces: true,
+  standalone: true,
+  imports: [NgFor, NgIf, TranslocoModule, LowerCasePipe, SlicePipe],
 })
 export class ShareWithUsersModalComponent implements OnInit {
   public modalActive = false;

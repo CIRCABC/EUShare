@@ -14,10 +14,10 @@ import { ModalsService } from '../../modals/modals.service';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-delete-button',
-    templateUrl: './delete-button.component.html',
-    standalone: true,
-    imports: [TranslocoModule],
+  selector: 'app-delete-button',
+  templateUrl: './delete-button.component.html',
+  standalone: true,
+  imports: [TranslocoModule],
 })
 export class DeleteButtonComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

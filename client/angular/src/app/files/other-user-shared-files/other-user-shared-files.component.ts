@@ -16,10 +16,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { FileRowContainerComponent } from '../../common/uploaded-file-row-container/uploaded-file-row-container.component';
 
 @Component({
-    selector: 'app-other-user-shared-files',
-    templateUrl: './other-user-shared-files.component.html',
-    standalone: true,
-    imports: [FileRowContainerComponent, TranslocoModule],
+  selector: 'app-other-user-shared-files',
+  templateUrl: './other-user-shared-files.component.html',
+  standalone: true,
+  imports: [FileRowContainerComponent, TranslocoModule],
 })
 export class OtherUserSharedFilesComponent implements OnInit {
   public userId!: string;

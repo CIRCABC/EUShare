@@ -58,6 +58,10 @@ public class UserInfo   {
     
     INTERNAL("INTERNAL"),
     
+    EXTERNAL("EXTERNAL"),
+    
+    TRUSTED_EXTERNAL("TRUSTED_EXTERNAL"),
+    
     API_KEY("API_KEY");
 
     private String value;

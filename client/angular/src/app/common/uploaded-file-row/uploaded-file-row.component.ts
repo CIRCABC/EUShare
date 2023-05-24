@@ -21,18 +21,18 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgClass, SlicePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-uploaded-file-row',
-    templateUrl: './uploaded-file-row.component.html',
-    styleUrls: ['./uploaded-file-row.component.scss'],
-    standalone: true,
-    imports: [
-        NgIf,
-        FontAwesomeModule,
-        NgClass,
-        TranslocoModule,
-        SlicePipe,
-        FileSizeFormatPipe,
-    ],
+  selector: 'app-uploaded-file-row',
+  templateUrl: './uploaded-file-row.component.html',
+  styleUrls: ['./uploaded-file-row.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FontAwesomeModule,
+    NgClass,
+    TranslocoModule,
+    SlicePipe,
+    FileSizeFormatPipe,
+  ],
 })
 export class UploadedFileRowComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

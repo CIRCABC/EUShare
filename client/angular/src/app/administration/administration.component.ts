@@ -32,20 +32,20 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 @Component({
-    selector: 'app-administration',
-    templateUrl: './administration.component.html',
-    styleUrls: ['./administration.component.scss'],
-    standalone: true,
-    imports: [
-        ReactiveFormsModule,
-        FormsModule,
-        NgIf,
-        FontAwesomeModule,
-        NgFor,
-        BarChartComponent,
-        TranslocoModule,
-        FileSizeFormatPipe,
-    ],
+  selector: 'app-administration',
+  templateUrl: './administration.component.html',
+  styleUrls: ['./administration.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    FormsModule,
+    NgIf,
+    FontAwesomeModule,
+    NgFor,
+    BarChartComponent,
+    TranslocoModule,
+    FileSizeFormatPipe,
+  ],
 })
 export class AdministrationComponent implements OnInit {
   public faUser = faUser;
@@ -124,9 +124,7 @@ export class AdministrationComponent implements OnInit {
   }
 
   public async getStats(year: number) {
-    this.stats = await firstValueFrom(
-      this.statsService.getStats(year)
-    );
+    this.stats = await firstValueFrom(this.statsService.getStats(year));
     this.stats.sort((a: Stat, b: Stat) => {
       return a.month > b.month ? 1 : -1;
     });
@@ -319,7 +317,10 @@ export class AdministrationComponent implements OnInit {
       '/administration',
       this.selectedUserInfo.id,
       'files',
-      { userName: this.selectedUserInfo.givenName , email: this.selectedUserInfo.email},
+      {
+        userName: this.selectedUserInfo.givenName,
+        email: this.selectedUserInfo.email,
+      },
     ]);
   }
 

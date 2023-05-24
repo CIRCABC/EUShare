@@ -9,7 +9,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormGroup, Validators, FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormArray,
+  FormGroup,
+  Validators,
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { faUpload, faUserSlash } from '@fortawesome/free-solid-svg-icons';
 import {
   FileService,
@@ -36,21 +43,21 @@ import { NgIf, NgFor } from '@angular/common';
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
 
 @Component({
-    selector: 'app-upload',
-    templateUrl: './upload.component.html',
-    styleUrls: ['./upload.component.scss'],
-    standalone: true,
-    imports: [
-        ReactiveFormsModule,
-        FileAccessorDirective,
-        NgIf,
-        NgFor,
-        FontAwesomeModule,
-        EmailInputComponent,
-        MessageTextAreaComponent,
-        TranslocoModule,
-        FileSizeFormatPipe,
-    ],
+  selector: 'app-upload',
+  templateUrl: './upload.component.html',
+  styleUrls: ['./upload.component.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
+    FileAccessorDirective,
+    NgIf,
+    NgFor,
+    FontAwesomeModule,
+    EmailInputComponent,
+    MessageTextAreaComponent,
+    TranslocoModule,
+    FileSizeFormatPipe,
+  ],
 })
 export class UploadComponent implements OnInit {
   public faUserSlash = faUserSlash;

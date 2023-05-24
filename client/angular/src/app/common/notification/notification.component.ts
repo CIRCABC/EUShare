@@ -16,15 +16,11 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NgSwitch, NgSwitchCase } from '@angular/common';
 
 @Component({
-    selector: 'app-notification',
-    templateUrl: './notification.component.html',
-    styleUrls: ['./notification.component.scss'],
-    standalone: true,
-    imports: [
-        NgSwitch,
-        NgSwitchCase,
-        TranslocoModule,
-    ],
+  selector: 'app-notification',
+  templateUrl: './notification.component.html',
+  styleUrls: ['./notification.component.scss'],
+  standalone: true,
+  imports: [NgSwitch, NgSwitchCase, TranslocoModule],
 })
 export class NotificationComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -15,11 +15,11 @@ import { LoginComponent } from './login.component';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-    selector: 'app-logincircabc',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.scss'],
-    standalone: true,
-    imports: [TranslocoModule],
+  selector: 'app-logincircabc',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [TranslocoModule],
 })
 export class LoginCircabcComponent extends LoginComponent implements OnInit {
   constructor(oauthService: OAuthService, keyStoreService: KeyStoreService) {

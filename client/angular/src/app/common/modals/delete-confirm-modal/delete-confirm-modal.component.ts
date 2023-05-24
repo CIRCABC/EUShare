@@ -14,10 +14,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { DeleteButtonComponent } from '../../buttons/delete-button/delete-button.component';
 
 @Component({
-    selector: 'app-delete-confirm-modal',
-    templateUrl: './delete-confirm-modal.component.html',
-    standalone: true,
-    imports: [DeleteButtonComponent, TranslocoModule],
+  selector: 'app-delete-confirm-modal',
+  templateUrl: './delete-confirm-modal.component.html',
+  standalone: true,
+  imports: [DeleteButtonComponent, TranslocoModule],
 })
 export class DeleteConfirmModalComponent implements OnInit {
   public modalActive!: boolean;

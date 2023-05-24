@@ -161,6 +161,8 @@ public class DBUser {
   }
 
   public enum Role {
+    EXTERNAL,
+    TRUSTED_EXTERNAL,
     INTERNAL, // An active user. Has an email, a name and a username.
     ADMIN, // An internal user with extra advantage
     API_KEY

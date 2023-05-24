@@ -19,16 +19,16 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, SlicePipe } from '@angular/common';
 
 @Component({
-    selector: 'app-download-file-row',
-    templateUrl: './download-file-row.component.html',
-    standalone: true,
-    imports: [
-        NgIf,
-        FontAwesomeModule,
-        TranslocoModule,
-        SlicePipe,
-        FileSizeFormatPipe,
-    ],
+  selector: 'app-download-file-row',
+  templateUrl: './download-file-row.component.html',
+  standalone: true,
+  imports: [
+    NgIf,
+    FontAwesomeModule,
+    TranslocoModule,
+    SlicePipe,
+    FileSizeFormatPipe,
+  ],
 })
 export class DownloadFileRowComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
