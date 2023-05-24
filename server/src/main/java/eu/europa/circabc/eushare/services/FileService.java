@@ -118,8 +118,7 @@ public class FileService implements FileServiceInterface {
    * from the file system.
    */
 
-  @Scheduled(cron = "0 0 0 L * ?") // DO NOT CHANGE CLEANUP DELAY (last month of the day at midnight), IT WILL
-                                   // BREAK STATISTICS
+  @Scheduled(cron = "0 0 0 L * ?")                         
   @Transactional
   void cleanupFiles() {
 
@@ -155,7 +154,7 @@ public class FileService implements FileServiceInterface {
   /**
    * Record statistics (called before cleanup).
    */
-  @Scheduled(fixedDelay = 3600000) // Every hour
+  @Scheduled(cron = "0 0 23 * * ?")
   void statsFiles() {
     LocalDate currentdate = LocalDate.now();
     DBStat newStat = statsRepository.findCurrentStats(currentdate.getMonthValue(), currentdate.getYear());
@@ -177,7 +176,7 @@ public class FileService implements FileServiceInterface {
   /**
    * Marks all expired files as deleted in the database.
    */
-  @Scheduled(fixedDelay = 3600000) // Every hour
+  @Scheduled(cron = "0 0 22 * * ?")
   @Transactional
   void markExpiredFiles() {
     for (DBFile file : fileRepository.findByExpirationDateBefore(
@@ -191,7 +190,7 @@ public class FileService implements FileServiceInterface {
   /**
    * Marks all lost allocated files older than one day as deleted.
    */
-  @Scheduled(fixedDelay = 3600000) // Every hour
+  @Scheduled(cron = "0 0 22 * * ?")
   void markAllocatedLostFiles() {
     for (DBFile file : fileRepository.findByStatusAndLastModifiedBefore(
         eu.europa.circabc.eushare.storage.DBFile.Status.ALLOCATED,
