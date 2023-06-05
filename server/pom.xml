@@ -429,6 +429,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.sonarsource.scanner.maven</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
             <version>${sonar.version}</version>
@@ -560,12 +566,12 @@
             <version>31.1-jre</version>
             <scope>test</scope>
         </dependency>
- 		<dependency>
-			<groupId>net.bull.javamelody</groupId>
-			<artifactId>javamelody-spring-boot-starter</artifactId>
-			<version>1.94.0</version>
+        <dependency>
+            <groupId>net.bull.javamelody</groupId>
+            <artifactId>javamelody-spring-boot-starter</artifactId>
+            <version>1.94.0</version>
             <scope>runtime</scope>
-		</dependency>
+        </dependency>
     </dependencies>
 
     <reporting>

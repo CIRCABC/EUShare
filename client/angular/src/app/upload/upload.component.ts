@@ -41,6 +41,7 @@ import { EmailInputComponent } from '../common/formComponents/email-input/email-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgFor } from '@angular/common';
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
+import { Renderer2 } from '@angular/core';
 
 @Component({
   selector: 'app-upload',
@@ -82,7 +83,8 @@ export class UploadComponent implements OnInit {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private modalService: ModalsService,
-    private fileSizePipe: FileSizeFormatPipe
+    private fileSizePipe: FileSizeFormatPipe,
+    private renderer: Renderer2
   ) {
     this.initializeForm();
   }
@@ -108,6 +110,20 @@ export class UploadComponent implements OnInit {
         // notification in interceptor
       }
     }
+  }
+
+  ngAfterViewInit() {
+    // Get a reference to the file input element
+    const fileInput = document.getElementById('fileFromDisk');
+
+    // Register the click event listener using the Renderer2 service
+    this.renderer.listen(fileInput, 'change', (event) => {
+      this.checkExistingFile(event.target.files[0]);
+    });
+
+    this.renderer.listen(fileInput, 'click', (event) => {
+      this.checkUploadRights(event);
+    });
   }
 
   initializeEventListeners() {
@@ -211,6 +227,20 @@ export class UploadComponent implements OnInit {
     }
     this.lastfile = file;
   }
+
+  checkUploadRights = (event: MouseEvent) => {
+    // Open file dialog
+    if (this.sessionApi.getStoredUserInfo()?.role?.toString() != 'EXTERNAL') {
+      return true;
+    }
+    // Do not open file dialog
+    else {
+      event.preventDefault();
+      event.stopPropagation();
+      this.notificationService.addErrorMessageTranslation('no.upload.rights');
+      return false;
+    }
+  };
 
   // SELECT IMPORT
   getSelectImport(): string {

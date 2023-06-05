@@ -21,6 +21,7 @@ import eu.europa.circabc.eushare.exceptions.MessageTooLongException;
 import eu.europa.circabc.eushare.exceptions.UnknownFileException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
+import eu.europa.circabc.eushare.exceptions.UserHasNoUploadRightsException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
@@ -333,7 +334,7 @@ public class FileService implements FileServiceInterface {
       String requesterId,
       Boolean downloadNotification)
       throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
-      UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException,
+      UserHasInsufficientSpaceException, UserHasNoUploadRightsException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException,
       MessageTooLongException {
     // Validate uploader rights
     if (!uploaderId.equals(requesterId)) {
@@ -358,6 +359,10 @@ public class FileService implements FileServiceInterface {
     }
 
     DBUser uploader = userService.getDbUser(uploaderId);
+
+    if ( (uploader.getRole()).equals(DBUser.Role.EXTERNAL) ) {
+      throw new UserHasNoUploadRightsException();
+    }
 
     if (uploader.getFreeSpace() < filesize) {
       throw new UserHasInsufficientSpaceException();

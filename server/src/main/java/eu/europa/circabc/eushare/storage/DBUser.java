@@ -11,6 +11,8 @@ package eu.europa.circabc.eushare.storage;
 
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.model.UserSpace;
+import eu.europa.circabc.eushare.services.UserService;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -50,27 +52,28 @@ public class DBUser {
   @Column(nullable = true, unique = true)
   private String username;
 
-
   @Column(nullable = true)
   private LocalDateTime lastLogged = LocalDateTime.now();
-
 
   // Is the username used for login
 
   @Column(nullable = true, unique = true)
   private String email;
 
-  // Is the email used for login is nullable because a user can represent a link recipient
+  // Is the email used for login is nullable because a user can represent a link
+  // recipient
 
   @Column(nullable = true)
   private String name;
 
-  // Is the GivenName of the INTERNAL user !!OR!! the link name of the EXTERNAL user
+  // Is the GivenName of the INTERNAL user !!OR!! the link name of the EXTERNAL
+  // user
 
   @Column(nullable = true, unique = true)
   private String apiKey;
 
-  private DBUser() {}
+  private DBUser() {
+  }
 
   private DBUser(long totalSpace, Role role) {
     this.totalSpace = totalSpace;
@@ -83,11 +86,10 @@ public class DBUser {
    * @throws IllegalArgumentException If {@code totalSpace < 0}
    */
   public static DBUser createInternalUser(
-    String email,
-    String name,
-    long totalSpace,
-    String username
-  ) {
+      String email,
+      String name,
+      long totalSpace,
+      String username) {
     if (totalSpace < 0) {
       throw new IllegalArgumentException();
     }
@@ -96,8 +98,7 @@ public class DBUser {
     dbUser.setEmail(lowerCaseEmail);
 
     if (name == null || name.isEmpty()) {
-      name =
-        eu.europa.circabc.eushare.utils.StringUtils.emailToGivenName(email);
+      name = eu.europa.circabc.eushare.utils.StringUtils.emailToGivenName(email);
     }
     dbUser.setName(name);
     dbUser.setTotalSpace(totalSpace);
@@ -113,11 +114,9 @@ public class DBUser {
   @Transient
   private long getUsedSpace() {
     return this.filesUploaded.stream()
-      .filter(dbFile ->
-        dbFile.getStatus().equals(DBFile.Status.AVAILABLE) 
-      )
-      .mapToLong(DBFile::getSize)
-      .sum();
+        .filter(dbFile -> dbFile.getStatus().equals(DBFile.Status.AVAILABLE))
+        .mapToLong(DBFile::getSize)
+        .sum();
   }
 
   /**
@@ -136,12 +135,9 @@ public class DBUser {
     userInfo.setId(this.getId());
     userInfo.setGivenName(this.getName());
     userInfo.setLoginUsername(this.getUsername());
-    if(this.role.equals(Role.ADMIN))
-      userInfo.setRole(UserInfo.RoleEnum.ADMIN);
-    if(this.role.equals(Role.INTERNAL))
-      userInfo.setRole(UserInfo.RoleEnum.INTERNAL);
-    if(this.role.equals(Role.API_KEY))
-      userInfo.setRole(UserInfo.RoleEnum.API_KEY);
+    UserInfo.RoleEnum userInfoRole = UserService.convert(this.getRole(), UserInfo.RoleEnum.class);
+    userInfo.setRole(userInfoRole);
+
     userInfo.isAdmin(this.role.equals(Role.ADMIN));
     userInfo.setEmail(this.email);
     return userInfo;
@@ -261,5 +257,4 @@ public class DBUser {
     this.apiKey = apiKey;
   }
 
-  
 }

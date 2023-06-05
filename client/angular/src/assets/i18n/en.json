@@ -91,6 +91,7 @@
   "next": "Next",
   "no.files.to.download": "No files to download",
   "no.uploaded.files": "No uploaded files",
+  "no.upload.rights":"Please consider that in order to have upload rights, an internal user who is affiliated with one of the European institutions must share at least one file with you. This process ensures that upload permissions are only granted to trusted users who have established a connection with an internal user through file sharing.",
   "not.authorized": "You are not authorized",
   "notification.link": "You may now share the following link to your file.",
   "notification.links": "Notifications sent to the following recipients with the following links to your file : ",

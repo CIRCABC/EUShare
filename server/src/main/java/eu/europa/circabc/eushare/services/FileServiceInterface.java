@@ -20,6 +20,7 @@ import eu.europa.circabc.eushare.exceptions.MessageTooLongException;
 import eu.europa.circabc.eushare.exceptions.UnknownFileException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
+import eu.europa.circabc.eushare.exceptions.UserHasNoUploadRightsException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
@@ -77,7 +78,7 @@ public interface FileServiceInterface {
     String requesterId,
     Boolean downloadNotification
   )
-    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, MessageTooLongException;
+    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, UserHasNoUploadRightsException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, MessageTooLongException;
 
   public FileInfoUploader saveOnBehalfOf(
     String fileId,

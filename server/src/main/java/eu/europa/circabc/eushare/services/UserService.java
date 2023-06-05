@@ -25,6 +25,7 @@ import eu.europa.circabc.eushare.storage.UserInfoRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -185,16 +186,21 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       }
       // Role
       if (!oldUserInfo.getRole().equals(userInfo.getRole())) {
-        if (userInfo.getRole().equals(UserInfo.RoleEnum.ADMIN))
-          this.setRole(userId, DBUser.Role.ADMIN);
-        if (userInfo.getRole().equals(UserInfo.RoleEnum.API_KEY))
-          this.setRole(userId, DBUser.Role.API_KEY);
-        else
-          this.setRole(userId, DBUser.Role.INTERNAL);
+        DBUser.Role dbUserRole = convert(userInfo.getRole(), DBUser.Role.class);
+        this.setRole(userId, dbUserRole);
       }
       return userInfo;
     } else {
       throw new UserUnauthorizedException();
+    }
+  }
+
+  public static <T extends Enum<T>> T convert(Enum<?> enumValue, Class<T> targetEnumClass) {
+    try {
+      Field field = targetEnumClass.getDeclaredField(enumValue.name());
+      return (T) field.get(null);
+    } catch (NoSuchFieldException | IllegalAccessException e) {
+      throw new IllegalArgumentException("Unknown role: " + enumValue);
     }
   }
 
@@ -320,6 +326,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
     DBUser user = this.getDbUser(userId);
     user.setRole(role);
+
     userRepository.save(user);
   }
 

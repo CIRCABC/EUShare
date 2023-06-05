@@ -11,6 +11,7 @@ package eu.europa.circabc.eushare.storage;
 
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.model.UserSpace;
+import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.DBUser.Role;
 import java.math.BigDecimal;
 import javax.persistence.Entity;
@@ -53,13 +54,10 @@ public class DBUserInfoProjection {
     userInfo.setUsedSpace(new BigDecimal(this.usedSpace));
     userInfo.setFilesCount(new BigDecimal(this.filesCount));
     userInfo.setId(this.getId());
-    if (this.role.equals(Role.ADMIN))
-      userInfo.setRole(UserInfo.RoleEnum.ADMIN);
-    if (this.role.equals(Role.INTERNAL))
-      userInfo.setRole(UserInfo.RoleEnum.INTERNAL);
-    if (this.role.equals(Role.API_KEY))
-      userInfo.setRole(UserInfo.RoleEnum.API_KEY);
-
+  
+    UserInfo.RoleEnum userInfoRole = UserService.convert(this.role,UserInfo.RoleEnum.class);
+    userInfo.setRole(userInfoRole);
+    
     userInfo.setGivenName(this.getName());
     userInfo.setLoginUsername(this.getUsername());
     userInfo.isAdmin(this.role.equals(Role.ADMIN));

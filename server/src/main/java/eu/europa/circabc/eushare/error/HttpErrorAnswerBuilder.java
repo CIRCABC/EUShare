@@ -49,6 +49,10 @@ public class HttpErrorAnswerBuilder {
     return buildWithMessage(403, "UserHasInsufficientSpace");
   }
 
+  private static Status build403UserHasNoUploadRights() {
+    return buildWithMessage(403, "UserHasNoUploadRights");
+  }
+
   private static Status build403EmptyFileName() {
     return buildWithMessage(403, "EmptyFileName");
   }
@@ -174,4 +178,10 @@ public class HttpErrorAnswerBuilder {
       return "";
     }
   }
+
+  public static String build403UserHasNoUploadRightsToString() {
+    return mapAStatus(build403UserHasNoUploadRights());
+  }
+
+ 
 }

@@ -17,7 +17,7 @@
             <label class="file-label">
               <!-- INPUT -->
               <input appEsFileInput id="fileFromDisk" data-cy="file-input" class="file-input" type="file"
-                formControlName="fileFromDisk" (change)="checkExistingFile($event.target.files[0])" />
+                formControlName="fileFromDisk" />
               <span class="button cta--plus is-bigger">
                 <span class="file-label">
                   {{ "add.file" | transloco }}
