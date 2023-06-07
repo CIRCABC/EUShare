@@ -81,19 +81,19 @@ public class DBUser {
   }
 
   /**
-   * Create a new user with specified role {@code INTERNAL}
+   * Create a new user with specified role 
    *
    * @throws IllegalArgumentException If {@code totalSpace < 0}
    */
-  public static DBUser createInternalUser(
+  public static DBUser createUser(
       String email,
       String name,
       long totalSpace,
-      String username) {
+      String username, DBUser.Role role) {
     if (totalSpace < 0) {
       throw new IllegalArgumentException();
     }
-    DBUser dbUser = new DBUser(totalSpace, Role.INTERNAL);
+    DBUser dbUser = new DBUser(totalSpace, role);
     String lowerCaseEmail = email.toLowerCase();
     dbUser.setEmail(lowerCaseEmail);
 

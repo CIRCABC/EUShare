@@ -105,15 +105,16 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     throw new WrongAuthenticationException();
   }
 
-  private DBUser createInternalUser(
+  private DBUser createUser(
       String email,
       String givenName,
-      String username) {
-    DBUser user = DBUser.createInternalUser(
+      String username, DBUser.Role role) {
+    DBUser user = DBUser.createUser(
         email,
         givenName,
         esConfig.getDefaultUserSpace(),
-        username);
+        username,role);
+
     for (String admin : adminUsers) {
       if (admin.equals(username))
         user.setRole(DBUser.Role.ADMIN);
@@ -357,10 +358,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       dbUser = this.userRepository.findOneByUsername(username);
       if (dbUser == null) {
         // Not found in the database
-        if (username.startsWith("n00"))
-          throw new WrongEmailStructureException();
+        if (username.matches("^n\\d+.*"))
+          dbUser = this.createUser(email, givenName, username,Role.EXTERNAL);
         else
-          dbUser = this.createInternalUser(email, givenName, username);
+          dbUser = this.createUser(email, givenName, username,Role.INTERNAL);
 
         //
       } else {

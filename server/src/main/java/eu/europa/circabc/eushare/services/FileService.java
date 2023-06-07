@@ -119,7 +119,7 @@ public class FileService implements FileServiceInterface {
    * from the file system.
    */
 
-  @Scheduled(cron = "0 0 0 L * ?")                         
+  @Scheduled(cron = "0 0 0 L * ?")
   @Transactional
   void cleanupFiles() {
 
@@ -272,6 +272,14 @@ public class FileService implements FileServiceInterface {
           recipient.getMessage(),
           downloadNotification);
 
+      if (!recipient.getEmail().isEmpty()) {
+        DBUser user = userRepository.findOneByEmailIgnoreCase(recipient.getEmail());
+        if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
+          user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+          userRepository.save(user);
+        }
+      }
+
       String shortUrl;
       do {
         shortUrl = dbShare.generateShortUrl();
@@ -334,7 +342,8 @@ public class FileService implements FileServiceInterface {
       String requesterId,
       Boolean downloadNotification)
       throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
-      UserHasInsufficientSpaceException, UserHasNoUploadRightsException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException,
+      UserHasInsufficientSpaceException, UserHasNoUploadRightsException, CouldNotAllocateFileException,
+      UnknownUserException, EmptyFilenameException,
       MessageTooLongException {
     // Validate uploader rights
     if (!uploaderId.equals(requesterId)) {
@@ -360,7 +369,7 @@ public class FileService implements FileServiceInterface {
 
     DBUser uploader = userService.getDbUser(uploaderId);
 
-    if ( (uploader.getRole()).equals(DBUser.Role.EXTERNAL) ) {
+    if ((uploader.getRole()).equals(DBUser.Role.EXTERNAL)) {
       throw new UserHasNoUploadRightsException();
     }
 
@@ -397,6 +406,14 @@ public class FileService implements FileServiceInterface {
           dbFile,
           recipient.getMessage(),
           downloadNotification);
+
+      if (!recipient.getEmail().isEmpty()) {
+        DBUser user = userRepository.findOneByEmailIgnoreCase(recipient.getEmail());
+        if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
+          user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+          userRepository.save(user);
+        }
+      }
 
       String shortUrl;
       do {

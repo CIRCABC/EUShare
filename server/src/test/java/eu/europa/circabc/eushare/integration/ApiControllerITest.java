@@ -91,25 +91,22 @@ public class ApiControllerITest {
   public void createDefaultUsers() {
     DBUser admin = userRepository.findOneByUsername("admin");
     if (admin == null) {
-      admin =
-        DBUser.createInternalUser(
+      admin = DBUser.createUser(
           "admin@admin.com",
           "admin",
           1024000000,
-          "admin"
-        );
+          "admin",DBUser.Role.INTERNAL);
       admin.setRole(DBUser.Role.ADMIN);
       userRepository.save(admin);
     }
 
     DBUser username = userRepository.findOneByUsername("username");
     if (username == null) {
-      DBUser defautUser = DBUser.createInternalUser(
-        "email@email.com",
-        "name",
-        1024000000,
-        "username"
-      );
+      DBUser defautUser = DBUser.createUser(
+          "email@email.com",
+          "name",
+          1024000000,
+          "username",DBUser.Role.INTERNAL);
       userRepository.save(defautUser);
     }
     assert (true);
@@ -118,31 +115,23 @@ public class ApiControllerITest {
   @Test
   public void createDefaultUser() throws Exception {
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
-    ResponseEntity<String> entity =
-      this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assert (
-      entity
+    assert (entity
         .getBody()
         .contains(
-          userRepository.findOneByEmailIgnoreCase("email@email.com").getId()
-        )
-    );
+            userRepository.findOneByEmailIgnoreCase("email@email.com").getId()));
   }
 
   @Test
   public void postLogin200() throws Exception {
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
-    ResponseEntity<String> entity =
-      this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
-    assert (
-      entity
+    assert (entity
         .getBody()
         .contains(
-          userRepository.findOneByEmailIgnoreCase("email@email.com").getId()
-        )
-    );
+            userRepository.findOneByEmailIgnoreCase("email@email.com").getId()));
   }
 
   @Test
@@ -153,13 +142,11 @@ public class ApiControllerITest {
     httpHeaders.setBearerAuth("token");
     HttpEntity httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
+    ResponseEntity<String> entity = this.testRestTemplate.postForEntity("/login", httpEntity, String.class);
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -171,29 +158,26 @@ public class ApiControllerITest {
     String searchString = "email@email.com";
     Boolean active = true;
 
-    // because user did not share any file  we do not expect to find her via search
-    // even if she  exists
+    // because user did not share any file we do not expect to find her via search
+    // even if she exists
     UserInfo[] expectedUserInfos = {};
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&active={active}&sortBy={sortBy}",
-          HttpMethod.GET,
-          httpEntity,
-          String.class,
-          pageSize,
-          pageNumber,
-          searchString,
-          active,
-          sortBy
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&active={active}&sortBy={sortBy}",
+        HttpMethod.GET,
+        httpEntity,
+        String.class,
+        pageSize,
+        pageNumber,
+        searchString,
+        active,
+        sortBy);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
 
     assertEquals(
-      ApiControllerITest.asJsonString(expectedUserInfos),
-      entity.getBody()
-    );
+        ApiControllerITest.asJsonString(expectedUserInfos),
+        entity.getBody());
   }
 
   @Test
@@ -205,23 +189,20 @@ public class ApiControllerITest {
     String searchString = "email@email.com";
     String sortBy = "name";
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&sortBy={sortBy}",
-          HttpMethod.GET,
-          httpEntity,
-          String.class,
-          pageSize,
-          pageNumber,
-          searchString,
-          sortBy
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}&sortBy={sortBy}",
+        HttpMethod.GET,
+        httpEntity,
+        String.class,
+        pageSize,
+        pageNumber,
+        searchString,
+        sortBy);
 
     assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build400EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build400EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -229,19 +210,16 @@ public class ApiControllerITest {
     int pageSize = 1;
     int pageNumber = 0;
     String searchString = "email@email.com";
-    ResponseEntity<String> entity =
-      this.testRestTemplate.getForEntity(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}",
-          String.class,
-          pageSize,
-          pageNumber,
-          searchString
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.getForEntity(
+        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&searchString={searchString}",
+        String.class,
+        pageSize,
+        pageNumber,
+        searchString);
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -254,239 +232,203 @@ public class ApiControllerITest {
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(searchString);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&sortBy={sortBy}&searchString={searchString}&active={active}",
-          HttpMethod.GET,
-          httpEntity,
-          String.class,
-          pageSize,
-          pageNumber,
-          sortBy,
-          searchString,
-          active
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/users/userInfo?pageSize={pageSize}&pageNumber={pageNumber}&sortBy={sortBy}&searchString={searchString}&active={active}",
+        HttpMethod.GET,
+        httpEntity,
+        String.class,
+        pageSize,
+        pageNumber,
+        sortBy,
+        searchString,
+        active);
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
   public void putUserInfo200() throws Exception {
     UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("admin@admin.com")
-      .toUserInfo();
+        .findOneByEmailIgnoreCase("admin@admin.com")
+        .toUserInfo();
     expectedUserInfo.setIsAdmin(true);
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsAdmin(ApiControllerITest.asJsonString(expectedUserInfo));
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + expectedUserInfo.getId() + "/userInfo",
-          HttpMethod.PUT,
-          httpEntity,
-          String.class
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsAdmin(ApiControllerITest.asJsonString(expectedUserInfo));
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.PUT,
+        httpEntity,
+        String.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(
-      ApiControllerITest.asJsonString(expectedUserInfo),
-      entity.getBody()
-    );
+        ApiControllerITest.asJsonString(expectedUserInfo),
+        entity.getBody());
   }
 
   @Test
   public void putUserInfo401() throws Exception {
     UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("email@email.com")
-      .toUserInfo();
+        .findOneByEmailIgnoreCase("email@email.com")
+        .toUserInfo();
     expectedUserInfo.setIsAdmin(true);
 
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>(
-      ApiControllerITest.asJsonString(expectedUserInfo),
-      httpHeaders
-    );
+        ApiControllerITest.asJsonString(expectedUserInfo),
+        httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + expectedUserInfo.getId() + "/userInfo",
-          HttpMethod.PUT,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.PUT,
+        httpEntity,
+        String.class);
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   public void putUserInfo403() throws Exception {
     UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("email@email.com")
-      .toUserInfo();
+        .findOneByEmailIgnoreCase("email@email.com")
+        .toUserInfo();
     expectedUserInfo.setIsAdmin(true);
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(
-          ApiControllerITest.asJsonString(expectedUserInfo)
-        );
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + expectedUserInfo.getId() + "/userInfo",
-          HttpMethod.PUT,
-          httpEntity,
-          String.class
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(
+        ApiControllerITest.asJsonString(expectedUserInfo));
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.PUT,
+        httpEntity,
+        String.class);
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
   public void putUserInfo404() throws Exception {
     UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("email@email.com")
-      .toUserInfo();
+        .findOneByEmailIgnoreCase("email@email.com")
+        .toUserInfo();
     expectedUserInfo.setIsAdmin(true);
     expectedUserInfo.setId("wrongId");
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsAdmin(ApiControllerITest.asJsonString(expectedUserInfo));
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + expectedUserInfo.getId() + "/userInfo",
-          HttpMethod.PUT,
-          httpEntity,
-          String.class
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsAdmin(ApiControllerITest.asJsonString(expectedUserInfo));
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.PUT,
+        httpEntity,
+        String.class);
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   public void getUserInfo200() throws Exception {
     UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("email@email.com")
-      .toUserInfo();
+        .findOneByEmailIgnoreCase("email@email.com")
+        .toUserInfo();
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + expectedUserInfo.getId() + "/userInfo",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(
-      ApiControllerITest.asJsonString(expectedUserInfo),
-      entity.getBody()
-    );
+        ApiControllerITest.asJsonString(expectedUserInfo),
+        entity.getBody());
   }
 
   @Test
   public void getUserInfo401() throws Exception {
     UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("email@email.com")
-      .toUserInfo();
+        .findOneByEmailIgnoreCase("email@email.com")
+        .toUserInfo();
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>(
-      ApiControllerITest.asJsonString(expectedUserInfo),
-      httpHeaders
-    );
+        ApiControllerITest.asJsonString(expectedUserInfo),
+        httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + expectedUserInfo.getId() + "/userInfo",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   public void getUserInfo403() throws Exception {
     UserInfo expectedUserInfo = userRepository
-      .findOneByEmailIgnoreCase("admin@admin.com")
-      .toUserInfo();
+        .findOneByEmailIgnoreCase("admin@admin.com")
+        .toUserInfo();
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + expectedUserInfo.getId() + "/userInfo",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + expectedUserInfo.getId() + "/userInfo",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
   public void getUserInfo404() throws Exception {
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" + "wrongId" + "/userInfo",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" + "wrongId" + "/userInfo",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void getFilesFileInfoUploader200() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
 
     fileRepository.save(dbFile);
@@ -499,47 +441,41 @@ public class ApiControllerITest {
 
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          uploaderSaved.getId() +
-          "/files/fileInfoUploader?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            uploaderSaved.getId() +
+            "/files/fileInfoUploader?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(
-      ApiControllerITest.asJsonString(expectedFileInfoUploaderArray),
-      entity.getBody()
-    );
+        ApiControllerITest.asJsonString(expectedFileInfoUploaderArray),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void getFilesFileInfoUploader401() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -554,47 +490,41 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          uploaderSaved.getId() +
-          "/files/fileInfoUploader?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            uploaderSaved.getId() +
+            "/files/fileInfoUploader?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void getFilesFileInfoUploader403() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -602,21 +532,18 @@ public class ApiControllerITest {
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          uploaderSaved.getId() +
-          "/files/fileInfoUploader?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            uploaderSaved.getId() +
+            "/files/fileInfoUploader?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
@@ -624,120 +551,106 @@ public class ApiControllerITest {
   public void getFilesFileInfoUploader404() throws Exception {
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          "dummyId" +
-          "/files/fileInfoUploader?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            "dummyId" +
+            "/files/fileInfoUploader?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void getFilesFileInfoRecipient200() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message", true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(
-      uploader.getId()
-    );
+        uploader.getId());
     FileInfoRecipient[] expectedFileInfoRecipientArray = new FileInfoRecipient[1];
     expectedFileInfoRecipientArray[0] = expecterFileInfoRecipient;
 
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          uploaderSaved.getId() +
-          "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            uploaderSaved.getId() +
+            "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(
-      ApiControllerITest.asJsonString(expectedFileInfoRecipientArray),
-      entity.getBody()
-    );
+        ApiControllerITest.asJsonString(expectedFileInfoRecipientArray),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void getFilesFileInfoRecipient401() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     uploader.setRole(DBUser.Role.ADMIN);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(DBUser.Role.ADMIN, uploaderSaved.getRole());
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message", true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(
-      uploader.getId()
-    );
+        uploader.getId());
     FileInfoRecipient[] expectedFileInfoRecipientArray = new FileInfoRecipient[1];
     expectedFileInfoRecipientArray[0] = expecterFileInfoRecipient;
 
@@ -746,80 +659,70 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          uploaderSaved.getId() +
-          "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            uploaderSaved.getId() +
+            "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void getFilesFileInfoRecipient403() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message", true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
     FileInfoRecipient expecterFileInfoRecipient = dbFile.toFileInfoRecipient(
-      uploader.getId()
-    );
+        uploader.getId());
     FileInfoRecipient[] expectedFileInfoRecipientArray = new FileInfoRecipient[1];
     expectedFileInfoRecipientArray[0] = expecterFileInfoRecipient;
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          uploaderSaved.getId() +
-          "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            uploaderSaved.getId() +
+            "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
@@ -827,21 +730,18 @@ public class ApiControllerITest {
   public void getFilesFileInfoRecipient404() throws Exception {
     HttpEntity<String> httpEntity = this.httpEntityAsAdmin("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/user/" +
-          "dummyId" +
-          "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/user/" +
+            "dummyId" +
+            "/files/fileInfoRecipient?pageSize=2&pageNumber=0",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -850,26 +750,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -880,13 +777,11 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<Resource> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId(),
-          HttpMethod.GET,
-          httpEntity,
-          Resource.class
-        );
+    ResponseEntity<Resource> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId(),
+        HttpMethod.GET,
+        httpEntity,
+        Resource.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
   }
@@ -897,27 +792,24 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path,
-      "dummyPassword"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path,
+        "dummyPassword");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -928,19 +820,16 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "?password=",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "?password=",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -951,19 +840,16 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + "dummyId" + "?password=",
-          HttpMethod.GET,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + "dummyId" + "?password=",
+        HttpMethod.GET,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404FileNotFoundToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404FileNotFoundToString(),
+        entity.getBody());
   }
 
   @Test
@@ -972,26 +858,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -999,13 +882,11 @@ public class ApiControllerITest {
 
     HttpEntity httpEntity = this.httpEntityAsAdmin("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId(),
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId(),
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
   }
@@ -1016,26 +897,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -1046,19 +924,16 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId(),
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId(),
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1067,26 +942,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -1094,19 +966,16 @@ public class ApiControllerITest {
 
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId(),
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId(),
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1114,19 +983,16 @@ public class ApiControllerITest {
   public void deleteFile404() throws Exception { // NOSONAR
     HttpEntity httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + "dummyId",
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + "dummyId",
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1142,21 +1008,17 @@ public class ApiControllerITest {
     Recipient recipient = new Recipient();
     recipient.setEmail("email@email.com");
     recipient.setMessage("message");
-    
+
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(
-          ApiControllerITest.asJsonString(fileRequest)
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(
+        ApiControllerITest.asJsonString(fileRequest));
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/fileRequest",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/fileRequest",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
   }
@@ -1175,24 +1037,19 @@ public class ApiControllerITest {
 
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(
-          ApiControllerITest.asJsonString(fileRequest)
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(
+        ApiControllerITest.asJsonString(fileRequest));
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/fileRequest",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/fileRequest",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build400EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build400EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1215,19 +1072,16 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/fileRequest",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/fileRequest",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1245,24 +1099,19 @@ public class ApiControllerITest {
 
     fileRequest.setSharedWith(Arrays.asList(recipient));
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(
-          ApiControllerITest.asJsonString(fileRequest)
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(
+        ApiControllerITest.asJsonString(fileRequest));
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/fileRequest",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/fileRequest",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403IllegalFileSizeToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403IllegalFileSizeToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1271,26 +1120,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -1301,26 +1147,21 @@ public class ApiControllerITest {
     recipient.setMessage("message");
     recipient.setDownloadNotification(false);
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(
-          ApiControllerITest.asJsonString(recipient),
-          "emailA@email.com",
-          "uniqueUsername"
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(
+        ApiControllerITest.asJsonString(recipient),
+        "emailA@email.com",
+        "uniqueUsername");
 
-    ResponseEntity<Recipient> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
-          HttpMethod.POST,
-          httpEntity,
-          Recipient.class
-        );
+    ResponseEntity<Recipient> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
+        HttpMethod.POST,
+        httpEntity,
+        Recipient.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
     assertEquals(
-      recipient.getEmail().toLowerCase(),
-      entity.getBody().getEmail()
-    );
+        recipient.getEmail().toLowerCase(),
+        entity.getBody().getEmail());
     assertEquals(recipient.getMessage(), entity.getBody().getMessage());
   }
 
@@ -1330,26 +1171,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -1359,26 +1197,21 @@ public class ApiControllerITest {
     recipient.setEmail(null);
     recipient.setMessage("message");
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(
-          ApiControllerITest.asJsonString(recipient),
-          "emailA@email.com",
-          "stupidUsername"
-        );
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(
+        ApiControllerITest.asJsonString(recipient),
+        "emailA@email.com",
+        "stupidUsername");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build400EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build400EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1387,26 +1220,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -1421,19 +1251,16 @@ public class ApiControllerITest {
     httpHeaders.setOrigin("http://localhost:8080");
     HttpEntity<String> httpEntity = new HttpEntity<String>("", httpHeaders);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1442,26 +1269,23 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -1471,22 +1295,18 @@ public class ApiControllerITest {
     recipient.setEmail("email@email.com");
     recipient.setMessage("message");
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/sharedWith",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1496,22 +1316,18 @@ public class ApiControllerITest {
     recipient.setEmail("email@email.com");
     recipient.setMessage("message");
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser(ApiControllerITest.asJsonString(recipient));
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + "dummyId" + "/fileRequest/sharedWith",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + "dummyId" + "/fileRequest/sharedWith",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1521,32 +1337,28 @@ public class ApiControllerITest {
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     Resource fileSystemResource = new ClassPathResource(
-      "file.txt",
-      this.getClass().getClassLoader()
-    );
+        "file.txt",
+        this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
     body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
@@ -1554,15 +1366,13 @@ public class ApiControllerITest {
 
     FileInfoUploader fileInfoUploader = dbFile.toFileInfoUploader();
 
-    HttpEntity<MultiValueMap<String, Object>> httpEntity =
-      this.httpEntityAsInternalUser(body, "emailA@email.com", "uniqueUsername");
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body, "emailA@email.com",
+        "uniqueUsername");
 
-    ResponseEntity<FileInfoUploader> entity =
-      this.testRestTemplate.postForEntity(
-          "/file/" + dbFile.getId() + "/fileRequest/fileContent",
-          httpEntity,
-          FileInfoUploader.class
-        );
+    ResponseEntity<FileInfoUploader> entity = this.testRestTemplate.postForEntity(
+        "/file/" + dbFile.getId() + "/fileRequest/fileContent",
+        httpEntity,
+        FileInfoUploader.class);
     assertEquals(HttpStatus.OK, entity.getStatusCode());
 
     // after post status is availible
@@ -1577,53 +1387,46 @@ public class ApiControllerITest {
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/emptyfile.txt";
     Resource fileSystemResource = new ClassPathResource(
-      "emptyfile.txt",
-      this.getClass().getClassLoader()
-    );
+        "emptyfile.txt",
+        this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
     body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "emptyfile.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "emptyfile.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
     // Done
 
-    HttpEntity<MultiValueMap<String, Object>> httpEntity =
-      this.httpEntityAsInternalUser(body, "emailA@email.com", "stupidUsername");
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body, "emailA@email.com",
+        "stupidUsername");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "/fileRequest/fileContent",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/fileContent",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.BAD_REQUEST, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build400EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build400EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1633,53 +1436,45 @@ public class ApiControllerITest {
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     Resource fileSystemResource = new ClassPathResource(
-      "file.txt",
-      this.getClass().getClassLoader()
-    );
+        "file.txt",
+        this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
     body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
     // Done
 
-    HttpEntity<MultiValueMap<String, Object>> httpEntity =
-      this.httpEntityAsAnonymousUser(body);
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsAnonymousUser(body);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "/fileRequest/fileContent",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/fileContent",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1689,53 +1484,45 @@ public class ApiControllerITest {
     File resourcesDirectory = new File("src/test/resources");
     String path = resourcesDirectory.getAbsolutePath() + "/file.txt";
     Resource fileSystemResource = new ClassPathResource(
-      "file.txt",
-      this.getClass().getClassLoader()
-    );
+        "file.txt",
+        this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
     body.add("file", fileSystemResource);
 
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "file.txt",
-      13,
-      LocalDate.now(),
-      path
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "file.txt",
+        13,
+        LocalDate.now(),
+        path);
     dbFile.setStatus(DBFile.Status.ALLOCATED);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
     // Done
 
-    HttpEntity<MultiValueMap<String, Object>> httpEntity =
-      this.httpEntityAsInternalUser(body);
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + dbFile.getId() + "/fileRequest/fileContent",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + dbFile.getId() + "/fileRequest/fileContent",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1744,76 +1531,65 @@ public class ApiControllerITest {
     // Creating the uploaded file
     File resourcesDirectory = new File("src/test/resources");
     Resource fileSystemResource = new ClassPathResource(
-      "file.txt",
-      this.getClass().getClassLoader()
-    );
+        "file.txt",
+        this.getClass().getClassLoader());
     MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
     body.add("file", fileSystemResource);
-    HttpEntity<MultiValueMap<String, Object>> httpEntity =
-      this.httpEntityAsInternalUser(body);
+    HttpEntity<MultiValueMap<String, Object>> httpEntity = this.httpEntityAsInternalUser(body);
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" + "dummyId" + "/fileRequest/fileContent",
-          HttpMethod.POST,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" + "dummyId" + "/fileRequest/fileContent",
+        HttpMethod.POST,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void deleteFileSharedWithUser200() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message", true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
     // Done
 
-    HttpEntity<String> httpEntity =
-      this.httpEntityAsInternalUser("", "emailA@email.com", "uniqueUsername");
+    HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("", "emailA@email.com", "uniqueUsername");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" +
-          dbFile.getId() +
-          "/fileRequest/sharedWith?userID=" +
-          uploader.getId(),
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" +
+            dbFile.getId() +
+            "/fileRequest/sharedWith?userID=" +
+            uploader.getId(),
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.OK, entity.getStatusCode());
   }
@@ -1822,31 +1598,28 @@ public class ApiControllerITest {
   @DirtiesContext
   public void deleteFileSharedWithUser401() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message", true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
@@ -1854,53 +1627,47 @@ public class ApiControllerITest {
 
     HttpEntity<String> httpEntity = this.httpEntityAsAnonymousUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" +
-          dbFile.getId() +
-          "/fileRequest/sharedWith?userID=" +
-          uploader.getId(),
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" +
+            dbFile.getId() +
+            "/fileRequest/sharedWith?userID=" +
+            uploader.getId(),
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.UNAUTHORIZED, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build401EmptyToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build401EmptyToString(),
+        entity.getBody());
   }
 
   @Test
   @DirtiesContext
   public void deleteFileSharedWithUser403() throws Exception {
     // Creating the uploaded file
-    DBUser uploader = DBUser.createInternalUser(
-      "emailA@email.com",
-      "uniqueName",
-      1024,
-      "uniqueUsername"
-    );
+    DBUser uploader = DBUser.createUser(
+        "emailA@email.com",
+        "uniqueName",
+        1024,
+        "uniqueUsername", DBUser.Role.INTERNAL);
     userRepository.save(uploader);
     DBUser uploaderSaved = userRepository.findOneByEmailIgnoreCase(
-      "emailA@email.com"
-    );
+        "emailA@email.com");
     assertEquals(uploader, uploaderSaved);
 
     DBFile dbFile = new DBFile(
-      uploaderSaved,
-      Collections.emptySet(),
-      "filename",
-      1024,
-      LocalDate.now(),
-      "/a/sample/path"
-    );
+        uploaderSaved,
+        Collections.emptySet(),
+        "filename",
+        1024,
+        LocalDate.now(),
+        "/a/sample/path");
     dbFile.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(dbFile);
     fileRepository.findOneById(dbFile.getId());
 
-    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message",true);
+    DBShare dbShare = new DBShare(uploader.getEmail(), dbFile, "message", true);
     dbShare.setShorturl("AAAAAA");
     shareRepository.save(dbShare);
     shareRepository.findOneByDownloadId(dbShare.getDownloadId());
@@ -1908,22 +1675,19 @@ public class ApiControllerITest {
 
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/" +
-          dbFile.getId() +
-          "/fileRequest/sharedWith?userID=" +
-          uploader.getId(),
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/" +
+            dbFile.getId() +
+            "/fileRequest/sharedWith?userID=" +
+            uploader.getId(),
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.FORBIDDEN, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+        entity.getBody());
   }
 
   @Test
@@ -1931,19 +1695,16 @@ public class ApiControllerITest {
   public void deleteFileSharedWithUser404() throws Exception {
     HttpEntity<String> httpEntity = this.httpEntityAsInternalUser("");
 
-    ResponseEntity<String> entity =
-      this.testRestTemplate.exchange(
-          "/file/dummyId/fileRequest/sharedWith?userID=dummyId",
-          HttpMethod.DELETE,
-          httpEntity,
-          String.class
-        );
+    ResponseEntity<String> entity = this.testRestTemplate.exchange(
+        "/file/dummyId/fileRequest/sharedWith?userID=dummyId",
+        HttpMethod.DELETE,
+        httpEntity,
+        String.class);
 
     assertEquals(HttpStatus.NOT_FOUND, entity.getStatusCode());
     assertEquals(
-      HttpErrorAnswerBuilder.build404FileNotFoundToString(),
-      entity.getBody()
-    );
+        HttpErrorAnswerBuilder.build404FileNotFoundToString(),
+        entity.getBody());
   }
 
   public static String asJsonString(final Object obj) {
@@ -1967,10 +1728,9 @@ public class ApiControllerITest {
   }
 
   public <T> HttpEntity<T> httpEntityAsInternalUser(
-    T body,
-    String email,
-    String username
-  ) {
+      T body,
+      String email,
+      String username) {
     HttpHeaders httpHeaders = new HttpHeaders();
     if (body instanceof Resource) {
       httpHeaders.setContentType(MediaType.APPLICATION_OCTET_STREAM);
@@ -2009,17 +1769,15 @@ public class ApiControllerITest {
     attributes.put("email", email);
     attributes.put("username", username);
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      username,
-      attributes,
-      collection
-    );
+        username,
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
   }
 }

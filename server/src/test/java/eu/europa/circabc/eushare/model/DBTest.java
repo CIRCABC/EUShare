@@ -52,7 +52,7 @@ public class DBTest {
     @Test
     @Transactional
     public void creationOfaFileTest() {
-        DBUser dbUser = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername");
+        DBUser dbUser = DBUser.createUser("emailA@email.com", "uniqueName", 1024, "uniqueUsername",DBUser.Role.INTERNAL);
         userRepository.save(dbUser);
         DBFile dbFile = new DBFile( dbUser, Collections.emptySet(), "filename", 1024, LocalDate.now(),
                 "/a/sample/path"); // NOSONAR
@@ -65,7 +65,7 @@ public class DBTest {
    /*@Test
     @Transactional
     public void creationOfaUserToFileTest() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024,
+        DBUser uploader = DBUser.createUser("emailA@email.com", "uniqueName", 1024,
                 "uniqueUsername");
         userRepository.save(uploader);
 
@@ -103,8 +103,8 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByReceiver() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024,
-                "uniqueUsername");
+        DBUser uploader = DBUser.createUser("emailA@email.com", "uniqueName", 1024,
+                "uniqueUsername",DBUser.Role.INTERNAL);
         userRepository.save(uploader);
 
         DBFile dbFile = new DBFile( uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
@@ -135,8 +135,8 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByUploader() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024,
-                "uniqueUsername");
+        DBUser uploader = DBUser.createUser("emailA@email.com", "uniqueName", 1024,
+                "uniqueUsername",DBUser.Role.INTERNAL);
         userRepository.save(uploader);
 
         DBFile dbFile = new DBFile(uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
@@ -157,8 +157,8 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfUsersByEmail() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024,
-                "uniqueUsername");
+        DBUser uploader = DBUser.createUser("emailA@email.com", "uniqueName", 1024,
+                "uniqueUsername",DBUser.Role.INTERNAL);
         userRepository.save(uploader);
 
         List<DBUser> foundUsers = userRepository.findByEmailIgnoreCaseStartsWith("emailA", PageRequest.of(0, 10));
@@ -169,8 +169,8 @@ public class DBTest {
     @Test
     @Transactional
     public void searchOfAFileByReceiverAndOrderByExpDateAndName() {
-        DBUser uploader = DBUser.createInternalUser("emailA@email.com", "uniqueName", 1024,
-                "uniqueUsername");
+        DBUser uploader = DBUser.createUser("emailA@email.com", "uniqueName", 1024,
+                "uniqueUsername",DBUser.Role.INTERNAL);
         userRepository.save(uploader);
 
         DBFile dbFile = new DBFile( uploader, Collections.emptySet(), "filename", 1024, LocalDate.now(),
