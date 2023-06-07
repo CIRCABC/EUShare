@@ -91,6 +91,7 @@
   "next": "Naprej",
   "no.files.to.download": "Ni datotek za prenos",
   "no.uploaded.files": "Ni naloženih datotek",
+  "no.upload.rights": "Upoštevajte, da mora notranji uporabnik, ki je povezan z eno od evropskih institucij, z vami deliti vsaj eno datoteko. Ta postopek zagotavlja, da so dovoljenja za nalaganje dodeljena samo zaupanja vrednim uporabnikom, ki so vzpostavili povezavo z notranjim uporabnikom prek skupne rabe datotek. Lahko pa tudi zahtevate pravice za nalaganje od skupine za podporo CIRCABC. Upoštevajte, da bo morda potrebna odjava/prijava za uveljavljanje vaših pravic za nalaganje.",
   "not.authorized": "Nimate pooblastila za",
   "notification.link": "Zdaj lahko delite naslednjo povezavo do svoje datoteke.",
   "notification.links": "Obvestila poslana naslednjim prejemnikom z naslednjimi povezavami do vaše datoteke: ",

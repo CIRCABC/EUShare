@@ -91,6 +91,7 @@
   "next": "Järgmine",
   "no.files.to.download": "Ei ole faile, mida alla laadida",
   "no.uploaded.files": "Üles laaditud failid puuduvad",
+  "no.upload.rights": "Palun arvestage, et üleslaadimisõiguste saamiseks peab ühe Euroopa institutsiooniga liitunud sisemine kasutaja teiega jagama vähemalt ühte faili. See protsess tagab, et üleslaadimisõigused antakse ainult usaldusväärsetele kasutajatele, kes on loonud ühenduse sisemise kasutajaga failide ühiskasutuse kaudu. Teise võimalusena võite taotleda üleslaadimisõigusi CIRCABC tugimeeskonnalt. Palun pange tähele, et üleslaadimisõiguste rakendamiseks võib olla vaja sisselogimise/sisselogimist.",
   "not.authorized": "Teil ei ole:",
   "notification.link": "Saate nüüd jagada oma faili linki.",
   "notification.links": "Järgmistele vastuvõtjatele on saadetud teated Teie faili lingiga: ",

@@ -91,6 +91,7 @@
   "next": "Seuraava",
   "no.files.to.download": "Ei ladattavia tiedostoja",
   "no.uploaded.files": "Ei järjestelmään lähetettyjä tiedostoja",
+  "no.upload.rights": "Huomioithan, että lähetysoikeuksien saamiseksi johonkin EU:n toimielimeen kuuluvan sisäisen käyttäjän on jaettava vähintään yksi tiedosto kanssasi. Tämä prosessi varmistaa, että latausoikeudet myönnetään vain luotetuille käyttäjille, jotka ovat luoneet yhteyden sisäiseen käyttäjään tiedostonjaon avulla. Vaihtoehtoisesti voit pyytää latausoikeuksia CIRCABC-tukitiimiltä. Huomaathan, että latausoikeuksien soveltaminen saattaa edellyttää uloskirjautumista/kirjautumista.",
   "not.authorized": "Sinulla ei ole oikeuksia",
   "notification.link": "Voit nyt jakaa seuraavan linkin tiedostoosi.",
   "notification.links": "Seuraaville vastaanottajille on lähetetty ilmoitukset, joissa on seuraavat linkit tiedostoosi: ",

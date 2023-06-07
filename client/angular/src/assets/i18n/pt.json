@@ -91,6 +91,7 @@
   "next": "Seguinte",
   "no.files.to.download": "Não há ficheiros para descarregar",
   "no.uploaded.files": "Nenhuns ficheiros carregados",
+  "no.upload.rights": "Considere que, para obter direitos de upload, um usuário interno afiliado a uma das instituições europeias deve compartilhar pelo menos um arquivo com você. Esse processo garante que as permissões de upload sejam concedidas somente a usuários confiáveis que estabeleceram uma conexão com um usuário interno por meio do compartilhamento de arquivos. Como alternativa, você pode solicitar direitos de upload da equipe de suporte do CIRCABC. Observe que um logout/login pode ser necessário para aplicar seus direitos de upload.",
   "not.authorized": "Não tem autorização",
   "notification.link": "Já pode partilhar a seguinte ligação para o seu ficheiro.",
   "notification.links": "Notificações enviadas aos seguintes destinatários, com as seguintes ligações para o seu ficheiro: ",

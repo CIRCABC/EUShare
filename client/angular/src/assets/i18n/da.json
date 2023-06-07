@@ -91,6 +91,7 @@
   "next": "Næste",
   "no.files.to.download": "Ingen filer at downloade",
   "no.uploaded.files": "Ingen uploadede filer",
+  "no.upload.rights": "Vær opmærksom på, at en intern bruger, der er tilknyttet en af de europæiske institutioner, skal dele mindst en fil med dig for at opnå uploadrettigheder. Denne proces sikrer, at upload tilladelser kun gives til betroede brugere, der har etableret en forbindelse med en intern bruger via fildeling. Alternativt kan du anmode om uploadrettigheder fra CIRCABC-supportteamet. Bemærk, at et logout/login kan være nødvendigt for at anvende dine upload-rettigheder.",
   "not.authorized": "Du har ikke ret til",
   "notification.link": "Du kan nu dele følgende link til din fil.",
   "notification.links": "Notifikationer sendt til følgende modtagere med følgende links til din fil: ",
