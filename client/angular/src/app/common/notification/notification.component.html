@@ -31,6 +31,9 @@
     <ng-template [ngSwitchCase]="3">
       <img src="{{ imageCheckMarkLink }}" alt="OK" />
     </ng-template>
+    <ng-template [ngSwitchCase]="4">
+      <img src="{{ imageForbiddenLink }}" alt="xForbidden" />
+    </ng-template>
   </div>
   <div class="box--message--content">
     {{ message.body }}

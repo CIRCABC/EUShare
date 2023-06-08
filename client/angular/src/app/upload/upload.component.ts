@@ -237,7 +237,7 @@ export class UploadComponent implements OnInit {
     else {
       event.preventDefault();
       event.stopPropagation();
-      this.notificationService.addErrorMessageTranslation('no.upload.rights');
+      this.notificationService.addForbiddenMessageTranslation('no.upload.rights');
       return false;
     }
   };

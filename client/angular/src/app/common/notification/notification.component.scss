@@ -69,6 +69,11 @@
   border-top: 3px solid #ffc133;
 }
 
+.box--message--forbidden {
+  border-bottom: 3px solid #7a0000;
+  border-top: 3px solid #7a0000;
+}
+
 .box--message--content {
   padding: 25px;
   padding-left: 128px;

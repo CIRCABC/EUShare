@@ -54,6 +54,37 @@ export class NotificationService {
     );
   }
 
+  public addWarningMessageTranslation(
+    key: string,
+    params?: HashMap,
+    autoclose = false,
+    displayTime?: number
+  ): void {
+    this.addMessageTranslation(
+      NotificationLevel.WARNING,
+      key,
+      params,
+      autoclose,
+      displayTime
+    );
+  }
+
+  public addForbiddenMessageTranslation(
+    key: string,
+    params?: HashMap,
+    autoclose = false,
+    displayTime?: number
+  ): void {
+    this.addMessageTranslation(
+      NotificationLevel.FORBIDDEN,
+      key,
+      params,
+      autoclose,
+      displayTime
+    );
+  }
+
+
   public addSuccessMessageTranslation(
     key: string,
     params?: HashMap,

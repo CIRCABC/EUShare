@@ -61,6 +61,9 @@ export class NotificationComponent implements OnInit {
       }
       case NotificationLevel.ERROR: {
         return 'notification box--message--error';
+      }     
+      case NotificationLevel.FORBIDDEN: {
+        return 'notification box--message--forbidden';
       }
     }
   }
@@ -83,5 +86,9 @@ export class NotificationComponent implements OnInit {
 
   get imageCheckMarkLink(): string {
     return 'assets/img/check-mark.png';
+  }
+
+  get imageForbiddenLink(): string {
+    return 'assets/img/exclamation.png';
   }
 }
