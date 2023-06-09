@@ -12,6 +12,7 @@ package eu.europa.circabc.eushare.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +23,13 @@ import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthen
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.storage.UserRepository;
+
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -43,19 +50,25 @@ public class CustomWebSecurityConfigurerAdapter
   @Autowired
   private UserRepository userRepository;
 
+
+  @Autowired
+  private EushareConfiguration esConfig;
+  
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
-    APIKeyAuthenticationFilter filter = new APIKeyAuthenticationFilter(userRepository);
+    APIKeyAuthenticationFilter apiKeyFilter = new APIKeyAuthenticationFilter(userRepository);
     
 
+    String allowedOrigin = esConfig.getClientHttpAddress();
+    RefererFilter refererFilter = new RefererFilter(allowedOrigin);
+
     http
-        .cors()
+        .cors().configurationSource(corsConfigurationSource(allowedOrigin))
         .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-
         .csrf()
         .disable()
         .authorizeRequests()
@@ -74,7 +87,8 @@ public class CustomWebSecurityConfigurerAdapter
         .anyRequest()
         .authenticated()
         .and()
-        .addFilter(filter)
+        .addFilter(apiKeyFilter)
+        .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)  
         .exceptionHandling()
         .accessDeniedHandler(accessDeniedHandler())
         .and()
@@ -92,6 +106,22 @@ public class CustomWebSecurityConfigurerAdapter
         .authenticationEntryPoint(authenticationEntryPoint())
         .opaqueToken();
   }
+
+  
+
+  @Bean
+    public CorsConfigurationSource corsConfigurationSource(String allowedOrigin) {
+        CorsConfiguration config = new CorsConfiguration();
+       // config.setAllowCredentials(true);
+        config.addAllowedOrigin(allowedOrigin);
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+
+        return source;
+    }
 
   @Bean
   AuthenticationEntryPoint authenticationEntryPoint() {
