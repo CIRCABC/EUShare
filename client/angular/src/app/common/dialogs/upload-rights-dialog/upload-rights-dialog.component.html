@@ -1,1 +1,8 @@
-<p>upload-rights-dialog works!</p>
+<h2 mat-dialog-title>{{ data.title }}</h2>
+<mat-dialog-content>
+  <p>{{ data.message }}</p>
+</mat-dialog-content>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="result" cdkFocusInitial>Ok</button>
+</div>

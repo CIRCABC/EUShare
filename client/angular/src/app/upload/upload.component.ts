@@ -42,6 +42,9 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { EmailInputComponent } from '../common/formComponents/email-input/email-input.component';
 import { MessageTextAreaComponent } from '../common/formComponents/message-text-area/message-text-area.component';
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
+import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef,MatDialogModule} from '@angular/material/dialog';
 
 
 @Component({
@@ -59,7 +62,9 @@ import { FileAccessorDirective } from '../directives/file-accessor.directive';
     EmailInputComponent,
     MessageTextAreaComponent,
     FileSizeFormatPipe,
-    TranslocoModule
+    TranslocoModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [FileSizeFormatPipe],
   
@@ -89,7 +94,8 @@ export class UploadComponent implements OnInit {
     private modalService: ModalsService,
     private fileSizePipe: FileSizeFormatPipe,
     private renderer: Renderer2,
-    
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) {
     this.initializeForm();
   }
@@ -243,11 +249,25 @@ export class UploadComponent implements OnInit {
     else {
       event.preventDefault();
       event.stopPropagation();
+      this.snackBar.open('Hello, Snackbar!', 'Dismiss', {
+        duration: 3000
+      });
+
+      const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
+        data: {
+          title: 'My Dialog',
+          message: 'This is a custom dialog opened using MatDialog.'
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('Dialog was closed'+JSON.stringify(result));
+      });
+
       this.notificationService.addForbiddenMessageTranslation('no.upload.rights');
       return false;
     }
   };
-
   // SELECT IMPORT
   getSelectImport(): string {
     return this.uploadform.controls['selectImport'].value;
