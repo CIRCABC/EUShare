@@ -8,40 +8,41 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
+import { HttpEvent, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   FormArray,
-  FormGroup,
-  Validators,
   FormBuilder,
   FormControl,
+  FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { faUpload, faUserSlash } from '@fortawesome/free-solid-svg-icons';
+import { firstValueFrom } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ModalsService } from '../common/modals/modals.service';
+import { NotificationService } from '../common/notification/notification.service';
+import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
+import { fileSizeValidator } from '../common/validators/file-validator';
 import {
-  FileService,
+  FileInfoUploader,
   FileRequest,
+  FileService,
   Recipient,
   UsersService,
-  FileInfoUploader,
 } from '../openapi';
-import { NotificationService } from '../common/notification/notification.service';
-import { fileSizeValidator } from '../common/validators/file-validator';
-import { map } from 'rxjs/operators';
-import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { I18nService } from '../common/i18n/i18n.service';
-import { firstValueFrom } from 'rxjs';
 import { SessionStorageService } from '../services/session-storage.service';
-import { ModalsService } from '../common/modals/modals.service';
-import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
-import { TranslocoModule } from '@ngneat/transloco';
-import { MessageTextAreaComponent } from '../common/formComponents/message-text-area/message-text-area.component';
-import { EmailInputComponent } from '../common/formComponents/email-input/email-input.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgIf, NgFor } from '@angular/common';
-import { FileAccessorDirective } from '../directives/file-accessor.directive';
+
+import { NgFor, NgIf } from '@angular/common';
 import { Renderer2 } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TranslocoModule } from '@ngneat/transloco';
+import { EmailInputComponent } from '../common/formComponents/email-input/email-input.component';
+import { MessageTextAreaComponent } from '../common/formComponents/message-text-area/message-text-area.component';
+import { FileAccessorDirective } from '../directives/file-accessor.directive';
+
 
 @Component({
   selector: 'app-upload',
@@ -49,6 +50,7 @@ import { Renderer2 } from '@angular/core';
   styleUrls: ['./upload.component.scss'],
   standalone: true,
   imports: [
+    
     ReactiveFormsModule,
     FileAccessorDirective,
     NgIf,
@@ -56,9 +58,11 @@ import { Renderer2 } from '@angular/core';
     FontAwesomeModule,
     EmailInputComponent,
     MessageTextAreaComponent,
-    TranslocoModule,
     FileSizeFormatPipe,
+    TranslocoModule
   ],
+  providers: [FileSizeFormatPipe],
+  
 })
 export class UploadComponent implements OnInit {
   public faUserSlash = faUserSlash;
@@ -81,10 +85,11 @@ export class UploadComponent implements OnInit {
     private userApi: UsersService,
     private fileApi: FileService,
     private notificationService: NotificationService,
-    private i18nService: I18nService,
+  
     private modalService: ModalsService,
     private fileSizePipe: FileSizeFormatPipe,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    
   ) {
     this.initializeForm();
   }
@@ -146,9 +151,10 @@ export class UploadComponent implements OnInit {
   initializeForm() {
     this.emailControl = this.fb.nonNullable.control('');
 
-    const message = this.i18nService.translate('file.size.bigger.quota', {
+    const message = "hello";
+    /*this.i18nService.translate('file.size.bigger.quota', {
       fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes),
-    });
+    });*/
 
     this.uploadform = this.fb.nonNullable.group({
       fileFromDisk: [
@@ -565,10 +571,10 @@ export class UploadComponent implements OnInit {
         return;
 
       default:
-        this.notificationService.addErrorMessage(
-          `${this.i18nService.translate(
+        this.notificationService.addErrorMessage("error msg"
+         /* `${this.i18nService.translate(
             'error.occurred.download'
-          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}`
+          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}` */
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

@@ -9,22 +9,23 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { NgModule } from '@angular/core';
-import { NoPreloading, RouterModule, Routes } from '@angular/router';
-import { FilelinkComponent } from './filelink/filelink.component';
-import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
-import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
+import { RouterModule, Routes } from '@angular/router';
+import { NoPreloading } from '@angular/router';
 import { loginCanActivate } from './login.guard';
+import { uploadSuccessCanActivate } from './upload-success.guard';
 import { LoginComponent } from './login/login.component';
+import { LoginCircabcComponent } from './login/login-circabc.component';
+import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
 import { UploadComponent } from './upload/upload.component';
+import { UploadSuccessComponent } from './upload-success/upload-success.component';
+import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
+import { FilelinkComponent } from './filelink/filelink.component';
 import { AdministrationComponent } from './administration/administration.component';
 import { OtherUserSharedFilesComponent } from './files/other-user-shared-files/other-user-shared-files.component';
 import { CallBackComponent } from './call-back/call-back.component';
 import { MyUserComponent } from './profile/profile.component';
 import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
-import { UploadSuccessComponent } from './upload-success/upload-success.component';
-import { uploadSuccessCanActivate } from './upload-success.guard';
-import { LoginCircabcComponent } from './login/login-circabc.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -37,8 +38,12 @@ const appRoutes: Routes = [
     component: LoginCircabcComponent,
   },
   {
+    path: 'callback',
+    component: CallBackComponent,
+  },
+  {
     path: 'home',
-    component: MySharedFilesComponent,
+    loadComponent: () => import('./files/my-shared-files/my-shared-files.component').then(m => m.MySharedFilesComponent),
     canActivate: [loginCanActivate],
   },
   {
@@ -62,26 +67,24 @@ const appRoutes: Routes = [
   },
   {
     path: 'administration',
-    component: AdministrationComponent,
+    loadComponent: () => import('./administration/administration.component').then(m => m.AdministrationComponent),
     canActivate: [loginCanActivate],
   },
   {
     path: 'administration/:userId/files',
-    component: OtherUserSharedFilesComponent,
+    loadComponent: () => import('./files/other-user-shared-files/other-user-shared-files.component').then(m => m.OtherUserSharedFilesComponent),
     data: { userName: 'dummyUserName' },
     canActivate: [loginCanActivate],
   },
   {
-    path: 'callback',
-    component: CallBackComponent,
-  },
-  {
     path: 'profile',
-    component: MyUserComponent,
+    loadComponent: () => import('./profile/profile.component').then(m => m.MyUserComponent),
+    canActivate: [loginCanActivate],
   },
   {
     path: 'privacyStatement',
-    component: PrivacyStatementComponent,
+    loadComponent: () => import('./privacy-statement/privacy-statement.component').then(m => m.PrivacyStatementComponent),
+   
   },
   {
     path: 'termsOfService',
@@ -100,4 +103,4 @@ const appRoutes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

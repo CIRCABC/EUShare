@@ -8,27 +8,28 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
+import { Location } from '@angular/common';
 import { Component, HostListener } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { TranslocoModule } from '@ngneat/transloco';
 import {
   AuthConfig,
   NullValidationHandler,
   OAuthService,
 } from 'angular-oauth2-oidc';
-import { Location } from '@angular/common';
 import { environment } from '../environments/environment';
-import { FooterComponent } from './footer/footer.component';
-import { RouterOutlet } from '@angular/router';
-import { NotificationSystemComponent } from './common/notification/notification-system.component';
-import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
+import { AddRecipientsModalComponent } from './common/modals/add-recipients-modal/add-recipients-modal.component';
 import { ChangeExpirationDateModalComponent } from './common/modals/change-expiration-date-modal/change-expiration-date-modal.component';
 import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
-import { AddRecipientsModalComponent } from './common/modals/add-recipients-modal/add-recipients-modal.component';
-import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
 import { DownloadModalComponent } from './common/modals/download-modal/download-modal.component';
-import { StatisticsModalComponent } from './common/modals/statistics-modal/statistics-modal.component';
+import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
+import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
 import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { StatisticsModalComponent } from './common/modals/statistics-modal/statistics-modal.component';
+import { NotificationSystemComponent } from './common/notification/notification-system.component';
+import { FooterComponent } from './footer/footer.component';
 import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -49,24 +50,25 @@ const authCodeFlowConfig: AuthConfig = {
 };
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  standalone: true,
-  imports: [
-    CbcHeaderComponent,
-    NavbarComponent,
-    ShareWithUsersModalComponent,
-    StatisticsModalComponent,
-    DownloadModalComponent,
-    FileLinkModalComponent,
-    AddRecipientsModalComponent,
-    DeleteConfirmModalComponent,
-    ChangeExpirationDateModalComponent,
-    OverwriteConfirmModalComponent,
-    NotificationSystemComponent,
-    RouterOutlet,
-    FooterComponent,
-  ],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    imports: [
+        CbcHeaderComponent,
+        NavbarComponent,
+        ShareWithUsersModalComponent,
+        StatisticsModalComponent,
+        DownloadModalComponent,
+        FileLinkModalComponent,
+        AddRecipientsModalComponent,
+        DeleteConfirmModalComponent,
+        ChangeExpirationDateModalComponent,
+        OverwriteConfirmModalComponent,
+        NotificationSystemComponent,
+        RouterOutlet,
+        FooterComponent,
+        TranslocoModule
+    ],
+    standalone: true,
 })
 export class AppComponent {
   timestamp: number;

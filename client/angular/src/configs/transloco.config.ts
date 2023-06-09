@@ -1,0 +1,33 @@
+import { TranslocoConfig } from '@ngneat/transloco';
+
+export const translocoConfig: TranslocoConfig = {
+  availableLangs: [
+    'bg',
+    'cs',
+    'da',
+    'de',
+    'el',
+    'en',
+    'es',
+    'et',
+    'fi',
+    'fr',
+    'ga',
+    'hr',
+    'it',
+    'lv',
+    'lt',
+    'hu',
+    'mt',
+    'nl',
+    'pl',
+    'pt',
+    'ro',
+    'sk',
+    'sl',
+    'sv',
+  ],
+  reRenderOnLangChange: true,
+  fallbackLang: 'en',
+  defaultLang: 'en',
+};

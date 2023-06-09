@@ -21,9 +21,10 @@ import {
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../environments/environment';
 import { SessionStorageService } from '../services/session-storage.service';
-import { TranslocoModule } from '@ngneat/transloco';
+
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf } from '@angular/common';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-navbar',
@@ -35,7 +36,7 @@ import { NgIf } from '@angular/common';
     RouterLink,
     FontAwesomeModule,
     RouterLinkActive,
-    TranslocoModule,
+    TranslocoModule
   ],
 })
 export class NavbarComponent implements OnInit {
