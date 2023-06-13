@@ -249,10 +249,7 @@ export class UploadComponent implements OnInit {
     else {
       event.preventDefault();
       event.stopPropagation();
-      this.snackBar.open('Hello, Snackbar!', 'Dismiss', {
-        duration: 3000
-      });
-
+     
       const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
         data: {
           title: 'My Dialog',
@@ -264,7 +261,6 @@ export class UploadComponent implements OnInit {
         console.log('Dialog was closed'+JSON.stringify(result));
       });
 
-      this.notificationService.addForbiddenMessageTranslation('no.upload.rights');
       return false;
     }
   };

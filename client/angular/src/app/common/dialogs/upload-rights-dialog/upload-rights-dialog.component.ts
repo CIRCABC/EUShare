@@ -23,4 +23,8 @@ export class UploadRightsDialogComponent {
     // Pass data back to the component that opened the dialog
     this.dialogRef.close({ result: 'OK' });
   }
+
+  onNoClick() {
+    this.dialogRef.close();
+  }
 }
