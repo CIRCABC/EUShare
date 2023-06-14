@@ -1,13 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-upload-rights-dialog',
   templateUrl: './upload-rights-dialog.component.html',
   styleUrls: ['./upload-rights-dialog.component.scss'],
   standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule,  TranslocoModule,],
 })
 export class UploadRightsDialogComponent {
   constructor(
