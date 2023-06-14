@@ -91,7 +91,9 @@
   "next": "Înainte",
   "no.files.to.download": "Niciun fișier de descărcat",
   "no.uploaded.files": "Niciun fișier încărcat",
-  "no.upload.rights": "Vă rugăm să luați în considerare faptul că, pentru a obține drepturi de încărcare, un utilizator intern afiliat uneia dintre instituțiile europene trebuie să vă partajeze cel puțin un fișier. Acest proces asigură că permisiunile de încărcare sunt acordate numai utilizatorilor de încredere care au stabilit o conexiune cu un utilizator intern prin partajarea fișierelor. Alternativ, puteți solicita drepturi de încărcare de la echipa de asistență CIRCABC. Vă rugăm să rețineți că poate fi necesar un logout/autentificare pentru a vă aplica drepturile de încărcare.",
+  "no.upload.rights.title": "Acțiune neautorizată",
+  "no.upload.rights": "Pentru a putea încărca și partaja documente, trebuie mai întâi să solicitați utilizatorului intern să partajeze un fișier cu dvs. sau să ne trimiteți ",
+  "no.upload.rights.trustrequest": "cerere de încredere.",
   "not.authorized": "Nu aveți autorizația de a efectua operațiunea",
   "notification.link": "Acum puteți partaja următorul link către fișierul dumneavoastră.",
   "notification.links": "Au fost trimise notificări următorilor destinatari, cu următoarele linkuri către fișierul dumneavoastră: ",
@@ -153,6 +155,5 @@
   "welcome": "Bun venit!",
   "while.trying": "în timpul încercării",
   "wrong.password": "Parolă greșită, încercați din nou.",
-  "you.can.upload.up.to": "Puteți încărca până la",
-  "OK": "OK"
+  "you.can.upload.up.to": "Puteți încărca până la"
 }
