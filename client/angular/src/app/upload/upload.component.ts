@@ -45,6 +45,8 @@ import { FileAccessorDirective } from '../directives/file-accessor.directive';
 import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef,MatDialogModule} from '@angular/material/dialog';
+import { NotificationLevel } from '../common/notification/notification-level';
+import { I18nService } from '../common/i18n/i18n.service';
 
 
 @Component({
@@ -90,7 +92,7 @@ export class UploadComponent implements OnInit {
     private userApi: UsersService,
     private fileApi: FileService,
     private notificationService: NotificationService,
-  
+    private i18nService: I18nService,
     private modalService: ModalsService,
     private fileSizePipe: FileSizeFormatPipe,
     private renderer: Renderer2,
@@ -157,10 +159,9 @@ export class UploadComponent implements OnInit {
   initializeForm() {
     this.emailControl = this.fb.nonNullable.control('');
 
-    const message = "hello";
-    /*this.i18nService.translate('file.size.bigger.quota', {
+    const message = this.i18nService.translate('file.size.bigger.quota', {
       fileSizeMax: this.fileSizePipe.transform(this.leftSpaceInBytes),
-    });*/
+    });
 
     this.uploadform = this.fb.nonNullable.group({
       fileFromDisk: [
@@ -249,8 +250,17 @@ export class UploadComponent implements OnInit {
     else {
       event.preventDefault();
       event.stopPropagation();
-     
-      const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
+    
+      let msg: string = this.i18nService.translate("no.upload.rights");
+      msg = msg + "<a href=''><strong>";
+      msg = msg + this.i18nService.translate("no.upload.rights.trustrequest");
+      msg = msg + "</strong></a>";
+      this.notificationService.addInnerHtmlMessage(msg,NotificationLevel.FORBIDDEN,false,10);
+      
+
+
+      //this.notificationService.addErrorMessageTranslation("no.upload");
+      /*const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
         data: {
           title: 'My Dialog',
           message: 'This is a custom dialog opened using MatDialog.'
@@ -259,7 +269,7 @@ export class UploadComponent implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         console.log('Dialog was closed'+JSON.stringify(result));
-      });
+      });*/
 
       return false;
     }
@@ -587,10 +597,9 @@ export class UploadComponent implements OnInit {
         return;
 
       default:
-        this.notificationService.addErrorMessage("error msg"
-         /* `${this.i18nService.translate(
+        this.notificationService.addErrorMessage(`${this.i18nService.translate(
             'error.occurred.download'
-          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}` */
+          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}` 
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

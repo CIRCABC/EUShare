@@ -36,7 +36,7 @@ export class NotificationService {
     autoclose = false,
     displayTime?: number
   ): void {
-    this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
+    this.addMessage(message, NotificationLevel.ERROR, autoclose,false, displayTime);
   }
 
   public addErrorMessageTranslation(
@@ -113,7 +113,7 @@ export class NotificationService {
     } else {
       message = this.i18nService.translate(key, params);
     }
-    this.addMessage(message, level, autoclose, displayTime);
+    this.addMessage(message, level, autoclose,false, displayTime);
   }
 
   public removeMessage(message: NotificationMessage): void {
@@ -134,11 +134,11 @@ export class NotificationService {
     return result;
   }
 
-  private addMessage(
+  public addInnerHtmlMessage(
     message: string,
     level: NotificationLevel,
     autoclose = false,
-    displayTime?: number
+    displayTime?: number,
   ): void {
     let finalDisplayTime;
     if (displayTime !== undefined) {
@@ -149,6 +149,31 @@ export class NotificationService {
       const uiMessage = new NotificationMessage(
         level,
         message,
+        true,
+        autoclose,
+        finalDisplayTime
+      );
+      this.messageSource.next(uiMessage);
+    }
+  }
+
+  private addMessage(
+    message: string,
+    level: NotificationLevel,
+    autoclose = false,
+    innerHtml = false,
+    displayTime?: number,
+  ): void {
+    let finalDisplayTime;
+    if (displayTime !== undefined) {
+      finalDisplayTime = displayTime;
+    }
+
+    if (!this.isSameAsLastMessage(message)) {
+      const uiMessage = new NotificationMessage(
+        level,
+        message,
+        innerHtml,
         autoclose,
         finalDisplayTime
       );

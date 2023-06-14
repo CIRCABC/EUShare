@@ -32,10 +32,16 @@
       <img src="{{ imageCheckMarkLink }}" alt="OK" />
     </ng-template>
     <ng-template [ngSwitchCase]="4">
-      <img src="{{ imageForbiddenLink }}" alt="xForbidden" />
+      <img src="{{ imageForbiddenLink }}" alt="Forbidden" />
     </ng-template>
   </div>
-  <div class="box--message--content">
+
+
+  <div *ngIf="!message.innerHtml" class="box--message--content">
     {{ message.body }}
   </div>
+
+  <div *ngIf="message.innerHtml" class="box--message--content" [innerHTML]="message.body"></div>
+
+
 </section>
