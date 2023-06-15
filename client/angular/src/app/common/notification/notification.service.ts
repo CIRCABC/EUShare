@@ -134,7 +134,7 @@ export class NotificationService {
     return result;
   }
 
-  public addInnerHtmlMessage(
+  public addTrustMessage(
     message: string,
     level: NotificationLevel,
     autoclose = false,
@@ -161,7 +161,7 @@ export class NotificationService {
     message: string,
     level: NotificationLevel,
     autoclose = false,
-    innerHtml = false,
+    trustDialog = false,
     displayTime?: number,
   ): void {
     let finalDisplayTime;
@@ -173,7 +173,7 @@ export class NotificationService {
       const uiMessage = new NotificationMessage(
         level,
         message,
-        innerHtml,
+        trustDialog,
         autoclose,
         finalDisplayTime
       );

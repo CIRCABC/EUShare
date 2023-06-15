@@ -251,25 +251,7 @@ export class UploadComponent implements OnInit {
       event.preventDefault();
       event.stopPropagation();
     
-      let msg: string = this.i18nService.translate("no.upload.rights");
-      msg = msg + "<a href=''><strong>";
-      msg = msg + this.i18nService.translate("no.upload.rights.trustrequest");
-      msg = msg + "</strong></a>";
-      this.notificationService.addInnerHtmlMessage(msg,NotificationLevel.FORBIDDEN,false,10);
-      
-
-
-      //this.notificationService.addErrorMessageTranslation("no.upload");
-      /*const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
-        data: {
-          title: 'My Dialog',
-          message: 'This is a custom dialog opened using MatDialog.'
-        }
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('Dialog was closed'+JSON.stringify(result));
-      });*/
+      this.notificationService.addTrustMessage("TrustMessage",NotificationLevel.FORBIDDEN,false,10);
 
       return false;
     }

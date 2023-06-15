@@ -14,21 +14,25 @@ import { NotificationMessage } from './notification-message';
 import { NotificationService } from './notification.service';
 import { TranslocoModule } from '@ngneat/transloco';
 import { CommonModule, NgSwitch, NgSwitchCase } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { UploadRightsDialogComponent } from '../dialogs/upload-rights-dialog/upload-rights-dialog.component';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
   standalone: true,
-  imports: [CommonModule, NgSwitch, NgSwitchCase, TranslocoModule],
+  imports: [CommonModule, NgSwitch, NgSwitchCase, TranslocoModule,MatDialogModule],
 })
 export class NotificationComponent implements OnInit {
+
+ 
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input()
   public message!: NotificationMessage;
   public animationClass = 'ui-message-show';
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     if (this.message) {
@@ -48,6 +52,20 @@ export class NotificationComponent implements OnInit {
     }
   }
 
+
+  public openTrustDialog(): void {
+    this.closeMessage();
+    const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
+      data: {
+        title: 'My Dialog',
+        message: 'This is a custom dialog opened using MatDialog.'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog was closed'+JSON.stringify(result));
+    });
+  }
 
   public getClassPerLevel(notificationLevel: NotificationLevel) {
     switch (notificationLevel) {

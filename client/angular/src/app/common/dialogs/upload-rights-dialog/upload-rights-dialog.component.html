@@ -1,21 +1,52 @@
-<div class="modal is-active">
-  <div class="modal-background"></div>
-  <div class="modal-card">
-    <header class="modal-card-head">
-      <p class="modal-card-title">{{ "no.upload.rights.title" | transloco }}</p>
-      <button class="delete" aria-label="close" (click)="onNoClick()"></button>
-    </header>
-    <section class="modal-card-body">
-      <mat-dialog-content>
-        <p class="modal-card-title"> {{ "no.upload.rights" | transloco }} <a href=""><strong>{{
-              "no.upload.rights.trustrequest" | transloco }}</strong></a></p>
-      </mat-dialog-content>
-    </section>
-    <footer class="modal-card-foot">
-      <div mat-dialog-actions>
-        <button class="button" mat-button (click)="onNoClick()">No Thanks</button>
-        <button class="button" mat-button [mat-dialog-close]="result" cdkFocusInitial>Ok</button>
-      </div>
-    </footer>
+<form #form="ngForm">
+  <div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+
+      <header class="modal-card-head">
+        <p class="modal-card-title">{{ "no.upload.rights.submit.title" | transloco }}</p>
+        <button class="delete" aria-label="close" (click)="onNoClick()"></button>
+      </header>
+
+      <section class="modal-card-body">
+        <mat-dialog-content>
+          <div>
+            <p>{{ "no.upload.rights.submit.description" | transloco }}</p>
+            <mat-form-field>
+              <textarea matInput [(ngModel)]="editorContent" name="editorContent" placeholder="Enter text here"
+                required #editorContentModel="ngModel"></textarea>
+            </mat-form-field>
+
+            <mat-checkbox [(ngModel)]="terms" name="terms" required #termsModel="ngModel">
+              {{ "no.upload.rights.submit.tos1" | transloco }}
+              <a href="{{ circabc_url }}/ui/help/legal-notice/terms">
+                {{ "label.terms" | transloco }}
+              </a> 
+              {{ "no.upload.rights.submit.tos2" | transloco }}
+            </mat-checkbox>
+
+            <!-- Displaying warnings when fields are not filled -->
+            <p *ngIf="editorContentModel.invalid && editorContentModel.touched" style="color: red;">
+              {{ 'no.upload.rights.textrequired' | transloco }}
+            </p>
+            <p *ngIf="termsModel.invalid && termsModel.touched" style="color: red;">
+              {{ 'no.upload.rights.agreetosrequired' | transloco }}
+            </p>
+          </div>
+        </mat-dialog-content>
+      </section>
+
+      <footer class="modal-card-foot">
+        <div mat-dialog-actions>
+          <!-- Disabled the button when the form is invalid -->
+          <button class="button" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            {{ "submit" | transloco }}
+          </button>
+          <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">
+            {{ "cancel" | transloco }}
+          </button>
+        </div>
+      </footer>
+    </div>
   </div>
-</div>
+</form>
