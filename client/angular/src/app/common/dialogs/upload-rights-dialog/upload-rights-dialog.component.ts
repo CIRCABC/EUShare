@@ -36,7 +36,7 @@ export class UploadRightsDialogComponent {
     this.dialogRef.close({ result: 'OK' });
   }
 
-  onNoClick() {
+  cancel() {
     this.dialogRef.close();
   }
 }

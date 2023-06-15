@@ -5,27 +5,25 @@
 
       <header class="modal-card-head">
         <p class="modal-card-title">{{ "no.upload.rights.submit.title" | transloco }}</p>
-        <button class="delete" aria-label="close" (click)="onNoClick()"></button>
+        <button class="delete" aria-label="close" (click)="cancel()"></button>
       </header>
 
       <section class="modal-card-body">
         <mat-dialog-content>
           <div>
             <p>{{ "no.upload.rights.submit.description" | transloco }}</p>
-            <mat-form-field>
-              <textarea matInput [(ngModel)]="editorContent" name="editorContent" placeholder="Enter text here"
-                required #editorContentModel="ngModel"></textarea>
-            </mat-form-field>
+
+            <textarea matInput [(ngModel)]="editorContent" name="editorContent" placeholder="Enter text here" required
+              #editorContentModel="ngModel"></textarea>
 
             <mat-checkbox [(ngModel)]="terms" name="terms" required #termsModel="ngModel">
               {{ "no.upload.rights.submit.tos1" | transloco }}
               <a href="{{ circabc_url }}/ui/help/legal-notice/terms">
                 {{ "label.terms" | transloco }}
-              </a> 
+              </a>
               {{ "no.upload.rights.submit.tos2" | transloco }}
             </mat-checkbox>
 
-            <!-- Displaying warnings when fields are not filled -->
             <p *ngIf="editorContentModel.invalid && editorContentModel.touched" style="color: red;">
               {{ 'no.upload.rights.textrequired' | transloco }}
             </p>
@@ -38,7 +36,7 @@
 
       <footer class="modal-card-foot">
         <div mat-dialog-actions>
-          <!-- Disabled the button when the form is invalid -->
+
           <button class="button" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
             {{ "submit" | transloco }}
           </button>
