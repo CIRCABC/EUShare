@@ -26,6 +26,7 @@ export interface TrustRequest {
     email?: string;
     approved?: boolean;
     requestDateTime?: string;
-    senderName?: string;
+    name?: string;
+    username?: string;
 }
 

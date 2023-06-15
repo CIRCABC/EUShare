@@ -56,7 +56,7 @@ public interface TrustApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"approved\" : true, \"senderName\" : \"senderName\", \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\" }";
+                    String exampleString = "{ \"approved\" : true, \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"name\" : \"name\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\", \"username\" : \"username\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -84,7 +84,7 @@ public interface TrustApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"approved\" : true, \"senderName\" : \"senderName\", \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\" }";
+                    String exampleString = "{ \"approved\" : true, \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"name\" : \"name\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\", \"username\" : \"username\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -111,7 +111,7 @@ public interface TrustApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"approved\" : true, \"senderName\" : \"senderName\", \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\" }";
+                    String exampleString = "{ \"approved\" : true, \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"name\" : \"name\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\", \"username\" : \"username\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -140,7 +140,7 @@ public interface TrustApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"approved\" : true, \"senderName\" : \"senderName\", \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\" }";
+                    String exampleString = "{ \"approved\" : true, \"requestDateTime\" : \"2000-01-23T04:56:07.000+00:00\", \"name\" : \"name\", \"description\" : \"description\", \"id\" : \"id\", \"email\" : \"email\", \"username\" : \"username\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

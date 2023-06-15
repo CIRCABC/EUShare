@@ -7,25 +7,38 @@
  * This code is publicly distributed under the terms of EUPL-V1.2 license,
  * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
  */
-package eu.europa.circabc.eushare.model;
+package eu.europa.circabc.eushare.storage;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import eu.europa.circabc.eushare.model.TrustRequest;
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.time.OffsetDateTime;
 import org.openapitools.jackson.nullable.JsonNullable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 // eushare
 import com.fasterxml.jackson.annotation.JsonFormat;
-/**
- * TrustRequest
- */
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
+@Table( name = "Trust")
+@ApiModel(description = "DBTrust")
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class TrustRequest   {
+public class DBTrust {
+  @Id
+  @GeneratedValue(generator = "UUID")
+  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @JsonProperty("id")
   private String id;
 
@@ -39,9 +52,7 @@ public class TrustRequest   {
   private Boolean approved;
 
   @JsonProperty("requestDateTime")
-  // Eushare
   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
-  
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime requestDateTime;
 
@@ -51,18 +62,6 @@ public class TrustRequest   {
   @JsonProperty("username")
   private String username;
 
-  public TrustRequest id(String id) {
-    this.id = id;
-    return this;
-  }
-
-  /**
-   * Get id
-   * @return id
-  */
-  @ApiModelProperty(value = "")
-
-
   public String getId() {
     return id;
   }
@@ -70,18 +69,6 @@ public class TrustRequest   {
   public void setId(String id) {
     this.id = id;
   }
-
-  public TrustRequest description(String description) {
-    this.description = description;
-    return this;
-  }
-
-  /**
-   * Get description
-   * @return description
-  */
-  @ApiModelProperty(value = "")
-
 
   public String getDescription() {
     return description;
@@ -91,18 +78,6 @@ public class TrustRequest   {
     this.description = description;
   }
 
-  public TrustRequest email(String email) {
-    this.email = email;
-    return this;
-  }
-
-  /**
-   * Get email
-   * @return email
-  */
-  @ApiModelProperty(value = "")
-
-@javax.validation.constraints.Email
   public String getEmail() {
     return email;
   }
@@ -110,18 +85,6 @@ public class TrustRequest   {
   public void setEmail(String email) {
     this.email = email;
   }
-
-  public TrustRequest approved(Boolean approved) {
-    this.approved = approved;
-    return this;
-  }
-
-  /**
-   * Get approved
-   * @return approved
-  */
-  @ApiModelProperty(value = "")
-
 
   public Boolean getApproved() {
     return approved;
@@ -131,19 +94,6 @@ public class TrustRequest   {
     this.approved = approved;
   }
 
-  public TrustRequest requestDateTime(OffsetDateTime requestDateTime) {
-    this.requestDateTime = requestDateTime;
-    return this;
-  }
-
-  /**
-   * Get requestDateTime
-   * @return requestDateTime
-  */
-  @ApiModelProperty(value = "")
-
-  @Valid
-
   public OffsetDateTime getRequestDateTime() {
     return requestDateTime;
   }
@@ -151,18 +101,6 @@ public class TrustRequest   {
   public void setRequestDateTime(OffsetDateTime requestDateTime) {
     this.requestDateTime = requestDateTime;
   }
-
-  public TrustRequest name(String name) {
-    this.name = name;
-    return this;
-  }
-
-  /**
-   * Get name
-   * @return name
-  */
-  @ApiModelProperty(value = "")
-
 
   public String getName() {
     return name;
@@ -172,18 +110,6 @@ public class TrustRequest   {
     this.name = name;
   }
 
-  public TrustRequest username(String username) {
-    this.username = username;
-    return this;
-  }
-
-  /**
-   * Get username
-   * @return username
-  */
-  @ApiModelProperty(value = "")
-
-
   public String getUsername() {
     return username;
   }
@@ -191,7 +117,6 @@ public class TrustRequest   {
   public void setUsername(String username) {
     this.username = username;
   }
-
 
   @Override
   public boolean equals(Object o) {
@@ -201,14 +126,14 @@ public class TrustRequest   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    TrustRequest trustRequest = (TrustRequest) o;
-    return Objects.equals(this.id, trustRequest.id) &&
-        Objects.equals(this.description, trustRequest.description) &&
-        Objects.equals(this.email, trustRequest.email) &&
-        Objects.equals(this.approved, trustRequest.approved) &&
-        Objects.equals(this.requestDateTime, trustRequest.requestDateTime) &&
-        Objects.equals(this.name, trustRequest.name) &&
-        Objects.equals(this.username, trustRequest.username);
+    DBTrust dbTrust = (DBTrust) o;
+    return Objects.equals(this.id, dbTrust.id) &&
+        Objects.equals(this.description, dbTrust.description) &&
+        Objects.equals(this.email, dbTrust.email) &&
+        Objects.equals(this.approved, dbTrust.approved) &&
+        Objects.equals(this.requestDateTime, dbTrust.requestDateTime) &&
+        Objects.equals(this.name, dbTrust.name) &&
+        Objects.equals(this.username, dbTrust.username);
   }
 
   @Override
@@ -219,8 +144,7 @@ public class TrustRequest   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class TrustRequest {\n");
-    
+    sb.append("class DBTrust {\n");
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
@@ -232,15 +156,34 @@ public class TrustRequest   {
     return sb.toString();
   }
 
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
   private String toIndentedString(Object o) {
     if (o == null) {
       return "null";
     }
     return o.toString().replace("\n", "\n    ");
   }
-}
 
+  public TrustRequest toTrustRequest() {
+    TrustRequest trustRequest = new TrustRequest();
+    trustRequest.setId(this.getId());
+    trustRequest.setDescription(this.getDescription());
+    trustRequest.setEmail(this.getEmail());
+    trustRequest.setApproved(this.getApproved());
+    trustRequest.setRequestDateTime(this.getRequestDateTime());
+    trustRequest.setName(this.getName());
+    trustRequest.setUsername(this.getUsername());
+    return trustRequest;
+  }
+
+  public static DBTrust fromTrustRequest(TrustRequest trustRequest) {
+    DBTrust dbTrust = new DBTrust();
+    dbTrust.setId(trustRequest.getId());
+    dbTrust.setDescription(trustRequest.getDescription());
+    dbTrust.setEmail(trustRequest.getEmail());
+    dbTrust.setApproved(trustRequest.getApproved());
+    dbTrust.setRequestDateTime(trustRequest.getRequestDateTime());
+    dbTrust.setName(trustRequest.getName());
+    dbTrust.setUsername(trustRequest.getUsername());
+    return dbTrust;
+  }
+}

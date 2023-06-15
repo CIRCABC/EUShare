@@ -18,6 +18,9 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { TrustRequest } from '../../../openapi/model/trustRequest';
+import { TrustService } from '../../../openapi/api/trust.service';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
   selector: 'app-upload-rights-dialog',
@@ -36,7 +39,9 @@ import { CommonModule } from '@angular/common';
 export class UploadRightsDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    public dialogRef: MatDialogRef<UploadRightsDialogComponent>
+    public dialogRef: MatDialogRef<UploadRightsDialogComponent>,
+    private trustService: TrustService,
+    private notificationService: NotificationService
   ) {}
 
   editorContent: string = '';
@@ -51,9 +56,17 @@ export class UploadRightsDialogComponent {
   }
 
   submit() {
-    this.dialogRef.close({ description: this.editorContent });
-  }
+    const trustRequest: TrustRequest = {
+      description: this.editorContent,
+    };
 
+    this.trustService.sendTrustRequest(trustRequest).subscribe(() => {
+      this.notificationService.addSuccessMessageTranslation(
+        'no.upload.rights.requestsuccess'
+      );
+      this.dialogRef.close({ description: this.editorContent });
+    });
+  }
   cancel() {
     this.dialogRef.close();
   }

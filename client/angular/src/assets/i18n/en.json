@@ -92,6 +92,7 @@
   "no.files.to.download": "No files to download",
   "no.upload.rights": "To be able to upload and share documents you must first ask internal user to share a file with you or send us your ",
   "no.upload.rights.agreetosrequired": "You must agree the terms of service to submit.",
+  "no.upload.rights.requestsuccess": "Your trust request has been sent successfully. An administrator is going to evaluate it. You'll be notified by email.",
   "no.upload.rights.submit.description": "Please describe briefly the reasons for being trusted. Your request will be forwarded to the CIRCABC Share Administrator.",
   "no.upload.rights.submit.title": "Submit your trust request.",
   "no.upload.rights.submit.tos1": "I understand the importance of responsible and ethical use of this service. I assure you that I adhere to your ",
