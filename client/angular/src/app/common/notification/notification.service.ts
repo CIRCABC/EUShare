@@ -36,7 +36,13 @@ export class NotificationService {
     autoclose = false,
     displayTime?: number
   ): void {
-    this.addMessage(message, NotificationLevel.ERROR, autoclose,false, displayTime);
+    this.addMessage(
+      message,
+      NotificationLevel.ERROR,
+      autoclose,
+      false,
+      displayTime
+    );
   }
 
   public addErrorMessageTranslation(
@@ -84,7 +90,6 @@ export class NotificationService {
     );
   }
 
-
   public addSuccessMessageTranslation(
     key: string,
     params?: HashMap,
@@ -113,7 +118,7 @@ export class NotificationService {
     } else {
       message = this.i18nService.translate(key, params);
     }
-    this.addMessage(message, level, autoclose,false, displayTime);
+    this.addMessage(message, level, autoclose, false, displayTime);
   }
 
   public removeMessage(message: NotificationMessage): void {
@@ -138,7 +143,7 @@ export class NotificationService {
     message: string,
     level: NotificationLevel,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     let finalDisplayTime;
     if (displayTime !== undefined) {
@@ -162,7 +167,7 @@ export class NotificationService {
     level: NotificationLevel,
     autoclose = false,
     trustDialog = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     let finalDisplayTime;
     if (displayTime !== undefined) {

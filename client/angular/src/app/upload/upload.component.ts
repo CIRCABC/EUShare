@@ -44,10 +44,14 @@ import { MessageTextAreaComponent } from '../common/formComponents/message-text-
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
 import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef,MatDialogModule} from '@angular/material/dialog';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { NotificationLevel } from '../common/notification/notification-level';
 import { I18nService } from '../common/i18n/i18n.service';
-
 
 @Component({
   selector: 'app-upload',
@@ -55,7 +59,6 @@ import { I18nService } from '../common/i18n/i18n.service';
   styleUrls: ['./upload.component.scss'],
   standalone: true,
   imports: [
-    
     ReactiveFormsModule,
     FileAccessorDirective,
     NgIf,
@@ -66,10 +69,9 @@ import { I18nService } from '../common/i18n/i18n.service';
     FileSizeFormatPipe,
     TranslocoModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   providers: [FileSizeFormatPipe],
-  
 })
 export class UploadComponent implements OnInit {
   public faUserSlash = faUserSlash;
@@ -250,8 +252,13 @@ export class UploadComponent implements OnInit {
     else {
       event.preventDefault();
       event.stopPropagation();
-    
-      this.notificationService.addTrustMessage("TrustMessage",NotificationLevel.FORBIDDEN,false,10);
+
+      this.notificationService.addTrustMessage(
+        'TrustMessage',
+        NotificationLevel.FORBIDDEN,
+        false,
+        10
+      );
 
       return false;
     }
@@ -579,9 +586,10 @@ export class UploadComponent implements OnInit {
         return;
 
       default:
-        this.notificationService.addErrorMessage(`${this.i18nService.translate(
+        this.notificationService.addErrorMessage(
+          `${this.i18nService.translate(
             'error.occurred.download'
-          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}` 
+          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}`
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

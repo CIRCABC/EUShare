@@ -10,8 +10,9 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 
 import { Component, OnInit } from '@angular/core';
 import {
-
-  TranslocoModule, TranslocoService, getBrowserLang,
+  TranslocoModule,
+  TranslocoService,
+  getBrowserLang,
 } from '@ngneat/transloco';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { environment } from '../../../environments/environment';

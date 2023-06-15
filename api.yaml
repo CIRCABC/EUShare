@@ -943,6 +943,79 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
 
+  '/trust':
+    post:
+      tags:
+      - Trust
+      summary: "Send Trust Request"
+      operationId: "sendTrustRequest"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TrustRequest"
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrustRequest"
+    get:
+      tags:
+      - Trust
+      summary: "Get Trust Request List"
+      operationId: "getTrustRequestList"
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TrustRequest"
+  '/trust/{id}':
+    put:
+      tags:
+      - Trust
+      summary: "Approve Trust Request"
+      operationId: "approveTrustRequest"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrustRequest"
+    delete:
+      tags:
+      - Trust
+      summary: "Delete Trust Request"
+      operationId: "deleteTrustRequest"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TrustRequest"
+
+
+
   '/apikey':
     get:
       operationId: getApiKey
@@ -987,6 +1060,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status'
+
+ 
+
+
 
 components:
   securitySchemes:
@@ -1292,3 +1369,24 @@ components:
           type: string
       required:
       - apikey
+
+
+    TrustRequest:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+        description:
+          type: "string"
+        email:
+          type: "string"
+          format: "email"
+        approved:
+          type: "boolean"
+        requestDateTime:
+          type: "string"
+          format: "date-time"
+        senderName:
+          type: "string"
+
+

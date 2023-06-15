@@ -22,6 +22,7 @@ export * from './mountPointSpace';
 export * from './recipient';
 export * from './stat';
 export * from './status';
+export * from './trustRequest';
 export * from './userInfo';
 export * from './userInfoAllOf';
 export * from './userResult';

@@ -36,7 +36,7 @@ import { TranslocoModule } from '@ngneat/transloco';
     RouterLink,
     FontAwesomeModule,
     RouterLinkActive,
-    TranslocoModule
+    TranslocoModule,
   ],
 })
 export class NavbarComponent implements OnInit {

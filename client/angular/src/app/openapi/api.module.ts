@@ -17,6 +17,7 @@ import { ApiKeyService } from './api/apiKey.service';
 import { FileService } from './api/file.service';
 import { SessionService } from './api/session.service';
 import { StatsService } from './api/stats.service';
+import { TrustService } from './api/trust.service';
 import { UsersService } from './api/users.service';
 
 @NgModule({

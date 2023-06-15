@@ -37,7 +37,7 @@
       <footer class="modal-card-foot">
         <div mat-dialog-actions>
 
-          <button class="button" mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          <button class="button" mat-raised-button color="primary" type="submit" [disabled]="form.invalid" (click)="submit()">
             {{ "submit" | transloco }}
           </button>
           <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">

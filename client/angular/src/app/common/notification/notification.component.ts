@@ -22,17 +22,24 @@ import { UploadRightsDialogComponent } from '../dialogs/upload-rights-dialog/upl
   templateUrl: './notification.component.html',
   styleUrls: ['./notification.component.scss'],
   standalone: true,
-  imports: [CommonModule, NgSwitch, NgSwitchCase, TranslocoModule,MatDialogModule],
+  imports: [
+    CommonModule,
+    NgSwitch,
+    NgSwitchCase,
+    TranslocoModule,
+    MatDialogModule,
+  ],
 })
 export class NotificationComponent implements OnInit {
-
- 
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input()
   public message!: NotificationMessage;
   public animationClass = 'ui-message-show';
 
-  constructor(private notificationService: NotificationService, private dialog: MatDialog) {}
+  constructor(
+    private notificationService: NotificationService,
+    private dialog: MatDialog
+  ) {}
 
   ngOnInit(): void {
     if (this.message) {
@@ -52,18 +59,14 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-
   public openTrustDialog(): void {
     this.closeMessage();
     const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
-      data: {
-        title: 'My Dialog',
-        message: 'This is a custom dialog opened using MatDialog.'
-      }
+      data: {},
     });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog was closed'+JSON.stringify(result));
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Dialog was closed' + JSON.stringify(result));
     });
   }
 
@@ -80,7 +83,7 @@ export class NotificationComponent implements OnInit {
       }
       case NotificationLevel.ERROR: {
         return 'notification box--message--error';
-      }     
+      }
       case NotificationLevel.FORBIDDEN: {
         return 'notification box--message--forbidden';
       }

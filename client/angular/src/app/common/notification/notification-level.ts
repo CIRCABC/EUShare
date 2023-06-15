@@ -13,5 +13,5 @@ export enum NotificationLevel {
   WARNING = 1,
   ERROR = 2,
   SUCCESS = 3,
-  FORBIDDEN = 4
+  FORBIDDEN = 4,
 }

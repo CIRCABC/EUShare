@@ -1,11 +1,25 @@
 import { APP_BASE_HREF } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { enableProdMode, importProvidersFrom, Injectable } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { bootstrapApplication, BrowserModule, HammerModule } from '@angular/platform-browser';
+import {
+  bootstrapApplication,
+  BrowserModule,
+  HammerModule,
+} from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { Translation, TRANSLOCO_CONFIG, TRANSLOCO_LOADER, TranslocoLoader, TranslocoModule } from '@ngneat/transloco';
+import {
+  Translation,
+  TRANSLOCO_CONFIG,
+  TRANSLOCO_LOADER,
+  TranslocoLoader,
+  TranslocoModule,
+} from '@ngneat/transloco';
 import { OAuthModule, OAuthModuleConfig } from 'angular-oauth2-oidc';
 import 'hammerjs';
 import { NgChartsModule } from 'ng2-charts';
@@ -21,7 +35,7 @@ import { translocoConfig } from './configs/transloco.config';
 
 @Injectable({ providedIn: 'root' })
 export class HttpLoader implements TranslocoLoader {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   getTranslation(langPath: string) {
     return this.http.get<Translation>(`/share/assets/i18n/${langPath}.json`);
@@ -41,7 +55,8 @@ if (environment.production) {
 
 bootstrapApplication(AppComponent, {
   providers: [
-    importProvidersFrom(OAuthModule.forRoot(oauthModuleConfig),
+    importProvidersFrom(
+      OAuthModule.forRoot(oauthModuleConfig),
       BrowserModule,
       ReactiveFormsModule,
       FormsModule,
@@ -52,7 +67,8 @@ bootstrapApplication(AppComponent, {
       ApiModule,
       AppRoutingModule,
       TranslocoModule,
-      HttpClientModule),
+      HttpClientModule
+    ),
     KeyStoreService,
     { provide: APP_BASE_HREF, useValue: environment.frontend_url },
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
