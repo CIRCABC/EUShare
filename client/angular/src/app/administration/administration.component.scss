@@ -15,9 +15,49 @@ ul {
   border-radius: 4px;
 }
 
+
+.tabs mat-tab-group {
+  padding-top: 100px;
+  width: 100% !important;
+}
+
 .pagination {
   margin-top: 1em;
 }
+
+.user-info-row {
+  display: flex;
+  align-items: center;
+}
+
+.user-info-column {
+  flex: 1;
+  text-align: center;
+  padding: 5px;
+  width: 50px;
+}
+
+.alignleft {
+  text-align: left;
+}
+
+.alignright {
+  text-align: right;
+}
+
+.titletable {
+  background-color: rgba(155, 214, 217, 0.4509803922);
+}
+
+
+
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+}
+
+
 
 .columns {
   background-color: $background;

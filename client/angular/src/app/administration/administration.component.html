@@ -1,169 +1,208 @@
-<div class="centered">
-  <h1 class="title">{{ "administration" | transloco }}</h1>
-  <div class="columns">
-    <div class="column is-one-half">
-      <label class="label">{{ "user.search" | transloco }}</label>
-      <input [(ngModel)]="searchString" class="input" type="text"
-        [attr.placeholder]="'user.name.or.email' | transloco" />
-      <br />
-      Active users : <input type="checkbox" [(ngModel)]="searchActive" />
-      <br />
-      <a class="button" [class.is-loading]="searchIsLoading" (click)="search()">{{ "search" | transloco }}</a>
-      <div *ngIf="isAfterSearch">
-        <label class="alignleft" class="label">{{
-          "results" | transloco
-          }}</label>
+<div class="tabs">
+  <mat-tab-group>
 
-        <div style="clear: both"></div>
-        <ul class="menu-list">
-          <li class="titletable">
-            <a>
-              <strong class="alignleft"> Name <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
-              </strong>
-              <span></span>
-              <strong class="alignright">Files <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
-              </strong>
-              <strong class="alignright">Usage <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
-              </strong>
-              <div style="clear: both"></div>
-            </a>
-          </li>
-          <li *ngFor="let userInfo of userInfoArray; let i = index" [attr.data-index]="i" value="userInfo.id"
-            (click)="displayUserInfoNumber(i)">
-            <a *ngIf="userInfo.usedSpace === 0"> {{ userInfo.givenName }}  </a>
+    <mat-tab label="Administration">
+      <div class="centered">
 
-            <a *ngIf="userInfo.usedSpace > 0">
-              <strong class="alignleft"> {{ userInfo.givenName }}</strong><span> ( {{ userInfo.email }} )</span><strong class="alignright"> {{
-                userInfo.filesCount }}</strong><strong class="alignright">{{ userInfo.usedSpace | fileSizeFormat }}
-              </strong>
-              <div style="clear: both"></div>
-            </a>
+        <h1 class="title">{{ "administration" | transloco }}</h1>
+        <div class="columns">
+          <div class="column is-one-half">
+            <label class="label">{{ "user.search" | transloco }}</label>
+            <input [(ngModel)]="searchString" class="input" type="text"
+              [attr.placeholder]="'user.name.or.email' | transloco" />
+            <br />
+            Active users : <input type="checkbox" [(ngModel)]="searchActive" />
+            <br />
+            <a class="button" [class.is-loading]="searchIsLoading" (click)="search()">{{ "search" | transloco }}</a>
+            <div *ngIf="isAfterSearch">
+              <label class="alignleft" class="label">{{
+                "results" | transloco
+                }}</label>
 
-      
-          </li>
-        </ul>
-        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-          <a *ngIf="pageNumber > 0" class="pagination-previous button" (click)="resultsPreviousPage()">{{ "previous" |
-            transloco }}</a>
-          <a *ngIf="hasNextPage" class="pagination-next button" (click)="resultsNextPage()">{{ "next" | transloco }}</a>
-        </nav>
-      </div>
-    </div>
-    <div class="column is-one-half">
-      <div *ngIf="isAfterSearch && isAfterSelected">
-        <div>
-          <label class="label">{{ "user.info" | transloco }}</label>
-          {{ selectedUserInfo.givenName }} ( {{ selectedUserInfo.email }} ) :
-          <p *ngIf="!isChangePermissions">
-            Role : {{selectedUserRole }} <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
-          </p>
-          <div class="select" *ngIf="isChangePermissions">
-            <select [(ngModel)]="selectedUserRole">
-              <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
-            </select>
+
+
+                <div class="user-list">
+                  <div class="titletable user-info-row">
+                    <div class="alignleft user-info-column">
+                      <strong>Name</strong>
+                      <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
+                    </div>
+                    <div class="alignleft user-info-column">
+                      <strong>Email</strong>
+                    </div>
+                    <div class="alignleft user-info-column">
+                      <strong>Files</strong>
+                      <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
+                    </div>
+                    <div class="alignleft user-info-column">
+                      <strong>Usage</strong>
+                      <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
+                    </div>
+                  </div>
+                  <div *ngFor="let userInfo of userInfoArray; let i = index" class="user-info-row" [attr.data-index]="i" value="userInfo.id" (click)="displayUserInfoNumber(i)">
+                    <div *ngIf="userInfo.usedSpace === 0" class="user-info-row">
+                      <div class="alignleft user-info-column">{{ userInfo.givenName }}</div>
+                      <div class="alignleft user-info-column"></div>
+                      <div class="alignleft user-info-column"></div>
+                      <div class="alignleft user-info-column"></div>
+                    </div>
+                    <div *ngIf="userInfo.usedSpace > 0" class="user-info-row">
+                      <strong class="alignleft user-info-column">{{ userInfo.givenName }}</strong>
+                      <strong class="alignleft user-info-column">{{ userInfo.email }}</strong>
+                      <strong class="alignleft user-info-column">{{ userInfo.filesCount }}</strong>
+                      <strong class="alignleft user-info-column">{{ userInfo.usedSpace | fileSizeFormat }}</strong>
+                    </div>
+                  </div>
+                </div>
+                
+
+
+
+              <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+                <a *ngIf="pageNumber > 0" class="pagination-previous button" (click)="resultsPreviousPage()">{{
+                  "previous"
+                  |
+                  transloco }}</a>
+                <a *ngIf="hasNextPage" class="pagination-next button" (click)="resultsNextPage()">{{ "next" | transloco
+                  }}</a>
+              </nav>
+            </div>
+          </div>
+          <div class="column is-one-half">
+            <div *ngIf="isAfterSearch && isAfterSelected">
+              <div>
+                <label class="label">{{ "user.info" | transloco }}</label>
+                {{ selectedUserInfo.givenName }} ( {{ selectedUserInfo.email }} ) :
+                <p *ngIf="!isChangePermissions">
+                  Role : {{selectedUserRole }} <fa-icon
+                    [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
+                </p>
+                <div class="select" *ngIf="isChangePermissions">
+                  <select [(ngModel)]="selectedUserRole">
+                    <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+                  </select>
+                </div>
+
+                <br *ngIf="isChangePermissions" />
+                <p *ngIf="!isChangePermissions">
+                  {{ "total.space" | transloco }}:
+                  {{ selectedUserInfo.totalSpace | fileSizeFormat }}
+                </p>
+                <div class="select" *ngIf="isChangePermissions">
+                  <select [(ngModel)]="selectedValueInGigaBytes">
+                    <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
+                      [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
+                      {{ "total.space" | transloco }}: {{ valueInGig }} GB
+                    </option>
+                  </select>
+                </div>
+                <p>
+                  {{ "used.space" | transloco }}:
+                  {{ selectedUserInfo.usedSpace | fileSizeFormat }}
+                </p>
+                <p>
+                  {{ "free.space" | transloco }}:
+                  {{
+                  selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
+                  | fileSizeFormat
+                  }}
+                </p>
+              </div>
+              <a *ngIf="isChangePermissions" class="button" [class.is-loading]="changeIsLoading"
+                (click)="changePermissions()">{{ "done" | transloco }}</a>
+              <a *ngIf="isChangePermissions" class="button buttonMargin" (click)="toggleChangePermissions()">{{ "cancel"
+                |
+                transloco }}</a>
+              <a *ngIf="!isChangePermissions" class="button" (click)="toggleChangePermissions()">{{ "change.permissions"
+                |
+                transloco }}</a>
+              <a *ngIf="!isChangePermissions" class="button buttonMargin" (click)="toggleUploadedFiles()">{{
+                "display.shared.files" | transloco }}</a>
+              <div *ngIf="showUploadedFiles">
+                <div class="centered">
+                  <h1 class="title">
+                    {{ "user.uploaded.files" | transloco: { userName: userName } }}
+                  </h1>
+                  <app-uploaded-file-row-container [userId]="this.selectedUserInfo.id" [displayAsUploader]="false"
+                    [displayAsAdministrator]="true"></app-uploaded-file-row-container>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <br *ngIf="isChangePermissions" />
-          <p *ngIf="!isChangePermissions">
-            {{ "total.space" | transloco }}:
-            {{ selectedUserInfo.totalSpace | fileSizeFormat }}
-          </p>
-          <div class="select" *ngIf="isChangePermissions">
-            <select [(ngModel)]="selectedValueInGigaBytes">
-              <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
-                [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
-                {{ "total.space" | transloco }}: {{ valueInGig }} GB
-              </option>
-            </select>
-          </div>
-          <p>
-            {{ "used.space" | transloco }}:
-            {{ selectedUserInfo.usedSpace | fileSizeFormat }}
-          </p>
-          <p>
-            {{ "free.space" | transloco }}:
-            {{
-            selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
-            | fileSizeFormat
-            }}
-          </p>
+
         </div>
-        <a *ngIf="isChangePermissions" class="button" [class.is-loading]="changeIsLoading"
-          (click)="changePermissions()">{{ "done" | transloco }}</a>
-        <a *ngIf="isChangePermissions" class="button buttonMargin" (click)="toggleChangePermissions()">{{ "cancel" |
-          transloco }}</a>
-        <a *ngIf="!isChangePermissions" class="button" (click)="toggleChangePermissions()">{{ "change.permissions" |
-          transloco }}</a>
-        <a *ngIf="!isChangePermissions" class="button buttonMargin" (click)="goToUserUploadedFiles()">{{
-          "display.shared.files" | transloco }}</a>
       </div>
-    </div>
+    </mat-tab>
+
+    <mat-tab label="Disk usage">
+      <div class="centered">
+        <h1 class="title">Disk usage</h1>
+        <table>
+          <tr>
+            <th>Mount path</th>
+            <th>Total size</th>
+            <th>Free space</th>
+            <th>Used (in %)</th>
+          </tr>
+          <tr *ngFor="let mp of mountPointSpaces">
+            <td>{{ mp.path }}</td>
+            <td>{{ mp.totalSpace! | fileSizeFormat }}</td>
+            <td>{{mp.usableSpace! | fileSizeFormat }}</td>
+            <td>{{ math.round( ((mp.totalSpace! - mp.usableSpace!) /mp.totalSpace! ) /100 *10000) }} %</td>
+          </tr>
+        </table>
+      </div>
+    </mat-tab>
+
+    <mat-tab label="Statistics">
+      <ng-template matTabContent>
+        <div class="centered">
+          <h1 class="title">Statistics</h1>
+
+          <form #yearForm="ngForm">
+
+            <div class="form-group">
+              <label>Year:</label>
+              <select id="years" name="years" [(ngModel)]="year" (change)="changeYear()" class="form-control">
+                <option *ngFor="let y of yearList">{{y}}</option>
+              </select>
+            </div>
 
 
-  </div>
-  <p></p><br>
-  <p></p>
-  <h1 class="title">Disk usage</h1>
-  <table>
-    <tr>
-      <th>Mount path</th>
-      <th>Total size</th>
-      <th>Free space</th>
-      <th>Used (in %)</th>
-    </tr>
-    <tr *ngFor="let mp of mountPointSpaces">
-      <td>{{ mp.path }}</td>
-      <td>{{ mp.totalSpace! | fileSizeFormat }}</td>
-      <td>{{mp.usableSpace! | fileSizeFormat }}</td>
-      <td>{{ math.round( ((mp.totalSpace! - mp.usableSpace!) /mp.totalSpace! ) /100 *10000) }} %</td>
-    </tr>
-  </table>
+          </form>
+
+          <table>
+            <tr>
+              <th> Month </th>
+              <th> <a (click)="updateGraph('users','Users')">Users</a> </th>
+              <th> <a (click)="updateGraph('uploads','Uploads')">Uploads</a> </th>
+              <th> <a (click)="updateGraph('downloads','Downloads')">Downloads</a> </th>
+              <th> <a (click)="updateGraph('uploadsData','Uploads Data')">Uploads Data</a> </th>
+              <th> <a (click)="updateGraph('downloadsData','Downloads Data')">Downloads Data </a></th>
+            </tr>
+            <tr *ngFor="let month of stats">
+              <td>{{ getMonthName(month.month) }}</td>
+              <td>{{ month.users }}</td>
+              <td>{{ month.uploads }} </td>
+              <td>{{ month.downloads }}</td>
+              <td>{{ month.uploadsData! | fileSizeFormat }}</td>
+              <td>{{ month.downloadsData! | fileSizeFormat }}</td>
+            </tr>
+            <tr>
+              <td><b>Total</b></td>
+              <td><b>{{ yearStats.users }}</b> </td>
+              <td><b>{{ yearStats.uploads }}</b> </td>
+              <td><b>{{ yearStats.downloads }}</b></td>
+              <td><b>{{ yearStats.uploadsData | fileSizeFormat }}</b> </td>
+              <td><b>{{ yearStats.downloadsData | fileSizeFormat}}</b></td>
+            </tr>
+          </table>
 
 
-  <p></p><br>
-  <p></p>
-  <h1 class="title">Statistics</h1>
-
-  <form #yearForm="ngForm">
-
-    <div class="form-group">
-      <label>Year:</label>
-      <select id="years" name="years" [(ngModel)]="year" (change)="changeYear()" class="form-control">
-        <option *ngFor="let y of yearList">{{y}}</option>
-      </select>
-    </div>
-
-
-  </form>
-
-  <table>
-    <tr>
-      <th> Month </th>
-      <th> <a (click)="updateGraph('users','Users')">Users</a> </th>
-      <th> <a (click)="updateGraph('uploads','Uploads')">Uploads</a> </th>
-      <th> <a (click)="updateGraph('downloads','Downloads')">Downloads</a> </th>
-      <th> <a (click)="updateGraph('uploadsData','Uploads Data')">Uploads Data</a> </th>
-      <th> <a (click)="updateGraph('downloadsData','Downloads Data')">Downloads Data </a></th>
-    </tr>
-    <tr *ngFor="let month of stats">
-      <td>{{ getMonthName(month.month) }}</td>
-      <td>{{ month.users }}</td>
-      <td>{{ month.uploads }} </td>
-      <td>{{ month.downloads }}</td>
-      <td>{{ month.uploadsData! | fileSizeFormat }}</td>
-      <td>{{ month.downloadsData! | fileSizeFormat }}</td>
-    </tr>
-    <tr>
-      <td><b>Total</b></td>
-      <td><b>{{ yearStats.users }}</b> </td>
-      <td><b>{{ yearStats.uploads }}</b> </td>
-      <td><b>{{ yearStats.downloads }}</b></td>
-      <td><b>{{ yearStats.uploadsData | fileSizeFormat }}</b> </td>
-      <td><b>{{ yearStats.downloadsData | fileSizeFormat}}</b></td>
-    </tr>
-  </table>
-
-
-  <app-bar-chart [chartData]="data"></app-bar-chart>
-
+          <app-bar-chart [chartData]="data"></app-bar-chart>
+        </div>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </div>
