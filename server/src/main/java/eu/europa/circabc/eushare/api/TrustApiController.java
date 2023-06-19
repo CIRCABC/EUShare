@@ -10,10 +10,12 @@
 package eu.europa.circabc.eushare.api;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -80,12 +83,15 @@ public class TrustApiController implements TrustApi {
                         @ApiResponse(code = 200, message = "Successful Operation", response = TrustRequest.class) })
         @PutMapping(value = "/trust/{id}", produces = { "application/json" })
         public ResponseEntity<TrustRequest> approveTrustRequest(
-                        @ApiParam(value = "", required = true) @PathVariable("id") String id) {
+                        @ApiParam(value = "", required = true) @PathVariable("id") String id,
+                        @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "approved", required = true) Boolean approved) {
                 // Implement your logic here to approve the trust request
-                TrustRequest approvedRequest = new TrustRequest();
+                DBTrust trust = trustRepository.findOneById(id);
+                trust.setApproved(approved);
+                trustRepository.save(trust);
                 // Set the properties of the approved request
 
-                return ResponseEntity.ok(approvedRequest);
+                return ResponseEntity.ok(trust.toTrustRequest());
         }
 
         @Override
@@ -97,7 +103,9 @@ public class TrustApiController implements TrustApi {
         public ResponseEntity<TrustRequest> deleteTrustRequest(
                         @ApiParam(value = "", required = true) @PathVariable("id") String id) {
                 // Implement your logic here to delete the trust request
+                DBTrust trust = trustRepository.findOneById(id);
 
+                trustRepository.delete(trust);
                 return ResponseEntity.ok().build();
         }
 
@@ -109,7 +117,13 @@ public class TrustApiController implements TrustApi {
         @GetMapping(value = "/trust", produces = { "application/json" })
         public ResponseEntity<List<TrustRequest>> getTrustRequestList() {
                 // Implement your logic here to get the list of trust requests
-                List<TrustRequest> trustRequests = /* Retrieve the trust requests */ null;
+                List<DBTrust> dbTrustList = trustRepository.findAll();
+                List<TrustRequest> trustRequests = new ArrayList<>();
+
+                for (DBTrust dbTrust : dbTrustList) {
+                        TrustRequest trustRequest = dbTrust.toTrustRequest();
+                        trustRequests.add(trustRequest);
+                }
 
                 return ResponseEntity.ok(trustRequests);
         }

@@ -97,15 +97,25 @@ export class TrustService {
     /**
      * Approve Trust Request
      * @param id 
+     * @param approved 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public approveTrustRequest(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<TrustRequest>;
-    public approveTrustRequest(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<TrustRequest>>;
-    public approveTrustRequest(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<TrustRequest>>;
-    public approveTrustRequest(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public approveTrustRequest(id: string, approved: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<TrustRequest>;
+    public approveTrustRequest(id: string, approved: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<TrustRequest>>;
+    public approveTrustRequest(id: string, approved: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<TrustRequest>>;
+    public approveTrustRequest(id: string, approved: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling approveTrustRequest.');
+        }
+        if (approved === null || approved === undefined) {
+            throw new Error('Required parameter approved was null or undefined when calling approveTrustRequest.');
+        }
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (approved !== undefined && approved !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>approved, 'approved');
         }
 
         let headers = this.defaultHeaders;
@@ -131,6 +141,7 @@ export class TrustService {
         return this.httpClient.put<TrustRequest>(`${this.configuration.basePath}/trust/${encodeURIComponent(String(id))}`,
             null,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

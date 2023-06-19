@@ -17,6 +17,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrustRepository extends PagingAndSortingRepository<DBTrust, String>  {
     List<DBTrust> findAll();
+
+    DBTrust findOneById(String id);
 }
 
 

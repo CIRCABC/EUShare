@@ -1,10 +1,15 @@
+<div class="headertitle">
+  <h1 class="title">{{ "administration" | transloco }}</h1>
+</div>
 <div class="tabs">
-  <mat-tab-group>
-
-    <mat-tab label="Administration">
+  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="custom-tab-group">
+    <mat-tab class="mat-tab custom-tab" label="Users">
+      <ng-template mat-tab-label>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>Users
+      </ng-template>
       <div class="centered">
 
-        <h1 class="title">{{ "administration" | transloco }}</h1>
+        <h1 class="title">Users</h1>
         <div class="columns">
           <div class="column is-one-half">
             <label class="label">{{ "user.search" | transloco }}</label>
@@ -21,40 +26,41 @@
 
 
 
-                <div class="user-list">
-                  <div class="titletable user-info-row">
-                    <div class="alignleft user-info-column">
-                      <strong>Name</strong>
-                      <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
-                    </div>
-                    <div class="alignleft user-info-column">
-                      <strong>Email</strong>
-                    </div>
-                    <div class="alignleft user-info-column">
-                      <strong>Files</strong>
-                      <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
-                    </div>
-                    <div class="alignleft user-info-column">
-                      <strong>Usage</strong>
-                      <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
-                    </div>
+              <div class="user-list">
+                <div class="titletable user-info-row">
+                  <div class="alignleft user-info-column">
+                    <strong>Name</strong>
+                    <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
                   </div>
-                  <div *ngFor="let userInfo of userInfoArray; let i = index" class="user-info-row" [attr.data-index]="i" value="userInfo.id" (click)="displayUserInfoNumber(i)">
-                    <div *ngIf="userInfo.usedSpace === 0" class="user-info-row">
-                      <div class="alignleft user-info-column">{{ userInfo.givenName }}</div>
-                      <div class="alignleft user-info-column"></div>
-                      <div class="alignleft user-info-column"></div>
-                      <div class="alignleft user-info-column"></div>
-                    </div>
-                    <div *ngIf="userInfo.usedSpace > 0" class="user-info-row">
-                      <strong class="alignleft user-info-column">{{ userInfo.givenName }}</strong>
-                      <strong class="alignleft user-info-column">{{ userInfo.email }}</strong>
-                      <strong class="alignleft user-info-column">{{ userInfo.filesCount }}</strong>
-                      <strong class="alignleft user-info-column">{{ userInfo.usedSpace | fileSizeFormat }}</strong>
-                    </div>
+                  <div class="alignleft user-info-column">
+                    <strong>Email</strong>
+                  </div>
+                  <div class="alignleft user-info-column">
+                    <strong>Files</strong>
+                    <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
+                  </div>
+                  <div class="alignleft user-info-column">
+                    <strong>Usage</strong>
+                    <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
                   </div>
                 </div>
-                
+                <div *ngFor="let userInfo of userInfoArray; let i = index" class="user-info-row" [attr.data-index]="i"
+                  value="userInfo.id" (click)="displayUserInfoNumber(i)">
+                  <div *ngIf="userInfo.usedSpace === 0" class="user-info-row">
+                    <div class="alignleft user-info-column">{{ userInfo.givenName }}</div>
+                    <div class="alignleft user-info-column"></div>
+                    <div class="alignleft user-info-column"></div>
+                    <div class="alignleft user-info-column"></div>
+                  </div>
+                  <div *ngIf="userInfo.usedSpace > 0" class="user-info-row">
+                    <strong class="alignleft user-info-column">{{ userInfo.givenName }}</strong>
+                    <strong class="alignleft user-info-column">{{ userInfo.email }}</strong>
+                    <strong class="alignleft user-info-column">{{ userInfo.filesCount }}</strong>
+                    <strong class="alignleft user-info-column">{{ userInfo.usedSpace | fileSizeFormat }}</strong>
+                  </div>
+                </div>
+              </div>
+
 
 
 
@@ -204,5 +210,16 @@
         </div>
       </ng-template>
     </mat-tab>
+
+
+    <mat-tab label="Trust Requests">
+      <div class="centered">
+        <h1 class="title">Trust Requests</h1>
+        <app-trust></app-trust>
+      </div>
+    </mat-tab>
+
+
+
   </mat-tab-group>
 </div>

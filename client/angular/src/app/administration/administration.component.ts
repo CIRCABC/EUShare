@@ -33,7 +33,8 @@ import { NgIf, NgFor } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { FileRowContainerComponent } from '../common/uploaded-file-row-container/uploaded-file-row-container.component';
-
+import { TrustComponent } from './trust/trust.component';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
@@ -47,9 +48,11 @@ import { FileRowContainerComponent } from '../common/uploaded-file-row-container
     NgFor,
     BarChartComponent,
     TranslocoModule,
-    FileSizeFormatPipe, 
+    FileSizeFormatPipe,
     MatTabsModule,
-    FileRowContainerComponent
+    FileRowContainerComponent,
+    TrustComponent,
+    MatIconModule 
   ],
 })
 export class AdministrationComponent implements OnInit {
@@ -107,7 +110,7 @@ export class AdministrationComponent implements OnInit {
     private adminService: AdminService,
     private statsService: StatsService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.year = new Date().getFullYear();
@@ -127,7 +130,7 @@ export class AdministrationComponent implements OnInit {
   selectedTabChange(event: MatTabChangeEvent) {
     this.selectedTabIndex = event.index;
   }
-  
+
   public async getMountPointSpaces() {
     this.mountPointSpaces = await firstValueFrom(
       this.adminService.getDiskSpace()
@@ -334,7 +337,7 @@ export class AdministrationComponent implements OnInit {
       },
     ]);
   }
-  public showUploadedFiles: boolean=false;
+  public showUploadedFiles: boolean = false;
   public toggleUploadedFiles() {
     this.showUploadedFiles = !this.showUploadedFiles;
   }

@@ -6,6 +6,17 @@
   margin-left:10px;
 }
 
+.mat-mdc-tab-content {
+  background-color: white !important;
+  border-right: 1px solid black !important;
+}
+.mat-mdc-tab-ripple {
+  background-color: white !important;
+}
+.mat-tab-group {
+  background-color: white !important;
+}
+
 p {
   margin-left: 10px;
 }
@@ -15,10 +26,24 @@ ul {
   border-radius: 4px;
 }
 
+.headertitle {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
 
 .tabs mat-tab-group {
-  padding-top: 100px;
   width: 100% !important;
+}
+
+.custom-tab-group {
+  background-color: #f5f5f5;
+  font-size: 18px;
+}
+
+.mat-tab.custom-tab .mat-tab-label {
+  font-weight: bold;
+  font-size: 16px;
 }
 
 .pagination {
@@ -34,7 +59,8 @@ ul {
   flex: 1;
   text-align: center;
   padding: 5px;
-  width: 50px;
+  display: block;
+  min-width: 200px;
 }
 
 .alignleft {

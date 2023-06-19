@@ -988,6 +988,12 @@ paths:
           required: true
           schema:
             type: "string"
+        - name: "approved"
+          in: "query"
+          required: true
+          schema:
+            type: "boolean"
+            
       responses:
         '200':
           description: "Successful Operation"

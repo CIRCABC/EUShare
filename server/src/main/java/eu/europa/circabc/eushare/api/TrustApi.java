@@ -43,6 +43,7 @@ public interface TrustApi {
      * PUT /trust/{id} : Approve Trust Request
      *
      * @param id  (required)
+     * @param approved  (required)
      * @return Successful Operation (status code 200)
      */
     @ApiOperation(value = "Approve Trust Request", nickname = "approveTrustRequest", notes = "", response = TrustRequest.class, tags={ "Trust", })
@@ -52,7 +53,7 @@ public interface TrustApi {
         value = "/trust/{id}",
         produces = { "application/json" }
     )
-    default ResponseEntity<TrustRequest> approveTrustRequest(@ApiParam(value = "",required=true) @PathVariable("id") String id) {
+    default ResponseEntity<TrustRequest> approveTrustRequest(@ApiParam(value = "",required=true) @PathVariable("id") String id,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "approved", required = true) Boolean approved) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
