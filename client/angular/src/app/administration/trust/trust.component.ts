@@ -11,18 +11,20 @@ import { Component, OnInit } from '@angular/core';
 import { TrustService } from '../../openapi/api/trust.service';
 import { TrustRequest } from '../../openapi/model/trustRequest';
 import { CommonModule } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { TrustDialogComponent } from '../trust-dialog/trust-dialog/trust-dialog.component';
 
 @Component({
   selector: 'app-trust',
   templateUrl: './trust.component.html',
   styleUrls: ['./trust.component.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatDialogModule],
 })
 export class TrustComponent implements OnInit {
   trustRequests: TrustRequest[] = [];
 
-  constructor(private trustService: TrustService) {}
+  constructor(private trustService: TrustService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.trustService
@@ -40,8 +42,23 @@ export class TrustComponent implements OnInit {
   }
 
   onDeny(id: string): void {
-    this.trustService
-      .approveTrustRequest(id, false)
-      .subscribe(() => this.ngOnInit());
+    const dialogRef = this.dialog.open(TrustDialogComponent, {
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('Text area content:', result);
+      if (result) {
+        console.log('Text area content:', result);
+
+        this.trustService
+          .approveTrustRequest(id, false)
+          .subscribe(() => this.ngOnInit());
+      }
+    });
+  }
+
+  onDelete(id: string): void {
+    this.trustService.deleteTrustRequest(id).subscribe(() => this.ngOnInit());
   }
 }

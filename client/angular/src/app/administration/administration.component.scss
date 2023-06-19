@@ -6,16 +6,8 @@
   margin-left:10px;
 }
 
-.mat-mdc-tab-content {
-  background-color: white !important;
-  border-right: 1px solid black !important;
-}
-.mat-mdc-tab-ripple {
-  background-color: white !important;
-}
-.mat-tab-group {
-  background-color: white !important;
-}
+
+
 
 p {
   margin-left: 10px;
@@ -31,6 +23,9 @@ ul {
   padding-bottom: 50px;
 }
 
+.centered {
+  padding-left: 20px;
+}
 
 .tabs mat-tab-group {
   width: 100% !important;
@@ -44,7 +39,10 @@ ul {
 .mat-tab.custom-tab .mat-tab-label {
   font-weight: bold;
   font-size: 16px;
+  border-right: 1px solid black;
 }
+
+.mdc-tab-indicator__content--underline { --mdc-tab-indicator-active-indicator-color: green; } .mdc-tab-indicator .mdc-tab-indicator__content.mdc-tab-indicator__content--underline { border-top-width: 4px; }
 
 .pagination {
   margin-top: 1em;
@@ -53,19 +51,22 @@ ul {
 .user-info-row {
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
 .user-info-column {
   flex: 1;
-  text-align: center;
+  text-align: left;
+  font-size: smaller;
   padding: 5px;
   display: block;
-  min-width: 200px;
+  width: 100%;
+  
+}
+.user-list {
+  width: 100%;  
 }
 
-.alignleft {
-  text-align: left;
-}
 
 .alignright {
   text-align: right;
@@ -73,14 +74,26 @@ ul {
 
 .titletable {
   background-color: rgba(155, 214, 217, 0.4509803922);
+  display: flex;
+  width: 100%;
 }
 
+.user-list {
+  display: inline-block;
+  width: 100%;
+}
+
+.alignleft.user-info-column {
+  flex: 1;
+  width: 100%;
+}
 
 
 
 .user-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 
@@ -90,6 +103,7 @@ ul {
   padding: 1.5rem;
   border-radius: 4px;
   margin: 0.5rem;
+  width: 100%;
 }
 
 .alignleft {

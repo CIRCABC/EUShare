@@ -1,7 +1,7 @@
 <table>
     <thead>
         <tr>
-            <th></th>
+            <th>Trusted</th>
             <th>Description</th>
             <th>Email</th>
 
@@ -21,8 +21,9 @@
             <td>{{request.requestDateTime | date:'dd-MM-yyyy HH:mm'}}</td>
             <td>{{request.name}}</td>
             <td>{{request.username}}</td>
-            <td><button class="button" (click)="onApprove(request.id)">Approve</button></td>
-            <td><button class="button" (click)="onDeny(request.id)">Deny</button></td>
+            <td><button class="button" (click)="onApprove(request.id)"><i class="material-icons">done</i>&nbsp;Accept</button></td>
+            <td><button class="button" (click)="onDeny(request.id)"><i class="material-icons">close</i>&nbsp;Deny</button></td>
+            <td><button class="button" (click)="onDelete(request.id)"><i class="material-icons">delete</i>&nbsp;Delete</button></td>
         </tr>
     </tbody>
 </table>

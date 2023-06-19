@@ -1,0 +1,37 @@
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<form #form="ngForm" (ngSubmit)="submit(form.value)">
+
+    <div class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+
+            <header class="modal-card-head">
+                <p class="modal-card-title">Trust Deny</p>
+                <button class="delete" aria-label="close" (click)="cancel()"></button>
+            </header>
+
+            <section class="modal-card-body">
+                <mat-dialog-content>
+                    <div>
+                        <p>Trust deny reason:</p>
+                        <textarea matInput [(ngModel)]="editorContent" name="editorContent"
+                            placeholder="Enter text here" required #editorContentModel="ngModel"></textarea>
+                    </div>
+                </mat-dialog-content>
+            </section>
+
+            <footer class="modal-card-foot">
+                <div mat-dialog-actions>
+                    <button class="button" mat-raised-button color="primary" type="submit" (click)="submit(form)">
+                        {{ "submit" | transloco }}
+                    </button>
+                    <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">
+                        {{ "cancel" | transloco }}
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+</form>

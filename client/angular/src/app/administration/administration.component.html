@@ -3,10 +3,11 @@
 </div>
 <div class="tabs">
   <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="custom-tab-group">
-    <mat-tab class="mat-tab custom-tab" label="Users">
+    <mat-tab class="mat-tab custom-tab">
       <ng-template mat-tab-label>
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="home"></mat-icon>Users
+        <i class="material-icons">group</i> Users 
       </ng-template>
+
       <div class="centered">
 
         <h1 class="title">Users</h1>
@@ -142,6 +143,9 @@
     </mat-tab>
 
     <mat-tab label="Disk usage">
+      <ng-template mat-tab-label>
+        <i class="material-icons">storage</i> Disk usage 
+      </ng-template>
       <div class="centered">
         <h1 class="title">Disk usage</h1>
         <table>
@@ -162,6 +166,9 @@
     </mat-tab>
 
     <mat-tab label="Statistics">
+      <ng-template mat-tab-label>
+        <i class="material-icons">bar_chart</i> Statistics 
+      </ng-template>
       <ng-template matTabContent>
         <div class="centered">
           <h1 class="title">Statistics</h1>
@@ -213,6 +220,9 @@
 
 
     <mat-tab label="Trust Requests">
+      <ng-template mat-tab-label>
+        <i class="material-icons">lock</i> Trust Requests 
+      </ng-template>
       <div class="centered">
         <h1 class="title">Trust Requests</h1>
         <app-trust></app-trust>

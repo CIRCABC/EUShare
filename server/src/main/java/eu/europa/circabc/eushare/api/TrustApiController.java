@@ -37,7 +37,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
+import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.TrustRequest;
+import eu.europa.circabc.eushare.services.EmailService;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.DBTrust;
 import eu.europa.circabc.eushare.storage.DBUser;
@@ -58,6 +60,9 @@ public class TrustApiController implements TrustApi {
 
         @Autowired
         private UserRepository userRepository;
+
+        @Autowired
+        private EmailService emailService;
 
         @Autowired
         private TrustRepository trustRepository;
@@ -84,12 +89,16 @@ public class TrustApiController implements TrustApi {
         @PutMapping(value = "/trust/{id}", produces = { "application/json" })
         public ResponseEntity<TrustRequest> approveTrustRequest(
                         @ApiParam(value = "", required = true) @PathVariable("id") String id,
-                        @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "approved", required = true) Boolean approved) {
+                        @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "approved", required = true) Boolean approved,
+                        @ApiParam(value = "") @Valid @RequestParam(value = "reason", required = false) String reason) {
                 // Implement your logic here to approve the trust request
                 DBTrust trust = trustRepository.findOneById(id);
                 trust.setApproved(approved);
                 trustRepository.save(trust);
                 // Set the properties of the approved request
+        
+                //DBUser user = userRepository.findOneByEmailIgnoreCase(trust.getEmail());
+               // this.emailService.sendNotification(Recipient, reason);
 
                 return ResponseEntity.ok(trust.toTrustRequest());
         }

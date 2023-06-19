@@ -43,6 +43,7 @@ public class EmailService implements EmailServiceInterface {
   private static final String MESSAGE = "message";
   private static final String LINK = "link";
   private static final String EXPDATE = "expdate";
+  private static final String NOTIFICATION = "notification";
 
   @Autowired
   private JavaMailSender sender;
@@ -102,6 +103,21 @@ public class EmailService implements EmailServiceInterface {
     ctx.setVariable(REASON, reason);
     String content =
       this.templateEngine.process("mail/html/delete-notification", ctx);
+
+    this.sendMessage(recipient, content);
+  }
+
+
+    @Override
+  public void sendNotification(
+    String recipient,
+    String notification
+  ) throws MessagingException {
+    Context ctx = new Context();
+    ctx.setVariable(NOTIFICATION, notification);
+
+    String content =
+      this.templateEngine.process("mail/html/notification", ctx);
 
     this.sendMessage(recipient, content);
   }

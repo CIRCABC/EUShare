@@ -52,7 +52,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTabsModule,
     FileRowContainerComponent,
     TrustComponent,
-    MatIconModule 
+    MatIconModule,
   ],
 })
 export class AdministrationComponent implements OnInit {

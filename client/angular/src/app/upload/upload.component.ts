@@ -44,12 +44,7 @@ import { MessageTextAreaComponent } from '../common/formComponents/message-text-
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
 import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import {
-  MatDialog,
-  MAT_DIALOG_DATA,
-  MatDialogRef,
-  MatDialogModule,
-} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotificationLevel } from '../common/notification/notification-level';
 import { I18nService } from '../common/i18n/i18n.service';
 

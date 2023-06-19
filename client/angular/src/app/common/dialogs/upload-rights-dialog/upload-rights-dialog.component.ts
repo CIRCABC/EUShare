@@ -67,6 +67,7 @@ export class UploadRightsDialogComponent {
       this.dialogRef.close({ description: this.editorContent });
     });
   }
+
   cancel() {
     this.dialogRef.close();
   }

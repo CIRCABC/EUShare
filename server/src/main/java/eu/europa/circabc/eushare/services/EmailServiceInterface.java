@@ -34,4 +34,10 @@ public interface EmailServiceInterface {
     String shorturl,
     LocalDate expDate
   ) throws MessagingException;
+
+    public void sendNotification(
+    String recipient,
+    String notification
+  ) throws MessagingException;
+
 }
