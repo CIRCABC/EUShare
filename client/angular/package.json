@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "EUPL-1.1",
   "engines": {
     "node": "^14.20.0 || ^16.13.0 || >=18.10.0",
