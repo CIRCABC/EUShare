@@ -358,7 +358,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       dbUser = this.userRepository.findOneByUsername(username);
       if (dbUser == null) {
         // Not found in the database
-        if (username.matches("^n\\d+.*"))
+        if (username.matches("^n\\d+.*") || username.matches("^n.{7}.*"))
           dbUser = this.createUser(email, givenName, username,Role.EXTERNAL);
         else
           dbUser = this.createUser(email, givenName, username,Role.INTERNAL);
