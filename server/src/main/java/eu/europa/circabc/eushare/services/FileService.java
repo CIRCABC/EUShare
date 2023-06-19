@@ -261,24 +261,19 @@ public class FileService implements FileServiceInterface {
       throws UserUnauthorizedException, UnknownUserException, MessageTooLongException, UnknownFileException,
       MessagingException {
     if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
+
       if (!StringUtils.validateMessage(recipient.getMessage())) {
         throw new MessageTooLongException();
       }
       DBFile dbFile = findAvailableFile(fileId, false);
+      DBUser requester = userRepository.findOneById(requesterId);
 
       DBShare dbShare = new DBShare(
           recipient.getEmail().toLowerCase(),
           dbFile,
           recipient.getMessage(),
           downloadNotification);
-
-      if (!recipient.getEmail().isEmpty()) {
-        DBUser user = userRepository.findOneByEmailIgnoreCase(recipient.getEmail());
-        if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
-          user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
-          userRepository.save(user);
-        }
-      }
+      updateRoleAndSendNotification(recipient, requester);
 
       String shortUrl;
       do {
@@ -298,6 +293,26 @@ public class FileService implements FileServiceInterface {
       return dbShare.toRecipient();
     } else {
       throw new UserUnauthorizedException();
+    }
+  }
+
+  private void updateRoleAndSendNotification(Recipient recipient, DBUser requester) {
+
+    if (!recipient.getEmail().isEmpty()) {
+      DBUser user = userRepository.findOneByEmailIgnoreCase(recipient.getEmail());
+      if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
+        user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+        userRepository.save(user);
+        try {
+          emailService.sendNotification(user.getEmail(), "\n" + //
+              "\n" + //
+                  "Please be advised that you now have the right to upload files as you have gained trust through "
+              + requester.getEmail() + " sharing a file with you.");
+        } catch (MessagingException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
   }
 
@@ -401,19 +416,14 @@ public class FileService implements FileServiceInterface {
       if (!StringUtils.validateMessage(recipient.getMessage())) {
         throw new MessageTooLongException();
       }
+      DBUser requester = userRepository.findOneById(requesterId);
+
       DBShare dbShare = new DBShare(
           recipient.getEmail().toLowerCase(),
           dbFile,
           recipient.getMessage(),
           downloadNotification);
-
-      if (!recipient.getEmail().isEmpty()) {
-        DBUser user = userRepository.findOneByEmailIgnoreCase(recipient.getEmail());
-        if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
-          user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
-          userRepository.save(user);
-        }
-      }
+      updateRoleAndSendNotification(recipient, requester);
 
       String shortUrl;
       do {

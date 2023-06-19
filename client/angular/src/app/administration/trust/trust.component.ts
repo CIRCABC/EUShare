@@ -52,7 +52,7 @@ export class TrustComponent implements OnInit {
         console.log('Text area content:', result);
 
         this.trustService
-          .approveTrustRequest(id, false)
+          .approveTrustRequest(id, false,result)
           .subscribe(() => this.ngOnInit());
       }
     });

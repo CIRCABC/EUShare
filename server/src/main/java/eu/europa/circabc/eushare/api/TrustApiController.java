@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -45,6 +46,7 @@ import eu.europa.circabc.eushare.storage.DBTrust;
 import eu.europa.circabc.eushare.storage.DBUser;
 import eu.europa.circabc.eushare.storage.TrustRepository;
 import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.DBUser.Role;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -96,10 +98,28 @@ public class TrustApiController implements TrustApi {
                 trust.setApproved(approved);
                 trustRepository.save(trust);
                 // Set the properties of the approved request
-        
-                //DBUser user = userRepository.findOneByEmailIgnoreCase(trust.getEmail());
-               // this.emailService.sendNotification(Recipient, reason);
 
+                DBUser user = userRepository.findOneByEmailIgnoreCase(trust.getEmail());
+                if (user != null) {
+                        String message;
+                        if (approved && user.getRole().equals(Role.EXTERNAL)) {
+                                message = "Your trust request has been accepted by CIRCABC-Share administrator, you can now share some files.";
+                                user.setRole(Role.TRUSTED_EXTERNAL);
+                        }
+                        else {
+                                message = "We are sorry but your trust request has been denied by CIRCABC-Share administrator for the following reason : " +reason;
+                                user.setRole(Role.EXTERNAL);
+                        }
+                        userRepository.save(user);
+                        
+                        try {
+                                
+                                this.emailService.sendNotification(user.getEmail(), message);
+                        } catch (MessagingException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                        }
+                }
                 return ResponseEntity.ok(trust.toTrustRequest());
         }
 
