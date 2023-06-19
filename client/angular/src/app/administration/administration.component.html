@@ -127,9 +127,6 @@
                 "display.shared.files" | transloco }}</a>
               <div *ngIf="showUploadedFiles">
                 <div class="centered">
-                  <h1 class="title">
-                    {{ "user.uploaded.files" | transloco: { userName: userName } }}
-                  </h1>
                   <app-uploaded-file-row-container [userId]="this.selectedUserInfo.id" [displayAsUploader]="false"
                     [displayAsAdministrator]="true"></app-uploaded-file-row-container>
                 </div>

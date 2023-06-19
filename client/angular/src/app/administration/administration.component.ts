@@ -326,17 +326,7 @@ export class AdministrationComponent implements OnInit {
     this.isChangePermissions = !this.isChangePermissions;
   }
 
-  public goToUserUploadedFiles() {
-    this.router.navigate([
-      '/administration',
-      this.selectedUserInfo.id,
-      'files',
-      {
-        userName: this.selectedUserInfo.givenName,
-        email: this.selectedUserInfo.email,
-      },
-    ]);
-  }
+  
   public showUploadedFiles: boolean = false;
   public toggleUploadedFiles() {
     this.showUploadedFiles = !this.showUploadedFiles;

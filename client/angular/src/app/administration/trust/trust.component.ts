@@ -35,30 +35,41 @@ export class TrustComponent implements OnInit {
       });
   }
 
-  onApprove(id: string): void {
+  onApprove(id: string | undefined): void {
+    if (!id) {
+      return;
+    }
     this.trustService
       .approveTrustRequest(id, true)
       .subscribe(() => this.ngOnInit());
   }
-
-  onDeny(id: string): void {
+  
+  onDeny(id: string | undefined): void {
+    if (!id) {
+      return;
+    }
+    
     const dialogRef = this.dialog.open(TrustDialogComponent, {
       data: {},
     });
-
+  
     dialogRef.afterClosed().subscribe((result) => {
       console.log('Text area content:', result);
       if (result) {
         console.log('Text area content:', result);
-
+  
         this.trustService
-          .approveTrustRequest(id, false,result)
+          .approveTrustRequest(id, false, result)
           .subscribe(() => this.ngOnInit());
       }
     });
   }
-
-  onDelete(id: string): void {
+  
+  onDelete(id: string | undefined): void {
+    if (!id) {
+      return;
+    }
     this.trustService.deleteTrustRequest(id).subscribe(() => this.ngOnInit());
   }
+  
 }

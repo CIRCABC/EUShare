@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 import { TrustRequest } from '../../../openapi/model/trustRequest';
 import { TrustService } from '../../../openapi/api/trust.service';
 import { NotificationService } from '../../notification/notification.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-upload-rights-dialog',
@@ -43,6 +44,8 @@ export class UploadRightsDialogComponent {
     private trustService: TrustService,
     private notificationService: NotificationService
   ) {}
+
+  public circabc_url: string = environment.circabc_url;
 
   editorContent: string = '';
   terms: boolean = false;
