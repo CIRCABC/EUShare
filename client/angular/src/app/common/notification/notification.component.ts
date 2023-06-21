@@ -66,7 +66,7 @@ export class NotificationComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('Dialog was closed' + JSON.stringify(result));
+      console.log(`Dialog was closed${JSON.stringify(result)}`);
     });
   }
 

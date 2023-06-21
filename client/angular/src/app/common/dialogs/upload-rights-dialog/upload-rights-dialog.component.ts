@@ -51,7 +51,7 @@ export class UploadRightsDialogComponent {
   terms: boolean = false;
 
   isValid(): boolean {
-    return this.editorContent.length != 0 && this.terms;
+    return this.editorContent.length !== 0 && this.terms;
   }
 
   closeDialog() {
