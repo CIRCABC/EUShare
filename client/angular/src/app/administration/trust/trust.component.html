@@ -2,9 +2,7 @@
     <thead>
         <tr>
             <th>Trusted</th>
-            <th>Description</th>
             <th>Email</th>
-
             <th>Request Date</th>
             <th>Name</th>
             <th>Username</th>
@@ -15,14 +13,11 @@
     <tbody>
         <tr *ngFor="let request of trustRequests">
             <td><input class="button-checkbox" type="checkbox" [checked]="request.approved" disabled/></td>
-            <td>{{request.description}}</td>
             <td>{{request.email}}</td>
-
             <td>{{request.requestDateTime | date:'dd-MM-yyyy HH:mm'}}</td>
             <td>{{request.name}}</td>
             <td>{{request.username}}</td>
-            <td><button class="button" (click)="onApprove(request.id)"><i class="material-icons">done</i>&nbsp;Accept</button></td>
-            <td><button class="button" (click)="onDeny(request.id)"><i class="material-icons">close</i>&nbsp;Deny</button></td>
+            <td><button class="button" (click)="onOpen(request)"><i class="material-icons">done</i>&nbsp;Open</button></td>
             <td><button class="button" (click)="onDelete(request.id)"><i class="material-icons">delete</i>&nbsp;Delete</button></td>
         </tr>
     </tbody>

@@ -4,7 +4,7 @@
     <div class="modal-card">
 
       <header class="modal-card-head">
-        <p class="modal-card-title">{{ "no.upload.rights.submit.title" | transloco }}</p>
+        <p class="modal-card-title"><strong>{{ "no.upload.rights.submit.title" | transloco }}</strong></p>
         <button class="delete" aria-label="close" (click)="cancel()"></button>
       </header>
 
@@ -12,7 +12,7 @@
         <mat-dialog-content>
           <div>
             <p>{{ "no.upload.rights.submit.description" | transloco }}</p>
-
+            
             <textarea matInput [(ngModel)]="editorContent" name="editorContent" placeholder="Enter text here" required
               #editorContentModel="ngModel"></textarea>
 

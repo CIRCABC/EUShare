@@ -257,6 +257,7 @@ export class AdministrationComponent implements OnInit {
   }
 
   public displayUserInfoNumber(i: number) {
+    this.hideUploadedFiles();
     this.selectedUserInfoIndex = i;
     this.selectedValueInGigaBytes = Math.floor(
       this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
@@ -330,6 +331,10 @@ export class AdministrationComponent implements OnInit {
   public showUploadedFiles: boolean = false;
   public toggleUploadedFiles() {
     this.showUploadedFiles = !this.showUploadedFiles;
+  }
+
+  public hideUploadedFiles() {
+    this.showUploadedFiles = false;
   }
 
   public getMonthName(monthNumber: number) {

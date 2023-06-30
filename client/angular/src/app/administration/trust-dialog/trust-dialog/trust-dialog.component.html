@@ -1,33 +1,44 @@
 <h2 mat-dialog-title>{{ data.title }}</h2>
 
-<form #form="ngForm" (ngSubmit)="submit(form.value)">
+<form #form="ngForm" >
+    <input type="hidden" [(ngModel)]="action" name="action">
 
     <div class="modal is-active">
         <div class="modal-background"></div>
         <div class="modal-card">
 
             <header class="modal-card-head">
-                <p class="modal-card-title">Trust Deny</p>
+                <p class="modal-card-title"><strong>Trust Request Validation</strong> </p>
                 <button class="delete" aria-label="close" (click)="cancel()"></button>
             </header>
 
             <section class="modal-card-body">
                 <mat-dialog-content>
+                    <div><strong>Email : </strong>{{ data.email }}</div>
+                    <div><strong>Name :</strong> {{ data.name }}</div>
+                     
+                    <div >
+                        <p><strong>Request message : </strong></p>
+                        <div>{{data.description}}</div>
+                    </div>
                     <div>
-                        <p>Trust deny reason:</p>
-                        <textarea matInput [(ngModel)]="editorContent" name="editorContent"
-                            placeholder="Enter text here" required #editorContentModel="ngModel"></textarea>
+                        <p><strong>Trust deny reason : </strong></p>
+                        <textarea matInput [(ngModel)]="denyReason" name="denyReason"
+                            placeholder="Enter text here" required #denyReasonModel="ngModel"></textarea>
                     </div>
                 </mat-dialog-content>
             </section>
 
             <footer class="modal-card-foot">
                 <div mat-dialog-actions>
-                    <button class="button" mat-raised-button color="primary" type="submit" (click)="submit(form)">
-                        {{ "submit" | transloco }}
+                    <button class="button" mat-raised-button color="primary" type="button" (click)="submitApprove(form)">
+                        approve
+                    </button>
+                    <button class="button" mat-raised-button color="primary" type="button" (click)="submitDeny(form)">
+                        deny
                     </button>
                     <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">
-                        {{ "cancel" | transloco }}
+                        cancel
                     </button>
                 </div>
             </footer>

@@ -15,11 +15,10 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { TranslocoModule } from '@ngneat/transloco';
+import { TrustRequest } from '../../../openapi';
+import { DatePipe } from '@angular/common';
 
-export interface DialogData {
-  title: string;
-  message: string;
-}
+export interface DialogData  extends TrustRequest{};
 
 @Component({
   selector: 'app-trust-dialog',
@@ -27,17 +26,25 @@ export interface DialogData {
   styleUrls: ['./trust-dialog.component.scss'],
   standalone: true,
   imports: [MatDialogModule, FormsModule, TranslocoModule],
+  providers: [DatePipe]
 })
 export class TrustDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<TrustDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private datePipe: DatePipe
   ) {}
 
-  editorContent: string = '';
+  denyReason: string = '';
+  action: boolean = false;
 
-  submit(formData: any): void {
-    this.dialogRef.close(formData.editorContent);
+  submitApprove(formData: any): void {
+    formData.form.value.action = true;
+    this.dialogRef.close(formData.form.value);
+  }
+  submitDeny(formData: any): void {
+    formData.form.value.action = false;
+    this.dialogRef.close(formData.form.value);
   }
 
   cancel() {
