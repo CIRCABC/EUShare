@@ -240,7 +240,7 @@ export class UploadComponent implements OnInit {
 
   checkUploadRights = (event: MouseEvent) => {
     // Open file dialog
-    if (this.sessionApi.getStoredUserInfo()?.role?.toString() != 'EXTERNAL') {
+    if (this.sessionApi.getStoredUserInfo()?.role?.toString() !== 'EXTERNAL') {
       return true;
     }
     // Do not open file dialog
