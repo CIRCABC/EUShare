@@ -52,7 +52,7 @@ public class DBTrust {
   private Boolean approved;
 
   @JsonProperty("requestDateTime")
-  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime requestDateTime;
 

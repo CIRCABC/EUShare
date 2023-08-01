@@ -53,9 +53,9 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-@Controller
-@Api(value = "trust", description = "the trust API")
+
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
+@Controller
 public class TrustApiController implements TrustApi {
 
         private Logger log = LoggerFactory.getLogger(UserService.class);
