@@ -84,11 +84,6 @@ public class TrustApiController implements TrustApi {
         }
 
         @Override
-        @ApiOperation(value = "Approve Trust Request", nickname = "approveTrustRequest", notes = "", response = TrustRequest.class, tags = {
-                        "Trust", })
-        @ApiResponses(value = {
-                        @ApiResponse(code = 200, message = "Successful Operation", response = TrustRequest.class) })
-        @PutMapping(value = "/trust/{id}", produces = { "application/json" })
         public ResponseEntity<TrustRequest> approveTrustRequest(
                         @ApiParam(value = "", required = true) @PathVariable("id") String id,
                         @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "approved", required = true) Boolean approved,
@@ -124,11 +119,6 @@ public class TrustApiController implements TrustApi {
         }
 
         @Override
-        @ApiOperation(value = "Delete Trust Request", nickname = "deleteTrustRequest", notes = "", response = TrustRequest.class, tags = {
-                        "Trust", })
-        @ApiResponses(value = {
-                        @ApiResponse(code = 200, message = "Successful Operation", response = TrustRequest.class) })
-        @DeleteMapping(value = "/trust/{id}", produces = { "application/json" })
         public ResponseEntity<TrustRequest> deleteTrustRequest(
                         @ApiParam(value = "", required = true) @PathVariable("id") String id) {
                 // Implement your logic here to delete the trust request
@@ -139,11 +129,6 @@ public class TrustApiController implements TrustApi {
         }
 
         @Override
-        @ApiOperation(value = "Get Trust Request List", nickname = "getTrustRequestList", notes = "", response = TrustRequest.class, responseContainer = "List", tags = {
-                        "Trust", })
-        @ApiResponses(value = {
-                        @ApiResponse(code = 200, message = "Successful Operation", response = TrustRequest.class, responseContainer = "List") })
-        @GetMapping(value = "/trust", produces = { "application/json" })
         public ResponseEntity<List<TrustRequest>> getTrustRequestList() {
                 // Implement your logic here to get the list of trust requests
                 List<DBTrust> dbTrustList = trustRepository.findAll();
@@ -158,11 +143,6 @@ public class TrustApiController implements TrustApi {
         }
 
         @Override
-        @ApiOperation(value = "Send Trust Request", nickname = "sendTrustRequest", notes = "", response = TrustRequest.class, tags = {
-                        "Trust", })
-        @ApiResponses(value = {
-                        @ApiResponse(code = 200, message = "Successful Operation", response = TrustRequest.class) })
-        @PostMapping(value = "/trust", produces = { "application/json" }, consumes = { "application/json" })
         public ResponseEntity<TrustRequest> sendTrustRequest(
                         @ApiParam(value = "", required = true) @Valid @RequestBody TrustRequest trustRequest) {
 
