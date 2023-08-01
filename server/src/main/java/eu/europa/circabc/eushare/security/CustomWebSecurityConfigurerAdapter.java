@@ -110,19 +110,7 @@ public class CustomWebSecurityConfigurerAdapter
 
   
 
-  @Bean
-    public CorsConfigurationSource corsConfigurationSource(String allowedOrigin) {
-        CorsConfiguration config = new CorsConfiguration();
-       // config.setAllowCredentials(true);
-        config.addAllowedOrigin(allowedOrigin);
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
-
-        return source;
-    }
 
   @Bean
   AuthenticationEntryPoint authenticationEntryPoint() {
