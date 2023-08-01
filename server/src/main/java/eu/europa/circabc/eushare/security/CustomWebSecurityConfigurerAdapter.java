@@ -65,8 +65,8 @@ public class CustomWebSecurityConfigurerAdapter
     RefererFilter refererFilter = new RefererFilter(allowedOrigin);
 
     http
-        .cors().configurationSource(corsConfigurationSource(allowedOrigin))
-        .and()
+        //.cors().configurationSource(corsConfigurationSource(allowedOrigin))
+        //.and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
@@ -89,7 +89,7 @@ public class CustomWebSecurityConfigurerAdapter
         .authenticated()
         .and()
         .addFilter(apiKeyFilter)
-        .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)  
+       // .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)  
         .exceptionHandling()
         .accessDeniedHandler(accessDeniedHandler())
         .and()
