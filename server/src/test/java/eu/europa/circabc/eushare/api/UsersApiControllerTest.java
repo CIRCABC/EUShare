@@ -22,6 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.model.Status;
@@ -74,6 +76,9 @@ public class UsersApiControllerTest {
   @MockBean
   private UserRepository userRepository;
 
+  @MockBean
+  private EushareConfiguration esConfig;
+
   @Test
   public void getUsersUserInfo200() throws Exception { // NOSONAR
     String token = "StupidToken";
@@ -83,20 +88,18 @@ public class UsersApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     UserInfo userInfo = new UserInfo();
     userInfo.setId("id");
@@ -109,47 +112,43 @@ public class UsersApiControllerTest {
     List<UserInfo> userInfoList = Arrays.asList(userInfo);
 
     UserDetails userDetails = User
-      .builder()
-      .username("admin")
-      .password("admin")
-      .roles(DBUser.Role.ADMIN.toString())
-      .build();
+        .builder()
+        .username("admin")
+        .password("admin")
+        .roles(DBUser.Role.ADMIN.toString())
+        .build();
     when(service.loadUserByUsername(anyString())).thenReturn(userDetails);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      service.getUsersUserInfoOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyBoolean(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenReturn(userInfoList);
+        service.getUsersUserInfoOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyBoolean(),
+            anyString(),
+            anyString()))
+        .thenReturn(userInfoList);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/users/userInfo")
-          .param("pageSize", "10")
-          .param("pageNumber", "1")
-          .param("sortBy", "name")
-          .param("searchString", "email@email.com")
-          .param("active", "true")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(
-        content()
-          .string(
-            containsString(UsersApiControllerTest.asJsonString(userInfoList))
-          )
-      );
+            .get("/users/userInfo")
+            .param("pageSize", "10")
+            .param("pageNumber", "1")
+            .param("sortBy", "name")
+            .param("searchString", "email@email.com")
+            .param("active", "true")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content()
+                .string(
+                    containsString(UsersApiControllerTest.asJsonString(userInfoList))));
   }
 
   @Test
@@ -163,36 +162,33 @@ public class UsersApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/users/userInfo")
-          .param("pageSize", "10")
-          .param("searchString", "email@email.com")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(
-        content()
-          .string(containsString(UsersApiControllerTest.asJsonString(status)))
-      );
+            .get("/users/userInfo")
+            .param("pageSize", "10")
+            .param("searchString", "email@email.com")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string(containsString(UsersApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -202,19 +198,17 @@ public class UsersApiControllerTest {
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/users/userInfo")
-          .param("pageSize", "10")
-          .param("pageNumber", "1")
-          .param("searchString", "email@email.com")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UsersApiControllerTest.asJsonString(status)))
-      );
+            .get("/users/userInfo")
+            .param("pageSize", "10")
+            .param("pageNumber", "1")
+            .param("searchString", "email@email.com")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UsersApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -223,24 +217,23 @@ public class UsersApiControllerTest {
     status.setCode(401);
     String token = "StupidToken";
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/users/userInfo")
-          .param("pageSize", "10")
-          .param("pageNumber", "1")
-          .param("searchString", "email@email.com")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UsersApiControllerTest.asJsonString(status)))
-      );
+            .get("/users/userInfo")
+            .param("pageSize", "10")
+            .param("pageNumber", "1")
+            .param("searchString", "email@email.com")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UsersApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -256,51 +249,46 @@ public class UsersApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      service.getUsersUserInfoOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyBoolean(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenThrow(new UserUnauthorizedException());
+        service.getUsersUserInfoOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyBoolean(),
+            anyString(),
+            anyString()))
+        .thenThrow(new UserUnauthorizedException());
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/users/userInfo")
-          .param("pageSize", "10")
-          .param("pageNumber", "1")
-          .param("sortBy", "name")
-          .param("searchString", "email@email.com")
-          .param("active", "true")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(UsersApiControllerTest.asJsonString(status)))
-      );
+            .get("/users/userInfo")
+            .param("pageSize", "10")
+            .param("pageNumber", "1")
+            .param("sortBy", "name")
+            .param("searchString", "email@email.com")
+            .param("active", "true")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(UsersApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -315,50 +303,45 @@ public class UsersApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      service.getUsersUserInfoOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyBoolean(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenThrow(new UnknownUserException());
+        service.getUsersUserInfoOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyBoolean(),
+            anyString(),
+            anyString()))
+        .thenThrow(new UnknownUserException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/users/userInfo")
-          .param("pageSize", "10")
-          .param("pageNumber", "1")
-          .param("sortBy", "name")
-          .param("searchString", "email@email.com")
-          .param("active", "true")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(UsersApiControllerTest.asJsonString(status)))
-      );
+            .get("/users/userInfo")
+            .param("pageSize", "10")
+            .param("pageNumber", "1")
+            .param("sortBy", "name")
+            .param("searchString", "email@email.com")
+            .param("active", "true")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(UsersApiControllerTest.asJsonString(status))));
   }
 
   public static String asJsonString(final Object obj) {

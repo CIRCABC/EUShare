@@ -15,7 +15,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class TestHelper {
 
-  private TestHelper() {}
+  private TestHelper() {
+  }
 
   public static String asJsonString(final Object obj) {
     try {

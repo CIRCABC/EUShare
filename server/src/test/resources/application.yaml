@@ -3,7 +3,7 @@ cors:
 server:
   port: 8888
 eushare:
-  clientHttpAddress: http://localhost:4200
+  clientHttpAddress: http://localhost:8080
   expirationdays: 7
   defaultuserspace: 5368709120
   # 4Gb

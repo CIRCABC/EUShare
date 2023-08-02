@@ -61,7 +61,10 @@ public class CustomWebSecurityConfigurerAdapter
     
 
     String allowedOrigin = esConfig.getClientHttpAddress();
-    allowedOrigin = allowedOrigin.replace("/share", "");
+    if (allowedOrigin != null)
+    {
+      allowedOrigin = allowedOrigin.replace("/share", "");
+    }
     RefererFilter refererFilter = new RefererFilter(allowedOrigin);
 
     http

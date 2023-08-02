@@ -21,6 +21,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
@@ -68,7 +70,6 @@ public class UserApiControllerTest {
   @Autowired
   private MockMvc mockMvc;
 
-  
   @MockBean
   private UserRepository userRepository;
 
@@ -81,6 +82,9 @@ public class UserApiControllerTest {
   @MockBean
   private FileService fileService;
 
+  @MockBean
+  private EushareConfiguration esConfig;
+
   @Test
   public void getFilesFileInfoRecipient200() throws Exception { // NOSONAR
     String token = "StupidToken";
@@ -90,20 +94,18 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();
     fileInfoRecipient.setExpirationDate(LocalDate.now());
@@ -113,36 +115,30 @@ public class UserApiControllerTest {
     fileInfoRecipient.setUploaderName("uploaderName");
 
     List<FileInfoRecipient> fakeFileInfoRecipientList = Arrays.asList(
-      fileInfoRecipient
-    );
+        fileInfoRecipient);
     when(
-      fileService.getFileInfoRecipientOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenReturn(fakeFileInfoRecipientList);
+        fileService.getFileInfoRecipientOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString()))
+        .thenReturn(fakeFileInfoRecipientList);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(
-        content()
-          .string(
-            containsString(
-              UserApiControllerTest.asJsonString(fakeFileInfoRecipientList)
-            )
-          )
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content()
+                .string(
+                    containsString(
+                        UserApiControllerTest.asJsonString(fakeFileInfoRecipientList))));
   }
 
   @Test
@@ -157,89 +153,83 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
-          .header("Authorization", "Bearer " + token)
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void getFilesFileInfoRecipient401ForNoAuthentication()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(401);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void getFilesFileInfoRecipient401ForWrongAuthentication()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(401);
 
     String token = "StupidToken";
 
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void getFilesFileInfoRecipient403ForUnauthorizedUser()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(403);
     status.setMessage("NotAuthorized");
@@ -251,45 +241,40 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.getFileInfoRecipientOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    ) // pretending
-      .thenThrow(new UserUnauthorizedException());
+        fileService.getFileInfoRecipientOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString())) // pretending
+        .thenThrow(new UserUnauthorizedException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -304,45 +289,40 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.getFileInfoRecipientOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenThrow(new UnknownUserException());
+        fileService.getFileInfoRecipientOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString()))
+        .thenThrow(new UnknownUserException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -357,45 +337,40 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.getFileInfoRecipientOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenThrow(new NullPointerException());
+        fileService.getFileInfoRecipientOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString()))
+        .thenThrow(new NullPointerException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoRecipient")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -407,20 +382,18 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     FileInfoUploader fileInfoUploader = new FileInfoUploader();
     fileInfoUploader.setExpirationDate(LocalDate.now());
@@ -437,37 +410,31 @@ public class UserApiControllerTest {
     fileInfoUploader.setSharedWith(Arrays.asList(recipientWithLink));
 
     List<FileInfoUploader> fakeFileInfoUploaderList = Arrays.asList(
-      fileInfoUploader
-    );
+        fileInfoUploader);
 
     when(
-      fileService.getFileInfoUploaderOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenReturn(fakeFileInfoUploaderList);
+        fileService.getFileInfoUploaderOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString()))
+        .thenReturn(fakeFileInfoUploaderList);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(
-        content()
-          .string(
-            containsString(
-              UserApiControllerTest.asJsonString(fakeFileInfoUploaderList)
-            )
-          )
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content()
+                .string(
+                    containsString(
+                        UserApiControllerTest.asJsonString(fakeFileInfoUploaderList))));
   }
 
   @Test
@@ -482,88 +449,82 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
-          .header("Authorization", "Bearer " + token)
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void getFilesFileInfoUploader401ForNoAuthentication()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(401);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void getFilesFileInfoUploader401ForWrongAuthentication()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(401);
     String token = "StupidToken";
 
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void getFilesFileInfoUploader403ForUnauthorizedUser()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(403);
     status.setMessage("NotAuthorized");
@@ -575,45 +536,40 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.getFileInfoUploaderOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenThrow(new UserUnauthorizedException());
+        fileService.getFileInfoUploaderOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString()))
+        .thenThrow(new UserUnauthorizedException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -628,45 +584,40 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.getFileInfoUploaderOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenThrow(new UnknownUserException());
+        fileService.getFileInfoUploaderOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString()))
+        .thenThrow(new UnknownUserException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -681,45 +632,40 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.getFileInfoUploaderOnBehalfOf(
-        anyInt(),
-        anyInt(),
-        anyString(),
-        anyString()
-      )
-    )
-      .thenThrow(new NullPointerException());
+        fileService.getFileInfoUploaderOnBehalfOf(
+            anyInt(),
+            anyInt(),
+            anyString(),
+            anyString()))
+        .thenThrow(new NullPointerException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
-          .header("Authorization", "Bearer " + token)
-          .param("pageSize", "10")
-          .param("pageNumber", "0")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/files/fileInfoUploader")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .param("pageSize", "10")
+            .param("pageNumber", "0")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -731,20 +677,18 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "loginUsername");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     UserInfo userInfo = new UserInfo();
     userInfo.setId("id");
@@ -756,24 +700,22 @@ public class UserApiControllerTest {
     userInfo.setUsedSpace(new BigDecimal(0));
 
     when(service.setUserInfoOnBehalfOf(any(UserInfo.class), anyString()))
-      .thenReturn(userInfo);
+        .thenReturn(userInfo);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .put("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8")
-          .content(
-            UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8")
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(userInfo)))
-      );
+            .put("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8")
+            .content(
+                UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8"))
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(userInfo))));
   }
 
   @Test
@@ -788,20 +730,18 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     UserInfo userInfo = new UserInfo();
     userInfo.setId("id");
@@ -814,24 +754,22 @@ public class UserApiControllerTest {
     userInfo.setUsedSpace(new BigDecimal(0));
 
     when(service.setUserInfoOnBehalfOf(any(UserInfo.class), anyString()))
-      .thenReturn(userInfo);
+        .thenReturn(userInfo);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .put("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8")
-          .content(
-            UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8")
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .put("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8")
+            .content(
+                UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8"))
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -849,20 +787,17 @@ public class UserApiControllerTest {
     userInfo.setUsedSpace(new BigDecimal(0));
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .put("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8")
-          .content(
-            UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8")
-          )
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .put("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8")
+            .content(
+                UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8"))
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -871,7 +806,7 @@ public class UserApiControllerTest {
     status.setCode(401);
     String token = "StupidToken";
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
 
     UserInfo userInfo = new UserInfo();
     userInfo.setId("id");
@@ -883,24 +818,22 @@ public class UserApiControllerTest {
     userInfo.setUsedSpace(new BigDecimal(0));
 
     when(service.setUserInfoOnBehalfOf(any(UserInfo.class), anyString()))
-      .thenReturn(userInfo);
+        .thenReturn(userInfo);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .put("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8")
-          .content(
-            UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8")
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .put("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8")
+            .content(
+                UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8"))
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -916,20 +849,18 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     UserInfo userInfo = new UserInfo();
     userInfo.setId("id");
@@ -941,25 +872,23 @@ public class UserApiControllerTest {
     userInfo.setUsedSpace(new BigDecimal(0));
 
     when(service.setUserInfoOnBehalfOf(any(UserInfo.class), anyString()))
-      .thenThrow(new UserUnauthorizedException());
+        .thenThrow(new UserUnauthorizedException());
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .put("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8")
-          .content(
-            UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8")
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .put("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8")
+            .content(
+                UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8"))
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -974,20 +903,18 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     UserInfo userInfo = new UserInfo();
     userInfo.setId("id");
@@ -999,24 +926,22 @@ public class UserApiControllerTest {
     userInfo.setUsedSpace(new BigDecimal(0));
 
     when(service.setUserInfoOnBehalfOf(any(UserInfo.class), anyString()))
-      .thenThrow(new UnknownUserException());
+        .thenThrow(new UnknownUserException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .put("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8")
-          .content(
-            UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8")
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .put("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8")
+            .content(
+                UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8"))
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1040,40 +965,36 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(service.setUserInfoOnBehalfOf(any(UserInfo.class), anyString()))
-      .thenThrow(new NullPointerException());
+        .thenThrow(new NullPointerException());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .put("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .characterEncoding("utf-8")
-          .content(
-            UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8")
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .put("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .characterEncoding("utf-8")
+            .content(
+                UserApiControllerTest.asJsonString(userInfo).getBytes("utf-8"))
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1085,20 +1006,18 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     UserInfo fakeUserInfo = new UserInfo();
     fakeUserInfo.setId("id");
@@ -1106,22 +1025,20 @@ public class UserApiControllerTest {
     fakeUserInfo.setTotalSpace(new BigDecimal(1024 * 1204));
     fakeUserInfo.setUsedSpace(new BigDecimal(0));
     when(service.getUserInfoOnBehalfOf(anyString(), anyString()))
-      .thenReturn(fakeUserInfo);
+        .thenReturn(fakeUserInfo);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/userInfo")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(
-        content()
-          .string(
-            containsString(UserApiControllerTest.asJsonString(fakeUserInfo))
-          )
-      );
+            .get("/user/" + fakeSearchedUserId + "/userInfo")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(
+            content()
+                .string(
+                    containsString(UserApiControllerTest.asJsonString(fakeUserInfo))));
   }
 
   @Test
@@ -1130,20 +1047,19 @@ public class UserApiControllerTest {
     status.setCode(401);
     String token = "StupidToken";
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/userInfo")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/userInfo")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1152,16 +1068,14 @@ public class UserApiControllerTest {
     status.setCode(401);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/userInfo")
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/userInfo")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1176,36 +1090,33 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
     when(service.getUserInfoOnBehalfOf(anyString(), anyString()))
-      .thenThrow(new UserUnauthorizedException());
+        .thenThrow(new UserUnauthorizedException());
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/userInfo")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/userInfo")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1219,36 +1130,33 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
     when(service.getUserInfoOnBehalfOf(anyString(), anyString()))
-      .thenThrow(new UnknownUserException());
+        .thenThrow(new UnknownUserException());
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/userInfo")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/userInfo")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1262,33 +1170,30 @@ public class UserApiControllerTest {
     attributes.put("name", "name SURNAME");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenThrow(new NullPointerException());
+        .thenThrow(new NullPointerException());
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/user/" + fakeSearchedUserId + "/userInfo")
-          .header("Authorization", "Bearer " + token)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(UserApiControllerTest.asJsonString(status)))
-      );
+            .get("/user/" + fakeSearchedUserId + "/userInfo")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(UserApiControllerTest.asJsonString(status))));
   }
 
   public static String asJsonString(final Object obj) {

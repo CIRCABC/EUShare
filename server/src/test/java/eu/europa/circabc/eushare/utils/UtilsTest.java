@@ -18,28 +18,23 @@ public class UtilsTest {
   @Test
   public void testEmail() {
     Assert.assertEquals(
-      true,
-      StringUtils.validateEmailAddress("email@email.com")
-    );
+        true,
+        StringUtils.validateEmailAddress("email@email.com"));
     Assert.assertEquals(
-      true,
-      StringUtils.validateEmailAddress("admin@admin.com")
-    );
+        true,
+        StringUtils.validateEmailAddress("admin@admin.com"));
     Assert.assertEquals(
-      true,
-      StringUtils.validateEmailAddress("--------admin@admin.com")
-    );
+        true,
+        StringUtils.validateEmailAddress("--------admin@admin.com"));
   }
 
   @Test
   public void testGivenName() {
     Assert.assertEquals(
-      "email",
-      StringUtils.emailToGivenName("email@email.com")
-    );
+        "email",
+        StringUtils.emailToGivenName("email@email.com"));
     Assert.assertEquals(
-      "FirstName LastName",
-      StringUtils.emailToGivenName("FirstName.LastName@email.com")
-    );
+        "FirstName LastName",
+        StringUtils.emailToGivenName("FirstName.LastName@email.com"));
   }
 }

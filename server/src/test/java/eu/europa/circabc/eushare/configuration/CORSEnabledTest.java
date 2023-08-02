@@ -35,17 +35,16 @@ public class CORSEnabledTest {
     HttpHeaders httpHeaders = new HttpHeaders();
     httpHeaders.setContentType(MediaType.APPLICATION_JSON);
     httpHeaders.setOrigin("http://localhost:8080");
+    httpHeaders.set("Referer", "http://localhost:8080");
     httpHeaders.setBearerAuth("token");
     HttpEntity httpEntity = new HttpEntity<String>("", httpHeaders);
     ResponseEntity<String> response = restTemplate.postForEntity(
-      uri("/login"),
-      httpEntity,
-      String.class
-    );
+        uri("/login"),
+        httpEntity,
+        String.class);
     assertEquals(
-      "http://localhost:8080",
-      response.getHeaders().getAccessControlAllowOrigin()
-    );
+        "http://localhost:8080",
+        response.getHeaders().getAccessControlAllowOrigin());
     String responseBody = response.getBody();
     assertEquals(String.class, responseBody.getClass());
   }

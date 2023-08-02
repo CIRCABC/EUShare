@@ -29,6 +29,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.io.Files;
 import com.google.common.net.HttpHeaders;
+
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.CouldNotAllocateFileException;
 import eu.europa.circabc.eushare.exceptions.DateLiesInPastException;
 import eu.europa.circabc.eushare.exceptions.EmptyFilenameException;
@@ -83,11 +85,14 @@ import org.springframework.security.oauth2.server.resource.introspection.OpaqueT
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.multipart.MultipartFile;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(FileApiController.class)
 public class FileApiControllerTest {
+
+  
 
   final String fakeAuthenticatedUserId = "fakeAuthenticatedUserId";
   final String fakeSearchedFileId = "fakeSearchedFileId";
@@ -134,6 +139,12 @@ public class FileApiControllerTest {
   @MockBean
   private OpaqueTokenIntrospector opaqueTokenIntrospector;
 
+  @MockBean
+  private EushareConfiguration esConfig;
+  
+  @MockBean
+  private CorsConfigurationSource corsConfigurationSource;
+
   @Test
   public void deleteFile200() throws Exception { // NOSONAR
     String token = "StupidToken";
@@ -142,33 +153,31 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doNothing()
-      .when(fileService)
-      .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete("/file/" + fakeSearchedFileId) // NOSONAR
-          .param("reason", "fakeReason") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk());
+            .delete("/file/" + fakeSearchedFileId) // NOSONAR
+            .param("reason", "fakeReason") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -177,24 +186,21 @@ public class FileApiControllerTest {
     status.setCode(401);
 
     UserDetails userDetails = new User(
-      "username",
-      "password",
-      Collections.emptySet()
-    );
+        "username",
+        "password",
+        Collections.emptySet());
     when(service.loadUserByUsername(anyString())).thenReturn(userDetails);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete("/file/" + fakeSearchedFileId)
-          .param("reason", "fakeReason")
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete("/file/" + fakeSearchedFileId)
+            .param("reason", "fakeReason")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -204,28 +210,26 @@ public class FileApiControllerTest {
 
     String token = "StupidToken";
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
 
     UserDetails userDetails = new User(
-      "username",
-      "password",
-      Collections.emptySet()
-    );
+        "username",
+        "password",
+        Collections.emptySet());
     when(service.loadUserByUsername(anyString())).thenReturn(userDetails);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete("/file/" + fakeSearchedFileId)
-          .param("reason", "fakeReason")
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete("/file/" + fakeSearchedFileId)
+            .param("reason", "fakeReason")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -240,38 +244,35 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UserUnauthorizedException())
-      .when(fileService)
-      .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete("/file/" + fakeSearchedFileId)
-          .param("reason", "fakeReason")
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete("/file/" + fakeSearchedFileId)
+            .param("reason", "fakeReason")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -285,37 +286,34 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UnknownFileException())
-      .when(fileService)
-      .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete("/file/" + fakeSearchedFileId)
-          .param("reason", "fakeReason")
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete("/file/" + fakeSearchedFileId)
+            .param("reason", "fakeReason")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -326,42 +324,39 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doNothing()
-      .when(fileService)
-      .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .deleteFileOnBehalfOf(anyString(), anyString(), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete(
-            "/file/" +
-            fakeSearchedFileId +
-            "/fileRequest/sharedWith?userID=" +
-            fakeSearchedUserId
-          ) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk());
+            .delete(
+                "/file/" +
+                    fakeSearchedFileId +
+                    "/fileRequest/sharedWith?userID=" +
+                    fakeSearchedUserId) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
   }
 
   @Test
   public void deleteFileSharedWithUser403ForUserUnauthorized()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(403);
     status.setMessage("NotAuthorized");
@@ -372,94 +367,85 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UserUnauthorizedException())
-      .when(fileService)
-      .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete(
-            "/file/" +
-            fakeSearchedFileId +
-            "/fileRequest/sharedWith?userID=" +
-            fakeSearchedUserId
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete(
+                "/file/" +
+                    fakeSearchedFileId +
+                    "/fileRequest/sharedWith?userID=" +
+                    fakeSearchedUserId)
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void deleteFileSharedWithUser401ForNoAuthentication()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(401);
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete(
-            "/file/" +
-            fakeSearchedFileId +
-            "/fileRequest/sharedWith?userID=" +
-            fakeSearchedUserId
-          )
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete(
+                "/file/" +
+                    fakeSearchedFileId +
+                    "/fileRequest/sharedWith?userID=" +
+                    fakeSearchedUserId)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void deleteFileSharedWithUser401ForWrongAuthentication()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(401);
 
     String token = "StupidToken";
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete(
-            "/file/" +
-            fakeSearchedFileId +
-            "/fileRequest/sharedWith?userID=" +
-            fakeSearchedUserId
-          )
-          .header("Authorization", "Bearer " + token)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete(
+                "/file/" +
+                    fakeSearchedFileId +
+                    "/fileRequest/sharedWith?userID=" +
+                    fakeSearchedUserId)
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080"))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -474,41 +460,37 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UnknownFileException())
-      .when(fileService)
-      .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete(
-            "/file/" +
-            fakeSearchedFileId +
-            "/fileRequest/sharedWith?userID=" +
-            fakeSearchedUserId
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete(
+                "/file/" +
+                    fakeSearchedFileId +
+                    "/fileRequest/sharedWith?userID=" +
+                    fakeSearchedUserId)
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -523,41 +505,37 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UnknownUserException())
-      .when(fileService)
-      .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete(
-            "/file/" +
-            fakeSearchedFileId +
-            "/fileRequest/sharedWith?userID=" +
-            fakeSearchedUserId
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete(
+                "/file/" +
+                    fakeSearchedFileId +
+                    "/fileRequest/sharedWith?userID=" +
+                    fakeSearchedUserId)
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -571,62 +549,56 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new NullPointerException())
-      .when(fileService)
-      .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
+        .when(fileService)
+        .removeShareOnFileOnBehalfOf(anyString(), anyString(), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .delete(
-            "/file/" +
-            fakeSearchedFileId +
-            "/fileRequest/sharedWith?userID=" +
-            fakeSearchedUserId
-          )
-          .header("Authorization", "Bearer " + token)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .delete(
+                "/file/" +
+                    fakeSearchedFileId +
+                    "/fileRequest/sharedWith?userID=" +
+                    fakeSearchedUserId)
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void getFile200() throws Exception { // NOSONAR
     File file = new File(
-      getClass().getClassLoader().getResource("file.txt").getFile()
-    );
+        getClass().getClassLoader().getResource("file.txt").getFile());
 
     doReturn(new DownloadReturn(file, "filename", 256L))
-      .when(fileService)
-      .downloadFile(anyString(), anyString(), anyBoolean());
+        .when(fileService)
+        .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/file/" + fakeSearchedFileId) // NOSONAR
-          .param("password", "fakePassword") // NOSONAR
-          .accept(MediaType.APPLICATION_OCTET_STREAM)
-      )
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().bytes(FileUtils.readFileToByteArray(file)))
-      .andExpect(header().longValue(HttpHeaders.CONTENT_LENGTH, 256L));
+            .get("/file/" + fakeSearchedFileId) // NOSONAR
+            .param("password", "fakePassword") // NOSONAR
+            .accept(MediaType.APPLICATION_OCTET_STREAM))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().bytes(FileUtils.readFileToByteArray(file)))
+        .andExpect(header().longValue(HttpHeaders.CONTENT_LENGTH, 256L));
   }
 
   @Test
@@ -634,20 +606,18 @@ public class FileApiControllerTest {
     Status status = new Status();
     status.setCode(401);
     doThrow(new WrongPasswordException())
-      .when(fileService)
-      .downloadFile(anyString(), anyString(), anyBoolean());
+        .when(fileService)
+        .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/file/" + fakeSearchedFileId) // NOSONAR
-          .param("password", "WRONG_PASSWORD") // NOSONAR
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .get("/file/" + fakeSearchedFileId) // NOSONAR
+            .param("password", "WRONG_PASSWORD") // NOSONAR
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -656,20 +626,18 @@ public class FileApiControllerTest {
     status.setCode(404);
     status.setMessage("FileNotFound");
     doThrow(new UnknownFileException())
-      .when(fileService)
-      .downloadFile(anyString(), anyString(), anyBoolean());
+        .when(fileService)
+        .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/file/" + fakeSearchedFileId) // NOSONAR
-          .param("password", "fakePassword") // NOSONAR
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .get("/file/" + fakeSearchedFileId) // NOSONAR
+            .param("password", "fakePassword") // NOSONAR
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -677,20 +645,18 @@ public class FileApiControllerTest {
     Status status = new Status();
     status.setCode(500);
     doThrow(new NullPointerException())
-      .when(fileService)
-      .downloadFile(anyString(), anyString(), anyBoolean());
+        .when(fileService)
+        .downloadFile(anyString(), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .get("/file/" + fakeSearchedFileId) // NOSONAR
-          .param("password", "fakePassword") // NOSONAR
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .get("/file/" + fakeSearchedFileId) // NOSONAR
+            .param("password", "fakePassword") // NOSONAR
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -701,66 +667,62 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doReturn(fileID)
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(content().string(containsString(fileID)));
+            .post("/file/fileRequest") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validFileRequestContent)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString(fileID)));
   }
 
   @Test
   public void postFileFileRequest400() throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(400);
-    final String content =
-      "{" +
-      "\"expirationDate\": \"2019-0-16\"," +
-      "\"hasPassword\": true," +
-      "\"name\": \"string\"," +
-      "\"size\": 0," +
-      "\"password\": \"\"," +
-      "\"sharedWith\": [" +
-      "{" +
-      "\"emailOrID\": \"string\"," +
-      "\"message\": \"string\"" +
-      "\"sendEmail\": true" +
-      "}" +
-      "]" +
-      "}";
+    final String content = "{" +
+        "\"expirationDate\": \"2019-0-16\"," +
+        "\"hasPassword\": true," +
+        "\"name\": \"string\"," +
+        "\"size\": 0," +
+        "\"password\": \"\"," +
+        "\"sharedWith\": [" +
+        "{" +
+        "\"emailOrID\": \"string\"," +
+        "\"message\": \"string\"" +
+        "\"sendEmail\": true" +
+        "}" +
+        "]" +
+        "}";
 
     String token = "StupidToken";
 
@@ -768,47 +730,43 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doReturn("fileID")
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(content)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.TEXT_PLAIN)
-      )
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/fileRequest")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .content(content)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.TEXT_PLAIN))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -823,47 +781,43 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UserUnauthorizedException())
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/fileRequest")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .content(validFileRequestContent)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -878,47 +832,43 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new IllegalFileSizeException())
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/fileRequest")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .content(validFileRequestContent)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -933,52 +883,48 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new DateLiesInPastException())
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/fileRequest")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .content(validFileRequestContent)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void postFileFileRequest403UserHasInsufficientSpace()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(403);
     status.setMessage("UserHasInsufficientSpace");
@@ -989,47 +935,43 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UserHasInsufficientSpaceException())
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/fileRequest")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .content(validFileRequestContent)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1044,47 +986,43 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new EmptyFilenameException())
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/fileRequest")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .content(validFileRequestContent)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1098,47 +1036,43 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new CouldNotAllocateFileException())
-      .when(fileService)
-      .allocateFileOnBehalfOf(
-        any(LocalDate.class),
-        anyString(),
-        anyString(),
-        anyString(),
-        anyList(),
-        anyLong(),
-        anyString(),
-        anyBoolean()
-      );
+        .when(fileService)
+        .allocateFileOnBehalfOf(
+            any(LocalDate.class),
+            anyString(),
+            anyString(),
+            anyString(),
+            anyList(),
+            anyLong(),
+            anyString(),
+            anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/fileRequest")
-          .header("Authorization", "Bearer " + token)
-          .content(validFileRequestContent)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/fileRequest")
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .content(validFileRequestContent)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1153,46 +1087,44 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.addShareOnFileOnBehalfOf(
-        anyString(),
-        any(Recipient.class),
-        anyString(),
-        anyBoolean()
-      )
-    )
-      .thenReturn(recipientWithLink);
+        fileService.addShareOnFileOnBehalfOf(
+            anyString(),
+            any(Recipient.class),
+            anyString(),
+            anyBoolean()))
+        .thenReturn(recipientWithLink);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk());
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
   }
 
   @Test
   public void postFileSharedWith400()
-    throws Exception, WrongAuthenticationException, UserUnauthorizedException, UnknownUserException, WrongEmailStructureException, WrongNameStructureException, MessageTooLongException, UnknownFileException, MessagingException { // NOSONAR
+      throws Exception, WrongAuthenticationException, UserUnauthorizedException, UnknownUserException,
+      WrongEmailStructureException, WrongNameStructureException, MessageTooLongException, UnknownFileException,
+      MessagingException { // NOSONAR
     Status status = new Status();
     status.setCode(400);
     Recipient recipientWithLink = new Recipient();
@@ -1205,45 +1137,40 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.addShareOnFileOnBehalfOf(
-        anyString(),
-        any(Recipient.class),
-        anyString(),
-        anyBoolean()
-      )
-    )
-      .thenReturn(recipientWithLink);
+        fileService.addShareOnFileOnBehalfOf(
+            anyString(),
+            any(Recipient.class),
+            anyString(),
+            anyBoolean()))
+        .thenReturn(recipientWithLink);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.TEXT_HTML)
-      )
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.TEXT_HTML))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1255,28 +1182,24 @@ public class FileApiControllerTest {
     recipientWithLink.setMessage("message");
 
     when(
-      fileService.addShareOnFileOnBehalfOf(
-        anyString(),
-        any(Recipient.class),
-        anyString(),
-        anyBoolean()
-      )
-    )
-      .thenReturn(recipientWithLink);
+        fileService.addShareOnFileOnBehalfOf(
+            anyString(),
+            any(Recipient.class),
+            anyString(),
+            anyBoolean()))
+        .thenReturn(recipientWithLink);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1286,36 +1209,33 @@ public class FileApiControllerTest {
 
     String token = "StupidToken";
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
 
     Recipient recipientWithLink = new Recipient();
     recipientWithLink.setEmail("email@email.com");
     recipientWithLink.setMessage("message");
 
     when(
-      fileService.addShareOnFileOnBehalfOf(
-        anyString(),
-        any(Recipient.class),
-        anyString(),
-        anyBoolean()
-      )
-    )
-      .thenReturn(recipientWithLink);
+        fileService.addShareOnFileOnBehalfOf(
+            anyString(),
+            any(Recipient.class),
+            anyString(),
+            anyBoolean()))
+        .thenReturn(recipientWithLink);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1330,39 +1250,36 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UserUnauthorizedException())
-      .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(), anyBoolean());
+        .when(fileService)
+        .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1376,39 +1293,36 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UnknownUserException())
-      .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(),anyBoolean());
+        .when(fileService)
+        .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1422,39 +1336,36 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UnknownFileException())
-      .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(),anyBoolean());
+        .when(fileService)
+        .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1468,39 +1379,36 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new NullPointerException())
-      .when(fileService)
-      .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(),anyBoolean());
+        .when(fileService)
+        .addShareOnFileOnBehalfOf(anyString(), any(Recipient.class), anyString(), anyBoolean());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .content(validRecipient)
-          .contentType(MediaType.APPLICATION_JSON)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/sharedWith") // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .content(validRecipient)
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1513,11 +1421,10 @@ public class FileApiControllerTest {
     fileInfoUploader.setSharedWith(new LinkedList());
     fileInfoUploader.setSize(new BigDecimal(1024));
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      validFileContent
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        validFileContent);
 
     String token = "StupidToken";
 
@@ -1525,40 +1432,36 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.saveOnBehalfOf(
-        anyString(),
-        any(MultipartFile.class),
-        anyString()
-      )
-    )
-      .thenReturn(fileInfoUploader);
+        fileService.saveOnBehalfOf(
+            anyString(),
+            any(MultipartFile.class),
+            anyString()))
+        .thenReturn(fileInfoUploader);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isOk());
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isOk());
   }
 
   @Test
@@ -1572,20 +1475,18 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     FileInfoUploader fileInfoUploader = new FileInfoUploader();
     fileInfoUploader.setFileId("fileId");
@@ -1595,44 +1496,39 @@ public class FileApiControllerTest {
     fileInfoUploader.setSharedWith(new LinkedList());
     fileInfoUploader.setSize(new BigDecimal(1024));
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      "".getBytes()
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        "".getBytes());
 
     UserDetails userDetails = new User(
-      "username",
-      "password",
-      Collections.emptySet()
-    );
+        "username",
+        "password",
+        Collections.emptySet());
     when(service.loadUserByUsername(anyString())).thenReturn(userDetails);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     when(
-      fileService.saveOnBehalfOf(
-        anyString(),
-        any(MultipartFile.class),
-        anyString()
-      )
-    )
-      .thenReturn(fileInfoUploader);
+        fileService.saveOnBehalfOf(
+            anyString(),
+            any(MultipartFile.class),
+            anyString()))
+        .thenReturn(fileInfoUploader);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isBadRequest())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isBadRequest())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1642,18 +1538,16 @@ public class FileApiControllerTest {
 
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
-          .characterEncoding("utf-8")
-          .content(validFileContent)
-          .contentType(MediaType.APPLICATION_OCTET_STREAM)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .post("/file/" + fakeSearchedFileId + "/fileRequest/fileContent") // NOSONAR
+            .characterEncoding("utf-8")
+            .content(validFileContent)
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1671,38 +1565,34 @@ public class FileApiControllerTest {
     fileInfoUploader.setSharedWith(new LinkedList());
     fileInfoUploader.setSize(new BigDecimal(1024));
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      validFileContent
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        validFileContent);
 
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenThrow(new OAuth2IntrospectionException(""));
+        .thenThrow(new OAuth2IntrospectionException(""));
 
     when(
-      fileService.saveOnBehalfOf(
-        anyString(),
-        any(MultipartFile.class),
-        anyString()
-      )
-    )
-      .thenReturn(fileInfoUploader);
+        fileService.saveOnBehalfOf(
+            anyString(),
+            any(MultipartFile.class),
+            anyString()))
+        .thenReturn(fileInfoUploader);
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.APPLICATION_OCTET_STREAM)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isUnauthorized())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.APPLICATION_OCTET_STREAM)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isUnauthorized())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1717,51 +1607,47 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      validFileContent
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        validFileContent);
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UserUnauthorizedException())
-      .when(fileService)
-      .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
+        .when(fileService)
+        .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
   public void postFileFileContent403FileLargerThanAllocation()
-    throws Exception { // NOSONAR
+      throws Exception { // NOSONAR
     Status status = new Status();
     status.setCode(403);
     status.setMessage("FileLargerThanAllocation");
@@ -1772,46 +1658,42 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      validFileContent
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        validFileContent);
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new FileLargerThanAllocationException())
-      .when(fileService)
-      .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
+        .when(fileService)
+        .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1829,46 +1711,42 @@ public class FileApiControllerTest {
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      validFileContent
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        validFileContent);
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new IllegalFileSizeException())
-      .when(fileService)
-      .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
+        .when(fileService)
+        .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isForbidden())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isForbidden())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1879,49 +1757,45 @@ public class FileApiControllerTest {
     String token = "StupidToken";
 
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      validFileContent
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        validFileContent);
 
     Map<String, Object> attributes = new HashMap<>();
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new UnknownFileException())
-      .when(fileService)
-      .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
+        .when(fileService)
+        .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isNotFound())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isNotFound())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   @Test
@@ -1932,49 +1806,45 @@ public class FileApiControllerTest {
     String token = "StupidToken";
 
     MockMultipartFile mockMultipartFile = new MockMultipartFile(
-      "file",
-      "name",
-      "multipart/form-data",
-      validFileContent
-    );
+        "file",
+        "name",
+        "multipart/form-data",
+        validFileContent);
 
     Map<String, Object> attributes = new HashMap<>();
     attributes.put("email", "email@email.com");
     attributes.put("username", "username");
     SimpleGrantedAuthority grantedAuthority = new SimpleGrantedAuthority(
-      "INTERNAL"
-    );
+        "INTERNAL");
     Collection<GrantedAuthority> collection = new LinkedList();
 
     collection.add(grantedAuthority);
     OAuth2AuthenticatedPrincipal oAuth2AuthenticatedPrincipal = new DefaultOAuth2AuthenticatedPrincipal(
-      "username",
-      attributes,
-      collection
-    );
+        "username",
+        attributes,
+        collection);
     when(opaqueTokenIntrospector.introspect(anyString()))
-      .thenReturn(oAuth2AuthenticatedPrincipal);
+        .thenReturn(oAuth2AuthenticatedPrincipal);
     when(service.getAuthenticatedUserId(any(Authentication.class)))
-      .thenReturn(fakeAuthenticatedUserId);
+        .thenReturn(fakeAuthenticatedUserId);
 
     doThrow(new NullPointerException())
-      .when(fileService)
-      .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
+        .when(fileService)
+        .saveOnBehalfOf(anyString(), any(MultipartFile.class), anyString());
     this.mockMvc.perform(
         MockMvcRequestBuilders
-          .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
-          .file(mockMultipartFile) // NOSONAR
-          .header("Authorization", "Bearer " + token)
-          .characterEncoding("utf-8")
-          .contentType(MediaType.MULTIPART_FORM_DATA)
-          .accept(MediaType.APPLICATION_JSON)
-      )
-      .andDo(print())
-      .andExpect(status().isInternalServerError())
-      .andExpect(
-        content()
-          .string(containsString(FileApiControllerTest.asJsonString(status)))
-      );
+            .multipart("/file/" + fakeSearchedFileId + "/fileRequest/fileContent")
+            .file(mockMultipartFile) // NOSONAR
+            .header("Authorization", "Bearer " + token)
+            .header("Referer", "http://localhost:8080")
+            .characterEncoding("utf-8")
+            .contentType(MediaType.MULTIPART_FORM_DATA)
+            .accept(MediaType.APPLICATION_JSON))
+        .andDo(print())
+        .andExpect(status().isInternalServerError())
+        .andExpect(
+            content()
+                .string(containsString(FileApiControllerTest.asJsonString(status))));
   }
 
   public static String asJsonString(final Object obj) {
