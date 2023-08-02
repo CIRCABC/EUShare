@@ -47,8 +47,8 @@ export class UploadRightsDialogComponent {
 
   public circabc_url: string = environment.circabc_url;
 
-  editorContent: string = '';
-  terms: boolean = false;
+  editorContent = '';
+  terms = false;
 
   isValid(): boolean {
     return this.editorContent.length !== 0 && this.terms;

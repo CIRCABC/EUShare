@@ -327,8 +327,7 @@ export class AdministrationComponent implements OnInit {
     this.isChangePermissions = !this.isChangePermissions;
   }
 
-  
-  public showUploadedFiles: boolean = false;
+  public showUploadedFiles = false;
   public toggleUploadedFiles() {
     this.showUploadedFiles = !this.showUploadedFiles;
   }

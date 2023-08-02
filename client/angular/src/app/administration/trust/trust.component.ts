@@ -12,7 +12,7 @@ import { TrustService } from '../../openapi/api/trust.service';
 import { TrustRequest } from '../../openapi/model/trustRequest';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TrustDialogComponent,DialogData } from '../trust-dialog/trust-dialog/trust-dialog.component';
+import { TrustDialogComponent } from '../trust-dialog/trust-dialog/trust-dialog.component';
 
 @Component({
   selector: 'app-trust',
@@ -31,7 +31,6 @@ export class TrustComponent implements OnInit {
       .getTrustRequestList()
       .subscribe((data: TrustRequest[]) => {
         this.trustRequests = data;
-        
       });
   }
 
@@ -40,32 +39,28 @@ export class TrustComponent implements OnInit {
     if (!id) {
       return;
     }
-    
+
     const dialogRef = this.dialog.open(TrustDialogComponent, {
       data: request,
     });
-  
+
     dialogRef.afterClosed().subscribe((result) => {
-       if (result.action) {
-          this.trustService
+      if (result.action) {
+        this.trustService
           .approveTrustRequest(id, true)
           .subscribe(() => this.ngOnInit());
-      }
-      else {
+      } else {
         this.trustService
-        .approveTrustRequest(id, false, result.denyReason)
-        .subscribe(() => this.ngOnInit());
+          .approveTrustRequest(id, false, result.denyReason)
+          .subscribe(() => this.ngOnInit());
       }
     });
   }
-  
 
-  
   onDelete(id: string | undefined): void {
     if (!id) {
       return;
     }
     this.trustService.deleteTrustRequest(id).subscribe(() => this.ngOnInit());
   }
-  
 }

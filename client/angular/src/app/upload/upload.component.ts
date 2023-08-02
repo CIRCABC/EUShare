@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -42,7 +42,6 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { EmailInputComponent } from '../common/formComponents/email-input/email-input.component';
 import { MessageTextAreaComponent } from '../common/formComponents/message-text-area/message-text-area.component';
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
-import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotificationLevel } from '../common/notification/notification-level';
@@ -68,7 +67,7 @@ import { I18nService } from '../common/i18n/i18n.service';
   ],
   providers: [FileSizeFormatPipe],
 })
-export class UploadComponent implements OnInit {
+export class UploadComponent implements OnInit, AfterViewInit {
   public faUserSlash = faUserSlash;
   public faUpload = faUpload;
   public moreOptions = false;

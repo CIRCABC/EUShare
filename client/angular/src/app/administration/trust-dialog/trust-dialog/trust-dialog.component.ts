@@ -18,25 +18,23 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { TrustRequest } from '../../../openapi';
 import { DatePipe } from '@angular/common';
 
-export interface DialogData  extends TrustRequest{};
-
 @Component({
   selector: 'app-trust-dialog',
   templateUrl: './trust-dialog.component.html',
   styleUrls: ['./trust-dialog.component.scss'],
   standalone: true,
   imports: [MatDialogModule, FormsModule, TranslocoModule],
-  providers: [DatePipe]
+  providers: [DatePipe],
 })
 export class TrustDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<TrustDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    @Inject(MAT_DIALOG_DATA) public data: TrustRequest,
     private datePipe: DatePipe
   ) {}
 
-  denyReason: string = '';
-  action: boolean = false;
+  denyReason = '';
+  action = false;
 
   submitApprove(formData: any): void {
     formData.form.value.action = true;

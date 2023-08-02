@@ -15,16 +15,11 @@ import { loginCanActivate } from './login.guard';
 import { uploadSuccessCanActivate } from './upload-success.guard';
 import { LoginComponent } from './login/login.component';
 import { LoginCircabcComponent } from './login/login-circabc.component';
-import { MySharedFilesComponent } from './files/my-shared-files/my-shared-files.component';
 import { UploadComponent } from './upload/upload.component';
 import { UploadSuccessComponent } from './upload-success/upload-success.component';
 import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.component';
 import { FilelinkComponent } from './filelink/filelink.component';
-import { AdministrationComponent } from './administration/administration.component';
-import { OtherUserSharedFilesComponent } from './files/other-user-shared-files/other-user-shared-files.component';
 import { CallBackComponent } from './call-back/call-back.component';
-import { MyUserComponent } from './profile/profile.component';
-import { PrivacyStatementComponent } from './privacy-statement/privacy-statement.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
 
 const appRoutes: Routes = [
@@ -84,7 +79,7 @@ const appRoutes: Routes = [
   {
     path: 'privacyStatement',
     loadComponent: () => import('./privacy-statement/privacy-statement.component').then(m => m.PrivacyStatementComponent),
-   
+
   },
   {
     path: 'termsOfService',
