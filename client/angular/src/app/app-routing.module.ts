@@ -9,8 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { NoPreloading } from '@angular/router';
+import { RouterModule, Routes, NoPreloading } from '@angular/router';
 import { loginCanActivate } from './login.guard';
 import { uploadSuccessCanActivate } from './upload-success.guard';
 import { LoginComponent } from './login/login.component';

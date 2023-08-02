@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Renderer2 } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -36,7 +36,6 @@ import {
 import { SessionStorageService } from '../services/session-storage.service';
 
 import { NgFor, NgIf } from '@angular/common';
-import { Renderer2 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslocoModule } from '@ngneat/transloco';
 import { EmailInputComponent } from '../common/formComponents/email-input/email-input.component';
