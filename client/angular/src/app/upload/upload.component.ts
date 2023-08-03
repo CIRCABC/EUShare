@@ -308,7 +308,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
         }
         this.isShowEmailControl = false;
         this.emailControl = this.fb.nonNullable.control('');
-        setTimeout(() => (this.isShowEmailControl = true));
+        setTimeout(() => {
+          this.isShowEmailControl = true;
+        });
       }
     }
   }

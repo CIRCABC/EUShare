@@ -14,8 +14,8 @@ export class NotificationMessage {
   constructor(
     public level: NotificationLevel,
     public body: string,
-    public trustDialog: boolean = false,
-    public autoclose: boolean = false,
-    public displayTime: number = 5
+    public trustDialog = false,
+    public autoclose = false,
+    public displayTime = 5
   ) {}
 }
