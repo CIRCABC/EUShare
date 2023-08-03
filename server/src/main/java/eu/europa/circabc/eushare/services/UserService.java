@@ -76,6 +76,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       String email = principal.getAttribute("email");
       String givenName = principal.getAttribute("name");
       String username = principal.getAttribute("username");
+      String domain = (String) bearerTokenAuthentication.getTokenAttributes().get("https://ecas.ec.europa.eu/claims/domain");
 
       if (email == null || username == null) {
         throw new WrongAuthenticationException(
@@ -84,7 +85,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
       DBUser dbUser = null;
       try {
-        dbUser = this.getOrCreateInternalUser(email, givenName, username);
+        dbUser = this.getOrCreateInternalUser(email, givenName, username, domain);
         return dbUser.getId();
       } catch (WrongEmailStructureException e) {
         throw new WrongAuthenticationException(e);
@@ -352,13 +353,14 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   private DBUser getOrCreateInternalUser(
       String email,
       String givenName,
-      String username) throws WrongEmailStructureException {
+      String username,
+      String domain) throws WrongEmailStructureException {
     DBUser dbUser = null;
     if (StringUtils.validateEmailAddress(email)) {
       dbUser = this.userRepository.findOneByUsername(username);
       if (dbUser == null) {
         // Not found in the database
-        if (username.matches("^n\\d+.*") || username.matches("^n.{7}.*") || username.matches("^v\\d{7}.*") )
+        if ("external".equals(domain) )
           dbUser = this.createUser(email, givenName, username,Role.EXTERNAL);
         else
           dbUser = this.createUser(email, givenName, username,Role.INTERNAL);
