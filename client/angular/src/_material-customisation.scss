@@ -1,0 +1,76 @@
+@import url("@angular/material/prebuilt-themes/deeppurple-amber.css");
+:root {
+  --theme-body-background: url(^img/background.jpg) no-repeat center top fixed;
+  --theme-header-link: #468ec2;
+  --theme-header-text: rgb(117 117 117 / 1);
+  --theme-header-text-inbox: #132735;
+  --theme-box-header-background: #rgb(255 255 255 / 0.5);
+  --theme-box-background: #fff;
+  --theme-menu: #fff;
+  --theme-menu-hover: #f4fafe;
+  --theme-link: rgb(0 51 85 / 1);
+  --theme-link-hover: #000;
+  --theme-h3: #035;
+  --theme-table-alternative-lines: #eef5f4;
+  --theme-table-container-backgroundcolor: #eef5f4;
+  --theme-table-container-alt-row: #fff;
+  --theme-timeline-header: #035;
+
+  .mat-mdc-slider.mat-primary {
+    --mdc-slider-handle-color: #4caf50;
+    --mdc-slider-focus-handle-color: #4caf50;
+    --mdc-slider-hover-handle-color: #4caf50;
+    --mdc-slider-active-track-color: #4caf50;
+    --mdc-slider-inactive-track-color: #4caf50;
+    --mdc-slider-with-tick-marks-active-container-color: #fff;
+    --mdc-slider-with-tick-marks-inactive-container-color: #4caf50;
+    --mat-mdc-slider-ripple-color: #4caf50;
+    --mat-mdc-slider-hover-ripple-color: #4caf500d;
+    --mat-mdc-slider-focus-ripple-color: #4caf5033;
+  }
+
+  .mat-mdc-radio-button.mat-accent {
+    --mdc-radio-disabled-selected-icon-color: #000;
+    --mdc-radio-disabled-unselected-icon-color: #000;
+    --mdc-radio-unselected-focus-icon-color: #212121;
+    --mdc-radio-unselected-hover-icon-color: #212121;
+    --mdc-radio-unselected-icon-color: #0000008a;
+    --mdc-radio-unselected-pressed-icon-color: #0000008a;
+    --mdc-radio-selected-focus-icon-color: #3a8a3c;
+    --mdc-radio-selected-hover-icon-color: #3a8a3c;
+    --mdc-radio-selected-icon-color: #4caf50;
+    --mdc-radio-selected-pressed-icon-color: #858585;
+    --mat-mdc-radio-ripple-color: #000;
+    --mat-mdc-radio-checked-ripple-color: #4caf50;
+  }
+
+  .mat-mdc-slide-toggle.mat-accent {
+    --mdc-switch-selected-focus-state-layer-color: #4caf50;
+    --mdc-switch-selected-handle-color: #4caf50;
+    --mdc-switch-selected-hover-state-layer-color: #4caf50;
+    --mdc-switch-selected-pressed-state-layer-color: #4caf50;
+    --mdc-switch-selected-focus-handle-color: #3a8a3c;
+    --mdc-switch-selected-hover-handle-color: #3a8a3c;
+    --mdc-switch-selected-pressed-handle-color: #3a8a3c;
+    --mdc-switch-selected-focus-track-color: #62e066;
+    --mdc-switch-selected-hover-track-color: #62e066;
+    --mdc-switch-selected-pressed-track-color: #62e066;
+    --mdc-switch-selected-track-color: #62e066;
+  }
+  .mat-mdc-tab-group,
+  .mat-mdc-tab-nav-bar {
+    --mdc-tab-indicator-active-indicator-color: #4caf50;
+    --mat-tab-header-disabled-ripple-color: rgba(0, 0, 0, 0.38);
+    --mat-tab-header-pagination-icon-color: #000;
+    --mat-tab-header-inactive-label-text-color: rgba(0, 0, 0, 0.6);
+    --mat-tab-header-active-label-text-color: rgba(0, 0, 0, 0.6);
+    --mat-tab-header-active-ripple-color: #4caf50;
+    --mat-tab-header-inactive-ripple-color: #4caf50;
+    --mat-tab-header-inactive-focus-label-text-color: rgba(0, 0, 0, 0.6);
+    --mat-tab-header-inactive-hover-label-text-color: rgba(0, 0, 0, 0.6);
+    --mat-tab-header-active-focus-label-text-color: rgba(0, 0, 0, 0.6);
+    --mat-tab-header-active-hover-label-text-color: rgba(0, 0, 0, 0.6);
+    --mat-tab-header-active-focus-indicator-color: #4caf50;
+    --mat-tab-header-active-hover-indicator-color: #4caf50;
+  }
+}
