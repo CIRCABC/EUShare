@@ -7,9 +7,8 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { TranslocoConfig } from '@ngneat/transloco';
 
-export const translocoConfig: TranslocoConfig = {
+export const translocoConfig = {
   availableLangs: [
     'bg',
     'cs',

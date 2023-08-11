@@ -14,9 +14,8 @@ import {
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
+  provideTransloco,
   Translation,
-  TRANSLOCO_CONFIG,
-  TRANSLOCO_LOADER,
   TranslocoLoader,
   TranslocoModule,
 } from '@ngneat/transloco';
@@ -82,14 +81,7 @@ bootstrapApplication(AppComponent, {
       useClass: HttpErrorInterceptor,
       multi: true,
     },
-    {
-      provide: TRANSLOCO_LOADER,
-      useClass: HttpLoader,
-    },
-    {
-      provide: TRANSLOCO_CONFIG,
-      useValue: translocoConfig, // Use the externalized Transloco configuration
-    },
+    provideTransloco({ config: translocoConfig, loader: HttpLoader }),
     provideAnimations(),
   ],
 });
