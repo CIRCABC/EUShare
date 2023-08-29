@@ -42,7 +42,7 @@ export class UploadRightsDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<UploadRightsDialogComponent>,
     private trustService: TrustService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   public circabc_url: string = environment.circabc_url;
@@ -65,7 +65,7 @@ export class UploadRightsDialogComponent {
 
     this.trustService.sendTrustRequest(trustRequest).subscribe(() => {
       this.notificationService.addSuccessMessageTranslation(
-        'no.upload.rights.requestsuccess'
+        'no.upload.rights.requestsuccess',
       );
       this.dialogRef.close({ description: this.editorContent });
     });

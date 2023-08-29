@@ -92,7 +92,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     private fileSizePipe: FileSizeFormatPipe,
     private renderer: Renderer2,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {
     this.initializeForm();
   }
@@ -140,14 +140,14 @@ export class UploadComponent implements OnInit, AfterViewInit {
       (e) => {
         e.preventDefault();
       },
-      false
+      false,
     ); // NOSONAR
     window.addEventListener(
       'drop',
       (e) => {
         e.preventDefault();
       },
-      false
+      false,
     ); // NOSONAR
   }
 
@@ -166,7 +166,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
           fileSizeValidator(
             this.leftSpaceInBytes,
             this.notificationService,
-            message
+            message,
           ),
         ]),
       ],
@@ -205,7 +205,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       {
         email: new FormControl('', Validators.required),
       },
-      { updateOn: 'change' }
+      { updateOn: 'change' },
     );
   }
 
@@ -214,7 +214,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       {
         email: new FormControl(value),
       },
-      { updateOn: 'change' }
+      { updateOn: 'change' },
     );
   }
 
@@ -230,7 +230,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     if (this.lastfile && file !== this.lastfile) {
       this.modalService.activateOverwriteConfirmModal(
         file.name,
-        this.lastfile.name
+        this.lastfile.name,
       );
     }
     this.lastfile = file;
@@ -250,7 +250,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
         'TrustMessage',
         NotificationLevel.FORBIDDEN,
         false,
-        10
+        10,
       );
 
       return false;
@@ -296,12 +296,12 @@ export class UploadComponent implements OnInit, AfterViewInit {
       );
       if (emailArray) {
         const addEmail = this.initializedEmailFormGroupValue(
-          this.emailControl.value
+          this.emailControl.value,
         );
         const emailAlreadyExist = emailArray.controls.some(
           (element) =>
             element.value.email.toUpperCase() ===
-            addEmail.controls['email'].value.toUpperCase()
+            addEmail.controls['email'].value.toUpperCase(),
         );
         if (!emailAlreadyExist && addEmail.controls['email'].value) {
           emailArray.push(addEmail);
@@ -327,7 +327,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   getEmailFormGroup(
     emailMessageArrayIndex: number,
-    emailArrayIndex: number
+    emailArrayIndex: number,
   ): FormGroup | null {
     const emailArray = this.getEmailArray(emailMessageArrayIndex);
     if (emailArray) {
@@ -338,7 +338,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   deleteEmailFormGroup(
     emailMessageArrayIndex: number,
-    emailArrayIndex: number
+    emailArrayIndex: number,
   ) {
     const emailArray = this.getEmailArray(emailMessageArrayIndex);
     if (emailArray) {
@@ -356,11 +356,11 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   getEmailControlValue(
     emailMessageArrayIndex: number,
-    emailArrayIndex: number
+    emailArrayIndex: number,
   ): string | null {
     const emailControl = this.getEmailControl(
       emailMessageArrayIndex,
-      emailArrayIndex
+      emailArrayIndex,
     );
     if (emailControl) {
       return <string | null>emailControl.value;
@@ -370,11 +370,11 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   getEmailControl(
     emailMessageArrayIndex: number,
-    emailArrayIndex: number
+    emailArrayIndex: number,
   ): FormControl | null {
     const emailFormGroup = this.getEmailFormGroup(
       emailMessageArrayIndex,
-      emailArrayIndex
+      emailArrayIndex,
     );
     if (emailFormGroup) {
       return <FormControl | null>emailFormGroup.controls['email'];
@@ -435,7 +435,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
   resetExpirationDate(): void {
     this.uploadform.controls['expirationDate'].setValue(
-      this.get7DaysAfterToday()
+      this.get7DaysAfterToday(),
     );
   }
   getTomorrow(): Date {
@@ -472,7 +472,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
             for (let j = 0; j < this.getEmailArrayLength(i); j++) {
               const emailOrNull: string | null = this.getEmailControlValue(
                 i,
-                j
+                j,
               );
               if (emailOrNull && emailOrNull !== '') {
                 const recipient: Recipient = {
@@ -507,7 +507,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
           myFileRequest.password = this.getPassword();
         }
         const fileResult = await firstValueFrom(
-          this.fileApi.postFileFileRequest(myFileRequest)
+          this.fileApi.postFileFileRequest(myFileRequest),
         );
 
         // do not use firstValueFrom bellow, because it does not work
@@ -516,7 +516,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
             fileResult.fileId,
             this.getFileFromDisk(),
             'events',
-            true
+            true,
           )
           .pipe(map((event) => this.getEventMessage(event)))
           .toPromise(); // NOSONAR
@@ -551,7 +551,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
           eventTotalOrUndefined = 1;
         }
         const percentDone = Math.round(
-          (event.loaded * 100) / eventTotalOrUndefined
+          (event.loaded * 100) / eventTotalOrUndefined,
         );
         this.percentageUploaded = percentDone === 100 ? 99 : percentDone;
         return;
@@ -583,8 +583,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
       default:
         this.notificationService.addErrorMessage(
           `${this.i18nService.translate(
-            'error.occurred.download'
-          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}`
+            'error.occurred.download',
+          )} ${this.i18nService.contactSupport()} ${JSON.stringify(event)}`,
         );
         this.uploadInProgress = false;
         this.percentageUploaded = 0;

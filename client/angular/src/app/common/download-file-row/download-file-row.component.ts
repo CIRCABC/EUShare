@@ -41,7 +41,7 @@ export class DownloadFileRowComponent {
 
   constructor(
     private modalService: ModalsService,
-    private downloadsService: DownloadsService
+    private downloadsService: DownloadsService,
   ) {}
 
   public displayMore() {
@@ -57,12 +57,12 @@ export class DownloadFileRowComponent {
       this.modalService.activateDownloadModal(
         this.fileToDisplay.fileId,
         this.fileToDisplay.name,
-        this.fileToDisplay.hasPassword
+        this.fileToDisplay.hasPassword,
       );
     } else {
       this.downloadsService.download(
         this.fileToDisplay.fileId,
-        this.fileToDisplay.name
+        this.fileToDisplay.name,
       );
     }
   }

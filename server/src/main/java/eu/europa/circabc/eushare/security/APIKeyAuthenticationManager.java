@@ -17,8 +17,8 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthentication;
 
 import eu.europa.circabc.eushare.api.ApiKeyApiController;
-import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 
 public class APIKeyAuthenticationManager implements AuthenticationManager {
 

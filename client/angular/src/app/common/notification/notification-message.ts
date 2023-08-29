@@ -16,6 +16,6 @@ export class NotificationMessage {
     public body: string,
     public trustDialog = false,
     public autoclose = false,
-    public displayTime = 5
+    public displayTime = 5,
   ) {}
 }

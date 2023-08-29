@@ -27,18 +27,18 @@ import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.Recipient;
-import eu.europa.circabc.eushare.storage.DBFile;
-import eu.europa.circabc.eushare.storage.DBFileLog;
-import eu.europa.circabc.eushare.storage.DBShare;
-import eu.europa.circabc.eushare.storage.DBStat;
-import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.DBUser.Role;
-import eu.europa.circabc.eushare.storage.FileLogsRepository;
-import eu.europa.circabc.eushare.storage.FileRepository;
-import eu.europa.circabc.eushare.storage.MountPoint;
-import eu.europa.circabc.eushare.storage.ShareRepository;
-import eu.europa.circabc.eushare.storage.StatsRepository;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.entity.DBFile;
+import eu.europa.circabc.eushare.storage.entity.DBFileLog;
+import eu.europa.circabc.eushare.storage.entity.DBShare;
+import eu.europa.circabc.eushare.storage.entity.DBStat;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.entity.MountPoint;
+import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
+import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
+import eu.europa.circabc.eushare.storage.repository.FileRepository;
+import eu.europa.circabc.eushare.storage.repository.ShareRepository;
+import eu.europa.circabc.eushare.storage.repository.StatsRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 import java.io.File;
 import java.io.IOException;
@@ -183,7 +183,7 @@ public class FileService implements FileServiceInterface {
     for (DBFile file : fileRepository.findByExpirationDateBefore(
         LocalDate.now())) {
       log.info("DBFile %s expired{}", file.getId());
-      file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
+      file.setStatus(eu.europa.circabc.eushare.storage.entity.DBFile.Status.DELETED);
       fileRepository.save(file);
     }
   }
@@ -194,10 +194,10 @@ public class FileService implements FileServiceInterface {
   @Scheduled(cron = "0 0 22 * * ?")
   void markAllocatedLostFiles() {
     for (DBFile file : fileRepository.findByStatusAndLastModifiedBefore(
-        eu.europa.circabc.eushare.storage.DBFile.Status.ALLOCATED,
+        eu.europa.circabc.eushare.storage.entity.DBFile.Status.ALLOCATED,
         LocalDateTime.now().minusDays(1))) {
       log.info("DBFile %s allocated is lost{}", file.getId());
-      file.setStatus(eu.europa.circabc.eushare.storage.DBFile.Status.DELETED);
+      file.setStatus(eu.europa.circabc.eushare.storage.entity.DBFile.Status.DELETED);
       fileRepository.save(file);
     }
   }
@@ -548,13 +548,11 @@ public class FileService implements FileServiceInterface {
       boolean head) throws WrongPasswordException, UnknownFileException {
     DBFile dbFile;
 
-    DBShare dbShare;
-    boolean isShortLength = downloadId.length() < 10;
-    dbShare = findShare(downloadId, isShortLength);
+    DBShare dbShare = findShare(downloadId);
 
     if (dbShare == null) {
       // File is downloaded by its uploader
-      dbFile = findFile(downloadId, isShortLength);
+      dbFile = findFile(downloadId);
     } else {
       // File is downloaded by a user it is shared with
       dbFile = dbShare.getFile();
@@ -601,19 +599,13 @@ public class FileService implements FileServiceInterface {
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
   }
 
-  private DBFile findFile(String downloadId, boolean isShortLength) throws UnknownFileException {
-    DBFile dbFile;
-    if (isShortLength) {
-      dbFile = findAvailableFileByShortUrl(downloadId);
-    } else {
-      dbFile = findAvailableFile(downloadId, false);
-    }
-    return dbFile;
-  }
 
-  private DBShare findShare(String downloadId, boolean isShortLength) {
+
+  public DBShare findShare(String downloadId ){
+
+    boolean isShortUrl = downloadId.length() == DBShare.SHORT_URL_LENGTH;
     DBShare dbShare;
-    if (isShortLength) {
+    if (isShortUrl) {
       dbShare = shareRepository.findOneByShorturl(downloadId);
     } else {
       dbShare = shareRepository.findOneByDownloadId(downloadId);

@@ -51,7 +51,7 @@ import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.Status;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import eu.europa.circabc.eushare.services.UserService;
 import java.io.File;
 import java.io.IOException;

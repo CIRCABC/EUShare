@@ -97,6 +97,50 @@ public class UserInfo   {
   @JsonProperty("isAdmin")
   private Boolean isAdmin;
 
+  /**
+   * status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.
+   */
+  public enum StatusEnum {
+    REGULAR("REGULAR"),
+    
+    FROZEN("FROZEN"),
+    
+    PURGED("PURGED"),
+    
+    BANNED("BANNED"),
+    
+    UNKNOWN("UNKNOWN");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static StatusEnum fromValue(String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
+  @JsonProperty("status")
+  private StatusEnum status;
+
   public UserInfo totalSpace(BigDecimal totalSpace) {
     this.totalSpace = totalSpace;
     return this;
@@ -289,6 +333,26 @@ public class UserInfo   {
     this.isAdmin = isAdmin;
   }
 
+  public UserInfo status(StatusEnum status) {
+    this.status = status;
+    return this;
+  }
+
+  /**
+   * status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.
+   * @return status
+  */
+  @ApiModelProperty(value = "status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.")
+
+
+  public StatusEnum getStatus() {
+    return status;
+  }
+
+  public void setStatus(StatusEnum status) {
+    this.status = status;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -307,12 +371,13 @@ public class UserInfo   {
         Objects.equals(this.givenName, userInfo.givenName) &&
         Objects.equals(this.email, userInfo.email) &&
         Objects.equals(this.role, userInfo.role) &&
-        Objects.equals(this.isAdmin, userInfo.isAdmin);
+        Objects.equals(this.isAdmin, userInfo.isAdmin) &&
+        Objects.equals(this.status, userInfo.status);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(totalSpace, usedSpace, filesCount, id, loginUsername, givenName, email, role, isAdmin);
+    return Objects.hash(totalSpace, usedSpace, filesCount, id, loginUsername, givenName, email, role, isAdmin, status);
   }
 
   @Override
@@ -329,6 +394,7 @@ public class UserInfo   {
     sb.append("    email: ").append(toIndentedString(email)).append("\n");
     sb.append("    role: ").append(toIndentedString(role)).append("\n");
     sb.append("    isAdmin: ").append(toIndentedString(isAdmin)).append("\n");
+    sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("}");
     return sb.toString();
   }

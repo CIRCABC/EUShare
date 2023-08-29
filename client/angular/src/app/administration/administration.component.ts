@@ -109,7 +109,7 @@ export class AdministrationComponent implements OnInit {
     private usersApi: UsersService,
     private adminService: AdminService,
     private statsService: StatsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -133,7 +133,7 @@ export class AdministrationComponent implements OnInit {
 
   public async getMountPointSpaces() {
     this.mountPointSpaces = await firstValueFrom(
-      this.adminService.getDiskSpace()
+      this.adminService.getDiskSpace(),
     );
   }
 
@@ -194,8 +194,8 @@ export class AdministrationComponent implements OnInit {
         this.pageNumber,
         this.searchString,
         this.searchActive,
-        this.sortBy
-      )
+        this.sortBy,
+      ),
     );
     this.hasNextPage = !(await this.isLastPage());
   }
@@ -210,8 +210,8 @@ export class AdministrationComponent implements OnInit {
         this.pageNumber,
         this.searchString,
         this.searchActive,
-        this.sortBy
-      )
+        this.sortBy,
+      ),
     );
     this.hasNextPage = !(await this.isLastPage());
   }
@@ -231,8 +231,8 @@ export class AdministrationComponent implements OnInit {
           this.pageNumber,
           this.searchString,
           this.searchActive,
-          this.sortBy
-        )
+          this.sortBy,
+        ),
       );
       this.hasNextPage = !(await this.isLastPage());
       this.isAfterSearch = true;
@@ -260,7 +260,7 @@ export class AdministrationComponent implements OnInit {
     this.hideUploadedFiles();
     this.selectedUserInfoIndex = i;
     this.selectedValueInGigaBytes = Math.floor(
-      this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
+      this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024),
     );
     const role = this.userInfoArray[i].role;
     this.selectedUserRole =
@@ -289,8 +289,8 @@ export class AdministrationComponent implements OnInit {
           this.pageNumber + 1,
           this.searchString,
           this.searchActive,
-          this.sortBy
-        )
+          this.sortBy,
+        ),
       );
       return nextPage.length === 0;
     }
@@ -307,13 +307,13 @@ export class AdministrationComponent implements OnInit {
       await firstValueFrom(
         this.usersApi.putUserUserInfo(
           this.selectedUserInfo.id,
-          this.selectedUserInfo
-        )
+          this.selectedUserInfo,
+        ),
       );
       this.notificationService.addSuccessMessageTranslation(
         'change.applied',
         undefined,
-        true
+        true,
       );
     } catch (error) {
       // managed in the interceptor

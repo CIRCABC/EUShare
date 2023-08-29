@@ -40,8 +40,7 @@ public class TrustRequest   {
 
   @JsonProperty("requestDateTime")
   // Eushare
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-
+  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
   
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime requestDateTime;

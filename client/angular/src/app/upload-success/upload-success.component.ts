@@ -32,7 +32,7 @@ export class UploadSuccessComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
   ) {}
 
   async ngOnInit() {
@@ -42,7 +42,7 @@ export class UploadSuccessComponent implements OnInit {
       this.fileInfoUploader = <FileInfoUploader>passedData;
     } else {
       const message = `${this.i18nService.translate(
-        'problem.occurred.navigation'
+        'problem.occurred.navigation',
       )} ${this.i18nService.contactSupport()}`;
 
       this.notificationService.addErrorMessage(message);
@@ -64,7 +64,7 @@ export class UploadSuccessComponent implements OnInit {
     this.notificationService.addSuccessMessageTranslation(
       'copied.file.link',
       undefined,
-      true
+      true,
     );
   }
 

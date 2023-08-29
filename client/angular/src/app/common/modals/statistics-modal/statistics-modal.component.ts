@@ -32,7 +32,7 @@ export class StatisticsModalComponent implements OnInit {
   constructor(
     private modalService: ModalsService,
     private fileApi: FileService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   public closeModal() {
@@ -47,7 +47,7 @@ export class StatisticsModalComponent implements OnInit {
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.fileLogs = nextModalActiveValue.fileLogs;
-      }
+      },
     );
   }
 

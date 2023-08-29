@@ -32,7 +32,7 @@ export class OverwriteConfirmModalComponent implements OnInit {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
-      }
+      },
     );
   }
 

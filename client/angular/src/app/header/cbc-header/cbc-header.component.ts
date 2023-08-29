@@ -37,7 +37,7 @@ export class CbcHeaderComponent implements OnInit {
   constructor(
     private sessionService: SessionStorageService,
     private oAuthService: OAuthService,
-    private translateService: TranslocoService
+    private translateService: TranslocoService,
   ) {}
 
   ngOnInit() {

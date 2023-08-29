@@ -17,12 +17,12 @@ writeFileSync(
 /* eslint-disable */
 export const VERSION = ${JSON.stringify(gitInfo, null, 4)};
 `,
-  { encoding: 'utf-8' }
+  { encoding: 'utf-8' },
 );
 
 console.log(
   `Wrote version info ${gitInfo.raw} to ${relative(
     resolve(__dirname, '..'),
-    file
-  )}`
+    file,
+  )}`,
 );

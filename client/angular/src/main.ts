@@ -66,7 +66,7 @@ bootstrapApplication(AppComponent, {
       ApiModule,
       AppRoutingModule,
       TranslocoModule,
-      HttpClientModule
+      HttpClientModule,
     ),
     KeyStoreService,
     { provide: APP_BASE_HREF, useValue: environment.frontend_url },

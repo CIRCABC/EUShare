@@ -32,7 +32,7 @@ import eu.europa.circabc.eushare.model.Status;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

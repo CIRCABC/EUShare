@@ -41,20 +41,20 @@ export class DownloadButtonComponent {
 
   constructor(
     private downloadsService: DownloadsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   public async download() {
     const result = await this.downloadsService.download(
       this.fileId,
       this.fileName,
-      this.inputPassword
+      this.inputPassword,
     );
     if (result === 'WRONG_PASSWORD') {
       this.notificationService.addErrorMessageTranslation(
         'wrong.password',
         undefined,
-        true
+        true,
       );
     }
     if (result === 'OK') {

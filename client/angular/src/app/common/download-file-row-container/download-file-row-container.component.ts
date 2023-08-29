@@ -77,8 +77,8 @@ export class DownloadFileRowContainerComponent implements OnInit {
       this.userService.getFilesFileInfoRecipient(
         this.userId,
         this.pageSize,
-        this.pageNumber
-      )
+        this.pageNumber,
+      ),
     );
   }
 
@@ -87,8 +87,8 @@ export class DownloadFileRowContainerComponent implements OnInit {
       this.userService.getFilesFileInfoRecipient(
         this.userId,
         this.pageSize,
-        this.pageNumber + 1
-      )
+        this.pageNumber + 1,
+      ),
     );
   }
 
@@ -97,8 +97,8 @@ export class DownloadFileRowContainerComponent implements OnInit {
       this.userService.getFilesFileInfoRecipient(
         this.userId,
         this.pageSize,
-        this.pageNumber - 1
-      )
+        this.pageNumber - 1,
+      ),
     );
   }
 

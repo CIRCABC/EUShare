@@ -18,11 +18,11 @@ import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
 import eu.europa.circabc.eushare.model.UserInfo;
-import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.DBUser.Role;
-import eu.europa.circabc.eushare.storage.DBUserInfoProjection;
-import eu.europa.circabc.eushare.storage.UserInfoRepository;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.repository.UserInfoRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
+import eu.europa.circabc.eushare.storage.dto.ProjectionUserInfo;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
 import eu.europa.circabc.eushare.utils.StringUtils;
 
 import java.lang.reflect.Field;
@@ -227,7 +227,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
                 searchString,
                 PageRequest.of(pageNumber, pageSize, dir, sortBy))
             .stream()
-            .map(DBUserInfoProjection::toUserInfo)
+            .map(ProjectionUserInfo::toUserInfo)
             .collect(Collectors.toList());
       else
         return userInfoRepository
@@ -235,7 +235,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
                 searchString,
                 PageRequest.of(pageNumber, pageSize))
             .stream()
-            .map(DBUserInfoProjection::toUserInfo)
+            .map(ProjectionUserInfo::toUserInfo)
             .collect(Collectors.toList());
     } else {
       throw new UserUnauthorizedException();

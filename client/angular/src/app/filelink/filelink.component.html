@@ -4,14 +4,16 @@
     <h2 class="subtitle">
       {{ "download" | transloco }}
       <span *ngIf="fileName">
-      {{ fileName.length > 25 ? (fileName | slice: 0:25) + ".." : fileName }}.
+        {{ fileName.length > 25 ? (fileName | slice: 0:25) + ".." : fileName }}.
       </span>
     </h2>
     <p *ngIf="isFilePasswordProtected">{{ "file.is.protected" | transloco }}</p>
-    <app-download-button
-      [fileId]="fileId"
-      [isFileHasPassword]="isFilePasswordProtected"
-      [fileName]="fileName"
-    ></app-download-button>
+    <div class="action-container">
+      <app-download-button [fileId]="fileId" [isFileHasPassword]="isFilePasswordProtected"
+        [fileName]="fileName"></app-download-button>
+
+
+      <a (click)="openAbuseDialog(fileId)">{{ 'abuse.title' | transloco }}</a>
+    </div>
   </div>
 </div>

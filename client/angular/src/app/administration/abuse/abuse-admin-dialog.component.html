@@ -1,0 +1,54 @@
+
+<form #form="ngForm" >
+    <input type="hidden" [(ngModel)]="action" name="action">
+
+    <div class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+
+            <header class="modal-card-head">
+                <p class="modal-card-title"><strong>Abuse Report Validation</strong> </p>
+                <button class="delete" aria-label="close" (click)="cancel()"></button>
+            </header>
+
+            <section class="modal-card-body">
+                <mat-dialog-content>
+                    <div><strong>Reporter : </strong>{{ data.reporter }}</div>
+                    
+
+                    <div><strong>Uploader name :</strong> {{ data.uploader_name }}</div>
+                    <div><strong>Uploader email :</strong> {{ data.upoader_email }}</div>
+
+                    <div><strong>Filename :</strong> {{ data.filename }}</div>
+                    <div><strong>Filesize :</strong> {{ data.filesize }}</div>
+                    <div><strong>Reason :</strong> {{ data.reason }}</div>
+                    <div><strong>Date :</strong> {{ data.date }}</div>
+                    <div >
+                        <p><strong>Description message : </strong></p>
+                        <div>{{data.description}}</div>
+                    </div>
+                  
+                </mat-dialog-content>
+            </section>
+
+            <input type="radio" name="user_status" [(ngModel)]="data.user_status" [value]="freeze"> Delete file. Prevent user from uploading. Set user as "frozen"
+            <input type="radio" name="user_status" [(ngModel)]="data.user_status" checked [value]="blacklist">Delete file. Prevent user from login. Set user as "blacklisted"
+            <input type="radio" name="user_status" [(ngModel)]="data.user_status"  [value]="ban">Delete all user's files. Prevent user from login. Set user as "banned"
+
+            <footer class="modal-card-foot">
+                <div mat-dialog-actions>
+                    <button class="button" mat-raised-button color="primary" type="button" (click)="submitApprove(form)">
+                        validate
+                    </button>
+                    <button class="button" mat-raised-button color="primary" type="button" (click)="submitDeny(form)">
+                        reject
+                    </button>
+                    <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">
+                        cancel
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+</form>

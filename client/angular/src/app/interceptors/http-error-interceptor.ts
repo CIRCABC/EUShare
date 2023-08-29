@@ -31,12 +31,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
   constructor(
     private notificationService: NotificationService,
     private i18nService: I18nService,
-    private sessionStorageService: SessionStorageService
+    private sessionStorageService: SessionStorageService,
   ) {}
 
   intercept(
     req: HttpRequest<any>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((err) => {
@@ -87,62 +87,62 @@ export class HttpErrorInterceptor implements HttpInterceptor {
 
           if (isPostLogin) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'login'
+              'login',
             )}.`;
           }
           if (isGetUsersUserInfo) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'retrieve.users.info'
+              'retrieve.users.info',
             )}.`;
           }
           if (isPutUserUserInfo) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'modify.user.rights'
+              'modify.user.rights',
             )}.`;
           }
           if (isGetUserUserInfo) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'retrieve.user.info'
+              'retrieve.user.info',
             )}.`;
           }
           if (isGetFilesFileInfoUploader) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'access.uploaded.files'
+              'access.uploaded.files',
             )}.`;
           }
           if (isGetFilesFileInfoRecipient) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'access.shared.files'
+              'access.shared.files',
             )}.`;
           }
           if (isGetFile) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'download.file'
+              'download.file',
             )}.`;
           }
           if (isDeleteFile) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'delete.file'
+              'delete.file',
             )}.`;
           }
           if (isPostFileFileRequest) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'upload.file'
+              'upload.file',
             )}.`;
           }
           if (isPostFileSharedWith) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'add.recipient.to.file'
+              'add.recipient.to.file',
             )}.`;
           }
           if (isPostFileContent) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'post.file'
+              'post.file',
             )}.`;
           }
           if (isDeleteFileSharedWithUser) {
             action = `${this.i18nService.to()} ${this.i18nService.translate(
-              'delete.recipient'
+              'delete.recipient',
             )}.`;
           }
 
@@ -150,8 +150,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             case 0: {
               this.notificationService.addErrorMessage(
                 `${this.i18nService.translate(
-                  'server.not.reachable'
-                )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`
+                  'server.not.reachable',
+                )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`,
               );
               break;
             }
@@ -162,8 +162,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               } else {
                 this.notificationService.addErrorMessage(
                   `${this.i18nService.translate(
-                    'bad.request'
-                  )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`
+                    'bad.request',
+                  )} ${this.i18nService.whileTrying()} ${action} ${this.i18nService.contactSupport()}`,
                 );
               }
               break;
@@ -171,24 +171,24 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             case 401: {
               if (isGetFile) {
                 this.notificationService.addErrorMessageTranslation(
-                  'wrong.password'
+                  'wrong.password',
                 );
               } else {
                 this.notificationService.addErrorMessage(
-                  'Invalid token.  Your account may not have access rights to CIRCABC-Share, please contact support.'
+                  'Invalid token.  Your account may not have access rights to CIRCABC-Share, please contact support.',
                 );
               }
               break;
             }
             case 403: {
               let errorMessage = `${this.i18nService.translate(
-                'not.authorized'
+                'not.authorized',
               )} ${action}`;
               if (err.error) {
                 const status: Status = JSON.parse(err.error);
                 if (status.message) {
                   errorMessage += `${this.i18nService.translate(
-                    'reason'
+                    'reason',
                   )} ${this.separateStatusMessage(status.message)}`;
                 }
               }
@@ -229,18 +229,18 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             case 500: {
               this.notificationService.addErrorMessage(
                 `${this.i18nService.translate(
-                  'unexpected.error'
-                )} ${action} ${this.i18nService.contactSupport()}`
+                  'unexpected.error',
+                )} ${action} ${this.i18nService.contactSupport()}`,
               );
               break;
             }
             default: {
               this.notificationService.addErrorMessage(
                 `${this.i18nService.translate(
-                  'unexpected.error'
+                  'unexpected.error',
                 )} ${action} ${this.i18nService.contactSupport()} ${this.i18nService.translate(
-                  'error.code'
-                )} ${err.status}`
+                  'error.code',
+                )} ${err.status}`,
               );
               break;
             }
@@ -248,7 +248,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         }
         const error = err.error.message || err.statusText;
         return throwError(() => new Error(error));
-      })
+      }),
     );
   }
 

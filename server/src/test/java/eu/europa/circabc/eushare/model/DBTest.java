@@ -24,12 +24,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.europa.circabc.eushare.storage.DBFile;
-import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.DBShare;
-import eu.europa.circabc.eushare.storage.FileRepository;
-import eu.europa.circabc.eushare.storage.ShareRepository;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.entity.DBFile;
+import eu.europa.circabc.eushare.storage.entity.DBShare;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.repository.FileRepository;
+import eu.europa.circabc.eushare.storage.repository.ShareRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;

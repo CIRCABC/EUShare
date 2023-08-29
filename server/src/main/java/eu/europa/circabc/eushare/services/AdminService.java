@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eu.europa.circabc.eushare.model.Stat;
-import eu.europa.circabc.eushare.storage.DBStat;
-import eu.europa.circabc.eushare.storage.StatsRepository;
+import eu.europa.circabc.eushare.storage.entity.DBStat;
+import eu.europa.circabc.eushare.storage.repository.StatsRepository;
 
 @Service
 public class AdminService implements AdminServiceInterface {

@@ -33,7 +33,7 @@ export class DeleteConfirmModalComponent implements OnInit {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
-      }
+      },
     );
   }
 

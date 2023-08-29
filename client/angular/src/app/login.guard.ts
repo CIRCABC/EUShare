@@ -20,7 +20,7 @@ import { SessionStorageService } from './services/session-storage.service';
 
 export const loginCanActivate: CanActivateFn = (
   _next: ActivatedRouteSnapshot,
-  _state: RouterStateSnapshot
+  _state: RouterStateSnapshot,
 ) => {
   const oAuthService = inject(OAuthService);
   const router = inject(Router);

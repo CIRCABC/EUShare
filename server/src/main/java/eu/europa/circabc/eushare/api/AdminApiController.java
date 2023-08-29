@@ -13,7 +13,8 @@ import eu.europa.circabc.eushare.model.MountPointSpace;
 import eu.europa.circabc.eushare.model.Stat;
 import eu.europa.circabc.eushare.services.AdminService;
 import eu.europa.circabc.eushare.services.FileService;
-import eu.europa.circabc.eushare.storage.MountPoint;
+import eu.europa.circabc.eushare.storage.entity.MountPoint;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;

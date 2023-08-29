@@ -30,7 +30,7 @@ import com.nimbusds.jwt.JWTClaimsSet;
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.model.Status;
 import eu.europa.circabc.eushare.services.UserService;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 
 import java.security.SecureRandom;
 import java.util.Collection;

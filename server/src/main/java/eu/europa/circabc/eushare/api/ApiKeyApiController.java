@@ -35,8 +35,8 @@ import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.ApiKey;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.services.UserService;
-import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.UserRepository;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller

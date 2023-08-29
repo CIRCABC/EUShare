@@ -42,11 +42,11 @@ import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.TrustRequest;
 import eu.europa.circabc.eushare.services.EmailService;
 import eu.europa.circabc.eushare.services.UserService;
-import eu.europa.circabc.eushare.storage.DBTrust;
-import eu.europa.circabc.eushare.storage.DBUser;
-import eu.europa.circabc.eushare.storage.TrustRepository;
-import eu.europa.circabc.eushare.storage.UserRepository;
-import eu.europa.circabc.eushare.storage.DBUser.Role;
+import eu.europa.circabc.eushare.storage.entity.DBTrust;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
+import eu.europa.circabc.eushare.storage.repository.TrustRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -58,7 +58,7 @@ import io.swagger.annotations.ApiResponses;
 @Controller
 public class TrustApiController implements TrustApi {
 
-        private Logger log = LoggerFactory.getLogger(UserService.class);
+        private Logger log = LoggerFactory.getLogger(TrustApiController.class);
 
         @Autowired
         private UserRepository userRepository;
@@ -88,12 +88,10 @@ public class TrustApiController implements TrustApi {
                         @ApiParam(value = "", required = true) @PathVariable("id") String id,
                         @NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "approved", required = true) Boolean approved,
                         @ApiParam(value = "") @Valid @RequestParam(value = "reason", required = false) String reason) {
-                // Implement your logic here to approve the trust request
                 DBTrust trust = trustRepository.findOneById(id);
                 trust.setApproved(approved);
                 trustRepository.save(trust);
-                // Set the properties of the approved request
-
+               
                 DBUser user = userRepository.findOneByEmailIgnoreCase(trust.getEmail());
                 if (user != null) {
                         String message;

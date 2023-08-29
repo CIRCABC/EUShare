@@ -55,7 +55,7 @@ export class FileRowContainerComponent implements OnInit, OnDestroy {
             this.hasNextPage = next.hasNextPage;
             this.hasPreviousPage = next.hasPreviousPage;
             this.pageNumber = next.pageNumber + 1;
-          }
+          },
         );
       await this.fileInfoUploaderService.reinit(this.userId);
     }

@@ -1,3 +1,4 @@
+
 openapi: 3.0.0
 servers:
   - url: http://localhost:8080
@@ -1026,6 +1027,100 @@ paths:
                 $ref: "#/components/schemas/TrustRequest"
 
 
+  '/abuse':
+    post:
+      tags:
+      - Abuse
+      summary: Create a new abuse report
+      operationId: "createAbuseReport"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AbuseReport"
+      
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbuseReport"
+    get:
+      tags:
+      - Abuse
+      summary: Get a list of abuse reports with details
+      operationId: "getAbuseReportList"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AbuseReportDetails'
+  '/abuse/{id}':
+    get:
+      tags:
+      - Abuse
+      summary: Get a specific abuse report by ID.
+      operationId: "getAbuseReport"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AbuseReport'
+    put:
+      tags:
+      - Abuse
+      summary: Update a specific abuse report by ID
+      operationId: "updateAbuseReport"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AbuseReport'
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AbuseReport"
+    delete:
+      tags:
+      - Abuse
+      summary: Delete a specific abuse report by ID
+      operationId: "deleteAbuseReport"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+
+
+
 
   '/apikey':
     get:
@@ -1285,6 +1380,15 @@ components:
             isAdmin:
               description: True if the user is admin
               type: boolean
+            status:
+              description: status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.
+              type: string
+              enum:
+               - REGULAR
+               - FROZEN
+               - PURGED
+               - BANNED
+               - UNKNOWN
           required:
           - id
           - loginUsername
@@ -1402,5 +1506,41 @@ components:
           type: "string"
         username:
           type: "string"
+ 
+    AbuseReport:
+      type: object
+      properties:
+        ID:
+          type: string
+        reporter:
+          type: string
+        fileId:
+          type: string
+        reason:
+          type: string
+        description:
+          type: string
+        date:
+          type: string
+          format: date
+        status:
+          type: boolean
 
+    AbuseReportDetails:
+      allOf:
+        - $ref: '#/components/schemas/AbuseReport'
+        - type: object
+          properties:
+            filename:
+              type: string
+            filesize:
+              type: number
+            shortUrl:
+              type: string
+            uploader_email:
+              type: string
+            uploader_name:
+              type: string
+            uploader_status:
+              type: string
 

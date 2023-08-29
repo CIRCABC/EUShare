@@ -28,8 +28,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
-import eu.europa.circabc.eushare.storage.UserRepository;
-
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
 
 @Configuration
 @EnableWebSecurity(debug = true)
@@ -45,31 +44,30 @@ public class CustomWebSecurityConfigurerAdapter
       "/swagger-ui/**",
       "/jmd/",
       "/jmd/**",
+      "/abuse",
+      "/abuse/**"
   };
 
   @Autowired
   private UserRepository userRepository;
 
-
   @Autowired
   private EushareConfiguration esConfig;
-  
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
 
     APIKeyAuthenticationFilter apiKeyFilter = new APIKeyAuthenticationFilter(userRepository);
-    
 
     String allowedOrigin = esConfig.getClientHttpAddress();
-    if (allowedOrigin != null)
-    {
+    if (allowedOrigin != null) {
       allowedOrigin = allowedOrigin.replace("/share", "");
     }
     RefererFilter refererFilter = new RefererFilter(allowedOrigin);
 
     http
-        //.cors().configurationSource(corsConfigurationSource(allowedOrigin))
-        //.and()
+        // .cors().configurationSource(corsConfigurationSource(allowedOrigin))
+        // .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
@@ -86,13 +84,15 @@ public class CustomWebSecurityConfigurerAdapter
         .anonymous()
         .antMatchers(HttpMethod.GET, "/file/{.+}/fileInfo")
         .anonymous()
+        .antMatchers(HttpMethod.POST, "/abuse")
+        .permitAll()
         .antMatchers(HttpMethod.PUT, "/user/userInfo")
         .hasAuthority("ROLE_ADMIN")
         .anyRequest()
         .authenticated()
         .and()
         .addFilter(apiKeyFilter)
-       // .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)  
+        // .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)
         .exceptionHandling()
         .accessDeniedHandler(accessDeniedHandler())
         .and()
@@ -110,10 +110,6 @@ public class CustomWebSecurityConfigurerAdapter
         .authenticationEntryPoint(authenticationEntryPoint())
         .opaqueToken();
   }
-
-  
-
-
 
   @Bean
   AuthenticationEntryPoint authenticationEntryPoint() {

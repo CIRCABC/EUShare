@@ -1,0 +1,60 @@
+<form #abuseForm="ngForm" (ngSubmit)="submitForm()">
+  
+    <div class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+
+            <header class="modal-card-head">
+                <p class="modal-card-title"><strong>{{ 'abuse.title' | transloco }}</strong> </p>
+                <button class="delete" aria-label="close" mat-dialog-close (click)="cancel()"></button>
+            </header>
+
+            <section class="modal-card-body">
+                {{ 'abuse.please.refer.to' | transloco }} <a
+                    href="https://circabc.development.europa.eu/ui/help/legal-notice/terms">{{ 'label.terms' | transloco
+                    }}</a> {{ 'abuse.please.refer.to2' | transloco }}
+
+                <mat-dialog-content>
+                    <div>
+                        {{ 'abuse.why' | transloco }}
+                        <div *ngFor="let reason of abuseReasons">
+                            <input type="radio" name="abuseReason" [(ngModel)]="abuseReport.reason" [value]="reason">
+                            {{ reason | transloco }}
+                        </div>
+                    </div>
+                    <p><br /></p>
+                    {{ 'abuse.more.info' | transloco }} :
+                    <div>
+                        <div>
+                            <textarea matInput name="description" [(ngModel)]="abuseReport.description" rows="3"
+                                cols="60"></textarea>
+                        </div>
+                    </div>
+                    <br />
+                    <div *ngIf="!authentified">{{ 'abuse.your.email' | transloco }}:</div>
+                    
+                    <ng-container *ngIf="!authentified">
+                        <div>
+                            <input matInput name="reporter" [(ngModel)]="abuseReport.reporter" required>
+                        </div>
+                    </ng-container>
+                </mat-dialog-content>
+
+            </section>
+
+            <footer class="modal-card-foot">
+                <div mat-dialog-actions>
+                    <button class="button" [disabled]="abuseForm.invalid"
+                        mat-raised-button color="primary" type="submit">
+                        Submit {{ submit | transloco }}
+                    </button>
+                    <button class="button" [mat-dialog-close]="abuseReport"  mat-raised-button color="warn" type="button" mat-dialog-close
+                        (click)="cancel()">
+                        Cancel
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+</form>

@@ -32,7 +32,7 @@ export class MyUserComponent implements OnInit {
   constructor(
     private sessionApi: SessionStorageService,
     private userApi: UsersService,
-    private apiKeyService: ApiKeyService
+    private apiKeyService: ApiKeyService,
   ) {}
 
   async ngOnInit() {

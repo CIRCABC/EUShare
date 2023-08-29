@@ -61,7 +61,7 @@ export class UploadedFileRowComponent implements OnInit {
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
     private uploadService: UploadedFilesService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -75,7 +75,7 @@ export class UploadedFileRowComponent implements OnInit {
       this.modalService.activateDownloadModal(
         this.file.fileId,
         this.file.name,
-        this.file.hasPassword
+        this.file.hasPassword,
       );
     } else {
       await this.downloadsService.download(this.file.fileId, this.file.name);
@@ -85,14 +85,14 @@ export class UploadedFileRowComponent implements OnInit {
   public openAddRecipientsModal() {
     this.modalService.activateAddRecipientsModal(
       this.file.name,
-      this.file.fileId
+      this.file.fileId,
     );
   }
 
   public async delete() {
     this.modalService.activateDeleteConfirmModal(
       this.file.name,
-      this.file.fileId
+      this.file.fileId,
     );
   }
 
@@ -100,7 +100,7 @@ export class UploadedFileRowComponent implements OnInit {
     this.modalService.activateChangeExpirationDateModal(
       this.file.name,
       this.file.fileId,
-      this.file.expirationDate
+      this.file.expirationDate,
     );
   }
 
@@ -110,7 +110,7 @@ export class UploadedFileRowComponent implements OnInit {
         this.file.name,
         this.file.fileId,
         this.file.sharedWith,
-        this.file.hasPassword
+        this.file.hasPassword,
       );
     }
   }
@@ -120,7 +120,7 @@ export class UploadedFileRowComponent implements OnInit {
       this.modalService.activateStatisticsModal(
         this.file.name,
         this.file.fileId,
-        this.file.fileLogs
+        this.file.fileLogs,
       );
     }
   }

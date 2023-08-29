@@ -19,7 +19,7 @@ export class DownloadsService {
   public async download(
     fileId: string,
     fileName: string,
-    inputPassword?: string
+    inputPassword?: string,
   ): Promise<'OK' | 'WRONG_PASSWORD'> {
     const url = `${environment.backend_url}/file/${fileId}${
       inputPassword === undefined ? '' : `?password=${inputPassword}`

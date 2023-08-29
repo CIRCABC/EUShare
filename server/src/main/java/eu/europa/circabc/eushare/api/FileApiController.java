@@ -34,8 +34,9 @@ import eu.europa.circabc.eushare.model.validation.FileRequestValidator;
 import eu.europa.circabc.eushare.model.validation.RecipientValidator;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
+import eu.europa.circabc.eushare.storage.entity.DBFile;
 import eu.europa.circabc.eushare.services.UserService;
-import eu.europa.circabc.eushare.storage.DBFile;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

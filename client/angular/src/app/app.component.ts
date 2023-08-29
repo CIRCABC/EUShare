@@ -21,8 +21,6 @@ import { environment } from '../environments/environment';
 import { AddRecipientsModalComponent } from './common/modals/add-recipients-modal/add-recipients-modal.component';
 import { ChangeExpirationDateModalComponent } from './common/modals/change-expiration-date-modal/change-expiration-date-modal.component';
 import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-modal/delete-confirm-modal.component';
-import { DownloadModalComponent } from './common/modals/download-modal/download-modal.component';
-import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
 import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
 import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
 import { StatisticsModalComponent } from './common/modals/statistics-modal/statistics-modal.component';
@@ -57,8 +55,6 @@ const authCodeFlowConfig: AuthConfig = {
     NavbarComponent,
     ShareWithUsersModalComponent,
     StatisticsModalComponent,
-    DownloadModalComponent,
-    FileLinkModalComponent,
     AddRecipientsModalComponent,
     DeleteConfirmModalComponent,
     ChangeExpirationDateModalComponent,
@@ -86,7 +82,7 @@ export class AppComponent {
 
   constructor(
     private oauthService: OAuthService,
-    private readonly location: Location
+    private readonly location: Location,
   ) {
     this.timestamp = new Date().getTime();
     localStorage.setItem('timestamp', this.timestamp.toString());

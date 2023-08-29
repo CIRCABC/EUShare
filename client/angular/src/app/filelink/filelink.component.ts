@@ -15,14 +15,26 @@ import { FileService } from '../openapi/api/file.service';
 import { firstValueFrom, map } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 import { DownloadButtonComponent } from '../common/buttons/download-button/download-button.component';
-import { NgIf, SlicePipe } from '@angular/common';
+import { CommonModule, NgIf, SlicePipe } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AbuseDialogComponent } from '../common/dialogs/abuse-dialog/abuse-dialog.component';
+import { AbuseReport } from '../openapi/model/abuseReport';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-filelink',
   templateUrl: './filelink.component.html',
   styleUrls: ['./filelink.component.scss'],
   standalone: true,
-  imports: [NgIf, DownloadButtonComponent, TranslocoModule, SlicePipe],
+  imports: [
+    NgIf,
+    DownloadButtonComponent,
+    CommonModule,
+    FormsModule,
+    TranslocoModule,
+    SlicePipe,
+    MatDialogModule,
+  ],
 })
 export class FilelinkComponent implements OnInit {
   public fileName!: string;
@@ -33,14 +45,15 @@ export class FilelinkComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private modalService: ModalsService,
-    private fileApi: FileService
+    private fileApi: FileService,
+    private dialog: MatDialog,
   ) {}
 
   download() {
     this.modalService.activateDownloadModal(
       this.fileId,
       this.fileName,
-      this.isFilePasswordProtected
+      this.isFilePasswordProtected,
     );
   }
 
@@ -54,11 +67,23 @@ export class FilelinkComponent implements OnInit {
             this.fileId = id;
             this.fileName = fileinfo.name;
             this.isFilePasswordProtected = fileinfo.hasPassword;
-          })
-        )
+          }),
+        ),
       );
     } else {
       this.router.navigateByUrl('/home');
     }
+  }
+
+  openAbuseDialog(fileId: string): void {
+    const dialogRef = this.dialog.open(AbuseDialogComponent, {
+      data: fileId,
+    });
+
+    dialogRef.afterClosed().subscribe((result: AbuseReport) => {
+      if (result) {
+        // Handle the submitted abuse report
+      }
+    });
   }
 }

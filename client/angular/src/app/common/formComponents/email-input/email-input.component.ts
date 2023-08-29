@@ -50,7 +50,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
 
   constructor(
     @Optional() @Self() public controlDirective: NgControl,
-    private i18nService: I18nService
+    private i18nService: I18nService,
   ) {
     controlDirective.valueAccessor = this;
   }
@@ -94,7 +94,7 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
       } else if (this.controlDirective.control.errors['maxlength']) {
         return this.i18nService.translate(
           'validation.maxlength',
-          this.controlDirective.control.errors['maxlength']
+          this.controlDirective.control.errors['maxlength'],
         );
       }
     }

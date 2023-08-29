@@ -1,0 +1,24 @@
+<table>
+    <thead>
+        <tr>
+            <th>Status</th>
+            <th>Reporter</th>
+            <th>File</th>
+            <th>Reason</th>
+            <th>Date</th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let request of abuseReports">
+            <td><input class="button-checkbox" type="checkbox" [checked]="request.status" disabled/></td>
+            <td>{{request.email}}</td>
+            <td>{{request.requestDateTime | date:'dd-MM-yyyy HH:mm'}}</td>
+            <td>{{request.name}}</td>
+            <td>{{request.username}}</td>
+            <td><button class="button" (click)="onOpen(request)"><i class="material-icons">done</i>&nbsp;Open</button></td>
+            <td><button class="button" (click)="onDelete(request.id)"><i class="material-icons">delete</i>&nbsp;Delete</button></td>
+        </tr>
+    </tbody>
+</table>

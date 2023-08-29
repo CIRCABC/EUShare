@@ -12,7 +12,7 @@ import { TrustService } from '../../openapi/api/trust.service';
 import { TrustRequest } from '../../openapi/model/trustRequest';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { TrustDialogComponent } from '../trust-dialog/trust-dialog/trust-dialog.component';
+import { TrustAdminDialogComponent } from './trust-admin-dialog.component';
 
 @Component({
   selector: 'app-trust',
@@ -24,7 +24,10 @@ import { TrustDialogComponent } from '../trust-dialog/trust-dialog/trust-dialog.
 export class TrustComponent implements OnInit {
   trustRequests: TrustRequest[] = [];
 
-  constructor(private trustService: TrustService, private dialog: MatDialog) {}
+  constructor(
+    private trustService: TrustService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     this.trustService
@@ -40,7 +43,7 @@ export class TrustComponent implements OnInit {
       return;
     }
 
-    const dialogRef = this.dialog.open(TrustDialogComponent, {
+    const dialogRef = this.dialog.open(TrustAdminDialogComponent, {
       data: request,
     });
 
