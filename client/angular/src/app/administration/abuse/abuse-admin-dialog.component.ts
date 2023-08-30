@@ -18,6 +18,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import {
   AbuseReport,
   AbuseReportDetails,
+  AbuseService,
   FileService,
   UserInfo,
   UsersService,
@@ -40,8 +41,7 @@ export class AbuseAdminDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<AbuseAdminDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AbuseReport,
-    private datePipe: DatePipe,
-    private fileApi: FileService,
+    private abuseService: AbuseService,
   ) {
     this.abuseReportDetails = {
       ID: data.ID,
@@ -60,28 +60,38 @@ export class AbuseAdminDialogComponent {
   }
 
   async ngOnInit() {
-    if (this.data.fileId) {
-      await firstValueFrom(
-        this.fileApi.getFileInfo(this.data.fileId).pipe(
-          map((fileinfo) => {
-            this.abuseReportDetails.filename = fileinfo.name;
-            this.abuseReportDetails.filesize = fileinfo.size;
-          }),
-        ),
-      );
-    }
+    
   }
 
-  submitApprove(formData: any): void {
-    formData.form.value.action = true;
-    this.dialogRef.close(formData.form.value);
+  async validate() {
+    await this.updateAbuseReportStatus(true);
   }
-  submitDeny(formData: any): void {
-    formData.form.value.action = false;
-    this.dialogRef.close(formData.form.value);
+
+  async reject() {
+    await this.updateAbuseReportStatus(false);
+  }
+
+  private async updateAbuseReportStatus(status: boolean) {
+    this.abuseReportDetails.status = status;
+    await this.abuseService.updateAbuseReport(this.abuseReportDetails.ID as string, this.convertToAbuseReport(this.abuseReportDetails)).toPromise();
+    await this.dialogRef.close();
   }
 
   cancel() {
     this.dialogRef.close();
   }
+
+
+   convertToAbuseReport(details: AbuseReportDetails): AbuseReport {
+    const abuseReport: AbuseReport = {
+        ID: details.ID,
+        reporter: details.reporter,
+        fileId: details.fileId,
+        reason: details.reason,
+        description: details.description,
+        date: details.date,
+        status: details.status,
+    };
+    return abuseReport;
+}
 }

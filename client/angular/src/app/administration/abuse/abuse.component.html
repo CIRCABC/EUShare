@@ -5,20 +5,29 @@
             <th>Reporter</th>
             <th>File</th>
             <th>Reason</th>
+            <th>Uploader</th>
             <th>Date</th>
-            <th></th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let request of abuseReports">
-            <td><input class="button-checkbox" type="checkbox" [checked]="request.status" disabled/></td>
-            <td>{{request.email}}</td>
-            <td>{{request.requestDateTime | date:'dd-MM-yyyy HH:mm'}}</td>
-            <td>{{request.name}}</td>
-            <td>{{request.username}}</td>
-            <td><button class="button" (click)="onOpen(request)"><i class="material-icons">done</i>&nbsp;Open</button></td>
-            <td><button class="button" (click)="onDelete(request.id)"><i class="material-icons">delete</i>&nbsp;Delete</button></td>
+        <tr *ngFor="let abuseReport of abuseReportsDetails">
+
+            <td>
+                <i class="material-icons"
+                   [ngClass]="{'green-icon': abuseReport.status, 'red-icon': !abuseReport.status}">
+                  {{ abuseReport.status ? 'done' : 'close' }}
+                </i>
+              </td>
+              
+            <td>{{abuseReport.reporter}}</td>
+            <td>{{abuseReport.filename }}</td>
+            <td>{{abuseReport.reason | transloco}}</td>
+            <td>{{abuseReport.uploader_email }}</td>
+            <td>{{abuseReport.date | date:'dd-MM-yyyy'}}</td>
+            
+            <td><button class="button" (click)="onOpen(abuseReport)"><i class="material-icons">done</i>&nbsp;Open</button></td>
+            <td><button class="button" (click)="onDelete(abuseReport.id)"><i class="material-icons">delete</i>&nbsp;Delete</button></td>
         </tr>
     </tbody>
 </table>
+

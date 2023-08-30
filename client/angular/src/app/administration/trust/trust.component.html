@@ -12,7 +12,12 @@
     </thead>
     <tbody>
         <tr *ngFor="let request of trustRequests">
-            <td><input class="button-checkbox" type="checkbox" [checked]="request.approved" disabled/></td>
+            <td>
+                <i class="material-icons"
+                   [ngClass]="{'green-icon': request.approved, 'red-icon': !request.approved}">
+                  {{ request.approved ? 'done' : 'close' }}
+                </i>
+              </td>
             <td>{{request.email}}</td>
             <td>{{request.requestDateTime | date:'dd-MM-yyyy HH:mm'}}</td>
             <td>{{request.name}}</td>

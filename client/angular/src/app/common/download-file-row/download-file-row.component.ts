@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, Input } from '@angular/core';
-import { FileInfoRecipient } from '../../openapi';
+import { AbuseReport, FileInfoRecipient } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
 import { DownloadsService } from '../../services/downloads.service';
@@ -17,6 +17,8 @@ import { FileSizeFormatPipe } from '../pipes/file-size-format.pipe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, SlicePipe } from '@angular/common';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AbuseDialogComponent } from '../dialogs/abuse-dialog/abuse-dialog.component';
 
 @Component({
   selector: 'app-download-file-row',
@@ -28,6 +30,7 @@ import { NgIf, SlicePipe } from '@angular/common';
     TranslocoModule,
     SlicePipe,
     FileSizeFormatPipe,
+    MatDialogModule
   ],
 })
 export class DownloadFileRowComponent {
@@ -42,6 +45,7 @@ export class DownloadFileRowComponent {
   constructor(
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
+    private dialog: MatDialog,
   ) {}
 
   public displayMore() {
@@ -65,5 +69,17 @@ export class DownloadFileRowComponent {
         this.fileToDisplay.name,
       );
     }
+  }
+
+  openAbuseDialog(): void {
+    const dialogRef = this.dialog.open(AbuseDialogComponent, {
+      data: this.fileToDisplay.fileId,
+    });
+
+    dialogRef.afterClosed().subscribe((result: AbuseReport) => {
+      if (result) {
+        // Handle the submitted abuse report
+      }
+    });
   }
 }

@@ -19,6 +19,7 @@ import { SessionStorageService } from '../../../services/session-storage.service
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AbuseService } from '../../../openapi/api/abuse.service';
+import { NotificationService } from '../../notification/notification.service';
 
 @Component({
   selector: 'app-abuse-dialog',
@@ -52,6 +53,7 @@ export class AbuseDialogComponent {
     public dialogRef: MatDialogRef<AbuseDialogComponent>,
     private sessionApi: SessionStorageService,
     private abuseService: AbuseService,
+    private notificationService: NotificationService,
     @Inject(MAT_DIALOG_DATA) public fileId: string,
   ) {
     const userInfo = this.sessionApi.getStoredUserInfo();
@@ -65,6 +67,12 @@ export class AbuseDialogComponent {
   submitForm(): void {
     this.abuseService
       .createAbuseReport(this.abuseReport)
-      .subscribe(() => this.dialogRef.close(this.abuseReport));
+      .subscribe(() => {
+        this.notificationService.addSuccessMessageTranslation(
+          'abuse.feedback',
+          undefined,
+          true,
+        ); this.dialogRef.close(this.abuseReport)
+      });
   }
 }

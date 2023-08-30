@@ -35,6 +35,8 @@ import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { FileRowContainerComponent } from '../common/uploaded-file-row-container/uploaded-file-row-container.component';
 import { TrustComponent } from './trust/trust.component';
 import { MatIconModule } from '@angular/material/icon';
+import { AbuseComponent } from './abuse/abuse.component';
+import { LogsComponent } from './logs/logs/logs.component';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
@@ -52,6 +54,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatTabsModule,
     FileRowContainerComponent,
     TrustComponent,
+    AbuseComponent,
+    LogsComponent,
     MatIconModule,
   ],
 })

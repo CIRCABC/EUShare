@@ -13,7 +13,6 @@ import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.AbuseReport;
 import eu.europa.circabc.eushare.model.AbuseReportDetails;
-import eu.europa.circabc.eushare.model.InlineObject1;
 import eu.europa.circabc.eushare.model.TrustRequest;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
@@ -94,16 +93,20 @@ public class AbuseApiController implements AbuseApi {
             }
         }
 
-        if (dbAbuse.getFiledId().length() == DBShare.SHORT_URL_LENGTH) {
-            DBShare share = fileService.findShare(dbAbuse.getFiledId());
+        DBShare share = fileService.findShare(dbAbuse.getFileId());
+
+        if (dbAbuse.getFileId().length() == DBShare.SHORT_URL_LENGTH) {
+            dbAbuse.setShortUrl(dbAbuse.getFileId());
             String file_id = share.getFile().getId();
-            dbAbuse.setFiledId(file_id);
+            dbAbuse.setFileId(file_id);  
+        } else {
+             dbAbuse.setShortUrl(share.getShorturl());
         }
 
         dbAbuse.setDate(LocalDate.now());
         dbAbuse.setStatus(false);
 
-        // abuseRepository.save(dbAbuse);
+        abuseRepository.save(dbAbuse);
 
         return ResponseEntity.ok(abuseReport);
 
@@ -115,7 +118,7 @@ public class AbuseApiController implements AbuseApi {
         if (dbAbuse == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Abuse report not found");
         }
-        // abuseRepository.delete(dbAbuse);
+        abuseRepository.delete(dbAbuse);
         return ResponseEntity.ok().build();
     }
 
@@ -143,7 +146,7 @@ public class AbuseApiController implements AbuseApi {
 
         dbAbuse.setStatus(abuseReport.getStatus());
 
-        // dbAbuse = abuseRepository.save(dbAbuse);
+        dbAbuse = abuseRepository.save(dbAbuse);
         return ResponseEntity.ok(dbAbuse.toAbuseReport());
     }
 }

@@ -47,7 +47,7 @@ import java.time.LocalDate;
         "FROM " +
         "abuse a " +
         "JOIN " +
-        "shares s ON a.file_id = s.shorturl " +
+        "shares s ON a.short_url = s.shorturl " +
         "JOIN " +
         "files f ON s.file_file_id = f.file_id " +
         "JOIN " +
@@ -82,7 +82,7 @@ public class DBAbuse {
     private String reporter;
 
     @Column(nullable = false)
-    private String filedId;
+    private String fileId;
 
     @Column(nullable = false)
     private String shortUrl;
@@ -122,12 +122,12 @@ public class DBAbuse {
 
     
 
-    public String getFiledId() {
-        return filedId;
+    public String getFileId() {
+        return fileId;
     }
 
-    public void setFiledId(String filedId) {
-        this.filedId = filedId;
+    public void setFileId(String fileId) {
+        this.fileId = fileId;
     }
 
     public String getShortUrl() {
@@ -173,7 +173,7 @@ public class DBAbuse {
     public static DBAbuse toDBAbuse(AbuseReport abuseReport) {
         DBAbuse dbAbuse = new DBAbuse();
         dbAbuse.setReporter(abuseReport.getReporter());
-        dbAbuse.setFiledId(abuseReport.getFileId());
+        dbAbuse.setFileId(abuseReport.getFileId());
         dbAbuse.setReason(abuseReport.getReason());
         dbAbuse.setDescription(abuseReport.getDescription());
         dbAbuse.setDate(abuseReport.getDate());
@@ -184,7 +184,7 @@ public class DBAbuse {
     public AbuseReport toAbuseReport() {
         AbuseReport abuseReport = new AbuseReport();
         abuseReport.setReporter(this.getReporter());
-        abuseReport.setFileId(this.getFiledId());
+        abuseReport.setFileId(this.getFileId());
         abuseReport.setReason(this.getReason());
         abuseReport.setDescription(this.getDescription());
         abuseReport.setDate(this.getDate());
