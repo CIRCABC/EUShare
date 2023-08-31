@@ -110,9 +110,10 @@ public class DBUser {
     dbUser.setTotalSpace(totalSpace);
     dbUser.setUsername(username);
     dbUser.setLastLogged(LocalDateTime.now());
-    // dbUser.setStatus(eu.europa.circabc.eushare.storage.DBUser.Status.REGULAR);
+    dbUser.setStatus(DBUser.Status.REGULAR);
     return dbUser;
   }
+
 
   public long getFreeSpace() {
     return this.totalSpace - this.getUsedSpace();
@@ -270,6 +271,14 @@ public class DBUser {
 
   public void setApiKey(String apiKey) {
     this.apiKey = apiKey;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 
 }

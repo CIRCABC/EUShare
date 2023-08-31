@@ -135,6 +135,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       DBUser user = userRepository.findOneByUsername(admin);
       if (user != null) {
         user.setRole(DBUser.Role.ADMIN);
+        user.setStatus(DBUser.Status.REGULAR);
         userRepository.save(user);
         log.warn("User {} set to admin", admin);
       }
