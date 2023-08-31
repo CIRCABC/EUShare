@@ -67,4 +67,6 @@ export class AbuseComponent implements OnInit {
     }
     this.abuseService.deleteAbuseReport(id).subscribe(() => this.ngOnInit());
   }
+
+
 }

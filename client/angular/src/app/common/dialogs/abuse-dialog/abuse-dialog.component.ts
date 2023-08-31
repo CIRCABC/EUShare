@@ -75,4 +75,8 @@ export class AbuseDialogComponent {
         ); this.dialogRef.close(this.abuseReport)
       });
   }
+
+  cancel() {
+    this.dialogRef.close();
+  }
 }

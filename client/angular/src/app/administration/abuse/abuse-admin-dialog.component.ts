@@ -40,7 +40,7 @@ export class AbuseAdminDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<AbuseAdminDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AbuseReport,
+    @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails,
     private abuseService: AbuseService,
   ) {
     this.abuseReportDetails = {
