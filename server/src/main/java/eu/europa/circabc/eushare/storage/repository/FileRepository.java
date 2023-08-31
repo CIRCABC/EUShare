@@ -13,8 +13,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import eu.europa.circabc.eushare.storage.dto.LastDownloadDTO;
+import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
+import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
 import eu.europa.circabc.eushare.storage.entity.DBFile;
 import eu.europa.circabc.eushare.storage.entity.DBFile.Status;
 
@@ -70,4 +74,14 @@ public interface FileRepository
     DBFile.Status status,
     LocalDateTime time
   );
+
+
+    @Query(nativeQuery = true)
+    List<LastLogDTO> getLastLogs();
+
+    @Query(nativeQuery = true)
+    List<LastUploadDTO> getLastUploads();
+
+    @Query(nativeQuery = true)
+    List<LastDownloadDTO> getLastDownloads();
 }

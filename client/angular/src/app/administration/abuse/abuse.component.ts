@@ -21,7 +21,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   templateUrl: './abuse.component.html',
   styleUrls: ['./abuse.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule,TranslocoModule],
+  imports: [CommonModule, MatDialogModule, TranslocoModule],
   providers: [DatePipe],
 })
 export class AbuseComponent implements OnInit {
@@ -36,15 +36,13 @@ export class AbuseComponent implements OnInit {
     this.fetchData();
   }
 
-
   fetchData(): void {
     this.abuseService
-    .getAbuseReportList()
-    .subscribe((data: AbuseReportDetails[]) => {
-      this.abuseReportsDetails = data;
-    });
+      .getAbuseReportList()
+      .subscribe((data: AbuseReportDetails[]) => {
+        this.abuseReportsDetails = data;
+      });
   }
-
 
   onOpen(report: AbuseReportDetails | undefined): void {
     const id = report?.ID;

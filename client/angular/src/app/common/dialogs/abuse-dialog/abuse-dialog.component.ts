@@ -65,14 +65,13 @@ export class AbuseDialogComponent {
   }
 
   submitForm(): void {
-    this.abuseService
-      .createAbuseReport(this.abuseReport)
-      .subscribe(() => {
-        this.notificationService.addSuccessMessageTranslation(
-          'abuse.feedback',
-          undefined,
-          true,
-        ); this.dialogRef.close(this.abuseReport)
-      });
+    this.abuseService.createAbuseReport(this.abuseReport).subscribe(() => {
+      this.notificationService.addSuccessMessageTranslation(
+        'abuse.feedback',
+        undefined,
+        true,
+      );
+      this.dialogRef.close(this.abuseReport);
+    });
   }
 }

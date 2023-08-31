@@ -20,22 +20,14 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  */
 
 
-export interface FileBasics { 
-    /**
-     * Expiration date of file
-     */
-    expirationDate: string;
-    /**
-     * File is password-protected
-     */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+export interface LastDownload { 
+    uploader_email?: string;
+    recipient?: string;
+    filename?: string;
+    path?: string;
+    password?: string;
+    shorturl?: string;
+    download_notification?: boolean;
+    download_date?: string;
 }
 

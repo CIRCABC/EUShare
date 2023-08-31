@@ -26,7 +26,9 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { TrustRequest } from '../model/models';
+import { LastDownload } from '../model/models';
+import { LastLog } from '../model/models';
+import { LastUpload } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -36,7 +38,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class TrustService {
+export class LogService {
 
     protected basePath = 'http://localhost:8080';
     public defaultHeaders = new HttpHeaders();
@@ -95,33 +97,14 @@ export class TrustService {
     }
 
     /**
-     * Approve Trust Request
-     * @param id 
-     * @param approved 
-     * @param reason 
+     * Retrieve the last downloads ordered by download date
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public approveTrustRequest(id: string, approved: boolean, reason?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<TrustRequest>;
-    public approveTrustRequest(id: string, approved: boolean, reason?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<TrustRequest>>;
-    public approveTrustRequest(id: string, approved: boolean, reason?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<TrustRequest>>;
-    public approveTrustRequest(id: string, approved: boolean, reason?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling approveTrustRequest.');
-        }
-        if (approved === null || approved === undefined) {
-            throw new Error('Required parameter approved was null or undefined when calling approveTrustRequest.');
-        }
-
-        let queryParameters = new HttpParams({encoder: this.encoder});
-        if (approved !== undefined && approved !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>approved, 'approved');
-        }
-        if (reason !== undefined && reason !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>reason, 'reason');
-        }
+    public logGetLastDownloadsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<LastDownload>>;
+    public logGetLastDownloadsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<LastDownload>>>;
+    public logGetLastDownloadsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<LastDownload>>>;
+    public logGetLastDownloadsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -143,54 +126,7 @@ export class TrustService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<TrustRequest>(`${this.configuration.basePath}/trust/${encodeURIComponent(String(id))}`,
-            null,
-            {
-                params: queryParameters,
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * Delete Trust Request
-     * @param id 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public deleteTrustRequest(id: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<TrustRequest>;
-    public deleteTrustRequest(id: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<TrustRequest>>;
-    public deleteTrustRequest(id: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<TrustRequest>>;
-    public deleteTrustRequest(id: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteTrustRequest.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'application/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.delete<TrustRequest>(`${this.configuration.basePath}/trust/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<Array<LastDownload>>(`${this.configuration.basePath}/log/getLastDownloads`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -202,14 +138,14 @@ export class TrustService {
     }
 
     /**
-     * Get Trust Request List
+     * Retrieve the last logs for users with username
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getTrustRequestList(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<TrustRequest>>;
-    public getTrustRequestList(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<TrustRequest>>>;
-    public getTrustRequestList(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<TrustRequest>>>;
-    public getTrustRequestList(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public logGetLastLogsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<LastLog>>;
+    public logGetLastLogsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<LastLog>>>;
+    public logGetLastLogsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<LastLog>>>;
+    public logGetLastLogsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -231,7 +167,7 @@ export class TrustService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<Array<TrustRequest>>(`${this.configuration.basePath}/trust`,
+        return this.httpClient.get<Array<LastLog>>(`${this.configuration.basePath}/log/getLastLogs`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -243,18 +179,14 @@ export class TrustService {
     }
 
     /**
-     * Send Trust Request
-     * @param trustRequest 
+     * Retrieve the last uploads for users with username
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public sendTrustRequest(trustRequest: TrustRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<TrustRequest>;
-    public sendTrustRequest(trustRequest: TrustRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<TrustRequest>>;
-    public sendTrustRequest(trustRequest: TrustRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<TrustRequest>>;
-    public sendTrustRequest(trustRequest: TrustRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
-        if (trustRequest === null || trustRequest === undefined) {
-            throw new Error('Required parameter trustRequest was null or undefined when calling sendTrustRequest.');
-        }
+    public logGetLastUploadsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<LastUpload>>;
+    public logGetLastUploadsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<LastUpload>>>;
+    public logGetLastUploadsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<LastUpload>>>;
+    public logGetLastUploadsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -271,22 +203,12 @@ export class TrustService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
         }
 
-        return this.httpClient.post<TrustRequest>(`${this.configuration.basePath}/trust`,
-            trustRequest,
+        return this.httpClient.get<Array<LastUpload>>(`${this.configuration.basePath}/log/getLastUploads`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

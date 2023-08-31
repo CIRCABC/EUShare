@@ -1168,7 +1168,50 @@ paths:
                 $ref: '#/components/schemas/Status'
 
  
+  /log/getLastLogs:
+    get:
+      tags:
+        - log
+      summary: Retrieve the last logs for users with username 
+      responses:
+        '200':
+          description: A list of last logs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LastLog'
 
+  /log/getLastUploads:
+    get:
+      tags:
+        - log
+      summary: Retrieve the last uploads for users with username 
+      responses:
+        '200':
+          description: A list of last uploads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LastUpload'
+  
+  /log/getLastDownloads:
+    get:
+      tags:
+        - log
+      summary: Retrieve the last downloads ordered by download date
+      responses:
+        '200':
+          description: A list of last downloads
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LastDownload'
 
 
 components:
@@ -1544,3 +1587,62 @@ components:
             uploader_status:
               type: string
 
+    LastLog:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+        username:
+          type: string
+        total_space:
+          type: integer
+        last_logged:
+          type: string
+          format: date-time
+    LastUpload:
+      type: object
+      properties:
+        uploader_email:
+          type: string
+        share_email:
+          type: string
+        filename:
+          type: string
+        file_size:
+          type: integer
+        path:
+          type: string
+        status:
+          type: string
+        created:
+          type: string
+          format: date-time
+        shorturl:
+          type: string
+        download_notification:
+          type: boolean
+
+    LastDownload:
+      type: object
+      properties:
+        uploader_email:
+          type: string
+        recipient:
+          type: string
+        filename:
+          type: string
+        path:
+          type: string
+        password:
+          type: string
+        shorturl:
+          type: string
+        download_notification:
+          type: boolean
+        download_date:
+          type: string
+          format: date-time
