@@ -15,17 +15,8 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { TranslocoModule } from '@ngneat/transloco';
-import {
-  AbuseReport,
-  AbuseReportDetails,
-  AbuseService,
-  FileService,
-  UserInfo,
-  UsersService,
-} from '../../openapi';
+import { AbuseReport, AbuseReportDetails, AbuseService } from '../../openapi';
 import { DatePipe } from '@angular/common';
-import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-abuse-admin-dialog',
@@ -59,10 +50,6 @@ export class AbuseAdminDialogComponent {
     };
   }
 
-  async ngOnInit() {
-    
-  }
-
   async validate() {
     await this.updateAbuseReportStatus(true);
   }
@@ -73,7 +60,12 @@ export class AbuseAdminDialogComponent {
 
   private async updateAbuseReportStatus(status: boolean) {
     this.abuseReportDetails.status = status;
-    await this.abuseService.updateAbuseReport(this.abuseReportDetails.ID as string, this.convertToAbuseReport(this.abuseReportDetails)).toPromise();
+    await this.abuseService
+      .updateAbuseReport(
+        this.abuseReportDetails.ID as string,
+        this.convertToAbuseReport(this.abuseReportDetails),
+      )
+      .toPromise();
     await this.dialogRef.close();
   }
 
@@ -81,17 +73,16 @@ export class AbuseAdminDialogComponent {
     this.dialogRef.close();
   }
 
-
-   convertToAbuseReport(details: AbuseReportDetails): AbuseReport {
+  convertToAbuseReport(details: AbuseReportDetails): AbuseReport {
     const abuseReport: AbuseReport = {
-        ID: details.ID,
-        reporter: details.reporter,
-        fileId: details.fileId,
-        reason: details.reason,
-        description: details.description,
-        date: details.date,
-        status: details.status,
+      ID: details.ID,
+      reporter: details.reporter,
+      fileId: details.fileId,
+      reason: details.reason,
+      description: details.description,
+      date: details.date,
+      status: details.status,
     };
     return abuseReport;
-}
+  }
 }

@@ -9,7 +9,6 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { AbuseService } from '../../openapi/api/abuse.service';
-import { AbuseReport } from '../../openapi/model/abuseReport';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';
@@ -21,7 +20,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   templateUrl: './abuse.component.html',
   styleUrls: ['./abuse.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule,TranslocoModule],
+  imports: [CommonModule, MatDialogModule, TranslocoModule],
   providers: [DatePipe],
 })
 export class AbuseComponent implements OnInit {
@@ -36,15 +35,13 @@ export class AbuseComponent implements OnInit {
     this.fetchData();
   }
 
-
   fetchData(): void {
     this.abuseService
-    .getAbuseReportList()
-    .subscribe((data: AbuseReportDetails[]) => {
-      this.abuseReportsDetails = data;
-    });
+      .getAbuseReportList()
+      .subscribe((data: AbuseReportDetails[]) => {
+        this.abuseReportsDetails = data;
+      });
   }
-
 
   onOpen(report: AbuseReportDetails | undefined): void {
     const id = report?.ID;
@@ -67,6 +64,4 @@ export class AbuseComponent implements OnInit {
     }
     this.abuseService.deleteAbuseReport(id).subscribe(() => this.ngOnInit());
   }
-
-
 }

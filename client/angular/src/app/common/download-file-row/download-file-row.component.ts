@@ -30,7 +30,7 @@ import { AbuseDialogComponent } from '../dialogs/abuse-dialog/abuse-dialog.compo
     TranslocoModule,
     SlicePipe,
     FileSizeFormatPipe,
-    MatDialogModule
+    MatDialogModule,
   ],
 })
 export class DownloadFileRowComponent {
