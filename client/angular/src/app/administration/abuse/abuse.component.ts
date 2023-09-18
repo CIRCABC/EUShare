@@ -26,10 +26,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 export class AbuseComponent implements OnInit {
   abuseReportsDetails: AbuseReportDetails[] = [];
 
-  constructor(
-    private abuseService: AbuseService,
-    private dialog: MatDialog,
-  ) {}
+  constructor(private abuseService: AbuseService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchData();
