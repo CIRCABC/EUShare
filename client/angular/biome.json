@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "formatter": {
-    "ignore": ["./src/app/openapi/api/*.ts", "./src/app/openapi/model/*.ts"],
+    "ignore": ["./src/app/openapi/api/*.ts", "./src/app/openapi/model/*.ts","./src/environments/version.ts"],
     "indentStyle": "space"
   },
   "organizeImports": {
