@@ -24,7 +24,10 @@ import { TrustAdminDialogComponent } from './trust-admin-dialog.component';
 export class TrustComponent implements OnInit {
   trustRequests: TrustRequest[] = [];
 
-  constructor(private trustService: TrustService, private dialog: MatDialog) {}
+  constructor(
+    private trustService: TrustService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     this.trustService

@@ -18,8 +18,6 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AbuseReportDetailsAllOf } from './abuseReportDetailsAllOf';
-import { AbuseReport } from './abuseReport';
 
 
 export interface AbuseReportDetails { 

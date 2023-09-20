@@ -18,10 +18,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FileBasics } from './fileBasics';
 import { FileLog } from './fileLog';
 import { Recipient } from './recipient';
-import { FileInfoUploaderAllOf } from './fileInfoUploaderAllOf';
 
 
 export interface FileInfoUploader { 
@@ -58,9 +56,9 @@ export interface FileInfoUploader {
 export namespace FileInfoUploader {
     export type StatusEnum = 'AVAILABLE' | 'ALLOCATED' | 'DELETED';
     export const StatusEnum = {
-        AVAILABLE: 'AVAILABLE' as StatusEnum,
-        ALLOCATED: 'ALLOCATED' as StatusEnum,
-        DELETED: 'DELETED' as StatusEnum
+        Available: 'AVAILABLE' as StatusEnum,
+        Allocated: 'ALLOCATED' as StatusEnum,
+        Deleted: 'DELETED' as StatusEnum
     };
 }
 

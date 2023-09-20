@@ -9,24 +9,18 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 export * from './abuseReport';
 export * from './abuseReportDetails';
-export * from './abuseReportDetailsAllOf';
 export * from './apiKey';
 export * from './fileBasics';
 export * from './fileInfoRecipient';
-export * from './fileInfoRecipientAllOf';
 export * from './fileInfoUploader';
-export * from './fileInfoUploaderAllOf';
 export * from './fileLog';
 export * from './fileRequest';
-export * from './fileRequestAllOf';
 export * from './fileResult';
-export * from './inlineObject';
 export * from './mountPointSpace';
 export * from './recipient';
 export * from './stat';
 export * from './status';
 export * from './trustRequest';
 export * from './userInfo';
-export * from './userInfoAllOf';
 export * from './userResult';
 export * from './userSpace';
