@@ -116,10 +116,5 @@
     "@biomejs/biome": "1.2.2",
     "source-map-explorer": "2.5.3",
     "typescript": "5.1.6"
-  },
-  "overrides": {
-    "ng2-charts": {
-      "ng2-charts-schematics": "0.1.7"
-    }
   }
 }
