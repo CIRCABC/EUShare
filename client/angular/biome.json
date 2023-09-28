@@ -1,0 +1,37 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "formatter": {
+    "enabled": false,
+    "ignore": ["./src/app/openapi/api/*.ts", "./src/app/openapi/model/*.ts","./src/environments/version.ts"],
+    "indentStyle": "space"
+  },
+  "organizeImports": {
+    "enabled": false
+  },
+  "linter": {
+    "ignore": ["./src/app/openapi/api/*.ts", "./src/app/openapi/model/*.ts"],
+
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "suspicious": {
+        "noExplicitAny": "off"
+      },
+      "style": {
+        "noParameterAssign": "off"
+      },
+      "complexity": {
+        "noUselessConstructor": "off",
+        "useLiteralKeys": "off",
+        "noBannedTypes": "off"
+      }
+    }
+  },
+
+  "javascript": {
+    "formatter": { "quoteStyle": "single", "trailingComma": "all" },
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    }
+  }
+}

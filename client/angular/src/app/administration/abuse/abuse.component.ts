@@ -9,7 +9,6 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit } from '@angular/core';
 import { AbuseService } from '../../openapi/api/abuse.service';
-import { AbuseReport } from '../../openapi/model/abuseReport';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';

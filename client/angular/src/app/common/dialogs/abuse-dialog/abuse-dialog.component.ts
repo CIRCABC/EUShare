@@ -48,7 +48,7 @@ export class AbuseDialogComponent {
     'abuse_reason_other_issues',
   ];
 
-  authentified: boolean = false;
+  authentified = false;
   constructor(
     public dialogRef: MatDialogRef<AbuseDialogComponent>,
     private sessionApi: SessionStorageService,

@@ -1,0 +1,46 @@
+/*
+CIRCABC Share - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "CIRCABC Share" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
+.gitignore
+.openapi-generator-ignore
+README.md
+api.module.ts
+api/abuse.service.ts
+api/admin.service.ts
+api/api.ts
+api/apiKey.service.ts
+api/file.service.ts
+api/session.service.ts
+api/stats.service.ts
+api/trust.service.ts
+api/users.service.ts
+configuration.ts
+encoder.ts
+git_push.sh
+index.ts
+model/abuseReport.ts
+model/abuseReportDetails.ts
+model/apiKey.ts
+model/fileBasics.ts
+model/fileInfoRecipient.ts
+model/fileInfoUploader.ts
+model/fileLog.ts
+model/fileRequest.ts
+model/fileResult.ts
+model/models.ts
+model/mountPointSpace.ts
+model/recipient.ts
+model/stat.ts
+model/status.ts
+model/trustRequest.ts
+model/userInfo.ts
+model/userResult.ts
+model/userSpace.ts
+param.ts
+variables.ts

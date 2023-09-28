@@ -73,7 +73,7 @@ jobs:
           command: npm run licchkchk
       - run:
           name: check-style
-          command: npm run lint-rome
+          command: npm run lint-biome
       - run:
           name: lint
           command: npm run lint

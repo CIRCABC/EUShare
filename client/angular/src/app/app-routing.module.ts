@@ -37,7 +37,10 @@ const appRoutes: Routes = [
   },
   {
     path: 'home',
-    loadComponent: () => import('./files/my-shared-files/my-shared-files.component').then(m => m.MySharedFilesComponent),
+    loadComponent: () =>
+      import('./files/my-shared-files/my-shared-files.component').then(
+        (m) => m.MySharedFilesComponent,
+      ),
     canActivate: [loginCanActivate],
   },
   {
@@ -61,24 +64,33 @@ const appRoutes: Routes = [
   },
   {
     path: 'administration',
-    loadComponent: () => import('./administration/administration.component').then(m => m.AdministrationComponent),
+    loadComponent: () =>
+      import('./administration/administration.component').then(
+        (m) => m.AdministrationComponent,
+      ),
     canActivate: [loginCanActivate],
   },
   {
     path: 'administration/:userId/files',
-    loadComponent: () => import('./files/other-user-shared-files/other-user-shared-files.component').then(m => m.OtherUserSharedFilesComponent),
+    loadComponent: () =>
+      import(
+        './files/other-user-shared-files/other-user-shared-files.component'
+      ).then((m) => m.OtherUserSharedFilesComponent),
     data: { userName: 'dummyUserName' },
     canActivate: [loginCanActivate],
   },
   {
     path: 'profile',
-    loadComponent: () => import('./profile/profile.component').then(m => m.MyUserComponent),
+    loadComponent: () =>
+      import('./profile/profile.component').then((m) => m.MyUserComponent),
     canActivate: [loginCanActivate],
   },
   {
     path: 'privacyStatement',
-    loadComponent: () => import('./privacy-statement/privacy-statement.component').then(m => m.PrivacyStatementComponent),
-
+    loadComponent: () =>
+      import('./privacy-statement/privacy-statement.component').then(
+        (m) => m.PrivacyStatementComponent,
+      ),
   },
   {
     path: 'termsOfService',
@@ -97,4 +109,4 @@ const appRoutes: Routes = [
   ],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

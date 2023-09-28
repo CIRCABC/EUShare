@@ -1,3 +1,12 @@
+/*
+CIRCABC Share - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "CIRCABC Share" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
 /**
  * CIRCABC Share
  * This is a API definition for the CIRCABC Share service.
@@ -9,8 +18,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { UserInfoAllOf } from './userInfoAllOf';
-import { UserSpace } from './userSpace';
 
 
 export interface UserInfo { 
@@ -58,19 +65,19 @@ export interface UserInfo {
 export namespace UserInfo {
     export type RoleEnum = 'ADMIN' | 'INTERNAL' | 'EXTERNAL' | 'TRUSTED_EXTERNAL' | 'API_KEY';
     export const RoleEnum = {
-        ADMIN: 'ADMIN' as RoleEnum,
-        INTERNAL: 'INTERNAL' as RoleEnum,
-        EXTERNAL: 'EXTERNAL' as RoleEnum,
-        TRUSTEDEXTERNAL: 'TRUSTED_EXTERNAL' as RoleEnum,
-        APIKEY: 'API_KEY' as RoleEnum
+        Admin: 'ADMIN' as RoleEnum,
+        Internal: 'INTERNAL' as RoleEnum,
+        External: 'EXTERNAL' as RoleEnum,
+        TrustedExternal: 'TRUSTED_EXTERNAL' as RoleEnum,
+        ApiKey: 'API_KEY' as RoleEnum
     };
     export type StatusEnum = 'REGULAR' | 'FROZEN' | 'PURGED' | 'BANNED' | 'UNKNOWN';
     export const StatusEnum = {
-        REGULAR: 'REGULAR' as StatusEnum,
-        FROZEN: 'FROZEN' as StatusEnum,
-        PURGED: 'PURGED' as StatusEnum,
-        BANNED: 'BANNED' as StatusEnum,
-        UNKNOWN: 'UNKNOWN' as StatusEnum
+        Regular: 'REGULAR' as StatusEnum,
+        Frozen: 'FROZEN' as StatusEnum,
+        Purged: 'PURGED' as StatusEnum,
+        Banned: 'BANNED' as StatusEnum,
+        Unknown: 'UNKNOWN' as StatusEnum
     };
 }
 

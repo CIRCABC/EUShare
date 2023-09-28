@@ -15,17 +15,9 @@ import {
   MatDialogRef,
 } from '@angular/material/dialog';
 import { TranslocoModule } from '@ngneat/transloco';
-import {
-  AbuseReport,
-  AbuseReportDetails,
-  AbuseService,
-  FileService,
-  UserInfo,
-  UsersService,
-} from '../../openapi';
+import { AbuseReport, AbuseReportDetails, AbuseService } from '../../openapi';
 import { DatePipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-abuse-admin-dialog',
@@ -41,7 +33,7 @@ export class AbuseAdminDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<AbuseAdminDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails,
-    private abuseService: AbuseService,
+    private abuseService: AbuseService
   ) {
     this.abuseReportDetails = {
       ID: data.ID,
@@ -59,8 +51,6 @@ export class AbuseAdminDialogComponent {
     };
   }
 
-  async ngOnInit() {}
-
   async validate() {
     await this.updateAbuseReportStatus(true);
   }
@@ -71,13 +61,13 @@ export class AbuseAdminDialogComponent {
 
   private async updateAbuseReportStatus(status: boolean) {
     this.abuseReportDetails.status = status;
-    await this.abuseService
-      .updateAbuseReport(
+    await firstValueFrom(
+      this.abuseService.updateAbuseReport(
         this.abuseReportDetails.ID as string,
-        this.convertToAbuseReport(this.abuseReportDetails),
+        this.convertToAbuseReport(this.abuseReportDetails)
       )
-      .toPromise();
-    await this.dialogRef.close();
+    );
+    this.dialogRef.close();
   }
 
   cancel() {
