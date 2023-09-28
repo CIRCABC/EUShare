@@ -15,36 +15,35 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';
 import { AbuseAdminDialogComponent } from './abuse-admin-dialog.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { AbuseDetailsDialogComponent } from './abuse-details-dialog.component';
 
 @Component({
   selector: 'app-abuse',
   templateUrl: './abuse.component.html',
   styleUrls: ['./abuse.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule,TranslocoModule],
+  imports: [CommonModule, MatDialogModule, TranslocoModule],
   providers: [DatePipe],
 })
 export class AbuseComponent implements OnInit {
-  abuseReportsDetails: AbuseReportDetails[] = [];
+  abuseReportsDetailsMap: { [key: string]: AbuseReportDetails[] } = {};
 
   constructor(
     private abuseService: AbuseService,
     private dialog: MatDialog,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.fetchData();
   }
 
-
   fetchData(): void {
     this.abuseService
-    .getAbuseReportList()
-    .subscribe((data: AbuseReportDetails[]) => {
-      this.abuseReportsDetails = data;
-    });
+      .getAbuseReportList()
+      .subscribe((data: { [key: string]: AbuseReportDetails[] }) => {
+        this.abuseReportsDetailsMap = data;
+      });
   }
-
 
   onOpen(report: AbuseReportDetails | undefined): void {
     const id = report?.ID;
@@ -61,12 +60,21 @@ export class AbuseComponent implements OnInit {
     });
   }
 
+
+  showList(reports: AbuseReportDetails[]): void {
+    const dialogRef = this.dialog.open(AbuseDetailsDialogComponent, {
+      data: reports,
+      width: '80%',
+    });
+
+
+  }
+
+
   onDelete(id: string | undefined): void {
     if (!id) {
       return;
     }
     this.abuseService.deleteAbuseReport(id).subscribe(() => this.ngOnInit());
   }
-
-
 }

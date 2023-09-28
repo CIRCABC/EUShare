@@ -17,8 +17,7 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { AbuseReport } from '../model/models';
-import { AbuseReportDetails } from '../model/models';
+import { AbuseReport, AbuseReportDetails } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -231,13 +230,13 @@ export class AbuseService {
     }
 
     /**
-     * Get a list of abuse reports with details
+     * Get a list of abuse reports with details grouped by fileId
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAbuseReportList(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<Array<AbuseReportDetails>>;
-    public getAbuseReportList(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<Array<AbuseReportDetails>>>;
-    public getAbuseReportList(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<Array<AbuseReportDetails>>>;
+    public getAbuseReportList(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<{ [key: string]: Array<AbuseReportDetails>; }>;
+    public getAbuseReportList(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<{ [key: string]: Array<AbuseReportDetails>; }>>;
+    public getAbuseReportList(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<{ [key: string]: Array<AbuseReportDetails>; }>>;
     public getAbuseReportList(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -260,7 +259,7 @@ export class AbuseService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<Array<AbuseReportDetails>>(`${this.configuration.basePath}/abuse`,
+        return this.httpClient.get<{ [key: string]: Array<AbuseReportDetails>; }>(`${this.configuration.basePath}/abuse`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

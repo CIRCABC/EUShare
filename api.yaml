@@ -1049,18 +1049,21 @@ paths:
                 $ref: "#/components/schemas/AbuseReport"
     get:
       tags:
-      - Abuse
-      summary: Get a list of abuse reports with details
-      operationId: "getAbuseReportList"
+        - Abuse
+      summary: Get a list of abuse reports with details grouped by fileId
+      operationId: getAbuseReportList
       responses:
         '200':
           description: OK
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/AbuseReportDetails'
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AbuseReportDetails'
+                    
   '/abuse/{id}':
     get:
       tags:
@@ -1525,6 +1528,7 @@ components:
           format: date
         status:
           type: boolean
+
 
     AbuseReportDetails:
       allOf:

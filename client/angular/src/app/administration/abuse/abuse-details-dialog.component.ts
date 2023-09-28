@@ -1,0 +1,36 @@
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-abuse-details-dialog',
+  templateUrl: './abuse-details-dialog.component.html',
+  styleUrls: ['./abuse-details-dialog.component.scss'],
+  standalone: true,
+  imports: [CommonModule,MatDialogModule,MatTableModule,MatPaginatorModule,MatTooltipModule]
+})
+export class AbuseDetailsDialogComponent implements OnInit {
+
+  displayedColumns: string[] = ['reporter', 'filename', 'reason', 'uploader_email', 'date', 'description'];
+  dataSource: MatTableDataSource<AbuseReportDetails> = new MatTableDataSource<AbuseReportDetails>([]);;
+
+  constructor(
+    public dialogRef: MatDialogRef<AbuseDetailsDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails[]
+) { }
+
+ngOnInit() {
+    this.dataSource = new MatTableDataSource<AbuseReportDetails>(this.data);
+}
+
+
+
+  onRowClicked(row: any): void {
+    console.log('Row clicked:', row);
+  }
+}

@@ -1,28 +1,15 @@
 <form #form="ngForm">
-    
     <div class="modal is-active">
         <div class="modal-background"></div>
         <div class="modal-card">
-
             <header class="modal-card-head">
                 <p class="modal-card-title"><strong>Abuse Report Validation</strong> </p>
                 <button class="delete" aria-label="close" (click)="cancel()"></button>
             </header>
-
             <section class="modal-card-body" aria-labelledby="modalTitle" aria-modal="true">
                 <mat-dialog-content>
-  
-                    <div><strong>Reporter:</strong> {{ data.reporter }}</div>
                     <div><strong>Filename:</strong> {{ data.filename }}</div>
-                    <div><strong>Reason:</strong> {{data.reason | transloco}}</div>
-                    <div><strong>Uploader name:</strong> {{ data.uploader_name }}</div>
                     <div><strong>Uploader email:</strong> {{ data.uploader_email }}</div>
-                    <div><strong>Date:</strong> {{ data.date }}</div>
-                    <div><strong>Filesize:</strong> {{ data.filesize }}</div>
-                    <div>
-                        <p><strong>Description message:</strong></p>
-                        <div>{{data.description}}</div>
-                    </div>
                     <div>
                         <strong>User blame:</strong>                 
                         <select [(ngModel)]="data.uploader_status" name="uploader_status">
@@ -34,11 +21,10 @@
                     </div>
                 </mat-dialog-content>
             </section>
-
             <footer class="modal-card-foot">
                 <div mat-dialog-actions>
-                    <button class="button" mat-raised-button color="primary" type="button" (click)="validate()">validate</button>
-                    <button class="button" mat-raised-button color="primary" type="button" (click)="reject()">reject</button>
+                    <button class="button" mat-raised-button color="primary" type="button" (click)="validate(data.fileId)">validate</button>
+                    <button class="button" mat-raised-button color="primary" type="button" (click)="reject(data.fileId)">reject</button>
                     <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">cancel</button>
                 </div>
             </footer>

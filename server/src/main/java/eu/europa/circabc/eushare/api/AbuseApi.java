@@ -116,27 +116,18 @@ public interface AbuseApi {
 
 
     /**
-     * GET /abuse : Get a list of abuse reports with details
+     * GET /abuse : Get a list of abuse reports with details grouped by fileId
      *
      * @return OK (status code 200)
      */
-    @ApiOperation(value = "Get a list of abuse reports with details", nickname = "getAbuseReportList", notes = "", response = AbuseReportDetails.class, responseContainer = "List", tags={ "Abuse", })
+    @ApiOperation(value = "Get a list of abuse reports with details grouped by fileId", nickname = "getAbuseReportList", notes = "", response = List.class, responseContainer = "Map", tags={ "Abuse", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = AbuseReportDetails.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "OK", response = AbuseReportDetails.class, responseContainer = "Map") })
     @GetMapping(
         value = "/abuse",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<AbuseReportDetails>> getAbuseReportList() {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "null";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
+    default ResponseEntity<Map<String, List<AbuseReportDetails>>> getAbuseReportList() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

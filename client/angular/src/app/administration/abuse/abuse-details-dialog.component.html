@@ -1,0 +1,51 @@
+<div mat-dialog-title>Abuse Reports Details</div>
+
+<mat-table [dataSource]="dataSource">
+
+  <ng-container matColumnDef="reporter">
+    <mat-header-cell *matHeaderCellDef> Reporter </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.reporter}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="filename">
+    <mat-header-cell *matHeaderCellDef> File Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.filename}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="reason">
+    <mat-header-cell *matHeaderCellDef> Reason for Report </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.reason}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="uploader_name">
+    <mat-header-cell *matHeaderCellDef> Uploader's Name </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.uploader_name}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="uploader_email">
+    <mat-header-cell *matHeaderCellDef> Uploader's Email </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.uploader_email}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <mat-header-cell *matHeaderCellDef> Report Date </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.date | date:'dd-MM-yyyy'}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="filesize">
+    <mat-header-cell *matHeaderCellDef> File Size </mat-header-cell>
+    <mat-cell *matCellDef="let element"> {{element.filesize}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="description">
+    <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <span matTooltip="{{element.description}}"> {{element.description | slice:0:20}}... </span>
+    </mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+</mat-table>
+
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>

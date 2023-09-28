@@ -41,7 +41,9 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
@@ -113,6 +115,26 @@ public class AbuseApiController implements AbuseApi {
     }
 
     @Override
+    public ResponseEntity<Map<String, List<AbuseReportDetails>>> getAbuseReportList() {
+    
+        List<AbuseReportDetailsDTO> abuseReportDetailsDto = abuseRepository.findAllDetails();
+        Map<String, List<AbuseReportDetails>> groupedReports = new HashMap<>();
+    
+        for (AbuseReportDetailsDTO dto : abuseReportDetailsDto) {
+            AbuseReportDetails detail = dto.toAbuseReportDetails();
+
+            String fileId = detail.getFileId();
+            if (!groupedReports.containsKey(fileId)) {
+                groupedReports.put(fileId, new ArrayList<>());
+            }
+            groupedReports.get(fileId).add(detail);
+        }
+    
+        return ResponseEntity.ok(groupedReports);
+    }
+    
+
+    @Override
     public ResponseEntity<Void> deleteAbuseReport(@PathVariable("id") String id) {
         DBAbuse dbAbuse = abuseRepository.findOneById(id);
         if (dbAbuse == null) {
@@ -122,20 +144,7 @@ public class AbuseApiController implements AbuseApi {
         return ResponseEntity.ok().build();
     }
 
-    @Override
-    public ResponseEntity<List<AbuseReportDetails>> getAbuseReportList() {
-
-        List<AbuseReportDetailsDTO> abuseReportDetailsDto = abuseRepository.findAllDetails();
-        List<AbuseReportDetails> abuseReportDetails = new ArrayList<>();
-
-        for (AbuseReportDetailsDTO dto : abuseReportDetailsDto) {
-            AbuseReportDetails detail = dto.toAbuseReportDetails();
-            abuseReportDetails.add(detail);
-        }
-
-        return ResponseEntity.ok(abuseReportDetails);
-    }
-
+ 
     @Override
     public ResponseEntity<AbuseReport> updateAbuseReport(@PathVariable("id") String id,
             @Valid @RequestBody AbuseReport abuseReport) {

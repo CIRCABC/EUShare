@@ -1,33 +1,32 @@
 <table>
     <thead>
         <tr>
-            <th>Status</th>
-            <th>Reporter</th>
-            <th>File</th>
-            <th>Reason</th>
+            <th>Filename</th>
             <th>Uploader</th>
-            <th>Date</th>
+            <th>Number of Reports</th>
+            <th>Action</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let abuseReport of abuseReportsDetails">
-
+        <tr *ngFor="let abuseReportsForFile of abuseReportsDetailsMap | keyvalue">
+            <td>{{ abuseReportsDetailsMap[abuseReportsForFile.key][0].filename }}</td>
+            <td>{{ abuseReportsDetailsMap[abuseReportsForFile.key][0].uploader_email }}</td>
             <td>
-                <i class="material-icons"
-                   [ngClass]="{'green-icon': abuseReport.status, 'red-icon': !abuseReport.status}">
-                  {{ abuseReport.status ? 'done' : 'close' }}
-                </i>
-              </td>
-              
-            <td>{{abuseReport.reporter}}</td>
-            <td>{{abuseReport.filename }}</td>
-            <td>{{abuseReport.reason | transloco}}</td>
-            <td>{{abuseReport.uploader_email }}</td>
-            <td>{{abuseReport.date | date:'dd-MM-yyyy'}}</td>
-            
-            <td><button class="button" (click)="onOpen(abuseReport)"><i class="material-icons">done</i>&nbsp;Open</button></td>
-            <td><button class="button" (click)="onDelete(abuseReport.ID)"><i class="material-icons">delete</i>&nbsp;Delete</button></td>
+                <a (click)="showList(abuseReportsDetailsMap[abuseReportsForFile.key])">
+                    {{ abuseReportsDetailsMap[abuseReportsForFile.key].length }}
+                </a>
+            </td>
+            <td>
+                <button class="button" (click)="onOpen(abuseReportsDetailsMap[abuseReportsForFile.key][0])">
+                    <i class="material-icons">check</i>&nbsp;Validate
+                </button>                
+                <button class="button" (click)="showList(abuseReportsDetailsMap[abuseReportsForFile.key])">
+                    <i class="material-icons">list</i>&nbsp;Show List
+                </button>
+                <button class="button" (click)="onDelete(abuseReportsForFile.key)">
+                    <i class="material-icons">delete</i>&nbsp;Delete
+                </button>
+            </td>
         </tr>
     </tbody>
 </table>
-
