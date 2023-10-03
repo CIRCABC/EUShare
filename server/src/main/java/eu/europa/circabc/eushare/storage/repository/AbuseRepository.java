@@ -24,6 +24,8 @@ public interface AbuseRepository extends PagingAndSortingRepository<DBAbuse, Str
 
     DBAbuse findOneById(String id);
 
+    List<DBAbuse> findByFileId(String id);
+
     @Query(name = "AbuseReportDetailsDTO.findAllDetails",nativeQuery=true)
     public List<AbuseReportDetailsDTO> findAllDetails();
 

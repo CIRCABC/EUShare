@@ -75,46 +75,49 @@
               </nav>
             </div>
           </div>
-          <div class="column is-one-half">
+          <div class="column is-one-half ">
             <div *ngIf="isAfterSearch && isAfterSelected">
-              <div>
-                <label class="label">{{ "user.info" | transloco }}</label>
-                {{ selectedUserInfo.givenName }} ( {{ selectedUserInfo.email }} ) :
+              <div class="user-info-column2">
+                <label >{{ "user.info" | transloco }}</label>
+                <div>{{ selectedUserInfo.givenName }} ({{ selectedUserInfo.email }})</div>
                 <p *ngIf="!isChangePermissions">
-                  Role : {{selectedUserRole }} <fa-icon
-                    [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
+                    Role: {{selectedUserRole}} 
+                    <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
                 </p>
-                <div class="select" *ngIf="isChangePermissions">
-                  <select [(ngModel)]="selectedUserRole">
-                    <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
-                  </select>
-                </div>
-
-                <br *ngIf="isChangePermissions" />
                 <p *ngIf="!isChangePermissions">
-                  {{ "total.space" | transloco }}:
-                  {{ selectedUserInfo.totalSpace | fileSizeFormat }}
-                </p>
-                <div class="select" *ngIf="isChangePermissions">
-                  <select [(ngModel)]="selectedValueInGigaBytes">
-                    <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
-                      [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
-                      {{ "total.space" | transloco }}: {{ valueInGig }} GB
-                    </option>
-                  </select>
+                  Status: {{selectedUserStatus}} 
+               </p>
+                <div  *ngIf="isChangePermissions">
+                    <div>
+                        Role :                          <select [(ngModel)]="selectedUserRole">
+                            <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+                        </select>
+                    </div>
+                    <div>
+                        Status :                 <select [(ngModel)]="selectedUserStatus">
+                            <option *ngFor="let statu of status" [ngValue]="statu">{{ statu }}</option>
+                        </select>
+                    </div>
                 </div>
-                <p>
-                  {{ "used.space" | transloco }}:
-                  {{ selectedUserInfo.usedSpace | fileSizeFormat }}
+            
+                <p *ngIf="!isChangePermissions">
+                    {{ "total.space" | transloco }}: {{ selectedUserInfo.totalSpace | fileSizeFormat }}
                 </p>
+                <div *ngIf="isChangePermissions">
+                  Quota : <select [(ngModel)]="selectedValueInGigaBytes">
+                        <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
+                            [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
+                             {{ valueInGig }} GB
+                        </option>
+                    </select>
+                </div>
+                <p>{{ "used.space" | transloco }}: {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
                 <p>
-                  {{ "free.space" | transloco }}:
-                  {{
-                  selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
-                  | fileSizeFormat
-                  }}
+                    {{ "free.space" | transloco }}: 
+                    {{ (selectedUserInfo.totalSpace - selectedUserInfo.usedSpace) | fileSizeFormat }}
                 </p>
-              </div>
+            </div>
+            
               <a *ngIf="isChangePermissions" class="button" [class.is-loading]="changeIsLoading"
                 (click)="changePermissions()">{{ "done" | transloco }}</a>
               <a *ngIf="isChangePermissions" class="button buttonMargin" (click)="toggleChangePermissions()">{{ "cancel"

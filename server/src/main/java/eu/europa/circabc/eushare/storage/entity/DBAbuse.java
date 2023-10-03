@@ -14,6 +14,8 @@ import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
@@ -23,6 +25,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import eu.europa.circabc.eushare.model.AbuseReport;
+import eu.europa.circabc.eushare.model.AbuseReportDetails;
+import eu.europa.circabc.eushare.model.EnumConverter;
+import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.dto.AbuseReportDetailsDTO;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Status;
 
@@ -61,7 +66,7 @@ import java.time.LocalDate;
         @ColumnResult(name = "reason"),
         @ColumnResult(name = "description"),
         @ColumnResult(name = "date", type = LocalDate.class),
-        @ColumnResult(name = "status", type = Boolean.class),
+        @ColumnResult(name = "status", type = String.class),
         @ColumnResult(name = "filename"),
         @ColumnResult(name = "filesize", type = BigDecimal.class),
         @ColumnResult(name = "uploader_email"),
@@ -96,12 +101,18 @@ public class DBAbuse {
     @Column(nullable = false)
     private LocalDate date;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private boolean status;
+    private Status status;
+
+    public enum Status {
+        WAITING,
+        APPROVED,
+        DENIED
+    }
 
     public DBAbuse() {
         this.date = LocalDate.now();
-        this.status = false;
     }
 
     public String getId() {
@@ -119,8 +130,6 @@ public class DBAbuse {
     public void setReporter(String reporter) {
         this.reporter = reporter;
     }
-
-    
 
     public String getFileId() {
         return fileId;
@@ -162,11 +171,11 @@ public class DBAbuse {
         this.date = date;
     }
 
-    public boolean isStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -177,7 +186,10 @@ public class DBAbuse {
         dbAbuse.setReason(abuseReport.getReason());
         dbAbuse.setDescription(abuseReport.getDescription());
         dbAbuse.setDate(abuseReport.getDate());
-        dbAbuse.setStatus(abuseReport.getStatus());
+
+        DBAbuse.Status dbAbuseStatus = EnumConverter.convert(abuseReport.getStatus(), DBAbuse.Status.class);
+        dbAbuse.setStatus(dbAbuseStatus);
+
         return dbAbuse;
     }
 
@@ -188,8 +200,14 @@ public class DBAbuse {
         abuseReport.setReason(this.getReason());
         abuseReport.setDescription(this.getDescription());
         abuseReport.setDate(this.getDate());
-        abuseReport.setStatus(this.isStatus());
+
+        AbuseReport.StatusEnum abuseReportStatus = EnumConverter.convert(this.getStatus(),
+                AbuseReport.StatusEnum.class);
+        abuseReport.setStatus(abuseReportStatus);
+
         return abuseReport;
     }
+
+    
 
 }

@@ -12,6 +12,7 @@ package eu.europa.circabc.eushare.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import eu.europa.circabc.eushare.model.AbuseReport;
 import eu.europa.circabc.eushare.model.AbuseReportDetailsAllOf;
 import io.swagger.annotations.ApiModel;
@@ -51,8 +52,45 @@ public class AbuseReportDetails   {
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE)
   private LocalDate date;
 
+  /**
+   * Gets or Sets status
+   */
+  public enum StatusEnum {
+    WAITING("WAITING"),
+    
+    DENIED("DENIED"),
+    
+    APPROVED("APPROVED");
+
+    private String value;
+
+    StatusEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+      return value;
+    }
+
+    @Override
+    public String toString() {
+      return String.valueOf(value);
+    }
+
+    @JsonCreator
+    public static StatusEnum fromValue(String value) {
+      for (StatusEnum b : StatusEnum.values()) {
+        if (b.value.equals(value)) {
+          return b;
+        }
+      }
+      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+    }
+  }
+
   @JsonProperty("status")
-  private Boolean status;
+  private StatusEnum status;
 
   @JsonProperty("filename")
   private String filename;
@@ -193,7 +231,7 @@ public class AbuseReportDetails   {
     this.date = date;
   }
 
-  public AbuseReportDetails status(Boolean status) {
+  public AbuseReportDetails status(StatusEnum status) {
     this.status = status;
     return this;
   }
@@ -205,11 +243,11 @@ public class AbuseReportDetails   {
   @ApiModelProperty(value = "")
 
 
-  public Boolean getStatus() {
+  public StatusEnum getStatus() {
     return status;
   }
 
-  public void setStatus(Boolean status) {
+  public void setStatus(StatusEnum status) {
     this.status = status;
   }
 

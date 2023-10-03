@@ -22,6 +22,8 @@ public interface FileRepository
   extends PagingAndSortingRepository<DBFile, String> {
   List<DBFile> findByExpirationDateBefore(LocalDate date);
 
+  List<DBFile> findByUploaderId(String uploaderId);
+
   DBFile findByStatusAndSharedWithDownloadId(
     DBFile.Status status,
     String downloadId
@@ -70,4 +72,7 @@ public interface FileRepository
     DBFile.Status status,
     LocalDateTime time
   );
+
+ 
+
 }

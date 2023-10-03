@@ -55,15 +55,22 @@ ul {
   width: 100%;
 }
 
-.user-info-column {
-  flex: 1;
-  text-align: left;
-  font-size: smaller;
-  padding: 5px;
-  display: block;
-  width: 100%;
-  
+
+
+.select {
+  width: 100%; 
+  margin-bottom: 10px; 
 }
+
+.user-info-column, .user-info-row {
+  display: flex; 
+  gap: 10px; 
+  align-items: center; 
+  flex-wrap: wrap;
+}
+
+
+
 .user-list {
   width: 100%;  
 }
@@ -98,8 +105,15 @@ ul {
 }
 
 
+.column {
+  box-sizing: border-box; 
+  padding: 10px; 
+}
 
 .columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
   background-color: $background;
   padding: 1.5rem;
   border-radius: 4px;

@@ -37,14 +37,6 @@ public interface UserServiceInterface {
     String requesterId
   ) throws UnknownUserException, UserUnauthorizedException;
 
-  public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
-    throws UnknownUserException, NonInternalUsersCannotBecomeAdminException, UserUnauthorizedException;
-
-  public void revokeAdminRightsOnBehalfOf(String userId, String requesterId)
-    throws UnknownUserException, UserUnauthorizedException;
-
-  public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
-    throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException;
 
   public void setAdminUsers();
 }

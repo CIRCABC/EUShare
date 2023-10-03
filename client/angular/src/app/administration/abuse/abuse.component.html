@@ -1,32 +1,21 @@
-<table>
-    <thead>
-        <tr>
-            <th>Filename</th>
-            <th>Uploader</th>
-            <th>Number of Reports</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let abuseReportsForFile of abuseReportsDetailsMap | keyvalue">
-            <td>{{ abuseReportsDetailsMap[abuseReportsForFile.key][0].filename }}</td>
-            <td>{{ abuseReportsDetailsMap[abuseReportsForFile.key][0].uploader_email }}</td>
-            <td>
-                <a (click)="showList(abuseReportsDetailsMap[abuseReportsForFile.key])">
-                    {{ abuseReportsDetailsMap[abuseReportsForFile.key].length }}
-                </a>
-            </td>
-            <td>
-                <button class="button" (click)="onOpen(abuseReportsDetailsMap[abuseReportsForFile.key][0])">
-                    <i class="material-icons">check</i>&nbsp;Validate
-                </button>                
-                <button class="button" (click)="showList(abuseReportsDetailsMap[abuseReportsForFile.key])">
-                    <i class="material-icons">list</i>&nbsp;Show List
-                </button>
-                <button class="button" (click)="onDelete(abuseReportsForFile.key)">
-                    <i class="material-icons">delete</i>&nbsp;Delete
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<mat-tab-group>
+
+    <mat-tab label="Waiting">
+        <app-abuse-tab [reportStatus]="'WAITING'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
+            (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
+            [abuseReportsDetailsMap]="abuseReportsDetailsMap"></app-abuse-tab>
+    </mat-tab>
+
+    <mat-tab label="Approved">
+        <app-abuse-tab [reportStatus]="'APPROVED'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
+            (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
+            [abuseReportsDetailsMap]="abuseReportsDetailsMap"></app-abuse-tab>
+    </mat-tab>
+
+    <mat-tab label="Denied">
+        <app-abuse-tab [reportStatus]="'DENIED'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
+            (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
+            [abuseReportsDetailsMap]="abuseReportsDetailsMap"></app-abuse-tab>
+    </mat-tab>
+
+</mat-tab-group>

@@ -9,31 +9,29 @@
  */
 package eu.europa.circabc.eushare.storage.dto;
 
+import eu.europa.circabc.eushare.model.EnumConverter;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.model.UserSpace;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
+import eu.europa.circabc.eushare.storage.entity.DBUser.Status;
 
 import java.math.BigDecimal;
-import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
-import org.hibernate.annotations.Subselect;
+public class UserInfoDTO {
 
+  private static final long serialVersionUID = 1L;
 
-// Use JPA projection : https://github.com/spring-projects/spring-data-examples/tree/main/jpa/jpa21/src/main/java/example/springdata/jpa/resultsetmappings
-
-@Entity
-@Subselect(value = "")
-public class ProjectionUserInfo {
-
-  @Id
   private String id;
 
   @Enumerated(value = EnumType.STRING)
   private Role role;
+
+  @Enumerated(value = EnumType.STRING)
+  private Status status;
 
   private String username;
   private String email;
@@ -43,22 +41,35 @@ public class ProjectionUserInfo {
 
   private long filesCount;
 
-  private ProjectionUserInfo() {
+  private UserInfoDTO() {
   }
 
-  /**
-   * Convert to {@link UserInfo} object
-   */
+  public UserInfoDTO(String id, String roleStr, String statusStr, String username, String email, String name,
+      long totalSpace, long usedSpace, long filesCount) {
+    this.id = id;
+    this.role = Role.valueOf(roleStr);
+    this.status = Status.valueOf(statusStr);
+    this.username = username;
+    this.email = email;
+    this.name = name;
+    this.totalSpace = totalSpace;
+    this.usedSpace = usedSpace;
+    this.filesCount = filesCount;
+  }
+
   public UserInfo toUserInfo() {
     UserInfo userInfo = new UserInfo();
     userInfo.setTotalSpace(new BigDecimal(this.totalSpace));
     userInfo.setUsedSpace(new BigDecimal(this.usedSpace));
     userInfo.setFilesCount(new BigDecimal(this.filesCount));
     userInfo.setId(this.getId());
-  
-    UserInfo.RoleEnum userInfoRole = UserService.convert(this.role,UserInfo.RoleEnum.class);
+
+    UserInfo.RoleEnum userInfoRole = EnumConverter.convert(this.role, UserInfo.RoleEnum.class);
     userInfo.setRole(userInfoRole);
-    
+
+    UserInfo.StatusEnum userInfoStatus = EnumConverter.convert(this.status, UserInfo.StatusEnum.class);
+    userInfo.setStatus(userInfoStatus);
+
     userInfo.setGivenName(this.getName());
     userInfo.setLoginUsername(this.getUsername());
     userInfo.isAdmin(this.role.equals(Role.ADMIN));
@@ -135,5 +146,13 @@ public class ProjectionUserInfo {
 
   public void setUsedSpace(long usedSpace) {
     this.usedSpace = usedSpace;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 }

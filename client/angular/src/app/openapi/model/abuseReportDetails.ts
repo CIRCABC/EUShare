@@ -27,7 +27,7 @@ export interface AbuseReportDetails {
     reason?: string;
     description?: string;
     date?: string;
-    status?: boolean;
+    status?: AbuseReportDetails.StatusEnum;
     filename?: string;
     filesize?: number;
     shortUrl?: string;
@@ -35,4 +35,13 @@ export interface AbuseReportDetails {
     uploader_name?: string;
     uploader_status?: string;
 }
+export namespace AbuseReportDetails {
+    export type StatusEnum = 'WAITING' | 'DENIED' | 'APPROVED';
+    export const StatusEnum = {
+        Waiting: 'WAITING' as StatusEnum,
+        Denied: 'DENIED' as StatusEnum,
+        Approved: 'APPROVED' as StatusEnum
+    };
+}
+
 

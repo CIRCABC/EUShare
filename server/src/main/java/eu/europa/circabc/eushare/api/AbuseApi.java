@@ -58,7 +58,7 @@ public interface AbuseApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"date\" : \"2000-01-23\", \"reason\" : \"reason\", \"description\" : \"description\", \"reporter\" : \"reporter\", \"ID\" : \"ID\", \"fileId\" : \"fileId\", \"status\" : true }";
+                    String exampleString = "{ \"date\" : \"2000-01-23\", \"reason\" : \"reason\", \"description\" : \"description\", \"reporter\" : \"reporter\", \"ID\" : \"ID\", \"fileId\" : \"fileId\", \"status\" : \"WAITING\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -104,7 +104,7 @@ public interface AbuseApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"date\" : \"2000-01-23\", \"reason\" : \"reason\", \"description\" : \"description\", \"reporter\" : \"reporter\", \"ID\" : \"ID\", \"fileId\" : \"fileId\", \"status\" : true }";
+                    String exampleString = "{ \"date\" : \"2000-01-23\", \"reason\" : \"reason\", \"description\" : \"description\", \"reporter\" : \"reporter\", \"ID\" : \"ID\", \"fileId\" : \"fileId\", \"status\" : \"WAITING\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -137,22 +137,22 @@ public interface AbuseApi {
      * PUT /abuse/{id} : Update a specific abuse report by ID
      *
      * @param id  (required)
-     * @param abuseReport  (required)
+     * @param abuseReportDetails  (required)
      * @return Successful Operation (status code 200)
      */
-    @ApiOperation(value = "Update a specific abuse report by ID", nickname = "updateAbuseReport", notes = "", response = AbuseReport.class, tags={ "Abuse", })
+    @ApiOperation(value = "Update a specific abuse report by ID", nickname = "updateAbuseReport", notes = "", response = AbuseReportDetails.class, tags={ "Abuse", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Successful Operation", response = AbuseReport.class) })
+        @ApiResponse(code = 200, message = "Successful Operation", response = AbuseReportDetails.class) })
     @PutMapping(
         value = "/abuse/{id}",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<AbuseReport> updateAbuseReport(@ApiParam(value = "",required=true) @PathVariable("id") String id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody AbuseReport abuseReport) {
+    default ResponseEntity<AbuseReportDetails> updateAbuseReport(@ApiParam(value = "",required=true) @PathVariable("id") String id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody AbuseReportDetails abuseReportDetails) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"date\" : \"2000-01-23\", \"reason\" : \"reason\", \"description\" : \"description\", \"reporter\" : \"reporter\", \"ID\" : \"ID\", \"fileId\" : \"fileId\", \"status\" : true }";
+                    String exampleString = "null";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

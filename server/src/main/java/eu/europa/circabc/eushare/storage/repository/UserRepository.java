@@ -15,6 +15,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
+import eu.europa.circabc.eushare.storage.dto.AbuseReportDetailsDTO;
+import eu.europa.circabc.eushare.storage.dto.UserInfoDTO;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
 
@@ -27,13 +29,7 @@ public interface UserRepository
   @Query("FROM DBUser u WHERE (u.email = lower(:email))")
   public DBUser findOneByEmailIgnoreCase(@Param("email") String email);
 
-  @Query(
-    "FROM DBUser u WHERE (u.email like lower(concat(:start,'%')) or (lower(u.name) like lower(concat('%',:start,'%')))) ORDER BY u.name"
-  )
-  public List<DBUser> findByEmailRoleInternalOrAdmin(
-    @Param("start") String start,
-    Pageable page
-  );
+
 
   public DBUser findOneByEmailIgnoreCaseAndRole(String email, DBUser.Role role);
 
@@ -49,4 +45,12 @@ public interface UserRepository
     String start,
     Pageable page
   );
+
+   @Query(name = "UserInfoDTO.findByEmailRoleInternalOrAdmin",nativeQuery=true)
+   public List<UserInfoDTO> findByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
+
+    @Query(name = "UserInfoDTO.findAllByEmailRoleInternalOrAdmin",nativeQuery=true)
+    public List<UserInfoDTO> findAllByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
+
+
 }

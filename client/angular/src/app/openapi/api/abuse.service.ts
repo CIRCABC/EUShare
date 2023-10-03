@@ -27,7 +27,10 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { AbuseReport, AbuseReportDetails } from '../model/models';
+// @ts-ignore
+import { AbuseReport } from '../model/abuseReport';
+// @ts-ignore
+import { AbuseReportDetails } from '../model/abuseReportDetails';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -272,10 +275,10 @@ export class AbuseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAbuseReportList(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<{ [key: string]: Array<AbuseReportDetails>; }>;
-    public getAbuseReportList(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpResponse<{ [key: string]: Array<AbuseReportDetails>; }>>;
-    public getAbuseReportList(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json'}): Observable<HttpEvent<{ [key: string]: Array<AbuseReportDetails>; }>>;
-    public getAbuseReportList(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json'}): Observable<any> {
+    public getAbuseReportList(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<{ [key: string]: Array<AbuseReportDetails>; }>;
+    public getAbuseReportList(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<{ [key: string]: Array<AbuseReportDetails>; }>>;
+    public getAbuseReportList(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<{ [key: string]: Array<AbuseReportDetails>; }>>;
+    public getAbuseReportList(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -304,7 +307,8 @@ export class AbuseService {
             }
         }
 
-        return this.httpClient.get<{ [key: string]: Array<AbuseReportDetails>; }>(`${this.configuration.basePath}/abuse`,
+        let localVarPath = `/abuse`;
+        return this.httpClient.request<{ [key: string]: Array<AbuseReportDetails>; }>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
@@ -318,19 +322,19 @@ export class AbuseService {
     /**
      * Update a specific abuse report by ID
      * @param id 
-     * @param abuseReport 
+     * @param abuseReportDetails 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateAbuseReport(id: string, abuseReport: AbuseReport, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<AbuseReport>;
-    public updateAbuseReport(id: string, abuseReport: AbuseReport, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<AbuseReport>>;
-    public updateAbuseReport(id: string, abuseReport: AbuseReport, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<AbuseReport>>;
-    public updateAbuseReport(id: string, abuseReport: AbuseReport, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public updateAbuseReport(id: string, abuseReportDetails: AbuseReportDetails, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<AbuseReportDetails>;
+    public updateAbuseReport(id: string, abuseReportDetails: AbuseReportDetails, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<AbuseReportDetails>>;
+    public updateAbuseReport(id: string, abuseReportDetails: AbuseReportDetails, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<AbuseReportDetails>>;
+    public updateAbuseReport(id: string, abuseReportDetails: AbuseReportDetails, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (id === null || id === undefined) {
             throw new Error('Required parameter id was null or undefined when calling updateAbuseReport.');
         }
-        if (abuseReport === null || abuseReport === undefined) {
-            throw new Error('Required parameter abuseReport was null or undefined when calling updateAbuseReport.');
+        if (abuseReportDetails === null || abuseReportDetails === undefined) {
+            throw new Error('Required parameter abuseReportDetails was null or undefined when calling updateAbuseReport.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -370,9 +374,9 @@ export class AbuseService {
         }
 
         let localVarPath = `/abuse/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        return this.httpClient.request<AbuseReport>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<AbuseReportDetails>('put', `${this.configuration.basePath}${localVarPath}`,
             {
-                body: abuseReport,
+                body: abuseReportDetails,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

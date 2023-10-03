@@ -96,8 +96,10 @@ export class AdministrationComponent implements OnInit {
   public selectedValueInGigaBytes = 0;
 
   public selectedUserRole: UserInfo.RoleEnum = UserInfo.RoleEnum.Internal;
+  public selectedUserStatus: UserInfo.StatusEnum = UserInfo.StatusEnum.Regular;
 
   public roles = Object.values(UserInfo.RoleEnum);
+  public status = Object.values(UserInfo.StatusEnum);
 
   public changeIsLoading = false;
 
@@ -267,8 +269,9 @@ export class AdministrationComponent implements OnInit {
       this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024),
     );
     const role = this.userInfoArray[i].role;
+    const statu = this.userInfoArray[i].status;
     this.selectedUserRole = role ?? UserInfo.RoleEnum.Internal;
-
+    this.selectedUserStatus = statu ?? UserInfo.StatusEnum.Regular;
     this.isAfterSelected = true;
   }
 
@@ -307,6 +310,7 @@ export class AdministrationComponent implements OnInit {
       this.selectedUserInfo.isAdmin =
         this.selectedUserRole === UserInfo.RoleEnum.Admin;
       this.selectedUserInfo.role = this.selectedUserRole;
+      this.selectedUserInfo.status = this.selectedUserStatus;
       await firstValueFrom(
         this.usersApi.putUserUserInfo(
           this.selectedUserInfo.id,

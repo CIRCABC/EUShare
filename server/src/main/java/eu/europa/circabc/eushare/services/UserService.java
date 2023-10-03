@@ -17,12 +17,13 @@ import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongEmailStructureException;
+import eu.europa.circabc.eushare.model.EnumConverter;
 import eu.europa.circabc.eushare.model.UserInfo;
-import eu.europa.circabc.eushare.storage.repository.UserInfoRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
-import eu.europa.circabc.eushare.storage.dto.ProjectionUserInfo;
+import eu.europa.circabc.eushare.storage.dto.UserInfoDTO;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
+import eu.europa.circabc.eushare.storage.entity.DBUser.Status;
 import eu.europa.circabc.eushare.utils.StringUtils;
 
 import java.lang.reflect.Field;
@@ -55,9 +56,6 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   private UserRepository userRepository;
 
   @Autowired
-  private UserInfoRepository userInfoRepository;
-
-  @Autowired
   private EushareConfiguration esConfig;
 
   @Value("${spring.security.adminusers}")
@@ -76,7 +74,8 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       String email = principal.getAttribute("email");
       String givenName = principal.getAttribute("name");
       String username = principal.getAttribute("username");
-      String domain = (String) bearerTokenAuthentication.getTokenAttributes().get("https://ecas.ec.europa.eu/claims/domain");
+      String domain = (String) bearerTokenAuthentication.getTokenAttributes()
+          .get("https://ecas.ec.europa.eu/claims/domain");
 
       if (email == null || username == null) {
         throw new WrongAuthenticationException(
@@ -114,7 +113,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         email,
         givenName,
         esConfig.getDefaultUserSpace(),
-        username,role);
+        username, role);
 
     for (String admin : adminUsers) {
       if (admin.equals(username))
@@ -167,45 +166,22 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       IllegalSpaceException {
     String userId = userInfo.getId();
     if (this.isAdmin(requesterId)) {
-      UserInfo oldUserInfo = this.getUserInfo(userId);
-      // Id, Name, UsedSpace
-      if (!oldUserInfo.getId().equals(userId) ||
-          !oldUserInfo.getGivenName().equals(userInfo.getGivenName()) ||
-          !oldUserInfo.getLoginUsername().equals(userInfo.getLoginUsername()) ||
-          !oldUserInfo.getUsedSpace().equals(userInfo.getUsedSpace())) {
-        throw new UserUnauthorizedException();
-      }
-      // isAdmin
-      if (!oldUserInfo.getIsAdmin().equals(userInfo.getIsAdmin())) {
-        if (oldUserInfo.getIsAdmin()) {
-          this.revokeAdminRights(userId);
-        } else {
-          this.grantAdminRights(userId);
-        }
-      }
-      // TotalSpace
-      if (!oldUserInfo.getTotalSpace().equals(userInfo.getTotalSpace())) {
-        this.setSpace(userId, userInfo.getTotalSpace().longValue());
-      }
-      // Role
-      if (!oldUserInfo.getRole().equals(userInfo.getRole())) {
-        DBUser.Role dbUserRole = convert(userInfo.getRole(), DBUser.Role.class);
-        this.setRole(userId, dbUserRole);
-      }
+     
+      DBUser user = this.getDbUser(userId);
+      DBUser.Role dbUserRole = EnumConverter.convert(userInfo.getRole(), DBUser.Role.class);
+      user.setRole(dbUserRole);
+      user.setTotalSpace(userInfo.getTotalSpace().longValue());
+      DBUser.Status dbUserStatus = EnumConverter.convert(userInfo.getStatus(), DBUser.Status.class);
+      user.setStatus(dbUserStatus);
+      userRepository.save(user);
+
       return userInfo;
     } else {
       throw new UserUnauthorizedException();
     }
   }
 
-  public static <T extends Enum<T>> T convert(Enum<?> enumValue, Class<T> targetEnumClass) {
-    try {
-      Field field = targetEnumClass.getDeclaredField(enumValue.name());
-      return (T) field.get(null);
-    } catch (NoSuchFieldException | IllegalAccessException e) {
-      throw new IllegalArgumentException("Unknown role: " + enumValue);
-    }
-  }
+
 
   @Override
   @Transactional
@@ -223,37 +199,40 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         dir = Direction.ASC;
       }
       if (Boolean.TRUE.equals(active))
-        return userInfoRepository
+        return userRepository
             .findByEmailRoleInternalOrAdmin(
                 searchString,
                 PageRequest.of(pageNumber, pageSize, dir, sortBy))
             .stream()
-            .map(ProjectionUserInfo::toUserInfo)
+            .map(UserInfoDTO::toUserInfo)
             .collect(Collectors.toList());
       else
-        return userInfoRepository
+        return userRepository
             .findAllByEmailRoleInternalOrAdmin(
                 searchString,
                 PageRequest.of(pageNumber, pageSize))
             .stream()
-            .map(ProjectionUserInfo::toUserInfo)
+            .map(UserInfoDTO::toUserInfo)
             .collect(Collectors.toList());
     } else {
       throw new UserUnauthorizedException();
     }
   }
 
-  @Override
-  @Transactional
-  public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
-      throws UnknownUserException, NonInternalUsersCannotBecomeAdminException, UserUnauthorizedException {
-    if (isAdmin(requesterId)) {
-      grantAdminRights(userId);
-    } else {
-      throw new UserUnauthorizedException();
-    }
-  }
-
+  /*
+   * @Override
+   * 
+   * @Transactional
+   * public void grantAdminRightsOnBehalfOf(String userId, String requesterId)
+   * throws UnknownUserException, NonInternalUsersCannotBecomeAdminException,
+   * UserUnauthorizedException {
+   * if (isAdmin(requesterId)) {
+   * grantAdminRights(userId);
+   * } else {
+   * throw new UserUnauthorizedException();
+   * }
+   * }
+   */
   boolean isRequesterIdEqualsToUserIdOrIsAnAdmin(
       String userId,
       String requesterId) throws UnknownUserException {
@@ -268,80 +247,27 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   /**
    * Grant admin rights to the specified user.
    */
-  private void grantAdminRights(String userId)
-      throws UnknownUserException, NonInternalUsersCannotBecomeAdminException {
-    DBUser user = this.getDbUser(userId);
+  /*
+   * private void grantAdminRights(String userId)
+   * throws UnknownUserException, NonInternalUsersCannotBecomeAdminException {
+   * DBUser user = this.getDbUser(userId);
+   * 
+   * if (!user.getRole().equals(DBUser.Role.INTERNAL)) {
+   * throw new NonInternalUsersCannotBecomeAdminException();
+   * }
+   * 
+   * user.setRole(DBUser.Role.ADMIN);
+   * userRepository.save(user);
+   * }
+   */
 
-    if (!user.getRole().equals(DBUser.Role.INTERNAL)) {
-      throw new NonInternalUsersCannotBecomeAdminException();
-    }
-
-    user.setRole(DBUser.Role.ADMIN);
-    userRepository.save(user);
-  }
-
-  boolean isAdmin(String userId) throws UnknownUserException {
+  public boolean isAdmin(String userId) throws UnknownUserException {
     DBUser dbUser = this.getDbUser(userId);
     return dbUser.getRole().equals(DBUser.Role.ADMIN);
   }
 
   boolean isAdmin(UserInfo userInfo) {
     return userInfo.getIsAdmin();
-  }
-
-  /**
-   * Resets the role of a user to {@code INTERNAL}.
-   */
-  private void revokeAdminRights(String userId) throws UnknownUserException {
-    DBUser user = this.getDbUser(userId);
-    if (user.getRole().equals(Role.ADMIN)) {
-      user.setRole(DBUser.Role.INTERNAL);
-      userRepository.save(user);
-    }
-  }
-
-  @Override
-  @Transactional
-  public void revokeAdminRightsOnBehalfOf(String userId, String requesterId)
-      throws UnknownUserException, UserUnauthorizedException {
-    if (this.isAdmin(requesterId)) {
-      this.revokeAdminRights(userId);
-    } else {
-      throw new UserUnauthorizedException();
-    }
-  }
-
-  /**
-   * Sets {@code userId}'s maximum space to {@code space}
-   */
-  private void setSpace(String userId, long space)
-      throws IllegalSpaceException, UnknownUserException {
-    if (space < 0) {
-      throw new IllegalSpaceException();
-    }
-    DBUser user = this.getDbUser(userId);
-    user.setTotalSpace(space);
-    userRepository.save(user);
-  }
-
-  private void setRole(String userId, Role role)
-      throws UnknownUserException {
-
-    DBUser user = this.getDbUser(userId);
-    user.setRole(role);
-
-    userRepository.save(user);
-  }
-
-  @Override
-  @Transactional
-  public void setSpaceOnBehalfOf(String userId, long space, String requesterId)
-      throws UnknownUserException, IllegalSpaceException, UserUnauthorizedException {
-    if (isRequesterIdEqualsToUserIdOrIsAnAdmin(userId, requesterId)) {
-      this.setSpace(userId, space);
-    } else {
-      throw new UserUnauthorizedException();
-    }
   }
 
   /**
@@ -361,10 +287,10 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       dbUser = this.userRepository.findOneByUsername(username);
       if (dbUser == null) {
         // Not found in the database
-        if ("external".equals(domain) )
-          dbUser = this.createUser(email, givenName, username,Role.EXTERNAL);
+        if ("external".equals(domain))
+          dbUser = this.createUser(email, givenName, username, Role.EXTERNAL);
         else
-          dbUser = this.createUser(email, givenName, username,Role.INTERNAL);
+          dbUser = this.createUser(email, givenName, username, Role.INTERNAL);
 
         //
       } else {

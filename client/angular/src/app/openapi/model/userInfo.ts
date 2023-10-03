@@ -58,7 +58,7 @@ export interface UserInfo {
      */
     isAdmin: boolean;
     /**
-     * status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.
+     * status = REGULAR (keep all user\'s rights) - Users who have full access to the site; SUSPENDED (Prevent users from uploading) - Users who can log in and download, but cannot upload; BANNED (prevent user from login) - Users who cannot log in at all.
      */
     status?: UserInfo.StatusEnum;
 }
@@ -71,13 +71,11 @@ export namespace UserInfo {
         TrustedExternal: 'TRUSTED_EXTERNAL' as RoleEnum,
         ApiKey: 'API_KEY' as RoleEnum
     };
-    export type StatusEnum = 'REGULAR' | 'FROZEN' | 'PURGED' | 'BANNED' | 'UNKNOWN';
+    export type StatusEnum = 'REGULAR' | 'SUSPENDED' | 'BANNED';
     export const StatusEnum = {
         Regular: 'REGULAR' as StatusEnum,
-        Frozen: 'FROZEN' as StatusEnum,
-        Purged: 'PURGED' as StatusEnum,
-        Banned: 'BANNED' as StatusEnum,
-        Unknown: 'UNKNOWN' as StatusEnum
+        Suspended: 'SUSPENDED' as StatusEnum,
+        Banned: 'BANNED' as StatusEnum
     };
 }
 

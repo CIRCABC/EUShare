@@ -12,7 +12,12 @@ package eu.europa.circabc.eushare.storage.dto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import eu.europa.circabc.eushare.model.AbuseReportDetails;
+import eu.europa.circabc.eushare.storage.entity.DBAbuse.Status;
+import eu.europa.circabc.eushare.model.EnumConverter;
 
 public class AbuseReportDetailsDTO {
     private static final long serialVersionUID = 1L;
@@ -25,17 +30,20 @@ public class AbuseReportDetailsDTO {
     private String reason;
     private String description;
     private LocalDate date;
-    private Boolean status;
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
     private String filename;
     private BigDecimal filesize;
     private String uploaderEmail;
     private String uploaderName;
     private String uploaderStatus;
 
+    private AbuseReportDetailsDTO() {
+    }
 
-
-    public AbuseReportDetailsDTO(String id, String reporter, String fileId, String shortUrl,String reason, String description,
-            LocalDate date, Boolean status, String filename, BigDecimal filesize, String uploaderEmail,
+    public AbuseReportDetailsDTO(String id, String reporter, String fileId, String shortUrl, String reason,
+            String description,
+            LocalDate date, String statusStr, String filename, BigDecimal filesize, String uploaderEmail,
             String uploaderName, String uploaderStatus) {
         this.id = id;
         this.reporter = reporter;
@@ -44,7 +52,7 @@ public class AbuseReportDetailsDTO {
         this.reason = reason;
         this.description = description;
         this.date = date;
-        this.status = status;
+        this.status = Status.valueOf(statusStr);
         this.filename = filename;
         this.filesize = filesize;
         this.uploaderEmail = uploaderEmail;
@@ -61,30 +69,17 @@ public class AbuseReportDetailsDTO {
         abuseReportDetails.setReason(this.reason);
         abuseReportDetails.setDescription(this.description);
         abuseReportDetails.setDate(this.date);
-        abuseReportDetails.setStatus(this.status);
+
+        AbuseReportDetails.StatusEnum abuseReportDetailsStatus = EnumConverter.convert(this.status,
+                AbuseReportDetails.StatusEnum.class);
+        abuseReportDetails.setStatus(abuseReportDetailsStatus);
+
         abuseReportDetails.setFilename(this.filename);
         abuseReportDetails.setFilesize(this.filesize);
         abuseReportDetails.setUploaderEmail(this.uploaderEmail);
         abuseReportDetails.setUploaderName(this.uploaderName);
         abuseReportDetails.setUploaderStatus(this.uploaderStatus);
         return abuseReportDetails;
-    }
-
-    public AbuseReportDetailsDTO toAbuseReportDetailsDTO() {
-        return new AbuseReportDetailsDTO(
-                this.getId(),
-                this.getReporter(),
-                this.getfileId(),
-                this.getShortUrl(),
-                this.getReason(),
-                this.getDescription(),
-                this.getDate(),
-                this.getStatus(),
-                this.getFilename(),
-                this.getFilesize(),
-                this.getUploaderEmail(),
-                this.getUploaderName(),
-                this.getUploaderStatus());
     }
 
     public String getId() {
@@ -175,11 +170,11 @@ public class AbuseReportDetailsDTO {
         this.date = date;
     }
 
-    public Boolean getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -190,6 +185,5 @@ public class AbuseReportDetailsDTO {
     public void setUploaderStatus(String uploaderStatus) {
         this.uploaderStatus = uploaderStatus;
     }
-
 
 }

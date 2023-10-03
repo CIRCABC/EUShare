@@ -306,7 +306,7 @@ public class FileService implements FileServiceInterface {
         try {
           emailService.sendNotification(user.getEmail(), "\n" + //
               "\n" + //
-                  "Please be advised that you now have the right to upload files as you have gained trust through "
+              "Please be advised that you now have the right to upload files as you have gained trust through "
               + requester.getEmail() + " sharing a file with you.");
         } catch (MessagingException e) {
           // TODO Auto-generated catch block
@@ -513,6 +513,67 @@ public class FileService implements FileServiceInterface {
 
   @Override
   @Transactional
+  public void freezeFile(String fileId) {
+    DBFile f = fileRepository.findById(fileId).orElse(null);
+
+    f.setStatus(DBFile.Status.FROZEN);
+    fileRepository.save(f);
+
+  }
+
+  @Override
+  @Transactional
+  public void unfreezeFile(String fileId) {
+    DBFile f = fileRepository.findById(fileId).orElse(null);
+    //if (f.getStatus() == DBFile.Status.FROZEN)
+      f.setStatus(DBFile.Status.AVAILABLE);
+    fileRepository.save(f);
+
+  }
+
+  @Override
+  @Transactional
+  public void freezeFilesFromUser(String userId, String requesterId)
+      throws UserUnauthorizedException, UnknownUserException {
+
+    if (!userService.isAdmin(requesterId)) {
+      throw new UserUnauthorizedException();
+    }
+
+    List<DBFile> filesByUser = fileRepository.findByUploaderId(userId);
+    if (filesByUser == null || filesByUser.isEmpty()) {
+      throw new UnknownUserException();
+    }
+
+    for (DBFile file : filesByUser) {
+      file.setStatus(DBFile.Status.FROZEN);
+    }
+    fileRepository.saveAll(filesByUser);
+  }
+
+  @Override
+  @Transactional
+  public void unfreezeFilesFromUser(String userId, String requesterId)
+      throws UserUnauthorizedException, UnknownUserException {
+
+    if (!userService.isAdmin(requesterId)) {
+      throw new UserUnauthorizedException();
+    }
+
+    List<DBFile> filesByUser = fileRepository.findByUploaderId(userId);
+    if (filesByUser == null || filesByUser.isEmpty()) {
+      throw new UnknownUserException();
+    }
+
+    for (DBFile file : filesByUser) {
+      //if (file.getStatus() == DBFile.Status.FROZEN)
+        file.setStatus(DBFile.Status.AVAILABLE);
+    }
+    fileRepository.saveAll(filesByUser);
+  }
+
+  @Override
+  @Transactional
   public void updateFileOnBehalfOf(
       String fileId,
       LocalDate expirationDate,
@@ -599,9 +660,7 @@ public class FileService implements FileServiceInterface {
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
   }
 
-
-
-  public DBShare findShare(String downloadId ){
+  public DBShare findShare(String downloadId) {
 
     boolean isShortUrl = downloadId.length() == DBShare.SHORT_URL_LENGTH;
     DBShare dbShare;

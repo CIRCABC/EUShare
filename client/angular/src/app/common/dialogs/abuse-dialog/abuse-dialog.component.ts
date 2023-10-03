@@ -34,7 +34,7 @@ export class AbuseDialogComponent {
     reason: '',
     description: '',
     date: '2000-01-01',
-    status: false,
+    status: AbuseReport.StatusEnum.Waiting,
   };
 
   abuseReasons = [

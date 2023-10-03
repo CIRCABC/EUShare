@@ -27,6 +27,15 @@ export interface AbuseReport {
     reason?: string;
     description?: string;
     date?: string;
-    status?: boolean;
+    status?: AbuseReport.StatusEnum;
 }
+export namespace AbuseReport {
+    export type StatusEnum = 'WAITING' | 'DENIED' | 'APPROVED';
+    export const StatusEnum = {
+        Waiting: 'WAITING' as StatusEnum,
+        Denied: 'DENIED' as StatusEnum,
+        Approved: 'APPROVED' as StatusEnum
+    };
+}
+
 

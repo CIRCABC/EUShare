@@ -10,9 +10,13 @@
 package eu.europa.circabc.eushare.api;
 
 import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
+import eu.europa.circabc.eushare.exceptions.UnknownFileException;
+import eu.europa.circabc.eushare.exceptions.UnknownUserException;
+import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.AbuseReport;
 import eu.europa.circabc.eushare.model.AbuseReportDetails;
+import eu.europa.circabc.eushare.model.EnumConverter;
 import eu.europa.circabc.eushare.model.TrustRequest;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
@@ -21,11 +25,14 @@ import eu.europa.circabc.eushare.storage.entity.DBAbuse;
 import eu.europa.circabc.eushare.storage.entity.DBShare;
 import eu.europa.circabc.eushare.storage.entity.DBTrust;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.entity.DBFile.Status;
 import eu.europa.circabc.eushare.storage.repository.AbuseRepository;
+import eu.europa.circabc.eushare.storage.repository.FileRepository;
 import eu.europa.circabc.eushare.storage.repository.TrustRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import io.swagger.annotations.ApiParam;
 
+import org.hibernate.dialect.Database;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +62,9 @@ public class AbuseApiController implements AbuseApi {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FileRepository fileRepository;
 
     @Autowired
     public UserService userService;
@@ -97,16 +107,16 @@ public class AbuseApiController implements AbuseApi {
 
         DBShare share = fileService.findShare(dbAbuse.getFileId());
 
-        if (dbAbuse.getFileId().length() == DBShare.SHORT_URL_LENGTH) {
+        if (dbAbuse.getFileId().length() == DBShare.SHORT_URL_LENGTH)
             dbAbuse.setShortUrl(dbAbuse.getFileId());
-            String file_id = share.getFile().getId();
-            dbAbuse.setFileId(file_id);  
-        } else {
-             dbAbuse.setShortUrl(share.getShorturl());
-        }
+        else
+            dbAbuse.setShortUrl(share.getShorturl());
+
+        String file_id = share.getFile().getId();
+        dbAbuse.setFileId(file_id);
 
         dbAbuse.setDate(LocalDate.now());
-        dbAbuse.setStatus(false);
+        dbAbuse.setStatus(DBAbuse.Status.WAITING);
 
         abuseRepository.save(dbAbuse);
 
@@ -116,10 +126,10 @@ public class AbuseApiController implements AbuseApi {
 
     @Override
     public ResponseEntity<Map<String, List<AbuseReportDetails>>> getAbuseReportList() {
-    
+
         List<AbuseReportDetailsDTO> abuseReportDetailsDto = abuseRepository.findAllDetails();
         Map<String, List<AbuseReportDetails>> groupedReports = new HashMap<>();
-    
+
         for (AbuseReportDetailsDTO dto : abuseReportDetailsDto) {
             AbuseReportDetails detail = dto.toAbuseReportDetails();
 
@@ -129,33 +139,91 @@ public class AbuseApiController implements AbuseApi {
             }
             groupedReports.get(fileId).add(detail);
         }
-    
+
         return ResponseEntity.ok(groupedReports);
     }
-    
 
     @Override
     public ResponseEntity<Void> deleteAbuseReport(@PathVariable("id") String id) {
-        DBAbuse dbAbuse = abuseRepository.findOneById(id);
-        if (dbAbuse == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Abuse report not found");
+
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+        String requesterId;
+        try {
+            requesterId = userService.getAuthenticatedUserId(authentication);
+
+            if (!userService.isAdmin(requesterId))
+                throw new WrongAuthenticationException("not Admin user");
+            DBAbuse dbAbuse = abuseRepository.findOneById(id);
+            String fileId = dbAbuse.getFileId();
+            List<DBAbuse> dbAbuseForFile = abuseRepository.findByFileId(fileId);
+            for (DBAbuse similarDbAbuse : dbAbuseForFile) {
+                abuseRepository.delete(similarDbAbuse);
+            }
+        } catch (WrongAuthenticationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (UnknownUserException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        abuseRepository.delete(dbAbuse);
         return ResponseEntity.ok().build();
     }
 
- 
     @Override
-    public ResponseEntity<AbuseReport> updateAbuseReport(@PathVariable("id") String id,
-            @Valid @RequestBody AbuseReport abuseReport) {
-        DBAbuse dbAbuse = abuseRepository.findOneById(abuseReport.getID());
-        if (dbAbuse == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Abuse report not found");
+    public ResponseEntity<AbuseReportDetails> updateAbuseReport(@PathVariable("id") String id,
+            @Valid @RequestBody AbuseReportDetails abuseReportDetails) {
+
+        Authentication authentication = SecurityContextHolder
+                .getContext()
+                .getAuthentication();
+        String requesterId;
+        try {
+            requesterId = userService.getAuthenticatedUserId(authentication);
+
+            if (!userService.isAdmin(requesterId))
+                throw new WrongAuthenticationException("not Admin user");
+
+            List<DBAbuse> dbAbuseForFile = abuseRepository.findByFileId(abuseReportDetails.getFileId());
+            for (DBAbuse dbAbuse : dbAbuseForFile) {
+                DBAbuse.Status dbAbuseStatus = EnumConverter.convert(abuseReportDetails.getStatus(),
+                        DBAbuse.Status.class);
+                dbAbuse.setStatus(dbAbuseStatus);
+                dbAbuse = abuseRepository.save(dbAbuse);
+            }
+
+            if (abuseReportDetails.getStatus() == AbuseReportDetails.StatusEnum.APPROVED) {
+                String uploader = abuseReportDetails.getUploaderEmail();
+
+                DBUser user = userRepository.findOneByEmailIgnoreCase(uploader);
+                user.setStatus(DBUser.Status.valueOf(abuseReportDetails.getUploaderStatus()));
+                userRepository.save(user);
+                try {
+                    if (DBUser.Status.valueOf(abuseReportDetails.getUploaderStatus()) == DBUser.Status.BANNED)
+
+                        fileService.freezeFilesFromUser(user.getId(), requesterId);
+
+                    else
+                        fileService.freezeFile(abuseReportDetails.getFileId());
+
+                } catch (UserUnauthorizedException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (abuseReportDetails.getStatus() == AbuseReportDetails.StatusEnum.DENIED) {
+               
+                fileService.unfreezeFile(abuseReportDetails.getFileId());
+
+            }
+
+        } catch (WrongAuthenticationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (UnknownUserException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-
-        dbAbuse.setStatus(abuseReport.getStatus());
-
-        dbAbuse = abuseRepository.save(dbAbuse);
-        return ResponseEntity.ok(dbAbuse.toAbuseReport());
+        return ResponseEntity.ok(abuseReportDetails);
     }
 }

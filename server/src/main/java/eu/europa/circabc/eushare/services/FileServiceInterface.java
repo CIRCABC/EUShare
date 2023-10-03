@@ -30,74 +30,82 @@ import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
 import java.time.LocalDate;
 import java.util.List;
 import javax.mail.MessagingException;
+import javax.transaction.Transactional;
+
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileServiceInterface {
   public void removeShareOnFileOnBehalfOf(
-    String fileId,
-    String userId,
-    String requesterId
-  )
-    throws UnknownUserException, UnknownFileException, UserUnauthorizedException;
+      String fileId,
+      String userId,
+      String requesterId)
+      throws UnknownUserException, UnknownFileException, UserUnauthorizedException;
 
   public Recipient addShareOnFileOnBehalfOf(
-    String fileId,
-    Recipient recipient,
-    String requesterId,
-    Boolean downloadNotification
-  )
-    throws UnknownFileException, UserUnauthorizedException, UnknownUserException, MessageTooLongException, MessagingException;
+      String fileId,
+      Recipient recipient,
+      String requesterId,
+      Boolean downloadNotification)
+      throws UnknownFileException, UserUnauthorizedException, UnknownUserException, MessageTooLongException,
+      MessagingException;
 
   public DownloadReturn downloadFile(
-    String fileId,
-    String password,
-    boolean notification
-  ) throws UnknownFileException, WrongPasswordException;
+      String fileId,
+      String password,
+      boolean notification) throws UnknownFileException, WrongPasswordException;
 
   public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(
-    int pageSize,
-    int pageNumber,
-    String userId,
-    String requesterId
-  ) throws UserUnauthorizedException, UnknownUserException;
+      int pageSize,
+      int pageNumber,
+      String userId,
+      String requesterId) throws UserUnauthorizedException, UnknownUserException;
 
   public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(
-    int pageSize,
-    int pageNumber,
-    String userId,
-    String requesterId
-  ) throws UserUnauthorizedException, UnknownUserException;
+      int pageSize,
+      int pageNumber,
+      String userId,
+      String requesterId) throws UserUnauthorizedException, UnknownUserException;
 
   public String allocateFileOnBehalfOf(
-    LocalDate expirationDate,
-    String fileName,
-    String password,
-    String uploaderId,
-    List<Recipient> recipientList,
-    long filesize,
-    String requesterId,
-    Boolean downloadNotification
-  )
-    throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException, UserHasInsufficientSpaceException, UserHasNoUploadRightsException, CouldNotAllocateFileException, UnknownUserException, EmptyFilenameException, MessageTooLongException;
+      LocalDate expirationDate,
+      String fileName,
+      String password,
+      String uploaderId,
+      List<Recipient> recipientList,
+      long filesize,
+      String requesterId,
+      Boolean downloadNotification)
+      throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
+      UserHasInsufficientSpaceException, UserHasNoUploadRightsException, CouldNotAllocateFileException,
+      UnknownUserException, EmptyFilenameException, MessageTooLongException;
 
   public FileInfoUploader saveOnBehalfOf(
-    String fileId,
-    MultipartFile multipartFile,
-    String requesterId
-  )
-    throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException, UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException;
+      String fileId,
+      MultipartFile multipartFile,
+      String requesterId)
+      throws UnknownFileException, IllegalFileStateException, FileLargerThanAllocationException,
+      UserUnauthorizedException, CouldNotSaveFileException, IllegalFileSizeException, MessagingException;
 
   public void deleteFileOnBehalfOf(
-    String fileId,
-    String reason,
-    String requesterId
-  )
-    throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
+      String fileId,
+      String reason,
+      String requesterId)
+      throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
+
+  public void freezeFile(String fileId);
+
+  public void freezeFilesFromUser(String userId, String requesterId)
+      throws UserUnauthorizedException, UnknownUserException;
+
+
+  public void unfreezeFile(String fileId);
+
+  public void unfreezeFilesFromUser(String userId, String requesterId)
+      throws UserUnauthorizedException, UnknownUserException;
 
   public void updateFileOnBehalfOf(
-    String fileId,
-    LocalDate expirationDate,
-    String requesterId
-  )
-    throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
+      String fileId,
+      LocalDate expirationDate,
+      String requesterId)
+      throws UnknownFileException, UserUnauthorizedException, UnknownUserException;
 }

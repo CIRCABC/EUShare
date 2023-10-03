@@ -98,18 +98,14 @@ public class UserInfo   {
   private Boolean isAdmin;
 
   /**
-   * status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.
+   * status = REGULAR (keep all user's rights) - Users who have full access to the site; SUSPENDED (Prevent users from uploading) - Users who can log in and download, but cannot upload; BANNED (prevent user from login) - Users who cannot log in at all.
    */
   public enum StatusEnum {
     REGULAR("REGULAR"),
     
-    FROZEN("FROZEN"),
+    SUSPENDED("SUSPENDED"),
     
-    PURGED("PURGED"),
-    
-    BANNED("BANNED"),
-    
-    UNKNOWN("UNKNOWN");
+    BANNED("BANNED");
 
     private String value;
 
@@ -339,10 +335,10 @@ public class UserInfo   {
   }
 
   /**
-   * status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.
+   * status = REGULAR (keep all user's rights) - Users who have full access to the site; SUSPENDED (Prevent users from uploading) - Users who can log in and download, but cannot upload; BANNED (prevent user from login) - Users who cannot log in at all.
    * @return status
   */
-  @ApiModelProperty(value = "status = REGULAR - Users who have full access to the site; FROZEN - Users who can log in and download, but cannot upload; PURGED - Users who can log in, download, but cannot upload, and their files get deleted; BANNED - Users who cannot log in at all.")
+  @ApiModelProperty(value = "status = REGULAR (keep all user's rights) - Users who have full access to the site; SUSPENDED (Prevent users from uploading) - Users who can log in and download, but cannot upload; BANNED (prevent user from login) - Users who cannot log in at all.")
 
 
   public StatusEnum getStatus() {
