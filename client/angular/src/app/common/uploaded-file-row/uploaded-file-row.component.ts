@@ -8,17 +8,17 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { faFile, faLock } from '@fortawesome/free-solid-svg-icons';
-import { FileInfoUploader } from '../../openapi';
+import { FileInfoUploader, FileService, FileStatusUpdate } from '../../openapi';
 import { ModalsService } from '../modals/modals.service';
 import { DownloadsService } from '../../services/downloads.service';
-import { UploadedFilesService } from '../../services/uploaded-files.service';
 import { Router } from '@angular/router';
 import { FileSizeFormatPipe } from '../pipes/file-size-format.pipe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgClass, SlicePipe } from '@angular/common';
+import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Component({
   selector: 'app-uploaded-file-row',
@@ -34,7 +34,7 @@ import { NgIf, NgClass, SlicePipe } from '@angular/common';
     FileSizeFormatPipe,
   ],
 })
-export class UploadedFileRowComponent implements OnInit {
+export class UploadedFileRowComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('fileToDisplay')
   public file!: FileInfoUploader;
@@ -47,6 +47,8 @@ export class UploadedFileRowComponent implements OnInit {
   @Input('displayAsUploader')
   public displayAsUploader = false;
 
+  @Output() refreshParent: EventEmitter<void> = new EventEmitter<void>();
+
   public isMoreDisplayed = false;
 
   public faFile = faFile;
@@ -55,20 +57,12 @@ export class UploadedFileRowComponent implements OnInit {
   public isLoading = false;
   public percentageDownloaded = 0;
 
-  public isAdminPage = false;
-
   constructor(
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
-    private uploadService: UploadedFilesService,
+    private fileService: FileService,
     private router: Router,
   ) {}
-
-  ngOnInit() {
-    if (this.router.url.indexOf('/administration/') !== -1) {
-      this.isAdminPage = true;
-    }
-  }
 
   public async tryDownload() {
     if (this.file.hasPassword) {
@@ -131,5 +125,23 @@ export class UploadedFileRowComponent implements OnInit {
 
   public displayLess() {
     this.isMoreDisplayed = false;
+  }
+
+  public async freeze() {
+    await firstValueFrom(
+      this.fileService.updateStatus(this.file.fileId, {
+        status: FileStatusUpdate.StatusEnum.Frozen,
+      }),
+    );
+    this.refreshParent.emit();
+  }
+
+  public async unfreeze() {
+    await firstValueFrom(
+      this.fileService.updateStatus(this.file.fileId, {
+        status: FileStatusUpdate.StatusEnum.Available,
+      }),
+    );
+    this.refreshParent.emit();
   }
 }

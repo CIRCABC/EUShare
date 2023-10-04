@@ -15,7 +15,9 @@
                     <div>
                         <strong>User blame:</strong>                 
                         <select [(ngModel)]="abuseReportDetails.uploader_status" name="uploader_status">
-                            <option *ngFor="let status of statusOptions" [value]="status">{{ status }} : {{ statusLabels[status] }}</option>
+                            <option *ngFor="let statusKey of statusKeys" [value]="statusKey">
+                                {{ statusKey }} : {{ statusLabels[statusKey] }}
+                            </option>
                         </select>
                     </div>
                 </mat-dialog-content>

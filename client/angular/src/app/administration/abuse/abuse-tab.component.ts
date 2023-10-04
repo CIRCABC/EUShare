@@ -7,10 +7,10 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-abuse-tab',
@@ -19,7 +19,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule],
 })
-export class AbuseTabComponent {
+export class AbuseTabComponent implements OnInit {
   @Input() reportStatus: string | undefined;
   @Input() abuseReportsDetailsMap:
     | { [key: string]: AbuseReportDetails[] }
@@ -33,7 +33,11 @@ export class AbuseTabComponent {
   @Output() denyEvent: EventEmitter<AbuseReportDetails> =
     new EventEmitter<AbuseReportDetails>();
 
-  
+  private frontend_url = '';
+
+  ngOnInit(): void {
+    this.frontend_url = environment.frontend_url;
+  }
 
   showList(reports: AbuseReportDetails[]): void {
     this.showListEvent.emit(reports);
@@ -51,5 +55,7 @@ export class AbuseTabComponent {
     this.denyEvent.emit(report);
   }
 
-
+  formatLink(details: AbuseReportDetails) {
+    return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${details.shortUrl}`;
+  }
 }

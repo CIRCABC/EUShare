@@ -33,6 +33,7 @@ model/fileInfoUploader.ts
 model/fileLog.ts
 model/fileRequest.ts
 model/fileResult.ts
+model/fileStatusUpdate.ts
 model/models.ts
 model/mountPointSpace.ts
 model/recipient.ts

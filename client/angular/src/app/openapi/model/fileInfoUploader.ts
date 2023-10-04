@@ -54,11 +54,13 @@ export interface FileInfoUploader {
     status?: FileInfoUploader.StatusEnum;
 }
 export namespace FileInfoUploader {
-    export type StatusEnum = 'AVAILABLE' | 'ALLOCATED' | 'DELETED';
+    export type StatusEnum = 'AVAILABLE' | 'ALLOCATED' | 'DELETED' | 'FROZEN' | 'UPLOADING';
     export const StatusEnum = {
         Available: 'AVAILABLE' as StatusEnum,
         Allocated: 'ALLOCATED' as StatusEnum,
-        Deleted: 'DELETED' as StatusEnum
+        Deleted: 'DELETED' as StatusEnum,
+        Frozen: 'FROZEN' as StatusEnum,
+        Uploading: 'UPLOADING' as StatusEnum
     };
 }
 

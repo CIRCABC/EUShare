@@ -16,6 +16,7 @@ export * from './fileInfoUploader';
 export * from './fileLog';
 export * from './fileRequest';
 export * from './fileResult';
+export * from './fileStatusUpdate';
 export * from './mountPointSpace';
 export * from './recipient';
 export * from './stat';

@@ -10,6 +10,7 @@
     [displayAsUploader]="displayAsUploader"
     [displayAsAdministrator]="displayAsAdministrator"
     [fileToDisplay]="fileInfoUploader"
+    (refreshParent)="update()"
   ></app-uploaded-file-row>
   <nav
     class="pagination is-centered"

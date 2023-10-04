@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Filename</th>
+            <th></th>
             <th>Uploader</th>
             <th>Number of Reports</th>
             <th></th>
@@ -10,7 +11,10 @@
     <tbody>
         <tr *ngFor="let abuseReportsForFile of abuseReportsDetailsMap | keyvalue">
             <ng-container *ngIf="abuseReportsForFile.value[0].status === reportStatus">
-                <td>{{ abuseReportsForFile.value[0].filename }}</td>
+                <td> {{ abuseReportsForFile.value[0].filename }}</td>
+                <td class="icon-cell"><a [href]="formatLink(abuseReportsForFile.value[0])" target="_blank" rel="noopener noreferrer"
+                        title="Download"><i class="material-icons">download</i></a>
+                </td>
                 <td>{{ abuseReportsForFile.value[0].uploader_email }}</td>
                 <td>
                     <a (click)="showList(abuseReportsForFile.value)">{{ abuseReportsForFile.value.length }}</a>
@@ -19,10 +23,12 @@
                     <button class="button" (click)="showList(abuseReportsForFile.value)">
                         <i class="material-icons">list</i>&nbsp;Show List
                     </button>
-                    <button class="button" *ngIf="reportStatus === 'WAITING' || reportStatus === 'DENIED'" (click)="approveReport(abuseReportsForFile.value[0])">
+                    <button class="button" *ngIf="reportStatus === 'WAITING' || reportStatus === 'DENIED'"
+                        (click)="approveReport(abuseReportsForFile.value[0])">
                         <i class="material-icons">check</i>&nbsp;Approve
                     </button>
-                    <button class="button" *ngIf="reportStatus === 'WAITING' || reportStatus === 'APPROVED'" (click)="denyReport(abuseReportsForFile.value[0])">
+                    <button class="button" *ngIf="reportStatus === 'WAITING' || reportStatus === 'APPROVED'"
+                        (click)="denyReport(abuseReportsForFile.value[0])">
                         <i class="material-icons">block</i>&nbsp;Deny
                     </button>
                     <button class="button" (click)="delete(abuseReportsForFile.value[0])">

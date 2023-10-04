@@ -38,6 +38,7 @@ export class UploadedFilesService {
   private pageNumber = 0;
 
   private userId!: string;
+  private all: boolean = false;
 
   constructor(
     private userService: UsersService,

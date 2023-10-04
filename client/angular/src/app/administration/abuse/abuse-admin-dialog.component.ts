@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component, Inject} from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   MAT_DIALOG_DATA,
@@ -20,8 +20,7 @@ import { AbuseReport, AbuseReportDetails, UserInfo } from '../../openapi';
 
 export const StatusEnumLabels = {
   REGULAR: "Delete file. Keep all user's rights.",
-  SUSPENDED: "Delete file. Prevent user from uploading.",
-  BANNED: "Delete all user's files. Prevent user from login."
+  SUSPENDED: 'Delete file. Prevent user from uploading.',
 };
 @Component({
   selector: 'app-abuse-admin-dialog',
@@ -35,6 +34,7 @@ export class AbuseAdminDialogComponent {
   abuseReportDetails: AbuseReportDetails;
   statusOptions = Object.values(UserInfo.StatusEnum);
   statusLabels = StatusEnumLabels;
+  statusKeys = Object.keys(StatusEnumLabels);
 
   constructor(
     public dialogRef: MatDialogRef<AbuseAdminDialogComponent>,

@@ -40,7 +40,7 @@ export class AbuseComponent implements OnInit {
   constructor(
     private abuseService: AbuseService,
     private dialog: MatDialog,
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.fetchData();
@@ -109,6 +109,8 @@ export class AbuseComponent implements OnInit {
       return;
     }
     if (details.ID)
-      this.abuseService.deleteAbuseReport(details.ID).subscribe(() => this.ngOnInit());
+      this.abuseService
+        .deleteAbuseReport(details.ID)
+        .subscribe(() => this.ngOnInit());
   }
 }

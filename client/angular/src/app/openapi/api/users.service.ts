@@ -420,18 +420,25 @@ export class UsersService {
      * Used by the administrators in order to update a specific INTERNAL user total space or admin status
      * @param userID The id of the user
      * @param userInfo 
+     * @param freezeAll Freeze or unfreeze user\&#39;s files
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<UserInfo>;
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<UserInfo>>;
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<UserInfo>>;
-    public putUserUserInfo(userID: string, userInfo: UserInfo, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public putUserUserInfo(userID: string, userInfo: UserInfo, freezeAll?: boolean, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<UserInfo>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, freezeAll?: boolean, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<UserInfo>>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, freezeAll?: boolean, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<UserInfo>>;
+    public putUserUserInfo(userID: string, userInfo: UserInfo, freezeAll?: boolean, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (userID === null || userID === undefined) {
             throw new Error('Required parameter userID was null or undefined when calling putUserUserInfo.');
         }
         if (userInfo === null || userInfo === undefined) {
             throw new Error('Required parameter userInfo was null or undefined when calling putUserUserInfo.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (freezeAll !== undefined && freezeAll !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>freezeAll, 'freezeAll');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -480,6 +487,7 @@ export class UsersService {
         return this.httpClient.request<UserInfo>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 body: userInfo,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
