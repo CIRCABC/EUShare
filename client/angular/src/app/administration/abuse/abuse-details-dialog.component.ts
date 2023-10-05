@@ -7,7 +7,7 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogModule,
@@ -16,7 +16,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 
@@ -50,8 +50,14 @@ export class AbuseDetailsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails[],
   ) {}
 
+
+
+  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+
   ngOnInit() {
     this.dataSource = new MatTableDataSource<AbuseReportDetails>(this.data);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.paginator.pageIndex = 0;
   }
 
   onRowClicked(row: any): void {

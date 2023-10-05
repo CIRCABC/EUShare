@@ -12,7 +12,7 @@
         <tr *ngFor="let abuseReportsForFile of abuseReportsDetailsMap | keyvalue">
             <ng-container *ngIf="abuseReportsForFile.value[0].status === reportStatus">
                 <td> {{ abuseReportsForFile.value[0].filename }}</td>
-                <td class="icon-cell"><a [href]="formatLink(abuseReportsForFile.value[0])" target="_blank" rel="noopener noreferrer"
+                <td class="icon-cell"><a (click)="tryDownload(abuseReportsForFile.value[0])" target="_blank" rel="noopener noreferrer"
                         title="Download"><i class="material-icons">download</i></a>
                 </td>
                 <td>{{ abuseReportsForFile.value[0].uploader_email }}</td>

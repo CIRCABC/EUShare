@@ -149,6 +149,9 @@ export class UserAdminComponent {
     }
   }
 
+
+ 
+
   public sortByName() {
     this.sortBy = 'name';
     this.search();

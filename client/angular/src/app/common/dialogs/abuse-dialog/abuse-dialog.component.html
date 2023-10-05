@@ -13,10 +13,10 @@
                 {{ 'abuse.please.refer.to' | transloco }} <a
                     href="https://circabc.development.europa.eu/ui/help/legal-notice/terms">{{ 'label.terms' | transloco
                     }}</a> {{ 'abuse.please.refer.to2' | transloco }}
-
-                <mat-dialog-content>
+                    
+                <div>
                     <div>
-                        {{ 'abuse.why' | transloco }}
+                        <p><br /></p>{{ 'abuse.why' | transloco }}<p><br /></p>
                         <div *ngFor="let reason of abuseReasons">
                             <input type="radio" name="abuseReason" [(ngModel)]="abuseReport.reason" [value]="reason">
                             {{ reason | transloco }}
@@ -38,7 +38,7 @@
                             <input matInput name="reporter" [(ngModel)]="abuseReport.reporter" required>
                         </div>
                     </ng-container>
-                </mat-dialog-content>
+                </div>
 
             </section>
 
@@ -46,7 +46,7 @@
                 <div mat-dialog-actions>
                     <button class="button" [disabled]="abuseForm.invalid"
                         mat-raised-button color="primary" type="submit">
-                        Submit {{ 'submit' | transloco }}
+                         {{ 'submit' | transloco }}
                     </button>
                     <button class="button" [mat-dialog-close]="abuseReport"  mat-raised-button color="warn" type="button" mat-dialog-close
                         (click)="cancel()">

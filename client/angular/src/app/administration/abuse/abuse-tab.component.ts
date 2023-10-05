@@ -11,6 +11,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../environments/environment';
+import { DownloadsService } from '../../services/downloads.service';
 
 @Component({
   selector: 'app-abuse-tab',
@@ -35,6 +36,12 @@ export class AbuseTabComponent implements OnInit {
 
   private frontend_url = '';
 
+  constructor(
+
+    private downloadsService: DownloadsService,
+
+  ) { }
+
   ngOnInit(): void {
     this.frontend_url = environment.frontend_url;
   }
@@ -58,4 +65,10 @@ export class AbuseTabComponent implements OnInit {
   formatLink(details: AbuseReportDetails) {
     return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${details.shortUrl}`;
   }
+
+  public async tryDownload(details: AbuseReportDetails) {
+    if (details.fileId && details.filename)
+      await this.downloadsService.download(details.fileId, details.filename);
+  }
 }
+
