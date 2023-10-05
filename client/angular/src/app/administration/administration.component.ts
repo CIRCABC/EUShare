@@ -23,7 +23,7 @@ import { FileRowContainerComponent } from '../common/uploaded-file-row-container
 import { TrustComponent } from './trust/trust.component';
 import { MatIconModule } from '@angular/material/icon';
 import { AbuseComponent } from './abuse/abuse.component';
-import { LogsComponent } from './logs/logs/logs.component';
+import { LogsComponent } from './logs/logs.component';
 import { UserAdminComponent } from './user/user-admin/user-admin.component';
 @Component({
   selector: 'app-administration',

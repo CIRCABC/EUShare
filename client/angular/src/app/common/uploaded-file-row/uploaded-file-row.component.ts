@@ -65,7 +65,7 @@ export class UploadedFileRowComponent {
   ) {}
 
   public async tryDownload() {
-    if (this.file.hasPassword && this.displayAsUploader ) {
+    if (this.file.hasPassword && this.displayAsUploader) {
       this.modalService.activateDownloadModal(
         this.file.fileId,
         this.file.name,

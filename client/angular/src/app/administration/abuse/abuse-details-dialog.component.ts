@@ -50,9 +50,7 @@ export class AbuseDetailsDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails[],
   ) {}
 
-
-
-  @ViewChild(MatPaginator, {static: true}) paginator!: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource<AbuseReportDetails>(this.data);

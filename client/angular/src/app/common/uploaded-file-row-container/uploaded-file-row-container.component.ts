@@ -74,9 +74,7 @@ export class FileRowContainerComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  public async update(){
+  public async update() {
     await this.fileInfoUploaderService.reinit(this.userId);
   }
-
-  
 }

@@ -36,11 +36,7 @@ export class AbuseTabComponent implements OnInit {
 
   private frontend_url = '';
 
-  constructor(
-
-    private downloadsService: DownloadsService,
-
-  ) { }
+  constructor(private downloadsService: DownloadsService) {}
 
   ngOnInit(): void {
     this.frontend_url = environment.frontend_url;
@@ -71,4 +67,3 @@ export class AbuseTabComponent implements OnInit {
       await this.downloadsService.download(details.fileId, details.filename);
   }
 }
-

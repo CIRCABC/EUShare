@@ -1,0 +1,53 @@
+<table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="uploader_email">
+      <th mat-header-cell *matHeaderCellDef> Uploader Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.uploader_email}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="share_email">
+      <th mat-header-cell *matHeaderCellDef> Share Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.share_email}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="filename">
+      <th mat-header-cell *matHeaderCellDef> Filename </th>
+      <td mat-cell *matCellDef="let element"> {{element.filename}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="file_size">
+      <th mat-header-cell *matHeaderCellDef> File Size </th>
+      <td mat-cell *matCellDef="let element"> {{element.file_size}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="path">
+      <th mat-header-cell *matHeaderCellDef> Path </th>
+      <td mat-cell *matCellDef="let element"> {{element.path}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="created">
+      <th mat-header-cell *matHeaderCellDef> Created </th>
+      <td mat-cell *matCellDef="let element"> {{element.created}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="shorturl">
+      <th mat-header-cell *matHeaderCellDef> Short URL </th>
+      <td mat-cell *matCellDef="let element"> {{element.shorturl}} </td>
+    </ng-container>
+  
+    <ng-container matColumnDef="download_notification">
+      <th mat-header-cell *matHeaderCellDef> Download Notification </th>
+      <td mat-cell *matCellDef="let element"> {{element.download_notification}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  
