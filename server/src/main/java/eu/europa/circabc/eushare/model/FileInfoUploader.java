@@ -69,7 +69,11 @@ public class FileInfoUploader   {
     
     ALLOCATED("ALLOCATED"),
     
-    DELETED("DELETED");
+    DELETED("DELETED"),
+    
+    FROZEN("FROZEN"),
+    
+    UPLOADING("UPLOADING");
 
     private String value;
 

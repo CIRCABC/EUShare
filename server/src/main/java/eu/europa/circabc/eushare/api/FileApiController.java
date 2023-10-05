@@ -25,16 +25,21 @@ import eu.europa.circabc.eushare.exceptions.UserHasNoUploadRightsException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
+import eu.europa.circabc.eushare.model.EnumConverter;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.FileResult;
+import eu.europa.circabc.eushare.model.FileStatusUpdate;
+import eu.europa.circabc.eushare.model.InlineObject;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.validation.FileRequestValidator;
 import eu.europa.circabc.eushare.model.validation.RecipientValidator;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
+import eu.europa.circabc.eushare.storage.entity.DBAbuse;
 import eu.europa.circabc.eushare.storage.entity.DBFile;
+import eu.europa.circabc.eushare.storage.repository.FileRepository;
 import eu.europa.circabc.eushare.services.UserService;
 
 import java.io.File;
@@ -80,6 +85,9 @@ public class FileApiController implements FileApi {
 
   @Autowired
   public FileService fileService;
+
+  @Autowired
+  public FileRepository fileRepository;
 
   @Autowired
   public UserService userService;
@@ -565,4 +573,35 @@ public class FileApiController implements FileApi {
   public Optional<NativeWebRequest> getRequest() {
     return Optional.ofNullable(request);
   }
+
+  @Override
+  public ResponseEntity<Void> updateStatus(String fileID, @Valid FileStatusUpdate fileStatusUpdate) {
+    Authentication authentication = SecurityContextHolder
+        .getContext()
+        .getAuthentication();
+    String requesterId;
+    try {
+      requesterId = userService.getAuthenticatedUserId(authentication);
+
+      if (!userService.isAdmin(requesterId))
+        throw new WrongAuthenticationException("not Admin user");
+
+      DBFile file = fileRepository.findOneById(fileID);
+      if (file != null) {
+        DBFile.Status dbfileStatus = EnumConverter.convert(fileStatusUpdate.getStatus(), DBFile.Status.class);
+        file.setStatus(dbfileStatus);
+        fileRepository.save(file);
+      }
+
+    } catch (WrongAuthenticationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (UnknownUserException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return ResponseEntity.noContent().build();
+
+  }
+
 }

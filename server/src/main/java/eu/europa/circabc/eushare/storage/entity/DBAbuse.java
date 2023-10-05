@@ -10,6 +10,9 @@
 
 package eu.europa.circabc.eushare.storage.entity;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -25,14 +28,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import eu.europa.circabc.eushare.model.AbuseReport;
-import eu.europa.circabc.eushare.model.AbuseReportDetails;
 import eu.europa.circabc.eushare.model.EnumConverter;
-import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.storage.dto.AbuseReportDetailsDTO;
-import eu.europa.circabc.eushare.storage.entity.DBUser.Status;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 @NamedNativeQuery(name = "AbuseReportDetailsDTO.findAllDetails", query = "SELECT " +

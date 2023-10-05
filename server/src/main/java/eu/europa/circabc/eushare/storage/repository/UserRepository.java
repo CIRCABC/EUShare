@@ -47,10 +47,10 @@ public interface UserRepository
   );
 
    @Query(name = "UserInfoDTO.findByEmailRoleInternalOrAdmin",nativeQuery=true)
-   public List<UserInfoDTO> findByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
+   public List<UserInfoDTO> findByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page,@Param("sortBy") String sortBy);
 
     @Query(name = "UserInfoDTO.findAllByEmailRoleInternalOrAdmin",nativeQuery=true)
-    public List<UserInfoDTO> findAllByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page);
+    public List<UserInfoDTO> findAllByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page,@Param("sortBy") String sortBy);
 
 
 }

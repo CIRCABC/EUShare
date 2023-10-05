@@ -23,6 +23,9 @@ import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +41,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
-@javax.annotation.Generated(
-  value = "org.openapitools.codegen.languages.SpringCodegen"
-)
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
 @RequestMapping("${openapi.easyShare.base-path:}")
 public class UserApiController implements UserApi {
@@ -67,163 +68,148 @@ public class UserApiController implements UserApi {
 
   @Override
   public ResponseEntity<List<FileInfoRecipient>> getFilesFileInfoRecipient(
-    @PathVariable("userID") String userID,
-    @RequestParam(value = "pageSize", required = true) Integer pageSize,
-    @RequestParam(value = "pageNumber", required = true) Integer pageNumber
-  ) {
+      @PathVariable("userID") String userID,
+      @RequestParam(value = "pageSize", required = true) Integer pageSize,
+      @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
     try {
       Authentication authentication = SecurityContextHolder
-        .getContext()
-        .getAuthentication();
+          .getContext()
+          .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
       List<FileInfoRecipient> fileInfoRecipientList = fileService.getFileInfoRecipientOnBehalfOf(
-        pageSize,
-        pageNumber,
-        userID,
-        requesterId
-      );
+          pageSize,
+          pageNumber,
+          userID,
+          requesterId);
       return new ResponseEntity<>(fileInfoRecipientList, HttpStatus.OK);
     } catch (WrongAuthenticationException exc) {
       log.debug("wrong authentication !");
       throw new ResponseStatusException(
-        HttpStatus.UNAUTHORIZED,
-        HttpErrorAnswerBuilder.build401EmptyToString(),
-        exc
-      );
+          HttpStatus.UNAUTHORIZED,
+          HttpErrorAnswerBuilder.build401EmptyToString(),
+          exc);
     } catch (UserUnauthorizedException e) {
       throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-        e
-      );
+          HttpStatus.FORBIDDEN,
+          HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+          e);
     } catch (UnknownUserException e) {
       throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        HttpErrorAnswerBuilder.build404EmptyToString(),
-        e
-      );
+          HttpStatus.NOT_FOUND,
+          HttpErrorAnswerBuilder.build404EmptyToString(),
+          e);
     }
   }
 
   @Override
   public ResponseEntity<List<FileInfoUploader>> getFilesFileInfoUploader(
-    @PathVariable("userID") String userID,
-    @RequestParam(value = "pageSize", required = true) Integer pageSize,
-    @RequestParam(value = "pageNumber", required = true) Integer pageNumber
-  ) {
+      @PathVariable("userID") String userID,
+      @RequestParam(value = "pageSize", required = true) Integer pageSize,
+      @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
     try {
       Authentication authentication = SecurityContextHolder
-        .getContext()
-        .getAuthentication();
+          .getContext()
+          .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
       List<FileInfoUploader> fileInfoUploaderList = fileService.getFileInfoUploaderOnBehalfOf(
-        pageSize,
-        pageNumber,
-        userID,
-        requesterId
-      );
+          pageSize,
+          pageNumber,
+          userID,
+          requesterId);
       return new ResponseEntity<>(fileInfoUploaderList, HttpStatus.OK);
     } catch (WrongAuthenticationException exc) {
       log.debug("wrong authentication !");
       throw new ResponseStatusException(
-        HttpStatus.UNAUTHORIZED,
-        HttpErrorAnswerBuilder.build401EmptyToString(),
-        exc
-      );
+          HttpStatus.UNAUTHORIZED,
+          HttpErrorAnswerBuilder.build401EmptyToString(),
+          exc);
     } catch (UserUnauthorizedException e) {
       throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-        e
-      );
+          HttpStatus.FORBIDDEN,
+          HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+          e);
     } catch (UnknownUserException e) {
       throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        HttpErrorAnswerBuilder.build404EmptyToString(),
-        e
-      );
+          HttpStatus.NOT_FOUND,
+          HttpErrorAnswerBuilder.build404EmptyToString(),
+          e);
     }
   }
 
   @Override
   public ResponseEntity<UserInfo> putUserUserInfo(
-    @PathVariable("userID") String userID,
-    @RequestBody UserInfo userInfo
-  ) {
+      @PathVariable("userID") String userID,
+      @RequestBody UserInfo userInfo, @Valid Boolean freezeAll) {
     if (!UserInfoValidator.validate(userInfo)) {
       throw new ResponseStatusException(
-        HttpStatus.BAD_REQUEST,
-        HttpErrorAnswerBuilder.build400EmptyToString()
-      );
+          HttpStatus.BAD_REQUEST,
+          HttpErrorAnswerBuilder.build400EmptyToString());
     }
     try {
       Authentication authentication = SecurityContextHolder
-        .getContext()
-        .getAuthentication();
+          .getContext()
+          .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
       UserInfo acceptedUserInfo = userService.setUserInfoOnBehalfOf(
-        userInfo,
-        requesterId
-      );
+          userInfo,
+          requesterId);
+          
+      if (freezeAll != null)
+        if (freezeAll)
+          fileService.freezeFilesFromUser(userID, requesterId);
+        else
+          fileService.unfreezeFilesFromUser(userID, requesterId);
+
       return new ResponseEntity<>(acceptedUserInfo, HttpStatus.OK);
     } catch (WrongAuthenticationException exc) {
       log.debug("wrong authentication !");
       throw new ResponseStatusException(
-        HttpStatus.UNAUTHORIZED,
-        HttpErrorAnswerBuilder.build401EmptyToString(),
-        exc
-      );
+          HttpStatus.UNAUTHORIZED,
+          HttpErrorAnswerBuilder.build401EmptyToString(),
+          exc);
     } catch (
-      UserUnauthorizedException
-      | NonInternalUsersCannotBecomeAdminException
-      | IllegalSpaceException e
-    ) {
+        UserUnauthorizedException
+        | NonInternalUsersCannotBecomeAdminException
+        | IllegalSpaceException e) {
       throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-        e
-      );
+          HttpStatus.FORBIDDEN,
+          HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+          e);
     } catch (UnknownUserException e) {
       throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        HttpErrorAnswerBuilder.build404EmptyToString(),
-        e
-      );
+          HttpStatus.NOT_FOUND,
+          HttpErrorAnswerBuilder.build404EmptyToString(),
+          e);
     }
   }
 
   @Override
   public ResponseEntity<UserInfo> getUserUserInfo(
-    @PathVariable("userID") String userID
-  ) {
+      @PathVariable("userID") String userID) {
     try {
       Authentication authentication = SecurityContextHolder
-        .getContext()
-        .getAuthentication();
+          .getContext()
+          .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
       UserInfo userInfo = userService.getUserInfoOnBehalfOf(
-        userID,
-        requesterId
-      );
+          userID,
+          requesterId);
       return new ResponseEntity<>(userInfo, HttpStatus.OK);
     } catch (WrongAuthenticationException exc2) {
       throw new ResponseStatusException(
-        HttpStatus.UNAUTHORIZED,
-        HttpErrorAnswerBuilder.build401EmptyToString(),
-        exc2
-      );
+          HttpStatus.UNAUTHORIZED,
+          HttpErrorAnswerBuilder.build401EmptyToString(),
+          exc2);
     } catch (UserUnauthorizedException ec) {
       throw new ResponseStatusException(
-        HttpStatus.FORBIDDEN,
-        HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
-        ec
-      );
+          HttpStatus.FORBIDDEN,
+          HttpErrorAnswerBuilder.build403NotAuthorizedToString(),
+          ec);
     } catch (UnknownUserException exc3) {
       log.error("Search on non existing userId, might be a security attack");
       throw new ResponseStatusException(
-        HttpStatus.NOT_FOUND,
-        HttpErrorAnswerBuilder.build404EmptyToString()
-      );
+          HttpStatus.NOT_FOUND,
+          HttpErrorAnswerBuilder.build404EmptyToString());
     }
   }
 }

@@ -713,6 +713,9 @@ public class FileService implements FileServiceInterface {
         status.add(DBFile.Status.AVAILABLE);
         if (userService.isAdmin(requesterId)) {
           status.add(DBFile.Status.ALLOCATED);
+          status.add(DBFile.Status.DELETED);
+          status.add(DBFile.Status.FROZEN);
+          status.add(DBFile.Status.UPLOADING);
         }
         return fileRepository
             .findByStatusInAndUploaderIdOrderByExpirationDateAscFilenameAsc(

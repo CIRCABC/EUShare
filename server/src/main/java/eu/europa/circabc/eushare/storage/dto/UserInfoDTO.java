@@ -44,7 +44,7 @@ public class UserInfoDTO {
   private UserInfoDTO() {
   }
 
-  public UserInfoDTO(String id, String roleStr, String statusStr, String username, String email, String name,
+  public UserInfoDTO(String id, String roleStr, String statusStr, String username, String name,String email, 
       long totalSpace, long usedSpace, long filesCount) {
     this.id = id;
     this.role = Role.valueOf(roleStr);

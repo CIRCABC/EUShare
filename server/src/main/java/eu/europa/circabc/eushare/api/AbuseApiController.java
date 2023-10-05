@@ -199,20 +199,15 @@ public class AbuseApiController implements AbuseApi {
                 DBUser user = userRepository.findOneByEmailIgnoreCase(uploader);
                 user.setStatus(DBUser.Status.valueOf(abuseReportDetails.getUploaderStatus()));
                 userRepository.save(user);
-                try {
-                    if (DBUser.Status.valueOf(abuseReportDetails.getUploaderStatus()) == DBUser.Status.BANNED)
 
-                        fileService.freezeFilesFromUser(user.getId(), requesterId);
+                fileService.freezeFile(abuseReportDetails.getFileId());
 
-                    else
-                        fileService.freezeFile(abuseReportDetails.getFileId());
-
-                } catch (UserUnauthorizedException e) {
-                    e.printStackTrace();
-                }
             }
             if (abuseReportDetails.getStatus() == AbuseReportDetails.StatusEnum.DENIED) {
-               
+                String uploader = abuseReportDetails.getUploaderEmail();
+                DBUser user = userRepository.findOneByEmailIgnoreCase(uploader);
+                user.setStatus(DBUser.Status.REGULAR);
+                userRepository.save(user);
                 fileService.unfreezeFile(abuseReportDetails.getFileId());
 
             }

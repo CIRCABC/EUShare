@@ -202,7 +202,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         return userRepository
             .findByEmailRoleInternalOrAdmin(
                 searchString,
-                PageRequest.of(pageNumber, pageSize, dir, sortBy))
+                PageRequest.of(pageNumber, pageSize, dir, sortBy),sortBy)
             .stream()
             .map(UserInfoDTO::toUserInfo)
             .collect(Collectors.toList());
@@ -210,7 +210,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         return userRepository
             .findAllByEmailRoleInternalOrAdmin(
                 searchString,
-                PageRequest.of(pageNumber, pageSize))
+                PageRequest.of(pageNumber, pageSize,dir, sortBy),sortBy)
             .stream()
             .map(UserInfoDTO::toUserInfo)
             .collect(Collectors.toList());

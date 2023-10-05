@@ -18,6 +18,7 @@ import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.FileRequest;
 import eu.europa.circabc.eushare.model.FileResult;
+import eu.europa.circabc.eushare.model.FileStatusUpdate;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.Status;
 import io.swagger.annotations.*;
@@ -375,6 +376,30 @@ public interface FileApi {
         consumes = { "application/json" }
     )
     default ResponseEntity<Void> updateFile(@ApiParam(value = "The id of the file",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "" ,required=true )  @Valid @RequestBody FileBasics fileBasics) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * PUT /file/{fileID}/status : Update file status
+     *
+     * @param fileID ID of the file to be updated (required)
+     * @param fileStatusUpdate Status update payload (required)
+     * @return File status updated successfully (status code 200)
+     *         or Invalid request body (status code 400)
+     *         or File not found (status code 404)
+     */
+    @ApiOperation(value = "Update file status", nickname = "updateStatus", notes = "", tags={ "File", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "File status updated successfully"),
+        @ApiResponse(code = 400, message = "Invalid request body"),
+        @ApiResponse(code = 404, message = "File not found") })
+    @PutMapping(
+        value = "/file/{fileID}/status",
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<Void> updateStatus(@ApiParam(value = "ID of the file to be updated",required=true) @PathVariable("fileID") String fileID,@ApiParam(value = "Status update payload" ,required=true )  @Valid @RequestBody FileStatusUpdate fileStatusUpdate) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

@@ -9,6 +9,7 @@
  */
 package eu.europa.circabc.eushare.storage.entity;
 
+import eu.europa.circabc.eushare.model.EnumConverter;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
@@ -165,11 +166,11 @@ public class DBFile {
     fileInfoUploader.setFileId(this.getId());
     fileInfoUploader.setSharedWith(sharedWithRecipients);
     fileInfoUploader.setFileLogs(localFileLogs);
-    if (this.status.toString().equals("AVAILABLE")) {
-      fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.AVAILABLE);
-    } else if (this.status.toString().equals("ALLOCATED")) {
-      fileInfoUploader.setStatus(FileInfoUploader.StatusEnum.ALLOCATED);
-    }
+
+    FileInfoUploader.StatusEnum fileInfoUploaderStatus = EnumConverter.convert(this.status,
+                        FileInfoUploader.StatusEnum.class);
+    fileInfoUploader.setStatus(    fileInfoUploaderStatus );       
+
 
     return fileInfoUploader;
   }

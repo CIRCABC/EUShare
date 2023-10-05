@@ -9,22 +9,14 @@
  */
 package eu.europa.circabc.eushare.storage.entity;
 
-import eu.europa.circabc.eushare.model.EnumConverter;
-import eu.europa.circabc.eushare.model.UserInfo;
-import eu.europa.circabc.eushare.model.UserSpace;
-import eu.europa.circabc.eushare.services.UserService;
-import eu.europa.circabc.eushare.storage.dto.UserInfoDTO;
-
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.AttributeConverter;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
-import javax.persistence.Converter;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -36,49 +28,38 @@ import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Pattern;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import eu.europa.circabc.eushare.model.EnumConverter;
+import eu.europa.circabc.eushare.model.UserInfo;
+import eu.europa.circabc.eushare.model.UserSpace;
+import eu.europa.circabc.eushare.storage.dto.UserInfoDTO;
+
 @Entity
-@SqlResultSetMapping(
-    name = "UserInfoDTOMapping",
-    classes = @ConstructorResult(
-        targetClass = UserInfoDTO.class,
-        columns = {
-            @ColumnResult(name = "id", type = String.class),
-            @ColumnResult(name = "role", type = String.class),
-            @ColumnResult(name = "status", type = String.class),
-            @ColumnResult(name = "username", type = String.class),
-            @ColumnResult(name = "name", type = String.class),
-            @ColumnResult(name = "email", type = String.class),
-            @ColumnResult(name = "total_space", type = long.class),
-            @ColumnResult(name = "used_space", type = long.class),
-            @ColumnResult(name = "files_count", type = long.class),
-            
-        }
-    )
-)
+@SqlResultSetMapping(name = "UserInfoDTOMapping", classes = @ConstructorResult(targetClass = UserInfoDTO.class, columns = {
+    @ColumnResult(name = "id", type = String.class),
+    @ColumnResult(name = "role", type = String.class),
+    @ColumnResult(name = "status", type = String.class),
+    @ColumnResult(name = "username", type = String.class),
+    @ColumnResult(name = "name", type = String.class),
+    @ColumnResult(name = "email", type = String.class),
+    @ColumnResult(name = "total_space", type = long.class),
+    @ColumnResult(name = "used_space", type = long.class),
+    @ColumnResult(name = "files_count", type = long.class),
 
-@NamedNativeQuery(
-    name = "UserInfoDTO.findByEmailRoleInternalOrAdmin",
-    query = "SELECT id, role, users.status, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count "
-            + "FROM users, files WHERE files.uploader_id=id and (files.status='AVAILABLE') and "
-            + "( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) "
-            + "GROUP BY id, role, username, name, email, total_space ",
-    resultSetMapping = "UserInfoDTOMapping"
-)
-@NamedNativeQuery(
-    name = "UserInfoDTO.findAllByEmailRoleInternalOrAdmin",
-    query = "SELECT id, role, users.status, username, name, email, total_space, COALESCE(SUM(files.file_size), 0) AS used_space, COALESCE(COUNT(files.file_id), 0) AS files_count "
-            + "FROM users LEFT JOIN files ON users.id =  files.uploader_id and files.status='AVAILABLE' "
-            + "WHERE (email LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT('% ',:start,'%'))) "
-            + "GROUP BY id, role, username, name, email, total_space ORDER BY name",
-    resultSetMapping = "UserInfoDTOMapping"
-)
+}))
 
-
-
+@NamedNativeQuery(name = "UserInfoDTO.findByEmailRoleInternalOrAdmin", query = "SELECT id, role, users.status, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count "
+    + "FROM users, files WHERE files.uploader_id=id and "
+    + "( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) "
+    + "GROUP BY id, role, username, name, email, total_space "
+    + "ORDER BY  CASE WHEN :sortBy = 'name' THEN name END ASC, CASE WHEN :sortBy = 'files_count' THEN files_count END DESC, CASE WHEN :sortBy = 'used_space' THEN used_space END DESC ", resultSetMapping = "UserInfoDTOMapping")
+@NamedNativeQuery(name = "UserInfoDTO.findAllByEmailRoleInternalOrAdmin", query = "SELECT id, role, users.status, username, name, email, total_space, COALESCE(SUM(files.file_size), 0) AS used_space, COALESCE(COUNT(files.file_id), 0) AS files_count "
+    + "FROM users LEFT JOIN files ON users.id =  files.uploader_id "
+    + "WHERE (email LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT('% ',:start,'%'))) "
+    + "GROUP BY id, role, username, name, email, total_space "
+    + "ORDER BY  CASE WHEN :sortBy = 'name' THEN name END ASC, CASE WHEN :sortBy = 'files_count' THEN files_count END DESC, CASE WHEN :sortBy = 'used_space' THEN used_space END DESC ", resultSetMapping = "UserInfoDTOMapping")
 
 @Table(name = "Users")
 public class DBUser {
@@ -161,7 +142,6 @@ public class DBUser {
     dbUser.setStatus(DBUser.Status.REGULAR);
     return dbUser;
   }
-
 
   public long getFreeSpace() {
     return this.totalSpace - this.getUsedSpace();

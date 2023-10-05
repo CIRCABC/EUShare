@@ -170,6 +170,7 @@ public interface UserApi {
      *
      * @param userID The id of the user (required)
      * @param userInfo  (required)
+     * @param freezeAll Freeze or unfreeze user&#39;s files (optional)
      * @return SUCCESS Returns the UserInfo of the selected user (status code 200)
      *         or BAD REQUEST the Error Message will be empty (status code 400)
      *         or UNAUTHORIZED the Error message will be empty (status code 401)
@@ -191,7 +192,7 @@ public interface UserApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<UserInfo> putUserUserInfo(@ApiParam(value = "The id of the user",required=true) @PathVariable("userID") String userID,@ApiParam(value = "" ,required=true )  @Valid @RequestBody UserInfo userInfo) {
+    default ResponseEntity<UserInfo> putUserUserInfo(@ApiParam(value = "The id of the user",required=true) @PathVariable("userID") String userID,@ApiParam(value = "" ,required=true )  @Valid @RequestBody UserInfo userInfo,@ApiParam(value = "Freeze or unfreeze user's files") @Valid @RequestParam(value = "freezeAll", required = false) Boolean freezeAll) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

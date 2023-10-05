@@ -128,6 +128,13 @@ paths:
     put:
       description: Used by the administrators in order to update a specific INTERNAL user total space or admin status
       operationId: putUserUserInfo
+      parameters:
+        - name: freezeAll
+          in: query
+          description: Freeze or unfreeze user's files
+          required: false
+          schema:
+            type: boolean
       tags:
       - Users
       security:
@@ -526,6 +533,41 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Status' 
+  
+
+
+  
+  '/file/{fileID}/status':
+    put:
+      tags:
+        - File
+      summary: Update file status
+      operationId: updateStatus
+      parameters:
+        - in: path
+          name: fileID
+          required: true
+          description: ID of the file to be updated
+          schema:
+            type: string
+      requestBody:
+        description: Status update payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileStatusUpdate'
+      responses:
+        '200':
+          description: File status updated successfully
+        '400':
+          description: Invalid request body
+        '404':
+          description: File not found
+
+
+
+
   '/file/fileRequest':
     post:
       description: Used by INTERNAL users in order to request the reservation of space for a file
@@ -1251,7 +1293,9 @@ components:
               enum: 
                 - "AVAILABLE"
                 - "ALLOCATED"
-                - "DELETED" 
+                - "DELETED"
+                - "FROZEN"
+                - "UPLOADING"
           required:
             - sharedWith
             - fileLogs
@@ -1549,3 +1593,12 @@ components:
             uploader_status:
               type: string
 
+    FileStatusUpdate:
+      type: object
+      properties:
+        status:
+          description: New status of the file
+          type: string
+          enum: [ 'FROZEN', 'AVAILABLE', 'DELETED'] 
+      required:
+        - status
