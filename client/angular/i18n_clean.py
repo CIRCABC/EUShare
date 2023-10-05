@@ -45,3 +45,5 @@ for translation_file in translation_files:
     write_json_file(translation_file, translations)
 
 print(f"Removed {len(keys_to_remove)} unused translation keys from {len(translation_files)} files.")
+for key in keys_to_remove:
+    print(key)

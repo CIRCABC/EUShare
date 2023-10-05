@@ -9,29 +9,20 @@
       </header>
 
       <section class="modal-card-body">
-        <mat-dialog-content>
+  
           <div>
             <p>{{ "no.upload.rights.submit.description" | transloco }}</p>
             
             <textarea matInput [(ngModel)]="editorContent" name="editorContent" placeholder="Enter text here" required
               #editorContentModel="ngModel"></textarea>
 
-            <mat-checkbox [(ngModel)]="terms" name="terms" required #termsModel="ngModel">
-              {{ "no.upload.rights.submit.tos1" | transloco }}
-              <a href="{{ circabc_url }}/ui/help/legal-notice/terms">
-                {{ "label.terms" | transloco }}
-              </a>
-              {{ "no.upload.rights.submit.tos2" | transloco }}
-            </mat-checkbox>
 
             <p *ngIf="editorContentModel.invalid && editorContentModel.touched" style="color: red;">
               {{ 'no.upload.rights.textrequired' | transloco }}
             </p>
-            <p *ngIf="termsModel.invalid && termsModel.touched" style="color: red;">
-              {{ 'no.upload.rights.agreetosrequired' | transloco }}
-            </p>
+
           </div>
-        </mat-dialog-content>
+        
       </section>
 
       <footer class="modal-card-foot">
