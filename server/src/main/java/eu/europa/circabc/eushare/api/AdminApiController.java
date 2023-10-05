@@ -11,6 +11,7 @@ package eu.europa.circabc.eushare.api;
 
 import eu.europa.circabc.eushare.model.MountPointSpace;
 import eu.europa.circabc.eushare.model.Stat;
+import eu.europa.circabc.eushare.security.AdminOnly;
 import eu.europa.circabc.eushare.services.AdminService;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.storage.entity.MountPoint;
@@ -53,6 +54,7 @@ public class AdminApiController implements AdminApi {
     return Optional.ofNullable(request);
   }
 
+  @AdminOnly
   @Override
   public ResponseEntity<List<MountPointSpace>> getDiskSpace() {
     // TODO Auto-generated method stub
@@ -69,7 +71,8 @@ public class AdminApiController implements AdminApi {
     }
     return new ResponseEntity<>(mountPointSpaces, HttpStatus.OK);
   }
-
+  
+  @AdminOnly
   @Override
   public ResponseEntity<List<Stat>> getStats(BigDecimal year) {
     HttpHeaders responseHeaders = new HttpHeaders();

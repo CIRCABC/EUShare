@@ -19,6 +19,7 @@ import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.model.validation.UserInfoValidator;
+import eu.europa.circabc.eushare.security.AdminOnly;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
 import java.util.List;
@@ -136,6 +137,7 @@ public class UserApiController implements UserApi {
     }
   }
 
+  @AdminOnly
   @Override
   public ResponseEntity<UserInfo> putUserUserInfo(
       @PathVariable("userID") String userID,

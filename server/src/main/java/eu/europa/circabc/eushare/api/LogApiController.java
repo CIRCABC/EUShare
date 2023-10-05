@@ -9,21 +9,22 @@
  */
 package eu.europa.circabc.eushare.api;
 
-import eu.europa.circabc.eushare.api.LogApi;
-import eu.europa.circabc.eushare.model.LastDownload;
-import eu.europa.circabc.eushare.model.LastLog;
-import eu.europa.circabc.eushare.model.LastUpload;
-import eu.europa.circabc.eushare.storage.dto.LastDownloadDTO;
-import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
-import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
-import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import eu.europa.circabc.eushare.model.LastDownload;
+import eu.europa.circabc.eushare.model.LastLog;
+import eu.europa.circabc.eushare.model.LastUpload;
+import eu.europa.circabc.eushare.security.AdminOnly;
+import eu.europa.circabc.eushare.storage.dto.LastDownloadDTO;
+import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
+import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
+import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
 
 @RestController
 public class LogApiController implements LogApi {
@@ -31,8 +32,10 @@ public class LogApiController implements LogApi {
     @Autowired
     private FileLogsRepository fileLogsRepository;
 
+    @AdminOnly
     @Override
     public ResponseEntity<List<LastDownload>> logGetLastDownloadsGet(Integer pageSize, Integer pageNumber) {
+        
         List<LastDownloadDTO> lastDownloadDTOs = fileLogsRepository.getLastDownloads();
         List<LastDownload> lastDownloads = new ArrayList<>();
 
@@ -43,6 +46,7 @@ public class LogApiController implements LogApi {
         return new ResponseEntity<>(lastDownloads, HttpStatus.OK);
     }
 
+    @AdminOnly
     @Override
     public ResponseEntity<List<LastLog>> logGetLastLogsGet(Integer pageSize, Integer pageNumber) {
         List<LastLogDTO> lastLogDTOs = fileLogsRepository.getLastLogs();
@@ -55,6 +59,7 @@ public class LogApiController implements LogApi {
         return new ResponseEntity<>(lastLogs, HttpStatus.OK);
     }
 
+    @AdminOnly
     @Override
     public ResponseEntity<List<LastUpload>> logGetLastUploadsGet(Integer pageSize, Integer pageNumber) {
         List<LastUploadDTO> lastUploadDTOs = fileLogsRepository.getLastUploads();

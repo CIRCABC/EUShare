@@ -40,6 +40,7 @@ import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.TrustRequest;
+import eu.europa.circabc.eushare.security.AdminOnly;
 import eu.europa.circabc.eushare.services.EmailService;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.entity.DBTrust;
@@ -83,6 +84,7 @@ public class TrustApiController implements TrustApi {
                 return Optional.ofNullable(request);
         }
 
+        @AdminOnly
         @Override
         public ResponseEntity<TrustRequest> approveTrustRequest(
                         @ApiParam(value = "", required = true) @PathVariable("id") String id,
@@ -116,6 +118,7 @@ public class TrustApiController implements TrustApi {
                 return ResponseEntity.ok(trust.toTrustRequest());
         }
 
+        @AdminOnly        
         @Override
         public ResponseEntity<TrustRequest> deleteTrustRequest(
                         @ApiParam(value = "", required = true) @PathVariable("id") String id) {
@@ -126,6 +129,7 @@ public class TrustApiController implements TrustApi {
                 return ResponseEntity.ok().build();
         }
 
+        @AdminOnly
         @Override
         public ResponseEntity<List<TrustRequest>> getTrustRequestList() {
                 // Implement your logic here to get the list of trust requests
