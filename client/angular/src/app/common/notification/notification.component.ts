@@ -57,6 +57,7 @@ export class NotificationComponent implements OnInit {
         }, timeOutIntrevalInMiliSeconds);
       }
     }
+
   }
 
 

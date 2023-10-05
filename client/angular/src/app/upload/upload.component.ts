@@ -235,6 +235,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.lastfile = file;
   }
 
+  isUserExternal() {
+    return (this.sessionApi.getStoredUserInfo()?.role?.toString() === 'EXTERNAL') ;
+  }
 
   // SELECT IMPORT
   getSelectImport(): string {
@@ -573,7 +576,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   public openTrustDialog(): void {
-  
+
     const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
       data: {},
     });

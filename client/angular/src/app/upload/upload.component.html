@@ -7,7 +7,7 @@
     }}
     {{ "quota" | transloco }})
   </h2>
-  <div class="upgrade-link">
+  <div *ngIf="isUserExternal()" class="upgrade-link">
      <a (click)='openTrustDialog()' > {{ "upgrade.account" | transloco }} </a>
   </div>
   <div class="formContainer">
