@@ -40,7 +40,6 @@ export class NotificationService {
       message,
       NotificationLevel.ERROR,
       autoclose,
-      false,
       displayTime,
     );
   }
@@ -118,7 +117,7 @@ export class NotificationService {
     } else {
       message = this.i18nService.translate(key, params);
     }
-    this.addMessage(message, level, autoclose, false, displayTime);
+    this.addMessage(message, level, autoclose, displayTime);
   }
 
   public removeMessage(message: NotificationMessage): void {
@@ -139,34 +138,12 @@ export class NotificationService {
     return result;
   }
 
-  public addTrustMessage(
-    message: string,
-    level: NotificationLevel,
-    autoclose = false,
-    displayTime?: number,
-  ): void {
-    let finalDisplayTime;
-    if (displayTime !== undefined) {
-      finalDisplayTime = displayTime;
-    }
 
-    if (!this.isSameAsLastMessage(message)) {
-      const uiMessage = new NotificationMessage(
-        level,
-        message,
-        true,
-        autoclose,
-        finalDisplayTime,
-      );
-      this.messageSource.next(uiMessage);
-    }
-  }
 
   private addMessage(
     message: string,
     level: NotificationLevel,
     autoclose = false,
-    trustDialog = false,
     displayTime?: number,
   ): void {
     let finalDisplayTime;
@@ -178,7 +155,6 @@ export class NotificationService {
       const uiMessage = new NotificationMessage(
         level,
         message,
-        trustDialog,
         autoclose,
         finalDisplayTime,
       );

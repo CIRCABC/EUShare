@@ -37,15 +37,10 @@
   </div>
 
 
-  <div *ngIf="!message.trustDialog" class="box--message--content">
+  <div class="box--message--content">
     {{ message.body }}
   </div>
 
-  <!-- ugly workaround before updating to mat-snackbar (see other related branches) -->  
-  <div *ngIf="message.trustDialog" class="box--message--content">
-    <strong>{{ "no.upload.rights.title" | transloco }}</strong>
-    <p></p>
-    {{ "no.upload.rights" | transloco }} <a (click)='openTrustDialog()' > {{ "no.upload.rights.trustrequest" | transloco }} </a> 
-  </div>
+ 
 
 </section>

@@ -23,6 +23,7 @@ h2 {
   border: 2px dashed #999;
 }
 
+
 .file-name {
   pointer-events: none !important;
   cursor: default !important;
@@ -79,3 +80,15 @@ h2 {
   background-color: white;
 }
 
+.centered {
+  position: relative; 
+}
+
+.upgrade-link {
+  position: absolute; 
+  top: 3em; 
+  right: 0;
+  z-index: 10; 
+  padding: 0.5em;
+ 
+}

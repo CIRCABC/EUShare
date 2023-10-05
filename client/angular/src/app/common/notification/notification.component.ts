@@ -59,16 +59,6 @@ export class NotificationComponent implements OnInit {
     }
   }
 
-  public openTrustDialog(): void {
-    this.closeMessage();
-    const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog was closed${JSON.stringify(result)}`);
-    });
-  }
 
   public getClassPerLevel(notificationLevel: NotificationLevel) {
     switch (notificationLevel) {

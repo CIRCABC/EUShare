@@ -287,14 +287,13 @@ public class UserService implements UserServiceInterface, UserDetailsService {
       dbUser = this.userRepository.findOneByUsername(username);
       if (dbUser == null) {
         // Not found in the database
-        if ("external".equals(domain))
+        if ("external".equals(domain) || username.startsWith("n00%"))
           dbUser = this.createUser(email, givenName, username, Role.EXTERNAL);
         else
           dbUser = this.createUser(email, givenName, username, Role.INTERNAL);
 
         //
       } else {
-        // Found in the database, probably an external
         updateUser(email, givenName, username, dbUser);
       }
       return dbUser;

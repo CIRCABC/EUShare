@@ -45,6 +45,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotificationLevel } from '../common/notification/notification-level';
 import { I18nService } from '../common/i18n/i18n.service';
+import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
 
 @Component({
   selector: 'app-upload',
@@ -129,9 +130,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       this.checkExistingFile(event.target.files[0]);
     });
 
-    this.renderer.listen(fileInput, 'click', (event) => {
-      this.checkUploadRights(event);
-    });
+
   }
 
   initializeEventListeners() {
@@ -236,26 +235,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.lastfile = file;
   }
 
-  checkUploadRights = (event: MouseEvent) => {
-    // Open file dialog
-    if (this.sessionApi.getStoredUserInfo()?.role?.toString() !== 'EXTERNAL') {
-      return true;
-    }
-    // Do not open file dialog
-    else {
-      event.preventDefault();
-      event.stopPropagation();
 
-      this.notificationService.addTrustMessage(
-        'TrustMessage',
-        NotificationLevel.FORBIDDEN,
-        false,
-        10,
-      );
-
-      return false;
-    }
-  };
   // SELECT IMPORT
   getSelectImport(): string {
     return this.uploadform.controls['selectImport'].value;
@@ -591,4 +571,16 @@ export class UploadComponent implements OnInit, AfterViewInit {
         return;
     }
   }
+
+  public openTrustDialog(): void {
+  
+    const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
+      data: {},
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog was closed${JSON.stringify(result)}`);
+    });
+  }
+
 }
