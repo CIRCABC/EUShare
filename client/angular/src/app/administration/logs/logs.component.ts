@@ -13,7 +13,7 @@ import { LastLogsComponent } from './last-logs/last-logs.component';
 import { LastUploadsComponent } from './last-uploads/last-uploads.component';
 import { LastDownloadsComponent } from './last-downloads/last-downloads.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { MatIcon } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
@@ -25,7 +25,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     LastUploadsComponent,
     LastDownloadsComponent,
     MatTabsModule,
-    MatIcon,
+    MatIconModule,
     FontAwesomeModule
   ],
   templateUrl: './logs.component.html',

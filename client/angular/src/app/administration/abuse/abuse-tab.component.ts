@@ -21,14 +21,14 @@ import { DownloadsService } from '../../services/downloads.service';
   imports: [CommonModule],
 })
 export class AbuseTabComponent implements OnInit {
-  @Input() reportStatus: string | undefined;
+  @Input() reportStatus: AbuseReportDetails.StatusEnum | undefined;
   @Input() abuseReportsDetailsMap:
     | { [key: string]: AbuseReportDetails[] }
     | undefined;
 
   @Output() showListEvent: EventEmitter<AbuseReportDetails[]> =
     new EventEmitter<AbuseReportDetails[]>();
-  @Output() deleteEvent: EventEmitter<string> = new EventEmitter<string>();
+  @Output() deleteEvent: EventEmitter<AbuseReportDetails> = new EventEmitter<AbuseReportDetails>();
   @Output() approveEvent: EventEmitter<AbuseReportDetails> =
     new EventEmitter<AbuseReportDetails>();
   @Output() denyEvent: EventEmitter<AbuseReportDetails> =
@@ -46,8 +46,8 @@ export class AbuseTabComponent implements OnInit {
     this.showListEvent.emit(reports);
   }
 
-  delete(id: string): void {
-    this.deleteEvent.emit(id);
+  delete(report: AbuseReportDetails): void {
+    this.deleteEvent.emit(report);
   }
 
   approveReport(report: AbuseReportDetails): void {

@@ -22,6 +22,8 @@ export const StatusEnumLabels = {
   REGULAR: "Delete file. Keep all user's rights.",
   SUSPENDED: 'Delete file. Prevent user from uploading.',
 };
+
+type StatusEnumKeys = (keyof typeof StatusEnumLabels)[];
 @Component({
   selector: 'app-abuse-admin-dialog',
   templateUrl: './abuse-admin-dialog.component.html',
@@ -34,7 +36,7 @@ export class AbuseAdminDialogComponent {
   abuseReportDetails: AbuseReportDetails;
   statusOptions = Object.values(UserInfo.StatusEnum);
   statusLabels = StatusEnumLabels;
-  statusKeys = Object.keys(StatusEnumLabels);
+  statusKeys = Object.keys(StatusEnumLabels) as StatusEnumKeys;
 
   constructor(
     public dialogRef: MatDialogRef<AbuseAdminDialogComponent>,
