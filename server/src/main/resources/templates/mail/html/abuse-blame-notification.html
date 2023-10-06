@@ -62,7 +62,7 @@
                                   <td align="left">
                                     <h1
                                       style="font-family:Helvetica,Arial,sans-serif; font-size:28px; font-weight:normal; color:#2C3E50; margin:0">
-                                      CIRCABC Share notification</h1>
+                                      CIRCABC Share abuse notification</h1>
                                   </td>
                                 </tr>
                                 <tr>
@@ -74,35 +74,14 @@
                                     Dear user, <br>
                                     <br>
                                     <p>
-                                      Please be informed that
-                                      <span th:text="${uploader}">Uploader</span> shared <br>"<span th:text="${filename}">Filename</span>" with you.
-                                      <p>The file expires on <span th:text="${expdate}">Expiration Date</span> </p>
-                                      <p></p>You may download it here : <br><p></p>
-                                      <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tbody>
-                                          <tr>
-                                            <td align="left">
-                                              <table border="0" cellspacing="0" cellpadding="0" class="x_mobile-btn-container">
-                                                <tbody>
-                                                  <tr>
-                                                    <td align="center" bgcolor="#8dcb6c" style="border-radius:3px"><a
-                                                        th:href="${link}"
-                                                        title="Read more"
-                                                        class="x_mobile-btn"
-                                                        style="font-family:Helvetica,Arial,sans-serif; font-size:16px; color:#ffffff; text-decoration:none; border-radius:3px; padding:15px 25px; border:1px solid #8dcb6c; display:inline-block">Download
-                                                        »</a> </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
+                                      Please be informed that the document : <span th:text="${abusereport.filename}">Filename</span>
+                                      has been reported as infringing our policies for the following reason : <span th:text="${abusereport.reason}">Reason</span>
+                                      
+                                      <p><br></p>
 
-                                    </p>
-                                    <p th:if="${message != null}"> He/She also left this message:
-                                      "<em th:text="${message}">Message</em>"
-                                    </p>
+                                      As a result, your account has been temporarily suspended. If you believe this action is unwarranted, you can contact support at the following address
+                                      DIGIT-CIRCABC-SUPPORT@ec.europa.eu
+                                   
 
                                   </td>
                                 </tr>

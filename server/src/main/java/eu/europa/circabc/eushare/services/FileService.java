@@ -73,7 +73,7 @@ import org.springframework.web.multipart.MultipartFile;
  * this class exclusively to access files.
  */
 @Service
-public class FileService implements FileServiceInterface {
+public class FileService {
 
   private Logger log = LoggerFactory.getLogger(FileService.class);
 
@@ -229,7 +229,7 @@ public class FileService implements FileServiceInterface {
     return Optional.empty();
   }
 
-  @Override
+
   @Transactional
   public void removeShareOnFileOnBehalfOf(
       String fileId,
@@ -252,7 +252,6 @@ public class FileService implements FileServiceInterface {
   }
 
   @Transactional
-  @Override
   public Recipient addShareOnFileOnBehalfOf(
       String fileId,
       Recipient recipient,
@@ -345,7 +344,6 @@ public class FileService implements FileServiceInterface {
    *
    * @return File ID if allocation successful
    */
-  @Override
   @Transactional
   public String allocateFileOnBehalfOf(
       LocalDate expirationDate,
@@ -478,7 +476,6 @@ public class FileService implements FileServiceInterface {
    * Mark a file as deleted, sends a mail with the reason if {@code reason} is not
    * null to {@code requesterId}
    */
-  @Override
   @Transactional
   public void deleteFileOnBehalfOf(
       String fileId,
@@ -511,7 +508,6 @@ public class FileService implements FileServiceInterface {
     }
   }
 
-  @Override
   @Transactional
   public void freezeFile(String fileId) {
     DBFile f = fileRepository.findById(fileId).orElse(null);
@@ -521,7 +517,6 @@ public class FileService implements FileServiceInterface {
 
   }
 
-  @Override
   @Transactional
   public void unfreezeFile(String fileId) {
     DBFile f = fileRepository.findById(fileId).orElse(null);
@@ -531,7 +526,6 @@ public class FileService implements FileServiceInterface {
 
   }
 
-  @Override
   @Transactional
   public void freezeFilesFromUser(String userId, String requesterId)
       throws UserUnauthorizedException, UnknownUserException {
@@ -551,7 +545,6 @@ public class FileService implements FileServiceInterface {
     fileRepository.saveAll(filesByUser);
   }
 
-  @Override
   @Transactional
   public void unfreezeFilesFromUser(String userId, String requesterId)
       throws UserUnauthorizedException, UnknownUserException {
@@ -572,7 +565,7 @@ public class FileService implements FileServiceInterface {
     fileRepository.saveAll(filesByUser);
   }
 
-  @Override
+  
   @Transactional
   public void updateFileOnBehalfOf(
       String fileId,
@@ -601,7 +594,7 @@ public class FileService implements FileServiceInterface {
    * @throws UnknownFileException
    * @throws WrongPasswordException
    */
-  @Override
+  
   @Transactional
   public DownloadReturn downloadFile(
       String downloadId,
@@ -672,7 +665,7 @@ public class FileService implements FileServiceInterface {
     return dbShare;
   }
 
-  @Override
+  
   @Transactional
   public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(
       int pageSize,
@@ -700,7 +693,7 @@ public class FileService implements FileServiceInterface {
     }
   }
 
-  @Override
+  
   @Transactional
   public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(
       int pageSize,
@@ -733,7 +726,7 @@ public class FileService implements FileServiceInterface {
     }
   }
 
-  @Override
+  
   @Transactional
   public FileInfoUploader saveOnBehalfOf(
       String fileId,
@@ -831,7 +824,7 @@ public class FileService implements FileServiceInterface {
       return fileSizeInBytes;
     }
 
-    @Override
+    
     public String toString() {
       return ("DownloadReturn [file=" +
           file +
@@ -842,7 +835,7 @@ public class FileService implements FileServiceInterface {
           "]");
     }
 
-    @Override
+    
     public int hashCode() {
       final int prime = 31;
       int result = 1;
@@ -854,7 +847,7 @@ public class FileService implements FileServiceInterface {
       return result;
     }
 
-    @Override
+    
     public boolean equals(Object obj) {
       if (this == obj)
         return true;

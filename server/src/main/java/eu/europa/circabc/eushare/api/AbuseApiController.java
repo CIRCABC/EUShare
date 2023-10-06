@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import eu.europa.circabc.eushare.model.AbuseReport;
 import eu.europa.circabc.eushare.model.AbuseReportDetails;
 import eu.europa.circabc.eushare.model.EnumConverter;
 import eu.europa.circabc.eushare.security.AdminOnly;
+import eu.europa.circabc.eushare.services.EmailService;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.dto.AbuseReportDetailsDTO;
@@ -45,6 +47,24 @@ import eu.europa.circabc.eushare.storage.repository.UserRepository;
 @Controller
 public class AbuseApiController implements AbuseApi {
 
+    private static final Map<String, String> REASONS;
+
+    static {
+        REASONS = new HashMap<>();
+        REASONS.put("abuse_reason_advertising_propaganda", "Advertisement or Propaganda");
+        REASONS.put("abuse_reason_copyright_infringement", "Copyright Infringement");
+        REASONS.put("abuse_reason_hate_violence_threats", "Hate, Violence, Threats");
+        REASONS.put("abuse_reason_inappropriate_content", "Inappropriate or Illegal Content");
+        REASONS.put("abuse_reason_malware_suspected", "Suspected Virus or Malware");
+        REASONS.put("abuse_reason_other_issues", "Other Issues");
+        REASONS.put("abuse_reason_phishing_attempt", "Phishing Attempt");
+        REASONS.put("abuse_reason_spam", "Spam");
+    }
+
+    public static String getReason(String key) {
+        return REASONS.get(key);
+    }
+
     @Autowired
     private AbuseRepository abuseRepository;
 
@@ -56,6 +76,9 @@ public class AbuseApiController implements AbuseApi {
 
     @Autowired
     public FileService fileService;
+
+    @Autowired
+    private EmailService emailService;
 
     @AdminOnly
     @Override
@@ -105,6 +128,18 @@ public class AbuseApiController implements AbuseApi {
         dbAbuse.setStatus(DBAbuse.Status.WAITING);
 
         abuseRepository.save(dbAbuse);
+        String filename = share.getFile().getFilename();
+        String uploader = share.getFile().getUploader().getName() + "(" + share.getFile().getUploader().getEmail()
+                + ")";
+
+        try {
+            abuseReport.setReason(getReason(abuseReport.getReason()));
+            this.emailService.sendAbuseReportNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", filename, uploader,
+                    abuseReport);
+        } catch (MessagingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         return ResponseEntity.ok(abuseReport);
 
@@ -164,6 +199,14 @@ public class AbuseApiController implements AbuseApi {
             userRepository.save(user);
 
             fileService.freezeFile(abuseReportDetails.getFileId());
+
+            try {
+                abuseReportDetails.setReason(getReason(abuseReportDetails.getReason()));
+                this.emailService.sendAbuseBlameNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", abuseReportDetails);
+            } catch (MessagingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
         }
         if (abuseReportDetails.getStatus() == AbuseReportDetails.StatusEnum.DENIED) {

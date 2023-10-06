@@ -20,12 +20,12 @@ import eu.europa.circabc.eushare.storage.entity.DBStat;
 import eu.europa.circabc.eushare.storage.repository.StatsRepository;
 
 @Service
-public class AdminService implements AdminServiceInterface {
+public class AdminService {
 
     @Autowired
     private StatsRepository statRepository;
 
-    @Override
+
     public List<Stat> getStats(Integer year)  {
 
        

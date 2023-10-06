@@ -62,7 +62,7 @@
                                   <td align="left">
                                     <h1
                                       style="font-family:Helvetica,Arial,sans-serif; font-size:28px; font-weight:normal; color:#2C3E50; margin:0">
-                                      CIRCABC Share - Notification</h1>
+                                      CIRCABC Share abuse notification</h1>
                                   </td>
                                 </tr>
                                 <tr>
@@ -74,11 +74,21 @@
                                     Dear user, <br>
                                     <br>
                                     <p>
-                                      <span th:text="${notification}">Notification</span>
-                                    </p>
+                                      Please be informed that the file : <span th:text="${filename}">Filename</span>
+                                      has been reported as infringing our policies. Please inform CIRCABC-Share administrator about that incident.
+                                      
+                                      <p>
+                                        <ul>
+                                          <li>Reporter :<span th:text="${abusereport.reporter}">Reporter</span> </li>
+                                          <li>Uploader :<span th:text="${uploader}">Uploader</span> </li>
+      
+                                          <li>Reason : <span th:text="${abusereport.reason}">Reason</span> </li>
+                                        </ul>
+                                      </p>
+
                                      
-                                    Best regards,<br/>
-                                    CIRCABC-Share support team.
+                     
+
                                   </td>
                                 </tr>
                               </tbody>
@@ -159,6 +169,3 @@
 </body>
 
 </html>
-
-
-

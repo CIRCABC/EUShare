@@ -48,7 +48,7 @@ import org.springframework.security.oauth2.server.resource.authentication.Bearer
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements UserServiceInterface, UserDetailsService {
+public class UserService implements  UserDetailsService {
 
   private Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -61,7 +61,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
   @Value("${spring.security.adminusers}")
   private String[] adminUsers;
 
-  @Override
+
   public String getAuthenticatedUserId(Authentication authentication)
       throws WrongAuthenticationException {
     if (authentication != null &&
@@ -128,7 +128,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
         .orElseThrow(UnknownUserException::new);
   }
 
-  @Override
+
   public void setAdminUsers() {
     for (String admin : adminUsers) {
       DBUser user = userRepository.findOneByUsername(admin);
@@ -148,7 +148,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     return this.getDbUser(userId).toUserInfo();
   }
 
-  @Override
+
   @Transactional
   public UserInfo getUserInfoOnBehalfOf(String userId, String requesterId)
       throws UnknownUserException, UserUnauthorizedException {
@@ -159,7 +159,7 @@ public class UserService implements UserServiceInterface, UserDetailsService {
     }
   }
 
-  @Override
+
   @Transactional
   public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId)
       throws UnknownUserException, UserUnauthorizedException, NonInternalUsersCannotBecomeAdminException,
@@ -183,7 +183,6 @@ public class UserService implements UserServiceInterface, UserDetailsService {
 
 
 
-  @Override
   @Transactional
   public List<UserInfo> getUsersUserInfoOnBehalfOf(
       int pageSize,

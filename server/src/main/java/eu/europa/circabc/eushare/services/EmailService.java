@@ -10,6 +10,8 @@
 package eu.europa.circabc.eushare.services;
 
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
+import eu.europa.circabc.eushare.model.AbuseReport;
+import eu.europa.circabc.eushare.model.AbuseReportDetails;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import java.net.URI;
@@ -32,7 +34,7 @@ import org.thymeleaf.context.Context;
  * Service for sending emails from EasyShare
  */
 @Service
-public class EmailService implements EmailServiceInterface {
+public class EmailService  {
 
   private Logger log = LoggerFactory.getLogger(EmailService.class);
 
@@ -44,6 +46,7 @@ public class EmailService implements EmailServiceInterface {
   private static final String LINK = "link";
   private static final String EXPDATE = "expdate";
   private static final String NOTIFICATION = "notification";
+  private static final String ABUSEREPORT = "abusereport";
 
   @Autowired
   private JavaMailSender sender;
@@ -71,7 +74,7 @@ public class EmailService implements EmailServiceInterface {
    * Send notification to {@code recipient} that {@code downloaderId} downloaded a
    * file.
    */
-  @Override
+ 
   public void sendDownloadNotification(
     String recipient,
     String downloaderId,
@@ -92,7 +95,7 @@ public class EmailService implements EmailServiceInterface {
   /**
    * Send notification to {@code recipient} that one of his files got deleted.
    */
-  @Override
+ 
   public void sendFileDeletedNotification(
     String recipient,
     FileBasics fileInfo,
@@ -108,7 +111,7 @@ public class EmailService implements EmailServiceInterface {
   }
 
 
-    @Override
+   
   public void sendNotification(
     String recipient,
     String notification
@@ -122,10 +125,41 @@ public class EmailService implements EmailServiceInterface {
     this.sendMessage(recipient, content);
   }
 
+  public void sendAbuseReportNotification(
+    String recipient,
+    String filename,
+    String uploader,
+    AbuseReport abuseReport
+  ) throws MessagingException {
+    Context ctx = new Context();
+    ctx.setVariable(FILENAME, filename);
+    ctx.setVariable(UPLOADER,uploader);
+    ctx.setVariable(ABUSEREPORT,abuseReport);
+
+    String content =
+      this.templateEngine.process("mail/html/abuse-report-notification", ctx);
+
+    this.sendMessage(recipient, content);
+  }
+
+    public void sendAbuseBlameNotification(
+    String recipient,
+    AbuseReportDetails abuseReport
+  ) throws MessagingException {
+    Context ctx = new Context();
+
+    ctx.setVariable(ABUSEREPORT,abuseReport);
+
+    String content =
+      this.templateEngine.process("mail/html/abuse-blame-notification", ctx);
+
+    this.sendMessage(recipient, content);
+  }
+
   /**
    * Send notification to {@code recipient} that someone shared a file with him.
    */
-  @Override
+  
   public void sendShareNotification(
     String recipient,
     FileInfoRecipient fileInfo,

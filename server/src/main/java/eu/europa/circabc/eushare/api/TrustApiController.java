@@ -54,7 +54,6 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
-
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Controller
 public class TrustApiController implements TrustApi {
@@ -93,22 +92,22 @@ public class TrustApiController implements TrustApi {
                 DBTrust trust = trustRepository.findOneById(id);
                 trust.setApproved(approved);
                 trustRepository.save(trust);
-               
+
                 DBUser user = userRepository.findOneByEmailIgnoreCase(trust.getEmail());
                 if (user != null) {
                         String message;
                         if (approved && user.getRole().equals(Role.EXTERNAL)) {
-                                message = "Your trust request has been accepted by CIRCABC-Share administrator, you can now share some files.";
+                                message = "Your user acount upgrade has been accepted by CIRCABC-Share administrator.";
                                 user.setRole(Role.TRUSTED_EXTERNAL);
-                        }
-                        else {
-                                message = "We are sorry but your trust request has been denied by CIRCABC-Share administrator for the following reason : " +reason;
+                        } else {
+                                message = "We are sorry but your user accound upgrade has been denied by CIRCABC-Share administrator for the following reason : "
+                                                + reason;
                                 user.setRole(Role.EXTERNAL);
                         }
                         userRepository.save(user);
-                        
+
                         try {
-                                
+
                                 this.emailService.sendNotification(user.getEmail(), message);
                         } catch (MessagingException e) {
                                 // TODO Auto-generated catch block
@@ -118,7 +117,7 @@ public class TrustApiController implements TrustApi {
                 return ResponseEntity.ok(trust.toTrustRequest());
         }
 
-        @AdminOnly        
+        @AdminOnly
         @Override
         public ResponseEntity<TrustRequest> deleteTrustRequest(
                         @ApiParam(value = "", required = true) @PathVariable("id") String id) {
@@ -161,6 +160,18 @@ public class TrustApiController implements TrustApi {
                         trustRequest.setRequestDateTime(OffsetDateTime.now());
                         DBTrust trust = DBTrust.fromTrustRequest(trustRequest);
                         trustRepository.save(trust);
+
+                        try {
+                                String message = "A user account upgrade has been requested by : "
+                                                + user.getName() + "(" + user.getEmail()
+                                                + ")  Please notify CIRCABC-Share admins to evaluate the request.";
+
+                                this.emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", message);
+                        } catch (MessagingException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                        }
+
                 } catch (WrongAuthenticationException e) {
                         log.debug("wrong authentication !");
                         throw new ResponseStatusException(
