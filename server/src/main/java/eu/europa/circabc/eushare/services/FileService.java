@@ -229,7 +229,6 @@ public class FileService {
     return Optional.empty();
   }
 
-
   @Transactional
   public void removeShareOnFileOnBehalfOf(
       String fileId,
@@ -299,17 +298,20 @@ public class FileService {
 
     if (!recipient.getEmail().isEmpty()) {
       DBUser user = userRepository.findOneByEmailIgnoreCase(recipient.getEmail());
-      if (user.getRole().equals(DBUser.Role.EXTERNAL)) {
-        user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
-        userRepository.save(user);
-        try {
-          emailService.sendNotification(user.getEmail(), "\n" + //
-              "\n" + //
-              "Please be advised that you now have the right to upload files as you have gained trust through "
-              + requester.getEmail() + " sharing a file with you.");
-        } catch (MessagingException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+      if (user != null && user.getRole().equals(DBUser.Role.EXTERNAL)) {
+        if (requester.getRole().equals(DBUser.Role.ADMIN) || requester.getRole().equals(DBUser.Role.INTERNAL)
+            || requester.getRole().equals(DBUser.Role.TRUSTED_EXTERNAL)) {
+          user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+          userRepository.save(user);
+          try {
+            emailService.sendNotification(user.getEmail(), "\n" + //
+                "\n" + //
+                "Please be advised that you account has been upgraded as  "
+                + requester.getEmail() + " has shared a file with you.");
+          } catch (MessagingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
         }
       }
     }
@@ -520,8 +522,8 @@ public class FileService {
   @Transactional
   public void unfreezeFile(String fileId) {
     DBFile f = fileRepository.findById(fileId).orElse(null);
-    //if (f.getStatus() == DBFile.Status.FROZEN)
-      f.setStatus(DBFile.Status.AVAILABLE);
+    // if (f.getStatus() == DBFile.Status.FROZEN)
+    f.setStatus(DBFile.Status.AVAILABLE);
     fileRepository.save(f);
 
   }
@@ -559,13 +561,12 @@ public class FileService {
     }
 
     for (DBFile file : filesByUser) {
-      //if (file.getStatus() == DBFile.Status.FROZEN)
-        file.setStatus(DBFile.Status.AVAILABLE);
+      // if (file.getStatus() == DBFile.Status.FROZEN)
+      file.setStatus(DBFile.Status.AVAILABLE);
     }
     fileRepository.saveAll(filesByUser);
   }
 
-  
   @Transactional
   public void updateFileOnBehalfOf(
       String fileId,
@@ -594,7 +595,7 @@ public class FileService {
    * @throws UnknownFileException
    * @throws WrongPasswordException
    */
-  
+
   @Transactional
   public DownloadReturn downloadFile(
       String downloadId,
@@ -665,7 +666,6 @@ public class FileService {
     return dbShare;
   }
 
-  
   @Transactional
   public List<FileInfoRecipient> getFileInfoRecipientOnBehalfOf(
       int pageSize,
@@ -693,7 +693,6 @@ public class FileService {
     }
   }
 
-  
   @Transactional
   public List<FileInfoUploader> getFileInfoUploaderOnBehalfOf(
       int pageSize,
@@ -726,7 +725,6 @@ public class FileService {
     }
   }
 
-  
   @Transactional
   public FileInfoUploader saveOnBehalfOf(
       String fileId,
@@ -824,7 +822,6 @@ public class FileService {
       return fileSizeInBytes;
     }
 
-    
     public String toString() {
       return ("DownloadReturn [file=" +
           file +
@@ -835,7 +832,6 @@ public class FileService {
           "]");
     }
 
-    
     public int hashCode() {
       final int prime = 31;
       int result = 1;
@@ -847,7 +843,6 @@ public class FileService {
       return result;
     }
 
-    
     public boolean equals(Object obj) {
       if (this == obj)
         return true;

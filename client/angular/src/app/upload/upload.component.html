@@ -7,6 +7,8 @@
     }}
     {{ "quota" | transloco }})
   </h2>
+
+
   <div *ngIf="isUserExternal()" class="upgrade-link">
      <a (click)='openTrustDialog()' > {{ "upgrade.account" | transloco }} </a>
   </div>
@@ -124,8 +126,12 @@
         </div>
       </div>
       <br />
+      <div class="wrap-box captcha" >
+        <cbc-captcha languageCode="en"></cbc-captcha>
+      </div>
+      <br /> <p></p>
       <div class="field">
-        <button class="button" [class.is-loading]="uploadInProgress" type="submit" [disabled]="!uploadform.valid"
+        <button class="button" [class.is-loading]="uploadInProgress" type="submit" [disabled]="!uploadform.valid || isCaptchaInValid()"
           data-cy="submit">
           {{ "submit" | transloco }}
         </button>

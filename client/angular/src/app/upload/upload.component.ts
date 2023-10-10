@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -37,7 +37,7 @@ import { SessionStorageService } from '../services/session-storage.service';
 
 import { NgFor, NgIf } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { TranslocoModule } from '@ngneat/transloco';
+import { TranslocoModule, getBrowserLang } from '@ngneat/transloco';
 import { EmailInputComponent } from '../common/formComponents/email-input/email-input.component';
 import { MessageTextAreaComponent } from '../common/formComponents/message-text-area/message-text-area.component';
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
@@ -46,6 +46,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { NotificationLevel } from '../common/notification/notification-level';
 import { I18nService } from '../common/i18n/i18n.service';
 import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
+import { CaptchaComponent } from '../common/captcha/captcha.component';
 
 @Component({
   selector: 'app-upload',
@@ -64,6 +65,7 @@ import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dia
     TranslocoModule,
     MatDialogModule,
     MatSnackBarModule,
+    CaptchaComponent
   ],
   providers: [FileSizeFormatPipe],
 })
@@ -80,6 +82,10 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   public emailControl!: FormControl;
   public isShowEmailControl = true;
+
+  @ViewChild(CaptchaComponent)
+  private captchaComponent!: CaptchaComponent;
+
 
   constructor(
     private router: Router,
@@ -130,6 +136,14 @@ export class UploadComponent implements OnInit, AfterViewInit {
       this.checkExistingFile(event.target.files[0]);
     });
 
+
+    const activeLang = getBrowserLang();
+    if (this.captchaComponent !== undefined) {
+      this.captchaComponent.answer.setValue('');
+      if (activeLang && activeLang !== this.captchaComponent.languageCode) {
+        this.captchaComponent.languageCode = activeLang;
+      }
+    }
 
   }
 
@@ -236,7 +250,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   isUserExternal() {
-    return (this.sessionApi.getStoredUserInfo()?.role?.toString() === 'EXTERNAL') ;
+    return (this.sessionApi.getStoredUserInfo()?.role?.toString() === 'EXTERNAL');
   }
 
   // SELECT IMPORT
@@ -584,6 +598,15 @@ export class UploadComponent implements OnInit, AfterViewInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(`Dialog was closed${JSON.stringify(result)}`);
     });
+  }
+
+
+  public isCaptchaInValid(): boolean {
+   // if (this.isGuest()) {
+      return this.captchaComponent.answer.invalid;
+   /* } else {
+      return !this.contactForm.valid;
+    }*/
   }
 
 }
