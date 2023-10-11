@@ -171,5 +171,6 @@
   "warning": "Tähelepanu!",
   "while.trying": "proovisime teha järgmist:",
   "wrong.password": "Vale salasõna, palun proovige uuesti.",
+  "wrong.captcha": "Vale captcha vastus, proovige uuesti.",
   "you.can.upload.up.to": "Üles on lubatud laadida kuni"
 }

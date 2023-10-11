@@ -1075,6 +1075,22 @@ paths:
       - Abuse
       summary: Create a new abuse report
       operationId: "createAbuseReport"
+      parameters:
+        - name: X-EU-CAPTCHA-ID
+          in: header
+          schema:
+            type: string
+          required: false
+        - name: X-EU-CAPTCHA-TOKEN
+          in: header
+          schema:
+            type: string
+          required: false
+        - name: X-EU-CAPTCHA-TEXT
+          in: header
+          schema:
+            type: string
+          required: false
       requestBody:
         required: true
         content:

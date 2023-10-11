@@ -1,24 +1,31 @@
+/*
+CIRCABC Share - a module of CIRCABC
+Copyright (C) 2019 European Commission
+
+This file is part of the "CIRCABC Share" project.
+
+This code is publicly distributed under the terms of EUPL-V1.2 license,
+available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+*/
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TranslocoModule } from '@ngneat/transloco';
 import { firstValueFrom } from 'rxjs';
-import { CaptchaControllerService } from '../../openapi/eu-captcha/api/captchaController.service';
+import { CaptchaControllerService } from '../../openapi-eu-captcha/api/captchaController.service';
 import { MatIconModule } from '@angular/material/icon';
-
-
 
 @Component({
   selector: 'cbc-captcha',
   templateUrl: './captcha.component.html',
   styleUrls: ['./captcha.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule,  TranslocoModule,MatIconModule],
+  imports: [ReactiveFormsModule, TranslocoModule, MatIconModule],
 })
 export class CaptchaComponent implements OnInit {
   constructor(
     private captchaService: CaptchaControllerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {}
 
   private capitalizationValue = false;
@@ -51,7 +58,7 @@ export class CaptchaComponent implements OnInit {
   @Input()
   get languageCode() {
     const result = this.captchaLang.find(
-      (captchaLang) => captchaLang.id === this.captchaLanguageId
+      (captchaLang) => captchaLang.id === this.captchaLanguageId,
     );
     if (result) {
       return result.code;
@@ -61,7 +68,7 @@ export class CaptchaComponent implements OnInit {
   }
   set languageCode(value: string) {
     const result = this.captchaLang.find(
-      (captchaLang) => captchaLang.code === value
+      (captchaLang) => captchaLang.code === value,
     );
     let newCaptchaLanguageId = 'en-GB';
     if (result) {
@@ -117,15 +124,15 @@ export class CaptchaComponent implements OnInit {
         this.capitalizationValue,
         undefined,
         undefined,
-        'response'
-      )
+        'response',
+      ),
     );
 
     if (captcha.body !== null) {
       this.captchaImage = `data:image/png;base64,${captcha.body.captchaImg}`;
       this.captchaId = captcha.body.captchaId;
       this.audioCaptcha = this.sanitizer.bypassSecurityTrustResourceUrl(
-        `data:audio/wav;base64,${captcha.body.audioCaptcha}`
+        `data:audio/wav;base64,${captcha.body.audioCaptcha}`,
       );
     }
 

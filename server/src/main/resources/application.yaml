@@ -26,3 +26,4 @@ eushare:
   defaultuserspace: 5368709120
   maxSizeAllowedInBytes: 5368709120 
   activateMailService: true
+  captcha-url: https://circabc.europa.eu/EuCaptcha-2.2.8

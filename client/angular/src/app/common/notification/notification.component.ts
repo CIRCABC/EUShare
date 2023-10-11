@@ -57,9 +57,7 @@ export class NotificationComponent implements OnInit {
         }, timeOutIntrevalInMiliSeconds);
       }
     }
-
   }
-
 
   public getClassPerLevel(notificationLevel: NotificationLevel) {
     switch (notificationLevel) {

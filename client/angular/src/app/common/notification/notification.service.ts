@@ -36,12 +36,7 @@ export class NotificationService {
     autoclose = false,
     displayTime?: number,
   ): void {
-    this.addMessage(
-      message,
-      NotificationLevel.ERROR,
-      autoclose,
-      displayTime,
-    );
+    this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
   }
 
   public addErrorMessageTranslation(
@@ -137,8 +132,6 @@ export class NotificationService {
     this.lastMessage.time = time;
     return result;
   }
-
-
 
   private addMessage(
     message: string,

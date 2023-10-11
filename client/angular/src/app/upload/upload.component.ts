@@ -9,7 +9,13 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { HttpEvent, HttpEventType } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -65,7 +71,7 @@ import { CaptchaComponent } from '../common/captcha/captcha.component';
     TranslocoModule,
     MatDialogModule,
     MatSnackBarModule,
-    CaptchaComponent
+    CaptchaComponent,
   ],
   providers: [FileSizeFormatPipe],
 })
@@ -85,7 +91,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   @ViewChild(CaptchaComponent)
   private captchaComponent!: CaptchaComponent;
-
 
   constructor(
     private router: Router,
@@ -136,15 +141,16 @@ export class UploadComponent implements OnInit, AfterViewInit {
       this.checkExistingFile(event.target.files[0]);
     });
 
-
     const activeLang = getBrowserLang();
-    if (this.captchaComponent !== undefined) {
+    if (
+      this.captchaComponent !== undefined &&
+      this.captchaComponent.answer !== undefined
+    ) {
       this.captchaComponent.answer.setValue('');
       if (activeLang && activeLang !== this.captchaComponent.languageCode) {
         this.captchaComponent.languageCode = activeLang;
       }
     }
-
   }
 
   initializeEventListeners() {
@@ -250,7 +256,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   isUserExternal() {
-    return (this.sessionApi.getStoredUserInfo()?.role?.toString() === 'EXTERNAL');
+    return this.sessionApi.getStoredUserInfo()?.role?.toString() === 'EXTERNAL';
   }
 
   // SELECT IMPORT
@@ -590,7 +596,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   public openTrustDialog(): void {
-
     const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
       data: {},
     });
@@ -600,13 +605,13 @@ export class UploadComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   public isCaptchaInValid(): boolean {
-   // if (this.isGuest()) {
+    // if (this.isGuest()) {
+    if (this.captchaComponent && this.captchaComponent.answer)
       return this.captchaComponent.answer.invalid;
-   /* } else {
-      return !this.contactForm.valid;
-    }*/
+    else return true;
+    /* } else {
+       return !this.contactForm.valid;
+     }*/
   }
-
 }

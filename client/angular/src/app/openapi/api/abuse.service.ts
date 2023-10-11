@@ -105,18 +105,30 @@ export class AbuseService {
     /**
      * Create a new abuse report
      * @param abuseReport 
+     * @param xEUCAPTCHAID 
+     * @param xEUCAPTCHATOKEN 
+     * @param xEUCAPTCHATEXT 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAbuseReport(abuseReport: AbuseReport, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<AbuseReport>;
-    public createAbuseReport(abuseReport: AbuseReport, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<AbuseReport>>;
-    public createAbuseReport(abuseReport: AbuseReport, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<AbuseReport>>;
-    public createAbuseReport(abuseReport: AbuseReport, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public createAbuseReport(abuseReport: AbuseReport, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<AbuseReport>;
+    public createAbuseReport(abuseReport: AbuseReport, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<AbuseReport>>;
+    public createAbuseReport(abuseReport: AbuseReport, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<AbuseReport>>;
+    public createAbuseReport(abuseReport: AbuseReport, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (abuseReport === null || abuseReport === undefined) {
             throw new Error('Required parameter abuseReport was null or undefined when calling createAbuseReport.');
         }
 
         let localVarHeaders = this.defaultHeaders;
+        if (xEUCAPTCHAID !== undefined && xEUCAPTCHAID !== null) {
+            localVarHeaders = localVarHeaders.set('X-EU-CAPTCHA-ID', String(xEUCAPTCHAID));
+        }
+        if (xEUCAPTCHATOKEN !== undefined && xEUCAPTCHATOKEN !== null) {
+            localVarHeaders = localVarHeaders.set('X-EU-CAPTCHA-TOKEN', String(xEUCAPTCHATOKEN));
+        }
+        if (xEUCAPTCHATEXT !== undefined && xEUCAPTCHATEXT !== null) {
+            localVarHeaders = localVarHeaders.set('X-EU-CAPTCHA-TEXT', String(xEUCAPTCHATEXT));
+        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {

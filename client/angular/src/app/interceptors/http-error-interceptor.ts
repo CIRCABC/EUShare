@@ -226,6 +226,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               this.notificationService.addErrorMessage(errorMessage);
               break;
             }
+            case 429: {
+              this.notificationService.addErrorMessage(
+                this.i18nService.translate('wrong.captcha'),
+              );
+              break;
+            }
             case 500: {
               this.notificationService.addErrorMessage(
                 `${this.i18nService.translate(

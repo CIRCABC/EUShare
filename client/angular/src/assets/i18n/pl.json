@@ -171,5 +171,6 @@
   "warning": "Ostrzeżenie",
   "while.trying": "podczas próby",
   "wrong.password": "Błędne hasło, spróbuj ponownie.",
+  "wrong.captcha": "Niewłaściwa odpowiedź captcha, spróbuj ponownie.",
   "you.can.upload.up.to": "Możesz załadować maksymalnie"
 }

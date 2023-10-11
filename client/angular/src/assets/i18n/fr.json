@@ -171,5 +171,6 @@
   "warning": "Avertissement",
   "while.trying": "lors de l’action suivante:",
   "wrong.password": "Mot de passe erroné; veuillez réessayer.",
+  "wrong.captcha": "Mauvaise réponse au captcha, veuillez réessayer.",
   "you.can.upload.up.to": "Vous pouvez télécharger jusqu'à"
 }

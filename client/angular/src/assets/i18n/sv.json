@@ -171,5 +171,6 @@
   "warning": "Varning",
   "while.trying": "när du försökte",
   "wrong.password": "Fel lösenord – försök igen.",
+  "wrong.captcha": "Fel captcha-svar, försök igen.",
   "you.can.upload.up.to": "Du kan ladda upp högst"
 }

@@ -171,5 +171,6 @@
     "warning": "Warning",
     "while.trying": "while trying",
     "wrong.password": "Wrong password, please try again.",
+    "wrong.captcha": "Wrong captcha response, please try again.",
     "you.can.upload.up.to": "You can upload up to"
 }

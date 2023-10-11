@@ -39,12 +39,15 @@
                         </div>
                     </ng-container>
                 </div>
+                <div *ngIf="!authentified" class="wrap-box captcha" >
+                    <cbc-captcha languageCode="en"></cbc-captcha>
+                  </div>
 
             </section>
 
             <footer class="modal-card-foot">
                 <div mat-dialog-actions>
-                    <button class="button" [disabled]="abuseForm.invalid"
+                    <button class="button" [disabled]="abuseForm.invalid || isCaptchaInValid()"
                         mat-raised-button color="primary" type="submit">
                          {{ 'submit' | transloco }}
                     </button>

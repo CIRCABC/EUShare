@@ -26,7 +26,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     LastDownloadsComponent,
     MatTabsModule,
     MatIconModule,
-    FontAwesomeModule
+    FontAwesomeModule,
   ],
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.scss'],

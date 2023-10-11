@@ -171,5 +171,6 @@
   "warning": "Atención",
   "while.trying": "al intentar",
   "wrong.password": "Contraseña incorrecta. Inténtelo de nuevo.",
+  "wrong.captcha": "Respuesta de captcha incorrecta, inténtalo de nuevo.",
   "you.can.upload.up.to": "Puede cargar hasta"
 }

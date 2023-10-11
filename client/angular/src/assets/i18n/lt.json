@@ -171,5 +171,6 @@
   "warning": "Įspėjimas",
   "while.trying": "bandant",
   "wrong.password": "Neteisingas slaptažodis, bandykite dar kartą.",
+  "wrong.captcha": "Neteisingas captcha atsakymas, pabandykite dar kartą.",
   "you.can.upload.up.to": "Galite įkelti ne daugiau kaip"
 }

@@ -15,7 +15,8 @@ import eu.europa.circabc.eushare.model.Status;
 
 public class HttpErrorAnswerBuilder {
 
-  private HttpErrorAnswerBuilder() {}
+  private HttpErrorAnswerBuilder() {
+  }
 
   public static Status build400Empty() {
     return buildEmpty(400);
@@ -81,6 +82,10 @@ public class HttpErrorAnswerBuilder {
     return buildWithMessage(404, "UserNotFound");
   }
 
+  private static Status build429Empty() {
+    return buildEmpty(429);
+  }
+
   private static Status build500Empty() {
     return buildEmpty(500);
   }
@@ -107,6 +112,10 @@ public class HttpErrorAnswerBuilder {
 
   public static String build401EmptyToString() {
     return mapAStatus(build401Empty());
+  }
+
+  public static String build429EmptyToString() {
+    return mapAStatus(build429Empty());
   }
 
   public static String build403NotAuthorizedToString() {
@@ -183,5 +192,4 @@ public class HttpErrorAnswerBuilder {
     return mapAStatus(build403UserHasNoUploadRights());
   }
 
- 
 }

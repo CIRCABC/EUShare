@@ -42,6 +42,9 @@ public class EushareConfiguration {
   @NotNull
   private String clientHttpAddress;
 
+  @NotNull
+  private String captchaUrl;
+
   public LocalDate defaultExpirationDate() {
     return LocalDate.now().plusDays(expirationDays);
   }
@@ -98,5 +101,13 @@ public class EushareConfiguration {
 
   public void setClientHttpAddress(String clientHttpAddress) {
     this.clientHttpAddress = clientHttpAddress;
+  }
+
+  public String getCaptchaUrl() {
+    return captchaUrl;
+  }
+
+  public void setCaptchaUrl(String captchaUrl) {
+    this.captchaUrl = captchaUrl;
   }
 }

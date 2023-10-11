@@ -171,5 +171,6 @@
   "warning": "Attenzione!",
   "while.trying": "mentre si tentava",
   "wrong.password": "Password non corretta, riprovare.",
+  "wrong.captcha": "Risposta captcha errata, riprova.",
   "you.can.upload.up.to": "È possibile caricare fino a"
 }

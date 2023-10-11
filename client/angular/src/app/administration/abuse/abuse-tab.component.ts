@@ -28,7 +28,8 @@ export class AbuseTabComponent implements OnInit {
 
   @Output() showListEvent: EventEmitter<AbuseReportDetails[]> =
     new EventEmitter<AbuseReportDetails[]>();
-  @Output() deleteEvent: EventEmitter<AbuseReportDetails> = new EventEmitter<AbuseReportDetails>();
+  @Output() deleteEvent: EventEmitter<AbuseReportDetails> =
+    new EventEmitter<AbuseReportDetails>();
   @Output() approveEvent: EventEmitter<AbuseReportDetails> =
     new EventEmitter<AbuseReportDetails>();
   @Output() denyEvent: EventEmitter<AbuseReportDetails> =

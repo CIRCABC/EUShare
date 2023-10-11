@@ -171,5 +171,6 @@
   "warning": "Advarsel",
   "while.trying": ": forsøg på",
   "wrong.password": "Forkert password – prøv igen.",
+  "wrong.captcha": "Forkert captcha-svar, prøv igen.",
   "you.can.upload.up.to": "Du kan uploade op til"
 }

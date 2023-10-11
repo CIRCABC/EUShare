@@ -29,7 +29,7 @@ export class LastLogsComponent implements AfterViewInit {
     'username',
     'total_space',
     'last_logged',
-    'status'
+    'status',
   ];
   dataSource = new MatTableDataSource<LastLog>();
 

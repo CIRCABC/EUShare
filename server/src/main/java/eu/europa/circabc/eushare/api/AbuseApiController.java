@@ -14,11 +14,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,6 +30,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.europa.circabc.eushare.CaptchaApi;
+import eu.europa.circabc.eushare.CaptchaApiImpl;
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
+import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.AbuseReport;
 import eu.europa.circabc.eushare.model.AbuseReportDetails;
@@ -80,6 +86,9 @@ public class AbuseApiController implements AbuseApi {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private EushareConfiguration esConfig;
+
     @AdminOnly
     @Override
     public ResponseEntity<AbuseReport> getAbuseReport(String id) {
@@ -95,13 +104,39 @@ public class AbuseApiController implements AbuseApi {
     }
 
     @Override
-    public ResponseEntity<AbuseReport> createAbuseReport(@Valid AbuseReport abuseReport) {
-
-        DBAbuse dbAbuse = DBAbuse.toDBAbuse(abuseReport);
+    public ResponseEntity<AbuseReport> createAbuseReport(@Valid AbuseReport abuseReport, String X_EU_CAPTCHA_ID,
+            String X_EU_CAPTCHA_TOKEN, String X_EU_CAPTCHA_TEXT) {
 
         Authentication authentication = SecurityContextHolder
                 .getContext()
                 .getAuthentication();
+       
+        if (authentication.isAuthenticated()) {
+            String captchaToken = X_EU_CAPTCHA_TOKEN;
+            String captchaId = X_EU_CAPTCHA_ID;
+            String answer = X_EU_CAPTCHA_TEXT;
+
+            if (captchaToken == null || captchaId == null || answer == null) {
+                throw new ResponseStatusException(
+                        HttpStatus.TOO_MANY_REQUESTS,
+                        HttpErrorAnswerBuilder.build429EmptyToString(),
+                        null);
+            }
+
+            CaptchaApiImpl captchaApi = new CaptchaApiImpl();
+            captchaApi.setCaptchaUrl(esConfig.getCaptchaUrl());
+
+            boolean isValid = captchaApi.validate(captchaToken, captchaId, answer);
+
+            if (!isValid) {
+                throw new ResponseStatusException(
+                        HttpStatus.TOO_MANY_REQUESTS,
+                        HttpErrorAnswerBuilder.build429EmptyToString(),
+                        null);
+            }
+        }
+
+        DBAbuse dbAbuse = DBAbuse.toDBAbuse(abuseReport);
 
         if (authentication.isAuthenticated()) {
             String requesterId;

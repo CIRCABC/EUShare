@@ -44,6 +44,9 @@ public interface AbuseApi {
      * POST /abuse : Create a new abuse report
      *
      * @param abuseReport  (required)
+     * @param X_EU_CAPTCHA_ID  (optional)
+     * @param X_EU_CAPTCHA_TOKEN  (optional)
+     * @param X_EU_CAPTCHA_TEXT  (optional)
      * @return Successful Operation (status code 200)
      */
     @ApiOperation(value = "Create a new abuse report", nickname = "createAbuseReport", notes = "", response = AbuseReport.class, tags={ "Abuse", })
@@ -54,7 +57,7 @@ public interface AbuseApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<AbuseReport> createAbuseReport(@ApiParam(value = "" ,required=true )  @Valid @RequestBody AbuseReport abuseReport) {
+    default ResponseEntity<AbuseReport> createAbuseReport(@ApiParam(value = "" ,required=true )  @Valid @RequestBody AbuseReport abuseReport,@ApiParam(value = "" ) @RequestHeader(value="X-EU-CAPTCHA-ID", required=false) String X_EU_CAPTCHA_ID,@ApiParam(value = "" ) @RequestHeader(value="X-EU-CAPTCHA-TOKEN", required=false) String X_EU_CAPTCHA_TOKEN,@ApiParam(value = "" ) @RequestHeader(value="X-EU-CAPTCHA-TEXT", required=false) String X_EU_CAPTCHA_TEXT) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

@@ -171,5 +171,6 @@
   "warning": "Varoitus",
   "while.trying": "yritettäessä",
   "wrong.password": "Virheellinen salasana. Yritä uudelleen.",
+  "wrong.captcha": "Väärä captcha-vastaus, yritä uudelleen.",
   "you.can.upload.up.to": "Tiedostojen enimmäiskoko on"
 }

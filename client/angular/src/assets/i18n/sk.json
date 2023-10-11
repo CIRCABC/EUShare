@@ -171,5 +171,6 @@
   "warning": "Upozornenie",
   "while.trying": "pri pokuse",
   "wrong.password": "Nesprávne heslo, skúste znova.",
+  "wrong.captcha": "Nesprávna odpoveď captcha, skúste to znova.",
   "you.can.upload.up.to": "Nahrať môžete najviac"
 }

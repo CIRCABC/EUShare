@@ -171,5 +171,6 @@
   "warning": "Opozorilo",
   "while.trying": "pri poskusu",
   "wrong.password": "Napačno geslo, poskusite znova.",
+  "wrong.captcha": "Napačen odgovor captcha, poskusite znova.",
   "you.can.upload.up.to": "Skupaj lahko naložite do"
 }
