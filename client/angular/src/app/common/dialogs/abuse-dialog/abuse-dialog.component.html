@@ -47,7 +47,7 @@
 
             <footer class="modal-card-foot">
                 <div mat-dialog-actions>
-                    <button class="button" [disabled]="abuseForm.invalid || isCaptchaInValid()"
+                    <button class="button" [disabled]="abuseForm.invalid || (isCaptchaInValid() && !authentified) "
                         mat-raised-button color="primary" type="submit">
                          {{ 'submit' | transloco }}
                     </button>

@@ -452,18 +452,30 @@ export class FileService {
     /**
      * Used by INTERNAL users in order to request the reservation of space for a file
      * @param fileRequest 
+     * @param xEUCAPTCHAID 
+     * @param xEUCAPTCHATOKEN 
+     * @param xEUCAPTCHATEXT 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public postFileFileRequest(fileRequest: FileRequest, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<FileResult>;
-    public postFileFileRequest(fileRequest: FileRequest, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<FileResult>>;
-    public postFileFileRequest(fileRequest: FileRequest, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<FileResult>>;
-    public postFileFileRequest(fileRequest: FileRequest, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public postFileFileRequest(fileRequest: FileRequest, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<FileResult>;
+    public postFileFileRequest(fileRequest: FileRequest, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<FileResult>>;
+    public postFileFileRequest(fileRequest: FileRequest, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<FileResult>>;
+    public postFileFileRequest(fileRequest: FileRequest, xEUCAPTCHAID?: string, xEUCAPTCHATOKEN?: string, xEUCAPTCHATEXT?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (fileRequest === null || fileRequest === undefined) {
             throw new Error('Required parameter fileRequest was null or undefined when calling postFileFileRequest.');
         }
 
         let localVarHeaders = this.defaultHeaders;
+        if (xEUCAPTCHAID !== undefined && xEUCAPTCHAID !== null) {
+            localVarHeaders = localVarHeaders.set('X-EU-CAPTCHA-ID', String(xEUCAPTCHAID));
+        }
+        if (xEUCAPTCHATOKEN !== undefined && xEUCAPTCHATOKEN !== null) {
+            localVarHeaders = localVarHeaders.set('X-EU-CAPTCHA-TOKEN', String(xEUCAPTCHATOKEN));
+        }
+        if (xEUCAPTCHATEXT !== undefined && xEUCAPTCHATEXT !== null) {
+            localVarHeaders = localVarHeaders.set('X-EU-CAPTCHA-TEXT', String(xEUCAPTCHATEXT));
+        }
 
         let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (localVarHttpHeaderAcceptSelected === undefined) {

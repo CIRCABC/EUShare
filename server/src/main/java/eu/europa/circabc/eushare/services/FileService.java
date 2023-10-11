@@ -384,7 +384,7 @@ public class FileService {
 
     DBUser uploader = userService.getDbUser(uploaderId);
 
-    if ((uploader.getRole()).equals(DBUser.Role.EXTERNAL)) {
+    if (!(uploader.getStatus()).equals(DBUser.Status.REGULAR)) {
       throw new UserHasNoUploadRightsException();
     }
 

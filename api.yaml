@@ -572,6 +572,22 @@ paths:
     post:
       description: Used by INTERNAL users in order to request the reservation of space for a file
       operationId: postFileFileRequest
+      parameters:
+        - name: X-EU-CAPTCHA-ID
+          in: header
+          schema:
+            type: string
+          required: false
+        - name: X-EU-CAPTCHA-TOKEN
+          in: header
+          schema:
+            type: string
+          required: false
+        - name: X-EU-CAPTCHA-TEXT
+          in: header
+          schema:
+            type: string
+          required: false
       tags:
       - File
       security:

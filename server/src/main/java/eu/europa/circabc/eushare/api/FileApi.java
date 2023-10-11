@@ -216,6 +216,9 @@ public interface FileApi {
      * Used by INTERNAL users in order to request the reservation of space for a file
      *
      * @param fileRequest  (required)
+     * @param X_EU_CAPTCHA_ID  (optional)
+     * @param X_EU_CAPTCHA_TOKEN  (optional)
+     * @param X_EU_CAPTCHA_TEXT  (optional)
      * @return SUCCESS Returns the File ID of the newly-created file (status code 200)
      *         or BAD REQUEST the Error Message will be empty (status code 400)
      *         or UNAUTHORIZED the Error message will be empty (status code 401)
@@ -234,7 +237,7 @@ public interface FileApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<FileResult> postFileFileRequest(@ApiParam(value = "" ,required=true )  @Valid @RequestBody FileRequest fileRequest) {
+    default ResponseEntity<FileResult> postFileFileRequest(@ApiParam(value = "" ,required=true )  @Valid @RequestBody FileRequest fileRequest,@ApiParam(value = "" ) @RequestHeader(value="X-EU-CAPTCHA-ID", required=false) String X_EU_CAPTCHA_ID,@ApiParam(value = "" ) @RequestHeader(value="X-EU-CAPTCHA-TOKEN", required=false) String X_EU_CAPTCHA_TOKEN,@ApiParam(value = "" ) @RequestHeader(value="X-EU-CAPTCHA-TEXT", required=false) String X_EU_CAPTCHA_TEXT) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

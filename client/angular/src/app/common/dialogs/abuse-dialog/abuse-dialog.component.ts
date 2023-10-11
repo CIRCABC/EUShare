@@ -89,12 +89,18 @@ export class AbuseDialogComponent implements AfterViewInit {
   }
 
   submitForm(): void {
+    const useCaptcha = !this.authentified;
+
     this.abuseService
       .createAbuseReport(
         this.abuseReport,
-        this.captchaComponent.captchaId,
-        this.captchaComponent.captchaToken,
-        this.captchaComponent.answer.value as string,
+        ...(useCaptcha
+          ? [
+              this.captchaComponent.captchaId,
+              this.captchaComponent.captchaToken,
+              this.captchaComponent.answer.value as string,
+            ]
+          : []),
       )
       .subscribe(() => {
         this.notificationService.addSuccessMessageTranslation(
@@ -112,7 +118,7 @@ export class AbuseDialogComponent implements AfterViewInit {
 
   public isCaptchaInValid(): boolean {
     if (this.captchaComponent && this.captchaComponent.answer) {
-      if (this.authentified) {
+      if (!this.authentified) {
         return this.captchaComponent.answer.invalid;
       } else {
         return false;

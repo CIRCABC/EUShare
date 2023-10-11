@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -39,6 +40,7 @@ import eu.europa.circabc.eushare.model.AbuseReport;
 import eu.europa.circabc.eushare.model.AbuseReportDetails;
 import eu.europa.circabc.eushare.model.EnumConverter;
 import eu.europa.circabc.eushare.security.AdminOnly;
+import eu.europa.circabc.eushare.security.CaptchaValidator;
 import eu.europa.circabc.eushare.services.EmailService;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
@@ -87,7 +89,7 @@ public class AbuseApiController implements AbuseApi {
     private EmailService emailService;
 
     @Autowired
-    private EushareConfiguration esConfig;
+    private CaptchaValidator captchaValidator;
 
     @AdminOnly
     @Override
@@ -103,42 +105,22 @@ public class AbuseApiController implements AbuseApi {
 
     }
 
+  
+
     @Override
     public ResponseEntity<AbuseReport> createAbuseReport(@Valid AbuseReport abuseReport, String X_EU_CAPTCHA_ID,
             String X_EU_CAPTCHA_TOKEN, String X_EU_CAPTCHA_TEXT) {
 
-        Authentication authentication = SecurityContextHolder
-                .getContext()
-                .getAuthentication();
-       
-        if (authentication.isAuthenticated()) {
-            String captchaToken = X_EU_CAPTCHA_TOKEN;
-            String captchaId = X_EU_CAPTCHA_ID;
-            String answer = X_EU_CAPTCHA_TEXT;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            if (captchaToken == null || captchaId == null || answer == null) {
-                throw new ResponseStatusException(
-                        HttpStatus.TOO_MANY_REQUESTS,
-                        HttpErrorAnswerBuilder.build429EmptyToString(),
-                        null);
-            }
+        if ((authentication instanceof AnonymousAuthenticationToken)) {
 
-            CaptchaApiImpl captchaApi = new CaptchaApiImpl();
-            captchaApi.setCaptchaUrl(esConfig.getCaptchaUrl());
-
-            boolean isValid = captchaApi.validate(captchaToken, captchaId, answer);
-
-            if (!isValid) {
-                throw new ResponseStatusException(
-                        HttpStatus.TOO_MANY_REQUESTS,
-                        HttpErrorAnswerBuilder.build429EmptyToString(),
-                        null);
-            }
+            captchaValidator.checkCaptcha(X_EU_CAPTCHA_ID, X_EU_CAPTCHA_TOKEN, X_EU_CAPTCHA_TEXT);
         }
 
         DBAbuse dbAbuse = DBAbuse.toDBAbuse(abuseReport);
 
-        if (authentication.isAuthenticated()) {
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
             String requesterId;
             try {
                 requesterId = userService.getAuthenticatedUserId(authentication);

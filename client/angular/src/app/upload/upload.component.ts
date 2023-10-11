@@ -85,6 +85,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   public leftSpaceInBytes = 0;
   public totalSpaceInBytes = 0;
   public percentageUploaded = 0;
+  public userRole = "EXTERNAL";
 
   public emailControl!: FormControl;
   public isShowEmailControl = true;
@@ -120,6 +121,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     if (id) {
       try {
         const me = await firstValueFrom(this.userApi.getUserUserInfo(id));
+        if (me.role)
+          this.userRole = me.role;
+  
         this.leftSpaceInBytes =
           me && me.totalSpace - me.usedSpace > 0
             ? me.totalSpace - me.usedSpace
@@ -140,6 +144,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.renderer.listen(fileInput, 'change', (event) => {
       this.checkExistingFile(event.target.files[0]);
     });
+
+
 
     const activeLang = getBrowserLang();
     if (
@@ -202,6 +208,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.resetEmailMessageArray();
     this.addEmailMessageFormGroup();
   }
+
 
   getEmailMessageFormGroup(i: number): FormGroup {
     const emailMessageArray: FormArray = this.emailMessageArray;
@@ -509,8 +516,16 @@ export class UploadComponent implements OnInit, AfterViewInit {
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
         }
+        const useCaptcha = this.userRole == 'EXTERNAL';
         const fileResult = await firstValueFrom(
-          this.fileApi.postFileFileRequest(myFileRequest),
+          this.fileApi.postFileFileRequest(myFileRequest, 
+            ...(useCaptcha
+            ? [
+              this.captchaComponent.captchaId,
+              this.captchaComponent.captchaToken,
+              this.captchaComponent.answer.value as string,
+            ]
+            : []),)
         );
 
         // do not use firstValueFrom bellow, because it does not work
@@ -535,8 +550,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
       }
     }
     this.uploadInProgress = false;
-
-    this.initializeForm();
+    if(!this.captchaComponent.answer)
+     this.initializeForm();
+    
   }
 
   get uf() {
@@ -605,13 +621,13 @@ export class UploadComponent implements OnInit, AfterViewInit {
     });
   }
 
+
   public isCaptchaInValid(): boolean {
-    // if (this.isGuest()) {
-    if (this.captchaComponent && this.captchaComponent.answer)
+    if (this.captchaComponent && this.captchaComponent.answer) {
       return this.captchaComponent.answer.invalid;
-    else return true;
-    /* } else {
-       return !this.contactForm.valid;
-     }*/
+
+    } else {
+      return true;
+    }
   }
 }

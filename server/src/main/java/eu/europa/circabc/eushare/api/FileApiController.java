@@ -35,10 +35,12 @@ import eu.europa.circabc.eushare.model.InlineObject;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.validation.FileRequestValidator;
 import eu.europa.circabc.eushare.model.validation.RecipientValidator;
+import eu.europa.circabc.eushare.security.CaptchaValidator;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.FileService.DownloadReturn;
 import eu.europa.circabc.eushare.storage.entity.DBAbuse;
 import eu.europa.circabc.eushare.storage.entity.DBFile;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.repository.FileRepository;
 import eu.europa.circabc.eushare.services.UserService;
 
@@ -60,6 +62,7 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -91,6 +94,9 @@ public class FileApiController implements FileApi {
 
   @Autowired
   public UserService userService;
+
+  @Autowired
+  private CaptchaValidator captchaValidator;
 
   @org.springframework.beans.factory.annotation.Autowired
   public FileApiController(NativeWebRequest request) {
@@ -267,17 +273,25 @@ public class FileApiController implements FileApi {
 
   @Override
   public ResponseEntity<FileResult> postFileFileRequest(
-      @RequestBody(required = false) FileRequest fileRequest) {
+      @RequestBody(required = false) FileRequest fileRequest, String X_EU_CAPTCHA_ID,
+      String X_EU_CAPTCHA_TOKEN, String X_EU_CAPTCHA_TEXT) {
+
     if (!FileRequestValidator.validate(fileRequest)) {
       throw new ResponseStatusException(
           HttpStatus.BAD_REQUEST,
           HttpErrorAnswerBuilder.build400EmptyToString());
     }
     try {
-      Authentication authentication = SecurityContextHolder
-          .getContext()
-          .getAuthentication();
+         Authentication authentication = SecurityContextHolder
+        .getContext()
+        .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
+
+      DBUser.Role userRole = userService.getDbUser(requesterId).getRole();
+     
+      if(userRole.equals(DBUser.Role.EXTERNAL))
+        captchaValidator.checkCaptcha(X_EU_CAPTCHA_ID, X_EU_CAPTCHA_TOKEN, X_EU_CAPTCHA_TEXT);
+    
       String fileId = fileService.allocateFileOnBehalfOf(
           fileRequest.getExpirationDate(),
           fileRequest.getName(),

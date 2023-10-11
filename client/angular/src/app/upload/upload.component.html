@@ -126,12 +126,12 @@
         </div>
       </div>
       <br />
-      <div class="wrap-box captcha" >
+      <div *ngIf="userRole == 'EXTERNAL'" class="wrap-box captcha" >
         <cbc-captcha languageCode="en"></cbc-captcha>
       </div>
       <br /> <p></p>
       <div class="field">
-        <button class="button" [class.is-loading]="uploadInProgress" type="submit" [disabled]="!uploadform.valid || isCaptchaInValid()"
+        <button class="button" [class.is-loading]="uploadInProgress" type="submit" [disabled]="!uploadform.valid || (isCaptchaInValid() && userRole == 'EXTERNAL')"
           data-cy="submit">
           {{ "submit" | transloco }}
         </button>
