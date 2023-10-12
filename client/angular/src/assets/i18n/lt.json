@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Kiti klausimai",
   "abuse_reason_phishing_attempt": "Sukčiavimo bandymas",
   "abuse_reason_spam": "Šlamštas",
+  "accept.tos1": "Suprantu atsakingo ir etiško šios paslaugos naudojimo svarbą. Užtikrinu jus, kad laikausi jūsų",
+  "accept.tos2": ", gerbiant vartotojų privatumą ir duomenų saugumą visada.",
   "access.shared.files": "naudotis bendrais failais",
   "access.uploaded.files": "naudotis įkeltais failais",
   "actions": "Veiksmai",
@@ -157,6 +159,7 @@
   "total.space": "Iš viso vietos",
   "unexpected.error": "Serveryje įvyko netikėta klaida,  ",
   "upgrade.account": "Atnaujinti paskyrą",
+  "upgrade.account.tooltip": "Galite paprašyti atnaujinti savo paskyrą, kuri leis pašalinti failų įkėlimo ir bendrinimo apribojimus.",
   "upload.file": "įkelti šį failą",
   "upload.notification": "Įkelti pranešimus",
   "upload.notification.help": "Siųskite el. laišką su failo nuoroda (kiekvienam gavėjui skirtinga nuoroda).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Didžiausias leidžiamas ilgis yra  {{requiredLength}}, bet esamas ilgis yra {{actualLength}}",
   "warning": "Įspėjimas",
   "while.trying": "bandant",
-  "wrong.password": "Neteisingas slaptažodis, bandykite dar kartą.",
   "wrong.captcha": "Neteisingas captcha atsakymas, pabandykite dar kartą.",
+  "wrong.password": "Neteisingas slaptažodis, bandykite dar kartą.",
   "you.can.upload.up.to": "Galite įkelti ne daugiau kaip"
 }

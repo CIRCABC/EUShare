@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Andre spørgsmål",
   "abuse_reason_phishing_attempt": "Phishing-forsøg",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Jeg forstår vigtigheden af ansvarlig og etisk brug af denne service. Jeg forsikrer dig om, at jeg holder mig til din",
+  "accept.tos2": ", respekterer brugernes privatliv og datasikkerhed til enhver tid.",
   "access.shared.files": "få adgang til de fælles filer",
   "access.uploaded.files": "få adgang til de uploadede filer",
   "actions": "Handlinger",
@@ -157,6 +159,7 @@
   "total.space": "Diskplads i alt",
   "unexpected.error": "Der opstod en uventet serverfejl: ",
   "upgrade.account": "Opgrader konto",
+  "upgrade.account.tooltip": "Du kan anmode om at opgradere din konto, hvilket giver dig mulighed for at fjerne begrænsninger for upload og deling af filer.",
   "upload.file": "upload denne fil",
   "upload.notification": "Upload meddelelser",
   "upload.notification.help": "Send en e-mail med fil-linket (en forskellig link til hver modtager).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Den maksimale længde {{requiredLength}}, men den faktiske længde er {{actualLength}}",
   "warning": "Advarsel",
   "while.trying": ": forsøg på",
-  "wrong.password": "Forkert password – prøv igen.",
   "wrong.captcha": "Forkert captcha-svar, prøv igen.",
+  "wrong.password": "Forkert password – prøv igen.",
   "you.can.upload.up.to": "Du kan uploade op til"
 }

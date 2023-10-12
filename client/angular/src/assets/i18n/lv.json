@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Citi jautājumi",
   "abuse_reason_phishing_attempt": "Pikšķerēšanas mēģinājums",
   "abuse_reason_spam": "Surogātpasts",
+  "accept.tos1": "Es saprotu, cik svarīgi ir atbildīgi un ētiski izmantot šo pakalpojumu. Es jums apliecinu, ka es ievēroju jūsu",
+  "accept.tos2": "vienmēr ievērojot lietotāju privātumu un datu drošību.",
   "access.shared.files": "piekļūt kopīgotajām datnēm",
   "access.uploaded.files": "piekļūt augšupielādētajām datnēm",
   "actions": "Darbības",
@@ -157,6 +159,7 @@
   "total.space": "Kopējā vieta",
   "unexpected.error": "Servera pusē radās neparedzēta kļūda: ",
   "upgrade.account": "Jaunināt kontu",
+  "upgrade.account.tooltip": "Varat pieprasīt sava konta jaunināšanu, kas ļaus noņemt failu augšupielādes un koplietošanas ierobežojumus.",
   "upload.file": "augšupielādēt šo datni",
   "upload.notification": "Augšupielādēt paziņojumus",
   "upload.notification.help": "Sūtiet e-pastu faila saistīto saiti (katram saņēmējam atšķirīga saite).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Maksimālais garums ir {{requiredLength}, bet pašreizējais garums ir {actualLength}}.",
   "warning": "Brīdinājums",
   "while.trying": "mēģinot izpildīt šādu darbību:",
-  "wrong.password": "Nepareiza parole – mēģiniet vēlreiz!",
   "wrong.captcha": "Nepareiza captcha atbilde, lūdzu, mēģiniet vēlreiz.",
+  "wrong.password": "Nepareiza parole – mēģiniet vēlreiz!",
   "you.can.upload.up.to": "Varat augšupielādēt līdz"
 }

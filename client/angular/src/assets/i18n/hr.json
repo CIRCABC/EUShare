@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Ostala pitanja",
   "abuse_reason_phishing_attempt": "Pokušaj krađe identiteta",
   "abuse_reason_spam": "Neželjena pošta",
+  "accept.tos1": "Razumijem važnost odgovornog i etičkog korištenja ove usluge. Uvjeravam vas da se pridržavam vašeg",
+  "accept.tos2": ", poštujući privatnost korisnika i sigurnost podataka u svakom trenutku.",
   "access.shared.files": "pristup podijeljenim datotekama.",
   "access.uploaded.files": "pristup učitanim datotekama.",
   "actions": "Radnje",
@@ -157,6 +159,7 @@
   "total.space": "Ukupni prostor za pohranu",
   "unexpected.error": "Pojavila se neočekivana pogreška na poslužitelju: ",
   "upgrade.account": "Nadogradite račun",
+  "upgrade.account.tooltip": "Možete zatražiti nadogradnju računa, što će vam omogućiti uklanjanje ograničenja pri prijenosu i dijeljenju datoteka.",
   "upload.file": "učitavanje te datoteke.",
   "upload.notification": "Prijenos obavijesti",
   "upload.notification.help": "Pošaljite e-poštu s vezom na datoteku (različita veza za svakog primatelja).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Najveća je dopuštena duljina {{requiredLength}}, dok je stvarna duljina {{actualLength}}",
   "warning": "Upozorenje",
   "while.trying": "dok traje",
-  "wrong.password": "Pogrešna lozinka. Pokušajte ponovno.",
   "wrong.captcha": "Pogrešan odgovor captcha, pokušajte ponovo.",
+  "wrong.password": "Pogrešna lozinka. Pokušajte ponovno.",
   "you.can.upload.up.to": "Možete učitati najviše"
 }

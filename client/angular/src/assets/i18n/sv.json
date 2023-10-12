@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Andra frågor",
   "abuse_reason_phishing_attempt": "Phishing-försök",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Jag förstår vikten av ansvarsfull och etisk användning av denna tjänst. Jag försäkrar dig att jag håller mig till din",
+  "accept.tos2": ", respekterar användarnas integritet och datasäkerhet hela tiden.",
   "access.shared.files": "få tillgång till de delade filerna",
   "access.uploaded.files": "få tillgång till de uppladdade filerna",
   "actions": "Åtgärder",
@@ -157,6 +159,7 @@
   "total.space": "Totalt utrymme",
   "unexpected.error": "Ett oväntat serverfel inträffade när ",
   "upgrade.account": "Uppgradera konto",
+  "upgrade.account.tooltip": "Du kan begära att uppgradera ditt konto, vilket gör att du kan ta bort begränsningar för uppladdning och delning av filer.",
   "upload.file": "ladda upp filen",
   "upload.notification": "Ladda upp aviseringar",
   "upload.notification.help": "Skicka ett e-postmeddelande med filens länk (en annan länk för varje mottagare).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Maxlängden är {{requiredLength}} men längden är nu {{actualLength}}",
   "warning": "Varning",
   "while.trying": "när du försökte",
-  "wrong.password": "Fel lösenord – försök igen.",
   "wrong.captcha": "Fel captcha-svar, försök igen.",
+  "wrong.password": "Fel lösenord – försök igen.",
   "you.can.upload.up.to": "Du kan ladda upp högst"
 }

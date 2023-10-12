@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Autres problèmes",
   "abuse_reason_phishing_attempt": "Tentative de phishing",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Je comprends l'importance d'une utilisation responsable et éthique de ce service. Je vous assure que je respecte votre",
+  "accept.tos2": ", en respectant à tout moment la confidentialité des utilisateurs et la sécurité des données.",
   "access.shared.files": "accéder aux fichiers partagés",
   "access.uploaded.files": "accéder aux fichiers téléchargés",
   "actions": "Actions",
@@ -157,6 +159,7 @@
   "total.space": "Espace total",
   "unexpected.error": "Une erreur inattendue s’est produite côté serveur: ",
   "upgrade.account": "Mettre à jour le compte",
+  "upgrade.account.tooltip": "Vous pouvez demander la mise à niveau de votre compte, ce qui vous permettra de supprimer les restrictions relatives au téléchargement et au partage de fichiers.",
   "upload.file": "télécharger ce fichier",
   "upload.notification": "Notifications du chargement",
   "upload.notification.help": "Envoyer un e-mail avec le lien du fichier (un lien différent pour chaque destinataire)",
@@ -170,7 +173,7 @@
   "validation.maxlength": "La longueur maximale est de {{requiredLength}}, mais la longueur actuelle est de {{actualLength}}",
   "warning": "Avertissement",
   "while.trying": "lors de l’action suivante:",
-  "wrong.password": "Mot de passe erroné; veuillez réessayer.",
   "wrong.captcha": "Mauvaise réponse au captcha, veuillez réessayer.",
+  "wrong.password": "Mot de passe erroné; veuillez réessayer.",
   "you.can.upload.up.to": "Vous pouvez télécharger jusqu'à"
 }

@@ -53,6 +53,9 @@ import { NotificationLevel } from '../common/notification/notification-level';
 import { I18nService } from '../common/i18n/i18n.service';
 import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
 import { CaptchaComponent } from '../common/captcha/captcha.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { environment } from '../../environments/environment';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-upload',
@@ -72,6 +75,8 @@ import { CaptchaComponent } from '../common/captcha/captcha.component';
     MatDialogModule,
     MatSnackBarModule,
     CaptchaComponent,
+    MatTooltipModule,
+    MatIconModule 
   ],
   providers: [FileSizeFormatPipe],
 })
@@ -89,7 +94,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   public emailControl!: FormControl;
   public isShowEmailControl = true;
-
+  public acceptTos=false;
+  public circabc_url: string = environment.circabc_url;
+  
   @ViewChild(CaptchaComponent)
   private captchaComponent!: CaptchaComponent;
 
@@ -201,6 +208,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       linkArray: this.fb.nonNullable.array([
         // this.initializeLinkFormGroup()
       ]),
+      acceptTos: [false], 
       expirationDate: [this.get7DaysAfterToday(), Validators.required],
       password: [undefined],
       downloadNotification: [false],

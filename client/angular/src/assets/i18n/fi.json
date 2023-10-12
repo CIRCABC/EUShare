@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Muut ongelmat",
   "abuse_reason_phishing_attempt": "Tietojenkalasteluyritys",
   "abuse_reason_spam": "Roskaposti",
+  "accept.tos1": "Ymmärrän palvelun vastuullisen ja eettisen käytön tärkeyden. Vakuutan teille, että pidän kiinni",
+  "accept.tos2": ", kunnioittaen käyttäjien yksityisyyttä ja tietoturvaa kaikkina aikoina.",
   "access.shared.files": "tarkastella jaettuja tiedostoja",
   "access.uploaded.files": "tarkastella järjestelmään lähetettyjä tiedostoja",
   "actions": "Toiminnot",
@@ -157,6 +159,7 @@
   "total.space": "Tilaa yhteensä",
   "unexpected.error": "Odottamaton virhe palvelimella: ",
   "upgrade.account": "Päivitä tili",
+  "upgrade.account.tooltip": "Voit pyytää tilisi päivittämistä, jolloin voit poistaa tiedostojen lataamiseen ja jakamiseen liittyvät rajoitukset.",
   "upload.file": "siirtää päivitettyä tiedostoa järjestelmään",
   "upload.notification": "Latauksen ilmoitukset",
   "upload.notification.help": "Lähetä sähköposti, jossa on tiedostolinkki (erilainen linkki jokaiselle vastaanottajalle)",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Enimmäispituus on {{requiredLength}}, tämänhetkinen on {{actualLength}}",
   "warning": "Varoitus",
   "while.trying": "yritettäessä",
-  "wrong.password": "Virheellinen salasana. Yritä uudelleen.",
   "wrong.captcha": "Väärä captcha-vastaus, yritä uudelleen.",
+  "wrong.password": "Virheellinen salasana. Yritä uudelleen.",
   "you.can.upload.up.to": "Tiedostojen enimmäiskoko on"
 }

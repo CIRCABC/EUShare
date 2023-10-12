@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Egyéb kérdések",
   "abuse_reason_phishing_attempt": "Adathalász kísérlet",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Megértem ennek a szolgáltatásnak a felelősségteljes és etikus használatának fontosságát. Biztosíthatom önöket, hogy ragaszkodom a",
+  "accept.tos2": "mindenkor tiszteletben tartva a felhasználói adatvédelmet és az adatbiztonságot.",
   "access.shared.files": "hozzáférés a megosztott fájlokhoz",
   "access.uploaded.files": "hozzáférés a feltöltött fájlokhoz",
   "actions": "Műveletek",
@@ -157,6 +159,7 @@
   "total.space": "Teljes tárhely",
   "unexpected.error": "Váratlan hiba történt a szerveroldalon: ",
   "upgrade.account": "Frissítse a fiókot",
+  "upgrade.account.tooltip": "Kérheti fiókjának frissítését, amely lehetővé teszi a fájlok feltöltésének és megosztásának korlátozásainak eltávolítását.",
   "upload.file": "a fájl feltöltése",
   "upload.notification": "Értesítések feltöltése",
   "upload.notification.help": "Egy e-mail küldése a fájllal kapcsolatos hivatkozással (mindegyik címzettnek más hivatkozás).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Az e-mail-cím maximális hossza {{requiredLength}}, de a tényleges hossz {{actualLength}}",
   "warning": "Figyelem",
   "while.trying": "a következő művelet során:",
-  "wrong.password": "Hibás jelszó, kérjük, próbálkozzon újra.",
   "wrong.captcha": "Rossz captcha válasz, kérjük, próbálja újra.",
+  "wrong.password": "Hibás jelszó, kérjük, próbálkozzon újra.",
   "you.can.upload.up.to": "Feltölthető fájlméret:"
 }

@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Druga vprašanja",
   "abuse_reason_phishing_attempt": "Poskus lažnega predstavljanja",
   "abuse_reason_spam": "Neželena pošta",
+  "accept.tos1": "Razumem pomen odgovorne in etične uporabe te storitve. Zagotavljam vam, da se držim vašega",
+  "accept.tos2": "ob upoštevanju zasebnosti uporabnikov in varnosti podatkov ves čas.",
   "access.shared.files": "dostop do skupnih datotek",
   "access.uploaded.files": "dostop do naloženih datotek",
   "actions": "Dejanja",
@@ -157,6 +159,7 @@
   "total.space": "Skupni prostor",
   "unexpected.error": "Nepričakovana napaka na strani strežnika med: ",
   "upgrade.account": "Nadgradite račun",
+  "upgrade.account.tooltip": "Zahtevate lahko nadgradnjo računa, kar vam bo omogočilo, da odstranite omejitve pri nalaganju in skupni rabi datotek.",
   "upload.file": "naložitev te datoteke",
   "upload.notification": "Naloži obvestila",
   "upload.notification.help": "Pošljite e-pošto z datoteko povezavo (drug URL naslov za vsakega prejemnika).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Največja dolžina znaša {{requiredLength}}, vendar je dejanska dolžina {{actualLength}}",
   "warning": "Opozorilo",
   "while.trying": "pri poskusu",
-  "wrong.password": "Napačno geslo, poskusite znova.",
   "wrong.captcha": "Napačen odgovor captcha, poskusite znova.",
+  "wrong.password": "Napačno geslo, poskusite znova.",
   "you.can.upload.up.to": "Skupaj lahko naložite do"
 }

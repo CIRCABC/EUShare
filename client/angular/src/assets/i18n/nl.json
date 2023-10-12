@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Andere problemen",
   "abuse_reason_phishing_attempt": "Poging tot phishing",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Ik begrijp het belang van verantwoord en ethisch gebruik van deze service. Ik verzeker u dat ik me aan uw",
+  "accept.tos2": ", met respect voor de privacy van gebruikers en de gegevensbeveiliging te allen tijde.",
   "access.shared.files": "naar de gedeelde bestanden te gaan",
   "access.uploaded.files": "naar de geüploade bestanden te gaan",
   "actions": "Acties",
@@ -157,6 +159,7 @@
   "total.space": "Totale ruimte",
   "unexpected.error": "Onverwachte serverfout ",
   "upgrade.account": "Account upgraden",
+  "upgrade.account.tooltip": "Je kunt een upgrade van je account aanvragen, zodat je de beperkingen op het uploaden en delen van bestanden kunt opheffen.",
   "upload.file": "dit bestand te uploaden",
   "upload.notification": "Meldingen van Upload",
   "upload.notification.help": "Stuur een e-mail met de bestandslink (een andere link voor elke ontvanger).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "De maximumlengte is {{requiredLength}}, maar de huidige lengte is {{actualLength}}",
   "warning": "Waarschuwing",
   "while.trying": "bij een poging",
-  "wrong.password": "Verkeerd wachtwoord, probeer het opnieuw.",
   "wrong.captcha": "Verkeerde captcha-reactie, probeer het opnieuw.",
+  "wrong.password": "Verkeerd wachtwoord, probeer het opnieuw.",
   "you.can.upload.up.to": "Uploads mogen niet groter zijn dan"
 }

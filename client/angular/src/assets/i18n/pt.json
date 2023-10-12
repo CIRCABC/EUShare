@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Outros problemas",
   "abuse_reason_phishing_attempt": "Tentativa de phishing",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Eu entendo a importância do uso responsável e ético desse serviço. Eu lhe asseguro que eu adiro ao seu",
+  "accept.tos2": ", respeitando a privacidade do usuário e a segurança dos dados em todos os momentos.",
   "access.shared.files": "aceder aos ficheiros partilhados",
   "access.uploaded.files": "aceder aos ficheiros carregados",
   "actions": "Ações",
@@ -157,6 +159,7 @@
   "total.space": "Espaço total",
   "unexpected.error": "Ocorreu um erro imprevisto no servidor: ",
   "upgrade.account": "Atualizar conta",
+  "upgrade.account.tooltip": "Você pode solicitar o upgrade de sua conta, o que permitirá que você remova as limitações de upload e compartilhamento de arquivos.",
   "upload.file": "carregar este ficheiro",
   "upload.notification": "Notificações do upload",
   "upload.notification.help": "Envie um e-mail com o link do arquivo (um link diferente para cada destinatário).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "O comprimento máximo é {{requiredLength}}, mas o comprimento atual é {{actualLength}}",
   "warning": "Atenção",
   "while.trying": "ao tentar",
-  "wrong.password": "Senha incorreta. Tente novamente.",
   "wrong.captcha": "Resposta incorreta do captcha, tente novamente.",
+  "wrong.password": "Senha incorreta. Tente novamente.",
   "you.can.upload.up.to": "Pode carregar até"
 }

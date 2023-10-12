@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Inne zagadnienia",
   "abuse_reason_phishing_attempt": "Próba phishingu",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Rozumiem znaczenie odpowiedzialnego i etycznego korzystania z tej usługi. Zapewniam cię, że trzymam się twojego",
+  "accept.tos2": ", szanując prywatność użytkowników i bezpieczeństwo danych przez cały czas.",
   "access.shared.files": "uzyskania dostępu do udostępnianych plików",
   "access.uploaded.files": "uzyskania dostępu do załadowanych plików",
   "actions": "Czynności",
@@ -157,6 +159,7 @@
   "total.space": "Dostępne miejsce łącznie",
   "unexpected.error": "Po stronie serwera wystąpił nieoczekiwany błąd: ",
   "upgrade.account": "Uaktualnij konto",
+  "upgrade.account.tooltip": "Możesz poprosić o uaktualnienie konta, co pozwoli Ci usunąć ograniczenia dotyczące przesyłania i udostępniania plików.",
   "upload.file": "załadowania tego pliku",
   "upload.notification": "Powiadomienia o przesyłaniu",
   "upload.notification.help": "Wyślij e-mail z linkiem do pliku (inny link dla każdego odbiorcy).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Maksymalna długość to {{requiredLength}}, a faktyczna długość to {{actualLength}}",
   "warning": "Ostrzeżenie",
   "while.trying": "podczas próby",
-  "wrong.password": "Błędne hasło, spróbuj ponownie.",
   "wrong.captcha": "Niewłaściwa odpowiedź captcha, spróbuj ponownie.",
+  "wrong.password": "Błędne hasło, spróbuj ponownie.",
   "you.can.upload.up.to": "Możesz załadować maksymalnie"
 }

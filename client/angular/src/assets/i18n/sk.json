@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Iné otázky",
   "abuse_reason_phishing_attempt": "Pokus o phishing",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Chápem dôležitosť zodpovedného a etického používania tejto služby. Uisťujem vás, že sa držím vášho",
+  "accept.tos2": ", rešpektovanie súkromia používateľov a bezpečnosti údajov za všetkých okolností.",
   "access.shared.files": "získať prístup k sprístupneným súborom",
   "access.uploaded.files": "získať prístup k nahratým súborom",
   "actions": "Akcie",
@@ -157,6 +159,7 @@
   "total.space": "Celkové miesto",
   "unexpected.error": "Na strane servera došlo k neočakávanej chybe počas ",
   "upgrade.account": "Aktualizácia účtu",
+  "upgrade.account.tooltip": "Môžete požiadať o aktualizáciu svojho účtu, čo vám umožní odstrániť obmedzenia pri nahrávaní a zdieľaní súborov.",
   "upload.file": "nahrať tento súbor",
   "upload.notification": "Oznámenia o nahrávať",
   "upload.notification.help": "Pošlite e-mail s odkazom na súbor (odlišný odkaz pre každého príjemcu).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Maximálna dĺžka je {{requiredLength}}, ale aktuálna dĺžka je {{actualLength}}",
   "warning": "Upozornenie",
   "while.trying": "pri pokuse",
-  "wrong.password": "Nesprávne heslo, skúste znova.",
   "wrong.captcha": "Nesprávna odpoveď captcha, skúste to znova.",
+  "wrong.password": "Nesprávne heslo, skúste znova.",
   "you.can.upload.up.to": "Nahrať môžete najviac"
 }

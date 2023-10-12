@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Alte probleme",
   "abuse_reason_phishing_attempt": "Încercare de phishing",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Înțeleg importanța utilizării responsabile și etice a acestui serviciu. Vă asigur că aderăm la",
+  "accept.tos2": ", respectând confidențialitatea utilizatorilor și securitatea datelor în orice moment.",
   "access.shared.files": "accesare a fișierelor partajate",
   "access.uploaded.files": "accesare a fișierelor încărcate",
   "actions": "Acțiuni",
@@ -157,6 +159,7 @@
   "total.space": "Spațiu total",
   "unexpected.error": "Eroare neprevăzută de server în timpul încercării ",
   "upgrade.account": "Actualizați contul",
+  "upgrade.account.tooltip": "Puteți solicita actualizarea contului dvs., ceea ce vă va permite să eliminați limitările privind încărcarea și partajarea fișierelor.",
   "upload.file": "încărcare a acestui fișier",
   "upload.notification": "Încarcă notificările",
   "upload.notification.help": "Trimiteți un e-mail cu link-ul fișierului (un link diferit pentru fiecare destinatar).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Lungimea cerută este {{requiredLength}}, iar lungimea actuală este {{actualLength}}",
   "warning": "Atenție!",
   "while.trying": "în timpul încercării",
-  "wrong.password": "Parolă greșită, încercați din nou.",
   "wrong.captcha": "Răspuns greșit la captcha, încercați din nou.",
+  "wrong.password": "Parolă greșită, încercați din nou.",
   "you.can.upload.up.to": "Puteți încărca până la"
 }

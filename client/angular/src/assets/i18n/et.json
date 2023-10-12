@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Muud probleemid",
   "abuse_reason_phishing_attempt": "Andmepüügiküse",
   "abuse_reason_spam": "Rämpsposti",
+  "accept.tos1": "Mõistan selle teenuse vastutustundliku ja eetilise kasutamise tähtsust. Kinnitan teile, et järgin teie",
+  "accept.tos2": ", austades kogu aeg kasutajate privaatsust ja andmeturvet.",
   "access.shared.files": "juurdepääsu ühistele failidele",
   "access.uploaded.files": "juurdepääsu üleslaaditud failidele",
   "actions": "Toimingud",
@@ -157,6 +159,7 @@
   "total.space": "Kogumaht",
   "unexpected.error": "Serveris ilmnes ootamatu viga toimingul: ",
   "upgrade.account": "Täiendage kontot",
+  "upgrade.account.tooltip": "Võite taotleda oma konto täiendamist, mis võimaldab teil eemaldada failide üleslaadimise ja jagamise piirangud.",
   "upload.file": "luba seda faili üles laadida",
   "upload.notification": "Laadi üles teatised",
   "upload.notification.help": "Saatke e-kiri faili lingiga (iga saaja jaoks erinev link).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Nõutav pikkus on {{requiredLength}}, kuid praegu on {{actualLength}}",
   "warning": "Tähelepanu!",
   "while.trying": "proovisime teha järgmist:",
-  "wrong.password": "Vale salasõna, palun proovige uuesti.",
   "wrong.captcha": "Vale captcha vastus, proovige uuesti.",
+  "wrong.password": "Vale salasõna, palun proovige uuesti.",
   "you.can.upload.up.to": "Üles on lubatud laadida kuni"
 }

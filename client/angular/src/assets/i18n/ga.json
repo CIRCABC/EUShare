@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Saincheisteanna Eile",
   "abuse_reason_phishing_attempt": "Iarracht Phishing",
   "abuse_reason_spam": "Turscar",
+  "accept.tos1": "Tuigim an tábhacht a bhaineann le húsáid fhreagrach agus eiticiúil na seirbhíse seo. Dealbhaím duit go gcloím le do",
+  "accept.tos2": ", urramú ar phríobháideacht úsáideora agus slándáil sonraí i gcónaí.",
   "access.shared.files": "na comhchomhaid a rochtain",
   "access.uploaded.files": "na comhaid uaslódáilte a rochtain",
   "actions": "Gníomhaíochtaí",
@@ -157,6 +159,7 @@
   "total.space": "Spás iomlán",
   "unexpected.error": "Tharla earráid gan choinne ar thaobh an fhreastalaí: ",
   "upgrade.account": "cuntas uasghrád",
+  "upgrade.account.tooltip": "Is féidir leat iarraidh a dhéanamh ar do chuntas a uasghrádú, rud a ligfidh duit teorainneacha maidir le comhaid a uaslódáil agus a roinnt a bhaint.",
   "upload.file": "an comhad sin a uaslódáil",
   "upload.notification": "Uaslódáil fógraí",
   "upload.notification.help": "Seol ríomhphost le nasc comhad (nasc éagsúil do gach glacadóir).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "Is é {{requiredLength}} an t-uasfhad atá ag teastáil, ach is é {{actualLength}} an fad iarbhír",
   "warning": "Rabhadh",
   "while.trying": "agus tú ag iarraidh",
-  "wrong.password": "Focal faire mícheart, bain triail as arís le do thoil.",
   "wrong.captcha": "Freagra captcha mícheart, déan iarracht arís le do thoil.",
+  "wrong.password": "Focal faire mícheart, bain triail as arís le do thoil.",
   "you.can.upload.up.to": "Is féidir leat suas leis an líon seo a leanas a uaslódáil:"
 }

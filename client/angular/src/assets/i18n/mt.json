@@ -15,6 +15,8 @@
   "abuse_reason_other_issues": "Kwistjonijiet oħra",
   "abuse_reason_phishing_attempt": "Tentattiv ta 'phishing",
   "abuse_reason_spam": "Spam",
+  "accept.tos1": "Nifhem l-importanza ta 'użu responsabbli u etiku ta' dan is-servizz. Nassigurak li nżomm mat-tieghek",
+  "accept.tos2": ", li jirrispetta l-privatezza tal-utent u s-sigurtà tad-dejta f'kull ħin.",
   "access.shared.files": "aċċessa l-files ixxerjati",
   "access.uploaded.files": "aċċessa l-files applowdjati",
   "actions": "Azzjonijiet",
@@ -157,6 +159,7 @@
   "total.space": "Spazju totali",
   "unexpected.error": "Seħħ żball mhux mistenni fuq in-naħa tas-server waqt ",
   "upgrade.account": "Taġġorna l-kont",
+  "upgrade.account.tooltip": "Tista 'titlob li taġġorna l-kont tiegħek, li jippermettilek tneħħi l-limitazzjonijiet fuq it-tlugħ u l-qsim ta' fajls.",
   "upload.file": "l-applowdjar ta’ dan il-file",
   "upload.notification": "Notifiki ta 'upload",
   "upload.notification.help": "Ibgħat email b'link tal-fajl (link differenti għal kull ricevent).",
@@ -170,7 +173,7 @@
   "validation.maxlength": "It-tul massimu hu ta’ {{requiredLength}} iżda t-tul attwali hu ta’ {{actualLength}}",
   "warning": "Twissija",
   "while.trying": "waqt li kien qed jipprova",
-  "wrong.password": "Password ħażina, jekk jogħġbok erġa’ pprova.",
   "wrong.captcha": "Rispons ħażin captcha, jekk jogħġbok ipprova mill-ġdid.",
+  "wrong.password": "Password ħażina, jekk jogħġbok erġa’ pprova.",
   "you.can.upload.up.to": "Tista’ tapplowdja sa"
 }
