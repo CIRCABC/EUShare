@@ -27,7 +27,8 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/tokenRefresh.html"
+              "src/tokenRefresh.html",
+              "src/robots.txt"
             ],
             "styles": [
               "./node_modules/ubuntu-fontface/ubuntu.min.css",
