@@ -136,14 +136,13 @@
       <br />
       <p></p>
 
-      <div>
+      <div *ngIf="userRole == 'EXTERNAL'">
         <label class="checkbox">
           <input type="checkbox" (change)="acceptTos = $event.target.checked"  formControlName="acceptTos" />
           {{ "accept.tos1" | transloco }} <a href="{{ circabc_url }}/ui/help/legal-notice/terms">{{"label.terms" | transloco}}</a> {{ 'accept.tos2' | transloco }}
         </label>
       </div>
 
-{{acceptTos}}
       <div class="field">
         <button class="button" [class.is-loading]="uploadInProgress" type="submit"
           [disabled]="!uploadform.valid || ((isCaptchaInValid() || !acceptTos) && userRole == 'EXTERNAL') "
