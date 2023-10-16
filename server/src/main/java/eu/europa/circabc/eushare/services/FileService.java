@@ -703,7 +703,7 @@ public class FileService {
       if (userService.isUserExists(userId)) {
         List<DBFile.Status> status = new ArrayList<>();
         status.add(DBFile.Status.AVAILABLE);
-        if (userService.isAdmin(requesterId)) {
+        if (userService.isAdmin(requesterId) && !(userId.equals(requesterId)) ) {
           status.add(DBFile.Status.ALLOCATED);
           status.add(DBFile.Status.DELETED);
           status.add(DBFile.Status.FROZEN);
