@@ -168,6 +168,7 @@
   "user.name.or.email": "Ime ILI e-adresa korisnika",
   "user.not.found": "Korisnik nije pronađen.",
   "user.search": "Pretraživanje korisnika",
+  "user.suspended": "",
   "user.uploaded.files": "Datoteke koje je učitao korisnik {{ userName }}",
   "validation.invalidEmail": "E-adresa nije valjana.",
   "validation.maxlength": "Najveća je dopuštena duljina {{requiredLength}}, dok je stvarna duljina {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": "dok traje",
   "wrong.captcha": "Pogrešan odgovor captcha, pokušajte ponovo.",
   "wrong.password": "Pogrešna lozinka. Pokušajte ponovno.",
-  "you.can.upload.up.to": "Možete učitati najviše"
+  "you.can.upload.up.to": "Možete učitati najviše",
+  "hello": ""
 }

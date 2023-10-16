@@ -30,7 +30,6 @@ export class DownloadsService {
       });
 
       if (result.status === 401) {
-        console.log('WRONG_PASSWORD');
         return 'WRONG_PASSWORD';
       }
     }

@@ -58,7 +58,4 @@ export class AbuseDetailsDialogComponent implements OnInit {
     this.dataSource.paginator.pageIndex = 0;
   }
 
-  onRowClicked(row: any): void {
-    console.log('Row clicked:', row);
-  }
 }

@@ -168,6 +168,7 @@
   "user.name.or.email": "Kasutaja nimi VÕI e-post",
   "user.not.found": "Kasutajat ei leitud",
   "user.search": "Kasutaja otsing",
+  "user.suspended": "",
   "user.uploaded.files": "Kasutaja {{ userName }} poolt üles laaditud failid",
   "validation.invalidEmail": "Kehtetu e-posti aadress",
   "validation.maxlength": "Nõutav pikkus on {{requiredLength}}, kuid praegu on {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": "proovisime teha järgmist:",
   "wrong.captcha": "Vale captcha vastus, proovige uuesti.",
   "wrong.password": "Vale salasõna, palun proovige uuesti.",
-  "you.can.upload.up.to": "Üles on lubatud laadida kuni"
+  "you.can.upload.up.to": "Üles on lubatud laadida kuni",
+  "hello": ""
 }

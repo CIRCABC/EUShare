@@ -168,6 +168,7 @@
   "user.name.or.email": "Όνομα χρήστη Ή email",
   "user.not.found": "Ο χρήστης δεν βρέθηκε",
   "user.search": "Αναζήτηση χρήστη",
+  "user.suspended": "",
   "user.uploaded.files": "Αρχεία που έχει ανεβάσει ο χρήστης {{ userName }}",
   "validation.invalidEmail": "Μη έγκυρη ηλεκτρονική διεύθυνση",
   "validation.maxlength": "Το μέγιστο μήκος είναι {{requiredLength}}, αλλά το πραγματικό μήκος είναι {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": "κατά τη(ν)",
   "wrong.captcha": "Λάθος απάντηση captcha, δοκιμάστε ξανά.",
   "wrong.password": "Εσφαλμένος κωδικός πρόσβασης, ξαναδοκιμάστε.",
-  "you.can.upload.up.to": "Μπορείτε να ανεβάσετε μέχρι"
+  "you.can.upload.up.to": "Μπορείτε να ανεβάσετε μέχρι",
+  "hello": ""
 }

@@ -168,6 +168,7 @@
   "user.name.or.email": "Käyttäjän nimi TAI sähköpostiosoite",
   "user.not.found": "Käyttäjää ei löydy",
   "user.search": "Käyttäjän haku",
+  "user.suspended": "",
   "user.uploaded.files": "Käyttäjän {{ userName }} järjestelmään lähettämät tiedostot",
   "validation.invalidEmail": "Virheellinen sähköpostiosoite",
   "validation.maxlength": "Enimmäispituus on {{requiredLength}}, tämänhetkinen on {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": "yritettäessä",
   "wrong.captcha": "Väärä captcha-vastaus, yritä uudelleen.",
   "wrong.password": "Virheellinen salasana. Yritä uudelleen.",
-  "you.can.upload.up.to": "Tiedostojen enimmäiskoko on"
+  "you.can.upload.up.to": "Tiedostojen enimmäiskoko on",
+  "hello": ""
 }

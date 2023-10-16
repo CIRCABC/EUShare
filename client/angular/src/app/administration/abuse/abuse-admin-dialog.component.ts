@@ -47,7 +47,6 @@ export class AbuseAdminDialogComponent {
 
   save() {
     this.abuseReportDetails.status = AbuseReport.StatusEnum.Approved;
-    console.log(this.abuseReportDetails);
     this.dialogRef.close(this.abuseReportDetails);
   }
 

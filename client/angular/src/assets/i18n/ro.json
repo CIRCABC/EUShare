@@ -168,6 +168,7 @@
   "user.name.or.email": "Numele SAU e-mailul utilizatorului ",
   "user.not.found": "Utilizatorul nu a fost găsit",
   "user.search": "Căutare utilizatori",
+  "user.suspended": "",
   "user.uploaded.files": "Fișierele încărcate de {{ userName }}",
   "validation.invalidEmail": "Adresa de e-mail nu este valabilă",
   "validation.maxlength": "Lungimea cerută este {{requiredLength}}, iar lungimea actuală este {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": "în timpul încercării",
   "wrong.captcha": "Răspuns greșit la captcha, încercați din nou.",
   "wrong.password": "Parolă greșită, încercați din nou.",
-  "you.can.upload.up.to": "Puteți încărca până la"
+  "you.can.upload.up.to": "Puteți încărca până la",
+  "hello": ""
 }

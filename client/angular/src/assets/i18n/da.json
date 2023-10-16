@@ -168,6 +168,7 @@
   "user.name.or.email": "Brugerens navn ELLER e-mail",
   "user.not.found": "Brugeren blev ikke fundet",
   "user.search": "Brugersøgning",
+  "user.suspended": "",
   "user.uploaded.files": "{{ userName }}s uploadede filer",
   "validation.invalidEmail": "Ugyldig e-mailadresse",
   "validation.maxlength": "Den maksimale længde {{requiredLength}}, men den faktiske længde er {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": ": forsøg på",
   "wrong.captcha": "Forkert captcha-svar, prøv igen.",
   "wrong.password": "Forkert password – prøv igen.",
-  "you.can.upload.up.to": "Du kan uploade op til"
+  "you.can.upload.up.to": "Du kan uploade op til",
+  "hello": ""
 }

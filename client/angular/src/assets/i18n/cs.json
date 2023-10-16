@@ -168,6 +168,7 @@
   "user.name.or.email": "Jméno uživatele NEBO e-mail",
   "user.not.found": "Uživatel nenalezen",
   "user.search": "Vyhledávání uživatelů",
+  "user.suspended": "",
   "user.uploaded.files": "Nahrané soubory uživatele {{ userName }}",
   "validation.invalidEmail": "Neplatná e-mailová adresa",
   "validation.maxlength": "Maximální délka je {{requiredLength}}, avšak skutečná délka činí {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": "během",
   "wrong.captcha": "Chybná odpověď captcha, zkuste to prosím znovu.",
   "wrong.password": "Nesprávné heslo, zkuste to znovu.",
-  "you.can.upload.up.to": "Můžete nahrát až"
+  "you.can.upload.up.to": "Můžete nahrát až",
+  "hello": ""
 }

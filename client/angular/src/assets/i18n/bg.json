@@ -168,6 +168,7 @@
   "user.name.or.email": "Име ИЛИ електронен адрес на потребителя",
   "user.not.found": "Потребителят не е намерен",
   "user.search": "Търсене на потребител",
+  "user.suspended": "",
   "user.uploaded.files": "Качени файлове на {{ userName }}",
   "validation.invalidEmail": "Невалиден електронен адрес",
   "validation.maxlength": "Максималната дължина е {{requiredLength}}, докато настоящата дължина е {{actualLength}}.",
@@ -175,5 +176,6 @@
   "while.trying": "при опит",
   "wrong.captcha": "Грешен отговор на captcha, моля опитайте отново.",
   "wrong.password": "Грешна парола. Моля, опитайте отново.",
-  "you.can.upload.up.to": "Можете да качите до"
+  "you.can.upload.up.to": "Можете да качите до",
+  "hello": ""
 }

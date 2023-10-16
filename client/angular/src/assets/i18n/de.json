@@ -168,6 +168,7 @@
   "user.name.or.email": "Name ODER E-Mail des Nutzers",
   "user.not.found": "Nutzer nicht gefunden",
   "user.search": "Nutzersuche",
+  "user.suspended": "",
   "user.uploaded.files": "Hochgeladene Dateien von {{userName}}",
   "validation.invalidEmail": "Ungültige E-Mail-Adresse",
   "validation.maxlength": "Die maximale Länge beträgt {{requiredLength}}, die tatsächliche Länge {{actualLength}}",
@@ -175,5 +176,6 @@
   "while.trying": "beim Versuch",
   "wrong.captcha": "Falsche Captcha-Antwort, bitte versuchen Sie es erneut.",
   "wrong.password": "Falsches Passwort, bitte versuchen Sie es erneut.",
-  "you.can.upload.up.to": "Hochladen möglich bis zu"
+  "you.can.upload.up.to": "Hochladen möglich bis zu",
+  "hello": ""
 }

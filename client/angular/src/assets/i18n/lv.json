@@ -168,6 +168,7 @@
   "user.name.or.email": "Lietotāja vārds VAI e-pasta adrese",
   "user.not.found": "Lietotājs nav atrasts",
   "user.search": "Lietotāja meklēšana",
+  "user.suspended": "",
   "user.uploaded.files": "Lietotāja {{userName}} augšupielādētās datnes",
   "validation.invalidEmail": "Nederīga e-pasta adrese",
   "validation.maxlength": "Maksimālais garums ir {{requiredLength}, bet pašreizējais garums ir {actualLength}}.",
@@ -175,5 +176,6 @@
   "while.trying": "mēģinot izpildīt šādu darbību:",
   "wrong.captcha": "Nepareiza captcha atbilde, lūdzu, mēģiniet vēlreiz.",
   "wrong.password": "Nepareiza parole – mēģiniet vēlreiz!",
-  "you.can.upload.up.to": "Varat augšupielādēt līdz"
+  "you.can.upload.up.to": "Varat augšupielādēt līdz",
+  "hello": ""
 }

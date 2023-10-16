@@ -112,7 +112,8 @@ export class CaptchaComponent implements OnInit {
   ];
 
   async ngOnInit() {
-    await this.init();
+    await 
+    this.init();
   }
 
   private async init() {
