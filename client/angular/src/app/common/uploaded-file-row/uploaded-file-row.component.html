@@ -43,7 +43,7 @@
       <a *ngIf="displayAsUploader" (click)="displayRecipients()">
         {{ "shared.times" | transloco: { count: file.sharedWith.length } }}
       </a>
-     <span *ngIf="displayAsAdministrator"  [ngClass]="[ file.status === 'AVAILABLE' ? 'status-available' : 'status-fail-or-pending']" >&nbsp;( {{ file.status }} ) </span>
+     <span *ngIf="displayAsAdministrator || file.status !== 'AVAILABLE' "  [ngClass]="[ file.status === 'AVAILABLE' ? 'status-available' : 'status-fail-or-pending']" >&nbsp;( {{ file.status }} ) </span>
     </div>
 
     <div class="level-item"> 
