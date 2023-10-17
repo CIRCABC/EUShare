@@ -17,7 +17,7 @@
                     <div *ngIf="monitoringDetails.uploader_email"><strong>Uploader Email:</strong> {{ monitoringDetails.uploader_email }}</div>
                     <div *ngIf="monitoringDetails.description"><strong>Details:</strong> {{ monitoringDetails.description }}</div>
                     
-                    <div *ngIf="monitoringDetails.event.includes('DOWNLOAD')">
+                    <div *ngIf="monitoringDetails.event && monitoringDetails.event.includes('DOWNLOAD')">
                         <strong>User blame:</strong>                 
                         <select [(ngModel)]="monitoringDetails.uploader_status" name="uploader_status">
                             <option *ngFor="let statusKey of statusKeys" [value]="statusKey">
@@ -26,7 +26,7 @@
                         </select>
                     </div>
 
-                    <div *ngIf="monitoringDetails.event.includes('UPLOAD')">
+                    <div *ngIf="monitoringDetails.event && monitoringDetails.event.includes('UPLOAD')">
                         <strong>User blame:</strong>                 
                         <select [(ngModel)]="monitoringDetails.uploader_status" name="uploader_status">
                             <option *ngFor="let statusKey of statusKeys" [value]="statusKey">
@@ -35,7 +35,7 @@
                         </select>
                     </div>
 
-                    <div *ngIf="monitoringDetails.event.includes('USER')">
+                    <div *ngIf="monitoringDetails.event && monitoringDetails.event.includes('USER')">
                         <strong>User blame:</strong>                 
                         <select [(ngModel)]="monitoringDetails.uploader_status" name="uploader_status">
                             <option *ngFor="let statusKey of statusKeys" [value]="statusKey">

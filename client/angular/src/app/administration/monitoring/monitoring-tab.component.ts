@@ -57,15 +57,18 @@ export class MonitoringTabComponent implements OnInit {
     return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${details.shortUrl}`;
   }
 
-  formatString(input: string): string {
-    const words = input.toLowerCase().split('_');
-    words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
-    words[words.length - 1] = `(by ${words[words.length - 1]})`;
-    return words.join(' ');
+  formatString(input: string | undefined): string {
+    if (input) {
+      const words = input.toLowerCase().split('_');
+      words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
+      words[words.length - 1] = `(by ${words[words.length - 1]})`;
+      return words.join(' ');
+    }
+    else { return ""; }
   }
-
   
-  public async tryDownload(details: MonitoringDetails) {
+  public async tryDownload(details: MonitoringDetails| undefined) {
+    if(details)
     if (details.fileId && details.filename)
       await this.downloadsService.download(details.fileId, details.filename);
   }

@@ -1,19 +1,19 @@
 <mat-tab-group>
 
     <mat-tab label="Waiting">
-        <app-monitoring-tab [reportStatus]="'WAITING'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
+        <app-monitoring-tab [reportStatus]="'WAITING'"  (deleteEvent)="delete($event)"
             (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
             [monitoringDetails]="monitoringDetails"></app-monitoring-tab>
     </mat-tab>
 
     <mat-tab label="Approved">
-        <app-monitoring-tab [reportStatus]="'APPROVED'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
+        <app-monitoring-tab [reportStatus]="'APPROVED'"  (deleteEvent)="delete($event)"
             (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
             [monitoringDetails]="monitoringDetails"></app-monitoring-tab>
     </mat-tab>
 
     <mat-tab label="Denied">
-        <app-monitoring-tab [reportStatus]="'DENIED'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
+        <app-monitoring-tab [reportStatus]="'DENIED'"  (deleteEvent)="delete($event)"
             (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
             [monitoringDetails]="monitoringDetails"></app-monitoring-tab>
     </mat-tab>
