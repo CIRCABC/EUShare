@@ -168,7 +168,7 @@
   "user.name.or.email": "Naam OF e-mailadres van de gebruiker",
   "user.not.found": "Gebruiker niet gevonden",
   "user.search": "Gebruiker zoeken",
-  "user.suspended": "",
+  "user.suspended": "Waarschuwing! Je gebruikersaccount is tijdelijk opgeschort vanwege verdachte activiteiten. Als je van mening bent dat deze actie ongegrond is, kun je contact opnemen met de klantenservice op het volgende e-mailadres DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "geüploade bestanden van {{ userName }}",
   "validation.invalidEmail": "Ongeldig e-mailadres",
   "validation.maxlength": "De maximumlengte is {{requiredLength}}, maar de huidige lengte is {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "bij een poging",
   "wrong.captcha": "Verkeerde captcha-reactie, probeer het opnieuw.",
   "wrong.password": "Verkeerd wachtwoord, probeer het opnieuw.",
-  "you.can.upload.up.to": "Uploads mogen niet groter zijn dan",
-  "hello": ""
+  "you.can.upload.up.to": "Uploads mogen niet groter zijn dan"
 }

@@ -168,7 +168,7 @@
   "user.name.or.email": "Käyttäjän nimi TAI sähköpostiosoite",
   "user.not.found": "Käyttäjää ei löydy",
   "user.search": "Käyttäjän haku",
-  "user.suspended": "",
+  "user.suspended": "Varoitus! Käyttäjätilisi on väliaikaisesti poistettu epäilyttävän toiminnan vuoksi. Jos uskot tämän toimenpiteen olevan perusteeton, voit ottaa yhteyttä tukeen seuraavalla sähköpostiosoitteella DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "Käyttäjän {{ userName }} järjestelmään lähettämät tiedostot",
   "validation.invalidEmail": "Virheellinen sähköpostiosoite",
   "validation.maxlength": "Enimmäispituus on {{requiredLength}}, tämänhetkinen on {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "yritettäessä",
   "wrong.captcha": "Väärä captcha-vastaus, yritä uudelleen.",
   "wrong.password": "Virheellinen salasana. Yritä uudelleen.",
-  "you.can.upload.up.to": "Tiedostojen enimmäiskoko on",
-  "hello": ""
+  "you.can.upload.up.to": "Tiedostojen enimmäiskoko on"
 }

@@ -168,7 +168,7 @@
   "user.name.or.email": "Naudotojo vardas ARBA e. paštas",
   "user.not.found": "Naudotojas nerastas",
   "user.search": "Naudotojų paieška",
-  "user.suspended": "",
+  "user.suspended": "Įspėjimas! Jūsų vartotojo paskyra buvo laikinai pakeista dėl įtartinos veiklos. Jei manote, kad šis veiksmas yra nepagrįstas, galite susisiekti su palaikymo tarnyba šiuo el. pašto adresu DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "Naudotojo {{ userName }} įkelti failai",
   "validation.invalidEmail": "Netinkamas e. pašto adresas.",
   "validation.maxlength": "Didžiausias leidžiamas ilgis yra  {{requiredLength}}, bet esamas ilgis yra {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "bandant",
   "wrong.captcha": "Neteisingas captcha atsakymas, pabandykite dar kartą.",
   "wrong.password": "Neteisingas slaptažodis, bandykite dar kartą.",
-  "you.can.upload.up.to": "Galite įkelti ne daugiau kaip",
-  "hello": ""
+  "you.can.upload.up.to": "Galite įkelti ne daugiau kaip"
 }

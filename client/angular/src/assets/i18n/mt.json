@@ -168,7 +168,7 @@
   "user.name.or.email": "Isem l-utent JEW email",
   "user.not.found": "L-utent ma nstabx",
   "user.search": "Fittex l-utenti",
-  "user.suspended": "",
+  "user.suspended": "Twissija! Il-kont tal-utent tiegħek ġie supsended temporanjament minħabba attività suspettuża. Jekk temmen li din l-azzjoni mhix ġustifikata, tista 'tikkuntattja l-appoġġ fl-indirizz elettroniku li ġej DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "Il-files applowdjati ta’ {{ userName }}",
   "validation.invalidEmail": "Indirizz tal-email invalidu",
   "validation.maxlength": "It-tul massimu hu ta’ {{requiredLength}} iżda t-tul attwali hu ta’ {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "waqt li kien qed jipprova",
   "wrong.captcha": "Rispons ħażin captcha, jekk jogħġbok ipprova mill-ġdid.",
   "wrong.password": "Password ħażina, jekk jogħġbok erġa’ pprova.",
-  "you.can.upload.up.to": "Tista’ tapplowdja sa",
-  "hello": ""
+  "you.can.upload.up.to": "Tista’ tapplowdja sa"
 }

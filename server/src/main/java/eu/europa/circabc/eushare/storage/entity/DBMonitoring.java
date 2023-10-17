@@ -80,7 +80,7 @@ import java.time.LocalDateTime;
         @ColumnResult(name = "file_id"),
         @ColumnResult(name = "user_id"),
         @ColumnResult(name = "counter", type = Long.class),
-        @ColumnResult(name = "monitoring_status", type = String.class),
+        @ColumnResult(name = "status", type = String.class),
         @ColumnResult(name = "filename"),
         @ColumnResult(name = "filesize", type = BigDecimal.class),
         @ColumnResult(name = "uploader_email"),

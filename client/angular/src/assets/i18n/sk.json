@@ -168,7 +168,7 @@
   "user.name.or.email": "Meno ALEBO e-mail používateľa",
   "user.not.found": "Používateľ sa nenašiel",
   "user.search": "Vyhľadávanie používateľov",
-  "user.suspended": "",
+  "user.suspended": "Varovanie! Vaše používateľské konto bolo dočasne vyradené z dôvodu podozrivej aktivity. Ak sa domnievate, že táto akcia je neoprávnená, môžete kontaktovať podporu na nasledujúcej e-mailovej adrese DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "Súbory, ktoré nahral(-a) {{ userName }}",
   "validation.invalidEmail": "Neplatná e-mailová adresa",
   "validation.maxlength": "Maximálna dĺžka je {{requiredLength}}, ale aktuálna dĺžka je {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "pri pokuse",
   "wrong.captcha": "Nesprávna odpoveď captcha, skúste to znova.",
   "wrong.password": "Nesprávne heslo, skúste znova.",
-  "you.can.upload.up.to": "Nahrať môžete najviac",
-  "hello": ""
+  "you.can.upload.up.to": "Nahrať môžete najviac"
 }

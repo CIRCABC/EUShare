@@ -168,7 +168,7 @@
   "user.name.or.email": "Ainm an úsáideora NÓ seoladh ríomhphoist an úsáideora",
   "user.not.found": "Níor aimsíodh an t-úsáideoir",
   "user.search": "Cuardach úsáideora",
-  "user.suspended": "",
+  "user.suspended": "Rabhadh! Cuireadh do chuntas úsáideora curtha isteach go sealadach mar gheall ar ghníomhaíocht amhrasach. Má chreideann tú nach bhfuil an gníomh seo gan bhráth, is féidir leat teagmháil a dhéanamh le tacaíocht ag an seoladh ríomhphoist seo a leanas DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "Comhaid uaslódáilte de chuid {{ userName }}",
   "validation.invalidEmail": "Seoladh ríomhphoist neamhbhailí",
   "validation.maxlength": "Is é {{requiredLength}} an t-uasfhad atá ag teastáil, ach is é {{actualLength}} an fad iarbhír",
@@ -176,6 +176,5 @@
   "while.trying": "agus tú ag iarraidh",
   "wrong.captcha": "Freagra captcha mícheart, déan iarracht arís le do thoil.",
   "wrong.password": "Focal faire mícheart, bain triail as arís le do thoil.",
-  "you.can.upload.up.to": "Is féidir leat suas leis an líon seo a leanas a uaslódáil:",
-  "hello": ""
+  "you.can.upload.up.to": "Is féidir leat suas leis an líon seo a leanas a uaslódáil:"
 }

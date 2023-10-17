@@ -14,6 +14,8 @@ import eu.europa.circabc.eushare.model.AbuseReport;
 import eu.europa.circabc.eushare.model.AbuseReportDetails;
 import eu.europa.circabc.eushare.model.FileBasics;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
+import eu.europa.circabc.eushare.model.MonitoringDetails;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -34,7 +36,7 @@ import org.thymeleaf.context.Context;
  * Service for sending emails from EasyShare
  */
 @Service
-public class EmailService  {
+public class EmailService {
 
   private Logger log = LoggerFactory.getLogger(EmailService.class);
 
@@ -58,7 +60,7 @@ public class EmailService  {
   private EushareConfiguration esConfig;
 
   private void sendMessage(String recipient, String content)
-    throws MessagingException {
+      throws MessagingException {
     if (esConfig.isActivateMailService()) {
       MimeMessage message = sender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
@@ -70,8 +72,8 @@ public class EmailService  {
     }
   }
 
-    private void sendMessageWithSupportCC(String recipient, String content)
-    throws MessagingException {
+  private void sendMessageWithSupportCC(String recipient, String content)
+      throws MessagingException {
     if (esConfig.isActivateMailService()) {
       MimeMessage message = sender.createMimeMessage();
       MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
@@ -84,17 +86,15 @@ public class EmailService  {
     }
   }
 
-
   /**
    * Send notification to {@code recipient} that {@code downloaderId} downloaded a
    * file.
    */
- 
+
   public void sendDownloadNotification(
-    String recipient,
-    String downloaderId,
-    FileBasics fileInfo
-  ) throws MessagingException {
+      String recipient,
+      String downloaderId,
+      FileBasics fileInfo) throws MessagingException {
     Context ctx = new Context();
 
     if (downloaderId == null || downloaderId.equals("")) {
@@ -102,71 +102,72 @@ public class EmailService  {
     }
     ctx.setVariable(DOWNLOADER, downloaderId);
     ctx.setVariable(FILENAME, fileInfo.getName());
-    String content =
-      this.templateEngine.process("mail/html/download-notification", ctx);
+    String content = this.templateEngine.process("mail/html/download-notification", ctx);
     this.sendMessage(recipient, content);
   }
 
   /**
    * Send notification to {@code recipient} that one of his files got deleted.
    */
- 
+
   public void sendFileDeletedNotification(
-    String recipient,
-    FileBasics fileInfo,
-    String reason
-  ) throws MessagingException {
+      String recipient,
+      FileBasics fileInfo,
+      String reason) throws MessagingException {
     Context ctx = new Context();
     ctx.setVariable(FILENAME, fileInfo.getName());
     ctx.setVariable(REASON, reason);
-    String content =
-      this.templateEngine.process("mail/html/delete-notification", ctx);
+    String content = this.templateEngine.process("mail/html/delete-notification", ctx);
 
     this.sendMessage(recipient, content);
   }
 
-
-   
   public void sendNotification(
-    String recipient,
-    String notification
-  ) throws MessagingException {
+      String recipient,
+      String notification) throws MessagingException {
     Context ctx = new Context();
     ctx.setVariable(NOTIFICATION, notification);
 
-    String content =
-      this.templateEngine.process("mail/html/notification", ctx);
+    String content = this.templateEngine.process("mail/html/notification", ctx);
 
     this.sendMessage(recipient, content);
   }
 
   public void sendAbuseReportNotification(
-    String recipient,
-    String filename,
-    String uploader,
-    AbuseReport abuseReport
-  ) throws MessagingException {
+      String recipient,
+      String filename,
+      String uploader,
+      AbuseReport abuseReport) throws MessagingException {
     Context ctx = new Context();
     ctx.setVariable(FILENAME, filename);
-    ctx.setVariable(UPLOADER,uploader);
-    ctx.setVariable(ABUSEREPORT,abuseReport);
+    ctx.setVariable(UPLOADER, uploader);
+    ctx.setVariable(ABUSEREPORT, abuseReport);
 
-    String content =
-      this.templateEngine.process("mail/html/abuse-report-notification", ctx);
+    String content = this.templateEngine.process("mail/html/abuse-report-notification", ctx);
 
     this.sendMessage(recipient, content);
   }
 
-    public void sendAbuseBlameNotification(
-    String recipient,
-    AbuseReportDetails abuseReport
-  ) throws MessagingException {
+  public void sendAbuseBlameNotification(
+      String recipient,
+      AbuseReportDetails abuseReport) throws MessagingException {
     Context ctx = new Context();
 
-    ctx.setVariable(ABUSEREPORT,abuseReport);
+    ctx.setVariable(ABUSEREPORT, abuseReport);
 
-    String content =
-      this.templateEngine.process("mail/html/abuse-blame-notification", ctx);
+    String content = this.templateEngine.process("mail/html/abuse-blame-notification", ctx);
+
+    this.sendMessageWithSupportCC(recipient, content);
+  }
+
+  public void sendMonitoringBlameNotification(
+      String recipient,
+      MonitoringDetails abuseReport) throws MessagingException {
+    Context ctx = new Context();
+
+    ctx.setVariable(ABUSEREPORT, abuseReport);
+
+    String content = this.templateEngine.process("mail/html/monitoring-blame-notification", ctx);
 
     this.sendMessageWithSupportCC(recipient, content);
   }
@@ -174,21 +175,19 @@ public class EmailService  {
   /**
    * Send notification to {@code recipient} that someone shared a file with him.
    */
-  
+
   public void sendShareNotification(
-    String recipient,
-    FileInfoRecipient fileInfo,
-    String message,
-    String shorturl,
-    LocalDate expDate
-  ) throws MessagingException {
+      String recipient,
+      FileInfoRecipient fileInfo,
+      String message,
+      String shorturl,
+      LocalDate expDate) throws MessagingException {
     Context ctx = new Context();
     ctx.setVariable(FILENAME, fileInfo.getName());
     ctx.setVariable(UPLOADER, fileInfo.getUploaderName());
     ctx.setVariable(
-      EXPDATE,
-      expDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG))
-    );
+        EXPDATE,
+        expDate.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)));
     StringBuilder sb = new StringBuilder();
     sb.append(this.esConfig.getClientHttpAddress());
     sb.append("/fs/");
@@ -202,8 +201,7 @@ public class EmailService  {
     }
 
     ctx.setVariable(MESSAGE, message);
-    String content =
-      this.templateEngine.process("mail/html/share-notification", ctx);
+    String content = this.templateEngine.process("mail/html/share-notification", ctx);
     this.sendMessage(recipient, content);
   }
 }

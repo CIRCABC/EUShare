@@ -168,7 +168,7 @@
   "user.name.or.email": "Brugerens navn ELLER e-mail",
   "user.not.found": "Brugeren blev ikke fundet",
   "user.search": "Brugersøgning",
-  "user.suspended": "",
+  "user.suspended": "Advarsel! Din brugerkonto er blevet midlertidigt slettet på grund af mistænkelig aktivitet. Hvis du mener, at denne handling er uberettiget, kan du kontakte support på følgende e-mail-adresse DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "{{ userName }}s uploadede filer",
   "validation.invalidEmail": "Ugyldig e-mailadresse",
   "validation.maxlength": "Den maksimale længde {{requiredLength}}, men den faktiske længde er {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": ": forsøg på",
   "wrong.captcha": "Forkert captcha-svar, prøv igen.",
   "wrong.password": "Forkert password – prøv igen.",
-  "you.can.upload.up.to": "Du kan uploade op til",
-  "hello": ""
+  "you.can.upload.up.to": "Du kan uploade op til"
 }

@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+
 @Service
 public class FileUploadRateService {
 
@@ -46,6 +48,9 @@ public class FileUploadRateService {
 
     @Autowired
     public MonitoringRepository monitoringRepository;  
+
+    @Autowired
+    public EmailService emailService;
 
     public void logFileUpload(String userID) {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
@@ -116,7 +121,14 @@ public class FileUploadRateService {
       
         dbMonitoring.setUserId(user.getId());
         monitoringRepository.save(dbMonitoring);
-       // send alert
+               String message = "A monitoring alert for too uploads ("+event.toString()+ ") of user :" + user.getEmail() + "\" has been raised at :"+ dbMonitoring.getDatetime() + ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
+        
+        try {
+            emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu",message);
+        } catch (MessagingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void removeOldUploadLogs() {
@@ -146,8 +158,5 @@ public class FileUploadRateService {
         }
     }
 
-    private void sendAlert(DBUser user) {
-        // Logic to send alert to the user or admins
-    }
-
+ 
 }

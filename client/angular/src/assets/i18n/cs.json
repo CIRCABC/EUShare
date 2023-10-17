@@ -168,7 +168,7 @@
   "user.name.or.email": "Jméno uživatele NEBO e-mail",
   "user.not.found": "Uživatel nenalezen",
   "user.search": "Vyhledávání uživatelů",
-  "user.suspended": "",
+  "user.suspended": "Varování! Váš uživatelský účet byl dočasně zrušen kvůli podezřelé aktivitě. Pokud se domníváte, že tato akce je neoprávněná, můžete kontaktovat podporu na následující e-mailové adrese DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "Nahrané soubory uživatele {{ userName }}",
   "validation.invalidEmail": "Neplatná e-mailová adresa",
   "validation.maxlength": "Maximální délka je {{requiredLength}}, avšak skutečná délka činí {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "během",
   "wrong.captcha": "Chybná odpověď captcha, zkuste to prosím znovu.",
   "wrong.password": "Nesprávné heslo, zkuste to znovu.",
-  "you.can.upload.up.to": "Můžete nahrát až",
-  "hello": ""
+  "you.can.upload.up.to": "Můžete nahrát až"
 }

@@ -168,7 +168,7 @@
   "user.name.or.email": "A felhasználó neve VAGY e-mail-címe",
   "user.not.found": "A felhasználó nem található",
   "user.search": "Felhasználó keresése",
-  "user.suspended": "",
+  "user.suspended": "Figyelmeztetés! Felhasználói fiókját gyanús tevékenység miatt ideiglenesen felfüggesztették. Ha úgy gondolja, hogy ez a művelet indokolatlan, vegye fel a kapcsolatot az ügyfélszolgálattal az alábbi e-mail címen: DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "{{ userName }}feltöltött fájljai:",
   "validation.invalidEmail": "Érvénytelen e-mail-cím",
   "validation.maxlength": "Az e-mail-cím maximális hossza {{requiredLength}}, de a tényleges hossz {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "a következő művelet során:",
   "wrong.captcha": "Rossz captcha válasz, kérjük, próbálja újra.",
   "wrong.password": "Hibás jelszó, kérjük, próbálkozzon újra.",
-  "you.can.upload.up.to": "Feltölthető fájlméret:",
-  "hello": ""
+  "you.can.upload.up.to": "Feltölthető fájlméret:"
 }

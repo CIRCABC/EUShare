@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
-import { MountPointSpace, AdminService, StatsService, Stat } from '../openapi';
+import { MountPointSpace, AdminService, StatsService, Stat, Monitoring } from '../openapi';
 
 import { firstValueFrom } from 'rxjs';
 import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AbuseComponent } from './abuse/abuse.component';
 import { LogsComponent } from './logs/logs.component';
 import { UserAdminComponent } from './user/user-admin/user-admin.component';
+import { MonitoringComponent } from './monitoring/monitoring.component';
 @Component({
   selector: 'app-administration',
   templateUrl: './administration.component.html',
@@ -43,6 +44,7 @@ import { UserAdminComponent } from './user/user-admin/user-admin.component';
     FileRowContainerComponent,
     TrustComponent,
     AbuseComponent,
+    MonitoringComponent,
     LogsComponent,
     MatIconModule,
     UserAdminComponent,

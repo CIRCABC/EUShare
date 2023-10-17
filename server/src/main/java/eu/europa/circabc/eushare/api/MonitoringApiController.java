@@ -34,6 +34,7 @@ import eu.europa.circabc.eushare.services.EmailService;
 import eu.europa.circabc.eushare.services.FileService;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.dto.MonitoringDetailsDTO;
+import eu.europa.circabc.eushare.storage.entity.DBAbuse;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
@@ -73,7 +74,6 @@ public class MonitoringApiController implements MonitoringApi {
 
     @Autowired
     private EmailService emailService;
-
 
     @AdminOnly
     @Override
@@ -118,33 +118,51 @@ public class MonitoringApiController implements MonitoringApi {
     public ResponseEntity<MonitoringDetails> updateMonitoringEntry(@PathVariable("id") String id,
             @Valid @RequestBody MonitoringDetails monitoringDetails) {
 
+         DBMonitoring dbMonitoring = monitoringRepository.findOneById(monitoringDetails.getID());
+         DBMonitoring.Status dbMonitoringStatus = EnumConverter.convert(monitoringDetails.getStatus(),DBMonitoring.Status.class);
+         dbMonitoring.setStatus(dbMonitoringStatus);
+         monitoringRepository.save(dbMonitoring);      
+
         if (monitoringDetails.getStatus() == MonitoringDetails.StatusEnum.APPROVED) {
+
             String userId = monitoringDetails.getUserId();
-            DBUser user = userRepository.findOneById(userId);
-            user.setStatus(DBUser.Status.valueOf(monitoringDetails.getUploaderStatus()));
-            userRepository.save(user);
+            if (userId != null) {
 
-            fileService.freezeFile(monitoringDetails.getFileId());
+                DBUser user = userRepository.findOneById(userId);
+                if (user != null) {
+                    user.setStatus(DBUser.Status.valueOf(monitoringDetails.getUploaderStatus()));
+                    userRepository.save(user);
+                    if (monitoringDetails.getFileId() != null) {
+                        fileService.freezeFile(monitoringDetails.getFileId());
+                    }
+                    else {
+                        //fileService.freezeFilesFromUser(userId, userId);
+                    }
+                }
+            }
+            
+              try {
+              this.emailService.sendMonitoringBlameNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", monitoringDetails);
+             } catch (MessagingException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+              }
+             
 
-            /*
-             * try {
-             * //monitoringDetails.s(getEventDescription(monitoringDetails.getEvent().
-             * getValue()));
-             * //this.emailService.sendMonitoringBlameNotification(
-             * "DIGIT-CIRCABC-SUPPORT@ec.europa.eu", monitoringDetails);
-             * } catch (MessagingException e) {
-             * // TODO Auto-generated catch block
-             * e.printStackTrace();
-             * }
-             */
 
         }
         if (monitoringDetails.getStatus() == MonitoringDetails.StatusEnum.DENIED) {
             String uploader = monitoringDetails.getUploaderEmail();
-            DBUser user = userRepository.findOneByEmailIgnoreCase(uploader);
-            user.setStatus(DBUser.Status.REGULAR);
-            userRepository.save(user);
-            fileService.unfreezeFile(monitoringDetails.getFileId());
+            if (uploader != null) {
+                DBUser user = userRepository.findOneByEmailIgnoreCase(uploader);
+                if (user != null) {
+                    user.setStatus(DBUser.Status.REGULAR);
+                    userRepository.save(user);
+                    if (monitoringDetails.getFileId() != null) {
+                        fileService.unfreezeFile(monitoringDetails.getFileId());
+                    }
+                }
+            }
         }
 
         return ResponseEntity.ok(monitoringDetails);

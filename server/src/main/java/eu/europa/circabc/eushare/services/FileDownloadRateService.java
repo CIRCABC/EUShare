@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.mail.MessagingException;
+import javax.validation.constraints.Email;
+
 @Service
 public class FileDownloadRateService {
 
@@ -38,6 +41,9 @@ public class FileDownloadRateService {
     
     @Autowired
     public MonitoringRepository monitoringRepository;
+
+    @Autowired
+    public EmailService emailService;
 
     private static final int HOURLY_THRESHOLD = 10;
     private static final int DAILY_THRESHOLD = 50;
@@ -108,11 +114,15 @@ public class FileDownloadRateService {
         dbMonitoring.setFileId(file.getId());
         dbMonitoring.setUserId(file.getUploader().getId());
         monitoringRepository.save(dbMonitoring);
-        sendAlert(file);
-    }
-    private void sendAlert(DBFile file) {
-    
-        System.out.println("Alerte! Le fichier " + file.getFilename() + " a été téléchargé plus que le seuil autorisé."+file.getUploader());
+
+        String message = "A monitoring alert for too many downloads ("+event.toString()+ ") of file :" + file.getFilename() + "\" has been raised at :"+ dbMonitoring.getDatetime() + ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
+        
+        try {
+            emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu",message);
+        } catch (MessagingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     private void removeOldDownloadLogs() {

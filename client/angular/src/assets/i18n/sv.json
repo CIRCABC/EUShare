@@ -168,7 +168,7 @@
   "user.name.or.email": "Användarens namn eller e-postadress",
   "user.not.found": "Användaren hittades inte",
   "user.search": "Sök användare",
-  "user.suspended": "",
+  "user.suspended": "Varning! Ditt användarkonto har tillfälligt upphävts på grund av misstänkt aktivitet. Om du anser att denna åtgärd är obefogad kan du kontakta support på följande e-postadress DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "{{ userName }}s uppladdade filer",
   "validation.invalidEmail": "Ogiltig e-postadress",
   "validation.maxlength": "Maxlängden är {{requiredLength}} men längden är nu {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "när du försökte",
   "wrong.captcha": "Fel captcha-svar, försök igen.",
   "wrong.password": "Fel lösenord – försök igen.",
-  "you.can.upload.up.to": "Du kan ladda upp högst",
-  "hello": ""
+  "you.can.upload.up.to": "Du kan ladda upp högst"
 }

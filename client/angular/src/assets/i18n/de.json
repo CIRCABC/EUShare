@@ -168,7 +168,7 @@
   "user.name.or.email": "Name ODER E-Mail des Nutzers",
   "user.not.found": "Nutzer nicht gefunden",
   "user.search": "Nutzersuche",
-  "user.suspended": "",
+  "user.suspended": "Warnung! Ihr Benutzerkonto wurde aufgrund verdächtiger Aktivitäten vorübergehend gesperrt. Wenn Sie der Meinung sind, dass diese Maßnahme ungerechtfertigt ist, können Sie sich unter der folgenden E-Mail-Adresse an den Support wenden: DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "Hochgeladene Dateien von {{userName}}",
   "validation.invalidEmail": "Ungültige E-Mail-Adresse",
   "validation.maxlength": "Die maximale Länge beträgt {{requiredLength}}, die tatsächliche Länge {{actualLength}}",
@@ -176,6 +176,5 @@
   "while.trying": "beim Versuch",
   "wrong.captcha": "Falsche Captcha-Antwort, bitte versuchen Sie es erneut.",
   "wrong.password": "Falsches Passwort, bitte versuchen Sie es erneut.",
-  "you.can.upload.up.to": "Hochladen möglich bis zu",
-  "hello": ""
+  "you.can.upload.up.to": "Hochladen möglich bis zu"
 }
