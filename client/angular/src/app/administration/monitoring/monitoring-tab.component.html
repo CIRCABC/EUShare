@@ -16,8 +16,8 @@
                 <td> {{ monitoringDetail.datetime | date:'yy-MM-dd HH:mm' }}</td>
                 <td> {{ formatString(monitoringDetail.event) }}</td>
                 <td>{{ monitoringDetail.counter }}</td>
-                <td> <span *ngIf="monitoringDetail.uploader_email" title="{{ monitoringDetail.uploader_email }}">
-                        {{ monitoringDetail.uploader_name }}
+                <td> <span *ngIf="monitoringDetail.uploader_email" title="{{ monitoringDetail.uploader_name }}">
+                        {{ monitoringDetail.uploader_email }}
                     </span></td>
                 <td> <span *ngIf="monitoringDetail.filename">{{ monitoringDetail.filename }}</span></td>
                 <td class="icon-cell"><a *ngIf="monitoringDetail.filename" (click)="tryDownload(monitoringDetail)"
