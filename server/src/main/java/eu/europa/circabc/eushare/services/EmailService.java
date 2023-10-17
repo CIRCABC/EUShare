@@ -70,6 +70,21 @@ public class EmailService  {
     }
   }
 
+    private void sendMessageWithSupportCC(String recipient, String content)
+    throws MessagingException {
+    if (esConfig.isActivateMailService()) {
+      MimeMessage message = sender.createMimeMessage();
+      MimeMessageHelper helper = new MimeMessageHelper(message, "UTF-8");
+      helper.setTo(recipient);
+      helper.setCc("DIGIT-CIRCABC-SUPPORT@ec.europa.eu");
+      helper.setText(content, true);
+      helper.setSubject("CIRCABC Share notification");
+
+      sender.send(message);
+    }
+  }
+
+
   /**
    * Send notification to {@code recipient} that {@code downloaderId} downloaded a
    * file.
@@ -153,7 +168,7 @@ public class EmailService  {
     String content =
       this.templateEngine.process("mail/html/abuse-blame-notification", ctx);
 
-    this.sendMessage(recipient, content);
+    this.sendMessageWithSupportCC(recipient, content);
   }
 
   /**

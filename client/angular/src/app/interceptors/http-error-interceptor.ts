@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService,
-  ) { }
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -187,10 +187,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               if (err.error) {
                 const status: Status = err.error;
                 if (status.message) {
-                  if (status.message == "UserHasNoUploadRights") {
-                    errorMessage += ` ${this.i18nService.translate('user.suspended')} `;
-                  }
-                  else {
+                  if (status.message == 'UserHasNoUploadRights') {
+                    errorMessage += ` ${this.i18nService.translate(
+                      'user.suspended',
+                    )} `;
+                  } else {
                     errorMessage += ` ${this.i18nService.translate(
                       'reason',
                     )} ${this.separateStatusMessage(status.message)}`;

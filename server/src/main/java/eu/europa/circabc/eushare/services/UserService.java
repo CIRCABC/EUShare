@@ -48,7 +48,7 @@ import org.springframework.security.oauth2.server.resource.authentication.Bearer
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService implements  UserDetailsService {
+public class UserService implements UserDetailsService {
 
   private Logger log = LoggerFactory.getLogger(UserService.class);
 
@@ -58,9 +58,11 @@ public class UserService implements  UserDetailsService {
   @Autowired
   private EushareConfiguration esConfig;
 
+  @Autowired
+  private UserCreationLogService userCreationLogService;
+
   @Value("${spring.security.adminusers}")
   private String[] adminUsers;
-
 
   public String getAuthenticatedUserId(Authentication authentication)
       throws WrongAuthenticationException {
@@ -115,6 +117,8 @@ public class UserService implements  UserDetailsService {
         esConfig.getDefaultUserSpace(),
         username, role);
 
+    userCreationLogService.logNewUserCreation();
+
     for (String admin : adminUsers) {
       if (admin.equals(username))
         user.setRole(DBUser.Role.ADMIN);
@@ -127,7 +131,6 @@ public class UserService implements  UserDetailsService {
         .findById(userId)
         .orElseThrow(UnknownUserException::new);
   }
-
 
   public void setAdminUsers() {
     for (String admin : adminUsers) {
@@ -148,7 +151,6 @@ public class UserService implements  UserDetailsService {
     return this.getDbUser(userId).toUserInfo();
   }
 
-
   @Transactional
   public UserInfo getUserInfoOnBehalfOf(String userId, String requesterId)
       throws UnknownUserException, UserUnauthorizedException {
@@ -159,14 +161,13 @@ public class UserService implements  UserDetailsService {
     }
   }
 
-
   @Transactional
   public UserInfo setUserInfoOnBehalfOf(UserInfo userInfo, String requesterId)
       throws UnknownUserException, UserUnauthorizedException, NonInternalUsersCannotBecomeAdminException,
       IllegalSpaceException {
     String userId = userInfo.getId();
     if (this.isAdmin(requesterId)) {
-     
+
       DBUser user = this.getDbUser(userId);
       DBUser.Role dbUserRole = EnumConverter.convert(userInfo.getRole(), DBUser.Role.class);
       user.setRole(dbUserRole);
@@ -180,8 +181,6 @@ public class UserService implements  UserDetailsService {
       throw new UserUnauthorizedException();
     }
   }
-
-
 
   @Transactional
   public List<UserInfo> getUsersUserInfoOnBehalfOf(
@@ -201,7 +200,7 @@ public class UserService implements  UserDetailsService {
         return userRepository
             .findByEmailRoleInternalOrAdmin(
                 searchString,
-                PageRequest.of(pageNumber, pageSize, dir, sortBy),sortBy)
+                PageRequest.of(pageNumber, pageSize, dir, sortBy), sortBy)
             .stream()
             .map(UserInfoDTO::toUserInfo)
             .collect(Collectors.toList());
@@ -209,7 +208,7 @@ public class UserService implements  UserDetailsService {
         return userRepository
             .findAllByEmailRoleInternalOrAdmin(
                 searchString,
-                PageRequest.of(pageNumber, pageSize,dir, sortBy),sortBy)
+                PageRequest.of(pageNumber, pageSize, dir, sortBy), sortBy)
             .stream()
             .map(UserInfoDTO::toUserInfo)
             .collect(Collectors.toList());

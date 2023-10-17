@@ -90,6 +90,9 @@ public class DBUser {
   @Column(nullable = true)
   private LocalDateTime lastLogged = LocalDateTime.now();
 
+  @Column(nullable = true)
+  private LocalDateTime creationDate = LocalDateTime.now();
+
   // Is the username used for login
 
   @Column(nullable = true, unique = true)
@@ -139,6 +142,7 @@ public class DBUser {
     dbUser.setTotalSpace(totalSpace);
     dbUser.setUsername(username);
     dbUser.setLastLogged(LocalDateTime.now());
+    dbUser.setCreationDate(LocalDateTime.now());
     dbUser.setStatus(DBUser.Status.REGULAR);
     return dbUser;
   }
@@ -228,6 +232,14 @@ public class DBUser {
   @Override
   public int hashCode() {
     return id.hashCode();
+  }
+
+  public LocalDateTime getCreationDate() {
+    return creationDate;
+  }
+
+  public void setCreationDate(LocalDateTime creationDate) {
+    this.creationDate = creationDate;
   }
 
   public String getId() {

@@ -13,8 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import eu.europa.circabc.eushare.storage.repository.FileUploadRateRepository;
+import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
+import eu.europa.circabc.eushare.storage.entity.DBFile;
 import eu.europa.circabc.eushare.storage.entity.DBFileUploadRate;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
 
@@ -29,17 +33,19 @@ import java.util.Optional;
 public class FileUploadRateService {
 
    
-    private static final int EXTERNAL_THRESHOLD_HOUR = 10;
-    private static final int TRUSTED_EXTERNAL_THRESHOLD_HOUR = 50;
+    private static final int EXTERNAL_THRESHOLD_HOUR = 5;
+    private static final int TRUSTED_EXTERNAL_THRESHOLD_HOUR = 10;
     private static final int EXTERNAL_THRESHOLD_DAY = 50;
-    private static final int TRUSTED_EXTERNAL_THRESHOLD_DAY = 300;
+    private static final int TRUSTED_EXTERNAL_THRESHOLD_DAY = 100;
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     public FileUploadRateRepository repository;
-    
+
+    @Autowired
+    public MonitoringRepository monitoringRepository;  
 
     public void logFileUpload(String userID) {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
@@ -62,7 +68,7 @@ public class FileUploadRateService {
         }
     }
 
-    @Scheduled(cron = "0 0 * * * ?") // Chaque heure
+    @Scheduled(cron = "0 0 * * * ?") 
     public void hourlyCheck() {
         LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
         List<DBFileUploadRate> uploadsLastHour = repository.findByDateHour(oneHourAgo);
@@ -72,36 +78,45 @@ public class FileUploadRateService {
             Role userRole = user.getRole();
             int threshold = getThresholdForRole(userRole);
             if (uploadRate.getUploadCount() > threshold)
-                sendAlert(user);
+            saveMonitoringAndSendAlert(user, uploadRate.getUploadCount(), DBMonitoring.Event.UPLOAD_RATE_HOUR);
+
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") // Every day at midnight
+    @Scheduled(cron = "0 0 0 * * ?") 
     public void dailyCheck() {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusDays(1);
         List<DBFileUploadRate> uploadsLastDay = repository.findByDateHourAfter(twentyFourHoursAgo);
 
         Map<DBUser, Integer> userUploadCounts = new HashMap<>();
 
-        // Sum the uploads for each user in the last 24 hours
         for (DBFileUploadRate uploadRate : uploadsLastDay) {
             userUploadCounts.put(uploadRate.getUser(),
                     userUploadCounts.getOrDefault(uploadRate.getUser(), 0) + uploadRate.getUploadCount());
         }
 
-        // Check if the summed upload counts exceed the daily threshold for each user
-        // role
         for (Map.Entry<DBUser, Integer> entry : userUploadCounts.entrySet()) {
             DBUser user = entry.getKey();
             int count = entry.getValue();
             int threshold = getDailyThresholdForRole(user.getRole());
             if (count > threshold) {
-                sendAlert(user);
+                saveMonitoringAndSendAlert(user, count, DBMonitoring.Event.UPLOAD_RATE_DAY);
             }
         }
 
-        // Effacement des logs vieux de plus de 30 jours
         removeOldUploadLogs();
+    }
+
+     private void saveMonitoringAndSendAlert(DBUser user, int count, DBMonitoring.Event event) {
+        DBMonitoring dbMonitoring = new DBMonitoring();
+        dbMonitoring.setStatus(Status.WAITING);
+        dbMonitoring.setCounter(count);
+        dbMonitoring.setEvent(event);
+        dbMonitoring.setDatetime(LocalDateTime.now());
+      
+        dbMonitoring.setUserId(user.getId());
+        monitoringRepository.save(dbMonitoring);
+       // send alert
     }
 
     public void removeOldUploadLogs() {
@@ -115,9 +130,8 @@ public class FileUploadRateService {
                 return EXTERNAL_THRESHOLD_HOUR;
             case TRUSTED_EXTERNAL:
                 return TRUSTED_EXTERNAL_THRESHOLD_HOUR;
-            // ... other cases
             default:
-                return -1; // or some default value
+                return Integer.MAX_VALUE; 
         }
     }
 
@@ -128,7 +142,7 @@ public class FileUploadRateService {
             case TRUSTED_EXTERNAL:
                 return TRUSTED_EXTERNAL_THRESHOLD_DAY;
             default:
-                return Integer.MAX_VALUE; // No threshold for other roles
+                return Integer.MAX_VALUE; 
         }
     }
 

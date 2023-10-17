@@ -16,9 +16,12 @@ import org.springframework.stereotype.Service;
 
 import eu.europa.circabc.eushare.storage.entity.DBFile;
 import eu.europa.circabc.eushare.storage.entity.DBFileDownloadRate;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
 import eu.europa.circabc.eushare.storage.repository.FileDownloadRateRepository;
 import eu.europa.circabc.eushare.storage.repository.FileRepository;
 import eu.europa.circabc.eushare.storage.repository.FileUploadRateRepository;
+import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,9 +36,11 @@ public class FileDownloadRateService {
     @Autowired
     public FileDownloadRateRepository repository;
     
+    @Autowired
+    public MonitoringRepository monitoringRepository;
 
-    private static final int HOURLY_THRESHOLD = 100;
-    private static final int DAILY_THRESHOLD = 500;
+    private static final int HOURLY_THRESHOLD = 10;
+    private static final int DAILY_THRESHOLD = 50;
 
     public void logFileDownload(DBFile file) {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
@@ -63,7 +68,9 @@ public class FileDownloadRateService {
         for (DBFileDownloadRate downloadRate : downloadsLastHour) {
             DBFile file = downloadRate.getFile();
             if (downloadRate.getDownloadCount() > HOURLY_THRESHOLD) {
-                sendAlert(file);
+
+                saveMonitoringAndSendAlert(file, downloadRate.getDownloadCount(), DBMonitoring.Event.DOWNLOAD_RATE_HOUR);
+
             }
         }
     }
@@ -84,16 +91,28 @@ public class FileDownloadRateService {
             DBFile file = entry.getKey();
             int count = entry.getValue();
             if (count > DAILY_THRESHOLD) {
-                sendAlert(file);
+                saveMonitoringAndSendAlert(file, count, DBMonitoring.Event.DOWNLOAD_RATE_DAY);
             }
         }
 
         removeOldDownloadLogs();
     }
 
+
+    private void saveMonitoringAndSendAlert(DBFile file, int count, DBMonitoring.Event event) {
+        DBMonitoring dbMonitoring = new DBMonitoring();
+        dbMonitoring.setStatus(Status.WAITING);
+        dbMonitoring.setCounter(count);
+        dbMonitoring.setEvent(event);
+        dbMonitoring.setDatetime(LocalDateTime.now());
+        dbMonitoring.setFileId(file.getId());
+        dbMonitoring.setUserId(file.getUploader().getId());
+        monitoringRepository.save(dbMonitoring);
+        sendAlert(file);
+    }
     private void sendAlert(DBFile file) {
-        // Votre logique d'alerte ici, comme envoyer un e-mail, une notification, etc.
-        System.out.println("Alerte! Le fichier " + file.getFilename() + " a été téléchargé plus que le seuil autorisé.");
+    
+        System.out.println("Alerte! Le fichier " + file.getFilename() + " a été téléchargé plus que le seuil autorisé."+file.getUploader());
     }
 
     private void removeOldDownloadLogs() {

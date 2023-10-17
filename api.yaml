@@ -1197,6 +1197,82 @@ paths:
           description: No Content
 
 
+  '/monitoring':
+    get:
+      tags:
+        - Monitoring
+      summary: Get a list of monitoring entries with details grouped by fileId
+      operationId: getMonitoringEntryList
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MonitoringDetails'
+
+
+  '/monitoring/{id}':
+    get:
+      tags:
+      - Monitoring
+      summary: Get a specific monitoring entry by ID.
+      operationId: "getMonitoringEntry"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monitoring'
+    
+    put:
+      tags:
+      - Monitoring
+      summary: Update a specific monitoring entry by ID
+      operationId: "updateMonitoringEntry"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonitoringDetails'
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MonitoringDetails"
+
+    delete:
+      tags:
+      - Monitoring
+      summary: Delete a specific monitoring entry by ID
+      operationId: "deleteMonitoringEntry"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
 
 
   '/apikey':
@@ -1706,6 +1782,57 @@ components:
               type: string
             uploader_status:
               type: string
+
+    Monitoring:
+      type: object
+      properties:
+        ID:
+          type: string
+        datetime:
+          type: string
+          format: datetime
+        event:
+          type: string
+          enum:
+            - DOWNLOAD_RATE_HOUR
+            - UPLOAD_RATE_HOUR
+            - DOWNLOAD_RATE_DAY
+            - UPLOAD_RATE_DAY
+            - USER_CREATION_DAY
+        fileId:
+          type: string
+        userId:
+          type: string
+        counter:
+          type: integer
+          format: int64
+        status:
+          type: string
+          enum:
+            - WAITING
+            - DENIED
+            - APPROVED
+
+    MonitoringDetails:
+      allOf:
+        - $ref: '#/components/schemas/Monitoring'
+        - type: object
+          properties:
+            filename:
+              type: string
+            filesize:
+              type: number
+            shortUrl:
+              type: string
+            uploader_email:
+              type: string
+            uploader_name:
+              type: string
+            uploader_status:
+              type: string
+            description:
+              type: string
+
 
     FileStatusUpdate:
       type: object

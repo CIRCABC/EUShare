@@ -57,5 +57,4 @@ export class AbuseDetailsDialogComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.paginator.pageIndex = 0;
   }
-
 }

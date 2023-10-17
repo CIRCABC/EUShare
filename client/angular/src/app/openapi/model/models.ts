@@ -20,6 +20,8 @@ export * from './fileStatusUpdate';
 export * from './lastDownload';
 export * from './lastLog';
 export * from './lastUpload';
+export * from './monitoring';
+export * from './monitoringDetails';
 export * from './mountPointSpace';
 export * from './recipient';
 export * from './stat';

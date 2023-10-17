@@ -219,7 +219,7 @@ public class AbuseApiController implements AbuseApi {
 
             try {
                 abuseReportDetails.setReason(getReason(abuseReportDetails.getReason()));
-                this.emailService.sendAbuseBlameNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", abuseReportDetails);
+                this.emailService.sendAbuseBlameNotification(user.getEmail(), abuseReportDetails);
             } catch (MessagingException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

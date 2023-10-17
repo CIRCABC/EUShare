@@ -103,6 +103,12 @@ public class FileService {
   @Autowired
   private StatsRepository statsRepository;
 
+  @Autowired
+  private  FileDownloadRateService fileDownloadRateService;
+
+  @Autowired
+  private  FileUploadRateService fileUploadRateService;
+
   /**
    * Prepare all given paths.
    */
@@ -412,6 +418,8 @@ public class FileService {
     dbFile.setPath(path);
     fileRepository.save(dbFile);
 
+    fileUploadRateService.logFileUpload(uploaderId);
+
     for (Recipient recipient : recipientList) {
       if (!StringUtils.validateMessage(recipient.getMessage())) {
         throw new MessageTooLongException();
@@ -650,7 +658,11 @@ public class FileService {
             dbShare.getShorturl());
       }
       fileLogsRepository.save(fileLogs);
+       fileDownloadRateService.logFileDownload(dbFile);
     }
+
+   
+
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
   }
 

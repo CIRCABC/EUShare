@@ -13,17 +13,86 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import eu.europa.circabc.eushare.model.Monitoring;
+import eu.europa.circabc.eushare.storage.dto.MonitoringDetailsDTO;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@NamedNativeQuery(name = "MonitoringDetailsDTO.findAllDetails", query = "SELECT " +
+        "m.id AS id, " +
+        "m.datetime AS datetime, " +
+        "m.event AS event, " +
+        "m.file_id AS file_id, " +
+        "m.user_id AS user_id, " +
+        "m.counter AS counter, " +
+        "m.status AS status, " +
+
+        "CASE " +
+        "WHEN m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY') THEN f.filename " +
+        "ELSE NULL " +
+        "END AS filename, " +
+
+        "CASE " +
+        "WHEN m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY') THEN f.file_size " +
+        "ELSE NULL " +
+        "END AS filesize, " +
+
+        "CASE " +
+        "WHEN m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY', 'UPLOAD_RATE_HOUR', 'UPLOAD_RATE_DAY') THEN u.email "
+        +
+        "ELSE NULL " +
+        "END AS uploader_email, " +
+
+        "CASE " +
+        "WHEN m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY', 'UPLOAD_RATE_HOUR', 'UPLOAD_RATE_DAY') THEN u.name "
+        +
+        "ELSE NULL " +
+        "END AS uploader_name, " +
+
+        "CASE " +
+        "WHEN m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY', 'UPLOAD_RATE_HOUR', 'UPLOAD_RATE_DAY') THEN u.status "
+        +
+        "ELSE NULL " +
+        "END AS uploader_status," +
+
+        "CASE " +
+        "WHEN m.event = 'USER_CREATION_DAY' THEN (SELECT GROUP_CONCAT(u.email) FROM users u WHERE u.last_logged >= m.datetime - INTERVAL 24 HOUR) "
+        +
+        "WHEN m.event = 'UPLOAD_RATE_HOUR' THEN (SELECT GROUP_CONCAT(f.filename) FROM files f WHERE f.uploader_id = m.user_id AND f.created >= m.datetime - INTERVAL 2 HOUR) "
+        +
+        "WHEN m.event = 'UPLOAD_RATE_DAY' THEN (SELECT GROUP_CONCAT(f.filename) FROM files f WHERE f.uploader_id = m.user_id AND f.created >= m.datetime - INTERVAL 24 HOUR) "
+        +
+        "ELSE NULL " +
+        "END AS description " +
+
+        "FROM " +
+        "monitoring m " +
+        "LEFT JOIN files f ON (m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY') AND m.file_id = f.FILE_ID) " +
+        "LEFT JOIN users u ON (m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY') AND f.uploader_id = u.id) " +
+        "OR (m.event IN ('UPLOAD_RATE_HOUR', 'UPLOAD_RATE_DAY') AND m.user_id = u.id) ", resultSetMapping = "MonitoringDetailsDTOMapping")
+
+@SqlResultSetMapping(name = "MonitoringDetailsDTOMapping", classes = @ConstructorResult(targetClass = MonitoringDetailsDTO.class, columns = {
+        @ColumnResult(name = "id"),
+        @ColumnResult(name = "datetime", type = LocalDateTime.class),
+        @ColumnResult(name = "event", type = String.class),
+        @ColumnResult(name = "file_id"),
+        @ColumnResult(name = "user_id"),
+        @ColumnResult(name = "counter", type = Long.class),
+        @ColumnResult(name = "monitoring_status", type = String.class),
+        @ColumnResult(name = "filename"),
+        @ColumnResult(name = "filesize", type = BigDecimal.class),
+        @ColumnResult(name = "uploader_email"),
+        @ColumnResult(name = "uploader_name"),
+        @ColumnResult(name = "uploader_status", type = String.class),
+        @ColumnResult(name = "description", type = String.class)
+}))
+
 @Table(name = "monitoring")
 public class DBMonitoring {
 
-    public enum Event {
-        DOWNLOAD,
-        UPLOAD,
-        USER
-    }
+   
 
     @Id
     @Column(nullable = false)
@@ -35,8 +104,16 @@ public class DBMonitoring {
     private LocalDateTime datetime;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "event", nullable = false, length = 8) // maximum length of our longest enum value
+    @Column(name = "event", nullable = false)
     private Event event;
+
+     public enum Event {
+        DOWNLOAD_RATE_HOUR,
+        UPLOAD_RATE_HOUR,
+        DOWNLOAD_RATE_DAY,
+        UPLOAD_RATE_DAY,
+        USER_CREATION_DAY
+    }
 
     @Column(name = "file_id", nullable = true)
     private String fileId;
@@ -47,7 +124,29 @@ public class DBMonitoring {
     @Column(name = "counter", nullable = false)
     private long counter;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
+
+    public enum Status {
+        WAITING,
+        APPROVED,
+        DENIED
+    }
+
     public DBMonitoring() {
+    }
+
+    public Monitoring toMonitoring() {
+        Monitoring monitoring = new Monitoring();
+        monitoring.setID(this.getId());
+        monitoring.setDatetime(this.getDatetime().toString());
+        monitoring.setEvent(Monitoring.EventEnum.valueOf(this.getEvent().name()));
+        monitoring.setFileId(this.getFileId());
+        monitoring.setUserId(this.getUserId());
+        monitoring.setCounter(this.getCounter());
+        monitoring.setStatus(Monitoring.StatusEnum.valueOf(this.getStatus().name()));
+        return monitoring;
     }
 
     public String getId() {
@@ -98,6 +197,12 @@ public class DBMonitoring {
         this.counter = counter;
     }
 
-    
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
 
 }

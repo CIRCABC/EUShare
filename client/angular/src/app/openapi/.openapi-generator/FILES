@@ -17,6 +17,7 @@ api/api.ts
 api/apiKey.service.ts
 api/file.service.ts
 api/log.service.ts
+api/monitoring.service.ts
 api/session.service.ts
 api/stats.service.ts
 api/trust.service.ts
@@ -39,6 +40,8 @@ model/lastDownload.ts
 model/lastLog.ts
 model/lastUpload.ts
 model/models.ts
+model/monitoring.ts
+model/monitoringDetails.ts
 model/mountPointSpace.ts
 model/recipient.ts
 model/stat.ts

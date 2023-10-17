@@ -26,13 +26,9 @@ public class UserCreationLogService {
 
     private static final int USER_CREATION_THRESHOLD = 10;
 
+    @Autowired 
+    private UserCreationLogRepository repository;
 
-    private final UserCreationLogRepository repository;
-
-    @Autowired
-    public UserCreationLogService(UserCreationLogRepository repository) {
-        this.repository = repository;
-    }
 
     public void logNewUserCreation() {
          Date today = Date.valueOf(LocalDate.now()); 
@@ -58,11 +54,10 @@ public class UserCreationLogService {
     }
     
     public void checkUserCreationThreshold() {
-        // Calculate the date for the previous day
+
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
         
-        // Convert java.util.Date to java.sql.Date
         java.sql.Date yesterday = new java.sql.Date(calendar.getTimeInMillis());
     
         Optional<DBUserCreationLog> optionalLog = repository.findByDateCreated(yesterday);
@@ -70,13 +65,11 @@ public class UserCreationLogService {
         if (optionalLog.isPresent()) {
             DBUserCreationLog log = optionalLog.get();
             if (log.getUserCount() > USER_CREATION_THRESHOLD) {
-                // Alerte ! Trop de nouveaux utilisateurs aujourd'hui.
-                // Ajoutez ici le code pour envoyer une alerte, un e-mail ou toute autre action que vous souhaitez effectuer.
+                
             }
         }
     }
     
-
     public void removeOldLogs() {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_MONTH, -30);

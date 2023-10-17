@@ -25,9 +25,16 @@ public class DBUserCreationLog {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @Column(name = "dateCreated", nullable = false, columnDefinition = "DATE DEFAULT CURRENT_DATE")
+    @Column(name = "date_created", nullable = false)
     private Date dateCreated;
 
+    @PrePersist
+    public void prePersist() {
+        if (dateCreated == null) {
+            dateCreated = new java.sql.Date(System.currentTimeMillis());
+        }
+    }
+    
     @Column(name = "userCount", nullable = false, columnDefinition = "INT DEFAULT 1")
     private int userCount;
 
@@ -55,5 +62,4 @@ public class DBUserCreationLog {
         this.id = id;
     }
 
-    
 }

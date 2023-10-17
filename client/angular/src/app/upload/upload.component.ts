@@ -77,7 +77,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatSnackBarModule,
     CaptchaComponent,
     MatTooltipModule,
-    MatIconModule
+    MatIconModule,
   ],
   providers: [FileSizeFormatPipe],
 })
@@ -91,7 +91,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   public leftSpaceInBytes = 0;
   public totalSpaceInBytes = 0;
   public percentageUploaded = 0;
-  public userRole = "EXTERNAL";
+  public userRole = 'EXTERNAL';
   public useCaptcha = false;
   public isLoading = true;
 
@@ -117,7 +117,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
   ) {
-  
     this.initializeForm();
   }
   async initializeAvailableSpace() {
@@ -132,10 +131,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     if (id) {
       try {
         const me = await firstValueFrom(this.userApi.getUserUserInfo(id));
-        if (me.role)
-          this.userRole = me.role;
-
-
+        if (me.role) this.userRole = me.role;
 
         this.leftSpaceInBytes =
           me && me.totalSpace - me.usedSpace > 0
@@ -154,10 +150,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     if (id) {
       try {
         const me = await firstValueFrom(this.userApi.getUserUserInfo(id));
-        if (me.role)
-          this.userRole = me.role;
+        if (me.role) this.userRole = me.role;
 
-        this.useCaptcha = (this.userRole === UserInfo.RoleEnum.External);
+        this.useCaptcha = this.userRole === UserInfo.RoleEnum.External;
         this.isLoading = false;
       } catch (error) {
         // notification in interceptor
@@ -243,7 +238,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
     this.addEmailMessageFormGroup();
   }
 
-
   getEmailMessageFormGroup(i: number): FormGroup {
     const emailMessageArray: FormArray = this.emailMessageArray;
     return <FormGroup>emailMessageArray.controls[i];
@@ -277,8 +271,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
       { updateOn: 'change' },
     );
   }
-
-
 
   public lastfile!: File;
 
@@ -500,7 +492,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
 
   async submit() {
     this.uploadInProgress = true;
- 
+
     if (this.getFileFromDisk()) {
       try {
         const recipientArray = new Array<Recipient>();
@@ -547,16 +539,18 @@ export class UploadComponent implements OnInit, AfterViewInit {
         if (this.getPassword() !== '') {
           myFileRequest.password = this.getPassword();
         }
-        
+
         const fileResult = await firstValueFrom(
-          this.fileApi.postFileFileRequest(myFileRequest,
+          this.fileApi.postFileFileRequest(
+            myFileRequest,
             ...(this.useCaptcha
               ? [
-                this.captchaComponent.captchaId,
-                this.captchaComponent.captchaToken,
-                this.captchaComponent.answer.value as string,
-              ]
-              : []),)
+                  this.captchaComponent.captchaId,
+                  this.captchaComponent.captchaToken,
+                  this.captchaComponent.answer.value as string,
+                ]
+              : []),
+          ),
         );
 
         // do not use firstValueFrom bellow, because it does not work
@@ -581,9 +575,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
       }
     }
     this.uploadInProgress = false;
-    if (this.useCaptcha && !this.captchaComponent.answer)
-      this.initializeForm();
-
+    if (this.useCaptcha && !this.captchaComponent.answer) this.initializeForm();
   }
 
   get uf() {
@@ -648,11 +640,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   public isCaptchaInValid(): boolean {
     if (this.captchaComponent && this.captchaComponent.answer) {
       return this.captchaComponent.answer.invalid;
-
     } else {
       return true;
     }
