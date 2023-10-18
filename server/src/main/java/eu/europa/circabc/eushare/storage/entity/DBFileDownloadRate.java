@@ -25,7 +25,7 @@ public class DBFileDownloadRate {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fileID", referencedColumnName = "FILE_ID", nullable = false)
     private DBFile file;
 

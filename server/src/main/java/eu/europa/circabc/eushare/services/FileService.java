@@ -145,6 +145,8 @@ public class FileService {
             file.getId())) {
           fileLogsRepository.delete(dbFileLog);
         }
+
+        
         fileRepository.delete(file);
       } catch (IOException e) {
         log.error("Could not delete DBFile, try again in next run", e);

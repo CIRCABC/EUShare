@@ -14,43 +14,41 @@
 
 
 
-        <div class="user-list">
-          <div class="titletable user-info-row">
-            <div class="alignleft user-info-column">
-              <strong>Name</strong>
-              <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
-            </div>
-            <div class="alignleft user-info-column">
-              <strong>Email</strong>
-            </div>
-            <div class="alignleft user-info-column">
-              <strong>Files</strong>
-              <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
-            </div>
-            <div class="alignleft user-info-column">
-              <strong>Usage</strong>
-              <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
-            </div>
-          </div>
-          <div *ngFor="let userInfo of userInfoArray; let i = index" class="user-info-row" [attr.data-index]="i"
-            value="userInfo.id" (click)="displayUserInfoNumber(i)">
-            <div *ngIf="userInfo.usedSpace === 0" class="user-info-row">
-              <div class="alignleft user-info-column">{{ userInfo.givenName }}</div>
-              <div class="alignleft user-info-column">{{ userInfo.email }}</div>
-              <div class="alignleft user-info-column"></div>
-              <div class="alignleft user-info-column"></div>
-            </div>
-            <div *ngIf="userInfo.usedSpace > 0"  class="user-info-row">
-              <strong class="alignleft user-info-column">{{ userInfo.givenName }}</strong>
-              <strong class="alignleft user-info-column">{{ userInfo.email }}</strong>
-              <strong class="alignleft user-info-column">{{ userInfo.filesCount }}</strong>
-              <strong class="alignleft user-info-column">{{ userInfo.usedSpace | fileSizeFormat }}</strong>
-            </div>
-          </div>
-        </div>
-
-
-
+          <table>
+            <thead>
+                <tr>
+                    <th>
+                        <strong>Name</strong>
+                        <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
+                    </th>
+                    <th>
+                        <strong>Email</strong>
+                    </th>
+                    <th>
+                        <strong>Files</strong>
+                        <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
+                    </th>
+                    <th>
+                        <strong>Usage</strong>
+                        <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let userInfo of userInfoArray; let i = index" [attr.data-index]="i" value="userInfo.id" (click)="displayUserInfoNumber(i)">
+                    <td *ngIf="userInfo.usedSpace === 0">{{ userInfo.givenName }}</td>
+                    <td *ngIf="userInfo.usedSpace === 0">{{ userInfo.email }}</td>
+                    <td *ngIf="userInfo.usedSpace === 0"></td>
+                    <td *ngIf="userInfo.usedSpace === 0"></td>
+                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.givenName }}</strong></td>
+                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.email }}</strong></td>
+                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.filesCount }}</strong></td>
+                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.usedSpace | fileSizeFormat }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        
 
         <nav class="pagination is-centered" role="navigation" aria-label="pagination">
           <a *ngIf="pageNumber > 0" class="pagination-previous button" (click)="resultsPreviousPage()">{{

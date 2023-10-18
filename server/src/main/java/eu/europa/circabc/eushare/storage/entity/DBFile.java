@@ -94,6 +94,7 @@ public class DBFile {
   @JoinColumn(foreignKey = @ForeignKey(name = "Fk_to_uploader"))
   private DBUser uploader;
 
+
   public DBFile(
     DBUser uploader,
     Collection<DBShare> sharedWith,
@@ -127,7 +128,7 @@ public class DBFile {
     this.fileLogs = new HashSet<>();
   }
 
-  private DBFile() {}
+  public DBFile() {}
 
   public FileInfoRecipient toFileInfoRecipient(String recipientEmail) {
     FileInfoRecipient fileInfoRecipient = new FileInfoRecipient();

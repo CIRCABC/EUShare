@@ -90,7 +90,7 @@ export class AbuseDialogComponent implements AfterViewInit {
 
   submitForm(): void {
     const useCaptcha = !this.authentified;
-
+  
     this.abuseService
       .createAbuseReport(
         this.abuseReport,
@@ -102,16 +102,22 @@ export class AbuseDialogComponent implements AfterViewInit {
             ]
           : []),
       )
-      .subscribe(() => {
-        this.notificationService.addSuccessMessageTranslation(
-          'abuse.feedback',
-          undefined,
-          true,
-        );
-        this.dialogRef.close(this.abuseReport);
+      .subscribe({
+        next: () => {
+          this.notificationService.addSuccessMessageTranslation(
+            'abuse.feedback',
+            undefined,
+            true,
+          );
+          this.dialogRef.close(this.abuseReport);
+        },
+        error: (err) => {
+          console.error('Error submitting the form:', err);
+          this.refreshCaptcha();
+        }
       });
   }
-
+  
   cancel() {
     this.dialogRef.close();
   }
@@ -126,5 +132,9 @@ export class AbuseDialogComponent implements AfterViewInit {
     } else {
       return true;
     }
+  }
+
+  refreshCaptcha(): void {
+    this.captchaComponent.refresh();
   }
 }

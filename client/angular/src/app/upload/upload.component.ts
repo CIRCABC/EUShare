@@ -575,7 +575,11 @@ export class UploadComponent implements OnInit, AfterViewInit {
       }
     }
     this.uploadInProgress = false;
-    if (this.useCaptcha && !this.captchaComponent.answer) this.initializeForm();
+    if (this.useCaptcha) {
+      if(!this.captchaComponent.answer)
+        this.initializeForm();
+      this.refreshCaptcha();
+    }
   }
 
   get uf() {
@@ -646,5 +650,9 @@ export class UploadComponent implements OnInit, AfterViewInit {
     } else {
       return true;
     }
+  }
+
+  refreshCaptcha(): void {
+    this.captchaComponent.refresh();
   }
 }

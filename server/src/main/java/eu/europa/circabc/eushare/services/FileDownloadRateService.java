@@ -70,10 +70,12 @@ public class FileDownloadRateService {
     public void hourlyCheck() {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime oneHourAgo = currentHour.minusHours(1);
+       
         List<DBFileDownloadRate> downloadsLastHour = repository.findByDateHour(oneHourAgo);
 
         for (DBFileDownloadRate downloadRate : downloadsLastHour) {
             DBFile file = downloadRate.getFile();
+    
             if (downloadRate.getDownloadCount() > HOURLY_THRESHOLD) {
 
                 saveMonitoringAndSendAlert(file, downloadRate.getDownloadCount(), DBMonitoring.Event.DOWNLOAD_RATE_HOUR);
