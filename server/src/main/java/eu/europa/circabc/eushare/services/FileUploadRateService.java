@@ -75,7 +75,8 @@ public class FileUploadRateService {
 
     @Scheduled(cron = "0 0 * * * ?") 
     public void hourlyCheck() {
-        LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+        LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime oneHourAgo = currentHour.minusHours(1);
         List<DBFileUploadRate> uploadsLastHour = repository.findByDateHour(oneHourAgo);
 
         for (DBFileUploadRate uploadRate : uploadsLastHour) {

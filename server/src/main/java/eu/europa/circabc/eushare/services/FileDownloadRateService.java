@@ -68,7 +68,8 @@ public class FileDownloadRateService {
 
     @Scheduled(cron = "0 0 * * * ?")  
     public void hourlyCheck() {
-        LocalDateTime oneHourAgo = LocalDateTime.now().minusHours(1);
+        LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime oneHourAgo = currentHour.minusHours(1);
         List<DBFileDownloadRate> downloadsLastHour = repository.findByDateHour(oneHourAgo);
 
         for (DBFileDownloadRate downloadRate : downloadsLastHour) {
