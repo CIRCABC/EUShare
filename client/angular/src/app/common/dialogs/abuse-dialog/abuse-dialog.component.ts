@@ -90,16 +90,16 @@ export class AbuseDialogComponent implements AfterViewInit {
 
   submitForm(): void {
     const useCaptcha = !this.authentified;
-  
+
     this.abuseService
       .createAbuseReport(
         this.abuseReport,
         ...(useCaptcha
           ? [
-              this.captchaComponent.captchaId,
-              this.captchaComponent.captchaToken,
-              this.captchaComponent.answer.value as string,
-            ]
+            this.captchaComponent.captchaId,
+            this.captchaComponent.captchaToken,
+            this.captchaComponent.answer.value as string,
+          ]
           : []),
       )
       .subscribe({
@@ -113,11 +113,15 @@ export class AbuseDialogComponent implements AfterViewInit {
         },
         error: (err) => {
           console.error('Error submitting the form:', err);
-          this.refreshCaptcha();
+          this.refreshCaptcha().then(() => {
+           
+          }).catch((refreshError) => {
+            console.error('Error after refreshing the captcha:', refreshError);
+          });
         }
       });
   }
-  
+
   cancel() {
     this.dialogRef.close();
   }
@@ -134,7 +138,13 @@ export class AbuseDialogComponent implements AfterViewInit {
     }
   }
 
-  refreshCaptcha(): void {
-    this.captchaComponent.refresh();
+  refreshCaptcha(): Promise<void> {
+    return this.captchaComponent.refresh().then(() => {
+
+    }).catch((error) => {
+      console.error('Error refreshing the captcha:', error);
+    });
   }
+
+
 }

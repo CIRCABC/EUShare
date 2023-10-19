@@ -652,7 +652,11 @@ export class UploadComponent implements OnInit, AfterViewInit {
     }
   }
 
-  refreshCaptcha(): void {
-    this.captchaComponent.refresh();
+  refreshCaptcha(): Promise<void> {
+    return this.captchaComponent.refresh().then(() => {
+
+    }).catch((error) => {
+      console.error('Error refreshing the captcha:', error);
+    });
   }
 }
