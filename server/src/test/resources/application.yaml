@@ -1,5 +1,4 @@
-cors:
-  origin: '*'
+
 server:
   port: 8888
 eushare:

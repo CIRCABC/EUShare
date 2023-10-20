@@ -9,6 +9,8 @@
  */
 package eu.europa.circabc.eushare.security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,49 +68,39 @@ public class CustomWebSecurityConfigurerAdapter
     RefererFilter refererFilter = new RefererFilter(allowedOrigin);
 
     http
-        // .cors().configurationSource(corsConfigurationSource(allowedOrigin))
-        // .and()
+        .csrf().disable()
+        .cors().configurationSource(corsConfigurationSource(allowedOrigin))
+        .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
-        .csrf()
-        .disable()
         .authorizeRequests()
-        .antMatchers(HttpMethod.OPTIONS, "/**")
-        .permitAll()
-        .antMatchers(AUTH_WHITELIST)
-        .permitAll()
-        .antMatchers(HttpMethod.HEAD, "/file/{.+}")
-        .anonymous()
-        .antMatchers(HttpMethod.GET, "/file/{.+}")
-        .anonymous()
-        .antMatchers(HttpMethod.GET, "/file/{.+}/fileInfo")
-        .anonymous()
-        .antMatchers(HttpMethod.POST, "/abuse")
-        .permitAll()
-        .antMatchers(HttpMethod.PUT, "/user/userInfo")
-        .hasAuthority("ROLE_ADMIN")
-        .anyRequest()
-        .authenticated()
+        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+        .antMatchers(AUTH_WHITELIST).permitAll()
+        .antMatchers(HttpMethod.HEAD, "/file/{.+}").anonymous()
+        .antMatchers(HttpMethod.GET, "/file/{.+}").anonymous()
+        .antMatchers(HttpMethod.GET, "/file/{.+}/fileInfo").anonymous()
+        .antMatchers(HttpMethod.POST, "/abuse").permitAll()
+        .antMatchers(HttpMethod.PUT, "/user/userInfo").hasAuthority("ROLE_ADMIN")
+        .anyRequest().authenticated()
         .and()
         .addFilter(apiKeyFilter)
-        // .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)
+        .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)
+        .addFilterAfter(refererFilter, APIKeyAuthenticationFilter.class)
         .exceptionHandling()
         .accessDeniedHandler(accessDeniedHandler())
         .and()
         .oauth2ResourceServer()
-        .withObjectPostProcessor(
-            new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
-              @Override
-              public <O extends BearerTokenAuthenticationFilter> O postProcess(
-                  O object) {
-                object.setAuthenticationFailureHandler(
-                    authenticationFailureHandler());
-                return object;
-              }
-            })
+        .withObjectPostProcessor(new ObjectPostProcessor<BearerTokenAuthenticationFilter>() {
+          @Override
+          public <O extends BearerTokenAuthenticationFilter> O postProcess(O object) {
+            object.setAuthenticationFailureHandler(authenticationFailureHandler());
+            return object;
+          }
+        })
         .authenticationEntryPoint(authenticationEntryPoint())
         .opaqueToken();
+
   }
 
   @Bean
@@ -125,4 +117,19 @@ public class CustomWebSecurityConfigurerAdapter
   AuthenticationFailureHandler authenticationFailureHandler() {
     return new CustomAuthenticationHandler();
   }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource(String allowedOrigin) {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(Arrays.asList(allowedOrigin));
+    configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+    configuration.setAllowCredentials(true);
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+
+    return source;
+  }
+
 }
