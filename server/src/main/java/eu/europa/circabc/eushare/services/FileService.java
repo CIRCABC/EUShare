@@ -310,6 +310,7 @@ public class FileService {
         if (requester.getRole().equals(DBUser.Role.ADMIN) || requester.getRole().equals(DBUser.Role.INTERNAL)
             || requester.getRole().equals(DBUser.Role.TRUSTED_EXTERNAL)) {
           user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+          user.setTotalSpace(esConfig.getDefaultUserSpace());
           userRepository.save(user);
           try {
             emailService.sendNotification(user.getEmail(), "\n" + //

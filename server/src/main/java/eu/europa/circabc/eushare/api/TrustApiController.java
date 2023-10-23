@@ -36,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.server.ResponseStatusException;
 
+import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.Recipient;
@@ -72,6 +73,9 @@ public class TrustApiController implements TrustApi {
         @Autowired
         public UserService userService;
 
+        @Autowired
+        private EushareConfiguration esConfig;
+
         private final NativeWebRequest request;
 
         public TrustApiController(NativeWebRequest request) {
@@ -99,6 +103,8 @@ public class TrustApiController implements TrustApi {
                         if (approved && user.getRole().equals(Role.EXTERNAL)) {
                                 message = "Your user acount upgrade has been accepted by CIRCABC-Share administrator.";
                                 user.setRole(Role.TRUSTED_EXTERNAL);
+                                user.setTotalSpace(esConfig.getDefaultUserSpace());
+
                         } else {
                                 message = "We are sorry but your user accound upgrade has been denied by CIRCABC-Share administrator for the following reason : "
                                                 + reason;
