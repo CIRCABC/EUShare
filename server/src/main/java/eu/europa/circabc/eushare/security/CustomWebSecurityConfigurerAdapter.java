@@ -65,8 +65,7 @@ public class CustomWebSecurityConfigurerAdapter
     if (allowedOrigin != null) {
       allowedOrigin = allowedOrigin.replace("/share", "");
     }
-    RefererFilter refererFilter = new RefererFilter(allowedOrigin);
-
+   
     http
         .csrf().disable()
         .cors().configurationSource(corsConfigurationSource(allowedOrigin))
@@ -85,8 +84,7 @@ public class CustomWebSecurityConfigurerAdapter
         .anyRequest().authenticated()
         .and()
         .addFilter(apiKeyFilter)
-        .addFilterAfter(refererFilter,APIKeyAuthenticationFilter.class)
-        .addFilterAfter(refererFilter, APIKeyAuthenticationFilter.class)
+    //    .addFilterAfter(refererFilter, APIKeyAuthenticationFilter.class)
         .exceptionHandling()
         .accessDeniedHandler(accessDeniedHandler())
         .and()
