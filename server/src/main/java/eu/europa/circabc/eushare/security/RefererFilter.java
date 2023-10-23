@@ -17,6 +17,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.europa.circabc.eushare.services.UserService;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -24,6 +30,8 @@ public class RefererFilter implements Filter {
 
     private final String serviceDomain;
     private final String servicePath;
+
+     private Logger log = LoggerFactory.getLogger(UserService.class);
 
     public RefererFilter(String serviceURL) throws Exception {
         URL url = new URL(serviceURL);
@@ -40,7 +48,7 @@ public class RefererFilter implements Filter {
         String referer = httpRequest.getHeader("Referer");
 
         if (referer==null || (referer != null && !isValidReferer(referer))) {
-            throw new ServletException("Invalid request");
+            throw new ServletException("Invalid request" + referer);
         }
 
         chain.doFilter(request, response);
@@ -49,6 +57,9 @@ public class RefererFilter implements Filter {
     private boolean isValidReferer(String referer) {
         try {
             URL refererURL = new URL(referer);
+            log.info(refererURL.toString());
+            log.info(refererURL.getHost()+"="+serviceDomain);
+            log.info(refererURL.getPath()+"start with"+servicePath);
             return serviceDomain.equals(refererURL.getHost()) 
                    && refererURL.getPath().startsWith(servicePath);
         } catch (Exception ex) {
