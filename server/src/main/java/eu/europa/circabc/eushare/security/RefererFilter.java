@@ -9,7 +9,6 @@
  */
 package eu.europa.circabc.eushare.security;
 
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -31,14 +30,13 @@ public class RefererFilter implements Filter {
     private final String serviceDomain;
     private final String servicePath;
 
-     private Logger log = LoggerFactory.getLogger(UserService.class);
+    private Logger log = LoggerFactory.getLogger(UserService.class);
 
     public RefererFilter(String serviceURL) throws Exception {
         URL url = new URL(serviceURL);
         this.serviceDomain = url.getHost();
         this.servicePath = url.getPath();
     }
-
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -47,7 +45,7 @@ public class RefererFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String referer = httpRequest.getHeader("Referer");
 
-        if (referer==null || (referer != null && !isValidReferer(referer))) {
+        if (referer == null || (referer != null && !isValidReferer(referer))) {
             throw new ServletException("Invalid request" + referer);
         }
 
@@ -57,14 +55,16 @@ public class RefererFilter implements Filter {
     private boolean isValidReferer(String referer) {
         try {
             URL refererURL = new URL(referer);
-            log.info(refererURL.toString());
-            log.info(refererURL.getHost()+"="+serviceDomain);
-            log.info(refererURL.getPath()+"start with"+servicePath);
-            return serviceDomain.equals(refererURL.getHost()) 
-                   && refererURL.getPath().startsWith(servicePath);
+            if (refererURL.toString().contains("/callback"))
+                return true;
+            log.debug(refererURL.toString());
+            log.debug(refererURL.getHost() + "=" + serviceDomain);
+            log.debug(refererURL.getPath() + "start with" + servicePath);
+            return serviceDomain.equals(refererURL.getHost())
+                    && refererURL.getPath().startsWith(servicePath);
         } catch (Exception ex) {
             return false;
         }
     }
-    
+
 }
