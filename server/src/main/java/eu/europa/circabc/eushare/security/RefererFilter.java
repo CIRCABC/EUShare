@@ -23,14 +23,13 @@ import org.slf4j.LoggerFactory;
 import eu.europa.circabc.eushare.services.UserService;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.URL;
 
 public class RefererFilter implements Filter {
 
     private final String serviceDomain;
     private final String servicePath;
-
-    private Logger log = LoggerFactory.getLogger(UserService.class);
 
     public RefererFilter(String serviceURL) throws Exception {
         URL url = new URL(serviceURL);
@@ -45,6 +44,10 @@ public class RefererFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         String referer = httpRequest.getHeader("Referer");
 
+        if (referer == null || containsIpAddress(referer)) {
+            referer = httpRequest.getHeader("X-Forwarded-Host");
+        }
+
         if (referer == null || (referer != null && !isValidReferer(referer))) {
             throw new ServletException("Invalid request" + referer);
         }
@@ -55,14 +58,20 @@ public class RefererFilter implements Filter {
     private boolean isValidReferer(String referer) {
         try {
             URL refererURL = new URL(referer);
-            if (refererURL.toString().contains("/callback"))
-                return true;
-            log.debug(refererURL.toString());
-            log.debug(refererURL.getHost() + "=" + serviceDomain);
-            log.debug(refererURL.getPath() + "start with" + servicePath);
             return serviceDomain.equals(refererURL.getHost())
                     && refererURL.getPath().startsWith(servicePath);
         } catch (Exception ex) {
+            return false;
+        }
+    }
+
+    private boolean containsIpAddress(String urlString) {
+        try {
+            URL url = new URL(urlString);
+            String host = url.getHost();
+            InetAddress inetAddress = InetAddress.getByName(host);
+            return inetAddress.getHostAddress().equals(host); 
+        } catch (Exception e) {
             return false;
         }
     }
