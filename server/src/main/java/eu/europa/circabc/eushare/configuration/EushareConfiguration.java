@@ -28,6 +28,9 @@ public class EushareConfiguration {
   private long defaultUserSpace;
 
   @NotNull
+  private long defaultExternalUserSpace;
+
+  @NotNull
   private List<String> disks;
 
   @NotNull
@@ -109,5 +112,13 @@ public class EushareConfiguration {
 
   public void setCaptchaUrl(String captchaUrl) {
     this.captchaUrl = captchaUrl;
+  }
+
+  public long getDefaultExternalUserSpace() {
+    return defaultExternalUserSpace;
+  }
+
+  public void setDefaultExternalUserSpace(long defaultExternalUserSpace) {
+    this.defaultExternalUserSpace = defaultExternalUserSpace;
   }
 }

@@ -114,7 +114,7 @@ public class UserService implements UserDetailsService {
     DBUser user = DBUser.createUser(
         email,
         givenName,
-        esConfig.getDefaultUserSpace(),
+        role.equals(DBUser.Role.EXTERNAL) ? esConfig.getDefaultExternalUserSpace() : esConfig.getDefaultUserSpace(),
         username, role);
 
     userCreationLogService.logNewUserCreation();
