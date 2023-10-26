@@ -35,41 +35,75 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "logs")
-@NamedNativeQuery(name = "DBFileLog.getLastLogs", query = "SELECT id, email, name, username, total_space, last_logged, status FROM users order by last_logged desc", resultSetMapping = "getLastLogsMapping")
-@SqlResultSetMapping(name = "getLastLogsMapping", classes = @ConstructorResult(targetClass = LastLogDTO.class, columns = {
-    @ColumnResult(name = "id"),
-    @ColumnResult(name = "email"),
-    @ColumnResult(name = "name"),
-    @ColumnResult(name = "username"),
-    @ColumnResult(name = "total_space", type = Long.class),
-    @ColumnResult(name = "last_logged", type = LocalDateTime.class),
-    @ColumnResult(name = "status"),
-}))
-@NamedNativeQuery(name = "DBFileLog.getLastUploads", query = "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification FROM shares s, files f, users u WHERE f.uploader_id=u.id AND s.file_file_id = f.file_id ORDER BY f.created DESC", resultSetMapping = "getLastUploadsMapping")
-@SqlResultSetMapping(name = "getLastUploadsMapping", classes = @ConstructorResult(targetClass = LastUploadDTO.class, columns = {
-    @ColumnResult(name = "uploader_email", type = String.class),
-    @ColumnResult(name = "share_email", type = String.class),
-    @ColumnResult(name = "filename", type = String.class),
-    @ColumnResult(name = "file_size", type = Long.class),
-    @ColumnResult(name = "path", type = String.class),
-    @ColumnResult(name = "status", type = String.class),
-    @ColumnResult(name = "created", type = LocalDateTime.class),
-    @ColumnResult(name = "shorturl", type = String.class),
-    @ColumnResult(name = "download_notification", type = Boolean.class)
+@NamedNativeQuery(
+    name = "DBFileLog.getLastLogs", 
+    query = "SELECT id, email, name, username, total_space, last_logged, status FROM users ORDER BY :sortField :sortOrder", 
+    resultSetMapping = "getLastLogsMapping"
+)
 
-}))
-@NamedNativeQuery(name = "DBFileLog.getLastDownloads", query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date FROM shares s, users u, logs l, files f WHERE l.file_file_id=s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id ORDER BY l.download_date DESC", resultSetMapping = "getLastDownloadsMapping")
-@SqlResultSetMapping(name = "getLastDownloadsMapping", classes = @ConstructorResult(targetClass = LastDownloadDTO.class, columns = {
-    @ColumnResult(name = "uploader_email", type = String.class),
-    @ColumnResult(name = "recipient", type = String.class),
-    @ColumnResult(name = "filename", type = String.class),
-    @ColumnResult(name = "path", type = String.class),
-    @ColumnResult(name = "password", type = String.class),
-    @ColumnResult(name = "shorturl", type = String.class),
-    @ColumnResult(name = "download_notification", type = Boolean.class),
-    @ColumnResult(name = "download_date", type = LocalDateTime.class)
+@SqlResultSetMapping(
+    name = "getLastLogsMapping", 
+    classes = @ConstructorResult(
+        targetClass = LastLogDTO.class, 
+        columns = {
+            @ColumnResult(name = "id"),
+            @ColumnResult(name = "email"),
+            @ColumnResult(name = "name"),
+            @ColumnResult(name = "username"),
+            @ColumnResult(name = "total_space", type = Long.class),
+            @ColumnResult(name = "last_logged", type = LocalDateTime.class),
+            @ColumnResult(name = "status")
+        }
+    )
+)
 
-}))
+@NamedNativeQuery(
+    name = "DBFileLog.getLastUploads", 
+    query = "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification FROM shares s, files f, users u WHERE f.uploader_id=u.id AND s.file_file_id = f.file_id ORDER BY :sortField :sortOrder", 
+    resultSetMapping = "getLastUploadsMapping"
+)
+
+@SqlResultSetMapping(
+    name = "getLastUploadsMapping", 
+    classes = @ConstructorResult(
+        targetClass = LastUploadDTO.class, 
+        columns = {
+            @ColumnResult(name = "uploader_email", type = String.class),
+            @ColumnResult(name = "share_email", type = String.class),
+            @ColumnResult(name = "filename", type = String.class),
+            @ColumnResult(name = "file_size", type = Long.class),
+            @ColumnResult(name = "path", type = String.class),
+            @ColumnResult(name = "status", type = String.class),
+            @ColumnResult(name = "created", type = LocalDateTime.class),
+            @ColumnResult(name = "shorturl", type = String.class),
+            @ColumnResult(name = "download_notification", type = Boolean.class)
+        }
+    )
+)
+
+@NamedNativeQuery(
+    name = "DBFileLog.getLastDownloads", 
+    query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date FROM shares s, users u, logs l, files f WHERE l.file_file_id=s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id ORDER BY :sortField :sortOrder", 
+    resultSetMapping = "getLastDownloadsMapping"
+)
+
+@SqlResultSetMapping(
+    name = "getLastDownloadsMapping", 
+    classes = @ConstructorResult(
+        targetClass = LastDownloadDTO.class, 
+        columns = {
+            @ColumnResult(name = "uploader_email", type = String.class),
+            @ColumnResult(name = "recipient", type = String.class),
+            @ColumnResult(name = "filename", type = String.class),
+            @ColumnResult(name = "path", type = String.class),
+            @ColumnResult(name = "password", type = String.class),
+            @ColumnResult(name = "shorturl", type = String.class),
+            @ColumnResult(name = "download_notification", type = Boolean.class),
+            @ColumnResult(name = "download_date", type = LocalDateTime.class)
+        }
+    )
+)
+
 @NamedNativeQuery(
     name = "DBFileLog.countLastLogs",
     query = "SELECT COUNT(*) as count FROM users",
