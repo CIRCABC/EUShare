@@ -9,12 +9,28 @@
  */
 package eu.europa.circabc.eushare.api;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.europa.circabc.eushare.model.LastDownload;
@@ -27,25 +43,90 @@ import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
 import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
 import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
 
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 public class LogApiController implements LogApi {
 
     @Autowired
     private FileLogsRepository fileLogsRepository;
+
+    @AdminOnly
+    @Override
+    public ResponseEntity<Resource> logGetAllLastLogsGet() {
+        List<LastLogDTO> logs = fileLogsRepository.getAllLastLogs();
+        String csvContent = toCSV(logs);
+
+        InputStream stream = new ByteArrayInputStream(csvContent.getBytes(StandardCharsets.UTF_8));
+        InputStreamResource inputStreamResource = new InputStreamResource(stream);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        ContentDisposition cd = ContentDisposition
+                .builder("attachment")
+                .filename("last_logs.csv", StandardCharsets.UTF_8)
+                .build();
+        responseHeaders.setContentDisposition(cd);
+        responseHeaders.setContentLength(csvContent.length());
+        responseHeaders.setContentType(MediaType.parseMediaType("text/csv"));
+
+        ResponseEntity<Resource> responseEntity = new ResponseEntity<>(
+                inputStreamResource,
+                responseHeaders,
+                HttpStatus.OK);
+
+        return responseEntity;
+    }
+
+    @AdminOnly
+    @Override
+    public ResponseEntity<Resource> logGetAllLastDownloadsGet() {
+        List<LastDownloadDTO> downloads = fileLogsRepository.getAllLastDownloads();
+        String csvContent = toCSV(downloads);
+
+        InputStream stream = new ByteArrayInputStream(csvContent.getBytes(StandardCharsets.UTF_8));
+        InputStreamResource inputStreamResource = new InputStreamResource(stream);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        ContentDisposition cd = ContentDisposition
+                .builder("attachment")
+                .filename("last_downloads.csv", StandardCharsets.UTF_8)
+                .build();
+        responseHeaders.setContentDisposition(cd);
+        responseHeaders.setContentLength(csvContent.length());
+        responseHeaders.setContentType(MediaType.parseMediaType("text/csv"));
+
+        ResponseEntity<Resource> responseEntity = new ResponseEntity<>(
+                inputStreamResource,
+                responseHeaders,
+                HttpStatus.OK);
+
+        return responseEntity;
+    }
+
+    @AdminOnly
+    @Override
+    public ResponseEntity<Resource> logGetAllLastUploadsGet() {
+        List<LastUploadDTO> uploads = fileLogsRepository.getAllLastUploads();
+        String csvContent = toCSV(uploads);
+
+        InputStream stream = new ByteArrayInputStream(csvContent.getBytes(StandardCharsets.UTF_8));
+        InputStreamResource inputStreamResource = new InputStreamResource(stream);
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        ContentDisposition cd = ContentDisposition
+                .builder("attachment")
+                .filename("last_uploads.csv", StandardCharsets.UTF_8)
+                .build();
+        responseHeaders.setContentDisposition(cd);
+        responseHeaders.setContentLength(csvContent.length());
+        responseHeaders.setContentType(MediaType.parseMediaType("text/csv"));
+
+        ResponseEntity<Resource> responseEntity = new ResponseEntity<>(
+                inputStreamResource,
+                responseHeaders,
+                HttpStatus.OK);
+
+        return responseEntity;
+    }
+
 
     private Pageable createPageRequest(Integer pageSize, Integer pageNumber) {
         return PageRequest.of(pageNumber, pageSize);
@@ -128,4 +209,36 @@ public class LogApiController implements LogApi {
         metadata.setTotal(total);
         return ResponseEntity.ok(metadata);
     }
+
+    private String toCSV(List<?> list) {
+        if (list == null || list.isEmpty()) {
+            return "";
+        }
+
+        StringJoiner csvHeader = new StringJoiner(",");
+        StringJoiner csvBody = new StringJoiner("\n");
+
+        Field[] fields = list.get(0).getClass().getDeclaredFields();
+
+        for (Field field : fields) {
+            csvHeader.add(field.getName());
+        }
+
+        for (Object obj : list) {
+            StringJoiner row = new StringJoiner(",");
+            for (Field field : fields) {
+                field.setAccessible(true);
+                try {
+                    Object value = field.get(obj);
+                    row.add(value != null ? value.toString() : "");
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            csvBody.add(row.toString());
+        }
+
+        return csvHeader.toString() + "\n" + csvBody.toString();
+    }
+
 }

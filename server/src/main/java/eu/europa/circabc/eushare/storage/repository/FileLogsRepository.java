@@ -23,26 +23,35 @@ import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
 import eu.europa.circabc.eushare.storage.entity.DBFileLog;
 
 public interface FileLogsRepository extends PagingAndSortingRepository<DBFileLog, String> {
-  List<DBFileLog> findByFileId(String fileId);
+    List<DBFileLog> findByFileId(String fileId);
 
-  @Query(name = "DBFileLog.getLastLogs", nativeQuery = true)
-  List<LastLogDTO> getLastLogs(Pageable pageable, @Param("sortField") String sortField,
-      @Param("sortOrder") String sortOrder);
+    @Query(name = "DBFileLog.getAllLastLogs", nativeQuery = true)
+    List<LastLogDTO> getAllLastLogs();
 
-  @Query(name = "DBFileLog.getLastUploads", nativeQuery = true)
-  List<LastUploadDTO> getLastUploads(Pageable pageable, @Param("sortField") String sortField,
-      @Param("sortOrder") String sortOrder);
+    @Query(name = "DBFileLog.getAllLastUploads", nativeQuery = true)
+    List<LastUploadDTO> getAllLastUploads();
 
-  @Query(name = "DBFileLog.getLastDownloads", nativeQuery = true)
-  List<LastDownloadDTO> getLastDownloads(Pageable pageable, @Param("sortField") String sortField,
-      @Param("sortOrder") String sortOrder);
+    @Query(name = "DBFileLog.getAllLastDownloads", nativeQuery = true)
+    List<LastDownloadDTO> getAllLastDownloads();
 
-  @Query(nativeQuery = true, name = "DBFileLog.countLastLogs")
-  Long countLastLogs();
+    @Query(name = "DBFileLog.getLastLogs", nativeQuery = true)
+    List<LastLogDTO> getLastLogs(Pageable pageable, @Param("sortField") String sortField,
+            @Param("sortOrder") String sortOrder);
 
-  @Query(nativeQuery = true, name = "DBFileLog.countLastUploads")
-  Long countLastUploads();
+    @Query(name = "DBFileLog.getLastUploads", nativeQuery = true)
+    List<LastUploadDTO> getLastUploads(Pageable pageable, @Param("sortField") String sortField,
+            @Param("sortOrder") String sortOrder);
 
-  @Query(nativeQuery = true, name = "DBFileLog.countLastDownloads")
-  Long countLastDownloads();
+    @Query(name = "DBFileLog.getLastDownloads", nativeQuery = true)
+    List<LastDownloadDTO> getLastDownloads(Pageable pageable, @Param("sortField") String sortField,
+            @Param("sortOrder") String sortOrder);
+
+    @Query(nativeQuery = true, name = "DBFileLog.countLastLogs")
+    Long countLastLogs();
+
+    @Query(nativeQuery = true, name = "DBFileLog.countLastUploads")
+    Long countLastUploads();
+
+    @Query(nativeQuery = true, name = "DBFileLog.countLastDownloads")
+    Long countLastDownloads();
 }

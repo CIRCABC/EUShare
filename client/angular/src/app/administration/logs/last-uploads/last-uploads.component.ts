@@ -17,13 +17,20 @@ import { LogService } from '../../../openapi/api/log.service';
 import { LastUpload } from '../../../openapi/model/lastUpload';
 import { CommonModule } from '@angular/common';
 import { SortOrder } from '../../../openapi/model/sortOrder';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-last-uploads',
   templateUrl: './last-uploads.component.html',
   styleUrls: ['./last-uploads.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+  ],
 })
 export class LastUploadsComponent implements AfterViewInit {
   displayedColumns: string[] = [
@@ -89,18 +96,38 @@ export class LastUploadsComponent implements AfterViewInit {
     sortField: string,
     sortOrder: SortDirection,
   ): Observable<LastUpload[]> {
-    console.log(sortField + sortOrder);
-    return this.logService.logGetLastUploadsGet(pageSize, pageIndex,sortField,this.convertSortDirectionToSortOrder(sortOrder));
+    return this.logService.logGetLastUploadsGet(
+      pageSize,
+      pageIndex,
+      sortField,
+      this.convertSortDirectionToSortOrder(sortOrder),
+    );
   }
 
-    convertSortDirectionToSortOrder(direction: SortDirection): SortOrder {
-      switch (direction) {
-        case 'asc':
-          return SortOrder.Asc;
-        case 'desc':
-          return SortOrder.Desc;
-        default:
-          return SortOrder.Asc;
-      }
+  convertSortDirectionToSortOrder(direction: SortDirection): SortOrder {
+    switch (direction) {
+      case 'asc':
+        return SortOrder.Asc;
+      case 'desc':
+        return SortOrder.Desc;
+      default:
+        return SortOrder.Asc;
+    }
+  }
+  downloadFile() {
+    this.logService
+      .logGetAllLastUploadsGet('body', false)
+      .subscribe((data: Blob) => {
+        const blob = new Blob([data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'last_uploads.csv';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
   }
 }

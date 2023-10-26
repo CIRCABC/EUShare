@@ -1320,6 +1320,53 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
 
+  /log/getAllLastLogs:
+    get:
+      tags:
+        - log
+      summary: Retrieve all the last logs
+      responses:
+        '200':
+          description: A CSV file of all last logs.
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                description: CSV file with last logs
+
+
+  /log/getAllLastUploads:
+    get:
+      tags:
+        - log
+      summary: Retrieve all the last uploads 
+      responses:
+        '200':
+          description: A CSV file of all last uploads
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                description: CSV file with last uploads
+
+  /log/getAllLastDownloads:
+    get:
+      tags:
+        - log
+      summary: Retrieve all the last downloads ordered by download date.
+      responses:
+        '200':
+          description: A CSV file of all last downloads
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                description: CSV file with last downloads
+
+
   /log/getLastLogs:
     parameters:
       - name: pageSize
@@ -1352,7 +1399,7 @@ paths:
     get:
       tags:
         - log
-      summary: Retrieve the last logs for users with username 
+      summary: Retrieve the last logins 
       responses:
         '200':
           description: A list of last logs
@@ -1395,7 +1442,7 @@ paths:
     get:
       tags:
         - log
-      summary: Retrieve the last uploads for users with username 
+      summary: Retrieve the last uploads  
       responses:
         '200':
           description: A list of last uploads

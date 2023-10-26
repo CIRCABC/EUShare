@@ -30,7 +30,7 @@ import { SortOrder } from '../../../openapi/model/sortOrder';
     MatPaginatorModule,
     MatSortModule,
     MatIconModule,
-    MatSortModule
+    MatSortModule,
   ],
 })
 export class LastDownloadsComponent implements AfterViewInit {
@@ -96,18 +96,39 @@ export class LastDownloadsComponent implements AfterViewInit {
     sortField: string,
     sortOrder: SortDirection,
   ): Observable<LastDownload[]> {
-    console.log(sortField + sortOrder);
-    return this.logService.logGetLastDownloadsGet(pageSize, pageIndex,sortField,this.convertSortDirectionToSortOrder(sortOrder));
+    return this.logService.logGetLastDownloadsGet(
+      pageSize,
+      pageIndex,
+      sortField,
+      this.convertSortDirectionToSortOrder(sortOrder),
+    );
   }
 
-    convertSortDirectionToSortOrder(direction: SortDirection): SortOrder {
-      switch (direction) {
-        case 'asc':
-          return SortOrder.Asc;
-        case 'desc':
-          return SortOrder.Desc;
-        default:
-          return SortOrder.Asc;
-      }
+  convertSortDirectionToSortOrder(direction: SortDirection): SortOrder {
+    switch (direction) {
+      case 'asc':
+        return SortOrder.Asc;
+      case 'desc':
+        return SortOrder.Desc;
+      default:
+        return SortOrder.Asc;
+    }
+  }
+
+  downloadFile() {
+    this.logService
+      .logGetAllLastDownloadsGet('body', false)
+      .subscribe((data: Blob) => {
+        const blob = new Blob([data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'last_downloads.csv';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
   }
 }

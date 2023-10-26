@@ -43,6 +43,60 @@ public interface LogApi {
     }
 
     /**
+     * GET /log/getAllLastDownloads : Retrieve all the last downloads ordered by download date.
+     *
+     * @return A CSV file of all last downloads (status code 200)
+     */
+    @ApiOperation(value = "Retrieve all the last downloads ordered by download date.", nickname = "logGetAllLastDownloadsGet", notes = "", response = org.springframework.core.io.Resource.class, tags={ "log", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "A CSV file of all last downloads", response = org.springframework.core.io.Resource.class) })
+    @GetMapping(
+        value = "/log/getAllLastDownloads",
+        produces = { "application/octet-stream" }
+    )
+    default ResponseEntity<org.springframework.core.io.Resource> logGetAllLastDownloadsGet() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /log/getAllLastLogs : Retrieve all the last logs
+     *
+     * @return A CSV file of all last logs. (status code 200)
+     */
+    @ApiOperation(value = "Retrieve all the last logs", nickname = "logGetAllLastLogsGet", notes = "", response = org.springframework.core.io.Resource.class, tags={ "log", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "A CSV file of all last logs.", response = org.springframework.core.io.Resource.class) })
+    @GetMapping(
+        value = "/log/getAllLastLogs",
+        produces = { "application/octet-stream" }
+    )
+    default ResponseEntity<org.springframework.core.io.Resource> logGetAllLastLogsGet() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /log/getAllLastUploads : Retrieve all the last uploads
+     *
+     * @return A CSV file of all last uploads (status code 200)
+     */
+    @ApiOperation(value = "Retrieve all the last uploads", nickname = "logGetAllLastUploadsGet", notes = "", response = org.springframework.core.io.Resource.class, tags={ "log", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "A CSV file of all last uploads", response = org.springframework.core.io.Resource.class) })
+    @GetMapping(
+        value = "/log/getAllLastUploads",
+        produces = { "application/octet-stream" }
+    )
+    default ResponseEntity<org.springframework.core.io.Resource> logGetAllLastUploadsGet() {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * GET /log/getLastDownloads : Retrieve the last downloads ordered by download date
      *
      * @param pageSize Number of logs returned (required)
@@ -101,7 +155,7 @@ public interface LogApi {
 
 
     /**
-     * GET /log/getLastLogs : Retrieve the last logs for users with username
+     * GET /log/getLastLogs : Retrieve the last logins
      *
      * @param pageSize Number of logs returned (required)
      * @param pageNumber Page number (required)
@@ -109,7 +163,7 @@ public interface LogApi {
      * @param sortOrder Order in which logs will be sorted (ASC/DESC) (optional)
      * @return A list of last logs (status code 200)
      */
-    @ApiOperation(value = "Retrieve the last logs for users with username", nickname = "logGetLastLogsGet", notes = "", response = LastLog.class, responseContainer = "List", tags={ "log", })
+    @ApiOperation(value = "Retrieve the last logins", nickname = "logGetLastLogsGet", notes = "", response = LastLog.class, responseContainer = "List", tags={ "log", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "A list of last logs", response = LastLog.class, responseContainer = "List") })
     @GetMapping(
@@ -159,7 +213,7 @@ public interface LogApi {
 
 
     /**
-     * GET /log/getLastUploads : Retrieve the last uploads for users with username
+     * GET /log/getLastUploads : Retrieve the last uploads
      *
      * @param pageSize Number of logs returned (required)
      * @param pageNumber Page number (required)
@@ -167,7 +221,7 @@ public interface LogApi {
      * @param sortOrder Order in which uploads will be sorted (ASC/DESC) (optional)
      * @return A list of last uploads (status code 200)
      */
-    @ApiOperation(value = "Retrieve the last uploads for users with username", nickname = "logGetLastUploadsGet", notes = "", response = LastUpload.class, responseContainer = "List", tags={ "log", })
+    @ApiOperation(value = "Retrieve the last uploads", nickname = "logGetLastUploadsGet", notes = "", response = LastUpload.class, responseContainer = "List", tags={ "log", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "A list of last uploads", response = LastUpload.class, responseContainer = "List") })
     @GetMapping(

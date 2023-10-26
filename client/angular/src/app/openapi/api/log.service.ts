@@ -107,6 +107,120 @@ export class LogService {
     }
 
     /**
+     * Retrieve all the last downloads ordered by download date.
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public logGetAllLastDownloadsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<Blob>;
+    public logGetAllLastDownloadsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpResponse<Blob>>;
+    public logGetAllLastDownloadsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpEvent<Blob>>;
+    public logGetAllLastDownloadsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/octet-stream'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+
+
+        let localVarPath = `/log/getAllLastDownloads`;
+        return this.httpClient.request('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Retrieve all the last logs
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public logGetAllLastLogsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<Blob>;
+    public logGetAllLastLogsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpResponse<Blob>>;
+    public logGetAllLastLogsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpEvent<Blob>>;
+    public logGetAllLastLogsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/octet-stream'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+
+
+        let localVarPath = `/log/getAllLastLogs`;
+        return this.httpClient.request('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Retrieve all the last uploads
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public logGetAllLastUploadsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<Blob>;
+    public logGetAllLastUploadsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpResponse<Blob>>;
+    public logGetAllLastUploadsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpEvent<Blob>>;
+    public logGetAllLastUploadsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'application/octet-stream'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+
+
+        let localVarPath = `/log/getAllLastUploads`;
+        return this.httpClient.request('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                responseType: "blob",
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * Retrieve the last downloads ordered by download date
      * @param pageSize Number of logs returned
      * @param pageNumber Page number
@@ -234,7 +348,7 @@ export class LogService {
     }
 
     /**
-     * Retrieve the last logs for users with username
+     * Retrieve the last logins
      * @param pageSize Number of logs returned
      * @param pageNumber Page number
      * @param sortField Field by which the logs will be sorted
@@ -312,7 +426,7 @@ export class LogService {
     }
 
     /**
-     * Retrieve the total count of last logs
+     * Retrieve the total count of last logs.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
@@ -361,7 +475,7 @@ export class LogService {
     }
 
     /**
-     * Retrieve the last uploads for users with username
+     * Retrieve the last uploads
      * @param pageSize Number of logs returned
      * @param pageNumber Page number
      * @param sortField Field by which the uploads will be sorted

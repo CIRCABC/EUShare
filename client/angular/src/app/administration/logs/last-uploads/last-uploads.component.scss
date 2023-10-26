@@ -1,0 +1,15 @@
+.download-container {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .download-icon {
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.54);
+    transition: color 0.3s ease;
+  }
+  
+  .download-icon:hover {
+    color: #2196F3;
+  }
+  

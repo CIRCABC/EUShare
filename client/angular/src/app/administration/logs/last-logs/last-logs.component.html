@@ -1,3 +1,4 @@
+
 <table mat-table [dataSource]="data" matSort matSortActive="last_logged" matSortDisableClear matSortDirection="desc">
 
     <ng-container matColumnDef="id">
@@ -43,3 +44,7 @@
   <mat-paginator [length]="resultsLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
     showFirstLastButtons>
   </mat-paginator>
+<p></p>
+  <div class="download-container">
+    <mat-icon (click)="downloadFile()" class="download-icon" title="Download as CSV">file_download</mat-icon>
+</div>

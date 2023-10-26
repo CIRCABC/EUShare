@@ -17,6 +17,8 @@ import { LogService } from '../../../openapi/api/log.service';
 import { LastLog } from '../../../openapi/model/lastLog';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SortOrder } from '../../../openapi';
+import { MatIconModule } from '@angular/material/icon';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-last-logs',
@@ -28,7 +30,9 @@ import { SortOrder } from '../../../openapi';
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    DatePipe,MatSortModule
+    DatePipe,
+    MatSortModule,
+    MatIconModule,
   ],
 })
 export class LastLogsComponent implements AfterViewInit {
@@ -93,7 +97,12 @@ export class LastLogsComponent implements AfterViewInit {
     sortField: string,
     sortOrder: SortDirection,
   ): Observable<LastLog[]> {
-    return this.logService.logGetLastLogsGet(pageSize, pageIndex,sortField,this.convertSortDirectionToSortOrder(sortOrder));
+    return this.logService.logGetLastLogsGet(
+      pageSize,
+      pageIndex,
+      sortField,
+      this.convertSortDirectionToSortOrder(sortOrder),
+    );
   }
 
   convertSortDirectionToSortOrder(direction: SortDirection): SortOrder {
@@ -105,5 +114,22 @@ export class LastLogsComponent implements AfterViewInit {
       default:
         return SortOrder.Asc;
     }
+  }
+
+  downloadFile() {
+    this.logService
+      .logGetAllLastLogsGet('body', false)
+      .subscribe((data: Blob) => {
+        const blob = new Blob([data], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'last_logs.csv';
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
   }
 }
