@@ -1,0 +1,9 @@
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .dialog-header span {
+    flex-grow: 1;
+  }

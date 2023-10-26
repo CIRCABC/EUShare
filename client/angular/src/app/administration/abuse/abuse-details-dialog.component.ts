@@ -19,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-abuse-details-dialog',
@@ -30,7 +31,7 @@ import { CommonModule } from '@angular/common';
     MatDialogModule,
     MatTableModule,
     MatPaginatorModule,
-    MatTooltipModule,
+    MatTooltipModule,MatIconModule
   ],
 })
 export class AbuseDetailsDialogComponent implements OnInit {
@@ -48,6 +49,7 @@ export class AbuseDetailsDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AbuseDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails[],
+
   ) {}
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -56,5 +58,9 @@ export class AbuseDetailsDialogComponent implements OnInit {
     this.dataSource = new MatTableDataSource<AbuseReportDetails>(this.data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.paginator.pageIndex = 0;
+  }
+
+  onClose(): void {
+    this.dialogRef.close();
   }
 }

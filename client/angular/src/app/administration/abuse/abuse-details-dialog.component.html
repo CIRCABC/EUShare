@@ -1,5 +1,9 @@
-<div mat-dialog-title>Abuse Reports Details</div>
-
+<div mat-dialog-title class="dialog-header">
+  <span>Abuse Reports Details</span>
+  <button  (click)="onClose()">
+    Close
+  </button>
+</div>
 <mat-table [dataSource]="dataSource">
 
   <ng-container matColumnDef="reporter">
