@@ -45,6 +45,7 @@ model/monitoring.ts
 model/monitoringDetails.ts
 model/mountPointSpace.ts
 model/recipient.ts
+model/sortOrder.ts
 model/stat.ts
 model/status.ts
 model/trustRequest.ts

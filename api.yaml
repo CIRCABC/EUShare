@@ -1320,7 +1320,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
 
- 
   /log/getLastLogs:
     parameters:
       - name: pageSize
@@ -1335,6 +1334,21 @@ paths:
         required: true
         schema:
           type: integer
+      - name: sortField
+        in: query
+        description: Field by which the logs will be sorted
+        required: false
+        schema:
+          type: string
+      - name: sortOrder
+        in: query
+        description: Order in which logs will be sorted (ASC/DESC) 
+        required: false
+        schema:
+          type: string
+          enum:
+            - ASC
+            - DESC
     get:
       tags:
         - log
@@ -1363,6 +1377,21 @@ paths:
         required: true
         schema:
           type: integer
+      - name: sortField
+        in: query
+        description: Field by which the uploads will be sorted
+        required: false
+        schema:
+          type: string
+      - name: sortOrder
+        in: query
+        description: Order in which uploads will be sorted (ASC/DESC)
+        required: false
+        schema:
+          type: string
+          enum:
+            - ASC
+            - DESC
     get:
       tags:
         - log
@@ -1376,7 +1405,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/LastUpload'
-  
+
   /log/getLastDownloads:
     parameters:
       - name: pageSize
@@ -1391,6 +1420,21 @@ paths:
         required: true
         schema:
           type: integer
+      - name: sortField
+        in: query
+        description: Field by which the downloads will be sorted
+        required: false
+        schema:
+          type: string
+      - name: sortOrder
+        in: query
+        description: Order in which downloads will be sorted (ASC/DESC)
+        required: false
+        schema:
+          type: string
+          enum:
+            - ASC
+            - DESC
     get:
       tags:
         - log
@@ -1405,12 +1449,11 @@ paths:
                 items:
                   $ref: '#/components/schemas/LastDownload'
 
-
   /log/getLastLogsMetadata:
     get:
       tags:
         - log
-      summary: Retrieve the total count of last logs
+      summary: Retrieve the total count of last logs.
       responses:
         '200':
           description: Metadata for last logs
@@ -1953,3 +1996,8 @@ components:
           type: integer
           format: int64
           description: Total number of items
+    sortOrder:
+      type: string
+      enum:
+        - ASC
+        - DESC

@@ -25,6 +25,7 @@ export * from './monitoring';
 export * from './monitoringDetails';
 export * from './mountPointSpace';
 export * from './recipient';
+export * from './sortOrder';
 export * from './stat';
 export * from './status';
 export * from './trustRequest';

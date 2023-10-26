@@ -16,6 +16,7 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { LogService } from '../../../openapi/api/log.service';
 import { LastUpload } from '../../../openapi/model/lastUpload';
 import { CommonModule } from '@angular/common';
+import { SortOrder } from '../../../openapi/model/sortOrder';
 
 @Component({
   selector: 'app-last-uploads',
@@ -56,16 +57,21 @@ export class LastUploadsComponent implements AfterViewInit {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.logService.logGetLastUploadsMetadataGet().pipe(
-            switchMap(metadata => {
+            switchMap((metadata) => {
               if (metadata.total) {
                 this.resultsLength = metadata.total;
               }
-              return this.getData(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction);
+              return this.getData(
+                this.paginator.pageIndex,
+                this.paginator.pageSize,
+                this.sort.active,
+                this.sort.direction,
+              );
             }),
-            catchError(() => observableOf(null))
+            catchError(() => observableOf(null)),
           );
         }),
-        map(data => {
+        map((data) => {
           this.isLoadingResults = false;
           if (data === null) {
             this.isRateLimitReached = true;
@@ -74,11 +80,27 @@ export class LastUploadsComponent implements AfterViewInit {
           return data;
         }),
       )
-      .subscribe(data => this.data = data);
+      .subscribe((data) => (this.data = data));
   }
 
-  getData(pageIndex: number, pageSize: number, sortField: string, sortOrder: SortDirection): Observable<LastUpload[]> {
+  getData(
+    pageIndex: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: SortDirection,
+  ): Observable<LastUpload[]> {
     console.log(sortField + sortOrder);
-    return this.logService.logGetLastUploadsGet(pageSize, pageIndex);
+    return this.logService.logGetLastUploadsGet(pageSize, pageIndex,sortField,this.convertSortDirectionToSortOrder(sortOrder));
+  }
+
+    convertSortDirectionToSortOrder(direction: SortDirection): SortOrder {
+      switch (direction) {
+        case 'asc':
+          return SortOrder.Asc;
+        case 'desc':
+          return SortOrder.Desc;
+        default:
+          return SortOrder.Asc;
+      }
   }
 }

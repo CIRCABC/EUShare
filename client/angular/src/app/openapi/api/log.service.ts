@@ -110,13 +110,15 @@ export class LogService {
      * Retrieve the last downloads ordered by download date
      * @param pageSize Number of logs returned
      * @param pageNumber Page number
+     * @param sortField Field by which the downloads will be sorted
+     * @param sortOrder Order in which downloads will be sorted (ASC/DESC)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastDownload>>;
-    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastDownload>>>;
-    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastDownload>>>;
-    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastDownload>>;
+    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastDownload>>>;
+    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastDownload>>>;
+    public logGetLastDownloadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
             throw new Error('Required parameter pageSize was null or undefined when calling logGetLastDownloadsGet.');
         }
@@ -132,6 +134,14 @@ export class LogService {
         if (pageNumber !== undefined && pageNumber !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageNumber, 'pageNumber');
+        }
+        if (sortField !== undefined && sortField !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortField, 'sortField');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'sortOrder');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -227,13 +237,15 @@ export class LogService {
      * Retrieve the last logs for users with username
      * @param pageSize Number of logs returned
      * @param pageNumber Page number
+     * @param sortField Field by which the logs will be sorted
+     * @param sortOrder Order in which logs will be sorted (ASC/DESC)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastLog>>;
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastLog>>>;
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastLog>>>;
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastLog>>;
+    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastLog>>>;
+    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastLog>>>;
+    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
             throw new Error('Required parameter pageSize was null or undefined when calling logGetLastLogsGet.');
         }
@@ -249,6 +261,14 @@ export class LogService {
         if (pageNumber !== undefined && pageNumber !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageNumber, 'pageNumber');
+        }
+        if (sortField !== undefined && sortField !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortField, 'sortField');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'sortOrder');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -344,13 +364,15 @@ export class LogService {
      * Retrieve the last uploads for users with username
      * @param pageSize Number of logs returned
      * @param pageNumber Page number
+     * @param sortField Field by which the uploads will be sorted
+     * @param sortOrder Order in which uploads will be sorted (ASC/DESC)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public logGetLastUploadsGet(pageSize: number, pageNumber: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastUpload>>;
-    public logGetLastUploadsGet(pageSize: number, pageNumber: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastUpload>>>;
-    public logGetLastUploadsGet(pageSize: number, pageNumber: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastUpload>>>;
-    public logGetLastUploadsGet(pageSize: number, pageNumber: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public logGetLastUploadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastUpload>>;
+    public logGetLastUploadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastUpload>>>;
+    public logGetLastUploadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastUpload>>>;
+    public logGetLastUploadsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
             throw new Error('Required parameter pageSize was null or undefined when calling logGetLastUploadsGet.');
         }
@@ -366,6 +388,14 @@ export class LogService {
         if (pageNumber !== undefined && pageNumber !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageNumber, 'pageNumber');
+        }
+        if (sortField !== undefined && sortField !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortField, 'sortField');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'sortOrder');
         }
 
         let localVarHeaders = this.defaultHeaders;

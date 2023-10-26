@@ -37,9 +37,26 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "logs")
 @NamedNativeQuery(
     name = "DBFileLog.getLastLogs", 
-    query = "SELECT id, email, name, username, total_space, last_logged, status FROM users ORDER BY :sortField :sortOrder", 
+    query = 
+    "SELECT id, email, name, username, total_space, last_logged, status FROM users " +
+    "ORDER BY " +
+    "CASE WHEN :sortField = 'email' AND :sortOrder = 'ASC' THEN email END ASC, " +
+    "CASE WHEN :sortField = 'name' AND :sortOrder = 'ASC' THEN name END ASC, " +
+    "CASE WHEN :sortField = 'username' AND :sortOrder = 'ASC' THEN username END ASC, " +
+    "CASE WHEN :sortField = 'total_space' AND :sortOrder = 'ASC' THEN total_space END ASC, " +
+    "CASE WHEN :sortField = 'last_logged' AND :sortOrder = 'ASC' THEN last_logged END ASC, " +
+    "CASE WHEN :sortField = 'status' AND :sortOrder = 'ASC' THEN status END ASC, " +
+    "CASE WHEN :sortField = 'email' AND :sortOrder = 'DESC' THEN email END DESC, " +
+    "CASE WHEN :sortField = 'name' AND :sortOrder = 'DESC' THEN name END DESC, " +
+    "CASE WHEN :sortField = 'username' AND :sortOrder = 'DESC' THEN username END DESC, " +
+    "CASE WHEN :sortField = 'total_space' AND :sortOrder = 'DESC' THEN total_space END DESC, " +
+    "CASE WHEN :sortField = 'last_logged' AND :sortOrder = 'DESC' THEN last_logged END DESC, " +
+    "CASE WHEN :sortField = 'status' AND :sortOrder = 'DESC' THEN status END DESC",
     resultSetMapping = "getLastLogsMapping"
 )
+
+
+
 
 @SqlResultSetMapping(
     name = "getLastLogsMapping", 
@@ -59,9 +76,32 @@ import org.hibernate.annotations.GenericGenerator;
 
 @NamedNativeQuery(
     name = "DBFileLog.getLastUploads", 
-    query = "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification FROM shares s, files f, users u WHERE f.uploader_id=u.id AND s.file_file_id = f.file_id ORDER BY :sortField :sortOrder", 
+    query = 
+    "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification " +
+    "FROM shares s, files f, users u " +
+    "WHERE f.uploader_id = u.id AND s.file_file_id = f.file_id " +
+    "ORDER BY " +
+    "CASE WHEN :sortField = 'uploader_email' AND :sortOrder = 'ASC' THEN u.email END ASC, " +
+    "CASE WHEN :sortField = 'share_email' AND :sortOrder = 'ASC' THEN s.email END ASC, " +
+    "CASE WHEN :sortField = 'filename' AND :sortOrder = 'ASC' THEN f.filename END ASC, " +
+    "CASE WHEN :sortField = 'file_size' AND :sortOrder = 'ASC' THEN f.file_size END ASC, " +
+    "CASE WHEN :sortField = 'path' AND :sortOrder = 'ASC' THEN f.path END ASC, " +
+    "CASE WHEN :sortField = 'status' AND :sortOrder = 'ASC' THEN f.status END ASC, " +
+    "CASE WHEN :sortField = 'created' AND :sortOrder = 'ASC' THEN f.created END ASC, " +
+    "CASE WHEN :sortField = 'shorturl' AND :sortOrder = 'ASC' THEN s.shorturl END ASC, " +
+    "CASE WHEN :sortField = 'download_notification' AND :sortOrder = 'ASC' THEN s.download_notification END ASC, " +
+    "CASE WHEN :sortField = 'uploader_email' AND :sortOrder = 'DESC' THEN u.email END DESC, " +
+    "CASE WHEN :sortField = 'share_email' AND :sortOrder = 'DESC' THEN s.email END DESC, " +
+    "CASE WHEN :sortField = 'filename' AND :sortOrder = 'DESC' THEN f.filename END DESC, " +
+    "CASE WHEN :sortField = 'file_size' AND :sortOrder = 'DESC' THEN f.file_size END DESC, " +
+    "CASE WHEN :sortField = 'path' AND :sortOrder = 'DESC' THEN f.path END DESC, " +
+    "CASE WHEN :sortField = 'status' AND :sortOrder = 'DESC' THEN f.status END DESC, " +
+    "CASE WHEN :sortField = 'created' AND :sortOrder = 'DESC' THEN f.created END DESC, " +
+    "CASE WHEN :sortField = 'shorturl' AND :sortOrder = 'DESC' THEN s.shorturl END DESC, " +
+    "CASE WHEN :sortField = 'download_notification' AND :sortOrder = 'DESC' THEN s.download_notification END DESC",
     resultSetMapping = "getLastUploadsMapping"
 )
+
 
 @SqlResultSetMapping(
     name = "getLastUploadsMapping", 
@@ -83,7 +123,27 @@ import org.hibernate.annotations.GenericGenerator;
 
 @NamedNativeQuery(
     name = "DBFileLog.getLastDownloads", 
-    query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date FROM shares s, users u, logs l, files f WHERE l.file_file_id=s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id ORDER BY :sortField :sortOrder", 
+    query = 
+    "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date " +
+    "FROM shares s, users u, logs l, files f " +
+    "WHERE l.file_file_id = s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id " +
+    "ORDER BY " +
+    "CASE WHEN :sortField = 'uploader_email' AND :sortOrder = 'ASC' THEN u.email END ASC, " +
+    "CASE WHEN :sortField = 'recipient' AND :sortOrder = 'ASC' THEN l.recipient END ASC, " +
+    "CASE WHEN :sortField = 'filename' AND :sortOrder = 'ASC' THEN f.filename END ASC, " +
+    "CASE WHEN :sortField = 'path' AND :sortOrder = 'ASC' THEN f.path END ASC, " +
+    "CASE WHEN :sortField = 'password' AND :sortOrder = 'ASC' THEN f.password END ASC, " +
+    "CASE WHEN :sortField = 'shorturl' AND :sortOrder = 'ASC' THEN s.shorturl END ASC, " +
+    "CASE WHEN :sortField = 'download_notification' AND :sortOrder = 'ASC' THEN s.download_notification END ASC, " +
+    "CASE WHEN :sortField = 'download_date' AND :sortOrder = 'ASC' THEN l.download_date END ASC, " +
+    "CASE WHEN :sortField = 'uploader_email' AND :sortOrder = 'DESC' THEN u.email END DESC, " +
+    "CASE WHEN :sortField = 'recipient' AND :sortOrder = 'DESC' THEN l.recipient END DESC, " +
+    "CASE WHEN :sortField = 'filename' AND :sortOrder = 'DESC' THEN f.filename END DESC, " +
+    "CASE WHEN :sortField = 'path' AND :sortOrder = 'DESC' THEN f.path END DESC, " +
+    "CASE WHEN :sortField = 'password' AND :sortOrder = 'DESC' THEN f.password END DESC, " +
+    "CASE WHEN :sortField = 'shorturl' AND :sortOrder = 'DESC' THEN s.shorturl END DESC, " +
+    "CASE WHEN :sortField = 'download_notification' AND :sortOrder = 'DESC' THEN s.download_notification END DESC, " +
+    "CASE WHEN :sortField = 'download_date' AND :sortOrder = 'DESC' THEN l.download_date END DESC",
     resultSetMapping = "getLastDownloadsMapping"
 )
 

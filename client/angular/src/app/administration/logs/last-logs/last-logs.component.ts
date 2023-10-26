@@ -16,16 +16,31 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { LogService } from '../../../openapi/api/log.service';
 import { LastLog } from '../../../openapi/model/lastLog';
 import { CommonModule, DatePipe } from '@angular/common';
+import { SortOrder } from '../../../openapi';
 
 @Component({
   selector: 'app-last-logs',
   templateUrl: './last-logs.component.html',
   styleUrls: ['./last-logs.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, DatePipe],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    DatePipe,MatSortModule
+  ],
 })
 export class LastLogsComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'email', 'name', 'username', 'total_space', 'last_logged', 'status'];
+  displayedColumns: string[] = [
+    'id',
+    'email',
+    'name',
+    'username',
+    'total_space',
+    'last_logged',
+    'status',
+  ];
   data: LastLog[] = [];
   dataSource = new MatTableDataSource<LastLog>();
   resultsLength: number = 0;
@@ -46,16 +61,21 @@ export class LastLogsComponent implements AfterViewInit {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.logService.logGetLastLogsMetadataGet().pipe(
-            switchMap(metadata => {
+            switchMap((metadata) => {
               if (metadata.total) {
                 this.resultsLength = metadata.total;
               }
-              return this.getData(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction);
+              return this.getData(
+                this.paginator.pageIndex,
+                this.paginator.pageSize,
+                this.sort.active,
+                this.sort.direction,
+              );
             }),
-            catchError(() => observableOf(null))
+            catchError(() => observableOf(null)),
           );
         }),
-        map(data => {
+        map((data) => {
           this.isLoadingResults = false;
           if (data === null) {
             this.isRateLimitReached = true;
@@ -64,11 +84,26 @@ export class LastLogsComponent implements AfterViewInit {
           return data;
         }),
       )
-      .subscribe(data => this.data = data);
+      .subscribe((data) => (this.data = data));
   }
 
-  getData(pageIndex: number, pageSize: number, sortField: string, sortOrder: SortDirection): Observable<LastLog[]> {
-    console.log(sortField+sortOrder);
-    return this.logService.logGetLastLogsGet(pageSize, pageIndex);
+  getData(
+    pageIndex: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: SortDirection,
+  ): Observable<LastLog[]> {
+    return this.logService.logGetLastLogsGet(pageSize, pageIndex,sortField,this.convertSortDirectionToSortOrder(sortOrder));
+  }
+
+  convertSortDirectionToSortOrder(direction: SortDirection): SortOrder {
+    switch (direction) {
+      case 'asc':
+        return SortOrder.Asc;
+      case 'desc':
+        return SortOrder.Desc;
+      default:
+        return SortOrder.Asc;
+    }
   }
 }

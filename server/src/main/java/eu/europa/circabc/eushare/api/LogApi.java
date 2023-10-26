@@ -47,6 +47,8 @@ public interface LogApi {
      *
      * @param pageSize Number of logs returned (required)
      * @param pageNumber Page number (required)
+     * @param sortField Field by which the downloads will be sorted (optional)
+     * @param sortOrder Order in which downloads will be sorted (ASC/DESC) (optional)
      * @return A list of last downloads (status code 200)
      */
     @ApiOperation(value = "Retrieve the last downloads ordered by download date", nickname = "logGetLastDownloadsGet", notes = "", response = LastDownload.class, responseContainer = "List", tags={ "log", })
@@ -56,7 +58,7 @@ public interface LogApi {
         value = "/log/getLastDownloads",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<LastDownload>> logGetLastDownloadsGet(@NotNull @ApiParam(value = "Number of logs returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
+    default ResponseEntity<List<LastDownload>> logGetLastDownloadsGet(@NotNull @ApiParam(value = "Number of logs returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@ApiParam(value = "Field by which the downloads will be sorted") @Valid @RequestParam(value = "sortField", required = false) String sortField,@ApiParam(value = "Order in which downloads will be sorted (ASC/DESC)", allowableValues = "ASC, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -103,6 +105,8 @@ public interface LogApi {
      *
      * @param pageSize Number of logs returned (required)
      * @param pageNumber Page number (required)
+     * @param sortField Field by which the logs will be sorted (optional)
+     * @param sortOrder Order in which logs will be sorted (ASC/DESC) (optional)
      * @return A list of last logs (status code 200)
      */
     @ApiOperation(value = "Retrieve the last logs for users with username", nickname = "logGetLastLogsGet", notes = "", response = LastLog.class, responseContainer = "List", tags={ "log", })
@@ -112,7 +116,7 @@ public interface LogApi {
         value = "/log/getLastLogs",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<LastLog>> logGetLastLogsGet(@NotNull @ApiParam(value = "Number of logs returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
+    default ResponseEntity<List<LastLog>> logGetLastLogsGet(@NotNull @ApiParam(value = "Number of logs returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@ApiParam(value = "Field by which the logs will be sorted") @Valid @RequestParam(value = "sortField", required = false) String sortField,@ApiParam(value = "Order in which logs will be sorted (ASC/DESC)", allowableValues = "ASC, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
@@ -128,11 +132,11 @@ public interface LogApi {
 
 
     /**
-     * GET /log/getLastLogsMetadata : Retrieve the total count of last logs
+     * GET /log/getLastLogsMetadata : Retrieve the total count of last logs.
      *
      * @return Metadata for last logs (status code 200)
      */
-    @ApiOperation(value = "Retrieve the total count of last logs", nickname = "logGetLastLogsMetadataGet", notes = "", response = Metadata.class, tags={ "log", })
+    @ApiOperation(value = "Retrieve the total count of last logs.", nickname = "logGetLastLogsMetadataGet", notes = "", response = Metadata.class, tags={ "log", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "Metadata for last logs", response = Metadata.class) })
     @GetMapping(
@@ -159,6 +163,8 @@ public interface LogApi {
      *
      * @param pageSize Number of logs returned (required)
      * @param pageNumber Page number (required)
+     * @param sortField Field by which the uploads will be sorted (optional)
+     * @param sortOrder Order in which uploads will be sorted (ASC/DESC) (optional)
      * @return A list of last uploads (status code 200)
      */
     @ApiOperation(value = "Retrieve the last uploads for users with username", nickname = "logGetLastUploadsGet", notes = "", response = LastUpload.class, responseContainer = "List", tags={ "log", })
@@ -168,7 +174,7 @@ public interface LogApi {
         value = "/log/getLastUploads",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<LastUpload>> logGetLastUploadsGet(@NotNull @ApiParam(value = "Number of logs returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber) {
+    default ResponseEntity<List<LastUpload>> logGetLastUploadsGet(@NotNull @ApiParam(value = "Number of logs returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@ApiParam(value = "Field by which the uploads will be sorted") @Valid @RequestParam(value = "sortField", required = false) String sortField,@ApiParam(value = "Order in which uploads will be sorted (ASC/DESC)", allowableValues = "ASC, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
