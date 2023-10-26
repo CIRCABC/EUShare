@@ -20,22 +20,10 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  */
 
 
-export interface FileBasics { 
+export interface Metadata { 
     /**
-     * Expiration date of file
+     * Total number of items
      */
-    expirationDate: string;
-    /**
-     * File is password-protected
-     */
-    hasPassword: boolean;
-    /**
-     * Filename
-     */
-    name: string;
-    /**
-     * Size of file (Bytes)
-     */
-    size: number;
+    total?: number;
 }
 

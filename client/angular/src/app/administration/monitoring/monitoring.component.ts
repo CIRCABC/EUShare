@@ -76,8 +76,10 @@ export class MonitoringComponent implements OnInit {
   }
 
   private async updateMonitoringStatus(details: MonitoringDetails) {
-    if(details.ID){
-      await firstValueFrom(this.monitoringService.updateMonitoringEntry(details.ID,details));
+    if (details.ID) {
+      await firstValueFrom(
+        this.monitoringService.updateMonitoringEntry(details.ID, details),
+      );
       this.fetchData();
     }
   }
@@ -93,7 +95,6 @@ export class MonitoringComponent implements OnInit {
       status: details.status,
     };
   }
-
 
   delete(details: MonitoringDetails): void {
     if (!details) {

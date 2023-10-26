@@ -22,9 +22,8 @@ import { DownloadsService } from '../../services/downloads.service';
 })
 export class MonitoringTabComponent implements OnInit {
   @Input() reportStatus: MonitoringDetails.StatusEnum | undefined;
-  @Input() monitoringDetails: MonitoringDetails[]  | undefined;
+  @Input() monitoringDetails: MonitoringDetails[] | undefined;
 
- 
   @Output() deleteEvent: EventEmitter<MonitoringDetails> =
     new EventEmitter<MonitoringDetails>();
   @Output() approveEvent: EventEmitter<MonitoringDetails> =
@@ -34,7 +33,10 @@ export class MonitoringTabComponent implements OnInit {
 
   private frontend_url = '';
 
-  constructor(private downloadsService: DownloadsService,private datePipe: DatePipe) {}
+  constructor(
+    private downloadsService: DownloadsService,
+    private datePipe: DatePipe,
+  ) {}
 
   ngOnInit(): void {
     this.frontend_url = environment.frontend_url;
@@ -43,7 +45,6 @@ export class MonitoringTabComponent implements OnInit {
   delete(report: MonitoringDetails): void {
     this.deleteEvent.emit(report);
   }
-
 
   approveReport(report: MonitoringDetails): void {
     this.approveEvent.emit(report);
@@ -63,13 +64,14 @@ export class MonitoringTabComponent implements OnInit {
       words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
       words[words.length - 1] = `(by ${words[words.length - 1]})`;
       return words.join(' ');
+    } else {
+      return '';
     }
-    else { return ""; }
   }
-  
-  public async tryDownload(details: MonitoringDetails| undefined) {
-    if(details)
-    if (details.fileId && details.filename)
-      await this.downloadsService.download(details.fileId, details.filename);
+
+  public async tryDownload(details: MonitoringDetails | undefined) {
+    if (details)
+      if (details.fileId && details.filename)
+        await this.downloadsService.download(details.fileId, details.filename);
   }
 }

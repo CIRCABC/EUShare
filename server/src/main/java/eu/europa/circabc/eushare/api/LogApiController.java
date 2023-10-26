@@ -20,11 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.europa.circabc.eushare.model.LastDownload;
 import eu.europa.circabc.eushare.model.LastLog;
 import eu.europa.circabc.eushare.model.LastUpload;
+import eu.europa.circabc.eushare.model.Metadata;
 import eu.europa.circabc.eushare.security.AdminOnly;
 import eu.europa.circabc.eushare.storage.dto.LastDownloadDTO;
 import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
 import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
 import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 public class LogApiController implements LogApi {
@@ -32,11 +36,15 @@ public class LogApiController implements LogApi {
     @Autowired
     private FileLogsRepository fileLogsRepository;
 
+    private Pageable createPageRequest(Integer pageSize, Integer pageNumber) {
+        return PageRequest.of(pageNumber, pageSize);
+    }
+
     @AdminOnly
     @Override
     public ResponseEntity<List<LastDownload>> logGetLastDownloadsGet(Integer pageSize, Integer pageNumber) {
-        
-        List<LastDownloadDTO> lastDownloadDTOs = fileLogsRepository.getLastDownloads();
+        List<LastDownloadDTO> lastDownloadDTOs = fileLogsRepository
+                .getLastDownloads(createPageRequest(pageSize, pageNumber));
         List<LastDownload> lastDownloads = new ArrayList<>();
 
         for (LastDownloadDTO dto : lastDownloadDTOs) {
@@ -49,7 +57,7 @@ public class LogApiController implements LogApi {
     @AdminOnly
     @Override
     public ResponseEntity<List<LastLog>> logGetLastLogsGet(Integer pageSize, Integer pageNumber) {
-        List<LastLogDTO> lastLogDTOs = fileLogsRepository.getLastLogs();
+        List<LastLogDTO> lastLogDTOs = fileLogsRepository.getLastLogs(createPageRequest(pageSize, pageNumber));
         List<LastLog> lastLogs = new ArrayList<>();
 
         for (LastLogDTO dto : lastLogDTOs) {
@@ -62,7 +70,7 @@ public class LogApiController implements LogApi {
     @AdminOnly
     @Override
     public ResponseEntity<List<LastUpload>> logGetLastUploadsGet(Integer pageSize, Integer pageNumber) {
-        List<LastUploadDTO> lastUploadDTOs = fileLogsRepository.getLastUploads();
+        List<LastUploadDTO> lastUploadDTOs = fileLogsRepository.getLastUploads(createPageRequest(pageSize, pageNumber));
         List<LastUpload> lastUploads = new ArrayList<>();
 
         for (LastUploadDTO dto : lastUploadDTOs) {
@@ -70,6 +78,30 @@ public class LogApiController implements LogApi {
         }
 
         return new ResponseEntity<>(lastUploads, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Metadata> logGetLastDownloadsMetadataGet() {
+        long total = fileLogsRepository.countLastDownloads();
+        Metadata metadata = new Metadata();
+        metadata.setTotal(total);
+        return ResponseEntity.ok(metadata);
+    }
+
+    @Override
+    public ResponseEntity<Metadata> logGetLastLogsMetadataGet() {
+        long total = fileLogsRepository.countLastLogs();
+        Metadata metadata = new Metadata();
+        metadata.setTotal(total);
+        return ResponseEntity.ok(metadata);
+    }
+
+    @Override
+    public ResponseEntity<Metadata> logGetLastUploadsMetadataGet() {
+        long total = fileLogsRepository.countLastUploads();
+        Metadata metadata = new Metadata();
+        metadata.setTotal(total);
+        return ResponseEntity.ok(metadata);
     }
 
 }

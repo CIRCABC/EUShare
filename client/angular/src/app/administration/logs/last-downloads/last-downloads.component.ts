@@ -9,11 +9,13 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { LogService } from '../../../openapi/api/log.service';
-
-import { CommonModule } from '@angular/common';
 import { LastDownload } from '../../../openapi/model/lastDownload';
+import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -21,7 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './last-downloads.component.html',
   styleUrls: ['./last-downloads.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatIconModule],
+  imports: [CommonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatIconModule],
 })
 export class LastDownloadsComponent implements AfterViewInit {
   displayedColumns: string[] = [
@@ -34,29 +36,49 @@ export class LastDownloadsComponent implements AfterViewInit {
     'download_notification',
     'download_date',
   ];
+  data: LastDownload[] = [];
   dataSource = new MatTableDataSource<LastDownload>();
+  resultsLength: number = 0;
+  isLoadingResults: boolean = true;
+  isRateLimitReached: boolean = false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(private logService: LogService) {}
 
-  fetchData() {
-    const pageSize = this.paginator.pageSize || 10;
-    const pageNumber = this.paginator.pageIndex || 0;
+  ngAfterViewInit() {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    this.logService
-      .logGetLastDownloadsGet(pageSize, pageNumber)
-      .subscribe((data) => {
-        this.dataSource.data = data;
-      });
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.logService.logGetLastDownloadsMetadataGet().pipe(
+            switchMap(metadata => {
+              if (metadata.total) {
+                this.resultsLength = metadata.total;
+              }
+              return this.getData(this.paginator.pageIndex, this.paginator.pageSize, this.sort.active, this.sort.direction);
+            }),
+            catchError(() => observableOf(null))
+          );
+        }),
+        map(data => {
+          this.isLoadingResults = false;
+          if (data === null) {
+            this.isRateLimitReached = true;
+            return [];
+          }
+          return data;
+        }),
+      )
+      .subscribe(data => this.data = data);
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.paginator.pageIndex = 0;
-    this.paginator.page.subscribe(() => {
-      this.fetchData();
-    });
-    this.fetchData();
+  getData(pageIndex: number, pageSize: number, sortField: string, sortOrder: SortDirection): Observable<LastDownload[]> {
+    console.log(sortField + sortOrder);
+    return this.logService.logGetLastDownloadsGet(pageSize, pageIndex);
   }
 }

@@ -50,7 +50,6 @@ import { MessageTextAreaComponent } from '../common/formComponents/message-text-
 import { FileAccessorDirective } from '../directives/file-accessor.directive';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { NotificationLevel } from '../common/notification/notification-level';
 import { I18nService } from '../common/i18n/i18n.service';
 import { UploadRightsDialogComponent } from '../common/dialogs/upload-rights-dialog/upload-rights-dialog.component';
 import { CaptchaComponent } from '../common/captcha/captcha.component';
@@ -576,8 +575,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     }
     this.uploadInProgress = false;
     if (this.useCaptcha) {
-      if(!this.captchaComponent.answer)
-        this.initializeForm();
+      if (!this.captchaComponent.answer) this.initializeForm();
       this.refreshCaptcha();
     }
   }
@@ -639,7 +637,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   public openTrustDialog(): void {
-    const dialogRef = this.dialog.open(UploadRightsDialogComponent, {
+    this.dialog.open(UploadRightsDialogComponent, {
       data: {},
     });
   }
@@ -653,10 +651,11 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   refreshCaptcha(): Promise<void> {
-    return this.captchaComponent.refresh().then(() => {
-
-    }).catch((error) => {
-      console.error('Error refreshing the captcha:', error);
-    });
+    return this.captchaComponent
+      .refresh()
+      .then(() => {})
+      .catch((error) => {
+        console.error('Error refreshing the captcha:', error);
+      });
   }
 }

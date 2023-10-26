@@ -187,7 +187,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               if (err.error) {
                 const status: Status = err.error;
                 if (status.message) {
-                  if (status.message == 'UserHasNoUploadRights') {
+                  if (status.message === 'UserHasNoUploadRights') {
                     errorMessage += ` ${this.i18nService.translate(
                       'user.suspended',
                     )} `;

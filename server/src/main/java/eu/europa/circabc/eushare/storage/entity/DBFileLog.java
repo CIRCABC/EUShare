@@ -70,6 +70,26 @@ import org.hibernate.annotations.GenericGenerator;
     @ColumnResult(name = "download_date", type = LocalDateTime.class)
 
 }))
+@NamedNativeQuery(
+    name = "DBFileLog.countLastLogs",
+    query = "SELECT COUNT(*) as count FROM users",
+    resultSetMapping = "countLastLogsMapping"
+)
+@SqlResultSetMapping(name = "countLastLogsMapping", columns = @ColumnResult(name = "count", type = Long.class))
+
+@NamedNativeQuery(
+    name = "DBFileLog.countLastUploads",
+    query = "SELECT COUNT(*) as count FROM shares s, files f, users u WHERE f.uploader_id=u.id AND s.file_file_id = f.file_id",
+    resultSetMapping = "countLastUploadsMapping"
+)
+@SqlResultSetMapping(name = "countLastUploadsMapping", columns = @ColumnResult(name = "count", type = Long.class))
+
+@NamedNativeQuery(
+    name = "DBFileLog.countLastDownloads",
+    query = "SELECT COUNT(*) as count FROM shares s, users u, logs l, files f WHERE l.file_file_id=s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id",
+    resultSetMapping = "countLastDownloadsMapping"
+)
+@SqlResultSetMapping(name = "countLastDownloadsMapping", columns = @ColumnResult(name = "count", type = Long.class))
 
 public class DBFileLog {
 

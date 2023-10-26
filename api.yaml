@@ -1406,6 +1406,46 @@ paths:
                   $ref: '#/components/schemas/LastDownload'
 
 
+  /log/getLastLogsMetadata:
+    get:
+      tags:
+        - log
+      summary: Retrieve the total count of last logs
+      responses:
+        '200':
+          description: Metadata for last logs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+
+  /log/getLastUploadsMetadata:
+    get:
+      tags:
+        - log
+      summary: Retrieve the total count of last uploads
+      responses:
+        '200':
+          description: Metadata for last uploads
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+
+  /log/getLastDownloadsMetadata:
+    get:
+      tags:
+        - log
+      summary: Retrieve the total count of last downloads
+      responses:
+        '200':
+          description: Metadata for last downloads
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+
+
 components:
   securitySchemes:
     OpenID:   # <--- Arbitrary name for the security scheme. Used to refer to it from elsewhere.
@@ -1906,3 +1946,10 @@ components:
         download_date:
           type: string
           format: date-time
+    Metadata:
+      type: object
+      properties:
+        total:
+          type: integer
+          format: int64
+          description: Total number of items

@@ -9,7 +9,12 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
-import { MountPointSpace, AdminService, StatsService, Stat, Monitoring } from '../openapi';
+import {
+  MountPointSpace,
+  AdminService,
+  StatsService,
+  Stat,
+} from '../openapi';
 
 import { firstValueFrom } from 'rxjs';
 import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';

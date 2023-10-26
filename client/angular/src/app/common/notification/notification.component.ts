@@ -15,8 +15,6 @@ import { NotificationService } from './notification.service';
 import { TranslocoModule } from '@ngneat/transloco';
 import { CommonModule, NgSwitch, NgSwitchCase } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { UploadRightsDialogComponent } from '../dialogs/upload-rights-dialog/upload-rights-dialog.component';
-
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.component.html',

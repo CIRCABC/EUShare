@@ -17,6 +17,7 @@ package eu.europa.circabc.eushare.api;
 import eu.europa.circabc.eushare.model.LastDownload;
 import eu.europa.circabc.eushare.model.LastLog;
 import eu.europa.circabc.eushare.model.LastUpload;
+import eu.europa.circabc.eushare.model.Metadata;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,6 +72,33 @@ public interface LogApi {
 
 
     /**
+     * GET /log/getLastDownloadsMetadata : Retrieve the total count of last downloads
+     *
+     * @return Metadata for last downloads (status code 200)
+     */
+    @ApiOperation(value = "Retrieve the total count of last downloads", nickname = "logGetLastDownloadsMetadataGet", notes = "", response = Metadata.class, tags={ "log", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Metadata for last downloads", response = Metadata.class) })
+    @GetMapping(
+        value = "/log/getLastDownloadsMetadata",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Metadata> logGetLastDownloadsMetadataGet() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"total\" : 0 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * GET /log/getLastLogs : Retrieve the last logs for users with username
      *
      * @param pageSize Number of logs returned (required)
@@ -100,6 +128,33 @@ public interface LogApi {
 
 
     /**
+     * GET /log/getLastLogsMetadata : Retrieve the total count of last logs
+     *
+     * @return Metadata for last logs (status code 200)
+     */
+    @ApiOperation(value = "Retrieve the total count of last logs", nickname = "logGetLastLogsMetadataGet", notes = "", response = Metadata.class, tags={ "log", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Metadata for last logs", response = Metadata.class) })
+    @GetMapping(
+        value = "/log/getLastLogsMetadata",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Metadata> logGetLastLogsMetadataGet() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"total\" : 0 }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
      * GET /log/getLastUploads : Retrieve the last uploads for users with username
      *
      * @param pageSize Number of logs returned (required)
@@ -118,6 +173,33 @@ public interface LogApi {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "{ \"path\" : \"path\", \"filename\" : \"filename\", \"shorturl\" : \"shorturl\", \"download_notification\" : true, \"share_email\" : \"share_email\", \"created\" : \"2000-01-23T04:56:07.000+00:00\", \"uploader_email\" : \"uploader_email\", \"file_size\" : 0, \"status\" : \"status\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /log/getLastUploadsMetadata : Retrieve the total count of last uploads
+     *
+     * @return Metadata for last uploads (status code 200)
+     */
+    @ApiOperation(value = "Retrieve the total count of last uploads", nickname = "logGetLastUploadsMetadataGet", notes = "", response = Metadata.class, tags={ "log", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Metadata for last uploads", response = Metadata.class) })
+    @GetMapping(
+        value = "/log/getLastUploadsMetadata",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Metadata> logGetLastUploadsMetadataGet() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"total\" : 0 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

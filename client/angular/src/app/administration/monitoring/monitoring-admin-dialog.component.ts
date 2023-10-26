@@ -29,10 +29,9 @@ export const StatusEnumLabelsUpload = {
 };
 
 export const StatusEnumLabelsUser = {
-  REGULAR: "Delete files. Keep all users rights.",
+  REGULAR: 'Delete files. Keep all users rights.',
   SUSPENDED: 'Delete files. Prevent users from uploading.',
 };
-
 
 type StatusEnumKeys = (keyof typeof StatusEnumLabels)[];
 @Component({
@@ -48,11 +47,12 @@ export class MonitoringAdminDialogComponent {
   statusOptions = Object.values(UserInfo.StatusEnum);
   statusLabels = StatusEnumLabels;
   statusLabelsUploads = StatusEnumLabelsUpload;
-  statusLabelsUser = StatusEnumLabelsUser
+  statusLabelsUser = StatusEnumLabelsUser;
   statusKeys = Object.keys(StatusEnumLabels) as StatusEnumKeys;
 
   constructor(
-    public dialogRef: MatDialogRef<MonitoringAdminDialogComponent>, private datePipe: DatePipe,
+    public dialogRef: MatDialogRef<MonitoringAdminDialogComponent>,
+    private datePipe: DatePipe,
     @Inject(MAT_DIALOG_DATA) public data: MonitoringDetails,
   ) {
     this.monitoringDetails = { ...data };
@@ -67,15 +67,14 @@ export class MonitoringAdminDialogComponent {
     this.dialogRef.close();
   }
 
-
   formatString(input: string | undefined): string {
     if (input) {
       const words = input.toLowerCase().split('_');
       words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
       words[words.length - 1] = `(by ${words[words.length - 1]})`;
       return words.join(' ');
+    } else {
+      return '';
     }
-    else { return ""; }
   }
-
 }
