@@ -169,7 +169,7 @@
   "user.name.or.email": "User's name OR email",
   "user.not.found": "User not found",
   "user.search": "User search",
-  "user.suspended": "Warning ! Your user account has been temporary supsended due to suspicious activity. If you believe this action is unwarranted, you can contact support at the following email address DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
+  "user.suspended": "Your user account has been temporarily suspended due to suspicious activity. If you believe this action is unwarranted, please contact support at the following email address: DIGIT-CIRCABC-SUPPORT@ec.europa.eu",
   "user.uploaded.files": "{{ userName }}'s uploaded files",
   "validation.invalidEmail": "Invalid email address",
   "validation.maxlength": "Maximum length is {{requiredLength}} but actual length is {{actualLength}}",

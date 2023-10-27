@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService,
-  ) {}
+  ) { }
 
   intercept(
     req: HttpRequest<any>,
@@ -184,10 +184,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               let errorMessage = `${this.i18nService.translate(
                 'not.authorized',
               )} ${action}`;
+              let warning = false;
               if (err.error) {
                 const status: Status = err.error;
                 if (status.message) {
                   if (status.message === 'UserHasNoUploadRights') {
+                    warning = true;
                     errorMessage += ` ${this.i18nService.translate(
                       'user.suspended',
                     )} `;
@@ -198,7 +200,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                   }
                 }
               }
-              this.notificationService.addErrorMessage(errorMessage);
+              if (warning)
+                this.notificationService.addWarningMessage(errorMessage);
+              else
+                this.notificationService.addErrorMessage(errorMessage);
               break;
             }
             case 404: {

@@ -39,6 +39,14 @@ export class NotificationService {
     this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
   }
 
+  public addWarningMessage(
+    message: string,
+    autoclose = false,
+    displayTime?: number,
+  ): void {
+    this.addMessage(message, NotificationLevel.WARNING, autoclose, displayTime);
+  }
+
   public addErrorMessageTranslation(
     key: string,
     params?: HashMap,
