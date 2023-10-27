@@ -31,7 +31,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatDialogModule,
     MatTableModule,
     MatPaginatorModule,
-    MatTooltipModule,MatIconModule
+    MatTooltipModule,
+    MatIconModule,
   ],
 })
 export class AbuseDetailsDialogComponent implements OnInit {
@@ -49,7 +50,6 @@ export class AbuseDetailsDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<AbuseDetailsDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails[],
-
   ) {}
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

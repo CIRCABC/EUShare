@@ -18,7 +18,6 @@ import { LastLog } from '../../../openapi/model/lastLog';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SortOrder } from '../../../openapi';
 import { MatIconModule } from '@angular/material/icon';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-last-logs',

@@ -25,7 +25,7 @@ import { NotificationService } from '../common/notification/notification.service
 @Component({
   selector: 'app-filelink',
   templateUrl: './filelink.component.html',
-  styleUrls: ['./filelink.component.scss'], 
+  styleUrls: ['./filelink.component.scss'],
   standalone: true,
   imports: [
     NgIf,
@@ -52,11 +52,9 @@ export class FilelinkComponent implements OnInit {
     private modalService: ModalsService,
     private fileApi: FileService,
     private dialog: MatDialog,
-    private downloadsService: DownloadsService, 
-    private notificationService: NotificationService, 
+    private downloadsService: DownloadsService,
+    private notificationService: NotificationService,
   ) {}
-
-
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');

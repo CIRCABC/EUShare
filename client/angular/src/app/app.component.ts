@@ -44,7 +44,7 @@ const authCodeFlowConfig: AuthConfig = {
   responseType: 'id_token',
 
   scope: 'openid email',
- 
+
   showDebugInformation: false,
   sessionChecksEnabled: false,
   tokenEndpoint: environment.OIDC_TOKENENDPOINT,

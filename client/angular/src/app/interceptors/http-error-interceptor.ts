@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService,
-  ) { }
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -202,8 +202,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               }
               if (warning)
                 this.notificationService.addWarningMessage(errorMessage);
-              else
-                this.notificationService.addErrorMessage(errorMessage);
+              else this.notificationService.addErrorMessage(errorMessage);
               break;
             }
             case 404: {
