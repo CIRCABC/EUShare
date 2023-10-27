@@ -9,8 +9,25 @@
     </h2>
     <p *ngIf="isFilePasswordProtected">{{ "file.is.protected" | transloco }}</p>
     <div class="action-container">
-      <app-download-button [fileId]="fileId" [isFileHasPassword]="isFilePasswordProtected"
-        [fileName]="fileName"></app-download-button>
+    
+    
+      <div class="control" [class.is-expanded]="isFileHasPassword">
+        <input
+          *ngIf="isFileHasPassword"
+          class="input is-info"
+          type="password"
+          placeholder="Type password here"
+          [(ngModel)]="inputPassword"
+          (keyup.enter)="download()"
+        />
+      </div>
+      <div class="control">
+        <a class="button" data-cy="download" (click)="initiateDownload()">
+          {{ "download" | transloco }}
+        </a>
+      </div>
+      
+
 
 
       <a (click)="openAbuseDialog(fileId)">{{ 'abuse.title' | transloco }}</a>

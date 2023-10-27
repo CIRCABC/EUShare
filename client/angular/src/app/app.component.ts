@@ -24,10 +24,13 @@ import { DeleteConfirmModalComponent } from './common/modals/delete-confirm-moda
 import { OverwriteConfirmModalComponent } from './common/modals/overwrite-confirm-modal/overwrite-confirm-modal.component';
 import { ShareWithUsersModalComponent } from './common/modals/share-with-users-modal/share-with-users-modal.component';
 import { StatisticsModalComponent } from './common/modals/statistics-modal/statistics-modal.component';
+
+import { FileLinkModalComponent } from './common/modals/file-link-modal/file-link-modal.component';
 import { NotificationSystemComponent } from './common/notification/notification-system.component';
 import { FooterComponent } from './footer/footer.component';
 import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { DownloadModalComponent } from './common/modals/download-modal/download-modal.component';
 
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -41,7 +44,7 @@ const authCodeFlowConfig: AuthConfig = {
   responseType: 'id_token',
 
   scope: 'openid email',
-  // disableAtHashCheck: true,
+ 
   showDebugInformation: false,
   sessionChecksEnabled: false,
   tokenEndpoint: environment.OIDC_TOKENENDPOINT,
@@ -57,6 +60,8 @@ const authCodeFlowConfig: AuthConfig = {
     StatisticsModalComponent,
     AddRecipientsModalComponent,
     DeleteConfirmModalComponent,
+    DownloadModalComponent,
+    FileLinkModalComponent,
     ChangeExpirationDateModalComponent,
     OverwriteConfirmModalComponent,
     NotificationSystemComponent,

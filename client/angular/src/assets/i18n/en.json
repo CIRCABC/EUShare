@@ -64,6 +64,7 @@
   "file": "File",
   "file.downloads": "File Downloads",
   "file.is.protected": "The file is protected by a password.",
+  "file.link.copied": "Copied file link !",
   "file.not.found": "File not found (The file may be expired).",
   "file.password.optional": "File password (optional)",
   "file.recipients": "File Recipients",
