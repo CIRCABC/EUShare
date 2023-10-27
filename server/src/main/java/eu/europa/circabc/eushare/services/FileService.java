@@ -104,10 +104,10 @@ public class FileService {
   private StatsRepository statsRepository;
 
   @Autowired
-  private  FileDownloadRateService fileDownloadRateService;
+  private FileDownloadRateService fileDownloadRateService;
 
   @Autowired
-  private  FileUploadRateService fileUploadRateService;
+  private FileUploadRateService fileUploadRateService;
 
   /**
    * Prepare all given paths.
@@ -146,7 +146,6 @@ public class FileService {
           fileLogsRepository.delete(dbFileLog);
         }
 
-        
         fileRepository.delete(file);
       } catch (IOException e) {
         log.error("Could not delete DBFile, try again in next run", e);
@@ -265,14 +264,17 @@ public class FileService {
       String requesterId,
       Boolean downloadNotification)
       throws UserUnauthorizedException, UnknownUserException, MessageTooLongException, UnknownFileException,
-      MessagingException {
+      MessagingException, UserHasNoUploadRightsException {
     if (this.isRequesterTheOwnerOfTheFileOrIsAnAdmin(fileId, requesterId)) {
+      DBUser requester = userRepository.findOneById(requesterId);
+      if (!(requester.getStatus()).equals(DBUser.Status.REGULAR)) {
+        throw new UserHasNoUploadRightsException();
+      }
 
       if (!StringUtils.validateMessage(recipient.getMessage())) {
         throw new MessageTooLongException();
       }
       DBFile dbFile = findAvailableFile(fileId, false);
-      DBUser requester = userRepository.findOneById(requesterId);
 
       DBShare dbShare = new DBShare(
           recipient.getEmail().toLowerCase(),
@@ -661,10 +663,8 @@ public class FileService {
             dbShare.getShorturl());
       }
       fileLogsRepository.save(fileLogs);
-       fileDownloadRateService.logFileDownload(dbFile);
+      fileDownloadRateService.logFileDownload(dbFile);
     }
-
-   
 
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
   }
@@ -718,7 +718,7 @@ public class FileService {
       if (userService.isUserExists(userId)) {
         List<DBFile.Status> status = new ArrayList<>();
         status.add(DBFile.Status.AVAILABLE);
-        if (userService.isAdmin(requesterId)  ) {
+        if (userService.isAdmin(requesterId)) {
           status.add(DBFile.Status.ALLOCATED);
           status.add(DBFile.Status.DELETED);
           status.add(DBFile.Status.FROZEN);

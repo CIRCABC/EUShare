@@ -463,6 +463,11 @@ public class FileApiController implements FileApi {
           HttpStatus.INTERNAL_SERVER_ERROR,
           HttpErrorAnswerBuilder.build500EmptyToString(),
           e);
+    } catch (UserHasNoUploadRightsException exc) {
+      throw new ResponseStatusException(
+          HttpStatus.FORBIDDEN,
+          HttpErrorAnswerBuilder.build403UserHasNoUploadRightsToString(),
+          exc);
     }
   }
 
