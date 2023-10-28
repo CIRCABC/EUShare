@@ -102,6 +102,7 @@
   "login.with.eulogin": "Connectez-vous au moyen d’EULogin",
   "logout": "Déconnexion",
   "main.menu": "Menu principal",
+  "max.recepient.reached": "Vous avez atteint le nombre maximum de destinataires.",
   "modify.user.rights": "modifier les droits de cet utilisateur",
   "more.advanced": "Plus d'options",
   "my.calendar": "Mon calendrier",

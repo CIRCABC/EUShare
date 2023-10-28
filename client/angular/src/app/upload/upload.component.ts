@@ -318,6 +318,14 @@ export class UploadComponent implements OnInit, AfterViewInit {
   }
 
   addEmailFormGroup(emailMessageFormArrayIndex: number) {
+    if (this.userRole === 'EXTERNAL' &&  this.getEmailArrayLength(emailMessageFormArrayIndex) >= 5) {
+      this.notificationService.addWarningMessage("max.recepient.reached");
+      return;
+    }
+    if (this.userRole === 'TRUSTED_EXTERNAL' && this.getEmailMessageArrayLength() >= 25) {
+      this.notificationService.addWarningMessage("max.recepient.reached");
+      return;
+    }
     const formGroupOrNull = <FormGroup | null>(
       this.emailMessageArray.controls[emailMessageFormArrayIndex]
     );
@@ -355,6 +363,7 @@ export class UploadComponent implements OnInit, AfterViewInit {
     }
     return null;
   }
+
 
   getEmailFormGroup(
     emailMessageArrayIndex: number,
@@ -507,6 +516,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
                 j,
               );
               if (emailOrNull && emailOrNull !== '') {
+
+
                 const recipient: Recipient = {
                   email: emailOrNull,
                 };

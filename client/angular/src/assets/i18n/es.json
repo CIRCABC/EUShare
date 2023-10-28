@@ -102,6 +102,7 @@
   "login.with.eulogin": "Iniciar sesión con EULogin",
   "logout": "Cerrar sesión",
   "main.menu": "Menú principal",
+  "max.recepient.reached": "Has alcanzado el número máximo de destinatarios.",
   "modify.user.rights": "modificar los derechos de este usuario",
   "more.advanced": "Más opciones",
   "my.calendar": "Mi calendario",

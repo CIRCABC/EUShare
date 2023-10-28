@@ -102,6 +102,7 @@
   "login.with.eulogin": "Logga in med EU Login",
   "logout": "Logga ut",
   "main.menu": "Huvudmeny",
+  "max.recepient.reached": "Du har nått det maximala antalet mottagare.",
   "modify.user.rights": "ändra användarens rättigheter",
   "more.advanced": "Fler alternativ",
   "my.calendar": "Min kalender",

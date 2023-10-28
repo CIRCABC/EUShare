@@ -102,6 +102,7 @@
   "login.with.eulogin": "Login with EULogin",
   "logout": "Logout",
   "main.menu": "Main menu",
+  "max.recepient.reached": "You have reached the maximum number of recipients.",
   "modify.user.rights": "modify this user",
   "more.advanced": "More options",
   "my.calendar": "My calendar",

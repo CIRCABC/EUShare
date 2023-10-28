@@ -102,6 +102,7 @@
   "login.with.eulogin": "Bejelentkezés az EU Login használatával",
   "logout": "Kijelentkezés",
   "main.menu": "Főmenü",
+  "max.recepient.reached": "Elérte a címzettek maximális számát.",
   "modify.user.rights": "a felhasználó jogainak módosítása",
   "more.advanced": "További lehetőségek",
   "my.calendar": "Saját naptáram",

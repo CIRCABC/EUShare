@@ -102,6 +102,7 @@
   "login.with.eulogin": "Sisselogimine EU Loginiga",
   "logout": "Logi välja",
   "main.menu": "Põhimenüü",
+  "max.recepient.reached": "Olete jõudnud maksimaalse adressaatide arvu.",
   "modify.user.rights": "luba muuta selle kasutaja õigusi",
   "more.advanced": "Rohkem valikuid",
   "my.calendar": "Minu kalender",

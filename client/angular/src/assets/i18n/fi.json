@@ -102,6 +102,7 @@
   "login.with.eulogin": "Kirjaudu sisään EU Login -tunnuksilla",
   "logout": "Kirjaudu ulos",
   "main.menu": "Päävalikko",
+  "max.recepient.reached": "Olet saavuttanut vastaanottajien enimmäismäärän.",
   "modify.user.rights": "muuttaa tämän käyttäjän oikeuksia",
   "more.advanced": "Lisää vaihtoehtoja",
   "my.calendar": "Oma kalenteri",

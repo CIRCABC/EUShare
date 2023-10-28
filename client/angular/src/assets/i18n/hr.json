@@ -102,6 +102,7 @@
   "login.with.eulogin": "Prijava putem sustava EU Login",
   "logout": "Odjava",
   "main.menu": "Glavni izbornik",
+  "max.recepient.reached": "Dostigli ste maksimalni broj primatelja.",
   "modify.user.rights": "mijenjanje prava tog korisnika.",
   "more.advanced": "Više opcija",
   "my.calendar": "Moj kalendar",
