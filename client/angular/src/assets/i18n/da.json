@@ -157,6 +157,7 @@
   "text.optional": "Valgfri tekst",
   "times": "gang(e)",
   "to": "at",
+  "too.many.downloads": "Filoverførslen er midlertidigt suspenderet på grund af for høje downloadhastigheder.",
   "total.space": "Diskplads i alt",
   "unexpected.error": "Der opstod en uventet serverfejl: ",
   "upgrade.account": "Opgrader konto",

@@ -157,6 +157,7 @@
   "text.optional": "Text (optional)",
   "times": "time(s)",
   "to": "to",
+  "too.many.downloads": "The file download has been temporarily suspended due to excessive download rates.",
   "total.space": "Total space",
   "unexpected.error": "An unexpected error occured on server side while ",
   "upgrade.account": "Upgrade account",

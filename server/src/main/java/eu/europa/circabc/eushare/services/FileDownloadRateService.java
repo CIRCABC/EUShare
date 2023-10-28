@@ -46,6 +46,7 @@ public class FileDownloadRateService {
     public EmailService emailService;
 
     private static final int HOURLY_THRESHOLD = 10;
+    private static final int HOURLY_THRESHOLD_RT = 15;
     private static final int DAILY_THRESHOLD = 50;
 
     public void logFileDownload(DBFile file) {
@@ -64,6 +65,22 @@ public class FileDownloadRateService {
             newLogEntry.setDownloadCount(1);
             repository.save(newLogEntry);
         }
+    }
+
+    public boolean realTimeCheck(DBFile file) {
+        LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
+       
+        Optional<DBFileDownloadRate> optionalLogEntry = repository.findByDateHourAndFile(currentHour, file);
+
+        if (optionalLogEntry.isPresent()) {
+            DBFileDownloadRate logEntry = optionalLogEntry.get();
+            if( logEntry.getDownloadCount()  > HOURLY_THRESHOLD_RT) {
+
+              return true;
+
+            }
+        }
+        return false;
     }
 
     @Scheduled(cron = "0 0 * * * ?")  

@@ -157,6 +157,7 @@
   "text.optional": "Tekst (nije obvezan)",
   "times": "puta",
   "to": "to",
+  "too.many.downloads": "Preuzimanje datoteka privremeno je obustavljeno zbog prekomjernih stopa preuzimanja.",
   "total.space": "Ukupni prostor za pohranu",
   "unexpected.error": "Pojavila se neočekivana pogreška na poslužitelju: ",
   "upgrade.account": "Nadogradite račun",

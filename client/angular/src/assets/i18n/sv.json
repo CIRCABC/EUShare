@@ -157,6 +157,7 @@
   "text.optional": "Text (frivilligt)",
   "times": "gång(er)",
   "to": "att",
+  "too.many.downloads": "Nedladdningen av filen har tillfälligt avbrutits på grund av överdrivna nedladdningshastigheter.",
   "total.space": "Totalt utrymme",
   "unexpected.error": "Ett oväntat serverfel inträffade när ",
   "upgrade.account": "Uppgradera konto",

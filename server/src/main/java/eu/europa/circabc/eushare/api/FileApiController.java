@@ -18,6 +18,8 @@ import eu.europa.circabc.eushare.exceptions.FileLargerThanAllocationException;
 import eu.europa.circabc.eushare.exceptions.IllegalFileSizeException;
 import eu.europa.circabc.eushare.exceptions.IllegalFileStateException;
 import eu.europa.circabc.eushare.exceptions.MessageTooLongException;
+import eu.europa.circabc.eushare.exceptions.NoStackTraceResponseStatusException;
+import eu.europa.circabc.eushare.exceptions.TooManyRequestsException;
 import eu.europa.circabc.eushare.exceptions.UnknownFileException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
@@ -199,10 +201,14 @@ public class FileApiController implements FileApi {
       @RequestParam(value = "password", required = false) String password) {
     HttpHeaders responseHeaders = new HttpHeaders();
     try {
-      DownloadReturn downloadReturn = fileService.downloadFile(
-          fileID,
-          password,
-          true);
+      DownloadReturn downloadReturn=null;
+     
+        downloadReturn = fileService.downloadFile(
+            fileID,
+            password,
+            true);
+     
+
       ContentDisposition cd = ContentDisposition
           .builder("attachment")
           .filename(downloadReturn.getFilename(), StandardCharsets.UTF_8)
@@ -222,6 +228,11 @@ public class FileApiController implements FileApi {
           HttpStatus.UNAUTHORIZED,
           HttpErrorAnswerBuilder.build401EmptyToString(),
           exc4);
+    } 
+    catch (TooManyRequestsException e) {
+      throw new NoStackTraceResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
+          HttpErrorAnswerBuilder.build429EmptyToString(),
+          e);
     }
   }
 
@@ -230,6 +241,7 @@ public class FileApiController implements FileApi {
       @PathVariable("fileID") String fileID,
       @RequestParam(value = "password", required = false) String password) {
     try {
+
       DownloadReturn downloadReturn = fileService.downloadFile(
           fileID,
           password,
@@ -268,6 +280,10 @@ public class FileApiController implements FileApi {
       throw new ResponseStatusException(
           HttpStatus.INTERNAL_SERVER_ERROR,
           HttpErrorAnswerBuilder.build500EmptyToString());
+    } catch (TooManyRequestsException e) {
+      throw new NoStackTraceResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
+          HttpErrorAnswerBuilder.build429EmptyToString(),
+          e);
     }
   }
 
@@ -282,16 +298,16 @@ public class FileApiController implements FileApi {
           HttpErrorAnswerBuilder.build400EmptyToString());
     }
     try {
-         Authentication authentication = SecurityContextHolder
-        .getContext()
-        .getAuthentication();
+      Authentication authentication = SecurityContextHolder
+          .getContext()
+          .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
 
       DBUser.Role userRole = userService.getDbUser(requesterId).getRole();
-     
-      if(userRole.equals(DBUser.Role.EXTERNAL))
+
+      if (userRole.equals(DBUser.Role.EXTERNAL))
         captchaValidator.checkCaptcha(X_EU_CAPTCHA_ID, X_EU_CAPTCHA_TOKEN, X_EU_CAPTCHA_TEXT);
-    
+
       String fileId = fileService.allocateFileOnBehalfOf(
           fileRequest.getExpirationDate(),
           fileRequest.getName(),

@@ -18,6 +18,7 @@ import eu.europa.circabc.eushare.exceptions.FileLargerThanAllocationException;
 import eu.europa.circabc.eushare.exceptions.IllegalFileSizeException;
 import eu.europa.circabc.eushare.exceptions.IllegalFileStateException;
 import eu.europa.circabc.eushare.exceptions.MessageTooLongException;
+import eu.europa.circabc.eushare.exceptions.TooManyRequestsException;
 import eu.europa.circabc.eushare.exceptions.UnknownFileException;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
@@ -63,10 +64,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Service for managing all files that are available in the application. Use
@@ -607,14 +610,17 @@ public class FileService {
    *
    * @throws UnknownFileException
    * @throws WrongPasswordException
+   * @throws TooManyRequestsException
    */
 
   @Transactional
   public DownloadReturn downloadFile(
       String downloadId,
       String password,
-      boolean head) throws WrongPasswordException, UnknownFileException {
+      boolean head) throws WrongPasswordException, UnknownFileException, TooManyRequestsException {
     DBFile dbFile;
+
+    
 
     DBShare dbShare = findShare(downloadId);
 
@@ -645,6 +651,11 @@ public class FileService {
             e);
       }
     }
+    
+    if(fileDownloadRateService.realTimeCheck(dbFile)) {
+       throw new TooManyRequestsException();
+    }
+
     if (dbFile.getPassword() != null &&
         !BCrypt.checkpw(password, dbFile.getPassword())) {
       throw new WrongPasswordException();

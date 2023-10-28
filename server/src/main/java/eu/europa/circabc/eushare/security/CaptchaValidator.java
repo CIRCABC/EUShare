@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import eu.europa.circabc.eushare.CaptchaApiImpl;
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
+import eu.europa.circabc.eushare.exceptions.NoStackTraceResponseStatusException;
 
 
 @Component
@@ -29,7 +30,7 @@ public class CaptchaValidator {
     public void checkCaptcha(String captchaId, String captchaToken, String captchaText) {
 
         if (captchaToken == null || captchaId == null || captchaText == null) {
-            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "CAPTCHA parameters missing", null);
+            throw new NoStackTraceResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "CAPTCHA parameters missing", null);
         }
 
         CaptchaApiImpl captchaApi = new CaptchaApiImpl();
@@ -38,7 +39,7 @@ public class CaptchaValidator {
         boolean isValid = captchaApi.validate(captchaToken, captchaId, captchaText);
 
         if (!isValid) {
-            throw new ResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "CAPTCHA validation failed", null);
+            throw new NoStackTraceResponseStatusException(HttpStatus.TOO_MANY_REQUESTS, "CAPTCHA validation failed", null);
         }
     }
 }

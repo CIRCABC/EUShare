@@ -157,6 +157,7 @@
   "text.optional": "Texto (facultativo)",
   "times": "vez(es)",
   "to": "fazer o seguinte:",
+  "too.many.downloads": "O download do arquivo foi temporariamente suspenso devido às taxas excessivas de download.",
   "total.space": "Espaço total",
   "unexpected.error": "Ocorreu um erro imprevisto no servidor: ",
   "upgrade.account": "Atualizar conta",

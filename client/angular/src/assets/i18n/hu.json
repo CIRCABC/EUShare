@@ -157,6 +157,7 @@
   "text.optional": "Szöveg (nem kötelező)",
   "times": "alkalommal",
   "to": "a következő művelethez:",
+  "too.many.downloads": "A fájl letöltését ideiglenesen felfüggesztették a túlzott letöltési arány miatt.",
   "total.space": "Teljes tárhely",
   "unexpected.error": "Váratlan hiba történt a szerveroldalon: ",
   "upgrade.account": "Frissítse a fiókot",

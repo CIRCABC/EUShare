@@ -157,6 +157,7 @@
   "text.optional": "Text (nepovinné)",
   "times": "krát",
   "to": "to",
+  "too.many.downloads": "Stahování souboru bylo dočasně pozastaveno kvůli nadměrné rychlosti stahování.",
   "total.space": "Celkové místo",
   "unexpected.error": "Na serveru došlo k neočekávané chybě během ",
   "upgrade.account": "Upgradujte účet",

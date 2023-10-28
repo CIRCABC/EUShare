@@ -157,6 +157,7 @@
   "text.optional": "Tekst (valikuline)",
   "times": "kord(a)",
   "to": "kuni",
+  "too.many.downloads": "Failide allalaadimine on ülemäärase allalaadimismäära tõttu ajutiselt peatatud.",
   "total.space": "Kogumaht",
   "unexpected.error": "Serveris ilmnes ootamatu viga toimingul: ",
   "upgrade.account": "Täiendage kontot",

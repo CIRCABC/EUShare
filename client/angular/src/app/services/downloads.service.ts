@@ -20,7 +20,7 @@ export class DownloadsService {
     fileId: string,
     fileName: string,
     inputPassword?: string,
-  ): Promise<'OK' | 'WRONG_PASSWORD'> {
+  ): Promise<'OK' | 'WRONG_PASSWORD' | 'TOO_MANY_DOWNLOADS'> {
     const url = `${environment.backend_url}/file/${fileId}${
       inputPassword === undefined ? '' : `?password=${inputPassword}`
     }`;
@@ -31,6 +31,9 @@ export class DownloadsService {
 
       if (result.status === 401) {
         return 'WRONG_PASSWORD';
+      }
+      if (result.status === 429) {
+        return 'TOO_MANY_DOWNLOADS';
       }
     }
     if (fileId && fileName) {

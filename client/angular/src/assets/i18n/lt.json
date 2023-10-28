@@ -157,6 +157,7 @@
   "text.optional": "Tekstas (neprivaloma)",
   "times": ".",
   "to": " ",
+  "too.many.downloads": "Failų atsisiuntimas buvo laikinai sustabdytas dėl pernelyg didelio atsisiuntimo greičio.",
   "total.space": "Iš viso vietos",
   "unexpected.error": "Serveryje įvyko netikėta klaida,  ",
   "upgrade.account": "Atnaujinti paskyrą",

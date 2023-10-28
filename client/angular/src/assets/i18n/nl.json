@@ -157,6 +157,7 @@
   "text.optional": "Tekst (facultatief)",
   "times": "keer",
   "to": "om",
+  "too.many.downloads": "Het downloaden van het bestand is tijdelijk onderbroken vanwege te hoge downloadsnelheden.",
   "total.space": "Totale ruimte",
   "unexpected.error": "Onverwachte serverfout ",
   "upgrade.account": "Account upgraden",

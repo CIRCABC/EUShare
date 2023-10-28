@@ -157,6 +157,7 @@
   "text.optional": "Teksti (valinnainen)",
   "times": "kertaa",
   "to": "to",
+  "too.many.downloads": "Tiedostojen lataus on väliaikaisesti keskeytetty liiallisten latausnopeuksien vuoksi.",
   "total.space": "Tilaa yhteensä",
   "unexpected.error": "Odottamaton virhe palvelimella: ",
   "upgrade.account": "Päivitä tili",

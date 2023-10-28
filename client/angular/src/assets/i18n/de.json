@@ -157,6 +157,7 @@
   "text.optional": "Text (optional)",
   "times": "Mal(e)",
   "to": ",",
+  "too.many.downloads": "Der Dateidownload wurde aufgrund überhöhter Download-Raten vorübergehend ausgesetzt.",
   "total.space": "Speicherkapazität insgesamt",
   "unexpected.error": "Unerwarteter Fehler auf Serverseite aufgetreten während ",
   "upgrade.account": "Konto aktualisieren",

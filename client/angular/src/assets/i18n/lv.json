@@ -157,6 +157,7 @@
   "text.optional": "Teksts (nav obligāts)",
   "times": "reizi/reizes",
   "to": "–",
+  "too.many.downloads": "Failu lejupielāde ir īslaicīgi apturēta pārmērīgu lejupielādes ātrumu dēļ.",
   "total.space": "Kopējā vieta",
   "unexpected.error": "Servera pusē radās neparedzēta kļūda: ",
   "upgrade.account": "Jaunināt kontu",

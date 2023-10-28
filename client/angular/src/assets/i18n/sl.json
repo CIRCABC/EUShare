@@ -157,6 +157,7 @@
   "text.optional": "Besedilo (neobvezno)",
   "times": "-krat",
   "to": "to",
+  "too.many.downloads": "Prenos datotek je bil začasno prekinjen zaradi prekomernih hitrosti prenosa.",
   "total.space": "Skupni prostor",
   "unexpected.error": "Nepričakovana napaka na strani strežnika med: ",
   "upgrade.account": "Nadgradite račun",

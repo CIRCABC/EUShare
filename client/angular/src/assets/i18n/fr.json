@@ -157,6 +157,7 @@
   "text.optional": "Texte (facultatif)",
   "times": "fois",
   "to": "à",
+  "too.many.downloads": "Le téléchargement du fichier a été temporairement suspendu en raison de taux de téléchargement excessifs.",
   "total.space": "Espace total",
   "unexpected.error": "Une erreur inattendue s’est produite côté serveur: ",
   "upgrade.account": "Mettre à jour le compte",

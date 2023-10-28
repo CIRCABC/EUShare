@@ -157,6 +157,7 @@
   "text.optional": "Tekst (nieobowiązkowo)",
   "times": "raz(y)",
   "to": " ",
+  "too.many.downloads": "Pobieranie plików zostało tymczasowo zawieszone z powodu nadmiernych szybkości pobierania.",
   "total.space": "Dostępne miejsce łącznie",
   "unexpected.error": "Po stronie serwera wystąpił nieoczekiwany błąd: ",
   "upgrade.account": "Uaktualnij konto",
