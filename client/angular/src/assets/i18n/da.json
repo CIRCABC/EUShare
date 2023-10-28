@@ -65,7 +65,7 @@
   "file.downloads": "Navn på downloadede filer",
   "file.is.protected": "Filen er beskyttet med password.",
   "file.link.copied": "Kopieret fillink!",
-  "file.not.found": "Filen blev ikke fundet",
+  "file.not.found": "Filen blev ikke fundet. Det kan have nået sin udløbsdato eller været i karantæne for misbrug.",
   "file.password.optional": "Filpassword (valgfrit)",
   "file.recipients": "Filmodtagere",
   "file.request.accepting.deletion": "Du er ved at slette filen ved navn",

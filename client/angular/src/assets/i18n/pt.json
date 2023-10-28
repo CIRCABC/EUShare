@@ -65,7 +65,7 @@
   "file.downloads": "Descarregamentos do ficheiro",
   "file.is.protected": "O ficheiro está protegido por uma senha.",
   "file.link.copied": "Link do arquivo copiado!",
-  "file.not.found": "Ficheiro não encontrado",
+  "file.not.found": "O arquivo não foi encontrado. Ele pode ter atingido a data de validade ou ter sido colocado em quarentena por abuso.",
   "file.password.optional": "Senha do ficheiro (facultativo)",
   "file.recipients": "Destinatários do ficheiro",
   "file.request.accepting.deletion": "Está prestes a apagar o ficheiro intitulado",

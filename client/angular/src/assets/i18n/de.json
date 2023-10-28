@@ -65,7 +65,7 @@
   "file.downloads": "Heruntergeladene Dateien",
   "file.is.protected": "Die Datei ist durch ein Passwort geschützt.",
   "file.link.copied": "Dateilink kopiert!",
-  "file.not.found": "Datei nicht gefunden",
+  "file.not.found": "Die Datei wurde nicht gefunden. Sie hat möglicherweise ihr Ablaufdatum erreicht oder wurde wegen Missbrauchs unter Quarantäne gestellt.",
   "file.password.optional": "Dateipasswort (optional)",
   "file.recipients": "Empfänger der Datei",
   "file.request.accepting.deletion": "Sie sind im Begriff, folgende Datei zu löschen:",

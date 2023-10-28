@@ -65,7 +65,7 @@
   "file.downloads": "Descargas de archivo",
   "file.is.protected": "El archivo está protegido por una contraseña.",
   "file.link.copied": "¡Enlace de archivo copiado!",
-  "file.not.found": "Archivo no encontrado",
+  "file.not.found": "No se encontró el archivo. Puede que haya llegado a su fecha de caducidad o que esté en cuarentena por uso indebido.",
   "file.password.optional": "Contraseña de archivo (opcional)",
   "file.recipients": "Destinatarios del archivo",
   "file.request.accepting.deletion": "Va a eliminar el archivo denominado",

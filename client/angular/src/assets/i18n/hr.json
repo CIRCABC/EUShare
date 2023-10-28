@@ -65,7 +65,7 @@
   "file.downloads": "Preuzimanje datoteke",
   "file.is.protected": "Datoteka je zaštićena lozinkom.",
   "file.link.copied": "Kopirana veza datoteke!",
-  "file.not.found": "Datoteka nije pronađena.",
+  "file.not.found": "Datoteka nije pronađena. Možda je dostigao datum isteka ili je bio u karanteni zbog zlostavljanja.",
   "file.password.optional": "Lozinka datoteke (nije obvezna)",
   "file.recipients": "Primatelji datoteke",
   "file.request.accepting.deletion": "Izbrisat ćete datoteku",

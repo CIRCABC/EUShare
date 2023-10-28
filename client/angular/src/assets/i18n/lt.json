@@ -65,7 +65,7 @@
   "file.downloads": "Failo atsisiuntimai",
   "file.is.protected": "Failas apsaugotas slaptažodžiu.",
   "file.link.copied": "Nukopijuota failo nuoroda!",
-  "file.not.found": "Failas nerastas.",
+  "file.not.found": "Failas nerastas. Jis galėjo sulaukti savo galiojimo pabaigos datos arba buvo karantinuotas dėl piktnaudžiavimo.",
   "file.password.optional": "Failo slaptažodis (neprivaloma)",
   "file.recipients": "Failo gavėjai",
   "file.request.accepting.deletion": "Rengiatės pašalinti failą pavadinimu",

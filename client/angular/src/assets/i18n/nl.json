@@ -65,7 +65,7 @@
   "file.downloads": "Gedownloade bestanden ",
   "file.is.protected": "Dit bestand is beschermd door een wachtwoord.",
   "file.link.copied": "Gekopieerde bestandskoppeling!",
-  "file.not.found": "Bestand niet gevonden",
+  "file.not.found": "Het bestand is niet gevonden. Het is mogelijk dat de houdbaarheidsdatum is bereikt of in quarantaine is geplaatst wegens misbruik.",
   "file.password.optional": "Wachtwoord instellen voor bestand (facultatief)",
   "file.recipients": "Ontvangers van dit bestand",
   "file.request.accepting.deletion": "U staat op het punt het volgende bestand te verwijderen:",

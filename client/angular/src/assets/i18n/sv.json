@@ -65,7 +65,7 @@
   "file.downloads": "Filnedladdningar",
   "file.is.protected": "Filen är lösenordsskyddad.",
   "file.link.copied": "Kopierad fillänk!",
-  "file.not.found": "Filen hittades inte",
+  "file.not.found": "Filen hittades inte. Det kan ha nått sitt utgångsdatum eller satt i karantän för missbruk.",
   "file.password.optional": "Lösenord för filen (frivilligt)",
   "file.recipients": "Filens mottagare",
   "file.request.accepting.deletion": "Du är på väg att radera filen med namnet",

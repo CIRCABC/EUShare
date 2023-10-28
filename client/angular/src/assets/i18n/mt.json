@@ -65,7 +65,7 @@
   "file.downloads": "Downloads tal-File",
   "file.is.protected": "Il-file huwa protett b’password.",
   "file.link.copied": "Link tal-fajl ikkupjat!",
-  "file.not.found": "Il-file ma nstabx",
+  "file.not.found": "Il-fajl ma nstabx. Jista 'jkun laħaq id-data ta' skadenza tiegħu jew ġie mqiegħed fi kwarantina għal abbuż.",
   "file.password.optional": "Password tal-file (mhux obbligatorja)",
   "file.recipients": "Riċevituri tal-File",
   "file.request.accepting.deletion": "Se tħassar il-file bl-isem:",

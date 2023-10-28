@@ -65,7 +65,7 @@
   "file.downloads": "Download file",
   "file.is.protected": "Il file è protetto da una password.",
   "file.link.copied": "Link al file copiato!",
-  "file.not.found": "File non trovato",
+  "file.not.found": "Il file non è stato trovato. Potrebbe aver raggiunto la data di scadenza o essere stato messo in quarantena per abuso.",
   "file.password.optional": "Password del file (facoltativo)",
   "file.recipients": "Destinatari del file",
   "file.request.accepting.deletion": "Stai per cancellare il file chiamato",

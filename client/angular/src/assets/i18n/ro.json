@@ -65,7 +65,7 @@
   "file.downloads": "Descărcări fișier",
   "file.is.protected": "Fișierul este protejat cu parolă.",
   "file.link.copied": "Link de fișier copiat!",
-  "file.not.found": "Fișierul nu a fost găsit",
+  "file.not.found": "Dosarul nu a fost găsit. Este posibil să fi atins data de expirare sau să fi fost pus în carantină pentru abuz.",
   "file.password.optional": "Parolă pentru fișier (opțional)",
   "file.recipients": "Destinatarii fișierului",
   "file.request.accepting.deletion": "Sunteți pe punctul de a șterge fișierul cu numele",

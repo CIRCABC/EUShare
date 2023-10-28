@@ -65,7 +65,7 @@
   "file.downloads": "Prenesene datoteke",
   "file.is.protected": "Datoteka je zaščitena z geslom.",
   "file.link.copied": "Kopirana povezava do datoteke!",
-  "file.not.found": "Datoteke ni mogoče najti.",
+  "file.not.found": "Datoteka ni bila najdena. Morda je dosegel rok veljavnosti ali je bil zaradi zlorabe v karanteni.",
   "file.password.optional": "Geslo za datoteko (neobvezno)",
   "file.recipients": "Prejemniki datotek",
   "file.request.accepting.deletion": "Izbrisali boste datoteko",

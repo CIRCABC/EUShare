@@ -65,7 +65,7 @@
   "file.downloads": "Tiedoston lataukset",
   "file.is.protected": "Tiedosto on suojattu salasanalla.",
   "file.link.copied": "Kopioitu tiedostolinkki!",
-  "file.not.found": "Tiedostoa ei löydy",
+  "file.not.found": "Tiedostoa ei löytynyt. Se on saattanut saavuttaa viimeisen käyttöpäivän tai olla karanteenissa väärinkäytön vuoksi.",
   "file.password.optional": "Tiedoston salasana (valinnainen)",
   "file.recipients": "Tiedoston vastaanottajat",
   "file.request.accepting.deletion": "Olet poistamassa tiedostoa",

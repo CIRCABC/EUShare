@@ -65,7 +65,7 @@
   "file.downloads": "Datnes lejupielādes",
   "file.is.protected": "Šī datne ir aizsargāta ar paroli.",
   "file.link.copied": "Kopēta faila saite!",
-  "file.not.found": "Datne nav atrasta",
+  "file.not.found": "Fails netika atrasts. Iespējams, ka tas ir sasniedzis derīguma termiņu vai tika ievietots karantīnā ļaunprātīgas izmantošanas dēļ.",
   "file.password.optional": "Datnes parole (nav obligāta)",
   "file.recipients": "Datnes saņēmēji",
   "file.request.accepting.deletion": "Jūs grasāties izdzēst šo datni:",

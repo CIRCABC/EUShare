@@ -65,7 +65,7 @@
   "file.downloads": "Íoslódálacha comhaid",
   "file.is.protected": "Tá an comhad cosanta ag pasfhocal.",
   "file.link.copied": "Nasc comhad cóipeáilte!",
-  "file.not.found": "Níor aimsíodh an comhad",
+  "file.not.found": "Níor aimsíodh an comhad. D'fhéadfadh sé gur shroich sé a dháta éaga nó go raibh sé coraintíneach mar gheall ar mhí-úsáid.",
   "file.password.optional": "Pasfhocal an chomhaid (roghnach)",
   "file.recipients": "Faighteoirí an chomhaid",
   "file.request.accepting.deletion": "Tá tú ar tí an comhad a scriosadh darb ainm:",

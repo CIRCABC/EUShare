@@ -65,7 +65,7 @@
   "file.downloads": "Faili allalaadimised",
   "file.is.protected": "Fail on kaitstud salasõnaga",
   "file.link.copied": "Kopeeritud faililink!",
-  "file.not.found": "Faili ei leitud",
+  "file.not.found": "Faili ei leitud. See võib olla jõudnud aegumiskuupäevani või olla kuritarvitamise tõttu karantiinis.",
   "file.password.optional": "Faili salasõna (valikuline)",
   "file.recipients": "Faili vastuvõtjad",
   "file.request.accepting.deletion": "Olete kustutamas faili:",

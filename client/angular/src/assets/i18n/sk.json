@@ -65,7 +65,7 @@
   "file.downloads": "Stiahnutia súboru",
   "file.is.protected": "Súbor je chránený heslom.",
   "file.link.copied": "Skopírovaný odkaz na súbor!",
-  "file.not.found": "Súbor sa nenašiel",
+  "file.not.found": "Súbor nebol nájdený. Možno dosiahol dátum vypršania platnosti alebo bol umiestnený v karanténe kvôli zneužitiu.",
   "file.password.optional": "Heslo súboru (nepovinné)",
   "file.recipients": "Príjemcovia súboru",
   "file.request.accepting.deletion": "Chystáte sa odstrániť súbor s názvom",

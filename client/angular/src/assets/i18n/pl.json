@@ -65,7 +65,7 @@
   "file.downloads": "Pobrane pliki",
   "file.is.protected": "Plik jest chroniony hasłem.",
   "file.link.copied": "Skopiowany link do pliku!",
-  "file.not.found": "Nie znaleziono pliku",
+  "file.not.found": "Plik nie został znaleziony. Mógł osiągnąć datę wygaśnięcia lub zostać poddany kwarantannie z powodu nadużyć.",
   "file.password.optional": "Hasło pliku (nieobowiązkowo)",
   "file.recipients": "Odbiorcy pliku",
   "file.request.accepting.deletion": "Masz zamiar usunąć plik o nazwie",

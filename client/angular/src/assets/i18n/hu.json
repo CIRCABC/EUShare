@@ -65,7 +65,7 @@
   "file.downloads": "Fájlletöltések",
   "file.is.protected": "A fájlt jelszó védi.",
   "file.link.copied": "Másolt fájl link!",
-  "file.not.found": "A fájl nem található",
+  "file.not.found": "Az aktát nem találták meg. Lehet, hogy elérte a lejárati idejét, vagy visszaélés miatt karanténba került.",
   "file.password.optional": "Jelszó a fájlhoz (nem kötelező)",
   "file.recipients": "A fájl címzettjei",
   "file.request.accepting.deletion": "Ön a következő fájl törlésére készül:",

@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { RouterModule, Routes, NoPreloading } from '@angular/router';
 import { loginCanActivate } from './login.guard';
 import { uploadSuccessCanActivate } from './upload-success.guard';
@@ -20,6 +20,18 @@ import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.com
 import { FilelinkComponent } from './filelink/filelink.component';
 import { CallBackComponent } from './call-back/call-back.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
+import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoService } from '@ngneat/transloco';
+import { forkJoin } from 'rxjs';
+
+export function preloadAllTranslocoLanguages(
+  transloco: TranslocoService,
+  config: TranslocoConfig
+): Function {
+  return () => {
+    const allLanguages = config.availableLangs.map(lang => transloco.load(lang as string));
+    return forkJoin(allLanguages).toPromise();
+  };
+}
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -108,5 +120,13 @@ const appRoutes: Routes = [
     }),
   ],
   exports: [RouterModule],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: preloadAllTranslocoLanguages,
+      deps: [TranslocoService, TRANSLOCO_CONFIG],
+      multi: true
+    }
+  ]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
