@@ -57,6 +57,13 @@ export class DownloadButtonComponent {
         true,
       );
     }
+    if (result === 'TOO_MANY_DOWNLOADS') {
+      this.notificationService.addErrorMessageTranslation(
+        'too.many.downloads',
+        undefined,
+        true,
+      );
+    }
     if (result === 'OK') {
       this.ok.emit();
     }

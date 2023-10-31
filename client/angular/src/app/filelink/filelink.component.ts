@@ -54,7 +54,7 @@ export class FilelinkComponent implements OnInit {
     private dialog: MatDialog,
     private downloadsService: DownloadsService,
     private notificationService: NotificationService,
-  ) {}
+  ) { }
 
   async ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
@@ -87,27 +87,12 @@ export class FilelinkComponent implements OnInit {
   }
 
   public async initiateDownload() {
-    const result = await this.downloadsService.download(
+
+    await this.modalService.activateDownloadModal(
       this.fileId,
       this.fileName,
-      this.inputPassword,
+      this.isFilePasswordProtected,
     );
-    if (result === 'WRONG_PASSWORD') {
-      this.notificationService.addErrorMessageTranslation(
-        'wrong.password',
-        undefined,
-        true,
-      );
-    }
-    if (result === 'TOO_MANY_DOWNLOADS') {
-      this.notificationService.addErrorMessageTranslation(
-        'too.many.downloads',
-        undefined,
-        true,
-      );
-    }
-    if (result === 'OK') {
-      this.ok.emit();
-    }
+
   }
 }
