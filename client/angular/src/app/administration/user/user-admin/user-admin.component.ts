@@ -276,4 +276,11 @@ export class UserAdminComponent {
       true,
     );
   }
+
+  public updateQuotaBasedOnRole() {
+    const rolesThatGet1GB = [UserInfo.RoleEnum.External, UserInfo.RoleEnum.TrustedExternal];
+    this.selectedValueInGigaBytes = rolesThatGet1GB.includes(this.selectedUserRole) ? 1 : 5;
+    this.selectedValueInGigaBytesIndex = this.valuesInGigaBytes.indexOf(this.selectedValueInGigaBytes);
+  }
+
 }

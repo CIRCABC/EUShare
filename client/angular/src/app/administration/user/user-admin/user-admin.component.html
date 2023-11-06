@@ -74,12 +74,12 @@
          </p>
           <div  *ngIf="isChangePermissions">
               <div>
-                  Role :                          <select [(ngModel)]="selectedUserRole">
+                  Role :                          <select [(ngModel)]="selectedUserRole" (ngModelChange)="updateQuotaBasedOnRole()">
                       <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
                   </select>
               </div>
               <div>
-                  Status :                 <select [(ngModel)]="selectedUserStatus">
+                  Status :                 <select [(ngModel)]="selectedUserStatus" >
                       <option *ngFor="let statu of status" [ngValue]="statu">{{ statu }}</option>
                   </select>
               </div>
@@ -89,7 +89,7 @@
               {{ "total.space" | transloco }}: {{ selectedUserInfo.totalSpace | fileSizeFormat }}
           </p>
           <div *ngIf="isChangePermissions">
-            Quota : <select [(ngModel)]="selectedValueInGigaBytes">
+            Quota : <select [(ngModel)]="selectedValueInGigaBytes"  >
                   <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
                       [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
                        {{ valueInGig }} GB

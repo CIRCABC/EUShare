@@ -104,7 +104,6 @@ public class TrustApiController implements TrustApi {
                                 message = "Your user acount upgrade has been accepted by CIRCABC-Share administrator.";
                                 user.setRole(Role.TRUSTED_EXTERNAL);
                                 user.setTotalSpace(esConfig.getDefaultUserSpace());
-
                         } else {
                                 message = "We are sorry but your user account upgrade has been denied by CIRCABC-Share administrator for the following reason : "
                                                 + reason;
