@@ -1,130 +1,132 @@
 <div class="columns">
-    <div class="column is-one-half">
-      <label class="label">{{ "user.search" | transloco }}</label>
-      <input [(ngModel)]="searchString" class="input" type="text"
-        [attr.placeholder]="'user.name.or.email' | transloco" />
-      <br />
-      Active users : <input type="checkbox" [(ngModel)]="searchActive" />
-      <br />
-      <a class="button" [class.is-loading]="searchIsLoading" (click)="search()">{{ "search" | transloco }}</a>
-      <div *ngIf="isAfterSearch">
-        <label class="alignleft" class="label">{{
-          "results" | transloco
-          }}</label>
+  <div class="column is-one-half">
+    <label class="label">{{ "user.search" | transloco }}</label>
+    <input [(ngModel)]="searchString" class="input" type="text" [attr.placeholder]="'user.name.or.email' | transloco" />
+    <br />
+    Active users : <input type="checkbox" [(ngModel)]="searchActive" />
+    <br />
+    <a class="button" [class.is-loading]="searchIsLoading" (click)="search()">{{ "search" | transloco }}</a>
+    <div *ngIf="isAfterSearch">
+      <label class="alignleft" class="label">{{
+        "results" | transloco
+        }}</label>
 
 
 
-          <table>
-            <thead>
-                <tr>
-                    <th>
-                        <strong>Name</strong>
-                        <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
-                    </th>
-                    <th>
-                        <strong>Email</strong>
-                    </th>
-                    <th>
-                        <strong>Files</strong>
-                        <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
-                    </th>
-                    <th>
-                        <strong>Usage</strong>
-                        <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let userInfo of userInfoArray; let i = index" [attr.data-index]="i" value="userInfo.id" (click)="displayUserInfoNumber(i)">
-                    <td *ngIf="userInfo.usedSpace === 0">{{ userInfo.givenName }}</td>
-                    <td *ngIf="userInfo.usedSpace === 0">{{ userInfo.email }}</td>
-                    <td *ngIf="userInfo.usedSpace === 0"></td>
-                    <td *ngIf="userInfo.usedSpace === 0"></td>
-                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.givenName }}</strong></td>
-                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.email }}</strong></td>
-                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.filesCount }}</strong></td>
-                    <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.usedSpace | fileSizeFormat }}</strong></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        
+      <table>
+        <thead>
+          <tr>
+            <th>
+              <strong>Name</strong>
+              <fa-icon (click)="sortByName()" [icon]="faArrowDownWideShort"></fa-icon>
+            </th>
+            <th>
+              <strong>Email</strong>
+            </th>
+            <th>
+              <strong>Files</strong>
+              <fa-icon (click)="sortByFiles()" [icon]="faArrowDownWideShort"></fa-icon>
+            </th>
+            <th>
+              <strong>Usage</strong>
+              <fa-icon (click)="sortByUsage()" [icon]="faArrowDownWideShort"></fa-icon>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let userInfo of userInfoArray; let i = index" [attr.data-index]="i" value="userInfo.id"
+            (click)="displayUserInfoNumber(i)">
+            <td *ngIf="userInfo.usedSpace === 0">{{ userInfo.givenName }}</td>
+            <td *ngIf="userInfo.usedSpace === 0">{{ userInfo.email }}</td>
+            <td *ngIf="userInfo.usedSpace === 0"></td>
+            <td *ngIf="userInfo.usedSpace === 0"></td>
+            <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.givenName }}</strong></td>
+            <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.email }}</strong></td>
+            <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.filesCount }}</strong></td>
+            <td *ngIf="userInfo.usedSpace > 0"><strong>{{ userInfo.usedSpace | fileSizeFormat }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
 
-        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-          <a *ngIf="pageNumber > 0" class="pagination-previous button" (click)="resultsPreviousPage()">{{
-            "previous"
-            |
-            transloco }}</a>
-          <a *ngIf="hasNextPage" class="pagination-next button" (click)="resultsNextPage()">{{ "next" | transloco
-            }}</a>
-        </nav>
-      </div>
+
+
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <a *ngIf="pageNumber > 0" class="pagination-previous button" (click)="resultsPreviousPage()">{{
+          "previous"
+          |
+          transloco }}</a>
+        <a *ngIf="hasNextPage" class="pagination-next button" (click)="resultsNextPage()">{{ "next" | transloco
+          }}</a>
+      </nav>
     </div>
-    <div class="column is-one-half ">
-      <div *ngIf="isAfterSearch && isAfterSelected">
-        <div class="user-info-column2">
-          <label >{{ "user.info" | transloco }}</label>
-          <div>{{ selectedUserInfo.givenName }} ({{ selectedUserInfo.email }})</div>
-          <p *ngIf="!isChangePermissions">
-              Role: {{selectedUserRole}} 
-              <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
-          </p>
-          <p *ngIf="!isChangePermissions">
-            Status: {{selectedUserStatus}} 
-         </p>
-          <div  *ngIf="isChangePermissions">
-              <div>
-                  Role :                          <select [(ngModel)]="selectedUserRole" (ngModelChange)="updateQuotaBasedOnRole()">
-                      <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
-                  </select>
-              </div>
-              <div>
-                  Status :                 <select [(ngModel)]="selectedUserStatus" >
-                      <option *ngFor="let statu of status" [ngValue]="statu">{{ statu }}</option>
-                  </select>
-              </div>
+  </div>
+  <div class="column is-one-half ">
+    <div *ngIf="isAfterSearch && isAfterSelected">
+      <div class="user-info-column2">
+        <label>{{ "user.info" | transloco }}</label>
+        <div>{{ selectedUserInfo.givenName }} ({{ selectedUserInfo.email }})</div>
+        <p *ngIf="!isChangePermissions">
+          Role: {{selectedUserRole}}
+          <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
+        </p>
+        <p *ngIf="!isChangePermissions">
+          Status: {{selectedUserStatus}}
+        </p>
+        <div *ngIf="isChangePermissions">
+          <div>
+            Role : <select [ngModel]="selectedUserRole" (ngModelChange)="confirmRoleChange($event)">
+              <option *ngFor="let role of roles" [ngValue]="role">{{ role }}</option>
+            </select>
+            
+
           </div>
-      
-          <p *ngIf="!isChangePermissions">
-              {{ "total.space" | transloco }}: {{ selectedUserInfo.totalSpace | fileSizeFormat }}
-          </p>
-          <div *ngIf="isChangePermissions">
-            Quota : <select [(ngModel)]="selectedValueInGigaBytes"  >
-                  <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
-                      [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
-                       {{ valueInGig }} GB
-                  </option>
-              </select>
+          <div>
+            Status : <select [(ngModel)]="selectedUserStatus">
+              <option *ngFor="let statu of status" [ngValue]="statu">{{ statu }}</option>
+            </select>
           </div>
-          <p>{{ "used.space" | transloco }}: {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
-          <p>
-              {{ "free.space" | transloco }}: 
-              {{ (selectedUserInfo.totalSpace - selectedUserInfo.usedSpace) | fileSizeFormat }}
-          </p>
+        </div>
+
+        <p *ngIf="!isChangePermissions">
+          {{ "total.space" | transloco }}: {{ selectedUserInfo.totalSpace | fileSizeFormat }}
+        </p>
+        <div *ngIf="isChangePermissions">
+          Quota : <select [(ngModel)]="selectedValueInGigaBytes">
+            <option *ngFor="let valueInGig of valuesInGigaBytes; let i = index" [attr.data-index]="i"
+              [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
+              {{ valueInGig }} GB
+            </option>
+          </select>
+        </div>
+        <p>{{ "used.space" | transloco }}: {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
+        <p>
+          {{ "free.space" | transloco }}:
+          {{ (selectedUserInfo.totalSpace - selectedUserInfo.usedSpace) | fileSizeFormat }}
+        </p>
       </div>
-      
-        <a *ngIf="isChangePermissions" class="button" [class.is-loading]="changeIsLoading"
-          (click)="changePermissions()">{{ "done" | transloco }}</a>
-        <a *ngIf="isChangePermissions" class="button buttonMargin" (click)="toggleChangePermissions()">{{ "cancel"
-          |
-          transloco }}</a>
-        <a *ngIf="!isChangePermissions" class="button" (click)="toggleChangePermissions()">{{ "change.permissions"
-          |
-          transloco }}</a>
-        <a *ngIf="!isChangePermissions" class="button buttonMargin" (click)="toggleUploadedFiles()">{{
-          "display.shared.files" | transloco }}</a>
-        <div *ngIf="showUploadedFiles">
-          <div class="buttons-top-right">
-            <button (click)="freezeAllFiles()">Freeze All Files</button>
-            <button (click)="unfreezeAllFiles()">Unfreeze All Files</button>
-          </div>
-          <div class="centered">
-            <app-uploaded-file-row-container [userId]="this.selectedUserInfo.id" [displayAsUploader]="false"
-              [displayAsAdministrator]="true"></app-uploaded-file-row-container>
-          </div>
+
+      <a *ngIf="isChangePermissions" class="button" [class.is-loading]="changeIsLoading"
+        (click)="changePermissions()">{{ "done" | transloco }}</a>
+      <a *ngIf="isChangePermissions" class="button buttonMargin" (click)="toggleChangePermissions()">{{ "cancel"
+        |
+        transloco }}</a>
+      <a *ngIf="!isChangePermissions" class="button" (click)="toggleChangePermissions()">{{ "change.permissions"
+        |
+        transloco }}</a>
+      <a *ngIf="!isChangePermissions" class="button buttonMargin" (click)="toggleUploadedFiles()">{{
+        "display.shared.files" | transloco }}</a>
+      <div *ngIf="showUploadedFiles">
+        <div class="buttons-top-right">
+          <button (click)="freezeAllFiles()">Freeze All Files</button>
+          <button (click)="unfreezeAllFiles()">Unfreeze All Files</button>
+        </div>
+        <div class="centered">
+          <app-uploaded-file-row-container [userId]="this.selectedUserInfo.id" [displayAsUploader]="false"
+            [displayAsAdministrator]="true"></app-uploaded-file-row-container>
         </div>
       </div>
     </div>
-
-
   </div>
+
+
+</div>

@@ -25,6 +25,9 @@ import { FileSizeFormatPipe } from '../../../common/pipes/file-size-format.pipe'
 import { MatIconModule } from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './confirm-dialog.component';
+
 
 @Component({
   selector: 'app-user-admin',
@@ -38,7 +41,7 @@ import { FormsModule } from '@angular/forms';
     TranslocoModule,
     FileRowContainerComponent,
     FileSizeFormatPipe,
-    MatIconModule,
+    MatIconModule,MatDialogModule
   ],
 })
 export class UserAdminComponent {
@@ -81,9 +84,12 @@ export class UserAdminComponent {
   public roles = Object.values(UserInfo.RoleEnum);
   public status = Object.values(UserInfo.StatusEnum);
 
+  private previousUserRole: UserInfo.RoleEnum = UserInfo.RoleEnum.External;
+
   constructor(
     private usersApi: UsersService,
     private notificationService: NotificationService,
+    private dialog: MatDialog,
   ) {}
 
   public async resultsNextPage() {
@@ -171,6 +177,7 @@ export class UserAdminComponent {
     const role = this.userInfoArray[i].role;
     const statu = this.userInfoArray[i].status;
     this.selectedUserRole = role ?? UserInfo.RoleEnum.Internal;
+    this.previousUserRole = this.selectedUserRole;
     this.selectedUserStatus = statu ?? UserInfo.StatusEnum.Regular;
     this.isAfterSelected = true;
   }
@@ -282,5 +289,34 @@ export class UserAdminComponent {
     this.selectedValueInGigaBytes = rolesThatGet1GB.includes(this.selectedUserRole) ? 1 : 5;
     this.selectedValueInGigaBytesIndex = this.valuesInGigaBytes.indexOf(this.selectedValueInGigaBytes);
   }
+
+
+
+  public confirmRoleChange(newRole: UserInfo.RoleEnum) {
+    if ((this.selectedUserRole === UserInfo.RoleEnum.External || this.selectedUserRole === UserInfo.RoleEnum.TrustedExternal) &&
+        (newRole === UserInfo.RoleEnum.Internal || newRole === UserInfo.RoleEnum.Admin)) {
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '250px',
+        data: { message: `Are you sure you want to change the role to ${newRole}?` }
+      });
+  
+      dialogRef.afterClosed().subscribe(confirmed => {
+        if (confirmed) {
+          this.selectedUserRole = newRole;
+          this.updateQuotaBasedOnRole();
+        }
+        else {
+          this.selectedUserRole = newRole;
+          setTimeout(() => this.selectedUserRole = this.previousUserRole);
+        }
+      });
+    } else {
+      this.selectedUserRole = newRole;
+      this.updateQuotaBasedOnRole();
+    }
+
+  }
+  
+  
 
 }
