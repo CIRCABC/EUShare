@@ -40,6 +40,8 @@ public class FileUploadRateService {
     private static final int EXTERNAL_THRESHOLD_DAY = 50;
     private static final int TRUSTED_EXTERNAL_THRESHOLD_DAY = 100;
 
+    private static final int TRUSTED_UPLOADS_THRESHOLD = 50;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -132,6 +134,8 @@ public class FileUploadRateService {
         }
     }
 
+
+
     public void removeOldUploadLogs() {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
         repository.deleteByDateHourBefore(thirtyDaysAgo);
@@ -159,5 +163,15 @@ public class FileUploadRateService {
         }
     }
 
+
+    @Scheduled(cron = "0 0 * * * ?")
+    public void upgradeExternalUsers() {
+      int uploadsThreshold = TRUSTED_UPLOADS_THRESHOLD; 
+      List<DBUser> users = userRepository.findExternalUsersWithMoreThanUploadsNotMonitored(DBUser.Role.EXTERNAL, uploadsThreshold);
+      for (DBUser user : users) {
+        user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+        userRepository.save(user);
+      }
+    }
  
 }

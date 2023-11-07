@@ -17,12 +17,14 @@ import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
 import eu.europa.circabc.eushare.storage.repository.UserCreationLogRepository;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.DBUserCreationLog;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
@@ -105,5 +107,5 @@ public class UserCreationLogService {
         repository.deleteByDateCreatedBefore(thresholdDate);
     }
 
-    // ... existing methods ...
+   
 }

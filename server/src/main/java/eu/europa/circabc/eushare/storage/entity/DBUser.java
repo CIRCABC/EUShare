@@ -93,19 +93,14 @@ public class DBUser {
   @Column(nullable = true)
   private LocalDateTime creationDate = LocalDateTime.now();
 
-  // Is the username used for login
+  @Column(nullable = true)
+  private Integer uploads=0;
 
   @Column(nullable = true, unique = true)
   private String email;
 
-  // Is the email used for login is nullable because a user can represent a link
-  // recipient
-
   @Column(nullable = true)
   private String name;
-
-  // Is the GivenName of the INTERNAL user !!OR!! the link name of the EXTERNAL
-  // user
 
   @Column(nullable = true, unique = true)
   private String apiKey;

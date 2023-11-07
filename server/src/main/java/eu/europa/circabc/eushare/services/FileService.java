@@ -427,6 +427,7 @@ public class FileService {
     fileRepository.save(dbFile);
 
     fileUploadRateService.logFileUpload(uploaderId);
+    userRepository.incrementUploads(uploaderId);
 
     for (Recipient recipient : recipientList) {
       if (!StringUtils.validateMessage(recipient.getMessage())) {
@@ -822,6 +823,7 @@ public class FileService {
         }
       }
     }
+    
   }
 
   public static class DownloadReturn {
