@@ -13,13 +13,14 @@ import { TrustRequest } from '../../openapi/model/trustRequest';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { TrustAdminDialogComponent } from './trust-admin-dialog.component';
+import { TrustLogTableComponent } from './trust-log-table.component';
 
 @Component({
   selector: 'app-trust',
   templateUrl: './trust.component.html',
   styleUrls: ['./trust.component.scss'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, TrustLogTableComponent],
 })
 export class TrustComponent implements OnInit {
   trustRequests: TrustRequest[] = [];

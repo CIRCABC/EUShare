@@ -21,6 +21,7 @@ api/monitoring.service.ts
 api/session.service.ts
 api/stats.service.ts
 api/trust.service.ts
+api/trustLog.service.ts
 api/users.service.ts
 configuration.ts
 encoder.ts
@@ -48,6 +49,7 @@ model/recipient.ts
 model/sortOrder.ts
 model/stat.ts
 model/status.ts
+model/trustLog.ts
 model/trustRequest.ts
 model/userInfo.ts
 model/userResult.ts

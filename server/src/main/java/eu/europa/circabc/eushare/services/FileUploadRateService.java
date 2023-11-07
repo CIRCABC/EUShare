@@ -14,15 +14,18 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import eu.europa.circabc.eushare.storage.repository.FileUploadRateRepository;
 import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
+import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import eu.europa.circabc.eushare.storage.entity.DBFile;
 import eu.europa.circabc.eushare.storage.entity.DBFileUploadRate;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
+import eu.europa.circabc.eushare.storage.entity.DBTrustLog;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +37,6 @@ import javax.mail.MessagingException;
 @Service
 public class FileUploadRateService {
 
-   
     private static final int EXTERNAL_THRESHOLD_HOUR = 5;
     private static final int TRUSTED_EXTERNAL_THRESHOLD_HOUR = 10;
     private static final int EXTERNAL_THRESHOLD_DAY = 50;
@@ -49,7 +51,10 @@ public class FileUploadRateService {
     public FileUploadRateRepository repository;
 
     @Autowired
-    public MonitoringRepository monitoringRepository;  
+    public MonitoringRepository monitoringRepository;
+
+    @Autowired
+    private TrustLogRepository trustLogRepository;
 
     @Autowired
     public EmailService emailService;
@@ -75,7 +80,7 @@ public class FileUploadRateService {
         }
     }
 
-    @Scheduled(cron = "0 0 * * * ?") 
+    @Scheduled(cron = "0 0 * * * ?")
     public void hourlyCheck() {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime oneHourAgo = currentHour.minusHours(1);
@@ -86,12 +91,12 @@ public class FileUploadRateService {
             Role userRole = user.getRole();
             int threshold = getThresholdForRole(userRole);
             if (uploadRate.getUploadCount() > threshold)
-            saveMonitoringAndSendAlert(user, uploadRate.getUploadCount(), DBMonitoring.Event.UPLOAD_RATE_HOUR);
+                saveMonitoringAndSendAlert(user, uploadRate.getUploadCount(), DBMonitoring.Event.UPLOAD_RATE_HOUR);
 
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") 
+    @Scheduled(cron = "0 0 0 * * ?")
     public void dailyCheck() {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusDays(1);
         List<DBFileUploadRate> uploadsLastDay = repository.findByDateHourAfter(twentyFourHoursAgo);
@@ -115,26 +120,26 @@ public class FileUploadRateService {
         removeOldUploadLogs();
     }
 
-     private void saveMonitoringAndSendAlert(DBUser user, int count, DBMonitoring.Event event) {
+    private void saveMonitoringAndSendAlert(DBUser user, int count, DBMonitoring.Event event) {
         DBMonitoring dbMonitoring = new DBMonitoring();
         dbMonitoring.setStatus(Status.WAITING);
         dbMonitoring.setCounter(count);
         dbMonitoring.setEvent(event);
         dbMonitoring.setDatetime(LocalDateTime.now());
-      
+
         dbMonitoring.setUserId(user.getId());
         monitoringRepository.save(dbMonitoring);
-               String message = "A monitoring alert for too uploads ("+event.toString()+ ") of user :" + user.getEmail() + "\" has been raised at :"+ dbMonitoring.getDatetime() + ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
-        
+        String message = "A monitoring alert for too uploads (" + event.toString() + ") of user :" + user.getEmail()
+                + "\" has been raised at :" + dbMonitoring.getDatetime()
+                + ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
+
         try {
-            emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu",message);
+            emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", message);
         } catch (MessagingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
-
-
 
     public void removeOldUploadLogs() {
         LocalDateTime thirtyDaysAgo = LocalDateTime.now().minusDays(30);
@@ -148,7 +153,7 @@ public class FileUploadRateService {
             case TRUSTED_EXTERNAL:
                 return TRUSTED_EXTERNAL_THRESHOLD_HOUR;
             default:
-                return Integer.MAX_VALUE; 
+                return Integer.MAX_VALUE;
         }
     }
 
@@ -159,19 +164,28 @@ public class FileUploadRateService {
             case TRUSTED_EXTERNAL:
                 return TRUSTED_EXTERNAL_THRESHOLD_DAY;
             default:
-                return Integer.MAX_VALUE; 
+                return Integer.MAX_VALUE;
         }
     }
-
+    
 
     @Scheduled(cron = "0 0 * * * ?")
     public void upgradeExternalUsers() {
-      int uploadsThreshold = TRUSTED_UPLOADS_THRESHOLD; 
-      List<DBUser> users = userRepository.findExternalUsersWithMoreThanUploadsNotMonitored(DBUser.Role.EXTERNAL, uploadsThreshold);
-      for (DBUser user : users) {
-        user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
-        userRepository.save(user);
-      }
+        int uploadsThreshold = TRUSTED_UPLOADS_THRESHOLD;
+        List<DBUser> users = userRepository.findExternalUsersWithMoreThanUploadsNotMonitored(DBUser.Role.EXTERNAL,
+                uploadsThreshold);
+        for (DBUser user : users) {
+            user.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+            userRepository.save(user);
+
+            DBTrustLog dbTrustLog = new DBTrustLog();
+
+            dbTrustLog.setTrustDate(OffsetDateTime.now());
+            dbTrustLog.setTruster("SYSTEM PROCESS");
+            dbTrustLog.setOrigin(DBTrustLog.Origin.REQUEST);
+
+            trustLogRepository.save(dbTrustLog);
+        }
     }
- 
+
 }

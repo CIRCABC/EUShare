@@ -28,7 +28,6 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
 
-
 @Component({
   selector: 'app-user-admin',
   standalone: true,
@@ -41,7 +40,8 @@ import { ConfirmDialogComponent } from './confirm-dialog.component';
     TranslocoModule,
     FileRowContainerComponent,
     FileSizeFormatPipe,
-    MatIconModule,MatDialogModule
+    MatIconModule,
+    MatDialogModule,
   ],
 })
 export class UserAdminComponent {
@@ -285,38 +285,46 @@ export class UserAdminComponent {
   }
 
   public updateQuotaBasedOnRole() {
-    const rolesThatGet1GB = [UserInfo.RoleEnum.External, UserInfo.RoleEnum.TrustedExternal];
-    this.selectedValueInGigaBytes = rolesThatGet1GB.includes(this.selectedUserRole) ? 1 : 5;
-    this.selectedValueInGigaBytesIndex = this.valuesInGigaBytes.indexOf(this.selectedValueInGigaBytes);
+    const rolesThatGet1GB = [
+      UserInfo.RoleEnum.External,
+      UserInfo.RoleEnum.TrustedExternal,
+    ];
+    this.selectedValueInGigaBytes = rolesThatGet1GB.includes(
+      this.selectedUserRole,
+    )
+      ? 1
+      : 5;
+    this.selectedValueInGigaBytesIndex = this.valuesInGigaBytes.indexOf(
+      this.selectedValueInGigaBytes,
+    );
   }
 
-
-
   public confirmRoleChange(newRole: UserInfo.RoleEnum) {
-    if ((this.selectedUserRole === UserInfo.RoleEnum.External || this.selectedUserRole === UserInfo.RoleEnum.TrustedExternal) &&
-        (newRole === UserInfo.RoleEnum.Internal || newRole === UserInfo.RoleEnum.Admin)) {
+    if (
+      (this.selectedUserRole === UserInfo.RoleEnum.External ||
+        this.selectedUserRole === UserInfo.RoleEnum.TrustedExternal) &&
+      (newRole === UserInfo.RoleEnum.Internal ||
+        newRole === UserInfo.RoleEnum.Admin)
+    ) {
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         width: '250px',
-        data: { message: `Are you sure you want to change the role to ${newRole}?` }
+        data: {
+          message: `Are you sure you want to change the role to ${newRole}?`,
+        },
       });
-  
-      dialogRef.afterClosed().subscribe(confirmed => {
+
+      dialogRef.afterClosed().subscribe((confirmed) => {
         if (confirmed) {
           this.selectedUserRole = newRole;
           this.updateQuotaBasedOnRole();
-        }
-        else {
+        } else {
           this.selectedUserRole = newRole;
-          setTimeout(() => this.selectedUserRole = this.previousUserRole);
+          setTimeout(() => (this.selectedUserRole = this.previousUserRole));
         }
       });
     } else {
       this.selectedUserRole = newRole;
       this.updateQuotaBasedOnRole();
     }
-
   }
-  
-  
-
 }

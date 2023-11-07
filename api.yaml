@@ -1084,6 +1084,21 @@ paths:
               schema:
                 $ref: "#/components/schemas/TrustRequest"
 
+  '/trustLogs':
+    get:
+      tags:
+      - TrustLog
+      summary: "Get All Trust Logs"
+      operationId: "getAllTrustLogs"
+      responses:
+        '200':
+          description: "Successful Operation"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/TrustLog"
 
   '/abuse':
     post:
@@ -1871,6 +1886,28 @@ components:
           type: "string"
         username:
           type: "string"
+          
+    TrustLog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: "The unique identifier for a trust log entry."
+        trustDate:
+          type: string
+          format: "date-time"
+          description: "The date and time when the trust was logged."
+        truster:
+          type: string
+          description: "The entity that is trusting."
+        origin:
+          type: string
+          description: "The origin of the trust action."
+          enum:
+          - REQUEST
+          - SHARE
+          - AUTO
  
     AbuseReport:
       type: object

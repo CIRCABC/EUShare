@@ -38,6 +38,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
+import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.model.Recipient;
 import eu.europa.circabc.eushare.model.TrustRequest;
@@ -45,8 +46,10 @@ import eu.europa.circabc.eushare.security.AdminOnly;
 import eu.europa.circabc.eushare.services.EmailService;
 import eu.europa.circabc.eushare.services.UserService;
 import eu.europa.circabc.eushare.storage.entity.DBTrust;
+import eu.europa.circabc.eushare.storage.entity.DBTrustLog;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
+import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
 import eu.europa.circabc.eushare.storage.repository.TrustRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import io.swagger.annotations.Api;
@@ -72,6 +75,9 @@ public class TrustApiController implements TrustApi {
 
         @Autowired
         public UserService userService;
+
+        @Autowired
+        private TrustLogRepository trustLogRepository;
 
         @Autowired
         private EushareConfiguration esConfig;
@@ -119,6 +125,30 @@ public class TrustApiController implements TrustApi {
                                 e.printStackTrace();
                         }
                 }
+
+                Authentication authentication = SecurityContextHolder
+                                .getContext()
+                                .getAuthentication();
+                try {
+                        String requesterId = userService.getAuthenticatedUserId(authentication);
+                        DBUser truster = userService.getDbUser(requesterId);
+
+                        DBTrustLog dbTrustLog = new DBTrustLog();
+
+                        dbTrustLog.setTrustDate(OffsetDateTime.now());
+                        dbTrustLog.setTruster(truster.getEmail());
+                        dbTrustLog.setOrigin(DBTrustLog.Origin.REQUEST);
+
+                        trustLogRepository.save(dbTrustLog);
+
+                } catch (WrongAuthenticationException e) {
+
+                        e.printStackTrace();
+                } catch (UnknownUserException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                }
+
                 return ResponseEntity.ok(trust.toTrustRequest());
         }
 

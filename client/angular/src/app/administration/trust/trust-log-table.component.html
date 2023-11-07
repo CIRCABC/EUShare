@@ -1,0 +1,27 @@
+<div class="trust-log-table-container">
+    <table mat-table [dataSource]="dataSource" matSort>
+  
+      <!-- Date Column -->
+      <ng-container matColumnDef="trustDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+        <td mat-cell *matCellDef="let row">{{ row.trustDate | date }}</td>
+      </ng-container>
+  
+      <!-- Origin Column -->
+      <ng-container matColumnDef="origin">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Origin</th>
+        <td mat-cell *matCellDef="let row">{{ row.origin }}</td>
+      </ng-container>
+  
+      <!-- Description Column -->
+      <ng-container matColumnDef="truster">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Truster</th>
+        <td mat-cell *matCellDef="let row">{{ row.truster }}</td>
+      </ng-container>
+  
+      <!-- Header and Row Declarations -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

@@ -28,6 +28,7 @@ export * from './recipient';
 export * from './sortOrder';
 export * from './stat';
 export * from './status';
+export * from './trustLog';
 export * from './trustRequest';
 export * from './userInfo';
 export * from './userResult';

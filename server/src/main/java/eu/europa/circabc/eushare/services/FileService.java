@@ -32,6 +32,7 @@ import eu.europa.circabc.eushare.storage.entity.DBFile;
 import eu.europa.circabc.eushare.storage.entity.DBFileLog;
 import eu.europa.circabc.eushare.storage.entity.DBShare;
 import eu.europa.circabc.eushare.storage.entity.DBStat;
+import eu.europa.circabc.eushare.storage.entity.DBTrustLog;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.MountPoint;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
@@ -39,6 +40,7 @@ import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
 import eu.europa.circabc.eushare.storage.repository.FileRepository;
 import eu.europa.circabc.eushare.storage.repository.ShareRepository;
 import eu.europa.circabc.eushare.storage.repository.StatsRepository;
+import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
 import java.io.File;
@@ -48,11 +50,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
@@ -111,6 +115,9 @@ public class FileService {
 
   @Autowired
   private FileUploadRateService fileUploadRateService;
+
+  @Autowired
+  private TrustLogRepository trustLogRepository;
 
   /**
    * Prepare all given paths.
@@ -326,6 +333,15 @@ public class FileService {
             // TODO Auto-generated catch block
             e.printStackTrace();
           }
+
+          DBTrustLog dbTrustLog = new DBTrustLog();
+
+          dbTrustLog.setTrustDate(OffsetDateTime.now());
+          dbTrustLog.setTruster(requester.getEmail());
+          dbTrustLog.setOrigin(DBTrustLog.Origin.SHARE);
+
+          trustLogRepository.save(dbTrustLog);
+
         }
       }
     }
@@ -621,8 +637,6 @@ public class FileService {
       boolean head) throws WrongPasswordException, UnknownFileException, TooManyRequestsException {
     DBFile dbFile;
 
-    
-
     DBShare dbShare = findShare(downloadId);
 
     if (dbShare == null) {
@@ -652,9 +666,9 @@ public class FileService {
             e);
       }
     }
-    
-    if(fileDownloadRateService.realTimeCheck(dbFile)) {
-       throw new TooManyRequestsException();
+
+    if (fileDownloadRateService.realTimeCheck(dbFile)) {
+      throw new TooManyRequestsException();
     }
 
     if (dbFile.getPassword() != null &&
@@ -823,7 +837,7 @@ public class FileService {
         }
       }
     }
-    
+
   }
 
   public static class DownloadReturn {

@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService,
-  ) { }
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -64,7 +64,6 @@ export class HttpErrorInterceptor implements HttpInterceptor {
             req.url.includes('/files/fileInfoRecipient') &&
             req.method === 'GET';
           const isGetFile = req.url.includes('/file/') && req.method === 'GET';
-          const isHeadFile = req.url.includes('/file/') && req.method === 'HEAD';
           const isDeleteFile =
             req.url.includes('/file/') &&
             !req.url.includes('/fileRequest/sharedWith') &&
@@ -238,11 +237,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
             case 429: {
-              if (
-                isGetFile) {
-                  this.notificationService.addErrorMessage( this.i18nService.translate('file.not.found'));
-              }
-              else
+              if (isGetFile) {
+                this.notificationService.addErrorMessage(
+                  this.i18nService.translate('file.not.found'),
+                );
+              } else
                 this.notificationService.addErrorMessage(
                   this.i18nService.translate('wrong.captcha'),
                 );
