@@ -88,11 +88,38 @@ export class FilelinkComponent implements OnInit {
 
   public async initiateDownload() {
 
-    await this.modalService.activateDownloadModal(
-      this.fileId,
-      this.fileName,
-      this.isFilePasswordProtected,
-    );
+    if (this.isFilePasswordProtected) {
+      await this.modalService.activateDownloadModal(
+        this.fileId,
+        this.fileName,
+        this.isFilePasswordProtected,
+      );
+    }
+    else {
+      const result = await this.downloadsService.download(
+        this.fileId,
+        this.fileName,
+        this.inputPassword,
+      );
+      if (result === 'WRONG_PASSWORD') {
+        this.notificationService.addErrorMessageTranslation(
+          'wrong.password',
+          undefined,
+          true,
+        );
+      }
+      if (result === 'TOO_MANY_DOWNLOADS') {
+        this.notificationService.addErrorMessageTranslation(
+          'too.many.downloads',
+          undefined,
+          true,
+        );
+      }
+      if (result === 'OK') {
+        this.ok.emit();
+      }
+    }
 
   }
+
 }
