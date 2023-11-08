@@ -82,6 +82,9 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class FileService {
 
+  private int MAX_RECIPIENT_TRUSTED_EXTERNAL = 3;
+  private int MAX_RECIPIENT_EXTERNAL = 2;
+
   private Logger log = LoggerFactory.getLogger(FileService.class);
 
   private final List<MountPoint> mountPoints = new ArrayList<>();
@@ -447,6 +450,12 @@ public class FileService {
     userRepository.incrementUploads(uploaderId);
 
     for (Recipient recipient : recipientList) {
+
+      if ((recipientList.size() > MAX_RECIPIENT_EXTERNAL && uploader.getRole().equals(DBUser.Role.EXTERNAL)) ||
+          (recipientList.size() > MAX_RECIPIENT_TRUSTED_EXTERNAL
+              && uploader.getRole().equals(DBUser.Role.TRUSTED_EXTERNAL)))
+        throw new UserUnauthorizedException();
+
       if (!StringUtils.validateMessage(recipient.getMessage())) {
         throw new MessageTooLongException();
       }
