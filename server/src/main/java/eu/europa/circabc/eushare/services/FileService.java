@@ -24,6 +24,7 @@ import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
 import eu.europa.circabc.eushare.exceptions.UserHasNoUploadRightsException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
+import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
@@ -70,6 +71,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -702,8 +705,34 @@ public class FileService {
       fileDownloadRateService.logFileDownload(dbFile);
     }
 
+   // tryToTrust(dbFile);
+
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
   }
+
+  /* user is not authentified in /fs ... 
+  private void tryToTrust(DBFile file) {
+    Authentication authentication = SecurityContextHolder
+        .getContext()
+        .getAuthentication();
+    try {
+      String requesterId = userService.getAuthenticatedUserId(authentication);
+      if (requesterId != null) {
+        DBUser downloader = userService.getDbUser(requesterId);
+        if (downloader != null) {
+          DBUser uploader = userService.getDbUser(file.getUploader().getId());
+          if (uploader != null && uploader.getRole().equals(DBUser.Role.EXTERNAL)
+              && (uploader.getRole().equals(DBUser.Role.ADMIN) || uploader.getRole().equals(DBUser.Role.INTERNAL)
+                  || uploader.getRole().equals(DBUser.Role.TRUSTED_EXTERNAL)))
+            downloader.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+          userRepository.save(downloader);
+        }
+      }
+    } catch (WrongAuthenticationException e) {
+    } catch (UnknownUserException e) {
+    }
+ 
+  }*/
 
   public DBShare findShare(String downloadId) {
 
