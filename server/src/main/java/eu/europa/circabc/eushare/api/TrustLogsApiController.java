@@ -10,6 +10,7 @@
 package eu.europa.circabc.eushare.api;
 
 import eu.europa.circabc.eushare.model.TrustLog;
+import eu.europa.circabc.eushare.security.AdminOnly;
 import eu.europa.circabc.eushare.storage.entity.DBTrustLog;
 import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
 
@@ -30,6 +31,7 @@ public class TrustLogsApiController implements TrustLogsApi {
         this.trustLogRepository = trustLogRepository;
     }
 
+    @AdminOnly
     @Override
     public ResponseEntity<List<TrustLog>> getAllTrustLogs() {
         List<TrustLog> trustLogs = new ArrayList<>();
