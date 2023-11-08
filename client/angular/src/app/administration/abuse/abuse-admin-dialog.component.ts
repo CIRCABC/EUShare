@@ -19,8 +19,8 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { AbuseReport, AbuseReportDetails, UserInfo } from '../../openapi';
 
 export const StatusEnumLabels = {
-  REGULAR: "Delete file. Keep all user's rights.",
-  SUSPENDED: 'Delete file. Prevent user from uploading.',
+  REGULAR: "Freeze file. Keep all user's rights.",
+  SUSPENDED: 'Freeze file. Prevent user from uploading.',
 };
 
 type StatusEnumKeys = (keyof typeof StatusEnumLabels)[];
