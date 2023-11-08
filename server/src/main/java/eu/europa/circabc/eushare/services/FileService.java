@@ -82,8 +82,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class FileService {
 
-  private int MAX_RECIPIENT_TRUSTED_EXTERNAL = 3;
-  private int MAX_RECIPIENT_EXTERNAL = 2;
+  private int MAX_RECIPIENT_TRUSTED_EXTERNAL = 25;
+  private int MAX_RECIPIENT_EXTERNAL = 5;
 
   private Logger log = LoggerFactory.getLogger(FileService.class);
 
