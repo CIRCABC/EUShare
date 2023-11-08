@@ -12,19 +12,15 @@ package eu.europa.circabc.eushare.storage.entity;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.UUID;
-
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import eu.europa.circabc.eushare.model.TrustLog;
 import eu.europa.circabc.eushare.model.TrustLog.OriginEnum;
 import io.swagger.annotations.ApiModel;
@@ -34,105 +30,115 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(description = "DBTrustLog")
 public class DBTrustLog {
   
-  @Id
-  @GeneratedValue(generator = "UUID")
-  @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-  @JsonProperty("id")
-  private String id;
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @JsonProperty("id")
+    private String id;
 
-  @JsonProperty("trustDate")
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-  private OffsetDateTime trustDate;
+    @JsonProperty("trustDate")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private OffsetDateTime trustDate;
 
-  @JsonProperty("truster")
-  private String truster;
+    @JsonProperty("truster")
+    private String truster;
 
-  @Enumerated(EnumType.STRING)
-  @JsonProperty("origin")
-  private Origin origin;
+    @JsonProperty("trusted")
+    private String trusted;
 
-  public enum Origin {
-    REQUEST, SHARE, AUTO
-  }
+    @Enumerated(EnumType.STRING)
+    @JsonProperty("origin")
+    private Origin origin;
 
-  public String getId() {
-    return id;
-  }
+    public enum Origin {
+        REQUEST, SHARE, AUTO
+    }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+    public String getId() {
+        return id;
+    }
 
-  public OffsetDateTime getTrustDate() {
-    return trustDate;
-  }
+    public void setId(String id) {
+        this.id = id;
+    }
 
-  public void setTrustDate(OffsetDateTime trustDate) {
-    this.trustDate = trustDate;
-  }
+    public OffsetDateTime getTrustDate() {
+        return trustDate;
+    }
 
-  public String getTruster() {
-    return truster;
-  }
+    public void setTrustDate(OffsetDateTime trustDate) {
+        this.trustDate = trustDate;
+    }
 
-  public void setTruster(String truster) {
-    this.truster = truster;
-  }
+    public String getTruster() {
+        return truster;
+    }
 
-  public Origin getOrigin() {
-    return origin;
-  }
+    public void setTruster(String truster) {
+        this.truster = truster;
+    }
 
-  public void setOrigin(Origin origin) {
-    this.origin = origin;
-  }
+    public String getTrusted() {
+        return trusted;
+    }
+
+    public void setTrusted(String trusted) {
+        this.trusted = trusted;
+    }
+
+    public Origin getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(Origin origin) {
+        this.origin = origin;
+    }
 
     public TrustLog toTrustLog() {
         TrustLog trustLog = new TrustLog();
-        trustLog.setId(UUID.fromString(this.getId())); 
+        trustLog.setId(UUID.fromString(this.getId()));
         trustLog.setTrustDate(this.getTrustDate());
         trustLog.setTruster(this.getTruster());
+        trustLog.setTrusted(this.getTrusted());
         trustLog.setOrigin(OriginEnum.valueOf(this.getOrigin().name()));
         return trustLog;
     }
 
-
     public static DBTrustLog fromTrustLog(TrustLog trustLog) {
         DBTrustLog dbTrustLog = new DBTrustLog();
+        dbTrustLog.setId(trustLog.getId().toString());
         dbTrustLog.setTrustDate(trustLog.getTrustDate());
         dbTrustLog.setTruster(trustLog.getTruster());
-        dbTrustLog.setOrigin(Origin.valueOf(trustLog.getOrigin().name())); 
+        dbTrustLog.setTrusted(trustLog.getTrusted());
+        dbTrustLog.setOrigin(Origin.valueOf(trustLog.getOrigin().name()));
         return dbTrustLog;
     }
 
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DBTrustLog that = (DBTrustLog) o;
+        return Objects.equals(id, that.id) &&
+               Objects.equals(trustDate, that.trustDate) &&
+               Objects.equals(truster, that.truster) &&
+               Objects.equals(trusted, that.trusted) &&
+               origin == that.origin;
     }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, trustDate, truster, trusted, origin);
     }
-    DBTrustLog that = (DBTrustLog) o;
-    return Objects.equals(id, that.id) &&
-           Objects.equals(trustDate, that.trustDate) &&
-           Objects.equals(truster, that.truster) &&
-           origin == that.origin;
-  }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(id, trustDate, truster, origin);
-  }
-
-  @Override
-  public String toString() {
-    return "DBTrustLog{" +
-           "id='" + id + '\'' +
-           ", trustDate=" + trustDate +
-           ", truster='" + truster + '\'' +
-           ", origin=" + origin +
-           '}';
-  }
+    @Override
+    public String toString() {
+        return "DBTrustLog{" +
+               "id='" + id + '\'' +
+               ", trustDate=" + trustDate +
+               ", truster='" + truster + '\'' +
+               ", trusted='" + trusted + '\'' +
+               ", origin=" + origin +
+               '}';
+    }
 }

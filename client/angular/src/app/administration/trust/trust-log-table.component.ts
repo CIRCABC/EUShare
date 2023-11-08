@@ -23,7 +23,7 @@ import { CommonModule } from '@angular/common';
   imports: [MatTableModule, MatSortModule, MatPaginatorModule, CommonModule],
 })
 export class TrustLogTableComponent implements OnInit {
-  displayedColumns: string[] = ['trustDate', 'origin', 'truster'];
+  displayedColumns: string[] = ['trustDate', 'origin', 'trusted', 'truster'];
   dataSource = new MatTableDataSource<TrustLog>([]);
 
   @ViewChild(MatSort, { static: true }) sort!: MatSort;

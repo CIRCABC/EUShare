@@ -1,31 +1,15 @@
-<table>
-    <thead>
-        <tr>
-            <th>Trusted</th>
-            <th>Email</th>
-            <th>Request Date</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let request of trustRequests">
-            <td>
-                <i class="material-icons"
-                   [ngClass]="{'green-icon': request.approved, 'red-icon': !request.approved}">
-                  {{ request.approved ? 'done' : 'close' }}
-                </i>
-              </td>
-            <td>{{request.email}}</td>
-            <td>{{request.requestDateTime | date:'dd-MM-yyyy HH:mm'}}</td>
-            <td>{{request.name}}</td>
-            <td>{{request.username}}</td>
-            <td><button class="button" (click)="onOpen(request)"><i class="material-icons">done</i>&nbsp;Open</button></td>
-            <td><button class="button" (click)="onDelete(request.id)"><i class="material-icons">delete</i>&nbsp;Delete</button></td>
-        </tr>
-    </tbody>
-</table>
-
-<app-trust-log-table></app-trust-log-table>
+<mat-tab-group>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>campaign</mat-icon> Trust Requests
+      </ng-template>
+      <app-trust-request></app-trust-request>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon>insights</mat-icon> Trust Logs
+      </ng-template>
+      <app-trust-log-table></app-trust-log-table>
+    </mat-tab>
+  </mat-tab-group>
+  

@@ -14,21 +14,22 @@
  */
 package eu.europa.circabc.eushare.api;
 
-import java.util.List;
-import java.util.Optional;
-
+import eu.europa.circabc.eushare.model.TrustLog;
+import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
-import eu.europa.circabc.eushare.model.TrustLog;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import javax.validation.Valid;
+import javax.validation.constraints.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
 @Validated
 @Api(value = "trustLogs", description = "the trustLogs API")
@@ -54,7 +55,7 @@ public interface TrustLogsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"trustDate\" : \"2000-01-23T04:56:07.000+00:00\", \"truster\" : \"truster\", \"origin\" : \"REQUEST\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
+                    String exampleString = "{ \"trusted\" : \"trusted\", \"trustDate\" : \"2000-01-23T04:56:07.000+00:00\", \"truster\" : \"truster\", \"origin\" : \"REQUEST\", \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

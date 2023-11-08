@@ -338,6 +338,7 @@ public class FileService {
 
           dbTrustLog.setTrustDate(OffsetDateTime.now());
           dbTrustLog.setTruster(requester.getEmail());
+          dbTrustLog.setTrusted(user.getEmail());
           dbTrustLog.setOrigin(DBTrustLog.Origin.SHARE);
 
           trustLogRepository.save(dbTrustLog);

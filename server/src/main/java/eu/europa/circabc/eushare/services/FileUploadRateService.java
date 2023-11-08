@@ -182,6 +182,7 @@ public class FileUploadRateService {
 
             dbTrustLog.setTrustDate(OffsetDateTime.now());
             dbTrustLog.setTruster("SYSTEM PROCESS");
+            dbTrustLog.setTrusted(user.getEmail());
             dbTrustLog.setOrigin(DBTrustLog.Origin.REQUEST);
 
             trustLogRepository.save(dbTrustLog);

@@ -34,6 +34,10 @@ export interface TrustLog {
      */
     truster?: string;
     /**
+     * The entity that is trusting.
+     */
+    trusted?: string;
+    /**
      * The origin of the trust action.
      */
     origin?: TrustLog.OriginEnum;

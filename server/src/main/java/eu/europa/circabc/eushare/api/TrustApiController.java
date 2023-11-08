@@ -137,6 +137,7 @@ public class TrustApiController implements TrustApi {
 
                         dbTrustLog.setTrustDate(OffsetDateTime.now());
                         dbTrustLog.setTruster(truster.getEmail());
+                        dbTrustLog.setTrusted(user.getEmail());
                         dbTrustLog.setOrigin(DBTrustLog.Origin.REQUEST);
 
                         trustLogRepository.save(dbTrustLog);

@@ -41,6 +41,9 @@ public class TrustLog   {
   @JsonProperty("truster")
   private String truster;
 
+  @JsonProperty("trusted")
+  private String trusted;
+
   /**
    * The origin of the trust action.
    */
@@ -143,6 +146,26 @@ public class TrustLog   {
     this.truster = truster;
   }
 
+  public TrustLog trusted(String trusted) {
+    this.trusted = trusted;
+    return this;
+  }
+
+  /**
+   * The entity that is trusting.
+   * @return trusted
+  */
+  @ApiModelProperty(value = "The entity that is trusting.")
+
+
+  public String getTrusted() {
+    return trusted;
+  }
+
+  public void setTrusted(String trusted) {
+    this.trusted = trusted;
+  }
+
   public TrustLog origin(OriginEnum origin) {
     this.origin = origin;
     return this;
@@ -176,12 +199,13 @@ public class TrustLog   {
     return Objects.equals(this.id, trustLog.id) &&
         Objects.equals(this.trustDate, trustLog.trustDate) &&
         Objects.equals(this.truster, trustLog.truster) &&
+        Objects.equals(this.trusted, trustLog.trusted) &&
         Objects.equals(this.origin, trustLog.origin);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, trustDate, truster, origin);
+    return Objects.hash(id, trustDate, truster, trusted, origin);
   }
 
   @Override
@@ -192,6 +216,7 @@ public class TrustLog   {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    trustDate: ").append(toIndentedString(trustDate)).append("\n");
     sb.append("    truster: ").append(toIndentedString(truster)).append("\n");
+    sb.append("    trusted: ").append(toIndentedString(trusted)).append("\n");
     sb.append("    origin: ").append(toIndentedString(origin)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -1901,6 +1901,9 @@ components:
         truster:
           type: string
           description: "The entity that is trusting."
+        trusted:
+          type: string
+          description: "The entity that is trusting."
         origin:
           type: string
           description: "The origin of the trust action."
