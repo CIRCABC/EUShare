@@ -31,6 +31,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CbcHeaderComponent } from './header/cbc-header/cbc-header.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DownloadModalComponent } from './common/modals/download-modal/download-modal.component';
+import { MaintenanceModalComponent } from './maintenance/maintenance-modal.component';
 
 const authCodeFlowConfig: AuthConfig = {
   // Url of the Identity Provider
@@ -68,6 +69,7 @@ const authCodeFlowConfig: AuthConfig = {
     RouterOutlet,
     FooterComponent,
     TranslocoModule,
+    MaintenanceModalComponent
   ],
   standalone: true,
 })

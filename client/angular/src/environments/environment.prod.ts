@@ -8,6 +8,7 @@ export const environment: Environment = {
   backend_url: '/webservice',
   frontend_url: '',
   circabc_url: 'https://circabc.europa.eu',
+  maintenance_code: 'XXX',
   API_BASE_PATH: '/webservice',
   OIDC_ISSUER: 'https://ecas-mockup:7002/cas/oauth2',
   OIDC_REDIRECTURI: `${window.location.origin}/callback`,

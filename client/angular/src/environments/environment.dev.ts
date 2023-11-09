@@ -8,6 +8,7 @@ export const environment: Environment = {
   backend_url: '/share/webservice',
   frontend_url: '/share',
   circabc_url: 'https://circabc.development.europa.eu',
+  maintenance_code: 'XXX',
   API_BASE_PATH: '/share/webservice',
   OIDC_ISSUER: 'https://eulogin:7002/cas/oauth2',
   OIDC_REDIRECTURI: `${window.location.origin}/share/callback`,
