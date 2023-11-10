@@ -9,22 +9,6 @@
  */
 package eu.europa.circabc.eushare.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-import eu.europa.circabc.eushare.storage.repository.FileUploadRateRepository;
-import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
-import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
-import eu.europa.circabc.eushare.storage.repository.UserRepository;
-import eu.europa.circabc.eushare.storage.entity.DBFile;
-import eu.europa.circabc.eushare.storage.entity.DBFileDownloadRate;
-import eu.europa.circabc.eushare.storage.entity.DBFileUploadRate;
-import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
-import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
-import eu.europa.circabc.eushare.storage.entity.DBTrustLog;
-import eu.europa.circabc.eushare.storage.entity.DBUser;
-import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
-
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -35,18 +19,45 @@ import java.util.Optional;
 
 import javax.mail.MessagingException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import eu.europa.circabc.eushare.storage.entity.DBFileUploadRate;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
+import eu.europa.circabc.eushare.storage.entity.DBTrustLog;
+import eu.europa.circabc.eushare.storage.entity.DBUser;
+import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
+import eu.europa.circabc.eushare.storage.repository.FileUploadRateRepository;
+import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
+import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
+import eu.europa.circabc.eushare.storage.repository.UserRepository;
+
 @Service
 public class FileUploadRateService {
 
-    private static final int EXTERNAL_THRESHOLD_HOUR = 5;
-    private static final int TRUSTED_EXTERNAL_THRESHOLD_HOUR = 10;
-    private static final int EXTERNAL_THRESHOLD_DAY = 50;
-    private static final int TRUSTED_EXTERNAL_THRESHOLD_DAY = 100;
+    @Value("${eushare.file_upload_rate.external_threshold_hour}")
+    private int EXTERNAL_THRESHOLD_HOUR;
 
-    private static final int EXTERNAL_USER_HOURLY_REALTIME = 2;
-    private static final int TRUSTED_EXTERNAL_USER_HOURLY_REALTIME = 2;
+    @Value("${eushare.file_upload_rate.trusted_external_threshold_hour}")
+    private int TRUSTED_EXTERNAL_THRESHOLD_HOUR;
 
-    private static final int UPLOADS_TO_BE_TRUSTED_THRESHOLD = 50;
+    @Value("${eushare.file_upload_rate.external_threshold_day}")
+    private int EXTERNAL_THRESHOLD_DAY;
+
+    @Value("${eushare.file_upload_rate.trusted_external_threshold_day}")
+    private int TRUSTED_EXTERNAL_THRESHOLD_DAY;
+
+    @Value("${eushare.file_upload_rate.external_user_hourly_realtime}")
+    private int EXTERNAL_USER_HOURLY_REALTIME;
+
+    @Value("${eushare.file_upload_rate.trusted_external_user_hourly_realtime}")
+    private int TRUSTED_EXTERNAL_USER_HOURLY_REALTIME;
+
+    @Value("${eushare.file_upload_rate.uploads_to_be_trusted_threshold}")
+    private int UPLOADS_TO_BE_TRUSTED_THRESHOLD;
 
     @Autowired
     private UserRepository userRepository;
@@ -107,19 +118,20 @@ public class FileUploadRateService {
         }
 
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
-    
+
         Optional<DBFileUploadRate> optionalLogEntry = repository.findByDateHourAndUser(currentHour, user);
-    
-        int userLimit = user.getRole().equals(Role.TRUSTED_EXTERNAL) ? TRUSTED_EXTERNAL_USER_HOURLY_REALTIME : EXTERNAL_USER_HOURLY_REALTIME;
-    
+
+        int userLimit = user.getRole().equals(Role.TRUSTED_EXTERNAL) ? TRUSTED_EXTERNAL_USER_HOURLY_REALTIME
+                : EXTERNAL_USER_HOURLY_REALTIME;
+
         if (optionalLogEntry.isPresent()) {
             DBFileUploadRate logEntry = optionalLogEntry.get();
             if (logEntry.getUploadCount() >= userLimit) {
-                return true; 
+                return true;
             }
         }
-    
-        return false; 
+
+        return false;
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
@@ -193,7 +205,6 @@ public class FileUploadRateService {
                 return Integer.MAX_VALUE;
         }
     }
-    
 
     @Scheduled(cron = "0 0 * * * ?")
     public void upgradeExternalUsers() {

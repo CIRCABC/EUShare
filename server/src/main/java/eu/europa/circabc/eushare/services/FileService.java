@@ -9,6 +9,37 @@
  */
 package eu.europa.circabc.eushare.services;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.annotation.PostConstruct;
+import javax.mail.MessagingException;
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
 import eu.europa.circabc.eushare.exceptions.CouldNotAllocateFileException;
 import eu.europa.circabc.eushare.exceptions.CouldNotSaveFileException;
@@ -24,7 +55,6 @@ import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserHasInsufficientSpaceException;
 import eu.europa.circabc.eushare.exceptions.UserHasNoUploadRightsException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
-import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
 import eu.europa.circabc.eushare.exceptions.WrongPasswordException;
 import eu.europa.circabc.eushare.model.FileInfoRecipient;
 import eu.europa.circabc.eushare.model.FileInfoUploader;
@@ -35,8 +65,8 @@ import eu.europa.circabc.eushare.storage.entity.DBShare;
 import eu.europa.circabc.eushare.storage.entity.DBStat;
 import eu.europa.circabc.eushare.storage.entity.DBTrustLog;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
-import eu.europa.circabc.eushare.storage.entity.MountPoint;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
+import eu.europa.circabc.eushare.storage.entity.MountPoint;
 import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
 import eu.europa.circabc.eushare.storage.repository.FileRepository;
 import eu.europa.circabc.eushare.storage.repository.ShareRepository;
@@ -44,39 +74,6 @@ import eu.europa.circabc.eushare.storage.repository.StatsRepository;
 import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import eu.europa.circabc.eushare.utils.StringUtils;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Collectors;
-import javax.annotation.PostConstruct;
-import javax.mail.MessagingException;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 /**
  * Service for managing all files that are available in the application. Use
@@ -85,8 +82,11 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class FileService {
 
-  private int MAX_RECIPIENT_TRUSTED_EXTERNAL = 25;
-  private int MAX_RECIPIENT_EXTERNAL = 5;
+  @Value("${eushare.file_recipients.max_recipient_trusted_external}")
+  private int MAX_RECIPIENT_TRUSTED_EXTERNAL;
+
+  @Value("${eushare.file_recipients.max_recipient_external}")
+  private int MAX_RECIPIENT_EXTERNAL;
 
   private Logger log = LoggerFactory.getLogger(FileService.class);
 

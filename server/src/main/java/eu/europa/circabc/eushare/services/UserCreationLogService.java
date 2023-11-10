@@ -9,35 +9,35 @@
  */
 package eu.europa.circabc.eushare.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
-import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
-import eu.europa.circabc.eushare.storage.repository.UserCreationLogRepository;
-import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
-import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
-import eu.europa.circabc.eushare.storage.entity.DBUser;
-import eu.europa.circabc.eushare.storage.entity.DBUserCreationLog;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
+import eu.europa.circabc.eushare.storage.entity.DBUserCreationLog;
+import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
+import eu.europa.circabc.eushare.storage.repository.UserCreationLogRepository;
+
 @Service
 public class UserCreationLogService {
 
-    private static final int USER_CREATION_THRESHOLD = 10;
+    @Value("${eushare.user_creation_log.user_creation_threshold}")
+    private int USER_CREATION_THRESHOLD;
 
     @Autowired
     private UserCreationLogRepository repository;
 
-        @Autowired
+    @Autowired
     public MonitoringRepository monitoringRepository;
 
     @Autowired
@@ -83,12 +83,12 @@ public class UserCreationLogService {
                 dbMonitoring.setCounter(log.getUserCount());
                 dbMonitoring.setEvent(DBMonitoring.Event.USER_CREATION_DAY);
                 dbMonitoring.setDatetime(LocalDateTime.now());
-              
+
                 monitoringRepository.save(dbMonitoring);
 
-                String message = "A monitoring alert for abnormal number of new users (" +log.getUserCount()+
-                         ") in the last 24h has been raised at :" + dbMonitoring.getDatetime() +
-                         ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
+                String message = "A monitoring alert for abnormal number of new users (" + log.getUserCount() +
+                        ") in the last 24h has been raised at :" + dbMonitoring.getDatetime() +
+                        ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
 
                 try {
                     emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", message);
@@ -107,5 +107,4 @@ public class UserCreationLogService {
         repository.deleteByDateCreatedBefore(thresholdDate);
     }
 
-   
 }

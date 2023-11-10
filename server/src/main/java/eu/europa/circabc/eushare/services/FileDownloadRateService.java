@@ -9,20 +9,6 @@
  */
 package eu.europa.circabc.eushare.services;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-
-import eu.europa.circabc.eushare.storage.entity.DBFile;
-import eu.europa.circabc.eushare.storage.entity.DBFileDownloadRate;
-import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
-import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
-import eu.europa.circabc.eushare.storage.repository.FileDownloadRateRepository;
-import eu.europa.circabc.eushare.storage.repository.FileRepository;
-import eu.europa.circabc.eushare.storage.repository.FileUploadRateRepository;
-import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
-
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -31,27 +17,43 @@ import java.util.Map;
 import java.util.Optional;
 
 import javax.mail.MessagingException;
-import javax.validation.constraints.Email;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import eu.europa.circabc.eushare.storage.entity.DBFile;
+import eu.europa.circabc.eushare.storage.entity.DBFileDownloadRate;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
+import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
+import eu.europa.circabc.eushare.storage.repository.FileDownloadRateRepository;
+import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
 
 @Service
 public class FileDownloadRateService {
 
     @Autowired
     public FileDownloadRateRepository repository;
-    
+
     @Autowired
     public MonitoringRepository monitoringRepository;
 
     @Autowired
     public EmailService emailService;
 
-    private static final int HOURLY_THRESHOLD = 10;
-    private static final int HOURLY_THRESHOLD_RT = 15;
-    private static final int DAILY_THRESHOLD = 50;
+    @Value("${eushare.file_download_rate.hourly_threshold}")
+    private int HOURLY_THRESHOLD;
+
+    @Value("${eushare.file_download_rate.hourly_threshold_rt}")
+    private int HOURLY_THRESHOLD_RT;
+
+    @Value("${eushare.file_download_rate.daily_threshold}")
+    private int DAILY_THRESHOLD;
 
     public void logFileDownload(DBFile file) {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
-       
+
         Optional<DBFileDownloadRate> optionalLogEntry = repository.findByDateHourAndFile(currentHour, file);
 
         if (optionalLogEntry.isPresent()) {
@@ -69,39 +71,40 @@ public class FileDownloadRateService {
 
     public boolean realTimeCheck(DBFile file) {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
-       
+
         Optional<DBFileDownloadRate> optionalLogEntry = repository.findByDateHourAndFile(currentHour, file);
 
         if (optionalLogEntry.isPresent()) {
             DBFileDownloadRate logEntry = optionalLogEntry.get();
-            if( logEntry.getDownloadCount()  > HOURLY_THRESHOLD_RT) {
+            if (logEntry.getDownloadCount() > HOURLY_THRESHOLD_RT) {
 
-              return true;
+                return true;
 
             }
         }
         return false;
     }
 
-    @Scheduled(cron = "0 0 * * * ?")  
+    @Scheduled(cron = "0 0 * * * ?")
     public void hourlyCheck() {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime oneHourAgo = currentHour.minusHours(1);
-       
+
         List<DBFileDownloadRate> downloadsLastHour = repository.findByDateHour(oneHourAgo);
 
         for (DBFileDownloadRate downloadRate : downloadsLastHour) {
             DBFile file = downloadRate.getFile();
-    
+
             if (downloadRate.getDownloadCount() > HOURLY_THRESHOLD) {
 
-                saveMonitoringAndSendAlert(file, downloadRate.getDownloadCount(), DBMonitoring.Event.DOWNLOAD_RATE_HOUR);
+                saveMonitoringAndSendAlert(file, downloadRate.getDownloadCount(),
+                        DBMonitoring.Event.DOWNLOAD_RATE_HOUR);
 
             }
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")  
+    @Scheduled(cron = "0 0 0 * * ?")
     public void dailyCheck() {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusDays(1);
         List<DBFileDownloadRate> downloadsLastDay = repository.findByDateHourAfter(twentyFourHoursAgo);
@@ -124,7 +127,6 @@ public class FileDownloadRateService {
         removeOldDownloadLogs();
     }
 
-
     private void saveMonitoringAndSendAlert(DBFile file, int count, DBMonitoring.Event event) {
         DBMonitoring dbMonitoring = new DBMonitoring();
         dbMonitoring.setStatus(Status.WAITING);
@@ -135,10 +137,12 @@ public class FileDownloadRateService {
         dbMonitoring.setUserId(file.getUploader().getId());
         monitoringRepository.save(dbMonitoring);
 
-        String message = "A monitoring alert for too many downloads ("+event.toString()+ ") of file :" + file.getFilename() + "\" has been raised at :"+ dbMonitoring.getDatetime() + ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
-        
+        String message = "A monitoring alert for too many downloads (" + event.toString() + ") of file :"
+                + file.getFilename() + "\" has been raised at :" + dbMonitoring.getDatetime()
+                + ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
+
         try {
-            emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu",message);
+            emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", message);
         } catch (MessagingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
