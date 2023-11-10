@@ -159,6 +159,7 @@
   "times": "vez/veces",
   "to": "para",
   "too.many.downloads": "La descarga del archivo se ha suspendido temporalmente debido a tasas de descarga excesivas.",
+  "too.many.uploads": "Has alcanzado el límite de carga de archivos en poco tiempo. La funcionalidad de carga está suspendida temporalmente. Vuelve a intentarlo más tarde.",
   "total.space": "Espacio total",
   "unexpected.error": "Se ha producido un error imprevisto en el servidor mientras ",
   "upgrade.account": "Actualizar cuenta",

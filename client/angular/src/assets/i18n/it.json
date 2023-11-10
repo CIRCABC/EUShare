@@ -159,6 +159,7 @@
   "times": "volta/volte",
   "to": "a",
   "too.many.downloads": "Il download del file è stato temporaneamente sospeso a causa di tassi di download eccessivi.",
+  "too.many.uploads": "Hai raggiunto il limite di caricamenti di file in un breve periodo. La funzionalità di caricamento è temporaneamente sospesa. Riprova più tardi.",
   "total.space": "Totale spazio",
   "unexpected.error": "Si è verificato un errore imprevisto sul server mentre ",
   "upgrade.account": "Aggiorna l'account",

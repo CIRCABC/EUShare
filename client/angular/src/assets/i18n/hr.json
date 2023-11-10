@@ -159,6 +159,7 @@
   "times": "puta",
   "to": "to",
   "too.many.downloads": "Preuzimanje datoteka privremeno je obustavljeno zbog prekomjernih stopa preuzimanja.",
+  "too.many.uploads": "Dostigli ste ograničenje za prijenos datoteka u kratkom razdoblju. Funkcionalnost prijenosa privremeno je obustavljena. Pokušajte ponovo kasnije.",
   "total.space": "Ukupni prostor za pohranu",
   "unexpected.error": "Pojavila se neočekivana pogreška na poslužitelju: ",
   "upgrade.account": "Nadogradite račun",

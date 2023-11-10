@@ -159,6 +159,7 @@
   "times": "time(s)",
   "to": "to",
   "too.many.downloads": "The file download has been temporarily suspended due to excessive download rates.",
+  "too.many.uploads": "You have reached the limit for file uploads in a short period.  Upload functionality is temporary suspended.  Please try again later.",
   "total.space": "Total space",
   "unexpected.error": "An unexpected error occured on server side while ",
   "upgrade.account": "Upgrade account",

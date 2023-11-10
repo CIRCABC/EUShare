@@ -159,6 +159,7 @@
   "times": "ori",
   "to": "de",
   "too.many.downloads": "Descărcarea fișierului a fost suspendată temporar din cauza ratelor excesive de descărcare.",
+  "too.many.uploads": "Ați atins limita pentru încărcarea fișierelor într-o perioadă scurtă. Funcționalitatea de încărcare este suspendată temporar. Vă rugăm să încercați din nou mai târziu.",
   "total.space": "Spațiu total",
   "unexpected.error": "Eroare neprevăzută de server în timpul încercării ",
   "upgrade.account": "Actualizați contul",

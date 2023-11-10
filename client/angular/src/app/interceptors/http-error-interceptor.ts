@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService,
-  ) {}
+  ) { }
 
   intercept(
     req: HttpRequest<any>,
@@ -241,7 +241,12 @@ export class HttpErrorInterceptor implements HttpInterceptor {
                 this.notificationService.addErrorMessage(
                   this.i18nService.translate('file.not.found'),
                 );
-              } else
+              } else if (isPostFileFileRequest) {
+                this.notificationService.addErrorMessage(
+                  this.i18nService.translate('too.many.uploads'),
+                );
+              }
+              else
                 this.notificationService.addErrorMessage(
                   this.i18nService.translate('wrong.captcha'),
                 );

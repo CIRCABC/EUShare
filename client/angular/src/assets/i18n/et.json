@@ -159,6 +159,7 @@
   "times": "kord(a)",
   "to": "kuni",
   "too.many.downloads": "Failide allalaadimine on ülemäärase allalaadimismäära tõttu ajutiselt peatatud.",
+  "too.many.uploads": "Olete lühikese aja jooksul saavutanud failide üleslaadimise piirmäära. Üleslaadimisfunktsioon on ajutiselt peatatud. Palun proovige hiljem uuesti.",
   "total.space": "Kogumaht",
   "unexpected.error": "Serveris ilmnes ootamatu viga toimingul: ",
   "upgrade.account": "Täiendage kontot",

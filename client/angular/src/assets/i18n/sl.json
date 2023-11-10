@@ -159,6 +159,7 @@
   "times": "-krat",
   "to": "to",
   "too.many.downloads": "Prenos datotek je bil začasno prekinjen zaradi prekomernih hitrosti prenosa.",
+  "too.many.uploads": "V kratkem času ste dosegli omejitev za nalaganje datotek. Funkcija nalaganja je začasno prekinjena. Poskusite znova pozneje.",
   "total.space": "Skupni prostor",
   "unexpected.error": "Nepričakovana napaka na strani strežnika med: ",
   "upgrade.account": "Nadgradite račun",

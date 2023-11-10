@@ -159,6 +159,7 @@
   "times": "vez(es)",
   "to": "fazer o seguinte:",
   "too.many.downloads": "O download do arquivo foi temporariamente suspenso devido às taxas excessivas de download.",
+  "too.many.uploads": "Você atingiu o limite para uploads de arquivos em um curto período. A funcionalidade de upload está temporariamente suspensa. Por favor, tente novamente mais tarde.",
   "total.space": "Espaço total",
   "unexpected.error": "Ocorreu um erro imprevisto no servidor: ",
   "upgrade.account": "Atualizar conta",

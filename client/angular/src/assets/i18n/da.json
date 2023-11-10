@@ -159,6 +159,7 @@
   "times": "gang(e)",
   "to": "at",
   "too.many.downloads": "Filoverførslen er midlertidigt suspenderet på grund af for høje downloadhastigheder.",
+  "too.many.uploads": "Du har nået grænsen for filuploads på kort tid. Uploadfunktionaliteten er midlertidigt suspenderet. Prøv igen senere.",
   "total.space": "Diskplads i alt",
   "unexpected.error": "Der opstod en uventet serverfejl: ",
   "upgrade.account": "Opgrader konto",

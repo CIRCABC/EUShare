@@ -19,6 +19,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgClass, SlicePipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
+import { NotificationService } from '../notification/notification.service';
 
 @Component({
   selector: 'app-uploaded-file-row',
@@ -54,28 +55,52 @@ export class UploadedFileRowComponent {
   public faFile = faFile;
   public faLock = faLock;
 
+  @Output() ok = new EventEmitter<void>();
+
   public isLoading = false;
   public percentageDownloaded = 0;
 
   constructor(
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
+    private notificationService: NotificationService,
     private fileService: FileService,
     private router: Router,
   ) {}
 
+  
   public async tryDownload() {
-    if (this.file.hasPassword && this.displayAsUploader) {
-      this.modalService.activateDownloadModal(
+    if (this.file.hasPassword) {
+      await this.modalService.activateDownloadModal(
         this.file.fileId,
         this.file.name,
         this.file.hasPassword,
       );
     } else {
-      await this.downloadsService.download(this.file.fileId, this.file.name);
+      const result = await this.downloadsService.download(
+        this.file.fileId,
+        this.file.name,
+      );
+      if (result === 'WRONG_PASSWORD') {
+        this.notificationService.addErrorMessageTranslation(
+          'wrong.password',
+          undefined,
+          true,
+        );
+      }
+      if (result === 'TOO_MANY_DOWNLOADS') {
+        this.notificationService.addErrorMessageTranslation(
+          'too.many.downloads',
+          undefined,
+          true,
+        );
+      }
+      if (result === 'OK') {
+        this.ok.emit();
+      }
     }
+    
   }
-
   public openAddRecipientsModal() {
     this.modalService.activateAddRecipientsModal(
       this.file.name,

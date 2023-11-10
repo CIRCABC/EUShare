@@ -21,21 +21,20 @@ export class DownloadsService {
     fileName: string,
     inputPassword?: string,
   ): Promise<'OK' | 'WRONG_PASSWORD' | 'TOO_MANY_DOWNLOADS'> {
-    const url = `${environment.backend_url}/file/${fileId}${
-      inputPassword === undefined ? '' : `?password=${inputPassword}`
-    }`;
-    if (inputPassword !== undefined) {
-      const result = await fetch(url, {
-        method: 'HEAD',
-      });
+    const url = `${environment.backend_url}/file/${fileId}${inputPassword === undefined ? '' : `?password=${inputPassword}`
+      }`;
 
-      if (result.status === 401) {
-        return 'WRONG_PASSWORD';
-      }
-      if (result.status === 429) {
-        return 'TOO_MANY_DOWNLOADS';
-      }
+    const result = await fetch(url, {
+      method: 'HEAD',
+    });
+
+    if (result.status === 401) {
+      return 'WRONG_PASSWORD';
     }
+    if (result.status === 429) {
+      return 'TOO_MANY_DOWNLOADS';
+    }
+
     if (fileId && fileName) {
       const link = document.createElement('a');
 

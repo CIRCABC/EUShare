@@ -159,6 +159,7 @@
   "times": "krát",
   "to": "to",
   "too.many.downloads": "Sťahovanie súborov bolo dočasne pozastavené z dôvodu nadmerných rýchlostí sťahovania.",
+  "too.many.uploads": "Limit pre nahrávanie súborov ste dosiahli v krátkom čase. Funkcia nahrávania je dočasne pozastavená. Skúste to znova neskôr.",
   "total.space": "Celkové miesto",
   "unexpected.error": "Na strane servera došlo k neočakávanej chybe počas ",
   "upgrade.account": "Aktualizácia účtu",

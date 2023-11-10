@@ -159,6 +159,7 @@
   "times": "alkalommal",
   "to": "a következő művelethez:",
   "too.many.downloads": "A fájl letöltését ideiglenesen felfüggesztették a túlzott letöltési arány miatt.",
+  "too.many.uploads": "Rövid időn belül elérte a fájlfeltöltési korlátot. A feltöltési funkció ideiglenesen felfüggesztett. Kérjük, próbálkozzon újra később.",
   "total.space": "Teljes tárhely",
   "unexpected.error": "Váratlan hiba történt a szerveroldalon: ",
   "upgrade.account": "Frissítse a fiókot",

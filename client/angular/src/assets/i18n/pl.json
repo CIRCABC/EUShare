@@ -159,6 +159,7 @@
   "times": "raz(y)",
   "to": " ",
   "too.many.downloads": "Pobieranie plików zostało tymczasowo zawieszone z powodu nadmiernych szybkości pobierania.",
+  "too.many.uploads": "Osiągnąłeś limit przesyłania plików w krótkim czasie. Funkcja przesyłania jest tymczasowo zawieszona. Spróbuj ponownie później.",
   "total.space": "Dostępne miejsce łącznie",
   "unexpected.error": "Po stronie serwera wystąpił nieoczekiwany błąd: ",
   "upgrade.account": "Uaktualnij konto",

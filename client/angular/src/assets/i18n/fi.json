@@ -159,6 +159,7 @@
   "times": "kertaa",
   "to": "to",
   "too.many.downloads": "Tiedostojen lataus on väliaikaisesti keskeytetty liiallisten latausnopeuksien vuoksi.",
+  "too.many.uploads": "Olet saavuttanut tiedostojen lataamisen rajan lyhyessä ajassa. Lataustoiminto on väliaikaisesti keskeytetty. Yritä myöhemmin uudelleen.",
   "total.space": "Tilaa yhteensä",
   "unexpected.error": "Odottamaton virhe palvelimella: ",
   "upgrade.account": "Päivitä tili",

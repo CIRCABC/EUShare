@@ -159,6 +159,7 @@
   "times": "keer",
   "to": "om",
   "too.many.downloads": "Het downloaden van het bestand is tijdelijk onderbroken vanwege te hoge downloadsnelheden.",
+  "too.many.uploads": "Je hebt de limiet voor het uploaden van bestanden in korte tijd bereikt. De uploadfunctionaliteit is tijdelijk opgeschort. Probeer het later nog eens.",
   "total.space": "Totale ruimte",
   "unexpected.error": "Onverwachte serverfout ",
   "upgrade.account": "Account upgraden",

@@ -159,6 +159,7 @@
   "times": "fois",
   "to": "à",
   "too.many.downloads": "Le téléchargement du fichier a été temporairement suspendu en raison de taux de téléchargement excessifs.",
+  "too.many.uploads": "Vous avez atteint la limite de téléchargement de fichiers en peu de temps. La fonctionnalité de téléchargement est temporairement suspendue. Veuillez réessayer ultérieurement.",
   "total.space": "Espace total",
   "unexpected.error": "Une erreur inattendue s’est produite côté serveur: ",
   "upgrade.account": "Mettre à jour le compte",

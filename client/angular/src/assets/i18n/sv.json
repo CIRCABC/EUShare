@@ -159,6 +159,7 @@
   "times": "gång(er)",
   "to": "att",
   "too.many.downloads": "Nedladdningen av filen har tillfälligt avbrutits på grund av överdrivna nedladdningshastigheter.",
+  "too.many.uploads": "Du har nått gränsen för filuppladdningar på kort tid. Uppladdningsfunktionen är tillfälligt avstängd. Försök igen senare.",
   "total.space": "Totalt utrymme",
   "unexpected.error": "Ett oväntat serverfel inträffade när ",
   "upgrade.account": "Uppgradera konto",

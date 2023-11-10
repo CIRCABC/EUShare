@@ -159,6 +159,7 @@
   "times": "Mal(e)",
   "to": ",",
   "too.many.downloads": "Der Dateidownload wurde aufgrund überhöhter Download-Raten vorübergehend ausgesetzt.",
+  "too.many.uploads": "Sie haben das Limit für Datei-Uploads in kurzer Zeit erreicht. Die Upload-Funktion ist vorübergehend gesperrt. Bitte versuchen Sie es später erneut.",
   "total.space": "Speicherkapazität insgesamt",
   "unexpected.error": "Unerwarteter Fehler auf Serverseite aufgetreten während ",
   "upgrade.account": "Konto aktualisieren",
