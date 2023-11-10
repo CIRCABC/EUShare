@@ -82,6 +82,10 @@ public class HttpErrorAnswerBuilder {
     return buildWithMessage(404, "UserNotFound");
   }
 
+  private static Status build406Empty() {
+    return buildEmpty(406);
+  }
+  
   private static Status build429Empty() {
     return buildEmpty(429);
   }
@@ -112,6 +116,10 @@ public class HttpErrorAnswerBuilder {
 
   public static String build401EmptyToString() {
     return mapAStatus(build401Empty());
+  }
+
+  public static String build406EmptyToString() {
+    return mapAStatus(build406Empty());
   }
 
   public static String build429EmptyToString() {

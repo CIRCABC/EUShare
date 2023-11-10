@@ -236,20 +236,23 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               this.notificationService.addErrorMessage(errorMessage);
               break;
             }
+            case 406: {
+                this.notificationService.addErrorMessage(
+                  this.i18nService.translate('wrong.captcha'),
+                );
+              break;
+            }
             case 429: {
               if (isGetFile) {
                 this.notificationService.addErrorMessage(
                   this.i18nService.translate('file.not.found'),
                 );
-              } else if (isPostFileFileRequest) {
+              } else {
                 this.notificationService.addErrorMessage(
                   this.i18nService.translate('too.many.uploads'),
                 );
               }
-              else
-                this.notificationService.addErrorMessage(
-                  this.i18nService.translate('wrong.captcha'),
-                );
+
               break;
             }
             case 500: {
