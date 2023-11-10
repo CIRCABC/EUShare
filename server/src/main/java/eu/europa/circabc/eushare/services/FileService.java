@@ -382,6 +382,7 @@ public class FileService {
    * fails, throws a corresponding Exception
    *
    * @return File ID if allocation successful
+   * @throws TooManyRequestsException
    */
   @Transactional
   public String allocateFileOnBehalfOf(
@@ -396,7 +397,7 @@ public class FileService {
       throws DateLiesInPastException, IllegalFileSizeException, UserUnauthorizedException,
       UserHasInsufficientSpaceException, UserHasNoUploadRightsException, CouldNotAllocateFileException,
       UnknownUserException, EmptyFilenameException,
-      MessageTooLongException {
+      MessageTooLongException, TooManyRequestsException {
     // Validate uploader rights
     if (!uploaderId.equals(requesterId)) {
       DBUser possibleAdminUser = userService.getDbUser(requesterId);
@@ -425,6 +426,10 @@ public class FileService {
       throw new UserHasNoUploadRightsException();
     }
 
+    if (fileUploadRateService.realTimeCheck(uploader)) {
+      throw new TooManyRequestsException();
+    }
+
     if (uploader.getFreeSpace() < filesize) {
       throw new UserHasInsufficientSpaceException();
     }
@@ -450,6 +455,7 @@ public class FileService {
     fileRepository.save(dbFile);
 
     fileUploadRateService.logFileUpload(uploaderId);
+
     userRepository.incrementUploads(uploaderId);
 
     for (Recipient recipient : recipientList) {
@@ -705,34 +711,37 @@ public class FileService {
       fileDownloadRateService.logFileDownload(dbFile);
     }
 
-   // tryToTrust(dbFile);
+    // tryToTrust(dbFile);
 
     return new DownloadReturn(file, dbFile.getFilename(), dbFile.getSize());
   }
 
-  /* user is not authentified in /fs ... 
-  private void tryToTrust(DBFile file) {
-    Authentication authentication = SecurityContextHolder
-        .getContext()
-        .getAuthentication();
-    try {
-      String requesterId = userService.getAuthenticatedUserId(authentication);
-      if (requesterId != null) {
-        DBUser downloader = userService.getDbUser(requesterId);
-        if (downloader != null) {
-          DBUser uploader = userService.getDbUser(file.getUploader().getId());
-          if (uploader != null && uploader.getRole().equals(DBUser.Role.EXTERNAL)
-              && (uploader.getRole().equals(DBUser.Role.ADMIN) || uploader.getRole().equals(DBUser.Role.INTERNAL)
-                  || uploader.getRole().equals(DBUser.Role.TRUSTED_EXTERNAL)))
-            downloader.setRole(DBUser.Role.TRUSTED_EXTERNAL);
-          userRepository.save(downloader);
-        }
-      }
-    } catch (WrongAuthenticationException e) {
-    } catch (UnknownUserException e) {
-    }
- 
-  }*/
+  /*
+   * user is not authentified in /fs ...
+   * private void tryToTrust(DBFile file) {
+   * Authentication authentication = SecurityContextHolder
+   * .getContext()
+   * .getAuthentication();
+   * try {
+   * String requesterId = userService.getAuthenticatedUserId(authentication);
+   * if (requesterId != null) {
+   * DBUser downloader = userService.getDbUser(requesterId);
+   * if (downloader != null) {
+   * DBUser uploader = userService.getDbUser(file.getUploader().getId());
+   * if (uploader != null && uploader.getRole().equals(DBUser.Role.EXTERNAL)
+   * && (uploader.getRole().equals(DBUser.Role.ADMIN) ||
+   * uploader.getRole().equals(DBUser.Role.INTERNAL)
+   * || uploader.getRole().equals(DBUser.Role.TRUSTED_EXTERNAL)))
+   * downloader.setRole(DBUser.Role.TRUSTED_EXTERNAL);
+   * userRepository.save(downloader);
+   * }
+   * }
+   * } catch (WrongAuthenticationException e) {
+   * } catch (UnknownUserException e) {
+   * }
+   * 
+   * }
+   */
 
   public DBShare findShare(String downloadId) {
 

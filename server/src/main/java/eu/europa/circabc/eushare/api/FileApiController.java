@@ -201,13 +201,12 @@ public class FileApiController implements FileApi {
       @RequestParam(value = "password", required = false) String password) {
     HttpHeaders responseHeaders = new HttpHeaders();
     try {
-      DownloadReturn downloadReturn=null;
-     
-        downloadReturn = fileService.downloadFile(
-            fileID,
-            password,
-            true);
-     
+      DownloadReturn downloadReturn = null;
+
+      downloadReturn = fileService.downloadFile(
+          fileID,
+          password,
+          true);
 
       ContentDisposition cd = ContentDisposition
           .builder("attachment")
@@ -228,8 +227,7 @@ public class FileApiController implements FileApi {
           HttpStatus.UNAUTHORIZED,
           HttpErrorAnswerBuilder.build401EmptyToString(),
           exc4);
-    } 
-    catch (TooManyRequestsException e) {
+    } catch (TooManyRequestsException e) {
       throw new NoStackTraceResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
           HttpErrorAnswerBuilder.build429EmptyToString(),
           e);
@@ -366,6 +364,10 @@ public class FileApiController implements FileApi {
       throw new ResponseStatusException(
           HttpStatus.INTERNAL_SERVER_ERROR,
           HttpErrorAnswerBuilder.build500EmptyToString());
+    } catch (TooManyRequestsException e) {
+      throw new NoStackTraceResponseStatusException(HttpStatus.TOO_MANY_REQUESTS,
+          HttpErrorAnswerBuilder.build429EmptyToString(),
+          e);
     }
   }
 

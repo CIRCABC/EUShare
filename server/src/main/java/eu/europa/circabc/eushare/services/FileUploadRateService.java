@@ -17,6 +17,7 @@ import eu.europa.circabc.eushare.storage.repository.MonitoringRepository;
 import eu.europa.circabc.eushare.storage.repository.TrustLogRepository;
 import eu.europa.circabc.eushare.storage.repository.UserRepository;
 import eu.europa.circabc.eushare.storage.entity.DBFile;
+import eu.europa.circabc.eushare.storage.entity.DBFileDownloadRate;
 import eu.europa.circabc.eushare.storage.entity.DBFileUploadRate;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
@@ -42,7 +43,10 @@ public class FileUploadRateService {
     private static final int EXTERNAL_THRESHOLD_DAY = 50;
     private static final int TRUSTED_EXTERNAL_THRESHOLD_DAY = 100;
 
-    private static final int TRUSTED_UPLOADS_THRESHOLD = 50;
+    private static final int EXTERNAL_USER_HOURLY_REALTIME = 2;
+    private static final int TRUSTED_EXTERNAL_USER_HOURLY_REALTIME = 2;
+
+    private static final int UPLOADS_TO_BE_TRUSTED_THRESHOLD = 50;
 
     @Autowired
     private UserRepository userRepository;
@@ -94,6 +98,28 @@ public class FileUploadRateService {
                 saveMonitoringAndSendAlert(user, uploadRate.getUploadCount(), DBMonitoring.Event.UPLOAD_RATE_HOUR);
 
         }
+    }
+
+    public boolean realTimeCheck(DBUser user) {
+
+        if (!user.getRole().equals(Role.EXTERNAL) && !user.getRole().equals(Role.TRUSTED_EXTERNAL)) {
+            return false;
+        }
+
+        LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
+    
+        Optional<DBFileUploadRate> optionalLogEntry = repository.findByDateHourAndUser(currentHour, user);
+    
+        int userLimit = user.getRole().equals(Role.TRUSTED_EXTERNAL) ? TRUSTED_EXTERNAL_USER_HOURLY_REALTIME : EXTERNAL_USER_HOURLY_REALTIME;
+    
+        if (optionalLogEntry.isPresent()) {
+            DBFileUploadRate logEntry = optionalLogEntry.get();
+            if (logEntry.getUploadCount() >= userLimit) {
+                return true; 
+            }
+        }
+    
+        return false; 
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
@@ -171,7 +197,7 @@ public class FileUploadRateService {
 
     @Scheduled(cron = "0 0 * * * ?")
     public void upgradeExternalUsers() {
-        int uploadsThreshold = TRUSTED_UPLOADS_THRESHOLD;
+        int uploadsThreshold = UPLOADS_TO_BE_TRUSTED_THRESHOLD;
         List<DBUser> users = userRepository.findExternalUsersWithMoreThanUploadsNotMonitored(DBUser.Role.EXTERNAL,
                 uploadsThreshold);
         for (DBUser user : users) {
