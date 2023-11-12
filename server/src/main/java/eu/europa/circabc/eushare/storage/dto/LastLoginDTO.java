@@ -12,43 +12,50 @@ package eu.europa.circabc.eushare.storage.dto;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-import eu.europa.circabc.eushare.model.LastLog;
+import eu.europa.circabc.eushare.model.LastLogin;
 
-public class LastLogDTO {
+public class LastLoginDTO {
     private String id;
     private String email;
     private String name;
     private String username;
     private Long total_space;
     private LocalDateTime last_logged;
+    private LocalDateTime creation_date;
+    private Integer uploads;
     private String status;
 
-    
-    public LastLogDTO(String id, String email, String name, String username, Long total_space,
-            LocalDateTime last_logged, String status) {
+    public LastLoginDTO(String id, String email, String name, String username, Long total_space,
+            LocalDateTime last_logged, LocalDateTime creation_date, Integer uploads, String status) {
         this.id = id;
         this.email = email;
         this.name = name;
         this.username = username;
         this.total_space = total_space;
         this.last_logged = last_logged;
+        this.creation_date = creation_date;
+        this.uploads = uploads;
         this.status = status;
     }
 
-    public LastLog toLastLog() {
-        LastLog lastLog = new LastLog();
-        lastLog.setId(this.id);
-        lastLog.setEmail(this.email);
-        lastLog.setName(this.name);
-        lastLog.setUsername(this.username);
-        lastLog.setTotalSpace(this.total_space); 
+    public LastLogin toLastLogin() {
+        LastLogin lastLogin = new LastLogin();
+        lastLogin.setId(this.id);
+        lastLogin.setEmail(this.email);
+        lastLogin.setName(this.name);
+        lastLogin.setUsername(this.username);
+        lastLogin.setTotalSpace(this.total_space);
         if (this.last_logged != null) {
-            lastLog.setLastLogged(this.last_logged.atOffset(ZoneOffset.UTC)); // convert from LocalDateTime to OffsetDateTime with UTC offset
+            lastLogin.setLastLogged(this.last_logged.atOffset(ZoneOffset.UTC));
         }
-        lastLog.setStatus(this.status);
-        return lastLog;
+        if (this.creation_date != null) {
+            lastLogin.setCreationDate(this.creation_date.atOffset(ZoneOffset.UTC));
+        }
+        lastLogin.setUploads(this.uploads);
+        lastLogin.setStatus(this.status);
+        return lastLogin;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -84,6 +91,18 @@ public class LastLogDTO {
     }
     public void setLast_logged(LocalDateTime last_logged) {
         this.last_logged = last_logged;
+    }
+    public LocalDateTime getCreationDate() {
+        return creation_date;
+    }
+    public void setCreationDate(LocalDateTime creation_date) {
+        this.creation_date = creation_date;
+    }
+    public Integer getUploads() {
+        return uploads;
+    }
+    public void setUploads(Integer uploads) {
+        this.uploads = uploads;
     }
 
     public String getStatus() {

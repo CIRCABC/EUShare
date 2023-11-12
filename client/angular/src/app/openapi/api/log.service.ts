@@ -30,7 +30,7 @@ import { Observable }                                        from 'rxjs';
 // @ts-ignore
 import { LastDownload } from '../model/lastDownload';
 // @ts-ignore
-import { LastLog } from '../model/lastLog';
+import { LastLogin } from '../model/lastLogin';
 // @ts-ignore
 import { LastUpload } from '../model/lastUpload';
 // @ts-ignore
@@ -145,14 +145,14 @@ export class LogService {
     }
 
     /**
-     * Retrieve all the last logs
+     * Retrieve all the last logins
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public logGetAllLastLogsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<Blob>;
-    public logGetAllLastLogsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpResponse<Blob>>;
-    public logGetAllLastLogsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpEvent<Blob>>;
-    public logGetAllLastLogsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<any> {
+    public logGetAllLastLoginsGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<Blob>;
+    public logGetAllLastLoginsGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpResponse<Blob>>;
+    public logGetAllLastLoginsGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<HttpEvent<Blob>>;
+    public logGetAllLastLoginsGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/octet-stream',}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -170,7 +170,7 @@ export class LogService {
 
 
 
-        let localVarPath = `/log/getAllLastLogs`;
+        let localVarPath = `/log/getAllLastLogins`;
         return this.httpClient.request('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 responseType: "blob",
@@ -349,22 +349,22 @@ export class LogService {
 
     /**
      * Retrieve the last logins
-     * @param pageSize Number of logs returned
+     * @param pageSize Number of logins returned
      * @param pageNumber Page number
-     * @param sortField Field by which the logs will be sorted
-     * @param sortOrder Order in which logs will be sorted (ASC/DESC)
+     * @param sortField Field by which the logins will be sorted
+     * @param sortOrder Order in which logins will be sorted (ASC/DESC)
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastLog>>;
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastLog>>>;
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastLog>>>;
-    public logGetLastLogsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public logGetLastLoginsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Array<LastLogin>>;
+    public logGetLastLoginsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Array<LastLogin>>>;
+    public logGetLastLoginsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Array<LastLogin>>>;
+    public logGetLastLoginsGet(pageSize: number, pageNumber: number, sortField?: string, sortOrder?: 'ASC' | 'DESC', observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
         if (pageSize === null || pageSize === undefined) {
-            throw new Error('Required parameter pageSize was null or undefined when calling logGetLastLogsGet.');
+            throw new Error('Required parameter pageSize was null or undefined when calling logGetLastLoginsGet.');
         }
         if (pageNumber === null || pageNumber === undefined) {
-            throw new Error('Required parameter pageNumber was null or undefined when calling logGetLastLogsGet.');
+            throw new Error('Required parameter pageNumber was null or undefined when calling logGetLastLoginsGet.');
         }
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -412,8 +412,8 @@ export class LogService {
             }
         }
 
-        let localVarPath = `/log/getLastLogs`;
-        return this.httpClient.request<Array<LastLog>>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/log/getLastLogins`;
+        return this.httpClient.request<Array<LastLogin>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 params: localVarQueryParameters,
                 responseType: <any>responseType_,
@@ -426,14 +426,14 @@ export class LogService {
     }
 
     /**
-     * Retrieve the total count of last logs.
+     * Retrieve the total count of last logins.
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public logGetLastLogsMetadataGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Metadata>;
-    public logGetLastLogsMetadataGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Metadata>>;
-    public logGetLastLogsMetadataGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Metadata>>;
-    public logGetLastLogsMetadataGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
+    public logGetLastLoginsMetadataGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<Metadata>;
+    public logGetLastLoginsMetadataGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpResponse<Metadata>>;
+    public logGetLastLoginsMetadataGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'application/json',}): Observable<HttpEvent<Metadata>>;
+    public logGetLastLoginsMetadataGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'application/json',}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -462,7 +462,7 @@ export class LogService {
             }
         }
 
-        let localVarPath = `/log/getLastLogsMetadata`;
+        let localVarPath = `/log/getLastLoginsMetadata`;
         return this.httpClient.request<Metadata>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 responseType: <any>responseType_,

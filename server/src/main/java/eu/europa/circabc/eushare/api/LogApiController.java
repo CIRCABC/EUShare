@@ -10,7 +10,6 @@
 package eu.europa.circabc.eushare.api;
 
 import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
@@ -34,12 +33,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.europa.circabc.eushare.model.LastDownload;
-import eu.europa.circabc.eushare.model.LastLog;
+import eu.europa.circabc.eushare.model.LastLogin;
 import eu.europa.circabc.eushare.model.LastUpload;
 import eu.europa.circabc.eushare.model.Metadata;
 import eu.europa.circabc.eushare.security.AdminOnly;
 import eu.europa.circabc.eushare.storage.dto.LastDownloadDTO;
-import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
+import eu.europa.circabc.eushare.storage.dto.LastLoginDTO;
 import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
 import eu.europa.circabc.eushare.storage.repository.FileLogsRepository;
 
@@ -51,8 +50,8 @@ public class LogApiController implements LogApi {
 
     @AdminOnly
     @Override
-    public ResponseEntity<Resource> logGetAllLastLogsGet() {
-        List<LastLogDTO> logs = fileLogsRepository.getAllLastLogs();
+    public ResponseEntity<Resource> logGetAllLastLoginsGet() {
+        List<LastLoginDTO> logs = fileLogsRepository.getAllLastLogins();
         String csvContent = toCSV(logs);
 
         InputStream stream = new ByteArrayInputStream(csvContent.getBytes(StandardCharsets.UTF_8));
@@ -61,7 +60,7 @@ public class LogApiController implements LogApi {
         HttpHeaders responseHeaders = new HttpHeaders();
         ContentDisposition cd = ContentDisposition
                 .builder("attachment")
-                .filename("last_logs.csv", StandardCharsets.UTF_8)
+                .filename("last_logins.csv", StandardCharsets.UTF_8)
                 .build();
         responseHeaders.setContentDisposition(cd);
         responseHeaders.setContentLength(csvContent.length());
@@ -152,20 +151,20 @@ public class LogApiController implements LogApi {
 
     @AdminOnly
     @Override
-    public ResponseEntity<List<LastLog>> logGetLastLogsGet(
+    public ResponseEntity<List<LastLogin>> logGetLastLoginsGet(
             @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,
             @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,
             @Valid @RequestParam(value = "sortField", required = false) String sortField,
             @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) {
 
-        List<LastLogDTO> lastLogDTOs = fileLogsRepository
-                .getLastLogs(createPageRequest(pageSize, pageNumber), sortField, sortOrder);
+        List<LastLoginDTO> lastLoginDTOs = fileLogsRepository
+                .getLastLogins(createPageRequest(pageSize, pageNumber), sortField, sortOrder);
 
-        List<LastLog> lastLogs = new ArrayList<>();
-        for (LastLogDTO dto : lastLogDTOs) {
-            lastLogs.add(dto.toLastLog());
+        List<LastLogin> lastLogins = new ArrayList<>();
+        for (LastLoginDTO dto : lastLoginDTOs) {
+            lastLogins.add(dto.toLastLogin());
         }
-        return new ResponseEntity<>(lastLogs, HttpStatus.OK);
+        return new ResponseEntity<>(lastLogins, HttpStatus.OK);
     }
 
     @AdminOnly
@@ -195,8 +194,8 @@ public class LogApiController implements LogApi {
     }
 
     @Override
-    public ResponseEntity<Metadata> logGetLastLogsMetadataGet() {
-        long total = fileLogsRepository.countLastLogs();
+    public ResponseEntity<Metadata> logGetLastLoginsMetadataGet() {
+        long total = fileLogsRepository.countLastLogins();
         Metadata metadata = new Metadata();
         metadata.setTotal(total);
         return ResponseEntity.ok(metadata);

@@ -14,15 +14,15 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { LogService } from '../../../openapi/api/log.service';
-import { LastLog } from '../../../openapi/model/lastLog';
+import { LastLogin } from '../../../openapi/model/lastLogin';
 import { CommonModule, DatePipe } from '@angular/common';
 import { SortOrder } from '../../../openapi';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-last-logs',
-  templateUrl: './last-logs.component.html',
-  styleUrls: ['./last-logs.component.scss'],
+  selector: 'app-last-logins',
+  templateUrl: './last-logins.component.html',
+  styleUrls: ['./last-logins.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -34,18 +34,19 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
   ],
 })
-export class LastLogsComponent implements AfterViewInit {
+export class LastLoginsComponent implements AfterViewInit {
   displayedColumns: string[] = [
-    'id',
     'email',
     'name',
     'username',
     'total_space',
     'last_logged',
+    'creation_date',
+    'uploads',
     'status',
   ];
-  data: LastLog[] = [];
-  dataSource = new MatTableDataSource<LastLog>();
+  data: LastLogin[] = [];
+  dataSource = new MatTableDataSource<LastLogin>();
   resultsLength: number = 0;
   isLoadingResults: boolean = true;
   isRateLimitReached: boolean = false;
@@ -63,7 +64,7 @@ export class LastLogsComponent implements AfterViewInit {
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.logService.logGetLastLogsMetadataGet().pipe(
+          return this.logService.logGetLastLoginsMetadataGet().pipe(
             switchMap((metadata) => {
               if (metadata.total) {
                 this.resultsLength = metadata.total;
@@ -95,8 +96,8 @@ export class LastLogsComponent implements AfterViewInit {
     pageSize: number,
     sortField: string,
     sortOrder: SortDirection,
-  ): Observable<LastLog[]> {
-    return this.logService.logGetLastLogsGet(
+  ): Observable<LastLogin[]> {
+    return this.logService.logGetLastLoginsGet(
       pageSize,
       pageIndex,
       sortField,
@@ -117,14 +118,14 @@ export class LastLogsComponent implements AfterViewInit {
 
   downloadFile() {
     this.logService
-      .logGetAllLastLogsGet('body', false)
+      .logGetAllLastLoginsGet('body', false)
       .subscribe((data: Blob) => {
         const blob = new Blob([data], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
 
         const link = document.createElement('a');
         link.href = url;
-        link.download = 'last_logs.csv';
+        link.download = 'last_logins.csv';
 
         document.body.appendChild(link);
         link.click();

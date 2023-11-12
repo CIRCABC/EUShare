@@ -1335,20 +1335,20 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
 
-  /log/getAllLastLogs:
+  /log/getAllLastLogins:
     get:
       tags:
         - log
-      summary: Retrieve all the last logs
+      summary: Retrieve all the last logins
       responses:
         '200':
-          description: A CSV file of all last logs.
+          description: A CSV file of all last logins.
           content:
             application/octet-stream:
               schema:
                 type: string
                 format: binary
-                description: CSV file with last logs
+                description: CSV file with last logins
 
 
   /log/getAllLastUploads:
@@ -1382,11 +1382,11 @@ paths:
                 description: CSV file with last downloads
 
 
-  /log/getLastLogs:
+  /log/getLastLogins:
     parameters:
       - name: pageSize
         in: query
-        description: Number of logs returned
+        description: Number of logins returned
         required: true
         schema:
           type: integer
@@ -1398,13 +1398,13 @@ paths:
           type: integer
       - name: sortField
         in: query
-        description: Field by which the logs will be sorted
+        description: Field by which the logins will be sorted
         required: false
         schema:
           type: string
       - name: sortOrder
         in: query
-        description: Order in which logs will be sorted (ASC/DESC) 
+        description: Order in which logins will be sorted (ASC/DESC) 
         required: false
         schema:
           type: string
@@ -1417,13 +1417,13 @@ paths:
       summary: Retrieve the last logins 
       responses:
         '200':
-          description: A list of last logs
+          description: A list of last logins
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/LastLog'
+                  $ref: '#/components/schemas/LastLogin'
 
   /log/getLastUploads:
     parameters:
@@ -1511,14 +1511,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/LastDownload'
 
-  /log/getLastLogsMetadata:
+  /log/getLastLoginsMetadata:
     get:
       tags:
         - log
-      summary: Retrieve the total count of last logs.
+      summary: Retrieve the total count of last logins.
       responses:
         '200':
-          description: Metadata for last logs
+          description: Metadata for last logins
           content:
             application/json:
               schema:
@@ -2013,7 +2013,7 @@ components:
           enum: [ 'FROZEN', 'AVAILABLE', 'DELETED'] 
       required:
         - status
-    LastLog:
+    LastLogin:
       type: object
       properties:
         id:
@@ -2030,6 +2030,11 @@ components:
         last_logged:
           type: string
           format: date-time
+        creation_date:
+          type: string
+          format: date-time
+        uploads:
+          type: integer
         status:
           type: string
     LastUpload:

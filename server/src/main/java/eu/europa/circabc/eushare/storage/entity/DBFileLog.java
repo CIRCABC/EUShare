@@ -11,7 +11,7 @@ package eu.europa.circabc.eushare.storage.entity;
 
 import eu.europa.circabc.eushare.model.FileLog;
 import eu.europa.circabc.eushare.storage.dto.LastDownloadDTO;
-import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
+import eu.europa.circabc.eushare.storage.dto.LastLoginDTO;
 import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
 
 import java.time.LocalDateTime;
@@ -35,71 +35,52 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "logs")
-@NamedNativeQuery(
-    name = "DBFileLog.getAllLastLogs", 
-    query = "SELECT id, email, name, username, total_space, last_logged, status FROM users order by last_logged",
-    resultSetMapping = "getLastLogsMapping"
-)
+@NamedNativeQuery(name = "DBFileLog.getAllLastLogins", query = "SELECT id, email, name, username, total_space, last_logged, creation_date, uploads, status FROM users order by last_logged", resultSetMapping = "getLastLoginsMapping")
 
-@NamedNativeQuery(
-    name = "DBFileLog.getAllLastUploads", 
-    query = "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification " +
+@NamedNativeQuery(name = "DBFileLog.getAllLastUploads", query = "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification "
+    +
     "FROM shares s, files f, users u " +
-    "WHERE f.uploader_id = u.id AND s.file_file_id = f.file_id order by f.created desc",
-    resultSetMapping = "getLastUploadsMapping"
-)
+    "WHERE f.uploader_id = u.id AND s.file_file_id = f.file_id order by f.created desc", resultSetMapping = "getLastUploadsMapping")
 
-@NamedNativeQuery(
-    name = "DBFileLog.getAllLastDownloads", 
-    query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date " +
+@NamedNativeQuery(name = "DBFileLog.getAllLastDownloads", query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date "
+    +
     "FROM shares s, users u, logs l, files f " +
-    "WHERE l.file_file_id = s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id order by l.download_date desc",
-    resultSetMapping = "getLastDownloadsMapping"
-)
+    "WHERE l.file_file_id = s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id order by l.download_date desc", resultSetMapping = "getLastDownloadsMapping")
 
-@NamedNativeQuery(
-    name = "DBFileLog.getLastLogs", 
-    query = 
-    "SELECT id, email, name, username, total_space, last_logged, status FROM users " +
+@NamedNativeQuery(name = "DBFileLog.getLastLogins", query = "SELECT id, email, name, username, total_space, last_logged, creation_date, uploads, status FROM users "
+    +
     "ORDER BY " +
     "CASE WHEN :sortField = 'email' AND :sortOrder = 'ASC' THEN email END ASC, " +
     "CASE WHEN :sortField = 'name' AND :sortOrder = 'ASC' THEN name END ASC, " +
     "CASE WHEN :sortField = 'username' AND :sortOrder = 'ASC' THEN username END ASC, " +
     "CASE WHEN :sortField = 'total_space' AND :sortOrder = 'ASC' THEN total_space END ASC, " +
     "CASE WHEN :sortField = 'last_logged' AND :sortOrder = 'ASC' THEN last_logged END ASC, " +
+    "CASE WHEN :sortField = 'creation_date' AND :sortOrder = 'ASC' THEN creation_date END ASC, " +
+    "CASE WHEN :sortField = 'uploads' AND :sortOrder = 'ASC' THEN uploads END ASC, " +
     "CASE WHEN :sortField = 'status' AND :sortOrder = 'ASC' THEN status END ASC, " +
     "CASE WHEN :sortField = 'email' AND :sortOrder = 'DESC' THEN email END DESC, " +
     "CASE WHEN :sortField = 'name' AND :sortOrder = 'DESC' THEN name END DESC, " +
     "CASE WHEN :sortField = 'username' AND :sortOrder = 'DESC' THEN username END DESC, " +
     "CASE WHEN :sortField = 'total_space' AND :sortOrder = 'DESC' THEN total_space END DESC, " +
     "CASE WHEN :sortField = 'last_logged' AND :sortOrder = 'DESC' THEN last_logged END DESC, " +
-    "CASE WHEN :sortField = 'status' AND :sortOrder = 'DESC' THEN status END DESC",
-    resultSetMapping = "getLastLogsMapping"
-)
+    "CASE WHEN :sortField = 'creation_date' AND :sortOrder = 'DESC' THEN creation_date END DESC, " +
+    "CASE WHEN :sortField = 'uploads' AND :sortOrder = 'DESC' THEN uploads END DESC, " +
+    "CASE WHEN :sortField = 'status' AND :sortOrder = 'DESC' THEN status END DESC", resultSetMapping = "getLastLoginsMapping")
 
+@SqlResultSetMapping(name = "getLastLoginsMapping", classes = @ConstructorResult(targetClass = LastLoginDTO.class, columns = {
+    @ColumnResult(name = "id"),
+    @ColumnResult(name = "email"),
+    @ColumnResult(name = "name"),
+    @ColumnResult(name = "username"),
+    @ColumnResult(name = "total_space", type = Long.class),
+    @ColumnResult(name = "last_logged", type = LocalDateTime.class),
+    @ColumnResult(name = "creation_date", type = LocalDateTime.class),
+    @ColumnResult(name = "uploads", type = Integer.class),
+    @ColumnResult(name = "status")
+}))
 
-
-
-@SqlResultSetMapping(
-    name = "getLastLogsMapping", 
-    classes = @ConstructorResult(
-        targetClass = LastLogDTO.class, 
-        columns = {
-            @ColumnResult(name = "id"),
-            @ColumnResult(name = "email"),
-            @ColumnResult(name = "name"),
-            @ColumnResult(name = "username"),
-            @ColumnResult(name = "total_space", type = Long.class),
-            @ColumnResult(name = "last_logged", type = LocalDateTime.class),
-            @ColumnResult(name = "status")
-        }
-    )
-)
-
-@NamedNativeQuery(
-    name = "DBFileLog.getLastUploads", 
-    query = 
-    "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification " +
+@NamedNativeQuery(name = "DBFileLog.getLastUploads", query = "SELECT u.email as uploader_email, s.email as share_email, f.filename, f.file_size, f.path, f.status, f.created, s.shorturl, s.download_notification "
+    +
     "FROM shares s, files f, users u " +
     "WHERE f.uploader_id = u.id AND s.file_file_id = f.file_id " +
     "ORDER BY " +
@@ -120,33 +101,22 @@ import org.hibernate.annotations.GenericGenerator;
     "CASE WHEN :sortField = 'status' AND :sortOrder = 'DESC' THEN f.status END DESC, " +
     "CASE WHEN :sortField = 'created' AND :sortOrder = 'DESC' THEN f.created END DESC, " +
     "CASE WHEN :sortField = 'shorturl' AND :sortOrder = 'DESC' THEN s.shorturl END DESC, " +
-    "CASE WHEN :sortField = 'download_notification' AND :sortOrder = 'DESC' THEN s.download_notification END DESC",
-    resultSetMapping = "getLastUploadsMapping"
-)
+    "CASE WHEN :sortField = 'download_notification' AND :sortOrder = 'DESC' THEN s.download_notification END DESC", resultSetMapping = "getLastUploadsMapping")
 
+@SqlResultSetMapping(name = "getLastUploadsMapping", classes = @ConstructorResult(targetClass = LastUploadDTO.class, columns = {
+    @ColumnResult(name = "uploader_email", type = String.class),
+    @ColumnResult(name = "share_email", type = String.class),
+    @ColumnResult(name = "filename", type = String.class),
+    @ColumnResult(name = "file_size", type = Long.class),
+    @ColumnResult(name = "path", type = String.class),
+    @ColumnResult(name = "status", type = String.class),
+    @ColumnResult(name = "created", type = LocalDateTime.class),
+    @ColumnResult(name = "shorturl", type = String.class),
+    @ColumnResult(name = "download_notification", type = Boolean.class)
+}))
 
-@SqlResultSetMapping(
-    name = "getLastUploadsMapping", 
-    classes = @ConstructorResult(
-        targetClass = LastUploadDTO.class, 
-        columns = {
-            @ColumnResult(name = "uploader_email", type = String.class),
-            @ColumnResult(name = "share_email", type = String.class),
-            @ColumnResult(name = "filename", type = String.class),
-            @ColumnResult(name = "file_size", type = Long.class),
-            @ColumnResult(name = "path", type = String.class),
-            @ColumnResult(name = "status", type = String.class),
-            @ColumnResult(name = "created", type = LocalDateTime.class),
-            @ColumnResult(name = "shorturl", type = String.class),
-            @ColumnResult(name = "download_notification", type = Boolean.class)
-        }
-    )
-)
-
-@NamedNativeQuery(
-    name = "DBFileLog.getLastDownloads", 
-    query = 
-    "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date " +
+@NamedNativeQuery(name = "DBFileLog.getLastDownloads", query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date "
+    +
     "FROM shares s, users u, logs l, files f " +
     "WHERE l.file_file_id = s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id " +
     "ORDER BY " +
@@ -165,46 +135,26 @@ import org.hibernate.annotations.GenericGenerator;
     "CASE WHEN :sortField = 'password' AND :sortOrder = 'DESC' THEN f.password END DESC, " +
     "CASE WHEN :sortField = 'shorturl' AND :sortOrder = 'DESC' THEN s.shorturl END DESC, " +
     "CASE WHEN :sortField = 'download_notification' AND :sortOrder = 'DESC' THEN s.download_notification END DESC, " +
-    "CASE WHEN :sortField = 'download_date' AND :sortOrder = 'DESC' THEN l.download_date END DESC",
-    resultSetMapping = "getLastDownloadsMapping"
-)
+    "CASE WHEN :sortField = 'download_date' AND :sortOrder = 'DESC' THEN l.download_date END DESC", resultSetMapping = "getLastDownloadsMapping")
 
-@SqlResultSetMapping(
-    name = "getLastDownloadsMapping", 
-    classes = @ConstructorResult(
-        targetClass = LastDownloadDTO.class, 
-        columns = {
-            @ColumnResult(name = "uploader_email", type = String.class),
-            @ColumnResult(name = "recipient", type = String.class),
-            @ColumnResult(name = "filename", type = String.class),
-            @ColumnResult(name = "path", type = String.class),
-            @ColumnResult(name = "password", type = String.class),
-            @ColumnResult(name = "shorturl", type = String.class),
-            @ColumnResult(name = "download_notification", type = Boolean.class),
-            @ColumnResult(name = "download_date", type = LocalDateTime.class)
-        }
-    )
-)
+@SqlResultSetMapping(name = "getLastDownloadsMapping", classes = @ConstructorResult(targetClass = LastDownloadDTO.class, columns = {
+    @ColumnResult(name = "uploader_email", type = String.class),
+    @ColumnResult(name = "recipient", type = String.class),
+    @ColumnResult(name = "filename", type = String.class),
+    @ColumnResult(name = "path", type = String.class),
+    @ColumnResult(name = "password", type = String.class),
+    @ColumnResult(name = "shorturl", type = String.class),
+    @ColumnResult(name = "download_notification", type = Boolean.class),
+    @ColumnResult(name = "download_date", type = LocalDateTime.class)
+}))
 
-@NamedNativeQuery(
-    name = "DBFileLog.countLastLogs",
-    query = "SELECT COUNT(*) as count FROM users",
-    resultSetMapping = "countLastLogsMapping"
-)
-@SqlResultSetMapping(name = "countLastLogsMapping", columns = @ColumnResult(name = "count", type = Long.class))
+@NamedNativeQuery(name = "DBFileLog.countLastLogins", query = "SELECT COUNT(*) as count FROM users", resultSetMapping = "countLastLoginsMapping")
+@SqlResultSetMapping(name = "countLastLoginsMapping", columns = @ColumnResult(name = "count", type = Long.class))
 
-@NamedNativeQuery(
-    name = "DBFileLog.countLastUploads",
-    query = "SELECT COUNT(*) as count FROM shares s, files f, users u WHERE f.uploader_id=u.id AND s.file_file_id = f.file_id",
-    resultSetMapping = "countLastUploadsMapping"
-)
+@NamedNativeQuery(name = "DBFileLog.countLastUploads", query = "SELECT COUNT(*) as count FROM shares s, files f, users u WHERE f.uploader_id=u.id AND s.file_file_id = f.file_id", resultSetMapping = "countLastUploadsMapping")
 @SqlResultSetMapping(name = "countLastUploadsMapping", columns = @ColumnResult(name = "count", type = Long.class))
 
-@NamedNativeQuery(
-    name = "DBFileLog.countLastDownloads",
-    query = "SELECT COUNT(*) as count FROM shares s, users u, logs l, files f WHERE l.file_file_id=s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id",
-    resultSetMapping = "countLastDownloadsMapping"
-)
+@NamedNativeQuery(name = "DBFileLog.countLastDownloads", query = "SELECT COUNT(*) as count FROM shares s, users u, logs l, files f WHERE l.file_file_id=s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id", resultSetMapping = "countLastDownloadsMapping")
 @SqlResultSetMapping(name = "countLastDownloadsMapping", columns = @ColumnResult(name = "count", type = Long.class))
 
 public class DBFileLog {

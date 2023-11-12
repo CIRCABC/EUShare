@@ -18,15 +18,15 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import eu.europa.circabc.eushare.storage.dto.LastDownloadDTO;
-import eu.europa.circabc.eushare.storage.dto.LastLogDTO;
+import eu.europa.circabc.eushare.storage.dto.LastLoginDTO;
 import eu.europa.circabc.eushare.storage.dto.LastUploadDTO;
 import eu.europa.circabc.eushare.storage.entity.DBFileLog;
 
 public interface FileLogsRepository extends PagingAndSortingRepository<DBFileLog, String> {
     List<DBFileLog> findByFileId(String fileId);
 
-    @Query(name = "DBFileLog.getAllLastLogs", nativeQuery = true)
-    List<LastLogDTO> getAllLastLogs();
+    @Query(name = "DBFileLog.getAllLastLogins", nativeQuery = true)
+    List<LastLoginDTO> getAllLastLogins();
 
     @Query(name = "DBFileLog.getAllLastUploads", nativeQuery = true)
     List<LastUploadDTO> getAllLastUploads();
@@ -34,8 +34,8 @@ public interface FileLogsRepository extends PagingAndSortingRepository<DBFileLog
     @Query(name = "DBFileLog.getAllLastDownloads", nativeQuery = true)
     List<LastDownloadDTO> getAllLastDownloads();
 
-    @Query(name = "DBFileLog.getLastLogs", nativeQuery = true)
-    List<LastLogDTO> getLastLogs(Pageable pageable, @Param("sortField") String sortField,
+    @Query(name = "DBFileLog.getLastLogins", nativeQuery = true)
+    List<LastLoginDTO> getLastLogins(Pageable pageable, @Param("sortField") String sortField,
             @Param("sortOrder") String sortOrder);
 
     @Query(name = "DBFileLog.getLastUploads", nativeQuery = true)
@@ -46,8 +46,8 @@ public interface FileLogsRepository extends PagingAndSortingRepository<DBFileLog
     List<LastDownloadDTO> getLastDownloads(Pageable pageable, @Param("sortField") String sortField,
             @Param("sortOrder") String sortOrder);
 
-    @Query(nativeQuery = true, name = "DBFileLog.countLastLogs")
-    Long countLastLogs();
+    @Query(nativeQuery = true, name = "DBFileLog.countLastLogins")
+    Long countLastLogins();
 
     @Query(nativeQuery = true, name = "DBFileLog.countLastUploads")
     Long countLastUploads();

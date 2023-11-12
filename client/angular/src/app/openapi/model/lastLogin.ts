@@ -20,13 +20,15 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
  */
 
 
-export interface LastLog { 
+export interface LastLogin { 
     id?: string;
     email?: string;
     name?: string;
     username?: string;
     total_space?: number;
     last_logged?: string;
+    creation_date?: string;
+    uploads?: number;
     status?: string;
 }
 

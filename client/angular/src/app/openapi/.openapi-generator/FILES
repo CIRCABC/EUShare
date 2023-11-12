@@ -38,7 +38,7 @@ model/fileRequest.ts
 model/fileResult.ts
 model/fileStatusUpdate.ts
 model/lastDownload.ts
-model/lastLog.ts
+model/lastLogin.ts
 model/lastUpload.ts
 model/metadata.ts
 model/models.ts

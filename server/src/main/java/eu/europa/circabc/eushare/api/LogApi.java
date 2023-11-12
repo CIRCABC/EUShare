@@ -15,7 +15,7 @@
 package eu.europa.circabc.eushare.api;
 
 import eu.europa.circabc.eushare.model.LastDownload;
-import eu.europa.circabc.eushare.model.LastLog;
+import eu.europa.circabc.eushare.model.LastLogin;
 import eu.europa.circabc.eushare.model.LastUpload;
 import eu.europa.circabc.eushare.model.Metadata;
 import io.swagger.annotations.*;
@@ -61,18 +61,18 @@ public interface LogApi {
 
 
     /**
-     * GET /log/getAllLastLogs : Retrieve all the last logs
+     * GET /log/getAllLastLogins : Retrieve all the last logins
      *
-     * @return A CSV file of all last logs. (status code 200)
+     * @return A CSV file of all last logins. (status code 200)
      */
-    @ApiOperation(value = "Retrieve all the last logs", nickname = "logGetAllLastLogsGet", notes = "", response = org.springframework.core.io.Resource.class, tags={ "log", })
+    @ApiOperation(value = "Retrieve all the last logins", nickname = "logGetAllLastLoginsGet", notes = "", response = org.springframework.core.io.Resource.class, tags={ "log", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "A CSV file of all last logs.", response = org.springframework.core.io.Resource.class) })
+        @ApiResponse(code = 200, message = "A CSV file of all last logins.", response = org.springframework.core.io.Resource.class) })
     @GetMapping(
-        value = "/log/getAllLastLogs",
+        value = "/log/getAllLastLogins",
         produces = { "application/octet-stream" }
     )
-    default ResponseEntity<org.springframework.core.io.Resource> logGetAllLastLogsGet() {
+    default ResponseEntity<org.springframework.core.io.Resource> logGetAllLastLoginsGet() {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -155,26 +155,26 @@ public interface LogApi {
 
 
     /**
-     * GET /log/getLastLogs : Retrieve the last logins
+     * GET /log/getLastLogins : Retrieve the last logins
      *
-     * @param pageSize Number of logs returned (required)
+     * @param pageSize Number of logins returned (required)
      * @param pageNumber Page number (required)
-     * @param sortField Field by which the logs will be sorted (optional)
-     * @param sortOrder Order in which logs will be sorted (ASC/DESC) (optional)
-     * @return A list of last logs (status code 200)
+     * @param sortField Field by which the logins will be sorted (optional)
+     * @param sortOrder Order in which logins will be sorted (ASC/DESC) (optional)
+     * @return A list of last logins (status code 200)
      */
-    @ApiOperation(value = "Retrieve the last logins", nickname = "logGetLastLogsGet", notes = "", response = LastLog.class, responseContainer = "List", tags={ "log", })
+    @ApiOperation(value = "Retrieve the last logins", nickname = "logGetLastLoginsGet", notes = "", response = LastLogin.class, responseContainer = "List", tags={ "log", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "A list of last logs", response = LastLog.class, responseContainer = "List") })
+        @ApiResponse(code = 200, message = "A list of last logins", response = LastLogin.class, responseContainer = "List") })
     @GetMapping(
-        value = "/log/getLastLogs",
+        value = "/log/getLastLogins",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<LastLog>> logGetLastLogsGet(@NotNull @ApiParam(value = "Number of logs returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@ApiParam(value = "Field by which the logs will be sorted") @Valid @RequestParam(value = "sortField", required = false) String sortField,@ApiParam(value = "Order in which logs will be sorted (ASC/DESC)", allowableValues = "ASC, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) {
+    default ResponseEntity<List<LastLogin>> logGetLastLoginsGet(@NotNull @ApiParam(value = "Number of logins returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@ApiParam(value = "Field by which the logins will be sorted") @Valid @RequestParam(value = "sortField", required = false) String sortField,@ApiParam(value = "Order in which logins will be sorted (ASC/DESC)", allowableValues = "ASC, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"last_logged\" : \"2000-01-23T04:56:07.000+00:00\", \"name\" : \"name\", \"total_space\" : 0, \"id\" : \"id\", \"email\" : \"email\", \"username\" : \"username\", \"status\" : \"status\" }";
+                    String exampleString = "{ \"last_logged\" : \"2000-01-23T04:56:07.000+00:00\", \"name\" : \"name\", \"total_space\" : 0, \"id\" : \"id\", \"creation_date\" : \"2000-01-23T04:56:07.000+00:00\", \"email\" : \"email\", \"username\" : \"username\", \"uploads\" : 6, \"status\" : \"status\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -186,18 +186,18 @@ public interface LogApi {
 
 
     /**
-     * GET /log/getLastLogsMetadata : Retrieve the total count of last logs.
+     * GET /log/getLastLoginsMetadata : Retrieve the total count of last logins.
      *
-     * @return Metadata for last logs (status code 200)
+     * @return Metadata for last logins (status code 200)
      */
-    @ApiOperation(value = "Retrieve the total count of last logs.", nickname = "logGetLastLogsMetadataGet", notes = "", response = Metadata.class, tags={ "log", })
+    @ApiOperation(value = "Retrieve the total count of last logins.", nickname = "logGetLastLoginsMetadataGet", notes = "", response = Metadata.class, tags={ "log", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "Metadata for last logs", response = Metadata.class) })
+        @ApiResponse(code = 200, message = "Metadata for last logins", response = Metadata.class) })
     @GetMapping(
-        value = "/log/getLastLogsMetadata",
+        value = "/log/getLastLoginsMetadata",
         produces = { "application/json" }
     )
-    default ResponseEntity<Metadata> logGetLastLogsMetadataGet() {
+    default ResponseEntity<Metadata> logGetLastLoginsMetadataGet() {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

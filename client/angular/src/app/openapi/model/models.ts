@@ -18,7 +18,7 @@ export * from './fileRequest';
 export * from './fileResult';
 export * from './fileStatusUpdate';
 export * from './lastDownload';
-export * from './lastLog';
+export * from './lastLogin';
 export * from './lastUpload';
 export * from './metadata';
 export * from './monitoring';

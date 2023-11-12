@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { LastLogsComponent } from './last-logs/last-logs.component';
+import { LastLoginsComponent } from './last-logins/last-logins.component';
 import { LastUploadsComponent } from './last-uploads/last-uploads.component';
 import { LastDownloadsComponent } from './last-downloads/last-downloads.component';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -21,7 +21,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   standalone: true,
   imports: [
     CommonModule,
-    LastLogsComponent,
+    LastLoginsComponent,
     LastUploadsComponent,
     LastDownloadsComponent,
     MatTabsModule,
