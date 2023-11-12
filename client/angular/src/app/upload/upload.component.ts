@@ -322,14 +322,18 @@ export class UploadComponent implements OnInit, AfterViewInit {
       this.userRole === 'EXTERNAL' &&
       this.getEmailArrayLength(emailMessageFormArrayIndex) >= 5
     ) {
-      this.notificationService.addWarningMessageTranslation('max.recepient.reached');
+      this.notificationService.addWarningMessageTranslation(
+        'max.recepient.reached',
+      );
       return;
     }
     if (
       this.userRole === 'TRUSTED_EXTERNAL' &&
       this.getEmailMessageArrayLength() >= 25
     ) {
-      this.notificationService.addWarningMessageTranslation('max.recepient.reached');
+      this.notificationService.addWarningMessageTranslation(
+        'max.recepient.reached',
+      );
       return;
     }
     const formGroupOrNull = <FormGroup | null>(

@@ -43,7 +43,7 @@ export class DownloadFileRowComponent {
   public faFile = faFile;
   public faLock = faLock;
   @Output() ok = new EventEmitter<void>();
-  
+
   constructor(
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
@@ -89,7 +89,6 @@ export class DownloadFileRowComponent {
         this.ok.emit();
       }
     }
-    
   }
 
   openAbuseDialog(): void {

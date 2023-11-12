@@ -69,7 +69,7 @@ const authCodeFlowConfig: AuthConfig = {
     RouterOutlet,
     FooterComponent,
     TranslocoModule,
-    MaintenanceModalComponent
+    MaintenanceModalComponent,
   ],
   standalone: true,
 })

@@ -32,7 +32,7 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     private notificationService: NotificationService,
     private i18nService: I18nService,
     private sessionStorageService: SessionStorageService,
-  ) { }
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -237,9 +237,9 @@ export class HttpErrorInterceptor implements HttpInterceptor {
               break;
             }
             case 406: {
-                this.notificationService.addErrorMessage(
-                  this.i18nService.translate('wrong.captcha'),
-                );
+              this.notificationService.addErrorMessage(
+                this.i18nService.translate('wrong.captcha'),
+              );
               break;
             }
             case 429: {

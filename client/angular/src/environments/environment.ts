@@ -16,4 +16,3 @@ export const environment: Environment = {
   OIDC_BACKEND_CLIENTID: 'my_oidc_backend_clientid',
   OIDC_TOKENENDPOINT: 'https://ecas-mockup:7002/cas/oauth2/token',
 };
-

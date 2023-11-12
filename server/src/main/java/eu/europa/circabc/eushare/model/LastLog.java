@@ -43,7 +43,7 @@ public class LastLog   {
 
   @JsonProperty("last_logged")
   // Eushare
-  @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime lastLogged;

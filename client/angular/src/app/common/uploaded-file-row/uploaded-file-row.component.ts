@@ -68,7 +68,6 @@ export class UploadedFileRowComponent {
     private router: Router,
   ) {}
 
-  
   public async tryDownload() {
     if (this.file.hasPassword) {
       await this.modalService.activateDownloadModal(
@@ -99,7 +98,6 @@ export class UploadedFileRowComponent {
         this.ok.emit();
       }
     }
-    
   }
   public openAddRecipientsModal() {
     this.modalService.activateAddRecipientsModal(

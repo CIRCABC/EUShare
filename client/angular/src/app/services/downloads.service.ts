@@ -21,8 +21,9 @@ export class DownloadsService {
     fileName: string,
     inputPassword?: string,
   ): Promise<'OK' | 'WRONG_PASSWORD' | 'TOO_MANY_DOWNLOADS'> {
-    const url = `${environment.backend_url}/file/${fileId}${inputPassword === undefined ? '' : `?password=${inputPassword}`
-      }`;
+    const url = `${environment.backend_url}/file/${fileId}${
+      inputPassword === undefined ? '' : `?password=${inputPassword}`
+    }`;
 
     const result = await fetch(url, {
       method: 'HEAD',
