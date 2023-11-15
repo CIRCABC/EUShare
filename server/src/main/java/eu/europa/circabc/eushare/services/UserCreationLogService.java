@@ -78,16 +78,26 @@ public class UserCreationLogService {
         if (optionalLog.isPresent()) {
             DBUserCreationLog log = optionalLog.get();
             if (log.getUserCount() > USER_CREATION_THRESHOLD) {
-                DBMonitoring dbMonitoring = new DBMonitoring();
-                dbMonitoring.setStatus(Status.WAITING);
-                dbMonitoring.setCounter(log.getUserCount());
-                dbMonitoring.setEvent(DBMonitoring.Event.USER_CREATION_DAY);
-                dbMonitoring.setDatetime(LocalDateTime.now());
+                LocalDateTime yesterdayStartOfDay = yesterday.toLocalDate().atStartOfDay();
+                DBMonitoring monitoring = monitoringRepository.findByStatusAndEventAndDatetime(
+                        Status.WAITING,
+                        DBMonitoring.Event.USER_CREATION_DAY,
+                        yesterdayStartOfDay);
 
-                monitoringRepository.save(dbMonitoring);
+                if (monitoring == null) {
+                    monitoring = new DBMonitoring();
+                    monitoring.setStatus(Status.WAITING);
+                    monitoring.setCounter(log.getUserCount());
+                    monitoring.setEvent(DBMonitoring.Event.USER_CREATION_DAY);           
+                    monitoring.setDatetime(yesterdayStartOfDay);
+                    monitoringRepository.save(monitoring);
+                } else {
+                    monitoring.setCounter(log.getUserCount());
+                    monitoringRepository.save(monitoring);
+                }
 
                 String message = "A monitoring alert for abnormal number of new users (" + log.getUserCount() +
-                        ") in the last 24h has been raised at :" + dbMonitoring.getDatetime() +
+                        ") in the last 24h has been raised at :" + monitoring.getDatetime() +
                         ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
 
                 try {
