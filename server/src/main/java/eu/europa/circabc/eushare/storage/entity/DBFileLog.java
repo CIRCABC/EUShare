@@ -45,7 +45,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NamedNativeQuery(name = "DBFileLog.getAllLastDownloads", query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date "
     +
     "FROM shares s, users u, logs l, files f " +
-    "WHERE l.file_file_id = s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id AND l.recipient = s.email order by l.download_date desc", resultSetMapping = "getLastDownloadsMapping")
+    "WHERE l.file_file_id = s.file_file_id AND f.file_id = l.file_file_id AND u.id = f.uploader_id AND l.recipient = s.email AND l.download_link = s.shorturl order by l.download_date desc", resultSetMapping = "getLastDownloadsMapping")
 
 @NamedNativeQuery(name = "DBFileLog.getLastLogins", query = "SELECT id, email, name, username, total_space, last_logged, creation_date, uploads, status FROM users "
     +
@@ -118,7 +118,7 @@ import org.hibernate.annotations.GenericGenerator;
 @NamedNativeQuery(name = "DBFileLog.getLastDownloads", query = "SELECT u.email as uploader_email, l.recipient, f.filename, f.path, f.password, s.shorturl, s.download_notification, l.download_date "
     +
     "FROM shares s, users u, logs l, files f " +
-    "WHERE l.file_file_id = f.file_id AND s.file_file_id = l.file_file_id AND u.id = f.uploader_id AND l.recipient = s.email " +
+    "WHERE l.file_file_id = f.file_id AND s.file_file_id = l.file_file_id AND u.id = f.uploader_id AND l.recipient = s.email AND l.download_link = s.shorturl "  +
     "ORDER BY " +
     "CASE WHEN :sortField = 'uploader_email' AND :sortOrder = 'ASC' THEN u.email END ASC, " +
     "CASE WHEN :sortField = 'recipient' AND :sortOrder = 'ASC' THEN l.recipient END ASC, " +
