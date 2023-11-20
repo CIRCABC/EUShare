@@ -20,7 +20,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatIconModule],
 })
 export class MaintenanceModalComponent {
-  modalOpen: boolean = true;
+  modalOpen = true;
 
   constructor(private maintenanceService: MaintenanceService) {
     this.maintenanceService.getModalActionObservable().subscribe((isOpen) => {

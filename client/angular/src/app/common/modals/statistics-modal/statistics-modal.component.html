@@ -14,8 +14,9 @@
         <!-- Left side -->
         <div class="level-item has-text-centered">
           <p>
-            <strong>{{ modalFileName }}</strong> {{ 'has.been.downloaded' | transloco }}
-            <strong>{{ fileLogs.length }}</strong> {{'times' | transloco }}
+            <strong>{{ modalFileName }}</strong>
+            {{ 'has.been.downloaded' | transloco }}
+            <strong>{{ fileLogs.length }}</strong> {{ 'times' | transloco }}
           </p>
         </div>
       </div>
@@ -30,27 +31,35 @@
         </caption>
         <thead>
           <tr>
-            <th><abbr title="Downloader">{{ 'downloader' | transloco }}</abbr></th>
-            <th><abbr title="Date">{{ 'date' | transloco }}</abbr></th>
-            <th><abbr title="Link">{{ 'download.link' | transloco }}</abbr></th>
+            <th
+              ><abbr title="Downloader">{{
+                'downloader' | transloco
+              }}</abbr></th
+            >
+            <th
+              ><abbr title="Date">{{ 'date' | transloco }}</abbr></th
+            >
+            <th
+              ><abbr title="Link">{{ 'download.link' | transloco }}</abbr></th
+            >
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let fileLog of fileLogs; let i = index"
-            [attr.data-index]="i"
-          >
+          @for (fileLog of fileLogs; track fileLog; let i = $index) {
+          <tr [attr.data-index]="i">
             <td>
-              <span *ngIf="fileLog.recipient !== ''">
+              @if (fileLog.recipient !== '') {
+              <span>
                 {{
                   fileLog.recipient.length > 35
-                    ? (fileLog.recipient | lowercase | slice: 0:35) + ".."
-                    : ((fileLog.recipient === ""
-                        ? "Anonymous"
+                    ? (fileLog.recipient | lowercase | slice: 0:35) + '..'
+                    : ((fileLog.recipient === ''
+                        ? 'Anonymous'
                         : fileLog.recipient
                       ) | lowercase)
                 }}
               </span>
+              }
             </td>
             <td>
               {{ fileLog.downloadDate }}
@@ -59,6 +68,7 @@
               {{ formatLink(fileLog.downloadLink) }}
             </td>
           </tr>
+          }
         </tbody>
       </table>
     </section>

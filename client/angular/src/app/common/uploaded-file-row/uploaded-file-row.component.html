@@ -1,14 +1,17 @@
-<div class="level filecontainer" >
+<div class="level filecontainer">
   <!-- Left side -->
   <div class="level-left">
     <div class="level-item has-text-centered">
-      <fa-icon *ngIf="!file.hasPassword" [icon]="faFile"></fa-icon>
-      <fa-icon *ngIf="file.hasPassword" [icon]="faLock"></fa-icon>
+      @if (!file.hasPassword) {
+      <fa-icon [icon]="faFile"></fa-icon>
+      } @if (file.hasPassword) {
+      <fa-icon [icon]="faLock"></fa-icon>
+      }
       <br />
       <p class="subtitle is-5 filename">
         <strong>
           {{
-          file.name.length > 25 ? (file.name | slice: 0:25) + ".." : file.name
+            file.name.length > 25 ? (file.name | slice: 0:25) + '..' : file.name
           }}
         </strong>
       </p>
@@ -23,7 +26,7 @@
         <div class="level-item">
           <div class="level-right">
             <p class="subtitle is-6">
-              {{ "expires.on" | transloco }} {{ file.expirationDate }}
+              {{ 'expires.on' | transloco }} {{ file.expirationDate }}
             </p>
           </div>
         </div>
@@ -34,55 +37,80 @@
   <div class="level">
     <div class="level-item">
       <a (click)="displayDownloads()">
-        {{ "downloaded.times" | transloco: { count: file.fileLogs.length } }}
+        {{ 'downloaded.times' | transloco: { count: file.fileLogs.length } }}
       </a>
     </div>
-    <div *ngIf="displayAsUploader" class="level-item">&nbsp;|&nbsp;
-    </div>
+    @if (displayAsUploader) {
+    <div class="level-item">&nbsp;|&nbsp; </div>
+    }
     <div class="level-item">
-      <a *ngIf="displayAsUploader" (click)="displayRecipients()">
-        {{ "shared.times" | transloco: { count: file.sharedWith.length } }}
+      @if (displayAsUploader) {
+      <a (click)="displayRecipients()">
+        {{ 'shared.times' | transloco: { count: file.sharedWith.length } }}
       </a>
-     <span *ngIf="displayAsAdministrator || file.status !== 'AVAILABLE' "  [ngClass]="[ file.status === 'AVAILABLE' ? 'status-available' : 'status-fail-or-pending']" >&nbsp;( {{ file.status }} ) </span>
+      } @if (displayAsAdministrator || file.status !== 'AVAILABLE' ) {
+      <span
+        [ngClass]="[
+          file.status === 'AVAILABLE'
+            ? 'status-available'
+            : 'status-fail-or-pending'
+        ]"
+        >&nbsp;( {{ file.status }} )
+      </span>
+      }
     </div>
 
-    <div class="level-item"> 
+    <div class="level-item">
       <div class="navbar-menu is-active" id="navMenu">
-        <div class="navbar-item has-dropdown is-hoverable" (mouseenter)="displayMore()" (tap)="displayMore()"
-          (mouseleave)="displayLess()">
+        <div
+          class="navbar-item has-dropdown is-hoverable"
+          (mouseenter)="displayMore()"
+          (tap)="displayMore()"
+          (mouseleave)="displayLess()"
+        >
           <a class="navbar-link">
-            {{ "actions" | transloco }}
+            {{ 'actions' | transloco }}
           </a>
 
-          <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
-            <a class="navbar-item" *ngIf="displayAsUploader" (click)="openAddRecipientsModal()">{{
-              "add.recipient" | transloco }}
+          @if (isMoreDisplayed) {
+          <div class="navbar-dropdown">
+            @if (displayAsUploader) {
+            <a class="navbar-item" (click)="openAddRecipientsModal()"
+              >{{ 'add.recipient' | transloco }}
             </a>
+            }
             <a class="navbar-item" (click)="tryDownload()">
-              {{ "download" | transloco }}
+              {{ 'download' | transloco }}
             </a>
 
-            <a class="navbar-item" *ngIf="displayAsAdministrator" (click)="openExpirationDateModal()">{{
-              "change.expirationdate" | transloco }}
+            @if (displayAsAdministrator) {
+            <a class="navbar-item" (click)="openExpirationDateModal()"
+              >{{ 'change.expirationdate' | transloco }}
             </a>
-            <a class="navbar-item" *ngIf="displayAsAdministrator && file.status !== 'FROZEN' " (click)="freeze()">Freeze
-            </a>
-            <a class="navbar-item" *ngIf="displayAsAdministrator && file.status === 'FROZEN'" (click)="unfreeze()">Unfreeze
-            </a>
+            } @if (displayAsAdministrator && file.status !== 'FROZEN' ) {
+            <a class="navbar-item" (click)="freeze()">Freeze </a>
+            } @if (displayAsAdministrator && file.status === 'FROZEN') {
+            <a class="navbar-item" (click)="unfreeze()">Unfreeze </a>
+            }
             <hr class="navbar-divider" />
             <a class="navbar-item" (click)="delete()">
-              {{ "delete" | transloco }}
+              {{ 'delete' | transloco }}
             </a>
           </div>
+          }
         </div>
       </div>
     </div>
-
   </div>
-
 </div>
-<div *ngIf="isLoading">
+@if (isLoading) {
+<div>
   {{ percentageDownloaded }}%
-  <progress class="progress is-success" value="{{ percentageDownloaded }}" max="100">{{ percentageDownloaded
-    }}%</progress>
+  <progress
+    class="progress is-success"
+    value="{{ percentageDownloaded }}"
+    max="100"
+    >{{ percentageDownloaded }}%</progress
+  >
 </div>
+}

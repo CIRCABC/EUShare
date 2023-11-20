@@ -28,7 +28,7 @@
         </div>
       </div>
       <div class="field">
-        <label class="label">{{ "used.space" | transloco }}</label>
+        <label class="label">{{ 'used.space' | transloco }}</label>
         <div class="control">
           <input
             readonly="readonly"
@@ -41,7 +41,7 @@
       </div>
 
       <div class="field">
-        <label class="label">{{ "total.space" | transloco }}</label>
+        <label class="label">{{ 'total.space' | transloco }}</label>
         <div class="control">
           <input
             readonly="readonly"
@@ -53,7 +53,9 @@
         </div>
       </div>
 
-      <div *ngIf="(userInfo.role?.toString() === 'API_KEY' ) || ( userInfo.role?.toString() === 'ADMIN')" class="field">
+      @if ((userInfo.role?.toString() === 'API_KEY' ) || (
+      userInfo.role?.toString() === 'ADMIN')) {
+      <div class="field">
         <label class="label">API Key</label>
         <div class="control">
           <div class="button" (click)="getApiKey()">Generate new API key</div>
@@ -65,9 +67,8 @@
             value="{{ apiKey }}"
           />
         </div>
-
       </div>
-
+      }
     </div>
     <div class="column is-one-half"></div>
   </div>

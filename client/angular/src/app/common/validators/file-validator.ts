@@ -15,7 +15,7 @@ import { NotificationService } from '../notification/notification.service';
 export function fileSizeValidator(
   notMoreThanInBytes: number,
   notificationService: NotificationService,
-  message: string,
+  message: string
 ): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
     const file: File = control.value;

@@ -3,42 +3,63 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        {{ "add.recipient.to" | transloco }} <br />
+        {{ 'add.recipient.to' | transloco }} <br />
         <strong>
           {{
-          modalFileName.length > 25
-          ? (modalFileName | slice: 0:25) + "..."
-          : modalFileName
+            modalFileName.length > 25
+              ? (modalFileName | slice: 0:25) + '...'
+              : modalFileName
           }}
         </strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
-      <form [formGroup]="sharedWithFormGroup" (ngSubmit)="onSubmit()" #fmod="ngForm">
+      <form
+        [formGroup]="sharedWithFormGroup"
+        (ngSubmit)="onSubmit()"
+        #fmod="ngForm"
+      >
         <div>
-          <app-email-input formControlName="email" [showAddRecipient]="false"></app-email-input>
-          <app-message-text-area [isOptional]="false" formControlName="message"></app-message-text-area>
+          <app-email-input
+            formControlName="email"
+            [showAddRecipient]="false"
+          ></app-email-input>
+          <app-message-text-area
+            [isOptional]="false"
+            formControlName="message"
+          ></app-message-text-area>
         </div>
         <div class="column is-half-desktop emailColumn">
-          <input type="checkbox" id="downloadNotification" formControlName="downloadNotification" class="checkbox"
-             /> {{ 'download.notification.help' | transloco }}
+          <input
+            type="checkbox"
+            id="downloadNotification"
+            formControlName="downloadNotification"
+            class="checkbox"
+          />
+          {{ 'download.notification.help' | transloco }}
         </div>
         <div>
-          <button class="button" [class.is-loading]="uploadInProgress" type="submit"
-            [disabled]="!sharedWithFormGroup.valid">
-            {{ "submit" | transloco }}
+          <button
+            class="button"
+            [class.is-loading]="uploadInProgress"
+            type="submit"
+            [disabled]="!sharedWithFormGroup.valid"
+          >
+            {{ 'submit' | transloco }}
           </button>
         </div>
-
       </form>
     </section>
     <footer class="modal-card-foot">
       <!-- workaround for unknow bug ... submit button not responding if not duplicated here ?!? -->
-      <button class="button" style=" visibility: hidden;" type="submit" [disabled]="!sharedWithFormGroup.valid">
-
+      <button
+        class="button"
+        style="visibility: hidden"
+        type="submit"
+        [disabled]="!sharedWithFormGroup.valid"
+      >
       </button>
     </footer>
-
   </div>
 </div>

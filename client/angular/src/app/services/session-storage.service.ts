@@ -113,7 +113,7 @@ export class SessionStorageService {
   public getAccessToken(): Observable<BearerToken> {
     let headers = new HttpHeaders().set(
       'Content-Type',
-      'application/x-www-form-urlencoded',
+      'application/x-www-form-urlencoded'
     );
     headers = headers.set('Accept', 'application/json');
 
@@ -144,7 +144,7 @@ export class SessionStorageService {
         headers,
         params,
         withCredentials: true,
-      },
+      }
     );
   }
 
@@ -154,7 +154,7 @@ export class SessionStorageService {
     protected httpClient: HttpClient,
     @Optional() @Inject(BASE_PATH) basePath: string,
     @Optional() configuration: Configuration,
-    private router: Router,
+    private router: Router
   ) {
     if (configuration) {
       this.configuration = configuration;

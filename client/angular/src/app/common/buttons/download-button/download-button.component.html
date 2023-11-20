@@ -1,15 +1,16 @@
 <div class="control" [class.is-expanded]="isFileHasPassword">
+  @if (isFileHasPassword) {
   <input
-    *ngIf="isFileHasPassword"
     class="input is-info"
     type="password"
     placeholder="Type password here"
     [(ngModel)]="inputPassword"
     (keyup.enter)="download()"
   />
+  }
 </div>
 <div class="control">
   <a class="button" data-cy="download" (click)="download()">
-    {{ "download" | transloco }}
+    {{ 'download' | transloco }}
   </a>
 </div>

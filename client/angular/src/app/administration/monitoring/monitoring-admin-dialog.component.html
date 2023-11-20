@@ -1,56 +1,118 @@
 <form #form="ngForm">
-    <div class="modal is-active">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title"><strong>Monitoring Alerts Moderation</strong> </p>
-                <button class="delete" aria-label="close" (click)="cancel()"></button>
-            </header>
-            <section class="modal-card-body" aria-labelledby="modalTitle" aria-modal="true">
-                <mat-dialog-content>
-                    <div><strong>Date/time:</strong> {{ monitoringDetails.datetime | date:'yy-MM-dd HH:mm' }}</div>
-                    <div><strong>Event:</strong> {{ formatString(monitoringDetails.event) }}</div>
-                    <div><strong>Number of occurences:</strong> {{ monitoringDetails.counter }}</div>
+  <div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"
+          ><strong>Monitoring Alerts Moderation</strong>
+        </p>
+        <button class="delete" aria-label="close" (click)="cancel()"></button>
+      </header>
+      <section
+        class="modal-card-body"
+        aria-labelledby="modalTitle"
+        aria-modal="true"
+      >
+        <mat-dialog-content>
+          <div
+            ><strong>Date/time:</strong>
+            {{ monitoringDetails.datetime | date: 'yy-MM-dd HH:mm' }}</div
+          >
+          <div
+            ><strong>Event:</strong>
+            {{ formatString(monitoringDetails.event) }}</div
+          >
+          <div
+            ><strong>Number of occurences:</strong>
+            {{ monitoringDetails.counter }}</div
+          >
 
-                    <div *ngIf="monitoringDetails.filename"><strong>File Name:</strong> {{ monitoringDetails.filename }}</div>
-                    <div *ngIf="monitoringDetails.uploader_name"><strong>Uploader Name:</strong> {{ monitoringDetails.uploader_name }}</div>
-                    <div *ngIf="monitoringDetails.uploader_email"><strong>Uploader Email:</strong> {{ monitoringDetails.uploader_email }}</div>
-                    <div *ngIf="monitoringDetails.description"><strong>Details:</strong> {{ monitoringDetails.description }}</div>
-                    
-                    <div *ngIf="monitoringDetails.event && monitoringDetails.event.includes('DOWNLOAD')">
-                        <strong>User blame:</strong>                 
-                        <select [(ngModel)]="monitoringDetails.uploader_status" name="uploader_status">
-                            <option *ngFor="let statusKey of statusKeys" [value]="statusKey">
-                                {{ statusKey }} : {{ statusLabels[statusKey] }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div *ngIf="monitoringDetails.event && monitoringDetails.event.includes('UPLOAD')">
-                        <strong>User blame:</strong>                 
-                        <select [(ngModel)]="monitoringDetails.uploader_status" name="uploader_status">
-                            <option *ngFor="let statusKey of statusKeys" [value]="statusKey">
-                                {{ statusKey }} : {{ statusLabelsUploads[statusKey] }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div *ngIf="monitoringDetails.event && monitoringDetails.event.includes('USER')">
-                        <strong>User blame:</strong>                 
-                        <select [(ngModel)]="monitoringDetails.uploader_status" name="uploader_status">
-                            <option *ngFor="let statusKey of statusKeys" [value]="statusKey">
-                                {{ statusKey }} : {{ statusLabelsUser[statusKey] }}
-                            </option>
-                        </select>
-                    </div>
-                </mat-dialog-content>
-            </section>
-            <footer class="modal-card-foot">
-                <div mat-dialog-actions>
-                    <button class="button" mat-raised-button color="primary" type="button" (click)="save()">save</button>
-                    <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">cancel</button>
-                </div>
-            </footer>
+          @if (monitoringDetails.filename) {
+          <div
+            ><strong>File Name:</strong> {{ monitoringDetails.filename }}</div
+          >
+          } @if (monitoringDetails.uploader_name) {
+          <div
+            ><strong>Uploader Name:</strong>
+            {{ monitoringDetails.uploader_name }}</div
+          >
+          } @if (monitoringDetails.uploader_email) {
+          <div
+            ><strong>Uploader Email:</strong>
+            {{ monitoringDetails.uploader_email }}</div
+          >
+          } @if (monitoringDetails.description) {
+          <div
+            ><strong>Details:</strong> {{ monitoringDetails.description }}</div
+          >
+          } @if (monitoringDetails.event &&
+          monitoringDetails.event.includes('DOWNLOAD')) {
+          <div>
+            <strong>User blame:</strong>
+            <select
+              [(ngModel)]="monitoringDetails.uploader_status"
+              name="uploader_status"
+            >
+              @for (statusKey of statusKeys; track statusKey) {
+              <option [value]="statusKey">
+                {{ statusKey }} : {{ statusLabels[statusKey] }}
+              </option>
+              }
+            </select>
+          </div>
+          } @if (monitoringDetails.event &&
+          monitoringDetails.event.includes('UPLOAD')) {
+          <div>
+            <strong>User blame:</strong>
+            <select
+              [(ngModel)]="monitoringDetails.uploader_status"
+              name="uploader_status"
+            >
+              @for (statusKey of statusKeys; track statusKey) {
+              <option [value]="statusKey">
+                {{ statusKey }} : {{ statusLabelsUploads[statusKey] }}
+              </option>
+              }
+            </select>
+          </div>
+          } @if (monitoringDetails.event &&
+          monitoringDetails.event.includes('USER')) {
+          <div>
+            <strong>User blame:</strong>
+            <select
+              [(ngModel)]="monitoringDetails.uploader_status"
+              name="uploader_status"
+            >
+              @for (statusKey of statusKeys; track statusKey) {
+              <option [value]="statusKey">
+                {{ statusKey }} : {{ statusLabelsUser[statusKey] }}
+              </option>
+              }
+            </select>
+          </div>
+          }
+        </mat-dialog-content>
+      </section>
+      <footer class="modal-card-foot">
+        <div mat-dialog-actions>
+          <button
+            class="button"
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="save()"
+            >save</button
+          >
+          <button
+            class="button"
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="cancel()"
+            >cancel</button
+          >
         </div>
+      </footer>
     </div>
+  </div>
 </form>

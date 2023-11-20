@@ -1,5 +1,8 @@
-<label class="label" *ngIf="isOptional">{{ 'text.optional' | transloco }}</label>
-<label class="label" *ngIf="!isOptional">{{ 'text' | transloco }}</label>
+@if (isOptional) {
+<label class="label">{{ 'text.optional' | transloco }}</label>
+} @if (!isOptional) {
+<label class="label">{{ 'text' | transloco }}</label>
+}
 <textarea
   #textarea
   [disabled]="disabled"
@@ -8,4 +11,6 @@
   class="textarea"
   placeholder="{{ 'please.enter.message' | transloco }}"
 ></textarea>
-<label class="label error" *ngIf="errorMessage">{{errorMessage}}</label>
+@if (errorMessage) {
+<label class="label error">{{ errorMessage }}</label>
+}

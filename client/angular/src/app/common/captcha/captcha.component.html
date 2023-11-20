@@ -4,7 +4,9 @@
   </div>
 
   <div class="field">
-    <label for="answer" class="mandatory">{{'label.answer' | transloco}}</label>
+    <label for="answer" class="mandatory">{{
+      'label.answer' | transloco
+    }}</label>
     <input id="answer" type="text" [formControl]="answer" />
   </div>
 
@@ -13,7 +15,10 @@
     <div class="captcha-button">
       <a (click)="refresh()">
         <img src="img/icon-autoupload-blue.svg" alt="" width="20px" />
-        <span  class="button"><i class="material-icons">refresh</i>{{ 'label.refresh' | transloco }}</span>
+        <span class="button"
+          ><i class="material-icons">refresh</i
+          >{{ 'label.refresh' | transloco }}</span
+        >
       </a>
     </div>
 
@@ -28,12 +33,13 @@
 
       <a (click)="playAudio.play()">
         <img src="img/icon-audio-blue.svg" alt="" width="20px" />
-        <span  class="button"><i class="material-icons">volume_up</i>{{ 'label.captcha.audio' | transloco }}</span>
+        <span class="button"
+          ><i class="material-icons">volume_up</i
+          >{{ 'label.captcha.audio' | transloco }}</span
+        >
       </a>
     </div>
 
     <div>Powered by EU CAPTCHA</div>
   </div>
 </div>
-
-

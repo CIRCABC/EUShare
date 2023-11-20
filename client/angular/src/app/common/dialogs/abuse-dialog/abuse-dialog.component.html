@@ -1,63 +1,104 @@
 <form #abuseForm="ngForm" (ngSubmit)="submitForm()">
-  
-    <div class="modal is-active">
-        <div class="modal-background"></div>
-        <div class="modal-card">
+  <div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"
+          ><strong>{{ 'abuse.title' | transloco }}</strong>
+        </p>
+        <button
+          class="delete"
+          aria-label="close"
+          mat-dialog-close
+          (click)="cancel()"
+        ></button>
+      </header>
 
-            <header class="modal-card-head">
-                <p class="modal-card-title"><strong>{{ 'abuse.title' | transloco }}</strong> </p>
-                <button class="delete" aria-label="close" mat-dialog-close (click)="cancel()"></button>
-            </header>
+      <section class="modal-card-body">
+        {{ 'abuse.please.refer.to' | transloco }}
+        <a
+          href="https://circabc.development.europa.eu/ui/help/legal-notice/terms"
+          >{{ 'label.terms' | transloco }}</a
+        >
+        {{ 'abuse.please.refer.to2' | transloco }}
 
-            <section class="modal-card-body">
-                {{ 'abuse.please.refer.to' | transloco }} <a
-                    href="https://circabc.development.europa.eu/ui/help/legal-notice/terms">{{ 'label.terms' | transloco
-                    }}</a> {{ 'abuse.please.refer.to2' | transloco }}
-                    
-                <div>
-                    <div>
-                        <p><br /></p>{{ 'abuse.why' | transloco }}<p><br /></p>
-                        <div *ngFor="let reason of abuseReasons">
-                            <input type="radio" name="abuseReason" [(ngModel)]="abuseReport.reason" [value]="reason">
-                            {{ reason | transloco }}
-                        </div>
-                    </div>
-                    <p><br /></p>
-                    {{ 'abuse.more.info' | transloco }} :
-                    <div>
-                        <div>
-                            <textarea matInput name="description" [(ngModel)]="abuseReport.description" rows="3"
-                                cols="60"></textarea>
-                        </div>
-                    </div>
-                    <br />
-                    <div *ngIf="!authentified">{{ 'abuse.your.email' | transloco }}:</div>
-                    
-                    <ng-container *ngIf="!authentified">
-                        <div>
-                            <input matInput name="reporter" [(ngModel)]="abuseReport.reporter" required>
-                        </div>
-                    </ng-container>
-                </div>
-                <div *ngIf="!authentified" class="wrap-box captcha" >
-                    <cbc-captcha languageCode="en"></cbc-captcha>
-                  </div>
+        <div>
+          <div>
+            <p><br /></p>{{ 'abuse.why' | transloco }}<p><br /></p>
+            @for (reason of abuseReasons; track reason) {
+            <div>
+              <input
+                type="radio"
+                name="abuseReason"
+                [(ngModel)]="abuseReport.reason"
+                [value]="reason"
+              />
+              {{ reason | transloco }}
+            </div>
+            }
+          </div>
+          <p><br /></p>
+          {{ 'abuse.more.info' | transloco }} :
+          <div>
+            <div>
+              <textarea
+                matInput
+                name="description"
+                [(ngModel)]="abuseReport.description"
+                rows="3"
+                cols="60"
+              ></textarea>
+            </div>
+          </div>
+          <br />
+          @if (!authentified) {
+          <div>{{ 'abuse.your.email' | transloco }}:</div>
+          } @if (!authentified) {
 
-            </section>
+          <div>
+            <input
+              matInput
+              name="reporter"
+              [(ngModel)]="abuseReport.reporter"
+              required
+            />
+          </div>
 
-            <footer class="modal-card-foot">
-                <div mat-dialog-actions>
-                    <button class="button" [disabled]="abuseForm.invalid || (isCaptchaInValid() && !authentified) "
-                        mat-raised-button color="primary" type="submit">
-                         {{ 'submit' | transloco }}
-                    </button>
-                    <button class="button" [mat-dialog-close]="abuseReport"  mat-raised-button color="warn" type="button" mat-dialog-close
-                        (click)="cancel()">
-                        {{ 'cancel' | transloco }}
-                    </button>
-                </div>
-            </footer>
+          }
         </div>
-    </div>
+        @if (!authentified) {
+        <div class="wrap-box captcha">
+          <cbc-captcha languageCode="en"></cbc-captcha>
+        </div>
+        }
+      </section>
 
+      <footer class="modal-card-foot">
+        <div mat-dialog-actions>
+          <button
+            class="button"
+            [disabled]="
+              abuseForm.invalid || (isCaptchaInValid() && !authentified)
+            "
+            mat-raised-button
+            color="primary"
+            type="submit"
+          >
+            {{ 'submit' | transloco }}
+          </button>
+          <button
+            class="button"
+            [mat-dialog-close]="abuseReport"
+            mat-raised-button
+            color="warn"
+            type="button"
+            mat-dialog-close
+            (click)="cancel()"
+          >
+            {{ 'cancel' | transloco }}
+          </button>
+        </div>
+      </footer>
+    </div>
+  </div>
 </form>

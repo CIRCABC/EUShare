@@ -68,7 +68,7 @@ export class ModalsService {
   public activateDownloadModal(
     modalFileId: string,
     modalFileName: string,
-    modalFileHasPassword: boolean,
+    modalFileHasPassword: boolean
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[0]) {
       this.deactivateAllModals();
@@ -95,7 +95,7 @@ export class ModalsService {
 
   public activateAddRecipientsModal(
     modalFileName: string,
-    modalFileId: string,
+    modalFileId: string
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[2]) {
       this.deactivateAllModals();
@@ -112,7 +112,7 @@ export class ModalsService {
     modalFileName: string,
     modalFileId: string,
     recipients: Recipient[],
-    modalFileHasPassword: boolean,
+    modalFileHasPassword: boolean
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[3]) {
       this.deactivateAllModals();
@@ -129,7 +129,7 @@ export class ModalsService {
 
   public activateDeleteConfirmModal(
     modalFileName: string,
-    modalFileId: string,
+    modalFileId: string
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[4]) {
       this.deactivateAllModals();
@@ -145,7 +145,7 @@ export class ModalsService {
   public activateStatisticsModal(
     modalFileName: string,
     modalFileId: string,
-    fileLogs: FileLog[],
+    fileLogs: FileLog[]
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[5]) {
       this.deactivateAllModals();
@@ -162,7 +162,7 @@ export class ModalsService {
   public activateChangeExpirationDateModal(
     modalFileName: string,
     modalFileId: string,
-    expirationDate: string,
+    expirationDate: string
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[6]) {
       this.deactivateAllModals();
@@ -178,7 +178,7 @@ export class ModalsService {
 
   public activateOverwriteConfirmModal(
     modalFileName: string,
-    modalFileId: string,
+    modalFileId: string
   ) {
     if (this.activeModal && this.activeModal !== this.possibleActiveModals[7]) {
       this.deactivateAllModals();

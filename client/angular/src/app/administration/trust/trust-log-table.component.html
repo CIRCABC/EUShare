@@ -1,6 +1,5 @@
 <div class="trust-log-table-container">
   <table mat-table [dataSource]="dataSource" matSort>
-
     <!-- Date Column -->
     <ng-container matColumnDef="trustDate">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
@@ -27,7 +26,10 @@
 
     <!-- Header and Row Declarations -->
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-paginator
+    [pageSizeOptions]="[5, 10, 20]"
+    showFirstLastButtons
+  ></mat-paginator>
 </div>

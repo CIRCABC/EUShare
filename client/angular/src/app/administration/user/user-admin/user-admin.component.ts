@@ -89,7 +89,7 @@ export class UserAdminComponent {
   constructor(
     private usersApi: UsersService,
     private notificationService: NotificationService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   public async resultsNextPage() {
@@ -106,8 +106,8 @@ export class UserAdminComponent {
         this.pageNumber,
         this.searchString,
         this.searchActive,
-        this.sortBy,
-      ),
+        this.sortBy
+      )
     );
     this.hasNextPage = !(await this.isLastPage());
   }
@@ -122,8 +122,8 @@ export class UserAdminComponent {
         this.pageNumber,
         this.searchString,
         this.searchActive,
-        this.sortBy,
-      ),
+        this.sortBy
+      )
     );
     this.hasNextPage = !(await this.isLastPage());
   }
@@ -143,8 +143,8 @@ export class UserAdminComponent {
           this.pageNumber,
           this.searchString,
           this.searchActive,
-          this.sortBy,
-        ),
+          this.sortBy
+        )
       );
       this.hasNextPage = !(await this.isLastPage());
       this.isAfterSearch = true;
@@ -172,7 +172,7 @@ export class UserAdminComponent {
     this.hideUploadedFiles();
     this.selectedUserInfoIndex = i;
     this.selectedValueInGigaBytes = Math.floor(
-      this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024),
+      this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
     );
     const role = this.userInfoArray[i].role;
     const statu = this.userInfoArray[i].status;
@@ -202,8 +202,8 @@ export class UserAdminComponent {
           this.pageNumber + 1,
           this.searchString,
           this.searchActive,
-          this.sortBy,
-        ),
+          this.sortBy
+        )
       );
       return nextPage.length === 0;
     }
@@ -221,13 +221,13 @@ export class UserAdminComponent {
       await firstValueFrom(
         this.usersApi.putUserUserInfo(
           this.selectedUserInfo.id,
-          this.selectedUserInfo,
-        ),
+          this.selectedUserInfo
+        )
       );
       this.notificationService.addSuccessMessageTranslation(
         'change.applied',
         undefined,
-        true,
+        true
       );
     } catch (error) {
       // managed in the interceptor
@@ -255,15 +255,15 @@ export class UserAdminComponent {
       this.usersApi.putUserUserInfo(
         this.selectedUserInfo.id,
         this.selectedUserInfo,
-        true,
-      ),
+        true
+      )
     );
 
     this.toggleUploadedFiles();
     this.notificationService.addSuccessMessageTranslation(
       'change.applied',
       undefined,
-      true,
+      true
     );
   }
 
@@ -272,15 +272,15 @@ export class UserAdminComponent {
       this.usersApi.putUserUserInfo(
         this.selectedUserInfo.id,
         this.selectedUserInfo,
-        false,
-      ),
+        false
+      )
     );
     this.toggleUploadedFiles();
 
     this.notificationService.addSuccessMessageTranslation(
       'change.applied',
       undefined,
-      true,
+      true
     );
   }
 
@@ -290,12 +290,12 @@ export class UserAdminComponent {
       UserInfo.RoleEnum.TrustedExternal,
     ];
     this.selectedValueInGigaBytes = rolesThatGet1GB.includes(
-      this.selectedUserRole,
+      this.selectedUserRole
     )
       ? 1
       : 5;
     this.selectedValueInGigaBytesIndex = this.valuesInGigaBytes.indexOf(
-      this.selectedValueInGigaBytes,
+      this.selectedValueInGigaBytes
     );
   }
 

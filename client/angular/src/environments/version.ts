@@ -2,12 +2,12 @@
 /* eslint-disable */
 export const VERSION = {
     "dirty": true,
-    "raw": "8619fca-dirty",
-    "hash": "8619fca",
-    "distance": null,
-    "tag": null,
+    "raw": "v1.2-677-gdfaf23f7-dirty",
+    "hash": "gdfaf23f7",
+    "distance": 677,
+    "tag": "v1.2",
     "semver": null,
-    "suffix": "8619fca-dirty",
-    "semverString": null,
-    "version": "0.0.0"
+    "suffix": "677-gdfaf23f7-dirty",
+    "semverString": "",
+    "version": "1.1.0"
 };

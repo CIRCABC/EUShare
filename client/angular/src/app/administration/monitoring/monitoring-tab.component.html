@@ -1,45 +1,64 @@
 <table>
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Event</th>
-            <th>Count</th>
-            <th>Uploader</th>
-            <th>Filename</th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let monitoringDetail of monitoringDetails">
-            <ng-container *ngIf="monitoringDetail.status === reportStatus">
-                <td> {{ monitoringDetail.datetime | date:'yy-MM-dd HH:mm' }}</td>
-                <td> {{ formatString(monitoringDetail.event) }}</td>
-                <td>{{ monitoringDetail.counter }}</td>
-                <td> <span *ngIf="monitoringDetail.uploader_email" title="{{ monitoringDetail.uploader_name }}">
-                        {{ monitoringDetail.uploader_email }}
-                    </span></td>
-                <td> <span *ngIf="monitoringDetail.filename">{{ monitoringDetail.filename }}</span></td>
-                <td class="icon-cell"><a *ngIf="monitoringDetail.filename" (click)="tryDownload(monitoringDetail)"
-                        target="_blank" rel="noopener noreferrer" title="Download"><i
-                            class="material-icons">download</i></a>
-                </td>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Event</th>
+      <th>Count</th>
+      <th>Uploader</th>
+      <th>Filename</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (monitoringDetail of monitoringDetails; track monitoringDetail) {
+    <tr>
+      @if (monitoringDetail.status === reportStatus) {
 
+      <td> {{ monitoringDetail.datetime | date: 'yy-MM-dd HH:mm' }}</td>
+      <td> {{ formatString(monitoringDetail.event) }}</td>
+      <td>{{ monitoringDetail.counter }}</td>
+      <td>
+        @if (monitoringDetail.uploader_email) {
+        <span title="{{ monitoringDetail.uploader_name }}">
+          {{ monitoringDetail.uploader_email }}
+        </span>
+        }</td
+      >
+      <td>
+        @if (monitoringDetail.filename) {
+        <span>{{ monitoringDetail.filename }}</span>
+        }</td
+      >
+      <td class="icon-cell"
+        >@if (monitoringDetail.filename) {
+        <a
+          (click)="tryDownload(monitoringDetail)"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="Download"
+          ><i class="material-icons">download</i></a
+        >
+        }
+      </td>
 
-                <td>
-                    <button class="button" *ngIf="reportStatus === 'WAITING' || reportStatus === 'DENIED'"
-                        (click)="approveReport(monitoringDetail)">
-                        <i class="material-icons">check</i>&nbsp;Approve
-                    </button>
-                    <button class="button" *ngIf="reportStatus === 'WAITING' || reportStatus === 'APPROVED'"
-                        (click)="denyReport(monitoringDetail)">
-                        <i class="material-icons">block</i>&nbsp;Deny
-                    </button>
-                    <button class="button" (click)="delete(monitoringDetail)">
-                        <i class="material-icons">delete</i>&nbsp;Delete
-                    </button>
-                </td>
-            </ng-container>
-        </tr>
-    </tbody>
+      <td>
+        @if (reportStatus === 'WAITING' || reportStatus === 'DENIED') {
+        <button class="button" (click)="approveReport(monitoringDetail)">
+          <i class="material-icons">check</i>&nbsp;Approve
+        </button>
+        } @if (reportStatus === 'WAITING' || reportStatus === 'APPROVED') {
+        <button class="button" (click)="denyReport(monitoringDetail)">
+          <i class="material-icons">block</i>&nbsp;Deny
+        </button>
+        }
+        <button class="button" (click)="delete(monitoringDetail)">
+          <i class="material-icons">delete</i>&nbsp;Delete
+        </button>
+      </td>
+
+      }
+    </tr>
+    }
+  </tbody>
 </table>

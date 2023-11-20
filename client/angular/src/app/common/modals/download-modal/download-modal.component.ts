@@ -35,7 +35,7 @@ export class DownloadModalComponent implements OnInit {
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.modalHasPassword = nextModalActiveValue.modalFileHasPassword;
-      },
+      }
     );
   }
 

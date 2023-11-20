@@ -1,28 +1,22 @@
 <div class="container">
-  <div
-    *ngIf="fileInfoUploaderArray && fileInfoUploaderArray.length === 0"
-    class="subtitle"
-  >
-    {{ "no.uploaded.files" | transloco }}
+  @if (fileInfoUploaderArray && fileInfoUploaderArray.length === 0) {
+  <div class="subtitle">
+    {{ 'no.uploaded.files' | transloco }}
   </div>
+  } @for (fileInfoUploader of fileInfoUploaderArray; track fileInfoUploader) {
   <app-uploaded-file-row
-    *ngFor="let fileInfoUploader of fileInfoUploaderArray"
     [displayAsUploader]="displayAsUploader"
     [displayAsAdministrator]="displayAsAdministrator"
     [fileToDisplay]="fileInfoUploader"
     (refreshParent)="update()"
   ></app-uploaded-file-row>
-  <nav
-    class="pagination is-centered"
-    role="navigation"
-    aria-label="pagination"
-    *ngIf="hasNextPage || hasPreviousPage"
-  >
+  } @if (hasNextPage || hasPreviousPage) {
+  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
     <a
       [style.visibility]="hasPreviousPage ? 'visible' : 'hidden'"
       class="pagination-previous button"
       (click)="previousPage()"
-      >{{ "previous" | transloco }}</a
+      >{{ 'previous' | transloco }}</a
     >
     <ul class="pagination-list">
       <a
@@ -36,7 +30,8 @@
       [style.visibility]="hasNextPage ? 'visible' : 'hidden'"
       class="pagination-next button"
       (click)="nextPage()"
-      >{{ "next" | transloco }}</a
+      >{{ 'next' | transloco }}</a
     >
   </nav>
+  }
 </div>

@@ -13,7 +13,7 @@ import { ModalsService } from '../modals.service';
 import { FileService, FileLog } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
 import { TranslocoModule } from '@ngneat/transloco';
-import { NgFor, NgIf, LowerCasePipe, SlicePipe } from '@angular/common';
+import { LowerCasePipe, SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-statistics-modal',
@@ -21,7 +21,7 @@ import { NgFor, NgIf, LowerCasePipe, SlicePipe } from '@angular/common';
   styleUrls: ['./statistics-modal.component.scss'],
   preserveWhitespaces: true,
   standalone: true,
-  imports: [NgFor, NgIf, TranslocoModule, LowerCasePipe, SlicePipe],
+  imports: [TranslocoModule, LowerCasePipe, SlicePipe],
 })
 export class StatisticsModalComponent implements OnInit {
   public modalActive = false;
@@ -32,7 +32,7 @@ export class StatisticsModalComponent implements OnInit {
   constructor(
     private modalService: ModalsService,
     private fileApi: FileService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   public closeModal() {
@@ -47,7 +47,7 @@ export class StatisticsModalComponent implements OnInit {
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.fileLogs = nextModalActiveValue.fileLogs;
-      },
+      }
     );
   }
 

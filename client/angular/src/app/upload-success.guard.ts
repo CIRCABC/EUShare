@@ -18,7 +18,7 @@ import {
 
 export const uploadSuccessCanActivate: CanActivateFn = (
   _next: ActivatedRouteSnapshot,
-  _state: RouterStateSnapshot,
+  _state: RouterStateSnapshot
 ) => {
   const router = inject(Router);
   if (

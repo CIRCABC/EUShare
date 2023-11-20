@@ -1,46 +1,53 @@
 <section class="{{ getClassPerLevel(message.level) }} {{ animationClass }}">
   <header class="header" style="background-color: rgba(255, 255, 255, 0.3)">
-    <span class="title" [ngSwitch]="message.level">
-      <ng-template [ngSwitchCase]="0">
-        {{ "information" | transloco }}
-      </ng-template>
-      <ng-template [ngSwitchCase]="1">
-        {{ "warning" | transloco }}
-      </ng-template>
-      <ng-template [ngSwitchCase]="2">
-        {{ "error" | transloco }}
-      </ng-template>
-      <ng-template [ngSwitchCase]="3">
-        {{ "success" | transloco }}
-      </ng-template>
+    <span class="title">
+      @switch (message.level) { @case (0) {
+
+      {{ 'information' | transloco }}
+
+      } @case (1) {
+
+      {{ 'warning' | transloco }}
+
+      } @case (2) {
+
+      {{ 'error' | transloco }}
+
+      } @case (3) {
+
+      {{ 'success' | transloco }}
+
+      } }
     </span>
     <span style="float: right">
-      <a (click)="closeMessage()">{{ "close" | transloco }}</a>
+      <a (click)="closeMessage()">{{ 'close' | transloco }}</a>
     </span>
   </header>
-  <div class="box--message--icon" [ngSwitch]="message.level">
-    <ng-template [ngSwitchCase]="0">
-      <img src="{{ imageInfoLink }}" alt="Information" />
-    </ng-template>
-    <ng-template [ngSwitchCase]="1">
-      <img src="{{ imageExclamationLink }}" alt="Exclamation" />
-    </ng-template>
-    <ng-template [ngSwitchCase]="2">
-      <img src="{{ imageErrorLink }}" alt="Error" />
-    </ng-template>
-    <ng-template [ngSwitchCase]="3">
-      <img src="{{ imageCheckMarkLink }}" alt="OK" />
-    </ng-template>
-    <ng-template [ngSwitchCase]="4">
-      <img src="{{ imageForbiddenLink }}" alt="Forbidden" />
-    </ng-template>
-  </div>
+  <div class="box--message--icon">
+    @switch (message.level) { @case (0) {
 
+    <img src="{{ imageInfoLink }}" alt="Information" />
+
+    } @case (1) {
+
+    <img src="{{ imageExclamationLink }}" alt="Exclamation" />
+
+    } @case (2) {
+
+    <img src="{{ imageErrorLink }}" alt="Error" />
+
+    } @case (3) {
+
+    <img src="{{ imageCheckMarkLink }}" alt="OK" />
+
+    } @case (4) {
+
+    <img src="{{ imageForbiddenLink }}" alt="Forbidden" />
+
+    } }
+  </div>
 
   <div class="box--message--content">
     {{ message.body }}
   </div>
-
- 
-
 </section>

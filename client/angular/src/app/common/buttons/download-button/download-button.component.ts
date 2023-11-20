@@ -13,14 +13,13 @@ import { DownloadsService } from '../../../services/downloads.service';
 import { NotificationService } from '../../notification/notification.service';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-download-button',
   templateUrl: './download-button.component.html',
   styleUrls: ['./download-button.component.scss'],
   standalone: true,
-  imports: [NgIf, ReactiveFormsModule, FormsModule, TranslocoModule],
+  imports: [ReactiveFormsModule, FormsModule, TranslocoModule],
 })
 export class DownloadButtonComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -41,27 +40,27 @@ export class DownloadButtonComponent {
 
   constructor(
     private downloadsService: DownloadsService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   public async download() {
     const result = await this.downloadsService.download(
       this.fileId,
       this.fileName,
-      this.inputPassword,
+      this.inputPassword
     );
     if (result === 'WRONG_PASSWORD') {
       this.notificationService.addErrorMessageTranslation(
         'wrong.password',
         undefined,
-        true,
+        true
       );
     }
     if (result === 'TOO_MANY_DOWNLOADS') {
       this.notificationService.addErrorMessageTranslation(
         'too.many.downloads',
         undefined,
-        true,
+        true
       );
     }
     if (result === 'OK') {

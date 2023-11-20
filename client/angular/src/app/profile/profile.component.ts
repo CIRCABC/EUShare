@@ -14,13 +14,13 @@ import { UsersService, UserInfo, ApiKeyService, ApiKey } from '../openapi';
 import { SessionStorageService } from '../services/session-storage.service';
 import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
 import { TranslocoModule } from '@ngneat/transloco';
-import { NgIf, LowerCasePipe } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   standalone: true,
-  imports: [NgIf, TranslocoModule, LowerCasePipe, FileSizeFormatPipe],
+  imports: [TranslocoModule, LowerCasePipe, FileSizeFormatPipe],
 })
 export class MyUserComponent implements OnInit {
   public userInfo!: UserInfo;
@@ -32,7 +32,7 @@ export class MyUserComponent implements OnInit {
   constructor(
     private sessionApi: SessionStorageService,
     private userApi: UsersService,
-    private apiKeyService: ApiKeyService,
+    private apiKeyService: ApiKeyService
   ) {}
 
   async ngOnInit() {

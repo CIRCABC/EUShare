@@ -12,61 +12,64 @@
             <p class="title is-4">
               {{
                 fileInfoUploader.name.length > 25
-                  ? (fileInfoUploader.name | slice: 0:25) + ".."
+                  ? (fileInfoUploader.name | slice: 0:25) + '..'
                   : fileInfoUploader.name
               }}
-              {{ "successfully.uploaded" | transloco }}
+              {{ 'successfully.uploaded' | transloco }}
             </p>
             <p class="subtitle is-6">
               {{
-                "file.will.expire"
+                'file.will.expire'
                   | transloco: { date: fileInfoUploader.expirationDate }
               }}
             </p>
           </div>
         </div>
 
-        <p class="subtitle is-6" *ngIf="!fileInfoUploader.sharedWith[0].email">
-          {{ "notification.link" | transloco }}
+        @if (!fileInfoUploader.sharedWith[0].email) {
+        <p class="subtitle is-6">
+          {{ 'notification.link' | transloco }}
         </p>
-        <p class="subtitle is-6" *ngIf="fileInfoUploader.sharedWith[0].email">
-          {{ "notification.links" | transloco }}
+        } @if (fileInfoUploader.sharedWith[0].email) {
+        <p class="subtitle is-6">
+          {{ 'notification.links' | transloco }}
         </p>
+        }
 
         <table class="table">
           <caption>
             {{ 'file.recipients' | transloco }}
           </caption>
-          <thead *ngIf="fileInfoUploader.sharedWith[0].email">
+          @if (fileInfoUploader.sharedWith[0].email) {
+          <thead>
             <tr>
               <th>
                 <abbr title="Notifications">{{
-                  "notifications" | transloco
+                  'notifications' | transloco
                 }}</abbr>
               </th>
               <th>
-                <abbr title="Links">{{ "links" | transloco }}</abbr>
+                <abbr title="Links">{{ 'links' | transloco }}</abbr>
               </th>
               <th></th>
               <th></th>
             </tr>
           </thead>
+          }
           <tbody>
-            <tr
-              *ngFor="
-                let recipient of fileInfoUploader.sharedWith;
-                let i = index
-              "
-              [attr.data-index]="i"
-            >
+            @for ( recipient of fileInfoUploader.sharedWith; track recipient;
+            let i = $index) {
+            <tr [attr.data-index]="i">
               <td>
-                <span *ngIf="recipient.email">
+                @if (recipient.email) {
+                <span>
                   {{
                     recipient.email.length > 35
-                      ? (recipient.email | lowercase | slice: 0:35) + ".."
+                      ? (recipient.email | lowercase | slice: 0:35) + '..'
                       : (recipient.email | lowercase)
                   }}
                 </span>
+                }
               </td>
               <td class="shorturl">
                 <input
@@ -80,6 +83,7 @@
                 <a class="button" (click)="copyLink(i)">Copy</a>
               </td>
             </tr>
+            }
           </tbody>
         </table>
       </div>

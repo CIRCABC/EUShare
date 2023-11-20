@@ -1,23 +1,26 @@
 <div class="headertitle">
-  <h1 class="title">{{ "administration" | transloco }}</h1>
+  <h1 class="title">{{ 'administration' | transloco }}</h1>
 </div>
 <div class="tabs">
-  <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="custom-tab-group">
+  <mat-tab-group
+    mat-stretch-tabs="false"
+    mat-align-tabs="start"
+    class="custom-tab-group"
+  >
     <mat-tab class="mat-tab custom-tab">
       <ng-template mat-tab-label>
-        <i class="material-icons">group</i> Users 
+        <i class="material-icons">group</i> Users
       </ng-template>
 
       <div class="centered">
-
         <h1 class="title">Users</h1>
-          <app-user-admin></app-user-admin>
+        <app-user-admin></app-user-admin>
       </div>
     </mat-tab>
 
     <mat-tab label="Disk usage">
       <ng-template mat-tab-label>
-        <i class="material-icons">storage</i> Disk usage 
+        <i class="material-icons">storage</i> Disk usage
       </ng-template>
       <div class="centered">
         <h1 class="title">Disk usage</h1>
@@ -28,46 +31,74 @@
             <th>Free space</th>
             <th>Used (in %)</th>
           </tr>
-          <tr *ngFor="let mp of mountPointSpaces">
+          @for (mp of mountPointSpaces; track mp) {
+          <tr>
             <td>{{ mp.path }}</td>
             <td>{{ mp.totalSpace! | fileSizeFormat }}</td>
-            <td>{{mp.usableSpace! | fileSizeFormat }}</td>
-            <td>{{ math.round( ((mp.totalSpace! - mp.usableSpace!) /mp.totalSpace! ) /100 *10000) }} %</td>
+            <td>{{ mp.usableSpace! | fileSizeFormat }}</td>
+            <td
+              >{{
+                math.round(
+                  ((mp.totalSpace! - mp.usableSpace!) / mp.totalSpace! / 100) *
+                    10000
+                )
+              }}
+              %</td
+            >
           </tr>
+          }
         </table>
       </div>
     </mat-tab>
 
     <mat-tab label="Statistics">
       <ng-template mat-tab-label>
-        <i class="material-icons">bar_chart</i> Statistics 
+        <i class="material-icons">bar_chart</i> Statistics
       </ng-template>
       <ng-template matTabContent>
         <div class="centered">
           <h1 class="title">Statistics</h1>
 
           <form #yearForm="ngForm">
-
             <div class="form-group">
               <label>Year:</label>
-              <select id="years" name="years" [(ngModel)]="year" (change)="changeYear()" class="form-control">
-                <option *ngFor="let y of yearList">{{y}}</option>
+              <select
+                id="years"
+                name="years"
+                [(ngModel)]="year"
+                (change)="changeYear()"
+                class="form-control"
+              >
+                @for (y of yearList; track y) {
+                <option>{{ y }}</option>
+                }
               </select>
             </div>
-
-
           </form>
 
           <table>
             <tr>
               <th> Month </th>
-              <th> <a (click)="updateGraph('users','Users')">Users</a> </th>
-              <th> <a (click)="updateGraph('uploads','Uploads')">Uploads</a> </th>
-              <th> <a (click)="updateGraph('downloads','Downloads')">Downloads</a> </th>
-              <th> <a (click)="updateGraph('uploadsData','Uploads Data')">Uploads Data</a> </th>
-              <th> <a (click)="updateGraph('downloadsData','Downloads Data')">Downloads Data </a></th>
+              <th> <a (click)="updateGraph('users', 'Users')">Users</a> </th>
+              <th>
+                <a (click)="updateGraph('uploads', 'Uploads')">Uploads</a>
+              </th>
+              <th>
+                <a (click)="updateGraph('downloads', 'Downloads')">Downloads</a>
+              </th>
+              <th>
+                <a (click)="updateGraph('uploadsData', 'Uploads Data')"
+                  >Uploads Data</a
+                >
+              </th>
+              <th>
+                <a (click)="updateGraph('downloadsData', 'Downloads Data')"
+                  >Downloads Data
+                </a></th
+              >
             </tr>
-            <tr *ngFor="let month of stats">
+            @for (month of stats; track month) {
+            <tr>
               <td>{{ getMonthName(month.month) }}</td>
               <td>{{ month.users }}</td>
               <td>{{ month.uploads }} </td>
@@ -75,26 +106,35 @@
               <td>{{ month.uploadsData! | fileSizeFormat }}</td>
               <td>{{ month.downloadsData! | fileSizeFormat }}</td>
             </tr>
+            }
             <tr>
               <td><b>Total</b></td>
-              <td><b>{{ yearStats.users }}</b> </td>
-              <td><b>{{ yearStats.uploads }}</b> </td>
-              <td><b>{{ yearStats.downloads }}</b></td>
-              <td><b>{{ yearStats.uploadsData | fileSizeFormat }}</b> </td>
-              <td><b>{{ yearStats.downloadsData | fileSizeFormat}}</b></td>
+              <td
+                ><b>{{ yearStats.users }}</b>
+              </td>
+              <td
+                ><b>{{ yearStats.uploads }}</b>
+              </td>
+              <td
+                ><b>{{ yearStats.downloads }}</b></td
+              >
+              <td
+                ><b>{{ yearStats.uploadsData | fileSizeFormat }}</b>
+              </td>
+              <td
+                ><b>{{ yearStats.downloadsData | fileSizeFormat }}</b></td
+              >
             </tr>
           </table>
-
 
           <app-bar-chart [chartData]="data"></app-bar-chart>
         </div>
       </ng-template>
     </mat-tab>
 
-
     <mat-tab label="Trust Requests">
       <ng-template mat-tab-label>
-        <i class="material-icons">lock</i> Trust Requests 
+        <i class="material-icons">lock</i> Trust Requests
       </ng-template>
       <div class="centered">
         <h1 class="title">Trust Requests</h1>
@@ -122,7 +162,6 @@
       </div>
     </mat-tab>
 
-
     <mat-tab label="Logs">
       <ng-template mat-tab-label>
         <i class="material-icons">receipt_long</i> Logs
@@ -132,8 +171,5 @@
         <app-logs></app-logs>
       </div>
     </mat-tab>
-
-
-
   </mat-tab-group>
 </div>

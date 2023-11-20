@@ -2,14 +2,17 @@
   <!-- Left side -->
   <div class="level-left">
     <div class="level-item has-text-centered">
-      <fa-icon *ngIf="!fileToDisplay.hasPassword" [icon]="faFile"></fa-icon>
-      <fa-icon *ngIf="fileToDisplay.hasPassword" [icon]="faLock"></fa-icon>
+      @if (!fileToDisplay.hasPassword) {
+      <fa-icon [icon]="faFile"></fa-icon>
+      } @if (fileToDisplay.hasPassword) {
+      <fa-icon [icon]="faLock"></fa-icon>
+      }
       <br />
       <p class="subtitle is-5 filename">
         <strong>
           {{
             fileToDisplay.name.length > 25
-              ? (fileToDisplay.name | slice: 0:25) + ".."
+              ? (fileToDisplay.name | slice: 0:25) + '..'
               : fileToDisplay.name
           }}
         </strong>
@@ -27,7 +30,7 @@
         <div class="level-item">
           <div class="level-right">
             <p class="subtitle is-6">
-              {{ "expires.on" | transloco }} {{ fileToDisplay.expirationDate }}
+              {{ 'expires.on' | transloco }} {{ fileToDisplay.expirationDate }}
             </p>
           </div>
         </div>
@@ -38,7 +41,7 @@
   <div class="level">
     <div class="level-item">
       <a
-        >{{ "shared.by" | transloco }}
+        >{{ 'shared.by' | transloco }}
         <strong>{{ fileToDisplay.uploaderName }}</strong></a
       >
     </div>
@@ -50,14 +53,18 @@
           (tap)="displayMore()"
           (mouseleave)="displayLess()"
         >
-          <a class="navbar-link"> {{ "actions" | transloco }} </a>
+          <a class="navbar-link"> {{ 'actions' | transloco }} </a>
 
-          <div class="navbar-dropdown" *ngIf="isMoreDisplayed">
+          @if (isMoreDisplayed) {
+          <div class="navbar-dropdown">
             <a class="navbar-item" (click)="tryDownload()">
-              {{ "download" | transloco }}
+              {{ 'download' | transloco }}
             </a>
-            <a class="navbar-item" (click)="openAbuseDialog()">{{ 'abuse.title' | transloco }}</a>
+            <a class="navbar-item" (click)="openAbuseDialog()">{{
+              'abuse.title' | transloco
+            }}</a>
           </div>
+          }
         </div>
       </div>
     </div>

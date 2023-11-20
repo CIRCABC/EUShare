@@ -34,7 +34,7 @@ export class NotificationService {
   public addErrorMessage(
     message: string,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     this.addMessage(message, NotificationLevel.ERROR, autoclose, displayTime);
   }
@@ -42,7 +42,7 @@ export class NotificationService {
   public addWarningMessage(
     message: string,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     this.addMessage(message, NotificationLevel.WARNING, autoclose, displayTime);
   }
@@ -51,14 +51,14 @@ export class NotificationService {
     key: string,
     params?: HashMap,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     this.addMessageTranslation(
       NotificationLevel.ERROR,
       key,
       params,
       autoclose,
-      displayTime,
+      displayTime
     );
   }
 
@@ -66,14 +66,14 @@ export class NotificationService {
     key: string,
     params?: HashMap,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     this.addMessageTranslation(
       NotificationLevel.WARNING,
       key,
       params,
       autoclose,
-      displayTime,
+      displayTime
     );
   }
 
@@ -81,14 +81,14 @@ export class NotificationService {
     key: string,
     params?: HashMap,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     this.addMessageTranslation(
       NotificationLevel.FORBIDDEN,
       key,
       params,
       autoclose,
-      displayTime,
+      displayTime
     );
   }
 
@@ -96,14 +96,14 @@ export class NotificationService {
     key: string,
     params?: HashMap,
     autoclose = true,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     this.addMessageTranslation(
       NotificationLevel.SUCCESS,
       key,
       params,
       autoclose,
-      displayTime,
+      displayTime
     );
   }
 
@@ -112,7 +112,7 @@ export class NotificationService {
     key: string,
     params?: HashMap,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     let message: string;
     if (params === undefined) {
@@ -145,7 +145,7 @@ export class NotificationService {
     message: string,
     level: NotificationLevel,
     autoclose = false,
-    displayTime?: number,
+    displayTime?: number
   ): void {
     let finalDisplayTime;
     if (displayTime !== undefined) {
@@ -157,7 +157,7 @@ export class NotificationService {
         level,
         message,
         autoclose,
-        finalDisplayTime,
+        finalDisplayTime
       );
       this.messageSource.next(uiMessage);
     }

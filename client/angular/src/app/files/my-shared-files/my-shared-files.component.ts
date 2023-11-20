@@ -23,10 +23,7 @@ import { FileRowContainerComponent } from '../../common/uploaded-file-row-contai
 export class MySharedFilesComponent implements OnInit {
   public myId!: string;
 
-  constructor(
-    private session: SessionStorageService,
-    private router: Router,
-  ) {}
+  constructor(private session: SessionStorageService, private router: Router) {}
 
   public ngOnInit() {
     const id = this.session.getStoredId();

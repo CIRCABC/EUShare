@@ -1,6 +1,6 @@
 {
   "root": true,
-  "ignorePatterns": ["src/polyfills.ts","src/test.ts","src/app/openapi"],
+  "ignorePatterns": ["src/polyfills.ts","src/test.ts","src/app/openapi","src/app/openapi-eu-captcha"],
   "parserOptions": {
     "ecmaVersion": 2020
   },

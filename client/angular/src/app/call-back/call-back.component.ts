@@ -31,7 +31,7 @@ export class CallBackComponent implements OnInit {
     private sessionStorageService: SessionStorageService,
     private sessionService: SessionService,
     private oAuthService: OAuthService,
-    private router: Router,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -41,7 +41,7 @@ export class CallBackComponent implements OnInit {
       switch (nextType) {
         case 'token_expires': {
           this.notificationService.addSuccessMessageTranslation(
-            'session.expired',
+            'session.expired'
           );
           this.sessionStorageService.logout();
           break;
@@ -72,7 +72,7 @@ export class CallBackComponent implements OnInit {
     try {
       const identifier = await firstValueFrom(this.sessionService.postLogin());
       const userInfo = await firstValueFrom(
-        this.userService.getUserUserInfo(identifier.userId),
+        this.userService.getUserUserInfo(identifier.userId)
       );
       this.sessionStorageService.setStoredUserInfo(userInfo);
       this.router.navigateByUrl('upload');

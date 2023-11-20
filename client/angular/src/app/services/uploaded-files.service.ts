@@ -38,13 +38,13 @@ export class UploadedFilesService {
   private pageNumber = 0;
 
   private userId!: string;
-  private all: boolean = false;
+  private all = false;
 
   constructor(
     private userService: UsersService,
     private notificationService: NotificationService,
     private fileService: FileService,
-    private modalService: ModalsService,
+    private modalService: ModalsService
   ) {}
 
   private emitValueToObservable() {
@@ -55,7 +55,7 @@ export class UploadedFilesService {
       pageNumber: this.pageNumber,
     };
     this.fileInfoUploaderArrayAndMetaDataSubject.next(
-      fileInfoUploaderArrayAndMetaData,
+      fileInfoUploaderArrayAndMetaData
     );
   }
 
@@ -117,8 +117,8 @@ export class UploadedFilesService {
       this.userService.getFilesFileInfoUploader(
         this.userId,
         this.pageSize,
-        this.pageNumber,
-      ),
+        this.pageNumber
+      )
     );
   }
 
@@ -127,8 +127,8 @@ export class UploadedFilesService {
       this.userService.getFilesFileInfoUploader(
         this.userId,
         this.pageSize,
-        this.pageNumber + 1,
-      ),
+        this.pageNumber + 1
+      )
     );
   }
 
@@ -137,8 +137,8 @@ export class UploadedFilesService {
       this.userService.getFilesFileInfoUploader(
         this.userId,
         this.pageSize,
-        this.pageNumber - 1,
-      ),
+        this.pageNumber - 1
+      )
     );
   }
 
@@ -147,14 +147,14 @@ export class UploadedFilesService {
       await firstValueFrom(this.fileService.deleteFile(fileId));
       this.notificationService.addSuccessMessageTranslation(
         'successfully.deleted',
-        { fileName },
+        { fileName }
       );
     } catch (error) {
       // error managed in error interceptor
     }
 
     this.fileInfoUploader = this.fileInfoUploader.filter(
-      (file) => file.fileId !== fileId,
+      (file) => file.fileId !== fileId
     );
     const elementToAddOrNull = this.nextPageFileInfoUploader.shift();
     if (elementToAddOrNull) {
@@ -171,7 +171,7 @@ export class UploadedFilesService {
     }
 
     this.fileInfoUploader = this.fileInfoUploader.filter(
-      (fileInfo) => fileInfo.fileId !== fileId,
+      (fileInfo) => fileInfo.fileId !== fileId
     );
     const elementToAddOrNull = this.nextPageFileInfoUploader.shift();
     if (elementToAddOrNull) {
@@ -184,15 +184,15 @@ export class UploadedFilesService {
   public async addOneRecipient(
     fileName: string,
     fileId: string,
-    recipient: Recipient,
+    recipient: Recipient
   ) {
     try {
       const recipientWithLink = await firstValueFrom(
-        this.fileService.postFileSharedWith(fileId, recipient),
+        this.fileService.postFileSharedWith(fileId, recipient)
       );
       this.notificationService.addSuccessMessageTranslation(
         'successfully.added',
-        { fileName },
+        { fileName }
       );
 
       this.fileInfoUploader.forEach((file) => {

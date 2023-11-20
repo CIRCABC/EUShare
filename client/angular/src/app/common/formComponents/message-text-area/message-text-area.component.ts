@@ -20,14 +20,13 @@ import {
 import { ControlValueAccessor, NgControl, Validators } from '@angular/forms';
 import { I18nService } from '../../i18n/i18n.service';
 import { TranslocoModule } from '@ngneat/transloco';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-message-text-area',
   templateUrl: './message-text-area.component.html',
   styleUrls: ['./message-text-area.component.scss'],
   standalone: true,
-  imports: [NgIf, TranslocoModule],
+  imports: [TranslocoModule],
 })
 export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;
@@ -41,7 +40,7 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
 
   constructor(
     @Optional() @Self() public controlDirective: NgControl,
-    private i18nService: I18nService,
+    private i18nService: I18nService
   ) {
     controlDirective.valueAccessor = this;
   }
@@ -75,7 +74,7 @@ export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
     if (this.controlDirective.control?.errors?.['maxlength']) {
       return this.i18nService.translate(
         'validation.maxlength',
-        this.controlDirective.control.errors['maxlength'],
+        this.controlDirective.control.errors['maxlength']
       );
     }
     return null;
