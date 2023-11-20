@@ -40,7 +40,7 @@
     "i18n:extract": "transloco-keys-manager extract",
     "i18n:find": "transloco-keys-manager find",
     "spellcheck": "cspell /src/**/*.ts",
-    "circleci": "npm run build && npm run licchkchk && npm run lint-biome && npm run lint",
+    "circleci": "npm run format-check && npm run build && npm run licchkchk && npm run lint-biome && npm run lint",
     "cy:open": "cypress open -b firefox:dev",
     "cy:run": "cypress run -b firefox:dev",
     "update-15": "ng update @angular/core@15 @angular/cli@15 --allow-dirty --force"
