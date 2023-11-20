@@ -12,43 +12,49 @@
         <i class="material-icons">group</i> Users
       </ng-template>
 
-      <div class="centered">
-        <h1 class="title">Users</h1>
-        <app-user-admin></app-user-admin>
-      </div>
+      <ng-template matTabContent>
+        <div class="centered">
+          <h1 class="title">Users</h1>
+          <app-user-admin></app-user-admin>
+        </div>
+      </ng-template>
     </mat-tab>
 
     <mat-tab label="Disk usage">
       <ng-template mat-tab-label>
         <i class="material-icons">storage</i> Disk usage
       </ng-template>
-      <div class="centered">
-        <h1 class="title">Disk usage</h1>
-        <table>
-          <tr>
-            <th>Mount path</th>
-            <th>Total size</th>
-            <th>Free space</th>
-            <th>Used (in %)</th>
-          </tr>
-          @for (mp of mountPointSpaces; track mp) {
-          <tr>
-            <td>{{ mp.path }}</td>
-            <td>{{ mp.totalSpace! | fileSizeFormat }}</td>
-            <td>{{ mp.usableSpace! | fileSizeFormat }}</td>
-            <td
-              >{{
-                math.round(
-                  ((mp.totalSpace! - mp.usableSpace!) / mp.totalSpace! / 100) *
-                    10000
-                )
-              }}
-              %</td
-            >
-          </tr>
-          }
-        </table>
-      </div>
+      <ng-template matTabContent>
+        <div class="centered">
+          <h1 class="title">Disk usage</h1>
+          <table>
+            <tr>
+              <th>Mount path</th>
+              <th>Total size</th>
+              <th>Free space</th>
+              <th>Used (in %)</th>
+            </tr>
+            @for (mp of mountPointSpaces; track mp) {
+            <tr>
+              <td>{{ mp.path }}</td>
+              <td>{{ mp.totalSpace! | fileSizeFormat }}</td>
+              <td>{{ mp.usableSpace! | fileSizeFormat }}</td>
+              <td>
+                {{
+                  math.round(
+                    ((mp.totalSpace! - mp.usableSpace!) /
+                      mp.totalSpace! /
+                      100) *
+                      10000
+                  )
+                }}
+                %
+              </td>
+            </tr>
+            }
+          </table>
+        </div>
+      </ng-template>
     </mat-tab>
 
     <mat-tab label="Statistics">
@@ -78,8 +84,8 @@
 
           <table>
             <tr>
-              <th> Month </th>
-              <th> <a (click)="updateGraph('users', 'Users')">Users</a> </th>
+              <th>Month</th>
+              <th><a (click)="updateGraph('users', 'Users')">Users</a></th>
               <th>
                 <a (click)="updateGraph('uploads', 'Uploads')">Uploads</a>
               </th>
@@ -94,14 +100,14 @@
               <th>
                 <a (click)="updateGraph('downloadsData', 'Downloads Data')"
                   >Downloads Data
-                </a></th
-              >
+                </a>
+              </th>
             </tr>
             @for (month of stats; track month) {
             <tr>
               <td>{{ getMonthName(month.month) }}</td>
               <td>{{ month.users }}</td>
-              <td>{{ month.uploads }} </td>
+              <td>{{ month.uploads }}</td>
               <td>{{ month.downloads }}</td>
               <td>{{ month.uploadsData! | fileSizeFormat }}</td>
               <td>{{ month.downloadsData! | fileSizeFormat }}</td>
@@ -109,21 +115,21 @@
             }
             <tr>
               <td><b>Total</b></td>
-              <td
-                ><b>{{ yearStats.users }}</b>
+              <td>
+                <b>{{ yearStats.users }}</b>
               </td>
-              <td
-                ><b>{{ yearStats.uploads }}</b>
+              <td>
+                <b>{{ yearStats.uploads }}</b>
               </td>
-              <td
-                ><b>{{ yearStats.downloads }}</b></td
-              >
-              <td
-                ><b>{{ yearStats.uploadsData | fileSizeFormat }}</b>
+              <td>
+                <b>{{ yearStats.downloads }}</b>
               </td>
-              <td
-                ><b>{{ yearStats.downloadsData | fileSizeFormat }}</b></td
-              >
+              <td>
+                <b>{{ yearStats.uploadsData | fileSizeFormat }}</b>
+              </td>
+              <td>
+                <b>{{ yearStats.downloadsData | fileSizeFormat }}</b>
+              </td>
             </tr>
           </table>
 
@@ -146,30 +152,36 @@
       <ng-template mat-tab-label>
         <i class="material-icons">troubleshoot</i> Moderation Queue
       </ng-template>
-      <div class="centered">
-        <h1 class="title">Moderation Queues</h1>
-        <app-monitoring></app-monitoring>
-      </div>
+      <ng-template matTabContent>
+        <div class="centered">
+          <h1 class="title">Moderation Queues</h1>
+          <app-monitoring></app-monitoring>
+        </div>
+      </ng-template>
     </mat-tab>
 
     <mat-tab label="Abuse Reports">
       <ng-template mat-tab-label>
         <i class="material-icons">feedback</i> Abuse Reports
       </ng-template>
-      <div class="centered">
-        <h1 class="title">Abuse Reports</h1>
-        <app-abuse></app-abuse>
-      </div>
+      <ng-template matTabContent>
+        <div class="centered">
+          <h1 class="title">Abuse Reports</h1>
+          <app-abuse></app-abuse>
+        </div>
+      </ng-template>
     </mat-tab>
 
     <mat-tab label="Logs">
       <ng-template mat-tab-label>
         <i class="material-icons">receipt_long</i> Logs
       </ng-template>
-      <div class="centered">
-        <h1 class="title">Logs</h1>
-        <app-logs></app-logs>
-      </div>
+      <ng-template matTabContent>
+        <div class="centered">
+          <h1 class="title">Logs</h1>
+          <app-logs></app-logs>
+        </div>
+      </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>
