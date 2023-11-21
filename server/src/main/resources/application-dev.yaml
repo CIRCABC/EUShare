@@ -1,0 +1,67 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://ecas-mockup:7002/cas/oauth2/token/introspect
+          client-id: my_client_id
+          client_secret: my_client_secret
+  datasource:
+    #continue-on-error: true
+    #jdbc:oracle:thin:@localhost:1521:testing
+    url: jdbc:mysql://db/easyshare
+    username: easyshare_username
+    password: easyshare_password
+    driverClassName: com.mysql.cj.jdbc.Driver 
+  jpa:
+    #org.hibernate.dialect.Oracle10gDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: maildev
+    port: 25
+    username: username
+    password: password
+    
+
+eushare:
+  clientHttpAddress: http://localhost/share
+  disks:
+    - /tmp/eushare/
+  file_recipients:
+    max_recipient_trusted_external: 25
+    max_recipient_external: 5
+  file_download_rate:
+    hourly_threshold: 10
+    hourly_threshold_rt: 15
+    daily_threshold: 50
+  file_upload_rate:
+    external_threshold_hour: 5
+    trusted_external_threshold_hour: 10
+    external_threshold_day: 50
+    trusted_external_threshold_day: 100
+    external_user_hourly_realtime: 2
+    trusted_external_user_hourly_realtime: 2
+    uploads_to_be_trusted_threshold: 50
+  user_creation_log:
+    user_creation_threshold: 10
+
+
+logging:
+  level:
+    root: DEBUG
+    org.springframework.web: OFF
+    org.springframework: DEBUG
+    org:
+      hibernate:
+        SQL: DEBUG
+       # type:
+         # descriptor:
+          #  sql: TRACE
+          # For bind parameter values
+          #type: TRACE
+
+
+
+
