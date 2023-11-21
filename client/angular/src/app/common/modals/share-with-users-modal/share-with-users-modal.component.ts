@@ -15,7 +15,7 @@ import { NotificationService } from '../../notification/notification.service';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { TranslocoModule } from '@ngneat/transloco';
-import { NgFor, NgIf, LowerCasePipe, SlicePipe } from '@angular/common';
+import { LowerCasePipe, SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-share-with-users-modal',
@@ -23,7 +23,7 @@ import { NgFor, NgIf, LowerCasePipe, SlicePipe } from '@angular/common';
   styleUrls: ['./share-with-users-modal.component.scss'],
   preserveWhitespaces: true,
   standalone: true,
-  imports: [NgFor, NgIf, TranslocoModule, LowerCasePipe, SlicePipe],
+  imports: [TranslocoModule, LowerCasePipe, SlicePipe],
 })
 export class ShareWithUsersModalComponent implements OnInit {
   public modalActive = false;
@@ -35,7 +35,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   constructor(
     private modalService: ModalsService,
     private fileApi: FileService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   public closeModal() {
@@ -51,7 +51,7 @@ export class ShareWithUsersModalComponent implements OnInit {
         this.modalFileId = nextModalActiveValue.modalFileId;
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.recipients = nextModalActiveValue.recipients;
-      },
+      }
     );
   }
 
@@ -60,13 +60,13 @@ export class ShareWithUsersModalComponent implements OnInit {
       return;
     }
     firstValueFrom(
-      this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareEmail),
+      this.fileApi.deleteFileSharedWithUser(this.modalFileId, shareEmail)
     )
       .then((_success) => {
         this.recipients.splice(shareIndex, 1);
         this.notificationService.addSuccessMessageTranslation(
           'successfully.removed',
-          { fileName: this.modalFileName, shareName: shareEmail },
+          { fileName: this.modalFileName, shareName: shareEmail }
         );
       })
       .catch((_error) => {
@@ -84,15 +84,15 @@ export class ShareWithUsersModalComponent implements OnInit {
       this.fileApi.postFileSharedWithDownloadNotification(
         this.modalFileId,
         recipient.email,
-        checked,
-      ),
+        checked
+      )
     )
       .then((_success) => {
         this.notificationService.addSuccessMessageTranslation(
           checked
             ? 'successfully.set.download.notification'
             : 'successfully.unset.download.notification',
-          { fileName: this.modalFileName, shareName: recipient.email },
+          { fileName: this.modalFileName, shareName: recipient.email }
         );
       })
       .catch((_error) => {
@@ -105,12 +105,12 @@ export class ShareWithUsersModalComponent implements OnInit {
       return;
     }
     firstValueFrom(
-      this.fileApi.postFileSharedWithReminder(this.modalFileId, shareEmail),
+      this.fileApi.postFileSharedWithReminder(this.modalFileId, shareEmail)
     )
       .then((_success) => {
         this.notificationService.addSuccessMessageTranslation(
           'successfully.reminded',
-          { shareEmail, fileName: this.modalFileName },
+          { shareEmail, fileName: this.modalFileName }
         );
       })
       .catch((_error) => {
@@ -133,7 +133,7 @@ export class ShareWithUsersModalComponent implements OnInit {
     this.notificationService.addSuccessMessageTranslation(
       'copied.file.link',
       undefined,
-      true,
+      true
     );
   }
 

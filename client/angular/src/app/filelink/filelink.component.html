@@ -1,34 +1,34 @@
 <div class="centered">
   <div class="centeredText">
-    <h1 class="title">{{ "download.shared.file" | transloco }}</h1>
+    <h1 class="title">{{ 'download.shared.file' | transloco }}</h1>
     <h2 class="subtitle">
-      {{ "download" | transloco }}
-      <span *ngIf="fileName">
-        {{ fileName.length > 25 ? (fileName | slice: 0:25) + ".." : fileName }}.
+      {{ 'download' | transloco }}
+      @if (fileName) {
+      <span>
+        {{ fileName.length > 25 ? (fileName | slice: 0:25) + '..' : fileName }}.
       </span>
+      }
     </h2>
-    <p *ngIf="isFilePasswordProtected">{{ "file.is.protected" | transloco }}</p>
+    @if (isFilePasswordProtected) {
+    <p>{{ 'file.is.protected' | transloco }}</p>
+    }
     <div class="action-container">
-    
-    
       <div class="control" [class.is-expanded]="isFileHasPassword">
+        @if (isFileHasPassword) {
         <input
-          *ngIf="isFileHasPassword"
           class="input is-info"
           type="password"
           placeholder="Type password here"
           [(ngModel)]="inputPassword"
           (keyup.enter)="initiateDownload()"
         />
+        }
       </div>
       <div class="control">
         <a class="button" data-cy="download" (click)="initiateDownload()">
-          {{ "download" | transloco }}
+          {{ 'download' | transloco }}
         </a>
       </div>
-      
-
-
 
       <a (click)="openAbuseDialog(fileId)">{{ 'abuse.title' | transloco }}</a>
     </div>

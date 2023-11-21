@@ -1,0 +1,4 @@
+src/environments/version.ts
+src/app/openapi/**/*.ts
+src/app/openapi-eu-captcha/**/*.ts
+

@@ -1,33 +1,58 @@
 <form #form="ngForm">
-    <div class="modal is-active">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title"><strong>Abuse Report Validation</strong> </p>
-                <button class="delete" aria-label="close" (click)="cancel()"></button>
-            </header>
-            <section class="modal-card-body" aria-labelledby="modalTitle" aria-modal="true">
-                <mat-dialog-content>
-                    <div><strong>Filename:</strong> {{ data.filename }}</div>
-                    <div><strong>File Id:</strong> {{ data.fileId }}</div>
-                    
-                    <div><strong>Uploader email:</strong> {{ data.uploader_email }}</div>
-                    <div>
-                        <strong>User blame:</strong>                 
-                        <select [(ngModel)]="abuseReportDetails.uploader_status" name="uploader_status">
-                            <option *ngFor="let statusKey of statusKeys" [value]="statusKey">
-                                {{ statusKey }} : {{ statusLabels[statusKey] }}
-                            </option>
-                        </select>
-                    </div>
-                </mat-dialog-content>
-            </section>
-            <footer class="modal-card-foot">
-                <div mat-dialog-actions>
-                    <button class="button" mat-raised-button color="primary" type="button" (click)="save()">save</button>
-                    <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">cancel</button>
-                </div>
-            </footer>
+  <div class="modal is-active">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title"
+          ><strong>Abuse Report Validation</strong>
+        </p>
+        <button class="delete" aria-label="close" (click)="cancel()"></button>
+      </header>
+      <section
+        class="modal-card-body"
+        aria-labelledby="modalTitle"
+        aria-modal="true"
+      >
+        <mat-dialog-content>
+          <div><strong>Filename:</strong> {{ data.filename }}</div>
+          <div><strong>File Id:</strong> {{ data.fileId }}</div>
+
+          <div><strong>Uploader email:</strong> {{ data.uploader_email }}</div>
+          <div>
+            <strong>User blame:</strong>
+            <select
+              [(ngModel)]="abuseReportDetails.uploader_status"
+              name="uploader_status"
+            >
+              @for (statusKey of statusKeys; track statusKey) {
+              <option [value]="statusKey">
+                {{ statusKey }} : {{ statusLabels[statusKey] }}
+              </option>
+              }
+            </select>
+          </div>
+        </mat-dialog-content>
+      </section>
+      <footer class="modal-card-foot">
+        <div mat-dialog-actions>
+          <button
+            class="button"
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="save()"
+            >save</button
+          >
+          <button
+            class="button"
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="cancel()"
+            >cancel</button
+          >
         </div>
+      </footer>
     </div>
+  </div>
 </form>

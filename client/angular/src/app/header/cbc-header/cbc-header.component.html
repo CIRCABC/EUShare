@@ -1,7 +1,12 @@
 <!-- MENU -->
 
-<div *ngIf="loggedIn">
-  <div class="main-header" style="display: flex; flex-flow: column" role="navigation">
+@if (loggedIn) {
+<div>
+  <div
+    class="main-header"
+    style="display: flex; flex-flow: column"
+    role="navigation"
+  >
     <div class="wrap-header">
       <a href="{{ circabc_url }}/eulogin">
         <app-cbc-ec-logo-app></app-cbc-ec-logo-app>
@@ -26,13 +31,13 @@
               <nav>
                 <div class="links-group">
                   <a href="{{ circabc_url }}/eulogin">{{
-                    "dashboard" | transloco
+                    'dashboard' | transloco
                   }}</a>
                   <a href="{{ circabc_url }}/eulogin?route=calendar">{{
-                    "my.calendar" | transloco
+                    'my.calendar' | transloco
                   }}</a>
                   <a href="{{ circabc_url }}/eulogin?route=roles">{{
-                    "roles" | transloco
+                    'roles' | transloco
                   }}</a>
                 </div>
 
@@ -212,24 +217,25 @@
     </div>
   </div>
 </div>
-<div *ngIf="!loggedIn" class="right-side">
+} @if (!loggedIn) {
+<div class="right-side">
   <div class="whiteheader">
     <header class="header fluid">
       <div class="ec-links">
         <ul>
           <li>
-            <a href="/ui/explore">{{ "discover" | transloco }}</a>
+            <a href="/ui/explore">{{ 'discover' | transloco }}</a>
           </li>
           <li>
-            <a href="/ui/help">{{ "help" | transloco }}</a>
+            <a href="/ui/help">{{ 'help' | transloco }}</a>
           </li>
           <li>
-            <a href="/ui/help/contact">{{ "contact" | transloco }}</a>
+            <a href="/ui/help/contact">{{ 'contact' | transloco }}</a>
           </li>
         </ul>
         <span class="ng-untouched ng-pristine ng-valid">
           &nbsp;
-          <label for="language">{{ "select.language" | transloco }}</label>
+          <label for="language">{{ 'select.language' | transloco }}</label>
           <select
             id="language"
             (change)="selectLanguage($event.target.value)"
@@ -271,3 +277,4 @@
     </header>
   </div>
 </div>
+}

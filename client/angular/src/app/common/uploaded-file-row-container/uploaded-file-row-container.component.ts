@@ -14,14 +14,13 @@ import { UploadedFilesService } from '../../services/uploaded-files.service';
 import { Subscription } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
 import { UploadedFileRowComponent } from '../uploaded-file-row/uploaded-file-row.component';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-uploaded-file-row-container',
   templateUrl: './uploaded-file-row-container.component.html',
   styleUrls: ['./uploaded-file-row-container.component.scss'],
   standalone: true,
-  imports: [NgIf, NgFor, UploadedFileRowComponent, TranslocoModule],
+  imports: [UploadedFileRowComponent, TranslocoModule],
 })
 export class FileRowContainerComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -55,7 +54,7 @@ export class FileRowContainerComponent implements OnInit, OnDestroy {
             this.hasNextPage = next.hasNextPage;
             this.hasPreviousPage = next.hasPreviousPage;
             this.pageNumber = next.pageNumber + 1;
-          },
+          }
         );
       await this.fileInfoUploaderService.reinit(this.userId);
     }

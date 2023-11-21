@@ -21,74 +21,72 @@
 
       <table class="table">
         <caption>
-         {{ 'file.recipients' | transloco }}
+          {{ 'file.recipients' | transloco }}
         </caption>
         <thead>
           <tr>
             <th>
-              <abbr title="Notifications">
-                Upload notification
-              </abbr>
+              <abbr title="Notifications"> Upload notification </abbr>
             </th>
             <th>
-              <abbr title="Upload">
-                Download notification
-              </abbr>
+              <abbr title="Upload"> Download notification </abbr>
             </th>
             <th>
-              <abbr title="Links">{{ "links" | transloco }} </abbr>
+              <abbr title="Links">{{ 'links' | transloco }} </abbr>
             </th>
             <th></th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let recipient of recipients; let i = index"
-            [attr.data-index]="i"
-          >
+          @for (recipient of recipients; track recipient; let i = $index) {
+          <tr [attr.data-index]="i">
             <td>
-              <span *ngIf="recipient.email">
+              @if (recipient.email) {
+              <span>
                 {{
                   recipient.email.length > 35
-                    ? (recipient.email | lowercase | slice: 0:35) + ".."
+                    ? (recipient.email | lowercase | slice: 0:35) + '..'
                     : (recipient.email | lowercase)
                 }}
               </span>
+              }
             </td>
             <td>
-                  <input type="checkbox"
-              id="download_notification"
-              class="checkbox"
-              [checked]="recipient.downloadNotification"
-              (change)="modifyDownloadNotification(recipient, $event.target.checked);"
-            /> 
+              <input
+                type="checkbox"
+                id="download_notification"
+                class="checkbox"
+                [checked]="recipient.downloadNotification"
+                (change)="
+                  modifyDownloadNotification(recipient, $event.target.checked)
+                "
+              />
             </td>
             <td class="shorturl">
               <input class="input" type="text" value="{{ formatLink(i) }}" />
             </td>
             <td>
               <a class="button" (click)="copyLink(i)"
-                >{{ "copy" | transloco }}
+                >{{ 'copy' | transloco }}
               </a>
             </td>
             <td>
-              <a
-                *ngIf="recipient.email !== ''"
-                class="button"
-                (click)="deleteShare(recipient.email, i)"
-                >{{ "remove" | transloco }}
+              @if (recipient.email !== '') {
+              <a class="button" (click)="deleteShare(recipient.email, i)"
+                >{{ 'remove' | transloco }}
               </a>
+              }
             </td>
             <td>
-              <a
-                *ngIf="recipient.email !== ''"
-                class="button"
-                (click)="reminderShare(recipient.email)"
-                >{{ "send.reminder" | transloco }}
+              @if (recipient.email !== '') {
+              <a class="button" (click)="reminderShare(recipient.email)"
+                >{{ 'send.reminder' | transloco }}
               </a>
+              }
             </td>
           </tr>
+          }
         </tbody>
       </table>
     </section>

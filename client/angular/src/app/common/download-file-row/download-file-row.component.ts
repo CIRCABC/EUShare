@@ -16,7 +16,7 @@ import { DownloadsService } from '../../services/downloads.service';
 import { FileSizeFormatPipe } from '../pipes/file-size-format.pipe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgIf, SlicePipe } from '@angular/common';
+import { SlicePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AbuseDialogComponent } from '../dialogs/abuse-dialog/abuse-dialog.component';
 import { NotificationService } from '../notification/notification.service';
@@ -26,7 +26,6 @@ import { NotificationService } from '../notification/notification.service';
   templateUrl: './download-file-row.component.html',
   standalone: true,
   imports: [
-    NgIf,
     FontAwesomeModule,
     TranslocoModule,
     SlicePipe,
@@ -48,7 +47,7 @@ export class DownloadFileRowComponent {
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
     private notificationService: NotificationService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) {}
 
   public displayMore() {
@@ -64,25 +63,25 @@ export class DownloadFileRowComponent {
       await this.modalService.activateDownloadModal(
         this.fileToDisplay.fileId,
         this.fileToDisplay.name,
-        this.fileToDisplay.hasPassword,
+        this.fileToDisplay.hasPassword
       );
     } else {
       const result = await this.downloadsService.download(
         this.fileToDisplay.fileId,
-        this.fileToDisplay.name,
+        this.fileToDisplay.name
       );
       if (result === 'WRONG_PASSWORD') {
         this.notificationService.addErrorMessageTranslation(
           'wrong.password',
           undefined,
-          true,
+          true
         );
       }
       if (result === 'TOO_MANY_DOWNLOADS') {
         this.notificationService.addErrorMessageTranslation(
           'too.many.downloads',
           undefined,
-          true,
+          true
         );
       }
       if (result === 'OK') {

@@ -54,7 +54,7 @@ export class AddRecipientsModalComponent implements OnInit {
   constructor(
     private modalService: ModalsService,
     private fb: FormBuilder,
-    private uploadedFileService: UploadedFilesService,
+    private uploadedFileService: UploadedFilesService
   ) {}
 
   ngOnInit() {
@@ -64,14 +64,14 @@ export class AddRecipientsModalComponent implements OnInit {
         email: [''],
         downloadNotification: [false],
       },
-      { validators: recipientValidator(), updateOn: 'change' },
+      { validators: recipientValidator(), updateOn: 'change' }
     );
     this.modalService.activateAddRecipientsModal$.subscribe(
       (nextModalActiveValue) => {
         this.modalActive = nextModalActiveValue.modalActive;
         this.modalFileName = nextModalActiveValue.modalFileName;
         this.modalFileId = nextModalActiveValue.modalFileId;
-      },
+      }
     );
   }
 
@@ -96,7 +96,7 @@ export class AddRecipientsModalComponent implements OnInit {
     await this.uploadedFileService.addOneRecipient(
       this.modalFileName,
       this.modalFileId,
-      recipient,
+      recipient
     );
     this.uploadInProgress = false;
   }

@@ -1,4 +1,4 @@
-<label class="label">{{ "email" | transloco }}</label>
+<label class="label">{{ 'email' | transloco }}</label>
 <div class="field is-grouped">
   <div class="control is-expanded">
     <input
@@ -15,14 +15,15 @@
     <p class="help is-danger" [hidden]="!errorMessage">{{ errorMessage }}</p>
   </div>
   <p class="control">
+    @if (showAddRecipient) {
     <button
-      *ngIf="showAddRecipient"
       [disabled]="errorMessage || input.value === ''"
       (click)="addRecipient()"
       type="button"
       class="button"
     >
-      {{ "add.recipient" | transloco }}
+      {{ 'add.recipient' | transloco }}
     </button>
+    }
   </p>
 </div>

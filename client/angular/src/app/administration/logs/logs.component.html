@@ -1,25 +1,28 @@
 <mat-tab-group>
-
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <i class="material-icons">person</i> Last Logins
-      </ng-template>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <i class="material-icons">person</i> Last Logins
+    </ng-template>
+    <ng-template matTabContent>
       <app-last-logins></app-last-logins>
-    </mat-tab>
-  
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <i class="material-icons">cloud_upload</i> Last Uploads
-      </ng-template>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <i class="material-icons">cloud_upload</i> Last Uploads
+    </ng-template>
+    <ng-template matTabContent>
       <app-last-uploads></app-last-uploads>
-    </mat-tab>
-  
-    <mat-tab>
-      <ng-template mat-tab-label>
-        <i class="material-icons">cloud_download</i> Last Downloads
-      </ng-template>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <i class="material-icons">cloud_download</i> Last Downloads
+    </ng-template>
+    <ng-template matTabContent>
       <app-last-downloads></app-last-downloads>
-    </mat-tab>
-  
-  </mat-tab-group>
-  
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

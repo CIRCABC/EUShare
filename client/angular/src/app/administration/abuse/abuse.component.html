@@ -1,21 +1,40 @@
 <mat-tab-group>
+  <mat-tab label="Waiting">
+    <ng-template matTabContent>
+      <app-abuse-tab
+        [reportStatus]="'WAITING'"
+        (showListEvent)="showList($event)"
+        (deleteEvent)="delete($event)"
+        (approveEvent)="approveReport($event)"
+        (denyEvent)="denyReport($event)"
+        [abuseReportsDetailsMap]="abuseReportsDetailsMap"
+      ></app-abuse-tab>
+    </ng-template>
+  </mat-tab>
 
-    <mat-tab label="Waiting">
-        <app-abuse-tab [reportStatus]="'WAITING'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
-            (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
-            [abuseReportsDetailsMap]="abuseReportsDetailsMap"></app-abuse-tab>
-    </mat-tab>
+  <mat-tab label="Approved">
+    <ng-template matTabContent>
+      <app-abuse-tab
+        [reportStatus]="'APPROVED'"
+        (showListEvent)="showList($event)"
+        (deleteEvent)="delete($event)"
+        (approveEvent)="approveReport($event)"
+        (denyEvent)="denyReport($event)"
+        [abuseReportsDetailsMap]="abuseReportsDetailsMap"
+      ></app-abuse-tab>
+    </ng-template>
+  </mat-tab>
 
-    <mat-tab label="Approved">
-        <app-abuse-tab [reportStatus]="'APPROVED'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
-            (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
-            [abuseReportsDetailsMap]="abuseReportsDetailsMap"></app-abuse-tab>
-    </mat-tab>
-
-    <mat-tab label="Denied">
-        <app-abuse-tab [reportStatus]="'DENIED'" (showListEvent)="showList($event)" (deleteEvent)="delete($event)"
-            (approveEvent)="approveReport($event)" (denyEvent)="denyReport($event)"
-            [abuseReportsDetailsMap]="abuseReportsDetailsMap"></app-abuse-tab>
-    </mat-tab>
-
+  <mat-tab label="Denied">
+    <ng-template matTabContent>
+      <app-abuse-tab
+        [reportStatus]="'DENIED'"
+        (showListEvent)="showList($event)"
+        (deleteEvent)="delete($event)"
+        (approveEvent)="approveReport($event)"
+        (denyEvent)="denyReport($event)"
+        [abuseReportsDetailsMap]="abuseReportsDetailsMap"
+      ></app-abuse-tab>
+    </ng-template>
+  </mat-tab>
 </mat-tab-group>

@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { FileSizeFormatPipe } from '../pipes/file-size-format.pipe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgIf, NgClass, SlicePipe } from '@angular/common';
+import { NgClass, SlicePipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { NotificationService } from '../notification/notification.service';
 
@@ -27,7 +27,6 @@ import { NotificationService } from '../notification/notification.service';
   styleUrls: ['./uploaded-file-row.component.scss'],
   standalone: true,
   imports: [
-    NgIf,
     FontAwesomeModule,
     NgClass,
     TranslocoModule,
@@ -65,7 +64,7 @@ export class UploadedFileRowComponent {
     private downloadsService: DownloadsService,
     private notificationService: NotificationService,
     private fileService: FileService,
-    private router: Router,
+    private router: Router
   ) {}
 
   public async tryDownload() {
@@ -73,25 +72,25 @@ export class UploadedFileRowComponent {
       await this.modalService.activateDownloadModal(
         this.file.fileId,
         this.file.name,
-        this.file.hasPassword,
+        this.file.hasPassword
       );
     } else {
       const result = await this.downloadsService.download(
         this.file.fileId,
-        this.file.name,
+        this.file.name
       );
       if (result === 'WRONG_PASSWORD') {
         this.notificationService.addErrorMessageTranslation(
           'wrong.password',
           undefined,
-          true,
+          true
         );
       }
       if (result === 'TOO_MANY_DOWNLOADS') {
         this.notificationService.addErrorMessageTranslation(
           'too.many.downloads',
           undefined,
-          true,
+          true
         );
       }
       if (result === 'OK') {
@@ -102,14 +101,14 @@ export class UploadedFileRowComponent {
   public openAddRecipientsModal() {
     this.modalService.activateAddRecipientsModal(
       this.file.name,
-      this.file.fileId,
+      this.file.fileId
     );
   }
 
   public async delete() {
     this.modalService.activateDeleteConfirmModal(
       this.file.name,
-      this.file.fileId,
+      this.file.fileId
     );
   }
 
@@ -117,7 +116,7 @@ export class UploadedFileRowComponent {
     this.modalService.activateChangeExpirationDateModal(
       this.file.name,
       this.file.fileId,
-      this.file.expirationDate,
+      this.file.expirationDate
     );
   }
 
@@ -127,7 +126,7 @@ export class UploadedFileRowComponent {
         this.file.name,
         this.file.fileId,
         this.file.sharedWith,
-        this.file.hasPassword,
+        this.file.hasPassword
       );
     }
   }
@@ -137,7 +136,7 @@ export class UploadedFileRowComponent {
       this.modalService.activateStatisticsModal(
         this.file.name,
         this.file.fileId,
-        this.file.fileLogs,
+        this.file.fileLogs
       );
     }
   }
@@ -154,7 +153,7 @@ export class UploadedFileRowComponent {
     await firstValueFrom(
       this.fileService.updateStatus(this.file.fileId, {
         status: FileStatusUpdate.StatusEnum.Frozen,
-      }),
+      })
     );
     this.refreshParent.emit();
   }
@@ -163,7 +162,7 @@ export class UploadedFileRowComponent {
     await firstValueFrom(
       this.fileService.updateStatus(this.file.fileId, {
         status: FileStatusUpdate.StatusEnum.Available,
-      }),
+      })
     );
     this.refreshParent.emit();
   }

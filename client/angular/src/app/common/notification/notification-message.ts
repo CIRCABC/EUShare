@@ -15,6 +15,6 @@ export class NotificationMessage {
     public level: NotificationLevel,
     public body: string,
     public autoclose = false,
-    public displayTime = 5,
+    public displayTime = 5
   ) {}
 }

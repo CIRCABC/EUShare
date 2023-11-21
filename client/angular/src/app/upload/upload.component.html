@@ -1,43 +1,61 @@
 <div class="centered">
-  <h1 class="title">{{ "share.a.new.file" | transloco }}</h1>
+  <h1 class="title">{{ 'share.a.new.file' | transloco }}</h1>
   <h2 class="subtitle is-family-secondary is-uppercase">
-    {{ "you.can.upload.up.to" | transloco }}
+    {{ 'you.can.upload.up.to' | transloco }}
     {{ leftSpaceInBytes | fileSizeFormat }} ({{
-    totalSpaceInBytes | fileSizeFormat
+      totalSpaceInBytes | fileSizeFormat
     }}
-    {{ "quota" | transloco }})
+    {{ 'quota' | transloco }})
   </h2>
 
-
-  <div *ngIf="isUserExternal()" class="upgrade-link">
-    <a (click)='openTrustDialog()' matTooltip="{{ 'upgrade.account.tooltip' | transloco }}">
-      {{ "upgrade.account" | transloco }} 
-    </a><mat-icon matTooltip="{{ 'upgrade.account.tooltip' | transloco }}" style="font-size: 16px; vertical-align: bottom;">info</mat-icon>
-</div>
-
+  @if (isUserExternal()) {
+  <div class="upgrade-link">
+    <a
+      (click)="openTrustDialog()"
+      matTooltip="{{ 'upgrade.account.tooltip' | transloco }}"
+    >
+      {{ 'upgrade.account' | transloco }} </a
+    ><mat-icon
+      matTooltip="{{ 'upgrade.account.tooltip' | transloco }}"
+      style="font-size: 16px; vertical-align: bottom"
+      >info</mat-icon
+    >
+  </div>
+  }
 
   <div class="formContainer">
     <form [formGroup]="uploadform" (ngSubmit)="submit()" #f="ngForm">
       <div>
         <!-- DRAG AND DROP-->
         <div class="field">
-          <label class="label">{{ "file" | transloco }}</label>
-          <div class="file has-name is-boxed" [class.has-name]="getFileFromDisk() !== undefined">
+          <label class="label">{{ 'file' | transloco }}</label>
+          <div
+            class="file has-name is-boxed"
+            [class.has-name]="getFileFromDisk() !== undefined"
+          >
             <label class="file-label">
               <!-- INPUT -->
-              <input appEsFileInput id="fileFromDisk" data-cy="file-input" class="file-input" type="file"
-                formControlName="fileFromDisk" />
+              <input
+                appEsFileInput
+                id="fileFromDisk"
+                data-cy="file-input"
+                class="file-input"
+                type="file"
+                formControlName="fileFromDisk"
+              />
               <span class="button cta--plus is-bigger">
                 <span class="file-label">
-                  {{ "add.file" | transloco }}
+                  {{ 'add.file' | transloco }}
                 </span>
               </span>
               <!-- FILE SIZE AND NAME -->
 
-              <span *ngIf="getFileFromDisk()" class="file-name">
+              @if (getFileFromDisk()) {
+              <span class="file-name">
                 {{ getFileFromDisk().name }}
                 ({{ getFileFromDisk().size }} Bytes)
               </span>
+              }
             </label>
           </div>
         </div>
@@ -45,7 +63,7 @@
           <!-- DRAG AND DROP BOX  -->
           <div (drop)="drop($event)" class="container">
             <div class="notification dragAndDrop">
-              {{ "drop.file" | transloco }}
+              {{ 'drop.file' | transloco }}
             </div>
           </div>
         </div>
@@ -55,107 +73,160 @@
       <div (click)="toggleMoreOptions()" class="is-info">
         <span class="button cta--dots is-bigger">
           <span class="file-label">
-            {{ "more.advanced" | transloco }}
+            {{ 'more.advanced' | transloco }}
           </span>
         </span>
       </div>
 
       <!-- EMAILS AND USER NAMES -->
-      <div class="field" *ngIf="moreOptions">
+      @if (moreOptions) {
+      <div class="field">
         <br />
         <div class="field fieldset">
           <label class="label legend">{{
-            "upload.notification" | transloco
-            }}</label>
+            'upload.notification' | transloco
+          }}</label>
           <div class="field-body">
             <div class="field is-narrow"> </div>
           </div>
-          <div formArrayName="emailMessageArray" class="column is-half-desktop emailColumn"> {{
-            'upload.notification.help' | transloco }}
-            <div [formGroupName]="i" *ngFor="
-                let emailAndMessageFg of emailMessageArray.controls;
-                let i = index
-              " class="media">
+          <div
+            formArrayName="emailMessageArray"
+            class="column is-half-desktop emailColumn"
+          >
+            {{ 'upload.notification.help' | transloco }}
+            @for ( emailAndMessageFg of emailMessageArray.controls; track
+            emailAndMessageFg; let i = $index) {
+            <div [formGroupName]="i" class="media">
               <div class="media-content">
                 <!-- EMAIL ARRAY -->
                 <div formArrayName="emailArray">
-                  <div [formGroupName]="j" *ngFor="
-                      let emailIndexed of getEmailArrayOnForm(
-                        emailAndMessageFg
-                      );
-                      let j = index
-                    ">
+                  @for ( emailIndexed of getEmailArrayOnForm( emailAndMessageFg
+                  ); track emailIndexed; let j = $index) {
+                  <div [formGroupName]="j">
                     <!-- DISPLAYED EMAILS -->
                     <div class="displayedEmail">
                       {{ getEmailControlValue(i, j) }}
                       <a (click)="deleteEmailFormGroup(i, j)">
-                        <fa-icon class="icon is-small" [icon]="faUserSlash"></fa-icon>
+                        <fa-icon
+                          class="icon is-small"
+                          [icon]="faUserSlash"
+                        ></fa-icon>
                       </a>
                     </div>
-                    <div class="emailContainer" *ngIf="j === getEmailArrayLength(i) - 1"></div>
+                    @if (j === getEmailArrayLength(i) - 1) {
+                    <div class="emailContainer"></div>
+                    }
                   </div>
+                  }
                 </div>
-                <app-email-input *ngIf="isShowEmailControl" (downClick)="addEmailFormGroup(i)"
-                  [formControl]="emailControl"></app-email-input>
-                <app-message-text-area formControlName="message"></app-message-text-area>
+                @if (isShowEmailControl) {
+                <app-email-input
+                  (downClick)="addEmailFormGroup(i)"
+                  [formControl]="emailControl"
+                ></app-email-input>
+                }
+                <app-message-text-area
+                  formControlName="message"
+                ></app-message-text-area>
               </div>
             </div>
+            }
           </div>
         </div>
         <!-- EMAIL AND MESSAGES -->
       </div>
+      }
       <p></p>
       <br />
-      <div class="field fieldset media-content" *ngIf="moreOptions">
+      @if (moreOptions) {
+      <div class="field fieldset media-content">
         <label class="label legend">{{
-          "file.password.optional" | transloco
-          }}</label>
+          'file.password.optional' | transloco
+        }}</label>
         <div class="column is-half-desktop emailColumn">
-          <input id="password" formControlName="password" class="input"
-            [attr.placeholder]="'password.on.file.download' | transloco" value="" />
+          <input
+            id="password"
+            formControlName="password"
+            class="input"
+            [attr.placeholder]="'password.on.file.download' | transloco"
+            value=""
+          />
         </div>
       </div>
+      }
       <br />
 
-      <div class="field fieldset media-content" *ngIf="moreOptions">
+      @if (moreOptions) {
+      <div class="field fieldset media-content">
         <label class="label legend">
-          {{ 'download.notification' | transloco }}
-        </label><br>
+          {{ 'download.notification' | transloco }} </label
+        ><br />
         <div class="field-body">
           <div class="field is-narrow"> </div>
         </div>
         <div class="column is-half-desktop emailColumn">
-          <input type="checkbox" id="downloadNotification" formControlName="downloadNotification" class="checkbox" /> {{
-          'download.notification.help' | transloco }}
+          <input
+            type="checkbox"
+            id="downloadNotification"
+            formControlName="downloadNotification"
+            class="checkbox"
+          />
+          {{ 'download.notification.help' | transloco }}
         </div>
       </div>
+      }
       <br />
-      <div *ngIf="!isLoading && useCaptcha" class="wrap-box captcha">
-        <cbc-captcha languageCode="en"></cbc-captcha> 
+      @if (!isLoading && useCaptcha) {
+      <div class="wrap-box captcha">
+        <cbc-captcha languageCode="en"></cbc-captcha>
       </div>
+      }
       <br />
       <p></p>
 
-      <div *ngIf="useCaptcha">
+      @if (useCaptcha) {
+      <div>
         <label class="checkbox">
-          <input type="checkbox" (change)="acceptTos = $event.target.checked"  formControlName="acceptTos" />
-          {{ "accept.tos1" | transloco }} <a href="{{ circabc_url }}/ui/help/legal-notice/terms">{{"label.terms" | transloco}}</a> {{ 'accept.tos2' | transloco }}
+          <input
+            type="checkbox"
+            (change)="acceptTos = $event.target.checked"
+            formControlName="acceptTos"
+          />
+          {{ 'accept.tos1' | transloco }}
+          <a href="{{ circabc_url }}/ui/help/legal-notice/terms">{{
+            'label.terms' | transloco
+          }}</a>
+          {{ 'accept.tos2' | transloco }}
         </label>
       </div>
+      }
 
       <div class="field">
-        <button class="button" [class.is-loading]="uploadInProgress" type="submit"
-          [disabled]="!uploadform.valid || ((useCaptcha) && (isCaptchaInValid() || !acceptTos )) "
-          data-cy="submit">
-          {{ "submit" | transloco }}
+        <button
+          class="button"
+          [class.is-loading]="uploadInProgress"
+          type="submit"
+          [disabled]="
+            !uploadform.valid ||
+            (useCaptcha && (isCaptchaInValid() || !acceptTos))
+          "
+          data-cy="submit"
+        >
+          {{ 'submit' | transloco }}
         </button>
       </div>
-      <div *ngIf="uploadInProgress">
+      @if (uploadInProgress) {
+      <div>
         {{ percentageUploaded }}%
-        <progress class="progress is-success" value="{{ percentageUploaded }}" max="100">
+        <progress
+          class="progress is-success"
+          value="{{ percentageUploaded }}"
+          max="100"
+        >
           {{ percentageUploaded }}%
         </progress>
       </div>
+      }
     </form>
   </div>
 </div>

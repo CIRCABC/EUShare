@@ -89,7 +89,7 @@ export class AppComponent {
 
   constructor(
     private oauthService: OAuthService,
-    private readonly location: Location,
+    private readonly location: Location
   ) {
     this.timestamp = new Date().getTime();
     localStorage.setItem('timestamp', this.timestamp.toString());

@@ -2,37 +2,54 @@
   <div class="modal is-active">
     <div class="modal-background"></div>
     <div class="modal-card">
-
       <header class="modal-card-head">
-        <p class="modal-card-title"><strong>{{ "no.upload.rights.submit.title" | transloco }}</strong></p>
+        <p class="modal-card-title"
+          ><strong>{{ 'no.upload.rights.submit.title' | transloco }}</strong></p
+        >
         <button class="delete" aria-label="close" (click)="cancel()"></button>
       </header>
 
       <section class="modal-card-body">
-  
-          <div>
-            <p>{{ "no.upload.rights.submit.description" | transloco }}</p>
-            
-            <textarea matInput [(ngModel)]="editorContent" name="editorContent" placeholder="Enter text here" required
-              #editorContentModel="ngModel"></textarea>
+        <div>
+          <p>{{ 'no.upload.rights.submit.description' | transloco }}</p>
 
+          <textarea
+            matInput
+            [(ngModel)]="editorContent"
+            name="editorContent"
+            placeholder="Enter text here"
+            required
+            #editorContentModel="ngModel"
+          ></textarea>
 
-            <p *ngIf="editorContentModel.invalid && editorContentModel.touched" style="color: red;">
-              {{ 'no.upload.rights.textrequired' | transloco }}
-            </p>
-
-          </div>
-        
+          @if (editorContentModel.invalid && editorContentModel.touched) {
+          <p style="color: red">
+            {{ 'no.upload.rights.textrequired' | transloco }}
+          </p>
+          }
+        </div>
       </section>
 
       <footer class="modal-card-foot">
         <div mat-dialog-actions>
-
-          <button class="button" mat-raised-button color="primary" type="submit" [disabled]="form.invalid" (click)="submit()">
-            {{ "submit" | transloco }}
+          <button
+            class="button"
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+            (click)="submit()"
+          >
+            {{ 'submit' | transloco }}
           </button>
-          <button class="button" mat-raised-button color="warn" type="button" (click)="cancel()">
-            {{ "cancel" | transloco }}
+          <button
+            class="button"
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="cancel()"
+          >
+            {{ 'cancel' | transloco }}
           </button>
         </div>
       </footer>

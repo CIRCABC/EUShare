@@ -1,55 +1,84 @@
+<table
+  mat-table
+  [dataSource]="data"
+  matSort
+  matSortActive="last_logged"
+  matSortDisableClear
+  matSortDirection="desc"
+>
+  <ng-container matColumnDef="email">
+    <th
+      mat-header-cell
+      *matHeaderCellDef
+      class="bold-header"
+      mat-sort-header
+      disableClear
+    >
+      Email
+    </th>
+    <td mat-cell *matCellDef="let element"> {{ element.email }} </td>
+  </ng-container>
 
-<table mat-table [dataSource]="data" matSort matSortActive="last_logged" matSortDisableClear matSortDirection="desc">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header>
+      Name
+    </th>
+    <td mat-cell *matCellDef="let element"> {{ element.name }} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header disableClear > Email </th>
-      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header> Name </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header> Username </th>
-      <td mat-cell *matCellDef="let element"> {{element.username}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="total_space">
-      <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header> Total Space </th>
-      <td mat-cell *matCellDef="let element"> {{element.total_space}} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="last_logged">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear > Last Logged </th>
-      <td mat-cell *matCellDef="let element"> {{element.last_logged}} </td>
-    </ng-container>
+  <ng-container matColumnDef="username">
+    <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header>
+      Username
+    </th>
+    <td mat-cell *matCellDef="let element"> {{ element.username }} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="creation_date">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation Date </th>
-      <td mat-cell *matCellDef="let element"> {{ element.creation_date }} </td>
-    </ng-container>
-  
-    <ng-container matColumnDef="uploads">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Uploads </th>
-      <td mat-cell *matCellDef="let element"> {{ element.uploads }} </td>
-    </ng-container>
+  <ng-container matColumnDef="total_space">
+    <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header>
+      Total Space
+    </th>
+    <td mat-cell *matCellDef="let element"> {{ element.total_space }} </td>
+  </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-    </ng-container>
-  
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
+  <ng-container matColumnDef="last_logged">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>
+      Last Logged
+    </th>
+    <td mat-cell *matCellDef="let element"> {{ element.last_logged }} </td>
+  </ng-container>
 
+  <ng-container matColumnDef="creation_date">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Creation Date </th>
+    <td mat-cell *matCellDef="let element"> {{ element.creation_date }} </td>
+  </ng-container>
 
-  <mat-paginator [length]="resultsLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
-    showFirstLastButtons>
-  </mat-paginator>
+  <ng-container matColumnDef="uploads">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Uploads </th>
+    <td mat-cell *matCellDef="let element"> {{ element.uploads }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+    <td mat-cell *matCellDef="let element"> {{ element.status }} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator
+  [length]="resultsLength"
+  [pageSize]="5"
+  [pageSizeOptions]="[5, 10, 20]"
+  showFirstLastButtons
+>
+</mat-paginator>
 <p></p>
-  <div class="download-container">
-    <mat-icon (click)="downloadFile()" class="download-icon" title="Download as CSV">file_download</mat-icon>
+<div class="download-container">
+  <mat-icon
+    (click)="downloadFile()"
+    class="download-icon"
+    title="Download as CSV"
+    >file_download</mat-icon
+  >
 </div>

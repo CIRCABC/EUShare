@@ -13,14 +13,13 @@ import { Subscription } from 'rxjs';
 import { NotificationMessage } from './notification-message';
 import { NotificationService } from './notification.service';
 import { NotificationComponent } from './notification.component';
-import { NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-notification-system',
   templateUrl: './notification-system.component.html',
   styleUrls: ['./notification-system.component.scss'],
   standalone: true,
-  imports: [NgFor, NotificationComponent],
+  imports: [NotificationComponent],
 })
 export class NotificationSystemComponent implements OnDestroy {
   public messages: NotificationMessage[] = [];
@@ -33,7 +32,7 @@ export class NotificationSystemComponent implements OnDestroy {
         (message: NotificationMessage) => {
           this.messages.push(message);
           window.scroll(0, 0);
-        },
+        }
       );
 
     this.messageDestroyedSubscription$ =
@@ -41,7 +40,7 @@ export class NotificationSystemComponent implements OnDestroy {
         (message: NotificationMessage) => {
           const i = this.messages.indexOf(message);
           this.messages.splice(i, 1);
-        },
+        }
       );
   }
   public ngOnDestroy(): void {

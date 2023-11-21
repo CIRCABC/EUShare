@@ -20,7 +20,11 @@ import { SharedWithMeComponent } from './files/shared-with-me/shared-with-me.com
 import { FilelinkComponent } from './filelink/filelink.component';
 import { CallBackComponent } from './call-back/call-back.component';
 import { TermsOfServiceComponent } from './terms-of-service/terms-of-service.component';
-import { TRANSLOCO_CONFIG, TranslocoConfig, TranslocoService } from '@ngneat/transloco';
+import {
+  TRANSLOCO_CONFIG,
+  TranslocoConfig,
+  TranslocoService,
+} from '@ngneat/transloco';
 import { forkJoin } from 'rxjs';
 
 export function preloadAllTranslocoLanguages(
@@ -28,7 +32,9 @@ export function preloadAllTranslocoLanguages(
   config: TranslocoConfig
 ): Function {
   return () => {
-    const allLanguages = config.availableLangs.map(lang => transloco.load(lang as string));
+    const allLanguages = config.availableLangs.map((lang) =>
+      transloco.load(lang as string)
+    );
     return forkJoin(allLanguages).toPromise();
   };
 }
@@ -51,7 +57,7 @@ const appRoutes: Routes = [
     path: 'home',
     loadComponent: () =>
       import('./files/my-shared-files/my-shared-files.component').then(
-        (m) => m.MySharedFilesComponent,
+        (m) => m.MySharedFilesComponent
       ),
     canActivate: [loginCanActivate],
   },
@@ -78,7 +84,7 @@ const appRoutes: Routes = [
     path: 'administration',
     loadComponent: () =>
       import('./administration/administration.component').then(
-        (m) => m.AdministrationComponent,
+        (m) => m.AdministrationComponent
       ),
     canActivate: [loginCanActivate],
   },
@@ -101,7 +107,7 @@ const appRoutes: Routes = [
     path: 'privacyStatement',
     loadComponent: () =>
       import('./privacy-statement/privacy-statement.component').then(
-        (m) => m.PrivacyStatementComponent,
+        (m) => m.PrivacyStatementComponent
       ),
   },
   {
@@ -125,8 +131,8 @@ const appRoutes: Routes = [
       provide: APP_INITIALIZER,
       useFactory: preloadAllTranslocoLanguages,
       deps: [TranslocoService, TRANSLOCO_CONFIG],
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

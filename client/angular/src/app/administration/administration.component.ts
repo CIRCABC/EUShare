@@ -16,7 +16,7 @@ import { FileSizeFormatPipe } from '../common/pipes/file-size-format.pipe';
 import { TranslocoModule } from '@ngneat/transloco';
 import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgIf, NgFor } from '@angular/common';
+
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { FileRowContainerComponent } from '../common/uploaded-file-row-container/uploaded-file-row-container.component';
@@ -34,9 +34,7 @@ import { MonitoringComponent } from './monitoring/monitoring.component';
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    NgIf,
     FontAwesomeModule,
-    NgFor,
     BarChartComponent,
     TranslocoModule,
     FileSizeFormatPipe,
@@ -64,7 +62,7 @@ export class AdministrationComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private statsService: StatsService,
+    private statsService: StatsService
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +86,7 @@ export class AdministrationComponent implements OnInit {
 
   public async getMountPointSpaces() {
     this.mountPointSpaces = await firstValueFrom(
-      this.adminService.getDiskSpace(),
+      this.adminService.getDiskSpace()
     );
   }
 

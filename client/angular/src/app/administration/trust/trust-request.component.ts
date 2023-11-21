@@ -25,10 +25,7 @@ import { TrustLogTableComponent } from './trust-log-table.component';
 export class TrustRequestComponent implements OnInit {
   trustRequests: TrustRequest[] = [];
 
-  constructor(
-    private trustService: TrustService,
-    private dialog: MatDialog,
-  ) {}
+  constructor(private trustService: TrustService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.trustService

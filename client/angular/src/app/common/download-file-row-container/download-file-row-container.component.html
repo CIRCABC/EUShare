@@ -1,25 +1,19 @@
 <div class="container">
-  <div
-    *ngIf="fileInfoRecipientArray && fileInfoRecipientArray.length === 0"
-    class="subtitle"
-  >
-    {{ "no.files.to.download" | transloco }}
+  @if (fileInfoRecipientArray && fileInfoRecipientArray.length === 0) {
+  <div class="subtitle">
+    {{ 'no.files.to.download' | transloco }}
   </div>
+  } @for (fileInfoUploader of fileInfoRecipientArray; track fileInfoUploader) {
   <app-download-file-row
-    *ngFor="let fileInfoUploader of fileInfoRecipientArray"
     [fileToDisplay]="fileInfoUploader"
   ></app-download-file-row>
-  <nav
-    class="pagination is-centered"
-    role="navigation"
-    aria-label="pagination"
-    *ngIf="fileInfoRecipientArrayNext.length > 0 || pageNumber > 0"
-  >
+  } @if (fileInfoRecipientArrayNext.length > 0 || pageNumber > 0) {
+  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
     <a
       [style.visibility]="pageNumber > 0 ? 'visible' : 'hidden'"
       class="pagination-previous button"
       (click)="previousPage()"
-      >{{ "previous" | transloco }}</a
+      >{{ 'previous' | transloco }}</a
     >
     <ul class="pagination-list">
       <a
@@ -35,7 +29,8 @@
       "
       class="pagination-next button"
       (click)="nextPage()"
-      >{{ "next" | transloco }}</a
+      >{{ 'next' | transloco }}</a
     >
   </nav>
+  }
 </div>

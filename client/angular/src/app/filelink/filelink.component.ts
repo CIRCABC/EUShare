@@ -14,7 +14,7 @@ import { ModalsService } from '../common/modals/modals.service';
 import { FileService } from '../openapi/api/file.service';
 import { firstValueFrom, map } from 'rxjs';
 import { TranslocoModule } from '@ngneat/transloco';
-import { CommonModule, NgIf, SlicePipe } from '@angular/common';
+import { CommonModule, SlicePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AbuseDialogComponent } from '../common/dialogs/abuse-dialog/abuse-dialog.component';
 import { AbuseReport } from '../openapi/model/abuseReport';
@@ -28,7 +28,6 @@ import { NotificationService } from '../common/notification/notification.service
   styleUrls: ['./filelink.component.scss'],
   standalone: true,
   imports: [
-    NgIf,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -53,7 +52,7 @@ export class FilelinkComponent implements OnInit {
     private fileApi: FileService,
     private dialog: MatDialog,
     private downloadsService: DownloadsService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   async ngOnInit() {
@@ -66,8 +65,8 @@ export class FilelinkComponent implements OnInit {
             this.fileId = id;
             this.fileName = fileinfo.name;
             this.isFilePasswordProtected = fileinfo.hasPassword;
-          }),
-        ),
+          })
+        )
       );
     } else {
       this.router.navigateByUrl('/home');
@@ -91,26 +90,26 @@ export class FilelinkComponent implements OnInit {
       await this.modalService.activateDownloadModal(
         this.fileId,
         this.fileName,
-        this.isFilePasswordProtected,
+        this.isFilePasswordProtected
       );
     } else {
       const result = await this.downloadsService.download(
         this.fileId,
         this.fileName,
-        this.inputPassword,
+        this.inputPassword
       );
       if (result === 'WRONG_PASSWORD') {
         this.notificationService.addErrorMessageTranslation(
           'wrong.password',
           undefined,
-          true,
+          true
         );
       }
       if (result === 'TOO_MANY_DOWNLOADS') {
         this.notificationService.addErrorMessageTranslation(
           'too.many.downloads',
           undefined,
-          true,
+          true
         );
       }
       if (result === 'OK') {

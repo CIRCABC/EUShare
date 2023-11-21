@@ -40,7 +40,7 @@ export class TrustLogTableComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching Trust Logs:', error);
-      },
+      }
     );
   }
 }

@@ -23,7 +23,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 export class LoginComponent {
   constructor(
     private oauthService: OAuthService,
-    private keyStoreService: KeyStoreService,
+    private keyStoreService: KeyStoreService
   ) {}
 
   login() {

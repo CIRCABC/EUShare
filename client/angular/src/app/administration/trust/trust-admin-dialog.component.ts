@@ -30,7 +30,7 @@ export class TrustAdminDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<TrustAdminDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: TrustRequest,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {}
 
   denyReason = '';

@@ -35,7 +35,7 @@ export class MonitoringTabComponent implements OnInit {
 
   constructor(
     private downloadsService: DownloadsService,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {

@@ -23,7 +23,7 @@ import { environment } from '../../environments/environment';
 import { SessionStorageService } from '../services/session-storage.service';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgIf } from '@angular/common';
+
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
@@ -31,13 +31,7 @@ import { TranslocoModule } from '@ngneat/transloco';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
   standalone: true,
-  imports: [
-    NgIf,
-    RouterLink,
-    FontAwesomeModule,
-    RouterLinkActive,
-    TranslocoModule,
-  ],
+  imports: [RouterLink, FontAwesomeModule, RouterLinkActive, TranslocoModule],
 })
 export class NavbarComponent implements OnInit {
   public faUsers = faUsers;
@@ -54,7 +48,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     private sessionService: SessionStorageService,
     private oAuthService: OAuthService,
-    public router: Router,
+    public router: Router
   ) {}
 
   ngOnInit() {

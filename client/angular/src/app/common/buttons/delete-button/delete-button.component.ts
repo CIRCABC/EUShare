@@ -32,7 +32,7 @@ export class DeleteButtonComponent {
 
   constructor(
     private uploadedFileService: UploadedFilesService,
-    private modalService: ModalsService,
+    private modalService: ModalsService
   ) {}
 
   public async delete() {

@@ -26,13 +26,13 @@ import { NotificationService } from '../../notification/notification.service';
   standalone: true,
 })
 export class FileLinkModalComponent implements OnInit {
-  public modalActive: boolean = false;
+  public modalActive = false;
   public fileLink!: string;
-  public isLoading: boolean = false;
+  public isLoading = false;
 
   constructor(
     private modalService: ModalsService,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class FileLinkModalComponent implements OnInit {
       (nextModalActiveValue) => {
         this.modalActive = nextModalActiveValue.modalActive;
         this.fileLink = nextModalActiveValue.fileLink;
-      },
+      }
     );
   }
 
