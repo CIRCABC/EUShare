@@ -50,16 +50,37 @@ import eu.europa.circabc.eushare.storage.dto.UserInfoDTO;
 
 }))
 
-@NamedNativeQuery(name = "UserInfoDTO.findByEmailRoleInternalOrAdmin", query = "SELECT id, role, users.status, username, name, email, total_space, sum(files.file_size) as used_space, count(*) as files_count "
-    + "FROM users, files WHERE files.uploader_id=id and "
-    + "( email like lower(concat(:start,'%')) or lower(name) like lower(concat(:start,'%'))  or lower(name) like lower(concat('% ',:start,'%')) ) "
-    + "GROUP BY id, role, username, name, email, total_space "
-    + "ORDER BY  CASE WHEN :sortBy = 'name' THEN name END ASC, CASE WHEN :sortBy = 'files_count' THEN files_count END DESC, CASE WHEN :sortBy = 'used_space' THEN used_space END DESC ", resultSetMapping = "UserInfoDTOMapping")
-@NamedNativeQuery(name = "UserInfoDTO.findAllByEmailRoleInternalOrAdmin", query = "SELECT id, role, users.status, username, name, email, total_space, COALESCE(SUM(files.file_size), 0) AS used_space, COALESCE(COUNT(files.file_id), 0) AS files_count "
-    + "FROM users LEFT JOIN files ON users.id =  files.uploader_id "
+@NamedNativeQuery(
+    name = "UserInfoDTO.findAllByEmailOrName",
+    query = "SELECT id, role, users.status, username, name, email, total_space, COALESCE(SUM(files.file_size), 0) AS used_space, COALESCE(COUNT(files.file_id), 0) AS files_count "
+    + "FROM users LEFT JOIN files ON users.id = files.uploader_id "
     + "WHERE (email LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT(:start,'%')) OR LOWER(name) LIKE LOWER(CONCAT('% ',:start,'%'))) "
     + "GROUP BY id, role, username, name, email, total_space "
-    + "ORDER BY  CASE WHEN :sortBy = 'name' THEN name END ASC, CASE WHEN :sortBy = 'files_count' THEN files_count END DESC, CASE WHEN :sortBy = 'used_space' THEN used_space END DESC ", resultSetMapping = "UserInfoDTOMapping")
+    + "ORDER BY "
+    + "CASE WHEN :sortField = 'id' AND :sortOrder = 'ASC' THEN id END ASC, "
+    + "CASE WHEN :sortField = 'role' AND :sortOrder = 'ASC' THEN role END ASC, "
+    + "CASE WHEN :sortField = 'status' AND :sortOrder = 'ASC' THEN users.status END ASC, "
+    + "CASE WHEN :sortField = 'username' AND :sortOrder = 'ASC' THEN username END ASC, "
+    + "CASE WHEN :sortField = 'name' AND :sortOrder = 'ASC' THEN name END ASC, "
+    + "CASE WHEN :sortField = 'email' AND :sortOrder = 'ASC' THEN email END ASC, "
+    + "CASE WHEN :sortField = 'total_space' AND :sortOrder = 'ASC' THEN total_space END ASC, "
+    + "CASE WHEN :sortField = 'id' AND :sortOrder = 'DESC' THEN id END DESC, "
+    + "CASE WHEN :sortField = 'role' AND :sortOrder = 'DESC' THEN role END DESC, "
+    + "CASE WHEN :sortField = 'status' AND :sortOrder = 'DESC' THEN users.status END DESC, "
+    + "CASE WHEN :sortField = 'username' AND :sortOrder = 'DESC' THEN username END DESC, "
+    + "CASE WHEN :sortField = 'name' AND :sortOrder = 'DESC' THEN name END DESC, "
+    + "CASE WHEN :sortField = 'email' AND :sortOrder = 'DESC' THEN email END DESC, "
+    + "CASE WHEN :sortField = 'total_space' AND :sortOrder = 'DESC' THEN total_space END DESC, "
+    + "CASE WHEN :sortField = 'usedSpace' AND :sortOrder = 'ASC' THEN used_space END ASC, "
+    + "CASE WHEN :sortField = 'filesCount' AND :sortOrder = 'ASC' THEN files_count END ASC, "
+    + "CASE WHEN :sortField = 'usedSpace' AND :sortOrder = 'DESC' THEN used_space END DESC, "
+    + "CASE WHEN :sortField = 'filesCount' AND :sortOrder = 'DESC' THEN files_count END DESC",
+    resultSetMapping = "UserInfoDTOMapping"
+)
+
+@NamedNativeQuery(name = "DBUser.countUsers", query = "SELECT COUNT(*) as count FROM users", resultSetMapping = "countUsersMapping")
+@SqlResultSetMapping(name = "countUsersMapping", columns = @ColumnResult(name = "count", type = Long.class))
+
 
 @Table(name = "Users")
 public class DBUser {

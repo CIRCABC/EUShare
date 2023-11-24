@@ -22,41 +22,42 @@ import eu.europa.circabc.eushare.storage.entity.DBUser;
 import eu.europa.circabc.eushare.storage.entity.DBUser.Role;
 
 public interface UserRepository
-    extends PagingAndSortingRepository<DBUser, String> {
-  public List<DBUser> findAllById(String id);
+        extends PagingAndSortingRepository<DBUser, String> {
+    public List<DBUser> findAllById(String id);
 
-  public DBUser findOneByUsername(String username);
+    public DBUser findOneByUsername(String username);
 
-  @Query("FROM DBUser u WHERE (u.email = lower(:email))")
-  public DBUser findOneByEmailIgnoreCase(@Param("email") String email);
+    @Query("FROM DBUser u WHERE (u.email = lower(:email))")
+    public DBUser findOneByEmailIgnoreCase(@Param("email") String email);
 
-  public DBUser findOneByEmailIgnoreCaseAndRole(String email, DBUser.Role role);
+    public DBUser findOneByEmailIgnoreCaseAndRole(String email, DBUser.Role role);
 
-  public DBUser findOneByName(String name);
+    public DBUser findOneByName(String name);
 
-  public DBUser findOneById(String id);
+    public DBUser findOneById(String id);
 
-  public DBUser findOneByNameAndRole(String name, DBUser.Role role);
+    public DBUser findOneByNameAndRole(String name, DBUser.Role role);
 
-  public DBUser findOneByApiKey(String apiKey);
+    public DBUser findOneByApiKey(String apiKey);
 
-  public List<DBUser> findByEmailIgnoreCaseStartsWith(
-      String start,
-      Pageable page);
+    public List<DBUser> findByEmailIgnoreCaseStartsWith(
+            String start,
+            Pageable page);
 
-  @Modifying
-  @Query("UPDATE DBUser u SET u.uploads = u.uploads + 1 WHERE u.id = :id")
-  void incrementUploads(@Param("id") String userId);
+    @Modifying
+    @Query("UPDATE DBUser u SET u.uploads = u.uploads + 1 WHERE u.id = :id")
+    void incrementUploads(@Param("id") String userId);
 
-  @Query("SELECT u FROM DBUser u LEFT JOIN DBMonitoring m ON u.id = m.userId WHERE u.role = :role AND u.uploads > :uploads AND m.userId IS NULL")
-  public List<DBUser> findExternalUsersWithMoreThanUploadsNotMonitored(@Param("role") DBUser.Role role, @Param("uploads") int uploads);  
+    @Query("SELECT u FROM DBUser u LEFT JOIN DBMonitoring m ON u.id = m.userId WHERE u.role = :role AND u.uploads > :uploads AND m.userId IS NULL")
+    public List<DBUser> findExternalUsersWithMoreThanUploadsNotMonitored(@Param("role") DBUser.Role role,
+            @Param("uploads") int uploads);
 
-  @Query(name = "UserInfoDTO.findByEmailRoleInternalOrAdmin", nativeQuery = true)
-  public List<UserInfoDTO> findByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page,
-      @Param("sortBy") String sortBy);
+    @Query(name = "UserInfoDTO.findAllByEmailOrName", nativeQuery = true)
+    public List<UserInfoDTO> findAllByEmailOrName(@Param("start") String start,
+            Pageable pageable,
+            @Param("sortField") String sortField,
+            @Param("sortOrder") String sortOrder);
 
-  @Query(name = "UserInfoDTO.findAllByEmailRoleInternalOrAdmin", nativeQuery = true)
-  public List<UserInfoDTO> findAllByEmailRoleInternalOrAdmin(@Param("start") String start, Pageable page,
-      @Param("sortBy") String sortBy);
-
+    @Query(nativeQuery = true, name = "DBUser.countUsers")
+    Long countUsers();
 }

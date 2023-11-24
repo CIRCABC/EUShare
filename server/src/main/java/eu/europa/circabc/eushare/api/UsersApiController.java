@@ -13,6 +13,7 @@ import eu.europa.circabc.eushare.error.HttpErrorAnswerBuilder;
 import eu.europa.circabc.eushare.exceptions.UnknownUserException;
 import eu.europa.circabc.eushare.exceptions.UserUnauthorizedException;
 import eu.europa.circabc.eushare.exceptions.WrongAuthenticationException;
+import eu.europa.circabc.eushare.model.Metadata;
 import eu.europa.circabc.eushare.model.UserInfo;
 import eu.europa.circabc.eushare.services.UserService;
 import java.util.List;
@@ -50,32 +51,32 @@ public class UsersApiController implements UsersApi {
   }
 
  
+
+
   @Override
-  public ResponseEntity<List<UserInfo>> getUsersUserInfo(
-    @RequestParam(value = "pageSize") Integer pageSize,
-    @RequestParam(value = "pageNumber") Integer pageNumber,
-    @RequestParam(value = "searchString") String searchString,
-    @RequestParam(value = "active") Boolean active,
-    @RequestParam(value = "sortBy") String sortBy
-    
-  ) {
+  public ResponseEntity<List<UserInfo>> getUsersUserInfo(@NotNull @Valid Integer pageSize,
+      @NotNull @Valid Integer pageNumber, @NotNull @Valid String searchString, @Valid String sortField,
+      @Valid String sortOrder) {
     try {
       Authentication authentication = SecurityContextHolder
         .getContext()
         .getAuthentication();
       String requesterId = userService.getAuthenticatedUserId(authentication);
 
-      return new ResponseEntity<>(
+
+      ResponseEntity response = new ResponseEntity<>(
         userService.getUsersUserInfoOnBehalfOf(
           pageSize,
           pageNumber,
           searchString,
-          active,
-          sortBy,
+          sortField,
+          sortOrder,
           requesterId
         ),
         HttpStatus.OK
       );
+      return response;
+
     } catch (WrongAuthenticationException exc) {
       throw new ResponseStatusException(
         HttpStatus.UNAUTHORIZED,
@@ -101,4 +102,19 @@ public class UsersApiController implements UsersApi {
   public Optional<NativeWebRequest> getRequest() {
     return Optional.ofNullable(request);
   }
+
+
+
+
+  @Override
+  public ResponseEntity<Metadata> usersGetUserInfoMetadataGet() {
+    long total = userService.countUsers();
+    Metadata metadata = new Metadata();
+    metadata.setTotal(total);
+    return ResponseEntity.ok(metadata);
+  }
+
+
+
+  
 }

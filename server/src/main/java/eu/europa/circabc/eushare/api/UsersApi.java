@@ -14,6 +14,7 @@
  */
 package eu.europa.circabc.eushare.api;
 
+import eu.europa.circabc.eushare.model.Metadata;
 import eu.europa.circabc.eushare.model.Status;
 import eu.europa.circabc.eushare.model.UserInfo;
 import io.swagger.annotations.*;
@@ -47,8 +48,8 @@ public interface UsersApi {
      * @param pageSize Number of persons returned (required)
      * @param pageNumber Page number (required)
      * @param searchString  (required)
-     * @param active  (required)
-     * @param sortBy Sort by criteria (optional)
+     * @param sortField Field by which the logins will be sorted (optional)
+     * @param sortOrder Order in which logins will be sorted (ASC/DESC) (optional)
      * @return SUCCESS Returns a pageSize number of UserInfos corresponding to the searchString and the pageNumber for internal users Users (status code 200)
      *         or BAD REQUEST the Error Message will be empty (status code 400)
      *         or UNAUTHORIZED the Error message will be empty (status code 401)
@@ -67,11 +68,38 @@ public interface UsersApi {
         value = "/users/userInfo",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<UserInfo>> getUsersUserInfo(@NotNull @ApiParam(value = "Number of persons returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "searchString", required = true) String searchString,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "active", required = true) Boolean active,@ApiParam(value = "Sort by criteria") @Valid @RequestParam(value = "sortBy", required = false) String sortBy) {
+    default ResponseEntity<List<UserInfo>> getUsersUserInfo(@NotNull @ApiParam(value = "Number of persons returned", required = true) @Valid @RequestParam(value = "pageSize", required = true) Integer pageSize,@NotNull @ApiParam(value = "Page number", required = true) @Valid @RequestParam(value = "pageNumber", required = true) Integer pageNumber,@NotNull @ApiParam(value = "", required = true) @Valid @RequestParam(value = "searchString", required = true) String searchString,@ApiParam(value = "Field by which the logins will be sorted") @Valid @RequestParam(value = "sortField", required = false) String sortField,@ApiParam(value = "Order in which logins will be sorted (ASC/DESC)", allowableValues = "ASC, DESC") @Valid @RequestParam(value = "sortOrder", required = false) String sortOrder) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
                     String exampleString = "null";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /users/getUserInfoMetadata : Retrieve the total count of users
+     *
+     * @return Metadata for last users (status code 200)
+     */
+    @ApiOperation(value = "Retrieve the total count of users", nickname = "usersGetUserInfoMetadataGet", notes = "", response = Metadata.class, tags={ "Users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "Metadata for last users", response = Metadata.class) })
+    @GetMapping(
+        value = "/users/getUserInfoMetadata",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Metadata> usersGetUserInfoMetadataGet() {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"total\" : 0 }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

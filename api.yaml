@@ -65,17 +65,21 @@ paths:
         required: true
         schema:
           type: string
-      - name: sortBy
+      - name: sortField
         in: query
-        description: Sort by criteria
+        description: Field by which the logins will be sorted
         required: false
         schema:
           type: string
-      - name: active
+      - name: sortOrder
         in: query
-        required: true
+        description: Order in which logins will be sorted (ASC/DESC) 
+        required: false
         schema:
-          type: boolean
+          type: string
+          enum:
+            - ASC
+            - DESC
     get:
       description: Used by the administrators in order to search for INTERNAL users' UserInfo
       operationId: getUsersUserInfo
@@ -116,7 +120,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Status'                
+                $ref: '#/components/schemas/Status'
+                               
+
+
   '/user/{userID}/userInfo':
     parameters:
       - name: userID
@@ -357,6 +364,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/Status'
   
+  '/users/getUserInfoMetadata':
+    get:
+      tags:
+        - Users
+      summary: Retrieve the total count of users
+      responses:
+        '200':
+          description: Metadata for last users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
 
   '/file/{fileShortUrl}/fileInfo':
       parameters:

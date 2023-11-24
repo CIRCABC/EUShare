@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "license": "EUPL-1.1",
   "engines": {
-    "node": "^14.20.0 || ^16.13.0 || >=18.10.0",
+    "node": "^14.20.0 || ^16.13.0 || >=20.9.0",
     "yarn": ">=1.22.4 <2",
     "npm": "Please use yarn instead of NPM to install dependencies"
   },
@@ -15,7 +15,6 @@
     "start-local-docker": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve  -c dev --host 0.0.0.0 --disable-host-check",
     "build": "cross-env NG_BUILD_LEGACY_SASS=1 ng build",
     "maildev": "maildev",
-    "test": "ng test",
     "lint": "ng lint client --format visualstudio",
     "lint-fix": "ng lint client --fix --force --format visualstudio",
     "lint-biome": "biome check ./src",
@@ -33,7 +32,7 @@
     "doc-build-serve": "npx compodoc -p tsconfig.json -s -r 9090 -o",
     "gen-version": "openapi-generator-cli version",
     "gen-version-list": "openapi-generator-cli version-manager list",
-    "gen-eu-share-client": "rimraf src/app/openapi && openapi-generator-cli generate -i ./../../api.yaml -g typescript-angular -o src/app/openapi --additional-properties ngVersion=9.0.0,providedInRoot=true && npm run prettier && npm run tsc && npm run licchkadd && npm run lint-fix",
+    "gen-eu-share-client": "rimraf src/app/openapi && openapi-generator-cli generate -i ./../../api.yaml -g typescript-angular -o src/app/openapi --additional-properties ngVersion=9.0.0,providedInRoot=true  && npm run tsc && npm run licchkadd && npm run lint-fix",
     "gen-eu-captcha-api": "rimraf src/app/openapi/eu-captcha && openapi-generator-cli generate -i ./../../eu-captcha.yaml -g typescript-angular -o src/app/openapi/eu-captcha --additional-properties ngVersion=9.0.0,providedInRoot=true ",
     "build-sm": "ng build -c=development",
     "source-map-explorer": "source-map-explorer dist/**/*.js",
@@ -61,7 +60,7 @@
     "@fortawesome/fontawesome-svg-core": "6.4.2",
     "@fortawesome/free-solid-svg-icons": "6.4.2",
     "@ngneat/transloco": "6.0.0",
-    "@schematics/angular": "17.0.1",
+    "@schematics/angular": "17.0.3",
     "@schematics/update": "0.1102.18",
     "@types/jsrsasign": "10.5.12",
     "angular-oauth2-oidc": "15.0.1",
@@ -80,8 +79,8 @@
     "zone.js": "0.14.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "17.0.1",
-    "@angular/cli": "17.0.1",
+    "@angular-devkit/build-angular": "17.0.3",
+    "@angular/cli": "17.0.3",
     "@angular/compiler-cli": "17.0.3",
     "@angular-eslint/builder": "17.1.0",
     "@angular-eslint/eslint-plugin": "17.1.0",

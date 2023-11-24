@@ -36,6 +36,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -182,36 +184,29 @@ public class UserService implements UserDetailsService {
     }
   }
 
+
   @Transactional
   public List<UserInfo> getUsersUserInfoOnBehalfOf(
       int pageSize,
       int pageNumber,
       String searchString,
-      Boolean active,
-      String sortBy,
+      String sortField,
+      String sortOrder,
       String requesterId) throws UnknownUserException, UserUnauthorizedException {
     if (isAdmin(requesterId)) {
-      Direction dir = Direction.DESC;
 
-      if (sortBy.equals("name")) {
-        dir = Direction.ASC;
-      }
-      if (Boolean.TRUE.equals(active))
-        return userRepository
-            .findByEmailRoleInternalOrAdmin(
-                searchString,
-                PageRequest.of(pageNumber, pageSize, dir, sortBy), sortBy)
-            .stream()
-            .map(UserInfoDTO::toUserInfo)
-            .collect(Collectors.toList());
-      else
-        return userRepository
-            .findAllByEmailRoleInternalOrAdmin(
-                searchString,
-                PageRequest.of(pageNumber, pageSize, dir, sortBy), sortBy)
-            .stream()
-            .map(UserInfoDTO::toUserInfo)
-            .collect(Collectors.toList());
+      Pageable page = PageRequest.of(pageNumber, pageSize);
+
+      return userRepository
+          .findAllByEmailOrName(
+              searchString,
+              page,
+              sortField,
+              sortOrder)
+          .stream()
+          .map(UserInfoDTO::toUserInfo)
+          .collect(Collectors.toList());
+
     } else {
       throw new UserUnauthorizedException();
     }
@@ -338,5 +333,9 @@ public class UserService implements UserDetailsService {
         .password("n/a")
         .roles(dbUser.getRole().toString())
         .build();
+  }
+
+  public long countUsers() {
+    return userRepository.countUsers();
   }
 }

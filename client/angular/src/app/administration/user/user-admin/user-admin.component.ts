@@ -7,7 +7,7 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -16,7 +16,7 @@ import {
   faArrowDownWideShort,
 } from '@fortawesome/free-solid-svg-icons';
 import { NotificationService } from '../../../common/notification/notification.service';
-import { UsersService } from '../../../openapi/api/users.service';
+
 import { UserInfo } from '../../../openapi/model/userInfo';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { TranslocoModule } from '@ngneat/transloco';
@@ -27,6 +27,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from './confirm-dialog.component';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { UsersService } from '../../../openapi';
 
 @Component({
   selector: 'app-user-admin',
@@ -42,6 +48,11 @@ import { ConfirmDialogComponent } from './confirm-dialog.component';
     FileSizeFormatPipe,
     MatIconModule,
     MatDialogModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+
   ],
 })
 export class UserAdminComponent {
@@ -55,9 +66,6 @@ export class UserAdminComponent {
   public isChangePermissions = false;
 
   public searchString = '';
-  public searchActive = true;
-
-  public sortBy = 'name';
 
   private pageSize = 10;
   public pageNumber = 0;
@@ -66,7 +74,18 @@ export class UserAdminComponent {
 
   public changeIsLoading = false;
 
-  public userInfoArray: UserInfo[] = [];
+  data: UserInfo[] = [];
+  dataSource = new MatTableDataSource<UserInfo>();
+  resultsLength = 0;
+  isLoadingResults = true;
+  isRateLimitReached = false;
+
+  displayedColumns: string[] = [
+    'name',
+    'email',
+    'filesCount',
+    'usedSpace'
+  ];
 
   private selectedUserInfoIndex = 0;
 
@@ -86,96 +105,86 @@ export class UserAdminComponent {
 
   private previousUserRole: UserInfo.RoleEnum = UserInfo.RoleEnum.External;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+
   constructor(
-    private usersApi: UsersService,
+    private usersService: UsersService,
     private notificationService: NotificationService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
-  public async resultsNextPage() {
-    if (await this.isLastPage()) {
-      return;
-    }
+  ngAfterViewInit() {
+    this.search();
+  }
 
-    this.removeSelection();
-    this.pageNumber++;
+  search() {
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    this.userInfoArray = await firstValueFrom(
-      this.usersApi.getUsersUserInfo(
-        this.pageSize,
-        this.pageNumber,
-        this.searchString,
-        this.searchActive,
-        this.sortBy
+    merge(this.sort.sortChange, this.paginator.page)
+      .pipe(
+        startWith({}),
+        switchMap(() => {
+          this.isLoadingResults = true;
+          return this.usersService.usersGetUserInfoMetadataGet().pipe(
+            switchMap((metadata) => {
+              if (metadata.total) {
+                this.resultsLength = metadata.total;
+              }
+              return this.getData(
+                this.paginator.pageIndex,
+                this.paginator.pageSize,
+                this.sort.active,
+                this.sort.direction
+              );
+            }),
+            catchError(() => observableOf(null))
+          );
+        }),
+        map((data) => {
+          this.isLoadingResults = false;
+          if (data === null) {
+            this.isRateLimitReached = true;
+            return [];
+          }
+          return data;
+        })
       )
+      .subscribe((data) => (this.data = data));
+  }
+
+ 
+
+  getData(
+    pageIndex: number,
+    pageSize: number,
+    sortField: string,
+    sortOrder: SortDirection
+  ): Observable<UserInfo[]> {
+    return this.usersService.getUsersUserInfo(
+      pageSize,
+      pageIndex,
+      this.searchString,
+      sortField,
+      this.convertSortDirectionToSortOrder(sortOrder)
     );
-    this.hasNextPage = !(await this.isLastPage());
   }
 
-  public async resultsPreviousPage() {
-    this.removeSelection();
-    this.pageNumber--;
-
-    this.userInfoArray = await firstValueFrom(
-      this.usersApi.getUsersUserInfo(
-        this.pageSize,
-        this.pageNumber,
-        this.searchString,
-        this.searchActive,
-        this.sortBy
-      )
-    );
-    this.hasNextPage = !(await this.isLastPage());
+  convertSortDirectionToSortOrder(direction: SortDirection): 'ASC' | 'DESC' {
+    return direction === 'asc' ? 'ASC' : 'DESC';
   }
 
-  public async search() {
-    try {
-      this.searchIsLoading = true;
-      this.isAfterSearch = false;
-
-      this.pageNumber = 0;
-
-      this.removeSelection();
-
-      this.userInfoArray = await firstValueFrom(
-        this.usersApi.getUsersUserInfo(
-          this.pageSize,
-          this.pageNumber,
-          this.searchString,
-          this.searchActive,
-          this.sortBy
-        )
-      );
-      this.hasNextPage = !(await this.isLastPage());
-      this.isAfterSearch = true;
-    } catch (error) {
-      // managed in interceptor
-    } finally {
-      this.searchIsLoading = false;
-    }
-  }
-
-  public sortByName() {
-    this.sortBy = 'name';
-    this.search();
-  }
-  public sortByFiles() {
-    this.sortBy = 'files_count';
-    this.search();
-  }
-  public sortByUsage() {
-    this.sortBy = 'used_space';
-    this.search();
-  }
 
   public displayUserInfoNumber(i: number) {
+   
     this.hideUploadedFiles();
     this.selectedUserInfoIndex = i;
     this.selectedValueInGigaBytes = Math.floor(
-      this.userInfoArray[i].totalSpace / (1024 * 1024 * 1024)
+      this.data[i].totalSpace / (1024 * 1024 * 1024)
     );
-    const role = this.userInfoArray[i].role;
-    const statu = this.userInfoArray[i].status;
+ 
+    const role = this.data[i].role;
+    const statu = this.data[i].status;
     this.selectedUserRole = role ?? UserInfo.RoleEnum.Internal;
     this.previousUserRole = this.selectedUserRole;
     this.selectedUserStatus = statu ?? UserInfo.StatusEnum.Regular;
@@ -183,31 +192,14 @@ export class UserAdminComponent {
   }
 
   public get selectedUserInfo(): UserInfo {
-    return this.userInfoArray[this.selectedUserInfoIndex];
+    return this.data[this.selectedUserInfoIndex];
   }
 
   public removeSelection() {
     this.isAfterSelected = false;
   }
 
-  private async isLastPage() {
-    if (this.userInfoArray.length === 0) {
-      return true;
-    } else if (this.userInfoArray.length < this.pageSize) {
-      return true;
-    } else {
-      const nextPage = await firstValueFrom(
-        this.usersApi.getUsersUserInfo(
-          this.pageSize,
-          this.pageNumber + 1,
-          this.searchString,
-          this.searchActive,
-          this.sortBy
-        )
-      );
-      return nextPage.length === 0;
-    }
-  }
+
 
   public async changePermissions() {
     try {
@@ -219,7 +211,7 @@ export class UserAdminComponent {
       this.selectedUserInfo.role = this.selectedUserRole;
       this.selectedUserInfo.status = this.selectedUserStatus;
       await firstValueFrom(
-        this.usersApi.putUserUserInfo(
+        this.usersService.putUserUserInfo(
           this.selectedUserInfo.id,
           this.selectedUserInfo
         )
@@ -252,7 +244,7 @@ export class UserAdminComponent {
 
   public async freezeAllFiles() {
     await firstValueFrom(
-      this.usersApi.putUserUserInfo(
+      this.usersService.putUserUserInfo(
         this.selectedUserInfo.id,
         this.selectedUserInfo,
         true
@@ -269,7 +261,7 @@ export class UserAdminComponent {
 
   public async unfreezeAllFiles() {
     await firstValueFrom(
-      this.usersApi.putUserUserInfo(
+      this.usersService.putUserUserInfo(
         this.selectedUserInfo.id,
         this.selectedUserInfo,
         false
