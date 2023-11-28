@@ -71,7 +71,7 @@ import java.time.LocalDateTime;
         "monitoring m " +
         "LEFT JOIN files f ON (m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY') AND m.file_id = f.FILE_ID) " +
         "LEFT JOIN users u ON (m.event IN ('DOWNLOAD_RATE_HOUR', 'DOWNLOAD_RATE_DAY') AND f.uploader_id = u.id) " +
-        "OR (m.event IN ('UPLOAD_RATE_HOUR', 'UPLOAD_RATE_DAY') AND m.user_id = u.id) ", resultSetMapping = "MonitoringDetailsDTOMapping")
+        "OR (m.event IN ('UPLOAD_RATE_HOUR', 'UPLOAD_RATE_DAY') AND m.user_id = u.id) ORDER BY datetime DESC", resultSetMapping = "MonitoringDetailsDTOMapping")
 
 @SqlResultSetMapping(name = "MonitoringDetailsDTOMapping", classes = @ConstructorResult(targetClass = MonitoringDetailsDTO.class, columns = {
         @ColumnResult(name = "id"),
