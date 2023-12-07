@@ -70,6 +70,10 @@ public class UserCreationLogService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, -1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
         java.sql.Date yesterday = new java.sql.Date(calendar.getTimeInMillis());
 
