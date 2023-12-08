@@ -60,7 +60,7 @@ public class UserCreationLogService {
         }
     }
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 5 0 * * ?")
     public void dailyCheck() {
         checkUserCreationThreshold();
         removeOldLogs();
@@ -83,22 +83,13 @@ public class UserCreationLogService {
             DBUserCreationLog log = optionalLog.get();
             if (log.getUserCount() > USER_CREATION_THRESHOLD) {
                 LocalDateTime yesterdayStartOfDay = yesterday.toLocalDate().atStartOfDay();
-                DBMonitoring monitoring = monitoringRepository.findByStatusAndEventAndDatetime(
-                        Status.WAITING,
-                        DBMonitoring.Event.USER_CREATION_DAY,
-                        yesterdayStartOfDay);
 
-                if (monitoring == null) {
-                    monitoring = new DBMonitoring();
-                    monitoring.setStatus(Status.WAITING);
-                    monitoring.setCounter(log.getUserCount());
-                    monitoring.setEvent(DBMonitoring.Event.USER_CREATION_DAY);           
-                    monitoring.setDatetime(yesterdayStartOfDay);
-                    monitoringRepository.save(monitoring);
-                } else {
-                    monitoring.setCounter(log.getUserCount());
-                    monitoringRepository.save(monitoring);
-                }
+                DBMonitoring monitoring = new DBMonitoring();
+                monitoring.setStatus(Status.WAITING);
+                monitoring.setCounter(log.getUserCount());
+                monitoring.setEvent(DBMonitoring.Event.USER_CREATION_DAY);
+                monitoring.setDatetime(yesterdayStartOfDay);
+                monitoringRepository.save(monitoring);
 
                 String message = "A monitoring alert for abnormal number of new users (" + log.getUserCount() +
                         ") in the last 24h has been raised at :" + monitoring.getDatetime() +
