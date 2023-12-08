@@ -82,8 +82,7 @@ export class MonitoringAdminDialogComponent {
       words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1);
       words[words.length - 1] = `(by ${words[words.length - 1]})`;
       return words.join(' ');
-    } else {
-      return '';
     }
+    return '';
   }
 }

@@ -7,7 +7,7 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import {
@@ -52,10 +52,9 @@ import { UsersService } from '../../../openapi';
     MatPaginatorModule,
     MatSortModule,
     MatIconModule,
-
   ],
 })
-export class UserAdminComponent {
+export class UserAdminComponent implements AfterViewInit {
   public faUser = faUser;
   public faUserTie = faUserTie;
   public faArrowDownWideShort = faArrowDownWideShort;
@@ -80,12 +79,7 @@ export class UserAdminComponent {
   isLoadingResults = true;
   isRateLimitReached = false;
 
-  displayedColumns: string[] = [
-    'name',
-    'email',
-    'filesCount',
-    'usedSpace'
-  ];
+  displayedColumns: string[] = ['name', 'email', 'filesCount', 'usedSpace'];
 
   private selectedUserInfoIndex = 0;
 
@@ -112,7 +106,7 @@ export class UserAdminComponent {
     private usersService: UsersService,
     private notificationService: NotificationService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngAfterViewInit() {
     this.search();
@@ -153,8 +147,6 @@ export class UserAdminComponent {
       .subscribe((data) => (this.data = data));
   }
 
- 
-
   getData(
     pageIndex: number,
     pageSize: number,
@@ -174,15 +166,13 @@ export class UserAdminComponent {
     return direction === 'asc' ? 'ASC' : 'DESC';
   }
 
-
   public displayUserInfoNumber(i: number) {
-   
     this.hideUploadedFiles();
     this.selectedUserInfoIndex = i;
     this.selectedValueInGigaBytes = Math.floor(
       this.data[i].totalSpace / (1024 * 1024 * 1024)
     );
- 
+
     const role = this.data[i].role;
     const statu = this.data[i].status;
     this.selectedUserRole = role ?? UserInfo.RoleEnum.Internal;
@@ -198,8 +188,6 @@ export class UserAdminComponent {
   public removeSelection() {
     this.isAfterSelected = false;
   }
-
-
 
   public async changePermissions() {
     try {

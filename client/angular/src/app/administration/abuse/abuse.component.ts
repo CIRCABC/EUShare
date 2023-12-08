@@ -7,7 +7,7 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { AbuseService } from '../../openapi/api/abuse.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -36,6 +36,7 @@ import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 })
 export class AbuseComponent implements OnInit {
   abuseReportsDetailsMap: { [key: string]: AbuseReportDetails[] } = {};
+  public selectedTabIndex = signal(0);
 
   constructor(private abuseService: AbuseService, private dialog: MatDialog) {}
 
