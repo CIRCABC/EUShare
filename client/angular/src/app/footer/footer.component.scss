@@ -1,24 +1,22 @@
 .footer-main {
-    background: #1f3341;
-    background: url("../../assets/img/header.jpg") no-repeat center bottom;
-    background-size: cover;
-    color: #fff;
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    overflow: hidden;
-  }
-  
-  a {
-    margin-left: 10px;
-    color: #999;
-    text-decoration: underline;
-  
-    &:hover {
-      text-decoration: none;
-    }
-  }
-  
+  background: #1f3341;
+  background: url('../../assets/img/header.jpg') no-repeat center bottom;
+  background-size: cover;
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  padding: 10px;
+  overflow: hidden;
+}
 
+a {
+  margin-left: 10px;
+  color: #999;
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

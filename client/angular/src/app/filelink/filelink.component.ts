@@ -87,7 +87,7 @@ export class FilelinkComponent implements OnInit {
 
   public async initiateDownload() {
     if (this.isFilePasswordProtected) {
-      await this.modalService.activateDownloadModal(
+      this.modalService.activateDownloadModal(
         this.fileId,
         this.fileName,
         this.isFilePasswordProtected

@@ -1,13 +1,9 @@
-
 @import '../../variables.scss';
 .button {
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left:10px;
+  margin-left: 10px;
 }
-
-
-
 
 p {
   margin-left: 10px;
@@ -25,7 +21,7 @@ ul {
 
 .centered {
   padding-left: 20px;
-  font-size: 0.8em; 
+  font-size: 0.8em;
 }
 
 .tabs mat-tab-group {
@@ -43,7 +39,13 @@ ul {
   border-right: 1px solid black;
 }
 
-.mdc-tab-indicator__content--underline { --mdc-tab-indicator-active-indicator-color: green; } .mdc-tab-indicator .mdc-tab-indicator__content.mdc-tab-indicator__content--underline { border-top-width: 4px; }
+.mdc-tab-indicator__content--underline {
+  --mdc-tab-indicator-active-indicator-color: green;
+}
+.mdc-tab-indicator
+  .mdc-tab-indicator__content.mdc-tab-indicator__content--underline {
+  border-top-width: 4px;
+}
 
 .pagination {
   margin-top: 1em;
@@ -55,29 +57,23 @@ ul {
   width: 100%;
 }
 
-
-
 .select {
-  width: 100%; 
-  margin-bottom: 10px; 
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-.user-info-column, .user-info-row {
-  display: flex; 
-  gap: 10px; 
-  align-items: center; 
+.user-info-column,
+.user-info-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
   flex-wrap: wrap;
 }
 
-
-
 .user-list {
-  width: 100%;  
-}
-
-
-.alignright {
-  text-align: right;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .titletable {
@@ -86,28 +82,14 @@ ul {
   width: 100%;
 }
 
-.user-list {
-  display: inline-block;
-  width: 100%;
-}
-
 .alignleft.user-info-column {
   flex: 1;
   width: 100%;
 }
 
-
-
-.user-list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-
 .column {
-  box-sizing: border-box; 
-  padding: 10px; 
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 .columns {
@@ -122,22 +104,17 @@ ul {
 }
 
 .alignleft {
-	float: left;
+  float: left;
 }
 .alignright {
-	float: right;
+  float: right;
   min-width: 75px;
-}
-
-.titletable {
-  background-color: rgba(155, 214, 217, 0.4509803922);
+  text-align: right;
 }
 
 table td {
   padding-left: 3px;
- 
 }
 table th {
   padding-left: 3px;
- 
 }

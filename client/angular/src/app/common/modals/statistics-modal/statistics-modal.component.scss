@@ -1,27 +1,25 @@
-
 @import '../../../../variables.scss';
 
 .share {
-    padding: 5px;
-    padding: $table-cell-padding;
-    border-bottom: $table-cell-border;
-    margin-bottom: 0px !important;
+  padding: 5px;
+  padding: $table-cell-padding;
+  border-bottom: $table-cell-border;
+  margin-bottom: 0px !important;
 }
 
 .button {
-    margin: 2px;
+  margin: 2px;
 }
 
 .share:hover {
-    background-color: $table-striped-row-even-hover-background-color;
+  background-color: $table-striped-row-even-hover-background-color;
 }
 
-
 .table {
-   width: 100%;
-  }
+  width: 100%;
+}
 
 .modal-card {
-    margin-top: 100px;
-    width: 800px;
- }
+  margin-top: 100px;
+  width: 800px;
+}

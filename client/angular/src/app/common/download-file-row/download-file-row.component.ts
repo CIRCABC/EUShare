@@ -32,7 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     SlicePipe,
     FileSizeFormatPipe,
     MatDialogModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
 })
 export class DownloadFileRowComponent {
@@ -62,7 +62,7 @@ export class DownloadFileRowComponent {
 
   public async tryDownload() {
     if (this.fileToDisplay.hasPassword) {
-      await this.modalService.activateDownloadModal(
+      this.modalService.activateDownloadModal(
         this.fileToDisplay.fileId,
         this.fileToDisplay.name,
         this.fileToDisplay.hasPassword

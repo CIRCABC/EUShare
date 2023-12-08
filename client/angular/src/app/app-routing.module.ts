@@ -25,7 +25,7 @@ import {
   TranslocoConfig,
   TranslocoService,
 } from '@ngneat/transloco';
-import { forkJoin } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
 
 export function preloadAllTranslocoLanguages(
   transloco: TranslocoService,
@@ -35,7 +35,7 @@ export function preloadAllTranslocoLanguages(
     const allLanguages = config.availableLangs.map((lang) =>
       transloco.load(lang as string)
     );
-    return forkJoin(allLanguages).toPromise();
+    return firstValueFrom(forkJoin(allLanguages));
   };
 }
 

@@ -1,39 +1,38 @@
-
 @import '../../../../variables.scss';
 
 .share {
-    padding: 5px;
-    padding: $table-cell-padding;
-    border-bottom: $table-cell-border;
-    margin-bottom: 0px !important;
+  padding: 5px;
+  padding: $table-cell-padding;
+  border-bottom: $table-cell-border;
+  margin-bottom: 0px !important;
 }
 
 .button {
-    margin: 2px;
+  margin: 2px;
 }
 
 .share:hover {
-    background-color: $table-striped-row-even-hover-background-color;
+  background-color: $table-striped-row-even-hover-background-color;
 }
 
 .shorturl {
-    margin-right: 10px;
-    width: 100%;
-  }
+  margin-right: 10px;
+  width: 100%;
+}
 
 .table td {
-    vertical-align: middle;
-  }
+  vertical-align: middle;
+}
 
-  .table {
-    width: 100%;
-   }
+.table {
+  width: 100%;
+}
 
 .tdbutton {
   width: fit-content;
 }
- 
- .modal-card {
-     margin-top: 100px;
-     width: 800px;
-  }
+
+.modal-card {
+  margin-top: 100px;
+  width: 800px;
+}

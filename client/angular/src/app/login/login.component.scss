@@ -1,4 +1,4 @@
-@import "../../variables.scss";
+@import '../../variables.scss';
 
 .subtitle {
   color: $grey;
@@ -8,10 +8,9 @@
   background: url(../../img/background-home.jpg) no-repeat center center;
   background-size: cover;
   color: #fff;
-  font-family: "Ubuntu", verdana, helvetica, sans-serif;
+  font-family: 'Ubuntu', verdana, helvetica, sans-serif;
   font-size: 15px;
   padding: 7vw 33px;
- 
 }
 
 h1 {
@@ -39,7 +38,7 @@ h2 {
 html {
   height: 100%;
   font-size: 62.5%;
-  font-family: "verdana", helvetica, sans-serif;
+  font-family: 'verdana', helvetica, sans-serif;
 }
 
 .main h1 {
@@ -127,7 +126,7 @@ a:hover {
   padding: 12px 12px 12px 47px;
 
   &::before {
-    content: "";
+    content: '';
     display: inline-block;
     position: absolute;
     left: 0;
@@ -136,7 +135,7 @@ a:hover {
     width: 35px;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.3);
-    background-image: url("../../img/icon-cadenas.png");
+    background-image: url('../../img/icon-cadenas.png');
     background-position: center center;
     background-repeat: no-repeat;
     border-radius: 3px 0 0 3px;
@@ -160,9 +159,9 @@ a:hover {
   padding: 1.2rem;
 }
 .abuttona,
-input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+input[type='button'],
+input[type='reset'],
+input[type='submit'] {
   display: inline-block;
   border-radius: 3px;
   border: 1px solid #76a3ad;

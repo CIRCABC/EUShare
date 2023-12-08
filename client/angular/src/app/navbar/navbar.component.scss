@@ -1,4 +1,4 @@
-@import "../../variables.scss";
+@import '../../variables.scss';
 
 .faIcon {
   margin-right: 10px;
@@ -15,45 +15,45 @@
 }
 
 .circabc-link-dashboard::before {
-  background: url("../../img/icon-info-grey.png") no-repeat;
+  background: url('../../img/icon-info-grey.png') no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
     brightness(93%) contrast(86%);
   background-size: 18px 18px;
 }
 .circabc-link-my-calendar::before {
-  background: url("../../img/icon-agenda-grey.png") no-repeat;
+  background: url('../../img/icon-agenda-grey.png') no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
     brightness(93%) contrast(86%);
   background-size: 18px 18px;
 }
 
 .circabc-link-roles::before {
-  background: url("../../img/business-card.png") no-repeat;
+  background: url('../../img/business-card.png') no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
     brightness(93%) contrast(86%);
   //background-size: 18px 18px;
 }
 .circabc-link-browse-public-groups::before {
-  background: url("../../img/icon-group-browser-grey.png") no-repeat;
+  background: url('../../img/icon-group-browser-grey.png') no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
     brightness(93%) contrast(86%);
   background-size: 18px 18px;
 }
 
 .my-shared-files::before {
-  background: url("../../img/mySharedFiles.svg") no-repeat;
+  background: url('../../img/mySharedFiles.svg') no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
     brightness(93%) contrast(86%);
 }
 
 .shared-with-me::before {
-  background: url("../../img/sharedWithMe.svg") no-repeat;
+  background: url('../../img/sharedWithMe.svg') no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
     brightness(93%) contrast(86%);
 }
 
 .administration::before {
-  background: url("../../img/administration.svg") no-repeat;
+  background: url('../../img/administration.svg') no-repeat;
   filter: invert(36%) sepia(0%) saturate(301%) hue-rotate(184deg)
     brightness(93%) contrast(86%);
 }
@@ -70,7 +70,7 @@
     position: absolute;
     left: calc(50% - 9px);
     top: 0.75rem;
-    content: "";
+    content: '';
     display: block;
     width: 20px;
     height: 20px;
@@ -115,7 +115,7 @@
   position: relative;
 
   &::after {
-    content: "";
+    content: '';
     height: 5px;
     position: absolute;
     left: 18px;
@@ -164,10 +164,7 @@
   box-shadow: unset;
 }
 
-.dropdown--personal-menu-help
-  .dropdown--personal-menu__sidebar
-  .links-group
-  a {
+.dropdown--personal-menu-help .dropdown--personal-menu__sidebar .links-group a {
   display: block;
   margin-bottom: 10px;
   font-size: 12px;
@@ -179,15 +176,12 @@
   border: none;
 }
 
-.dropdown--personal-menu-help
-  .dropdown--personal-menu__sidebar
-  .links-group {
+.dropdown--personal-menu-help .dropdown--personal-menu__sidebar .links-group {
   padding: 15px;
   border-bottom: 2px solid #f5fafa;
 }
 
-.personal-menu-help:hover
-  .dropdown--personal-menu-help {
+.personal-menu-help:hover .dropdown--personal-menu-help {
   display: block;
 }
 
@@ -199,14 +193,14 @@
 }
 
 .dropdown-help::before {
-  content: "";
+  content: '';
   width: 36px;
   height: 9px;
   position: absolute;
   top: -9px;
   right: 20px;
   display: block;
-  background: url("../../img/arrow-dropdown-top.png") no-repeat;
+  background: url('../../img/arrow-dropdown-top.png') no-repeat;
   z-index: 999;
 }
 
@@ -260,8 +254,7 @@
 }
 
 .main-nav .tab--help:before {
-  background: url("../../assets/img/icon-help-grey.png")
-    no-repeat;
+  background: url('../../assets/img/icon-help-grey.png') no-repeat;
 }
 
 .labelhelp {

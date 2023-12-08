@@ -3,11 +3,11 @@
 /** PRIMARY COLOURS **/
 $ec-blue: #004494;
 $ec-light-blue: #034da1; // flag colour
-$ec-yellow: #FFD617;
-$ec-green: #467A39;
+$ec-yellow: #ffd617;
+$ec-green: #467a39;
 $ec-grey: #404040;
-$ec-red: #DA2131;
-$ec-light-grey: #F5F5F5;
+$ec-red: #da2131;
+$ec-light-grey: #f5f5f5;
 $ec-white: #fff;
 
 $pastel-light-red: #ed8e89;
@@ -24,13 +24,13 @@ $pastel-red: #e84947;
 $pastel-blue: #39a7de;
 
 /** NOTIFICATION COLOURS **/
-$ec-notification-blue: #006FB4;
-$ec-notification-yellow: #F29527;
-$ec-notification-green: #467A39;
-$ec-notification-red: #DA2131;
+$ec-notification-blue: #006fb4;
+$ec-notification-yellow: #f29527;
+$ec-notification-green: #467a39;
+$ec-notification-red: #da2131;
 
 /** BACKGROUND COLOUR **/
-$ec-background-color: #FFFFFF;
+$ec-background-color: #ffffff;
 
 /** --------------------- TYPOGRAPHY  --------------------- **/
 $ec-font-family: Arial, sans-serif;
@@ -63,7 +63,6 @@ $ec-font-size-h5-mobile: 1rem;
 /** PARAGRAPH **/
 $ec-p-font-weight: 400;
 
-
 /** --------------------- ELEMENTS  --------------------- **/
 /** NAVBAR **/
 $ec-navbar-item-hover-background-color: $ec-light-blue;
@@ -72,7 +71,7 @@ $ec-navbar-item-color: $ec-light-grey;
 $ec-navbar-item-hover-color: $ec-light-grey;
 $ec-navbar-height: 3.5rem;
 $ec-navbar-box-shadow-size: 2px;
-$ec-navbar-box-shadow-color: rgba(0,0,0,.3);
+$ec-navbar-box-shadow-color: rgba(0, 0, 0, 0.3);
 
 /** TITLE **/
 $ec-title-color: #035;
@@ -86,8 +85,8 @@ $ec-menu-item-active-background-color: $pastel-light-light-blue;
 
 /** COOKIE CONSENT KIT **/
 .cookie-consent-banner {
-    position: fixed !important;
-    bottom: 1px;
-    max-width: 100% !important;
-    width: 100% !important;
+  position: fixed !important;
+  bottom: 1px;
+  max-width: 100% !important;
+  width: 100% !important;
 }

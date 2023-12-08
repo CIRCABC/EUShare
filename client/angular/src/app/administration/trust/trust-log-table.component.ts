@@ -32,15 +32,15 @@ export class TrustLogTableComponent implements OnInit {
   constructor(private trustLogService: TrustLogService) {}
 
   ngOnInit() {
-    this.trustLogService.getAllTrustLogs().subscribe(
-      (data) => {
+    this.trustLogService.getAllTrustLogs().subscribe({
+      next: (data) => {
         this.dataSource.data = data;
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;
       },
-      (error) => {
+      error: (error) => {
         console.error('Error fetching Trust Logs:', error);
-      }
-    );
+      },
+    });
   }
 }

@@ -19,8 +19,13 @@
     "lint-fix": "ng lint client --fix --force --format visualstudio",
     "lint-biome": "biome check ./src",
     "lint-fix-biome": "biome check ./src --apply-unsafe",
-    "format-check": "prettier --single-quote --list-different --html-whitespace-sensitivity strict \"src/**/*.html\" \"src/**/*.ts\" ",
-    "format-fix": "prettier --write --single-quote --list-different --html-whitespace-sensitivity strict \"src/**/*.html\" \"src/**/*.ts\" ",
+    "format-check": "prettier --single-quote --list-different --html-whitespace-sensitivity strict \"src/**/*.html\" \"src/**/*.ts\" \"src/**/*.scss\" ",
+    "format-fix": "prettier --write --single-quote --list-different --html-whitespace-sensitivity strict \"src/**/*.html\" \"src/**/*.ts\" \"src/**/*.scss\" ",
+    "format-check-scss": "prettier --single-quote --list-different  \"src/**/*.scss\" ",
+    "stylelint": "node ./node_modules/stylelint/bin/stylelint.mjs \"src/**/*.scss\" --custom-syntax postcss-scss ",
+    "stylelint-html": "node ./node_modules/stylelint/bin/stylelint.mjs \"src/**/*.html\" ",
+    "stylelint-fix": "node ./node_modules/stylelint/bin/stylelint.mjs \"src/**/*.scss\" --custom-syntax postcss-scss --fix",
+    "stylelint-html-fix": "node ./node_modules/stylelint/bin/stylelint.mjs \"src/**/*.html\" --fix ",
     "e2e": "ng e2e",
     "licchkchk": "license-check-and-add check -f",
     "licchkadd": "license-check-and-add add",
@@ -114,6 +119,9 @@
     "karma-jasmine": "5.1.0",
     "karma-jasmine-html-reporter": "2.1.0",
     "source-map-explorer": "2.5.3",
+    "stylelint": "15.11.0",
+    "stylelint-config-standard": "34.0.0",
+    "stylelint-config-standard-scss": "11.1.0",
     "typescript": "5.2.2"
   }
 }
