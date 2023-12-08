@@ -46,7 +46,7 @@
               <span>
                 {{
                   recipient.email.length > 35
-                    ? (recipient.email | lowercase | slice: 0:35) + '..'
+                    ? (recipient.email | lowercase | slice : 0 : 35) + '..'
                     : (recipient.email | lowercase)
                 }}
               </span>

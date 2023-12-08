@@ -11,7 +11,9 @@
       <p class="subtitle is-5 filename">
         <strong matTooltip="{{ file.name }}">
           {{
-            file.name.length > 25 ? (file.name | slice: 0:25) + '..' : file.name
+            file.name.length > 25
+              ? (file.name | slice : 0 : 25) + '..'
+              : file.name
           }}
         </strong>
       </p>
@@ -37,7 +39,7 @@
   <div class="level">
     <div class="level-item">
       <a (click)="displayDownloads()">
-        {{ 'downloaded.times' | transloco: { count: file.fileLogs.length } }}
+        {{ 'downloaded.times' | transloco : { count: file.fileLogs.length } }}
       </a>
     </div>
     @if (displayAsUploader) {
@@ -46,7 +48,7 @@
     <div class="level-item">
       @if (displayAsUploader) {
       <a (click)="displayRecipients()">
-        {{ 'shared.times' | transloco: { count: file.sharedWith.length } }}
+        {{ 'shared.times' | transloco : { count: file.sharedWith.length } }}
       </a>
       } @if (displayAsAdministrator || file.status !== 'AVAILABLE' ) {
       <span

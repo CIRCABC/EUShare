@@ -15,7 +15,7 @@
     <tr>
       @if (monitoringDetail.status === reportStatus) {
 
-      <td> {{ monitoringDetail.datetime | date: 'yy-MM-dd HH:mm' }}</td>
+      <td> {{ monitoringDetail.datetime | date : 'yy-MM-dd HH:mm' }}</td>
       <td> {{ formatString(monitoringDetail.event) }}</td>
       <td>{{ monitoringDetail.counter }}</td>
       <td>

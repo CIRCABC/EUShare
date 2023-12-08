@@ -5,7 +5,9 @@
       {{ 'download' | transloco }}
       @if (fileName) {
       <span>
-        {{ fileName.length > 25 ? (fileName | slice: 0:25) + '..' : fileName }}.
+        {{
+          fileName.length > 25 ? (fileName | slice : 0 : 25) + '..' : fileName
+        }}.
       </span>
       }
     </h2>

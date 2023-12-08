@@ -51,7 +51,7 @@
               <span>
                 {{
                   fileLog.recipient.length > 35
-                    ? (fileLog.recipient | lowercase | slice: 0:35) + '..'
+                    ? (fileLog.recipient | lowercase | slice : 0 : 35) + '..'
                     : ((fileLog.recipient === ''
                         ? 'Anonymous'
                         : fileLog.recipient

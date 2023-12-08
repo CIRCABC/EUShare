@@ -12,7 +12,7 @@
             <p class="title is-4">
               {{
                 fileInfoUploader.name.length > 25
-                  ? (fileInfoUploader.name | slice: 0:25) + '..'
+                  ? (fileInfoUploader.name | slice : 0 : 25) + '..'
                   : fileInfoUploader.name
               }}
               {{ 'successfully.uploaded' | transloco }}
@@ -20,7 +20,7 @@
             <p class="subtitle is-6">
               {{
                 'file.will.expire'
-                  | transloco: { date: fileInfoUploader.expirationDate }
+                  | transloco : { date: fileInfoUploader.expirationDate }
               }}
             </p>
           </div>
@@ -65,7 +65,7 @@
                 <span>
                   {{
                     recipient.email.length > 35
-                      ? (recipient.email | lowercase | slice: 0:35) + '..'
+                      ? (recipient.email | lowercase | slice : 0 : 35) + '..'
                       : (recipient.email | lowercase)
                   }}
                 </span>
