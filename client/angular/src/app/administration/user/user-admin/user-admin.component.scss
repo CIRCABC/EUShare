@@ -1,11 +1,9 @@
-
-@import '../../../../variables.scss';
+@import "../../../../variables.scss";
 .button {
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left:10px;
+  margin-left: 10px;
 }
-
 
 .buttons-top-right {
   float: right;
@@ -49,7 +47,13 @@ ul {
   border-right: 1px solid black;
 }
 
-.mdc-tab-indicator__content--underline { --mdc-tab-indicator-active-indicator-color: green; } .mdc-tab-indicator .mdc-tab-indicator__content.mdc-tab-indicator__content--underline { border-top-width: 4px; }
+.mdc-tab-indicator__content--underline {
+  --mdc-tab-indicator-active-indicator-color: green;
+}
+.mdc-tab-indicator
+  .mdc-tab-indicator__content.mdc-tab-indicator__content--underline {
+  border-top-width: 4px;
+}
 
 .pagination {
   margin-top: 1em;
@@ -61,14 +65,13 @@ ul {
   width: 100%;
 }
 
-
-
 .select {
   width: 100%;
   margin-bottom: 10px;
 }
 
-.user-info-column, .user-info-row {
+.user-info-column,
+.user-info-row {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -77,21 +80,19 @@ ul {
   flex: 1;
 }
 
-
-
 .alignleft {
   justify-content: flex-start;
+  float: left;
 }
 
 .fa-icon {
   margin-left: 5px; /* This is to give some space between the column title and the icon */
 }
 
-
-
-
 .alignright {
   text-align: right;
+  float: right;
+  min-width: 75px;
 }
 
 .titletable {
@@ -103,23 +104,15 @@ ul {
 }
 
 .user-list {
-  display: inline-block;
   width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .alignleft.user-info-column {
   flex: 1;
   width: 100%;
 }
-
-
-
-.user-list {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
 
 .column {
   box-sizing: border-box;
@@ -137,23 +130,9 @@ ul {
   width: 100%;
 }
 
-.alignleft {
-	float: left;
-}
-.alignright {
-	float: right;
-  min-width: 75px;
-}
-
-.titletable {
-  background-color: rgba(155, 214, 217, 0.4509803922);
-}
-
 table td {
   padding-left: 3px;
-
 }
 table th {
   padding-left: 3px;
-
 }
