@@ -31,7 +31,6 @@ export const loginCanActivate: CanActivateFn = (
     sessionService.getStoredUserInfo() !== null
   ) {
     return true;
-  } else {
-    return router.navigate(['/login']);
   }
+  return router.navigate(['/login']);
 };

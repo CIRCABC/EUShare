@@ -621,8 +621,6 @@ export class UploadComponent implements OnInit, AfterViewInit {
           this.uploadInProgress = false;
           this.percentageUploaded = 0;
           return event.body as FileInfoUploader;
-        } else {
-          // notification sent in interceptor
         }
         this.uploadInProgress = false;
         this.percentageUploaded = 0;
@@ -660,9 +658,8 @@ export class UploadComponent implements OnInit, AfterViewInit {
   public isCaptchaInValid(): boolean {
     if (this.captchaComponent?.answer) {
       return this.captchaComponent.answer.invalid;
-    } else {
-      return true;
     }
+    return true;
   }
 
   refreshCaptcha(): Promise<void> {

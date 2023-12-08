@@ -26,9 +26,8 @@ export const uploadSuccessCanActivate: CanActivateFn = (
     isFileInfoUploader(router.getCurrentNavigation()?.extras.state?.['data'])
   ) {
     return true;
-  } else {
-    return router.navigateByUrl('/upload');
   }
+  return router.navigateByUrl('/upload');
 };
 
 function isFileInfoUploader(object: any): boolean {

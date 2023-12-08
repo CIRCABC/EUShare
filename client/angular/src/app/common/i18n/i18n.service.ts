@@ -20,9 +20,8 @@ export class I18nService {
   public translate(key: string, params?: HashMap): string {
     if (params === undefined) {
       return this.translateService.translate<string>(key);
-    } else {
-      return this.translateService.translate<string>(key, params);
     }
+    return this.translateService.translate<string>(key, params);
   }
 
   public contactSupport(): string {

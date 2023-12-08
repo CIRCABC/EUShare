@@ -90,7 +90,8 @@ export class EmailInputComponent implements ControlValueAccessor, OnInit {
     if (this.controlDirective.control?.errors) {
       if (this.controlDirective.control.errors['pattern']) {
         return this.i18nService.translate('validation.invalidEmail');
-      } else if (this.controlDirective.control.errors['maxlength']) {
+      }
+      if (this.controlDirective.control.errors['maxlength']) {
         return this.i18nService.translate(
           'validation.maxlength',
           this.controlDirective.control.errors['maxlength']
