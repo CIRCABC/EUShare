@@ -29,14 +29,11 @@ export class FileSizeFormatPipe implements PipeTransform {
         if (valueInMb >= 1024) {
           const valueInGb = Math.round((valueInMb / 1024) * 1000) / 1000;
           return `${valueInGb} GB`;
-        } else {
-          return `${valueInMb} MB`;
         }
-      } else {
-        return `${valueInKb} KB`;
+        return `${valueInMb} MB`;
       }
-    } else {
-      return `${value} Bytes`;
+      return `${valueInKb} KB`;
     }
+    return `${value} Bytes`;
   }
 }

@@ -133,12 +133,10 @@ export class AbuseDialogComponent implements AfterViewInit {
     if (this.captchaComponent?.answer) {
       if (!this.authentified) {
         return this.captchaComponent.answer.invalid;
-      } else {
-        return false;
       }
-    } else {
-      return true;
+      return false;
     }
+    return true;
   }
 
   refreshCaptcha(): Promise<void> {

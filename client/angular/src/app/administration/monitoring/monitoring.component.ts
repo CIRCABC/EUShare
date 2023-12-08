@@ -7,7 +7,7 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MonitoringService } from '../../openapi/api/monitoring.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -34,6 +34,7 @@ import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 })
 export class MonitoringComponent implements OnInit {
   monitoringDetails: MonitoringDetails[] = [];
+  public selectedTabIndex = signal(0);
 
   constructor(
     private monitoringService: MonitoringService,

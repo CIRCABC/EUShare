@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { MountPointSpace, AdminService, StatsService, Stat } from '../openapi';
 
 import { firstValueFrom } from 'rxjs';
@@ -18,7 +18,7 @@ import { BarChartComponent } from './bar-chart/bar-chart.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { FileRowContainerComponent } from '../common/uploaded-file-row-container/uploaded-file-row-container.component';
 import { TrustComponent } from './trust/trust.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -49,6 +49,14 @@ import { MonitoringComponent } from './monitoring/monitoring.component';
   ],
 })
 export class AdministrationComponent implements OnInit {
+  selectedTabChanged($event: number) {
+    if ($event === 1) {
+      this.getMountPointSpaces();
+    } else if ($event === 2) {
+      this.getStats(this.year);
+    }
+    this.selectedTabIndex.set($event);
+  }
   public mountPointSpaces: MountPointSpace[] = [];
   public stats: Stat[] = [];
   public yearStats = {} as Stat;
@@ -60,6 +68,8 @@ export class AdministrationComponent implements OnInit {
 
   public monthsLabels: string[] = [];
 
+  public selectedTabIndex = signal(0);
+
   constructor(
     private adminService: AdminService,
     private statsService: StatsService
@@ -70,18 +80,12 @@ export class AdministrationComponent implements OnInit {
     for (let y = 2022; y <= this.year; y++) {
       this.yearList.push(y);
     }
-    this.getMountPointSpaces();
-    this.getStats(this.year);
+    // this.getMountPointSpaces();
+    // this.getStats(this.year);
 
     for (let i = 1; i <= 12; i++) {
       this.monthsLabels[i - 1] = this.getShortMonthName(i);
     }
-  }
-
-  selectedTabIndex = 0;
-
-  selectedTabChange(event: MatTabChangeEvent) {
-    this.selectedTabIndex = event.index;
   }
 
   public async getMountPointSpaces() {

@@ -2,33 +2,56 @@
   @if (!showUploadedFiles) {
   <div class="column is-one-half">
     <label class="label">{{ 'user.search' | transloco }}</label>
-    <input [(ngModel)]="searchString" class="input" type="text" [attr.placeholder]="'user.name.or.email' | transloco" />
+    <input
+      [(ngModel)]="searchString"
+      class="input"
+      type="text"
+      [attr.placeholder]="'user.name.or.email' | transloco"
+    />
     <br />
     <a class="button" [class.is-loading]="searchIsLoading" (click)="search()">{{
       'search' | transloco
-      }}</a>
+    }}</a>
 
     <div>
       <label class="alignleft" class="label">{{ 'results' | transloco }}</label>
 
-
-      <table mat-table [dataSource]="data" matSort matSortActive="name" matSortDisableClear matSortDirection="asc"
-        class="mat-elevation-z8">
-
+      <table
+        mat-table
+        [dataSource]="data"
+        matSort
+        matSortActive="name"
+        matSortDisableClear
+        matSortDirection="asc"
+        class="mat-elevation-z8"
+      >
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="bold-header"
+            mat-sort-header
+          >
             Name
           </th>
-          <td mat-cell *matCellDef="let element; let i = index" (click)="displayUserInfoNumber(i)">
+          <td
+            mat-cell
+            *matCellDef="let element; let i = index"
+            (click)="displayUserInfoNumber(i)"
+          >
             <b>{{ element.givenName }} </b>
           </td>
-          
         </ng-container>
 
         <!-- Email Column -->
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="bold-header"
+            mat-sort-header
+          >
             Email
           </th>
           <td mat-cell *matCellDef="let element">
@@ -38,7 +61,12 @@
 
         <!-- Files Column -->
         <ng-container matColumnDef="filesCount">
-          <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="bold-header"
+            mat-sort-header
+          >
             Files
           </th>
           <td mat-cell *matCellDef="let element">
@@ -48,7 +76,12 @@
 
         <!-- Usage Column -->
         <ng-container matColumnDef="usedSpace">
-          <th mat-header-cell *matHeaderCellDef class="bold-header" mat-sort-header>
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="bold-header"
+            mat-sort-header
+          >
             Usage
           </th>
           <td mat-cell *matCellDef="let element">
@@ -56,30 +89,34 @@
           </td>
         </ng-container>
 
-
-
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
 
-      <mat-paginator [length]="resultsLength" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons>
+      <mat-paginator
+        [length]="resultsLength"
+        [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons
+      >
       </mat-paginator>
-
     </div>
-
   </div>
-   }
+  }
   <div class="column is-one-half">
-    
     @if ( isAfterSelected) {
     <div>
       <div class="user-info-column2">
         <label>{{ 'user.info' | transloco }}</label>
-        <div>{{ selectedUserInfo.givenName }} ({{ selectedUserInfo.email }})</div>
+        <div
+          >{{ selectedUserInfo.givenName }} ({{ selectedUserInfo.email }})</div
+        >
         @if (!isChangePermissions) {
         <p>
           Role: {{ selectedUserRole }}
-          <fa-icon [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"></fa-icon>
+          <fa-icon
+            [icon]="selectedUserInfo.isAdmin ? faUserTie : faUser"
+          ></fa-icon>
         </p>
         } @if (!isChangePermissions) {
         <p> Status: {{ selectedUserStatus }} </p>
@@ -87,7 +124,10 @@
         <div>
           <div>
             Role :
-            <select [ngModel]="selectedUserRole" (ngModelChange)="confirmRoleChange($event)">
+            <select
+              [ngModel]="selectedUserRole"
+              (ngModelChange)="confirmRoleChange($event)"
+            >
               @for (role of roles; track role) {
               <option [ngValue]="role">{{ role }}</option>
               }
@@ -113,51 +153,64 @@
           <select [(ngModel)]="selectedValueInGigaBytes">
             @for (valueInGig of valuesInGigaBytes; track valueInGig; let i =
             $index) {
-            <option [attr.data-index]="i" [selected]="i === selectedValueInGigaBytesIndex" [ngValue]="valueInGig">
+            <option
+              [attr.data-index]="i"
+              [selected]="i === selectedValueInGigaBytesIndex"
+              [ngValue]="valueInGig"
+            >
               {{ valueInGig }} GB
             </option>
             }
           </select>
         </div>
         }
-        <p>{{ 'used.space' | transloco }}:
-          {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p>
+        <p
+          >{{ 'used.space' | transloco }}:
+          {{ selectedUserInfo.usedSpace | fileSizeFormat }}</p
+        >
         <p>
           {{ 'free.space' | transloco }}:
           {{
-          selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
-          | fileSizeFormat
+            selectedUserInfo.totalSpace - selectedUserInfo.usedSpace
+              | fileSizeFormat
           }}
         </p>
       </div>
 
       @if (isChangePermissions) {
-      <a class="button" [class.is-loading]="changeIsLoading" (click)="changePermissions()">{{ 'done' | transloco }}</a>
+      <a
+        class="button"
+        [class.is-loading]="changeIsLoading"
+        (click)="changePermissions()"
+        >{{ 'done' | transloco }}</a
+      >
       } @if (isChangePermissions) {
       <a class="button buttonMargin" (click)="toggleChangePermissions()">{{
         'cancel' | transloco
-        }}</a>
+      }}</a>
       } @if (!isChangePermissions && !showUploadedFiles) {
       <a class="button" (click)="toggleChangePermissions()">{{
         'change.permissions' | transloco
-        }}</a>
+      }}</a>
       } @if (!isChangePermissions && !showUploadedFiles) {
       <a class="button buttonMargin" (click)="toggleUploadedFiles()">{{
         'display.shared.files' | transloco
-        }}</a>
-      } 
-
-
-      @if (showUploadedFiles) {
-        <button class="button" (click)="showUploadedFiles = false">Go back to users list</button>
+      }}</a>
+      } @if (showUploadedFiles) {
+      <button class="button" (click)="showUploadedFiles = false"
+        >Go back to users list</button
+      >
       <div>
         <div class="buttons-top-right">
           <button (click)="freezeAllFiles()">Freeze All Files</button>
           <button (click)="unfreezeAllFiles()">Unfreeze All Files</button>
         </div>
         <div class="centered">
-          <app-uploaded-file-row-container [userId]="this.selectedUserInfo.id" [displayAsUploader]="false"
-            [displayAsAdministrator]="true"></app-uploaded-file-row-container>
+          <app-uploaded-file-row-container
+            [userId]="this.selectedUserInfo.id"
+            [displayAsUploader]="false"
+            [displayAsAdministrator]="true"
+          ></app-uploaded-file-row-container>
         </div>
       </div>
       }

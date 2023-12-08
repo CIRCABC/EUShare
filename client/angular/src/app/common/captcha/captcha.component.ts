@@ -62,9 +62,8 @@ export class CaptchaComponent implements OnInit {
     );
     if (result) {
       return result.code;
-    } else {
-      return 'en';
     }
+    return 'en';
   }
   set languageCode(value: string) {
     const result = this.captchaLang.find(
