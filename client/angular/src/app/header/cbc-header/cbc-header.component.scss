@@ -110,14 +110,14 @@
 }
 
 .dropdown:before {
-  content: "";
+  content: '';
   width: 36px;
   height: 9px;
   position: absolute;
   top: -9px;
   right: 20px;
   display: block;
-  background: url("../../../img/arrow-dropdown-top.png") no-repeat;
+  background: url('../../../img/arrow-dropdown-top.png') no-repeat;
   z-index: 999;
 }
 
@@ -156,11 +156,6 @@ summary {
   text-transform: uppercase;
 }
 
-
-
-
-
-
 .home-logout .header .ec-links {
   text-align: right;
   height: 20px;
@@ -188,14 +183,14 @@ summary {
   padding: 15px;
 }
 
-.ec-links ul, .ec-links li,  .ec-links select {
+.ec-links ul,
+.ec-links li,
+.ec-links select {
   display: inline-block;
   margin-left: 10px;
-
 }
 
-
-.ec-links  select:not(:-internal-list-box) {
+.ec-links select:not(:-internal-list-box) {
   background-color: white;
   overflow: visible !important;
 }

@@ -1,11 +1,10 @@
-
-body:after{
-  content: "BETA (DEV)";
+body:after {
+  content: 'BETA (DEV)';
   z-index: 999;
   position: fixed;
   width: 150px;
   height: 25px;
-  background: #EE8E4A;
+  background: #ee8e4a;
   top: 25px;
   left: -40px;
   text-align: center;
@@ -15,5 +14,5 @@ body:after{
   font-weight: bold;
   color: #fff;
   line-height: 27px;
-  transform:rotate(-45deg);
+  transform: rotate(-45deg);
 }

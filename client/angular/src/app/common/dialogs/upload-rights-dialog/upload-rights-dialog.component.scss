@@ -1,17 +1,15 @@
 textarea {
-    width: 100%;
-    height: 100%;
-    min-height: 200px;
-    box-sizing: border-box;
-    margin-top: 10px; 
-  }
-  
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  box-sizing: border-box;
+  margin-top: 10px;
+}
 
-  .modal-card-body {
-    margin-bottom: 20px; /* Add space at the bottom of the modal body */
-  }
-  
-  .modal-card-body p:first-child {
-    margin-bottom: 10px; /* Add space below the description paragraph */
-  }
-  
+.modal-card-body {
+  margin-bottom: 20px; /* Add space at the bottom of the modal body */
+}
+
+.modal-card-body p:first-child {
+  margin-bottom: 10px; /* Add space below the description paragraph */
+}

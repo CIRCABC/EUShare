@@ -1,14 +1,14 @@
 @use 'material-customisation.scss';
 @import '~material-icons/iconfont/material-icons.css';
-@import "./style.ec.scss";
-@import "./style.circabc.global.scss";
+@import './style.ec.scss';
+@import './style.circabc.global.scss';
 
 /** ------------------------------------------ BULMA TEMPLATE  ------------------------------------------ **/
 /** --------------------- ELEMENTS --------------------- **/
 /** ----------- NAVBAR ---------- **/
 $navbar-height: $ec-navbar-height;
 $navbar-box-shadow-size: 2px;
-$navbar-box-shadow-color: rgba(0,0,0,.3);
+$navbar-box-shadow-color: rgba(0, 0, 0, 0.3);
 $navbar-item-color: #5b5b5b;
 
 /** ----------- TITLE ---------- **/
@@ -32,7 +32,7 @@ $green: $dark-green;
 
 /** --------------------- TYPOGRAPHY  --------------------- **/
 $family-sans-serif: verdana, helvetica, sans-serif;
-$family-secondary: "Ubuntu", verdana, Helvetica, sans-serif;
+$family-secondary: 'Ubuntu', verdana, Helvetica, sans-serif;
 
 $font-color: $ec-font-color;
 
@@ -44,7 +44,6 @@ $size-4: 1.25rem;
 $size-5: 1.15rem;
 $size-6: 1.15rem;
 $size-7: 0.75rem;
-
 
 .centered {
   margin-top: 30px;
@@ -59,7 +58,7 @@ $size-7: 0.75rem;
 .button {
   background: linear-gradient(180deg, #8dcb6c 0, #58c37e) !important;
   color: #fff !important;
-  font-family: "Ubuntu", verdana, helvetica, sans-serif !important;
+  font-family: 'Ubuntu', verdana, helvetica, sans-serif !important;
   text-transform: uppercase;
 }
 
@@ -89,7 +88,7 @@ $size-7: 0.75rem;
 }
 
 .imageBackground {
-  background-image: url("assets/eushareBackground.jpg");
+  background-image: url('assets/eushareBackground.jpg');
   padding-top: 1em;
 }
 
@@ -104,4 +103,3 @@ $size-7: 0.75rem;
   padding: 1em;
   min-width: 33%;
 }
-

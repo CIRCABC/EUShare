@@ -33,8 +33,8 @@ $textAA: rgba(
 // - gradients
 
 // - fonts
-$titling: "Ubuntu", verdana, helvetica, sans-serif;
-$standardText: "verdana", helvetica, sans-serif;
+$titling: 'Ubuntu', verdana, helvetica, sans-serif;
+$standardText: 'verdana', helvetica, sans-serif;
 
 $break-medium: 1023px;
 $break-small: 595px;
@@ -72,7 +72,7 @@ body {
   position: relative;
   min-height: 100%;
   background: #b1e0e8;
-  background: url("assets/img/background.jpg") no-repeat center top fixed;
+  background: url('assets/img/background.jpg') no-repeat center top fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -85,7 +85,7 @@ body {
   height: 65px;
 
   background: #1f3341;
-  background: url("assets/img/header.jpg") no-repeat center bottom;
+  background: url('assets/img/header.jpg') no-repeat center bottom;
 
   @include background-cover;
 
@@ -109,7 +109,7 @@ body {
     width: 500px;
     border: 1px solid #fff;
     background-color: rgba(255, 255, 255, 0.1);
-    background-image: url("assets/img/icon-search-white.png");
+    background-image: url('assets/img/icon-search-white.png');
     background-repeat: no-repeat;
     background-position: 98% center;
     border-radius: 4px;
@@ -148,13 +148,13 @@ body {
     }
 
     &::after {
-      content: "icon";
+      content: 'icon';
     }
   }
 
   .search-bar:focus {
     background-color: rgba(255, 255, 255, 1);
-    background-image: url("assets/img/icon-search-blue.png");
+    background-image: url('assets/img/icon-search-blue.png');
     outline: none;
     color: $link;
 
@@ -352,7 +352,7 @@ body {
       position: absolute;
       left: calc(50% - 9px);
       top: 8px;
-      content: "";
+      content: '';
       display: block;
       width: 18px;
       height: 18px;
@@ -478,7 +478,7 @@ body {
   padding: 0;
 
   &::after {
-    content: "";
+    content: '';
     display: block;
     position: absolute;
     right: 0;
@@ -550,7 +550,7 @@ body {
       position: relative;
 
       &::before {
-        content: "";
+        content: '';
         display: block;
         width: 5px;
         position: absolute;
@@ -748,7 +748,7 @@ body {
   padding: 12px 47px 12px 12px;
 
   &::after {
-    content: "";
+    content: '';
     display: inline-block;
     position: absolute;
     right: 0;
@@ -766,12 +766,12 @@ body {
 
 .cta--plus {
   &::after {
-    background-image: url("assets/img/icon-plus.png");
+    background-image: url('assets/img/icon-plus.png');
   }
 }
 
 .cta--dots {
   &::after {
-    background-image: url("assets/img/icon-more-white.png");
+    background-image: url('assets/img/icon-more-white.png');
   }
 }
