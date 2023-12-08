@@ -9,6 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
+
 import { NotificationService } from '../common/notification/notification.service';
 import { FileInfoUploader } from '../openapi';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -32,7 +34,8 @@ export class UploadSuccessComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
+    private clipboard: Clipboard
   ) {}
 
   async ngOnInit() {
@@ -50,22 +53,15 @@ export class UploadSuccessComponent implements OnInit {
   }
 
   public copyLink(i: number) {
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = this.formatLink(i);
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy'); // NOSONAR
-    document.body.removeChild(selBox);
-    this.notificationService.addSuccessMessageTranslation(
-      'copied.file.link',
-      undefined,
-      true
-    );
+    const value = this.formatLink(i);
+    const success = this.clipboard.copy(value);
+    if (success) {
+      this.notificationService.addSuccessMessageTranslation(
+        'copied.file.link',
+        undefined,
+        true
+      );
+    }
   }
 
   isFileInfoUploader(object: any): boolean {

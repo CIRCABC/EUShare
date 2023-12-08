@@ -9,6 +9,8 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 
 import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
+
 import { ModalsService } from '../modals.service';
 import { Recipient, FileService } from '../../../openapi';
 import { NotificationService } from '../../notification/notification.service';
@@ -35,7 +37,8 @@ export class ShareWithUsersModalComponent implements OnInit {
   constructor(
     private modalService: ModalsService,
     private fileApi: FileService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private clipboard: Clipboard
   ) {}
 
   public closeModal() {
@@ -119,22 +122,15 @@ export class ShareWithUsersModalComponent implements OnInit {
   }
 
   public copyLink(i: number) {
-    const selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = this.formatLink(i);
-    document.body.appendChild(selBox);
-    selBox.focus();
-    selBox.select();
-    document.execCommand('copy'); // NOSONAR
-    document.body.removeChild(selBox);
-    this.notificationService.addSuccessMessageTranslation(
-      'copied.file.link',
-      undefined,
-      true
-    );
+    const value = this.formatLink(i);
+    const success = this.clipboard.copy(value);
+    if (success) {
+      this.notificationService.addSuccessMessageTranslation(
+        'copied.file.link',
+        undefined,
+        true
+      );
+    }
   }
 
   public formatLink(i: number) {

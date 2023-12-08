@@ -17,6 +17,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, OnInit } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
 import { ModalsService } from '../modals.service';
 import { NotificationService } from '../../notification/notification.service';
 
@@ -32,7 +33,8 @@ export class FileLinkModalComponent implements OnInit {
 
   constructor(
     private modalService: ModalsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private clipboard: Clipboard
   ) {}
 
   ngOnInit() {
@@ -44,15 +46,11 @@ export class FileLinkModalComponent implements OnInit {
     );
   }
 
-  copyLink(inputElement: any) {
-    this.isLoading = true;
-    inputElement.select();
-    document.execCommand('copy');
-    inputElement.setSelectionRange(0, 0);
-    this.notificationService.addSuccessMessageTranslation('file.link.copied');
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 300);
+  copyLink(value: string) {
+    const success = this.clipboard.copy(value);
+    if (success) {
+      this.notificationService.addSuccessMessageTranslation('file.link.copied');
+    }
   }
 
   closeModal() {
