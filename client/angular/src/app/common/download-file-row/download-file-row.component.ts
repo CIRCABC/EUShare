@@ -20,6 +20,7 @@ import { SlicePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AbuseDialogComponent } from '../dialogs/abuse-dialog/abuse-dialog.component';
 import { NotificationService } from '../notification/notification.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-download-file-row',
@@ -31,6 +32,7 @@ import { NotificationService } from '../notification/notification.service';
     SlicePipe,
     FileSizeFormatPipe,
     MatDialogModule,
+    MatTooltipModule
   ],
 })
 export class DownloadFileRowComponent {

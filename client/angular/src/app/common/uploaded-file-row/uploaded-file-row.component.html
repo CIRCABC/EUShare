@@ -9,7 +9,7 @@
       }
       <br />
       <p class="subtitle is-5 filename">
-        <strong>
+        <strong matTooltip="{{file.name}}">
           {{
             file.name.length > 25 ? (file.name | slice: 0:25) + '..' : file.name
           }}

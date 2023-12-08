@@ -20,6 +20,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgClass, SlicePipe } from '@angular/common';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 import { NotificationService } from '../notification/notification.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-uploaded-file-row',
@@ -32,6 +33,7 @@ import { NotificationService } from '../notification/notification.service';
     TranslocoModule,
     SlicePipe,
     FileSizeFormatPipe,
+    MatTooltipModule
   ],
 })
 export class UploadedFileRowComponent {
