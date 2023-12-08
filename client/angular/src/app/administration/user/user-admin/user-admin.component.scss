@@ -31,7 +31,7 @@ ul {
 .centered {
   clear: both;
   padding-left: 20px;
-  font-size: 0.8em; 
+  font-size: 0.8em;
 }
 
 .tabs mat-tab-group {
@@ -64,18 +64,16 @@ ul {
 
 
 .select {
-  width: 100%; 
-  margin-bottom: 10px; 
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .user-info-column, .user-info-row {
-  display: flex; 
-  gap: 10px; 
-  align-items: center; 
-  flex-wrap: wrap;
   display: flex;
-  justify-content: flex-start;
+  gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
   flex: 1;
 }
 
@@ -100,7 +98,6 @@ ul {
   background-color: rgba(155, 214, 217, 0.4509803922);
   display: flex;
   width: 100%;
-  display: flex;
   justify-content: flex-start;
   align-items: center;
 }
@@ -125,8 +122,8 @@ ul {
 
 
 .column {
-  box-sizing: border-box; 
-  padding: 10px; 
+  box-sizing: border-box;
+  padding: 10px;
 }
 
 .columns {
@@ -154,9 +151,9 @@ ul {
 
 table td {
   padding-left: 3px;
- 
+
 }
 table th {
   padding-left: 3px;
- 
+
 }

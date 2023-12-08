@@ -80,9 +80,6 @@ export class AdministrationComponent implements OnInit {
     for (let y = 2022; y <= this.year; y++) {
       this.yearList.push(y);
     }
-    // this.getMountPointSpaces();
-    // this.getStats(this.year);
-
     for (let i = 1; i <= 12; i++) {
       this.monthsLabels[i - 1] = this.getShortMonthName(i);
     }

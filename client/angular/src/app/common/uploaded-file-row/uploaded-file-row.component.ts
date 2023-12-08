@@ -33,7 +33,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     TranslocoModule,
     SlicePipe,
     FileSizeFormatPipe,
-    MatTooltipModule
+    MatTooltipModule,
   ],
 })
 export class UploadedFileRowComponent {
@@ -71,7 +71,7 @@ export class UploadedFileRowComponent {
 
   public async tryDownload() {
     if (this.file.hasPassword) {
-      await this.modalService.activateDownloadModal(
+      this.modalService.activateDownloadModal(
         this.file.fileId,
         this.file.name,
         this.file.hasPassword
