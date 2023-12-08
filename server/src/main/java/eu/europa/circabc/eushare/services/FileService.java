@@ -41,6 +41,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import eu.europa.circabc.eushare.configuration.EushareConfiguration;
+import eu.europa.circabc.eushare.configuration.cronjob.CronJobLock;
 import eu.europa.circabc.eushare.exceptions.CouldNotAllocateFileException;
 import eu.europa.circabc.eushare.exceptions.CouldNotSaveFileException;
 import eu.europa.circabc.eushare.exceptions.DateLiesInPastException;
@@ -142,6 +143,7 @@ public class FileService {
    */
 
   @Scheduled(cron = "0 0 0 L * ?")
+  @CronJobLock
   @Transactional
   void cleanupFiles() {
 
@@ -179,6 +181,7 @@ public class FileService {
    * Record statistics (called before cleanup).
    */
   @Scheduled(cron = "0 0 23 * * ?")
+  @CronJobLock
   void statsFiles() {
     LocalDate currentdate = LocalDate.now();
     DBStat newStat = statsRepository.findCurrentStats(currentdate.getMonthValue(), currentdate.getYear());
@@ -201,6 +204,7 @@ public class FileService {
    * Marks all expired files as deleted in the database.
    */
   @Scheduled(cron = "0 0 22 * * ?")
+  @CronJobLock
   @Transactional
   void markExpiredFiles() {
     for (DBFile file : fileRepository.findByExpirationDateBefore(
@@ -215,6 +219,7 @@ public class FileService {
    * Marks all lost allocated files older than one day as deleted.
    */
   @Scheduled(cron = "0 0 22 * * ?")
+  @CronJobLock
   void markAllocatedLostFiles() {
     for (DBFile file : fileRepository.findByStatusAndLastModifiedBefore(
         eu.europa.circabc.eushare.storage.entity.DBFile.Status.ALLOCATED,

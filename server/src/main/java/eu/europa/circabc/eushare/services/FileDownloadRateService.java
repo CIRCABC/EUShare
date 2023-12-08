@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import eu.europa.circabc.eushare.configuration.cronjob.CronJobLock;
 import eu.europa.circabc.eushare.storage.entity.DBFile;
 import eu.europa.circabc.eushare.storage.entity.DBFileDownloadRate;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
@@ -86,6 +87,7 @@ public class FileDownloadRateService {
     }
 
     @Scheduled(cron = "0 0 * * * ?")
+    @CronJobLock
     public void hourlyCheck() {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime oneHourAgo = currentHour.minusHours(1);
@@ -105,6 +107,7 @@ public class FileDownloadRateService {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
+    @CronJobLock
     public void dailyCheck() {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusDays(1);
         List<DBFileDownloadRate> downloadsLastDay = repository.findByDateHourAfter(twentyFourHoursAgo);

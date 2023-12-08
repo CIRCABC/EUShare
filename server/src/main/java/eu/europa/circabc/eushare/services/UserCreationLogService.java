@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import eu.europa.circabc.eushare.configuration.cronjob.CronJobLock;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
 import eu.europa.circabc.eushare.storage.entity.DBUserCreationLog;
@@ -61,6 +62,7 @@ public class UserCreationLogService {
     }
 
     @Scheduled(cron = "0 5 0 * * ?")
+    @CronJobLock
     public void dailyCheck() {
         checkUserCreationThreshold();
         removeOldLogs();

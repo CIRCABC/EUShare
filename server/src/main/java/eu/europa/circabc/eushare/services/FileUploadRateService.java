@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import eu.europa.circabc.eushare.configuration.cronjob.CronJobLock;
 import eu.europa.circabc.eushare.storage.entity.DBFileUploadRate;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring.Status;
@@ -96,6 +97,7 @@ public class FileUploadRateService {
     }
 
     @Scheduled(cron = "0 0 * * * ?")
+    @CronJobLock
     public void hourlyCheck() {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime oneHourAgo = currentHour.minusHours(1);
@@ -135,6 +137,7 @@ public class FileUploadRateService {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
+    @CronJobLock
     public void dailyCheck() {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusDays(1);
         List<DBFileUploadRate> uploadsLastDay = repository.findByDateHourAfter(twentyFourHoursAgo);
@@ -207,6 +210,7 @@ public class FileUploadRateService {
     }
 
     @Scheduled(cron = "0 0 * * * ?")
+    @CronJobLock
     public void upgradeExternalUsers() {
         int uploadsThreshold = UPLOADS_TO_BE_TRUSTED_THRESHOLD;
         List<DBUser> users = userRepository.findExternalUsersWithMoreThanUploadsNotMonitored(DBUser.Role.EXTERNAL,
