@@ -57,6 +57,7 @@ public class CronJobLockAspect {
 
         if (isEligibleToRun(jobInfo, cronExpression)) {
             jobInfo.setIsLocked(true);
+            jobInfo.setCronjobDelay(cronExpression);
             repository.save(jobInfo);
             Object result = joinPoint.proceed(); 
             Thread.sleep(2000); 
