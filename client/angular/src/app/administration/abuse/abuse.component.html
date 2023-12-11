@@ -1,5 +1,6 @@
-<mat-tab-group>
+<mat-tab-group (selectedIndexChange)="selectedTabIndex.set($event)">
   <mat-tab label="Waiting">
+    @defer (when selectedTabIndex() === 0) {
     <app-abuse-tab
       [reportStatus]="'WAITING'"
       (showListEvent)="showList($event)"
@@ -8,10 +9,11 @@
       (denyEvent)="denyReport($event)"
       [abuseReportsDetailsMap]="abuseReportsDetailsMap"
     ></app-abuse-tab>
+    }
   </mat-tab>
 
   <mat-tab label="Approved">
-   
+    @defer (when selectedTabIndex() === 1) {
     <app-abuse-tab
       [reportStatus]="'APPROVED'"
       (showListEvent)="showList($event)"
@@ -20,11 +22,11 @@
       (denyEvent)="denyReport($event)"
       [abuseReportsDetailsMap]="abuseReportsDetailsMap"
     ></app-abuse-tab>
-
+    }
   </mat-tab>
 
   <mat-tab label="Denied">
-    
+    @defer (when selectedTabIndex() === 2) {
     <app-abuse-tab
       [reportStatus]="'DENIED'"
       (showListEvent)="showList($event)"
@@ -33,6 +35,6 @@
       (denyEvent)="denyReport($event)"
       [abuseReportsDetailsMap]="abuseReportsDetailsMap"
     ></app-abuse-tab>
-    
+    }
   </mat-tab>
 </mat-tab-group>
