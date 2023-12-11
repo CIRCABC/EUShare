@@ -1,6 +1,5 @@
-<mat-tab-group (selectedIndexChange)="selectedTabIndex.set($event)">
+<mat-tab-group>
   <mat-tab label="Waiting">
-    @defer (when selectedTabIndex() === 0) {
     <app-monitoring-tab
       [reportStatus]="'WAITING'"
       (deleteEvent)="delete($event)"
@@ -8,11 +7,9 @@
       (denyEvent)="denyReport($event)"
       [monitoringDetails]="monitoringDetails"
     ></app-monitoring-tab>
-    }
   </mat-tab>
 
   <mat-tab label="Approved">
-    @defer (when selectedTabIndex() === 1) {
     <app-monitoring-tab
       [reportStatus]="'APPROVED'"
       (deleteEvent)="delete($event)"
@@ -20,11 +17,9 @@
       (denyEvent)="denyReport($event)"
       [monitoringDetails]="monitoringDetails"
     ></app-monitoring-tab>
-    }
   </mat-tab>
 
   <mat-tab label="Denied">
-    @defer (when selectedTabIndex() === 2) {
     <app-monitoring-tab
       [reportStatus]="'DENIED'"
       (deleteEvent)="delete($event)"
@@ -32,6 +27,5 @@
       (denyEvent)="denyReport($event)"
       [monitoringDetails]="monitoringDetails"
     ></app-monitoring-tab>
-    }
   </mat-tab>
 </mat-tab-group>

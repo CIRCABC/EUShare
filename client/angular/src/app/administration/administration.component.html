@@ -6,7 +6,6 @@
     mat-stretch-tabs="false"
     mat-align-tabs="start"
     class="custom-tab-group"
-    (selectedIndexChange)="selectedTabChanged($event)"
   >
     <mat-tab class="mat-tab custom-tab">
       <ng-template mat-tab-label>
@@ -24,7 +23,6 @@
       <ng-template mat-tab-label>
         <i class="material-icons">storage</i> Disk usage
       </ng-template>
-      @defer (when selectedTabIndex() === 1) {
       <div class="centered">
         <h1 class="title">Disk usage</h1>
         <table>
@@ -52,14 +50,12 @@
           }
         </table>
       </div>
-      }
     </mat-tab>
 
     <mat-tab label="Statistics">
       <ng-template mat-tab-label>
         <i class="material-icons">bar_chart</i> Statistics
       </ng-template>
-      @defer (when selectedTabIndex() === 2) {
       <div class="centered">
         <h1 class="title">Statistics</h1>
 
@@ -133,55 +129,47 @@
 
         <app-bar-chart [chartData]="data"></app-bar-chart>
       </div>
-      }
+
     </mat-tab>
 
     <mat-tab label="Trust Requests">
       <ng-template mat-tab-label>
         <i class="material-icons">lock</i> Trust Requests
       </ng-template>
-      @defer (when selectedTabIndex() === 3) {
       <div class="centered">
         <h1 class="title">Trust Requests</h1>
         <app-trust></app-trust>
       </div>
-      }
     </mat-tab>
 
     <mat-tab label="Moderation Queue">
       <ng-template mat-tab-label>
         <i class="material-icons">troubleshoot</i> Moderation Queue
       </ng-template>
-      @defer (when selectedTabIndex() === 4) {
       <div class="centered">
         <h1 class="title">Moderation Queues</h1>
         <app-monitoring></app-monitoring>
       </div>
-      }
     </mat-tab>
 
     <mat-tab label="Abuse Reports">
       <ng-template mat-tab-label>
         <i class="material-icons">feedback</i> Abuse Reports
       </ng-template>
-      @defer (when selectedTabIndex() === 5) {
       <div class="centered">
         <h1 class="title">Abuse Reports</h1>
         <app-abuse></app-abuse>
       </div>
-      }
     </mat-tab>
 
     <mat-tab label="Logs">
       <ng-template mat-tab-label>
         <i class="material-icons">receipt_long</i> Logs
       </ng-template>
-      @defer (when selectedTabIndex() === 6) {
       <div class="centered">
         <h1 class="title">Logs</h1>
         <app-logs></app-logs>
       </div>
-      }
     </mat-tab>
   </mat-tab-group>
 </div>
