@@ -54,6 +54,7 @@ public class CronJobLockAspect {
                 cronJobLockService.lockJob(cronJobName, cronExpression);
                 return joinPoint.proceed();
             } finally {
+                Thread.sleep(10000);
                 cronJobLockService.unlockJob(cronJobName);
             }
         } else {
