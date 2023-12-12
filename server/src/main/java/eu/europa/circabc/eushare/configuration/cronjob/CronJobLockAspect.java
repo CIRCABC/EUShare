@@ -31,6 +31,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 @Aspect
 @Component
 public class CronJobLockAspect {
@@ -38,6 +40,7 @@ public class CronJobLockAspect {
     @Autowired
     private CronJobInfoRepository repository;
 
+    @Transactional
     @Around("@annotation(CronJobLock) && @annotation(scheduled)")
     public Object aroundScheduledTasks(ProceedingJoinPoint joinPoint, Scheduled scheduled) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -47,20 +50,19 @@ public class CronJobLockAspect {
         String cronJobName = className + "." + methodName;
         String cronExpression = scheduled.cron();
 
-        DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
+        DBCronJobInfo jobInfo = repository.findByCronjobNameForUpdate(cronJobName);
         if (jobInfo == null) {
             jobInfo = new DBCronJobInfo();
             jobInfo.setIsLocked(false);
             jobInfo.setCronjobDelay(cronExpression);
             jobInfo.setCronjobName(cronJobName);
-        }
+        }   
 
         if (isEligibleToRun(jobInfo, cronExpression)) {
             jobInfo.setIsLocked(true);
             jobInfo.setCronjobDelay(cronExpression);
-            repository.save(jobInfo);
+            repository.saveAndFlush(jobInfo);
             Object result = joinPoint.proceed(); 
-            Thread.sleep(2000); 
             jobInfo.setIsLocked(false);
             jobInfo.setLastRunDateTime(LocalDateTime.now());
             repository.save(jobInfo);
