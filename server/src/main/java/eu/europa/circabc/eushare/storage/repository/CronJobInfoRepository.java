@@ -9,13 +9,19 @@
  */
 package eu.europa.circabc.eushare.storage.repository;
 
+import javax.persistence.LockModeType;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import eu.europa.circabc.eushare.storage.entity.DBCronJobInfo;
 
 @Repository
 public interface CronJobInfoRepository extends JpaRepository<DBCronJobInfo, Long> {
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     DBCronJobInfo findByCronjobNameForUpdate(String cronjobName);
 }
 
