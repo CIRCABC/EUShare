@@ -50,7 +50,7 @@ public class CronJobLockAspect {
         String cronJobName = className + "." + methodName;
         String cronExpression = scheduled.cron();
 
-        DBCronJobInfo jobInfo = repository.findByCronjobNameForUpdate(cronJobName);
+        DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
         if (jobInfo == null) {
             jobInfo = new DBCronJobInfo();
             jobInfo.setIsLocked(false);

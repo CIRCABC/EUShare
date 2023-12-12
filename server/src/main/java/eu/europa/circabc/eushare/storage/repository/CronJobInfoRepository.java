@@ -22,6 +22,6 @@ import eu.europa.circabc.eushare.storage.entity.DBCronJobInfo;
 public interface CronJobInfoRepository extends JpaRepository<DBCronJobInfo, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
-    DBCronJobInfo findByCronjobNameForUpdate(String cronjobName);
+    DBCronJobInfo findByCronjobName(String cronjobName);
 }
 
