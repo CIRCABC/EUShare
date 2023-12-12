@@ -14,10 +14,12 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cronutils.model.Cron;
 import com.cronutils.model.CronType;
@@ -34,7 +36,7 @@ public class CronJobLockService {
     @Autowired
     private CronJobInfoRepository repository;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void lockJob(String cronJobName, String cronExpression) {
         DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
         if (jobInfo == null) {
@@ -46,7 +48,7 @@ public class CronJobLockService {
         repository.save(jobInfo);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void unlockJob(String cronJobName) {
         DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
         if (jobInfo != null) {
@@ -58,7 +60,9 @@ public class CronJobLockService {
 
     public boolean isEligibleToRun(String cronJobName, String cronExpression) {
         DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
-   
+          if (jobInfo == null)
+            return true;
+
         boolean isLocked = jobInfo.getIsLocked();
         LocalDateTime lastRun = jobInfo.getLastRunDateTime();
         long timeUntilNextExecution = calculateTimeUntilNextExecutionInMinutes(cronExpression);

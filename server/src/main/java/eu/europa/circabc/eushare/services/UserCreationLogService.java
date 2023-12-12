@@ -61,7 +61,7 @@ public class UserCreationLogService {
         }
     }
 
-    @Scheduled(cron = "0 5 0 * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     @CronJobLock
     public void dailyCheck() {
         checkUserCreationThreshold();

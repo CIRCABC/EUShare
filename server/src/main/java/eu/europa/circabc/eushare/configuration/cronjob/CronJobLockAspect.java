@@ -35,7 +35,6 @@ import javax.transaction.Transactional;
 
 @Aspect
 @Component
-
 public class CronJobLockAspect {
 
     @Autowired
