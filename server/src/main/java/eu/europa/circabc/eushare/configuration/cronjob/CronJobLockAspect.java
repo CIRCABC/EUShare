@@ -35,12 +35,12 @@ import javax.transaction.Transactional;
 
 @Aspect
 @Component
+
 public class CronJobLockAspect {
 
     @Autowired
-    private CronJobInfoRepository repository;
+    private CronJobLockService cronJobLockService;
 
-    @Transactional
     @Around("@annotation(CronJobLock) && @annotation(scheduled)")
     public Object aroundScheduledTasks(ProceedingJoinPoint joinPoint, Scheduled scheduled) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -50,55 +50,19 @@ public class CronJobLockAspect {
         String cronJobName = className + "." + methodName;
         String cronExpression = scheduled.cron();
 
-        DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
-        if (jobInfo == null) {
-            jobInfo = new DBCronJobInfo();
-            jobInfo.setIsLocked(false);
-            jobInfo.setCronjobDelay(cronExpression);
-            jobInfo.setCronjobName(cronJobName);
-        }   
-
-        if (isEligibleToRun(jobInfo, cronExpression)) {
-            jobInfo.setIsLocked(true);
-            jobInfo.setCronjobDelay(cronExpression);
-            repository.saveAndFlush(jobInfo);
-            Object result = joinPoint.proceed(); 
-            jobInfo.setIsLocked(false);
-            jobInfo.setLastRunDateTime(LocalDateTime.now());
-            repository.save(jobInfo);
-            return result;
+        if (cronJobLockService.isEligibleToRun(cronJobName, cronExpression)) {
+            try {
+                cronJobLockService.lockJob(cronJobName, cronExpression);
+                return joinPoint.proceed();
+            } finally {
+                cronJobLockService.unlockJob(cronJobName);
+            }
         } else {
             return null; 
         }
     }
-
-    private boolean isEligibleToRun(DBCronJobInfo jobInfo, String cronExpression) {
-
-        boolean isLocked = jobInfo.getIsLocked();
-        LocalDateTime lastRun = jobInfo.getLastRunDateTime();
-        long timeUntilNextExecution = calculateTimeUntilNextExecutionInMinutes(cronExpression);
-
-        if (lastRun == null)
-            return true;
-
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime nextScheduledRun = lastRun.plusMinutes(timeUntilNextExecution);
-
-        return !isLocked || currentTime.isAfter(nextScheduledRun);
-    }
-
-    private long calculateTimeUntilNextExecutionInMinutes(String cronExpression) {
-        CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ));
-        Cron quartzCron = parser.parse(cronExpression);
-        ExecutionTime executionTime = ExecutionTime.forCron(quartzCron);
-
-        Optional<ZonedDateTime> nextExecution = executionTime.nextExecution(ZonedDateTime.now());
-        if (nextExecution.isPresent()) {
-            ZonedDateTime nextExecTime = nextExecution.get();
-            return Duration.between(ZonedDateTime.now(), nextExecTime).toMinutes();
-        } else {
-            return 0L; // If next execution time is not available
-        }
-    }
-
 }
+
+
+
+
