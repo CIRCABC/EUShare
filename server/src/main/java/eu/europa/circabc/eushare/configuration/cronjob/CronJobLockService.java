@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
+import javax.persistence.OptimisticLockException;
+
+import org.apache.maven.doxia.logging.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -25,6 +30,7 @@ import com.cronutils.model.definition.CronDefinitionBuilder;
 import com.cronutils.model.time.ExecutionTime;
 import com.cronutils.parser.CronParser;
 
+import eu.europa.circabc.eushare.api.FileApiController;
 import eu.europa.circabc.eushare.storage.entity.DBCronJobInfo;
 import eu.europa.circabc.eushare.storage.repository.CronJobInfoRepository;
 
@@ -34,16 +40,23 @@ public class CronJobLockService {
     @Autowired
     private CronJobInfoRepository repository;
 
+      private static final Logger log = LoggerFactory.getLogger(
+      CronJobLockService.class);
+
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void lockJob(String cronJobName, String cronExpression) {
-        DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
-        if (jobInfo == null) {
-            jobInfo = new DBCronJobInfo();
-            jobInfo.setCronjobName(cronJobName);
+        try {
+            DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
+            if (jobInfo == null) {
+                jobInfo = new DBCronJobInfo();
+                jobInfo.setCronjobName(cronJobName);
+            }
+            jobInfo.setIsLocked(true);
+            jobInfo.setCronjobDelay(cronExpression);
+            repository.save(jobInfo);
+        } catch (OptimisticLockException e) {
+            log.info("CronJob " + cronJobName + " already running on another server, skipping..");
         }
-        jobInfo.setIsLocked(true);
-        jobInfo.setCronjobDelay(cronExpression);
-        repository.save(jobInfo);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
