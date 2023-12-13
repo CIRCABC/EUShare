@@ -35,20 +35,20 @@ public class CronJobLockAspect {
         String cronJobName = className + "." + methodName;
         String cronExpression = scheduled.cron();
 
-        if (cronJobLockService.isEligibleToRun(cronJobName, cronExpression)) {
-            try {
-                cronJobLockService.lockJob(cronJobName, cronExpression);
+        boolean lockAcquired = false;
+        try {
+            lockAcquired = cronJobLockService.lockJob(cronJobName, cronExpression);
+            if (lockAcquired) {
                 return joinPoint.proceed();
-            } finally {
+            } else {
+                return null;
+            }
+        } finally {
+            if (lockAcquired) {
                 Thread.sleep(10000);
                 cronJobLockService.unlockJob(cronJobName);
             }
-        } else {
-            return null; 
         }
+
     }
 }
-
-
-
-

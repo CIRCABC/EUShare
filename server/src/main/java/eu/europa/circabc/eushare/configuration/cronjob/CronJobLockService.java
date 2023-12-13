@@ -46,7 +46,7 @@ public class CronJobLockService {
             CronJobLockService.class);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    public void lockJob(String cronJobName, String cronExpression) {
+    public boolean lockJob(String cronJobName, String cronExpression) {
         try {
             DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
             if (jobInfo == null) {
@@ -56,12 +56,16 @@ public class CronJobLockService {
             jobInfo.setIsLocked(true);
             jobInfo.setCronjobDelay(cronExpression);
             repository.save(jobInfo);
+            return true;
         } catch (ObjectOptimisticLockingFailureException e) {
             log.info("CronJob " + cronJobName + " already running on another server, skipping..");
+            return false;
         } catch (OptimisticLockException e) {
             log.info("CronJob " + cronJobName + " already running on another server, skipping..");
+            return false;
         } catch (DataIntegrityViolationException e) {
             log.info("CronJob " + cronJobName + " already existing, skipping..");
+            return false;
         }
     }
 
