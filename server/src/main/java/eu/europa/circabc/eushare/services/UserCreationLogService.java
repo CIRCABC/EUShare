@@ -83,7 +83,8 @@ public class UserCreationLogService {
 
         if (optionalLog.isPresent()) {
             DBUserCreationLog log = optionalLog.get();
-            if (log.getUserCount() > USER_CREATION_THRESHOLD) {
+            if (true) {
+                //log.getUserCount() > USER_CREATION_THRESHOLD) {
                 LocalDateTime yesterdayStartOfDay = yesterday.toLocalDate().atStartOfDay();
 
                 DBMonitoring monitoring = new DBMonitoring();
