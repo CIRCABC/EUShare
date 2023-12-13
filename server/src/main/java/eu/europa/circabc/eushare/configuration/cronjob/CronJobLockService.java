@@ -9,30 +9,18 @@
  */
 package eu.europa.circabc.eushare.configuration.cronjob;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.util.Optional;
 
 import javax.persistence.OptimisticLockException;
+import javax.transaction.Transactional;
 
-import org.apache.maven.doxia.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.cronutils.model.Cron;
-import com.cronutils.model.CronType;
-import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.model.time.ExecutionTime;
-import com.cronutils.parser.CronParser;
-
-import eu.europa.circabc.eushare.api.FileApiController;
 import eu.europa.circabc.eushare.storage.entity.DBCronJobInfo;
 import eu.europa.circabc.eushare.storage.repository.CronJobInfoRepository;
 
@@ -45,7 +33,7 @@ public class CronJobLockService {
     private static final Logger log = LoggerFactory.getLogger(
             CronJobLockService.class);
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public boolean lockJob(String cronJobName, String cronExpression) {
         try {
             DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
@@ -69,7 +57,7 @@ public class CronJobLockService {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     public void unlockJob(String cronJobName) {
         DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
         if (jobInfo != null) {
