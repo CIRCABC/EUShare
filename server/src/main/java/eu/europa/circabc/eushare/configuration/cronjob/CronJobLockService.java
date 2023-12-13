@@ -33,7 +33,7 @@ public class CronJobLockService {
     private static final Logger log = LoggerFactory.getLogger(
             CronJobLockService.class);
 
-    @Transactional
+ 
     public boolean lockJob(String cronJobName, String cronExpression) {
         try {
             DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
@@ -57,7 +57,7 @@ public class CronJobLockService {
         }
     }
 
-    @Transactional
+
     public void unlockJob(String cronJobName) {
         DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
         if (jobInfo != null) {
