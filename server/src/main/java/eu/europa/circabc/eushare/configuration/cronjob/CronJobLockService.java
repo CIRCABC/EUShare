@@ -20,6 +20,7 @@ import org.apache.maven.doxia.logging.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,8 +41,8 @@ public class CronJobLockService {
     @Autowired
     private CronJobInfoRepository repository;
 
-      private static final Logger log = LoggerFactory.getLogger(
-      CronJobLockService.class);
+    private static final Logger log = LoggerFactory.getLogger(
+            CronJobLockService.class);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void lockJob(String cronJobName, String cronExpression) {
@@ -56,6 +57,8 @@ public class CronJobLockService {
             repository.save(jobInfo);
         } catch (OptimisticLockException e) {
             log.info("CronJob " + cronJobName + " already running on another server, skipping..");
+        } catch (DataIntegrityViolationException e) {
+            log.info("CronJob " + cronJobName + " already existing, skipping..");
         }
     }
 

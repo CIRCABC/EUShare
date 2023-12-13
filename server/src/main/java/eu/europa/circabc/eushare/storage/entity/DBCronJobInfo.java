@@ -35,7 +35,7 @@ public class DBCronJobInfo {
     }
 
 
-    @Column(name = "cronjob_name")
+    @Column(name = "cronjob_name", unique = true)
     private String cronjobName;
 
     @Column(name = "cronjob_delay")
