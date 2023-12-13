@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,6 +56,8 @@ public class CronJobLockService {
             jobInfo.setIsLocked(true);
             jobInfo.setCronjobDelay(cronExpression);
             repository.save(jobInfo);
+        } catch (ObjectOptimisticLockingFailureException e) {
+            log.info("CronJob " + cronJobName + " already running on another server, skipping..");
         } catch (OptimisticLockException e) {
             log.info("CronJob " + cronJobName + " already running on another server, skipping..");
         } catch (DataIntegrityViolationException e) {
