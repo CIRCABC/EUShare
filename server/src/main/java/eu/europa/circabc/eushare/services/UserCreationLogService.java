@@ -88,7 +88,7 @@ public class UserCreationLogService {
 
                 DBMonitoring monitoring = new DBMonitoring();
                 monitoring.setStatus(Status.WAITING);
-                monitoring.setCounter(log.getUserCount());
+                monitoring.setCounter(1);
                 monitoring.setEvent(DBMonitoring.Event.USER_CREATION_DAY);
                 monitoring.setDatetime(yesterdayStartOfDay);
                 monitoringRepository.save(monitoring);
