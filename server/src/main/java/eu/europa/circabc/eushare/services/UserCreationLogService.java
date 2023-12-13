@@ -61,7 +61,7 @@ public class UserCreationLogService {
         }
     }
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 5 0 * * ?")
     @CronJobLock
     public void dailyCheck() {
         checkUserCreationThreshold();
@@ -81,14 +81,14 @@ public class UserCreationLogService {
 
         Optional<DBUserCreationLog> optionalLog = repository.findByDateCreated(yesterday);
 
-        if (true) {
-          //  DBUserCreationLog log = optionalLog.get();
-            if (true) {
+        if (optionalLog.isPresent()) {
+            DBUserCreationLog log = optionalLog.get();
+            if (log.getUserCount() > USER_CREATION_THRESHOLD) {
                 LocalDateTime yesterdayStartOfDay = yesterday.toLocalDate().atStartOfDay();
 
                 DBMonitoring monitoring = new DBMonitoring();
                 monitoring.setStatus(Status.WAITING);
-                monitoring.setCounter(1);
+                monitoring.setCounter(log.getUserCount());
                 monitoring.setEvent(DBMonitoring.Event.USER_CREATION_DAY);
                 monitoring.setDatetime(yesterdayStartOfDay);
                 monitoringRepository.save(monitoring);
