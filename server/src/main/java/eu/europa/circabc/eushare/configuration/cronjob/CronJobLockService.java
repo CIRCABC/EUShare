@@ -79,35 +79,5 @@ public class CronJobLockService {
         }
     }
 
-    public boolean isEligibleToRun(String cronJobName, String cronExpression) {
-        DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
-        if (jobInfo == null)
-            return true;
 
-        boolean isLocked = jobInfo.getIsLocked();
-        LocalDateTime lastRun = jobInfo.getLastRunDateTime();
-        long timeUntilNextExecution = calculateTimeUntilNextExecutionInMinutes(cronExpression);
-
-        if (lastRun == null)
-            return true;
-
-        LocalDateTime currentTime = LocalDateTime.now();
-        LocalDateTime nextScheduledRun = lastRun.plusMinutes(timeUntilNextExecution);
-
-        return !isLocked || currentTime.isAfter(nextScheduledRun);
-    }
-
-    private long calculateTimeUntilNextExecutionInMinutes(String cronExpression) {
-        CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ));
-        Cron quartzCron = parser.parse(cronExpression);
-        ExecutionTime executionTime = ExecutionTime.forCron(quartzCron);
-
-        Optional<ZonedDateTime> nextExecution = executionTime.nextExecution(ZonedDateTime.now());
-        if (nextExecution.isPresent()) {
-            ZonedDateTime nextExecTime = nextExecution.get();
-            return Duration.between(ZonedDateTime.now(), nextExecTime).toMinutes();
-        } else {
-            return 0L; // If next execution time is not available
-        }
-    }
 }
