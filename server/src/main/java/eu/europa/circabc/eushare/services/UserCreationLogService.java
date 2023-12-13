@@ -82,7 +82,7 @@ public class UserCreationLogService {
         Optional<DBUserCreationLog> optionalLog = repository.findByDateCreated(yesterday);
 
         if (true) {
-            DBUserCreationLog log = optionalLog.get();
+          //  DBUserCreationLog log = optionalLog.get();
             if (true) {
                 LocalDateTime yesterdayStartOfDay = yesterday.toLocalDate().atStartOfDay();
 
