@@ -20,6 +20,21 @@ public class DBCronJobInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+ 
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+
     @Column(name = "cronjob_name")
     private String cronjobName;
 

@@ -61,7 +61,7 @@ public class UserCreationLogService {
         }
     }
 
-    @Scheduled(cron = "0 5 0 * * ?")
+    @Scheduled(cron = "0 * * * * ?")
     @CronJobLock
     public void dailyCheck() {
         checkUserCreationThreshold();
@@ -83,7 +83,7 @@ public class UserCreationLogService {
 
         if (optionalLog.isPresent()) {
             DBUserCreationLog log = optionalLog.get();
-            if (log.getUserCount() > USER_CREATION_THRESHOLD) {
+            if (true) {//log.getUserCount() >  USER_CREATION_THRESHOLD) {
                 LocalDateTime yesterdayStartOfDay = yesterday.toLocalDate().atStartOfDay();
 
                 DBMonitoring monitoring = new DBMonitoring();
@@ -93,16 +93,16 @@ public class UserCreationLogService {
                 monitoring.setDatetime(yesterdayStartOfDay);
                 monitoringRepository.save(monitoring);
 
-                String message = "A monitoring alert for abnormal number of new users (" + log.getUserCount() +
+               /* String message = "A monitoring alert for abnormal number of new users (" + log.getUserCount() +
                         ") in the last 24h has been raised at :" + monitoring.getDatetime() +
                         ".  Please inform CIRCABC-Share administrators about it. (more details in CIRCABC-Share admin console)";
-
-                try {
+ */
+               /* try {
                     emailService.sendNotification("DIGIT-CIRCABC-SUPPORT@ec.europa.eu", message);
                 } catch (MessagingException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
-                }
+                }*/
             }
         }
     }

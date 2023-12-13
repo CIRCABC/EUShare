@@ -14,8 +14,6 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -60,7 +58,7 @@ public class CronJobLockService {
 
     public boolean isEligibleToRun(String cronJobName, String cronExpression) {
         DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
-          if (jobInfo == null)
+        if (jobInfo == null)
             return true;
 
         boolean isLocked = jobInfo.getIsLocked();
@@ -76,7 +74,7 @@ public class CronJobLockService {
         return !isLocked || currentTime.isAfter(nextScheduledRun);
     }
 
-        private long calculateTimeUntilNextExecutionInMinutes(String cronExpression) {
+    private long calculateTimeUntilNextExecutionInMinutes(String cronExpression) {
         CronParser parser = new CronParser(CronDefinitionBuilder.instanceDefinitionFor(CronType.QUARTZ));
         Cron quartzCron = parser.parse(cronExpression);
         ExecutionTime executionTime = ExecutionTime.forCron(quartzCron);

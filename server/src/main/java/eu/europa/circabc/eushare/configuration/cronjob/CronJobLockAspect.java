@@ -9,6 +9,8 @@
  */
 package eu.europa.circabc.eushare.configuration.cronjob;
 
+import java.lang.reflect.Method;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,22 +18,6 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import com.cronutils.model.Cron;
-import com.cronutils.model.CronType;
-import com.cronutils.model.definition.CronDefinitionBuilder;
-import com.cronutils.model.time.ExecutionTime;
-import com.cronutils.parser.CronParser;
-
-import eu.europa.circabc.eushare.storage.entity.DBCronJobInfo;
-import eu.europa.circabc.eushare.storage.repository.CronJobInfoRepository;
-
-import java.lang.reflect.Method;
-import java.time.ZonedDateTime;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
 
 @Aspect
 @Component
