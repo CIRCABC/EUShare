@@ -47,6 +47,9 @@ public class DBCronJobInfo {
     @Column(name = "last_run_datetime")
     private LocalDateTime lastRunDateTime;
 
+    @Column(name = "master_server_id")
+    private String masterServerId;
+
     public Long getId() {
         return id;
     }
@@ -85,6 +88,14 @@ public class DBCronJobInfo {
 
     public void setLastRunDateTime(LocalDateTime lastRunDateTime) {
         this.lastRunDateTime = lastRunDateTime;
+    }
+
+    public String getMasterServerId() {
+        return masterServerId;
+    }
+
+    public void setMasterServerId(String masterServerId) {
+        this.masterServerId = masterServerId;
     }
 
 

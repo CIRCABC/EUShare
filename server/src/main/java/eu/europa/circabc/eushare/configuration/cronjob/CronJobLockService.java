@@ -9,11 +9,13 @@
  */
 package eu.europa.circabc.eushare.configuration.cronjob;
 
+import java.net.InetAddress;
 import java.time.LocalDateTime;
 
 import javax.persistence.OptimisticLockException;
 import javax.transaction.Transactional;
 
+import org.hibernate.StaleStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +35,21 @@ public class CronJobLockService {
     private static final Logger log = LoggerFactory.getLogger(
             CronJobLockService.class);
 
- 
     public boolean lockJob(String cronJobName, String cronExpression) {
         try {
+            String serverId = getServerHostname();
             DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
             if (jobInfo == null) {
                 jobInfo = new DBCronJobInfo();
                 jobInfo.setCronjobName(cronJobName);
+                jobInfo.setMasterServerId(serverId); 
             }
+
+            if (!serverId.equals(jobInfo.getMasterServerId())) {
+                return false; 
+            }
+
+     
             jobInfo.setIsLocked(true);
             jobInfo.setCronjobDelay(cronExpression);
             repository.save(jobInfo);
@@ -54,16 +63,39 @@ public class CronJobLockService {
         } catch (DataIntegrityViolationException e) {
             log.info("CronJob " + cronJobName + " already existing, skipping..");
             return false;
-        }
+        }         
     }
 
 
     public void unlockJob(String cronJobName) {
-        DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
-        if (jobInfo != null) {
-            jobInfo.setIsLocked(false);
-            jobInfo.setLastRunDateTime(LocalDateTime.now());
-            repository.save(jobInfo);
+        try {
+            DBCronJobInfo jobInfo = repository.findByCronjobName(cronJobName);
+            if (jobInfo != null) {
+                jobInfo.setIsLocked(false);
+                jobInfo.setLastRunDateTime(LocalDateTime.now());
+                repository.save(jobInfo);
+            }
+
+        } catch (
+
+        ObjectOptimisticLockingFailureException e) {
+            log.info("CronJob " + cronJobName + " could not be unlock : " + e.getMessage());
+            return;
+        } catch (StaleStateException e) {
+            log.info("CronJob " + cronJobName + " could not be unlock : " + e.getMessage());
+            return;
+        } catch (DataIntegrityViolationException e) {
+            log.info("CronJob " + cronJobName + " could not be unlock : " + e.getMessage());
+            return;
+        }
+    }
+
+
+    public String getServerHostname() {
+        try {
+            return InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            return "UnknownHost";
         }
     }
 
