@@ -30,13 +30,15 @@ export interface Monitoring {
     status?: Monitoring.StatusEnum;
 }
 export namespace Monitoring {
-    export type EventEnum = 'DOWNLOAD_RATE_HOUR' | 'UPLOAD_RATE_HOUR' | 'DOWNLOAD_RATE_DAY' | 'UPLOAD_RATE_DAY' | 'USER_CREATION_DAY';
+    export type EventEnum = 'DOWNLOAD_RATE_HOUR' | 'UPLOAD_RATE_HOUR' | 'DOWNLOAD_RATE_DAY' | 'UPLOAD_RATE_DAY' | 'USER_CREATION_DAY' | 'BRUTE_FORCE_ATTACK_HOUR' | 'BRUTE_FORCE_ATTACK_DAY';
     export const EventEnum = {
         DownloadRateHour: 'DOWNLOAD_RATE_HOUR' as EventEnum,
         UploadRateHour: 'UPLOAD_RATE_HOUR' as EventEnum,
         DownloadRateDay: 'DOWNLOAD_RATE_DAY' as EventEnum,
         UploadRateDay: 'UPLOAD_RATE_DAY' as EventEnum,
-        UserCreationDay: 'USER_CREATION_DAY' as EventEnum
+        UserCreationDay: 'USER_CREATION_DAY' as EventEnum,
+        BruteForceAttackHour: 'BRUTE_FORCE_ATTACK_HOUR' as EventEnum,
+        BruteForceAttackDay: 'BRUTE_FORCE_ATTACK_DAY' as EventEnum
     };
     export type StatusEnum = 'WAITING' | 'DENIED' | 'APPROVED';
     export const StatusEnum = {

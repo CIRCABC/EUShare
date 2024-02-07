@@ -1988,6 +1988,8 @@ components:
             - DOWNLOAD_RATE_DAY
             - UPLOAD_RATE_DAY
             - USER_CREATION_DAY
+            - BRUTE_FORCE_ATTACK_HOUR
+            - BRUTE_FORCE_ATTACK_DAY
         fileId:
           type: string
         userId:
