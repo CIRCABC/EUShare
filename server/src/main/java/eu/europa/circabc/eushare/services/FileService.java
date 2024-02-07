@@ -124,6 +124,9 @@ public class FileService {
   private FileUploadRateService fileUploadRateService;
 
   @Autowired
+  private BruteForceAttackRateService bruteForceAttackRateService;
+
+  @Autowired
   private TrustLogRepository trustLogRepository;
 
   /**
@@ -496,6 +499,7 @@ public class FileService {
   private DBFile findFile(String fileId) throws UnknownFileException {
     DBFile f = fileRepository.findById(fileId).orElse(null);
     if (f == null || f.getStatus() == DBFile.Status.DELETED) {
+      bruteForceAttackLog();
       throw new UnknownFileException();
     }
     return f;
@@ -526,6 +530,7 @@ public class FileService {
         shortUrl);
 
     if (f == null) {
+      bruteForceAttackLog();
       throw new UnknownFileException();
     }
     return f;
@@ -659,6 +664,7 @@ public class FileService {
       String downloadId,
       String password,
       boolean head) throws WrongPasswordException, UnknownFileException, TooManyRequestsException {
+
     DBFile dbFile;
 
     DBShare dbShare = findShare(downloadId);
@@ -670,6 +676,7 @@ public class FileService {
       // File is downloaded by a user it is shared with
       dbFile = dbShare.getFile();
       if (!dbFile.getStatus().equals(DBFile.Status.AVAILABLE)) {
+        bruteForceAttackLog();
         throw new UnknownFileException();
       }
       String userIdentifier = dbShare.getEmail();
@@ -979,6 +986,18 @@ public class FileService {
       shareRepository.save(dbShare);
     } else {
       throw new UserUnauthorizedException();
+    }
+  }
+
+  private void bruteForceAttackLog() throws UnknownFileException {
+    bruteForceAttackRateService.logBruteForceAttack();
+    if (bruteForceAttackRateService.realTimeCheck()) {
+      try {
+        Thread.sleep(10000);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
+      throw new UnknownFileException();
     }
   }
 }

@@ -58,7 +58,7 @@ import java.time.LocalDateTime;
         "END AS uploader_status," +
 
         "CASE " +
-        "WHEN m.event = 'USER_CREATION_DAY' THEN (SELECT GROUP_CONCAT(u.email) FROM users u WHERE u.last_logged >= m.datetime - INTERVAL 24 HOUR) "
+        "WHEN m.event = 'USER_CREATION_DAY' THEN (SELECT GROUP_CONCAT(u.email) FROM users u WHERE u.creation_date >= m.datetime - INTERVAL 24 HOUR) "
         +
         "WHEN m.event = 'UPLOAD_RATE_HOUR' THEN (SELECT GROUP_CONCAT(f.filename) FROM files f WHERE f.uploader_id = m.user_id AND f.created >= m.datetime - INTERVAL 2 HOUR) "
         +
@@ -92,8 +92,6 @@ import java.time.LocalDateTime;
 @Table(name = "monitoring")
 public class DBMonitoring {
 
-   
-
     @Id
     @Column(nullable = false)
     @GeneratedValue(generator = "UUID")
@@ -107,12 +105,14 @@ public class DBMonitoring {
     @Column(name = "event", nullable = false)
     private Event event;
 
-     public enum Event {
+    public enum Event {
         DOWNLOAD_RATE_HOUR,
         UPLOAD_RATE_HOUR,
         DOWNLOAD_RATE_DAY,
         UPLOAD_RATE_DAY,
-        USER_CREATION_DAY
+        USER_CREATION_DAY, 
+        BRUTE_FORCE_ATTACK_DAY, 
+        BRUTE_FORCE_ATTACK_HOUR
     }
 
     @Column(name = "file_id", nullable = true)
