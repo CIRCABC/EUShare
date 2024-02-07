@@ -1,5 +1,6 @@
 package eu.europa.circabc.eushare.services;
 
+import eu.europa.circabc.eushare.configuration.cronjob.CronJobLock;
 import eu.europa.circabc.eushare.storage.entity.DBBruteForceAttackRate;
 import eu.europa.circabc.eushare.storage.entity.DBMonitoring;
 import eu.europa.circabc.eushare.storage.repository.BruteForceAttackRateRepository;
@@ -59,6 +60,7 @@ public class BruteForceAttackRateService {
     }
 
     @Scheduled(cron = "0 0 * * * ?")
+    @CronJobLock
     public void hourlyCheck() {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
         LocalDateTime oneHourAgo = currentHour.minusHours(1);
@@ -75,6 +77,7 @@ public class BruteForceAttackRateService {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
+    @CronJobLock
     public void dailyCheck() {
         LocalDateTime twentyFourHoursAgo = LocalDateTime.now(ZoneId.systemDefault()).minusDays(1);
         List<DBBruteForceAttackRate> attacksLastDay = bruteForceAttackRateRepository
