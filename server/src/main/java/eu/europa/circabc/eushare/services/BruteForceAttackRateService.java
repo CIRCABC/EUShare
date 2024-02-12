@@ -1,3 +1,12 @@
+/*
+ * EUShare - a module of CIRCABC
+ * Copyright (C) 2019-2021 European Commission
+ *
+ * This file is part of the "EUShare" project.
+ *
+ * This code is publicly distributed under the terms of EUPL-V1.2 license,
+ * available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
+ */
 package eu.europa.circabc.eushare.services;
 
 import eu.europa.circabc.eushare.configuration.cronjob.CronJobLock;
@@ -52,12 +61,23 @@ public class BruteForceAttackRateService {
         }
     }
 
-    public boolean realTimeCheck() {
+    public int realTimeCheck() {
         LocalDateTime currentHour = LocalDateTime.now(ZoneId.systemDefault()).withMinute(0).withSecond(0).withNano(0);
         Optional<DBBruteForceAttackRate> optionalLogEntry = bruteForceAttackRateRepository.findByDateHour(currentHour);
-
-        return optionalLogEntry.map(logEntry -> logEntry.getAttackCount() > HOURLY_THRESHOLD_RT).orElse(false);
+    
+        if (optionalLogEntry.isPresent()) {
+            DBBruteForceAttackRate logEntry = optionalLogEntry.get();
+            int attackCount = logEntry.getAttackCount();
+            if (attackCount > HOURLY_THRESHOLD_RT) {
+                return attackCount;
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
     }
+    
 
     @Scheduled(cron = "0 0 * * * ?")
     @CronJobLock

@@ -89,6 +89,9 @@ public class FileService {
   @Value("${eushare.file_recipients.max_recipient_external}")
   private int MAX_RECIPIENT_EXTERNAL;
 
+  @Value("${eushare.brute_force_attack_rate.hourly_threshold_rt}")
+  private int HOURLY_THRESHOLD_RT;
+
   private Logger log = LoggerFactory.getLogger(FileService.class);
 
   private final List<MountPoint> mountPoints = new ArrayList<>();
@@ -659,7 +662,7 @@ public class FileService {
    * @throws TooManyRequestsException
    */
 
-  @Transactional
+ 
   public DownloadReturn downloadFile(
       String downloadId,
       String password,
@@ -991,13 +994,20 @@ public class FileService {
 
   private void bruteForceAttackLog() throws UnknownFileException {
     bruteForceAttackRateService.logBruteForceAttack();
-    if (bruteForceAttackRateService.realTimeCheck()) {
-      try {
-        Thread.sleep(10000);
-      } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-      }
-      throw new UnknownFileException();
+    int attackCount = bruteForceAttackRateService.realTimeCheck();
+
+    if (attackCount > HOURLY_THRESHOLD_RT ) {
+        int additionalAttacks = attackCount - HOURLY_THRESHOLD_RT;
+        long sleepTime = 10000 + (additionalAttacks * 1000);
+        if(sleepTime>20000)
+          sleepTime=20000;
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        throw new UnknownFileException();
     }
-  }
+}
+
 }
