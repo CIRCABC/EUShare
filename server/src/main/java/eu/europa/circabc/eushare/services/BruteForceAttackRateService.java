@@ -99,7 +99,7 @@ public class BruteForceAttackRateService {
     @Scheduled(cron = "0 0 0 * * ?")
     @CronJobLock
     public void dailyCheck() {
-        LocalDateTime twentyFourHoursAgo = LocalDateTime.now(ZoneId.systemDefault()).minusDays(1);
+        LocalDateTime twentyFourHoursAgo = LocalDateTime.now(ZoneId.systemDefault()).minusHours(25);
         List<DBBruteForceAttackRate> attacksLastDay = bruteForceAttackRateRepository
                 .findByDateHourAfter(twentyFourHoursAgo);
 

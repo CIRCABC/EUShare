@@ -139,7 +139,7 @@ public class FileUploadRateService {
     @Scheduled(cron = "0 0 0 * * ?")
     @CronJobLock
     public void dailyCheck() {
-        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusDays(1);
+        LocalDateTime twentyFourHoursAgo = LocalDateTime.now().minusHours(25);
         List<DBFileUploadRate> uploadsLastDay = repository.findByDateHourAfter(twentyFourHoursAgo);
 
         Map<DBUser, Integer> userUploadCounts = new HashMap<>();
