@@ -33,7 +33,7 @@ export class UploadSuccessComponent implements OnInit {
 
   public faCheckCircle = faCheckCircle;
   private frontend_url = '';
-  private shorturl = '';
+  public shorturl = '';
   
 
   constructor(
