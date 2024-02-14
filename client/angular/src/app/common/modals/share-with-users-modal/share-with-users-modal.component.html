@@ -3,26 +3,13 @@
   <div class="modal-card">
     <header class="modal-card-head">
       <p class="modal-card-title">
-        {{ 'file.shares' | transloco }} <br />
-        <strong> {{ modalFileName }}</strong>
+        {{ 'file.shares' | transloco }} : <strong> {{ modalFileName }}</strong>
       </p>
       <button class="delete" aria-label="close" (click)="closeModal()"></button>
     </header>
     <section class="modal-card-body">
-      <div class="level">
-        <!-- Left side -->
-        <div class="level-item has-text-centered">
-          <p>
-            <strong>{{ modalFileName }}</strong> {{ 'is.shared' | transloco }}
-            <strong>{{ recipients.length }}</strong> {{ 'times' | transloco }}
-          </p>
-        </div>
-      </div>
 
       <table class="table">
-        <caption>
-          {{ 'file.recipients' | transloco }}
-        </caption>
         <thead>
           <tr>
             <th>
