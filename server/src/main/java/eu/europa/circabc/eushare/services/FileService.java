@@ -760,7 +760,7 @@ public class FileService {
 
   public DBShare findShare(String downloadId) {
 
-    boolean isShortUrl = downloadId.length() == DBShare.SHORT_URL_LENGTH;
+    boolean isShortUrl = downloadId.length() <= DBShare.SHORT_URL_LENGTH;
     DBShare dbShare;
     if (isShortUrl) {
       dbShare = shareRepository.findOneByShorturl(downloadId);

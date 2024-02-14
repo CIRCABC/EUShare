@@ -77,6 +77,9 @@
           @if (isMoreDisplayed) {
           <div class="navbar-dropdown">
             @if (displayAsUploader) {
+            <a class="navbar-item" (click)="displayRecipients()">
+                {{ 'display.links' | transloco }}
+            </a>
             <a class="navbar-item" (click)="openAddRecipientsModal()"
               >{{ 'add.recipient' | transloco }}
             </a>

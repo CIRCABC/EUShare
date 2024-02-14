@@ -87,6 +87,14 @@
           </tbody>
         </table>
       </div>
+
+      <div class="qr-code-container" >
+        <a href="{{ shorturl }}">
+          <qrcode [qrdata]="shorturl" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        </a>
+      </div>
+      
+
     </div>
   </div>
 </div>

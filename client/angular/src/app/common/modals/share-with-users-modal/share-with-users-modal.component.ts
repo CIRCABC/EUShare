@@ -18,6 +18,8 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { TranslocoModule } from '@ngneat/transloco';
 import { LowerCasePipe, SlicePipe } from '@angular/common';
+import { QRCodeModule} from 'angularx-qrcode';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-share-with-users-modal',
@@ -25,7 +27,7 @@ import { LowerCasePipe, SlicePipe } from '@angular/common';
   styleUrls: ['./share-with-users-modal.component.scss'],
   preserveWhitespaces: true,
   standalone: true,
-  imports: [TranslocoModule, LowerCasePipe, SlicePipe],
+  imports: [TranslocoModule, LowerCasePipe, MatIconModule, QRCodeModule, SlicePipe],
 })
 export class ShareWithUsersModalComponent implements OnInit {
   public modalActive = false;
@@ -33,6 +35,10 @@ export class ShareWithUsersModalComponent implements OnInit {
   private modalFileId = '';
   public recipients: Recipient[] = [];
   private frontend_url = '';
+
+  private qrCodeModalActive = false;
+  private qrCodeData: string = '';
+
 
   constructor(
     private modalService: ModalsService,
@@ -135,5 +141,10 @@ export class ShareWithUsersModalComponent implements OnInit {
 
   public formatLink(i: number) {
     return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.recipients[i].shortUrl}`;
+  }
+
+  public showQRCode(i: number) {
+    this.qrCodeData = this.formatLink(i);
+    this.qrCodeModalActive = true;
   }
 }

@@ -21,10 +21,12 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { ModalsService } from '../modals.service';
 import { NotificationService } from '../../notification/notification.service';
 
+
 @Component({
   selector: 'app-file-link-modal',
   templateUrl: './file-link-modal.component.html',
   standalone: true,
+  imports: [], 
 })
 export class FileLinkModalComponent implements OnInit {
   public modalActive = false;
@@ -56,4 +58,6 @@ export class FileLinkModalComponent implements OnInit {
   closeModal() {
     this.modalService.deactivateFileLinkModal();
   }
+
+ 
 }

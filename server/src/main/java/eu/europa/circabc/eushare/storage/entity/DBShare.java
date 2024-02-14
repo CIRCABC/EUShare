@@ -28,8 +28,8 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "shares", indexes = @Index(name = "INDEX_SHARES", columnList = "email, shorturl"))
 public class DBShare {
 
-  private static final String CHARACTERS = "abcdefghijkmnpqrstuvwxyz23456789";
-  public static final int SHORT_URL_LENGTH = 6;
+  private static final String CHARACTERS = "abcdefghijklmnopqrstuvwxyz0123456789";
+  public static final int SHORT_URL_LENGTH = 10;
   private static final SecureRandom RANDOM = new SecureRandom();
 
   @Id

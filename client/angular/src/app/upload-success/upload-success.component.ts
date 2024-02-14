@@ -17,20 +17,24 @@ import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { I18nService } from '../common/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { TranslocoModule } from '@ngneat/transloco';
-import { LowerCasePipe, SlicePipe } from '@angular/common';
+import { CommonModule, LowerCasePipe, SlicePipe } from '@angular/common';
+import { QRCodeModule } from 'angularx-qrcode';
+
 
 @Component({
   selector: 'app-upload-success',
   templateUrl: './upload-success.component.html',
   styleUrls: ['./upload-success.component.scss'],
   standalone: true,
-  imports: [TranslocoModule, LowerCasePipe, SlicePipe],
+  imports: [TranslocoModule,QRCodeModule, LowerCasePipe, SlicePipe,QRCodeModule,CommonModule],
 })
 export class UploadSuccessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;
 
   public faCheckCircle = faCheckCircle;
   private frontend_url = '';
+  private shorturl = '';
+  
 
   constructor(
     private notificationService: NotificationService,
@@ -76,6 +80,10 @@ export class UploadSuccessComponent implements OnInit {
   }
 
   public formatLink(i: number) {
-    return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
+    this.shorturl = `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
+    return this.shorturl;
+  }
+  handleSaveAs(fileUrl: string) {
+    console.log("Saving " + fileUrl);
   }
 }
