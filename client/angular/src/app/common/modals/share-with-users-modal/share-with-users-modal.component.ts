@@ -36,8 +36,8 @@ export class ShareWithUsersModalComponent implements OnInit {
   public recipients: Recipient[] = [];
   private frontend_url = '';
 
-  private qrCodeModalActive = false;
-  private qrCodeData: string = '';
+  public qrCodeModalActive = false;
+  public qrCodeData: string = '';
 
 
   constructor(
