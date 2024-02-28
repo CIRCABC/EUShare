@@ -44,6 +44,7 @@
   "delete.file": "delete this file",
   "delete.recipient": "delete this recipient from the shared file",
   "discover": "Discover",
+  "display.links": "Display share links",
   "display.shared.files": "Display shared files",
   "done": "Done",
   "download": "Download",
