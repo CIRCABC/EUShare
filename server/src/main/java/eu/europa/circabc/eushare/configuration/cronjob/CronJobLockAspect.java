@@ -45,7 +45,6 @@ public class CronJobLockAspect {
             }
         } finally {
             if (lockAcquired) {
-                Thread.sleep(10000);
                 cronJobLockService.unlockJob(cronJobName);
             }
         }
