@@ -90,7 +90,9 @@
       <button class="delete" aria-label="close" (click)="qrCodeModalActive = false"></button>
     </header>
       <section class="modal-card-body">
+        @if (qrCodeData) {
         <qrcode [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        } 
       </section>
   </div>
 </div>

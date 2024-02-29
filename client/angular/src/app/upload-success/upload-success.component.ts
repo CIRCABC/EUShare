@@ -1,16 +1,5 @@
-/*
-CIRCABC Share - a module of CIRCABC
-Copyright (C) 2019 European Commission
-
-This file is part of the "CIRCABC Share" project.
-
-This code is publicly distributed under the terms of EUPL-V1.2 license,
-available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
-*/
-
 import { Component, OnInit } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-
 import { NotificationService } from '../common/notification/notification.service';
 import { FileInfoUploader } from '../openapi';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
@@ -20,21 +9,17 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { CommonModule, LowerCasePipe, SlicePipe } from '@angular/common';
 import { QRCodeModule } from 'angularx-qrcode';
 
-
 @Component({
   selector: 'app-upload-success',
   templateUrl: './upload-success.component.html',
   styleUrls: ['./upload-success.component.scss'],
   standalone: true,
-  imports: [TranslocoModule,QRCodeModule, LowerCasePipe, SlicePipe,QRCodeModule,CommonModule],
+  imports: [TranslocoModule, QRCodeModule, LowerCasePipe, SlicePipe, QRCodeModule, CommonModule],
 })
 export class UploadSuccessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;
-
   public faCheckCircle = faCheckCircle;
   private frontend_url = '';
-  public shorturl = '';
-  
 
   constructor(
     private notificationService: NotificationService,
@@ -57,7 +42,7 @@ export class UploadSuccessComponent implements OnInit {
   }
 
   public copyLink(i: number) {
-    const value = this.formatLink(i);
+    const value = this.getFormattedLink(i);
     const success = this.clipboard.copy(value);
     if (success) {
       this.notificationService.addSuccessMessageTranslation(
@@ -79,10 +64,10 @@ export class UploadSuccessComponent implements OnInit {
     );
   }
 
-  public formatLink(i: number) {
-    this.shorturl = `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
-    return this.shorturl;
+  public getFormattedLink(i: number): string {
+    return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
   }
+
   handleSaveAs(fileUrl: string) {
     console.log("Saving " + fileUrl);
   }

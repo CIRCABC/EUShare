@@ -11,16 +11,16 @@
           <div class="media-content">
             <p class="title is-4">
               {{
-                fileInfoUploader.name.length > 25
-                  ? (fileInfoUploader.name | slice : 0 : 25) + '..'
-                  : fileInfoUploader.name
+              fileInfoUploader.name.length > 25
+              ? (fileInfoUploader.name | slice : 0 : 25) + '..'
+              : fileInfoUploader.name
               }}
               {{ 'successfully.uploaded' | transloco }}
             </p>
             <p class="subtitle is-6">
               {{
-                'file.will.expire'
-                  | transloco : { date: fileInfoUploader.expirationDate }
+              'file.will.expire'
+              | transloco : { date: fileInfoUploader.expirationDate }
               }}
             </p>
           </div>
@@ -46,7 +46,7 @@
               <th>
                 <abbr title="Notifications">{{
                   'notifications' | transloco
-                }}</abbr>
+                  }}</abbr>
               </th>
               <th>
                 <abbr title="Links">{{ 'links' | transloco }}</abbr>
@@ -64,36 +64,36 @@
                 @if (recipient.email) {
                 <span>
                   {{
-                    recipient.email.length > 35
-                      ? (recipient.email | lowercase | slice : 0 : 35) + '..'
-                      : (recipient.email | lowercase)
+                  recipient.email.length > 35
+                  ? (recipient.email | lowercase | slice : 0 : 35) + '..'
+                  : (recipient.email | lowercase)
                   }}
                 </span>
                 }
               </td>
               <td class="shorturl">
-                <input
-                  data-cy="short-url"
-                  class="input"
-                  type="text"
-                  value="{{ formatLink(i) }}"
-                />
+                <input data-cy="short-url" class="input" type="text" value="{{ getFormattedLink(i) }}" />
               </td>
               <td>
                 <a class="button" (click)="copyLink(i)">Copy</a>
               </td>
+              @if (getFormattedLink(i)) {
+              <div class="qr-code-container">
+                <a href="{{ getFormattedLink(i) }}">
+
+                  <qrcode [qrdata]="getFormattedLink(i)" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+
+                </a>
+              </div>
+              }
             </tr>
             }
           </tbody>
         </table>
       </div>
 
-      <div class="qr-code-container" >
-        <a href="{{ shorturl }}">
-          <qrcode [qrdata]="shorturl" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-        </a>
-      </div>
-      
+
+
 
     </div>
   </div>
