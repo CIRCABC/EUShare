@@ -72,18 +72,15 @@
                 }
               </td>
               <td class="shorturl">
-                <input data-cy="short-url" class="input" type="text" value="{{ getFormattedLink(i) }}" />
+                <input data-cy="short-url" class="input" type="text" value="{{ formatLink(i)  }}" />
               </td>
               <td>
                 <a class="button" (click)="copyLink(i)">Copy</a>
               </td>
-              @if (getFormattedLink(i)) {
+              @if ( formatLink(i) ) {
               <div class="qr-code-container">
-                <a href="{{ getFormattedLink(i) }}">
-
-                  <qrcode [qrdata]="getFormattedLink(i)" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-
-                </a>
+                  <qrcode [qrdata]="formatLink(i)"  (click)="showQRCode(i)" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
+          
               </div>
               }
             </tr>
@@ -92,6 +89,20 @@
         </table>
       </div>
 
+      <div class="modal" [class.is-active]="qrCodeModalActive" id="qr-code-modal">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+          <header class="modal-card-head">
+            <p class="modal-card-title">QR Code</p>
+            <button class="delete" aria-label="close" (click)="qrCodeModalActive = false"></button>
+          </header>
+            <section class="modal-card-body">
+              @if (qrCodeData) {
+              <qrcode [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+              } 
+            </section>
+        </div>
+      </div>
 
 
 

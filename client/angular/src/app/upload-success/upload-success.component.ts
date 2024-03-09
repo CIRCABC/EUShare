@@ -21,6 +21,10 @@ export class UploadSuccessComponent implements OnInit {
   public faCheckCircle = faCheckCircle;
   private frontend_url = '';
 
+
+  public qrCodeModalActive = false;
+  public qrCodeData: string = '';
+
   constructor(
     private notificationService: NotificationService,
     private i18nService: I18nService,
@@ -42,7 +46,7 @@ export class UploadSuccessComponent implements OnInit {
   }
 
   public copyLink(i: number) {
-    const value = this.getFormattedLink(i);
+    const value = this.formatLink(i);
     const success = this.clipboard.copy(value);
     if (success) {
       this.notificationService.addSuccessMessageTranslation(
@@ -64,11 +68,19 @@ export class UploadSuccessComponent implements OnInit {
     );
   }
 
-  public getFormattedLink(i: number): string {
+
+  public formatLink(i: number) {
     return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
   }
+
 
   handleSaveAs(fileUrl: string) {
     console.log("Saving " + fileUrl);
   }
+
+  public showQRCode(i: number) {
+    this.qrCodeData = this.formatLink(i);
+    this.qrCodeModalActive = true;
+  }
+
 }

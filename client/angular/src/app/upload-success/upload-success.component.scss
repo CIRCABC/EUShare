@@ -35,3 +35,14 @@ img {
   justify-content: center; 
 }
 
+.modal-card {
+  margin-top: 100px;
+  width: 300px;
+}
+
+.modal-card-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
