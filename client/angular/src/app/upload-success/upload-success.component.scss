@@ -35,6 +35,10 @@ img {
   justify-content: center; 
 }
 
+.qr-code-container:hover {
+  cursor: zoom-in;
+}
+
 .modal-card {
   margin-top: 100px;
   width: 300px;
