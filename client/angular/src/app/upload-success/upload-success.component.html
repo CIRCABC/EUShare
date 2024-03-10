@@ -37,10 +37,7 @@
         }
 
         <table class="table">
-          <caption>
-            {{ 'file.recipients' | transloco }}
-          </caption>
-          @if (fileInfoUploader.sharedWith[0].email) {
+          @if (fileInfoUploader.sharedWith.length > 1) {
           <thead>
             <tr>
               <th>
