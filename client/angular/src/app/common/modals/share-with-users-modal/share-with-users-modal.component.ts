@@ -37,7 +37,7 @@ export class ShareWithUsersModalComponent implements OnInit {
   private frontend_url = '';
 
   public qrCodeModalActive = false;
-  public qrCodeData: string = '';
+  public qrCodeData = '';
 
 
   constructor(

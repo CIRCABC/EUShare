@@ -33,7 +33,7 @@ export class UploadSuccessComponent implements OnInit {
 
 
   public qrCodeModalActive = false;
-  public qrCodeData: string = '';
+  public qrCodeData = '';
 
   constructor(
     private notificationService: NotificationService,
@@ -85,7 +85,7 @@ export class UploadSuccessComponent implements OnInit {
 
 
   handleSaveAs(fileUrl: string) {
-    console.log("Saving " + fileUrl);
+    console.log(`Saving ${fileUrl}`);
   }
 
   public showQRCode(i: number) {
