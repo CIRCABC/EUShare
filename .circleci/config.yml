@@ -5,8 +5,7 @@ jobs:
     working_directory: ~/EasyShare/server # directory where steps will run
 
     docker:
-      - image: circleci/openjdk:11-jdk-browsers 
-
+      - image: cimg/openjdk:17.0.3
     steps: 
 
       - checkout: 
