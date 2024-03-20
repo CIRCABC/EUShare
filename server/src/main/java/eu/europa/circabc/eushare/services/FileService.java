@@ -578,19 +578,20 @@ public class FileService {
   @Transactional
   public void freezeFile(String fileId) {
     DBFile f = fileRepository.findById(fileId).orElse(null);
-
-    f.setStatus(DBFile.Status.FROZEN);
-    fileRepository.save(f);
-
+    if (f != null) {
+      f.setStatus(DBFile.Status.FROZEN);
+      fileRepository.save(f);
+    }
   }
 
   @Transactional
   public void unfreezeFile(String fileId) {
     DBFile f = fileRepository.findById(fileId).orElse(null);
     // if (f.getStatus() == DBFile.Status.FROZEN)
-    f.setStatus(DBFile.Status.AVAILABLE);
-    fileRepository.save(f);
-
+    if (f != null) {
+      f.setStatus(DBFile.Status.AVAILABLE);
+      fileRepository.save(f); 
+    }
   }
 
   @Transactional
@@ -998,7 +999,7 @@ public class FileService {
 
     if (attackCount > HOURLY_THRESHOLD_RT ) {
         int additionalAttacks = attackCount - HOURLY_THRESHOLD_RT;
-        long sleepTime = 10000 + (additionalAttacks * 1000);
+        long sleepTime = 10000L + (additionalAttacks * 1000);
         if(sleepTime>20000)
           sleepTime=20000;
         try {

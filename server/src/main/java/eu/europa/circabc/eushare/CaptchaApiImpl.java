@@ -62,7 +62,7 @@ public class CaptchaApiImpl implements CaptchaApi {
                 logger.info("Request:\n" + url);
                 logger.info("Response:\n" + response);
             }
-            if (!response.contains("success")) {
+            if (response != null && !response.contains("success")) {
                 if (logger.isErrorEnabled()) {
                     logger.error("Call EU Captcha service :  " + url);
                     logger.error("Response is not successful :" + response);
