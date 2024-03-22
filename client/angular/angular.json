@@ -56,6 +56,25 @@
                 }
               ]
             },
+            "local": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "namedChunks": false,
+              "aot": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+              "serviceWorker": false,
+              "baseHref": "/",
+              "deployUrl": "/",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
+            },
             "prod": {
               "budgets": [
                 {
@@ -91,6 +110,9 @@
             },
             "dev": {
               "buildTarget": "client:build:dev"
+            },
+            "local": {
+              "buildTarget": "client:build:local"
             }
           }
         },
