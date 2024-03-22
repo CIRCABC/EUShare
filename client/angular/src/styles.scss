@@ -52,7 +52,7 @@ $size-7: 0.75rem;
   padding: 2px;
 }
 
-@import '../node_modules/bulma';
+@import '../node_modules/bulma/bulma.sass';
 @import '../node_modules/bulma-extensions/bulma-tooltip/src/sass/index';
 
 .button {
@@ -93,7 +93,9 @@ $size-7: 0.75rem;
 }
 
 .centeredText {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow:
+    0 4px 8px 0 rgba(0, 0, 0, 0.2),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
   margin-left: auto;
   margin-right: auto;
   margin-top: 2em;
