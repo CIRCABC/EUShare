@@ -105,7 +105,7 @@ export class UserAdminComponent implements AfterViewInit {
   constructor(
     private usersService: UsersService,
     private notificationService: NotificationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   ngAfterViewInit() {
@@ -129,10 +129,10 @@ export class UserAdminComponent implements AfterViewInit {
                 this.paginator.pageIndex,
                 this.paginator.pageSize,
                 this.sort.active,
-                this.sort.direction
+                this.sort.direction,
               );
             }),
-            catchError(() => observableOf(null))
+            catchError(() => observableOf(null)),
           );
         }),
         map((data) => {
@@ -142,7 +142,7 @@ export class UserAdminComponent implements AfterViewInit {
             return [];
           }
           return data;
-        })
+        }),
       )
       .subscribe((data) => (this.data = data));
   }
@@ -151,14 +151,14 @@ export class UserAdminComponent implements AfterViewInit {
     pageIndex: number,
     pageSize: number,
     sortField: string,
-    sortOrder: SortDirection
+    sortOrder: SortDirection,
   ): Observable<UserInfo[]> {
     return this.usersService.getUsersUserInfo(
       pageSize,
       pageIndex,
       this.searchString,
       sortField,
-      this.convertSortDirectionToSortOrder(sortOrder)
+      this.convertSortDirectionToSortOrder(sortOrder),
     );
   }
 
@@ -170,7 +170,7 @@ export class UserAdminComponent implements AfterViewInit {
     this.hideUploadedFiles();
     this.selectedUserInfoIndex = i;
     this.selectedValueInGigaBytes = Math.floor(
-      this.data[i].totalSpace / (1024 * 1024 * 1024)
+      this.data[i].totalSpace / (1024 * 1024 * 1024),
     );
 
     const role = this.data[i].role;
@@ -201,13 +201,13 @@ export class UserAdminComponent implements AfterViewInit {
       await firstValueFrom(
         this.usersService.putUserUserInfo(
           this.selectedUserInfo.id,
-          this.selectedUserInfo
-        )
+          this.selectedUserInfo,
+        ),
       );
       this.notificationService.addSuccessMessageTranslation(
         'change.applied',
         undefined,
-        true
+        true,
       );
     } catch (error) {
       // managed in the interceptor
@@ -235,15 +235,15 @@ export class UserAdminComponent implements AfterViewInit {
       this.usersService.putUserUserInfo(
         this.selectedUserInfo.id,
         this.selectedUserInfo,
-        true
-      )
+        true,
+      ),
     );
 
     this.toggleUploadedFiles();
     this.notificationService.addSuccessMessageTranslation(
       'change.applied',
       undefined,
-      true
+      true,
     );
   }
 
@@ -252,15 +252,15 @@ export class UserAdminComponent implements AfterViewInit {
       this.usersService.putUserUserInfo(
         this.selectedUserInfo.id,
         this.selectedUserInfo,
-        false
-      )
+        false,
+      ),
     );
     this.toggleUploadedFiles();
 
     this.notificationService.addSuccessMessageTranslation(
       'change.applied',
       undefined,
-      true
+      true,
     );
   }
 
@@ -270,12 +270,12 @@ export class UserAdminComponent implements AfterViewInit {
       UserInfo.RoleEnum.TrustedExternal,
     ];
     this.selectedValueInGigaBytes = rolesThatGet1GB.includes(
-      this.selectedUserRole
+      this.selectedUserRole,
     )
       ? 1
       : 5;
     this.selectedValueInGigaBytesIndex = this.valuesInGigaBytes.indexOf(
-      this.selectedValueInGigaBytes
+      this.selectedValueInGigaBytes,
     );
   }
 

@@ -24,13 +24,19 @@ import { QRCodeModule } from 'angularx-qrcode';
   templateUrl: './upload-success.component.html',
   styleUrls: ['./upload-success.component.scss'],
   standalone: true,
-  imports: [TranslocoModule, QRCodeModule, LowerCasePipe, SlicePipe, QRCodeModule, CommonModule],
+  imports: [
+    TranslocoModule,
+    QRCodeModule,
+    LowerCasePipe,
+    SlicePipe,
+    QRCodeModule,
+    CommonModule,
+  ],
 })
 export class UploadSuccessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;
   public faCheckCircle = faCheckCircle;
   private frontend_url = '';
-
 
   public qrCodeModalActive = false;
   public qrCodeData = '';
@@ -38,7 +44,7 @@ export class UploadSuccessComponent implements OnInit {
   constructor(
     private notificationService: NotificationService,
     private i18nService: I18nService,
-    private clipboard: Clipboard
+    private clipboard: Clipboard,
   ) {}
 
   async ngOnInit() {
@@ -48,7 +54,7 @@ export class UploadSuccessComponent implements OnInit {
       this.fileInfoUploader = <FileInfoUploader>passedData;
     } else {
       const message = `${this.i18nService.translate(
-        'problem.occurred.navigation'
+        'problem.occurred.navigation',
       )} ${this.i18nService.contactSupport()}`;
 
       this.notificationService.addErrorMessage(message);
@@ -62,7 +68,7 @@ export class UploadSuccessComponent implements OnInit {
       this.notificationService.addSuccessMessageTranslation(
         'copied.file.link',
         undefined,
-        true
+        true,
       );
     }
   }
@@ -78,11 +84,9 @@ export class UploadSuccessComponent implements OnInit {
     );
   }
 
-
   public formatLink(i: number) {
     return `${window.location.protocol}//${window.location.host}${this.frontend_url}/fs/${this.fileInfoUploader.sharedWith[i].shortUrl}`;
   }
-
 
   handleSaveAs(fileUrl: string) {
     console.log(`Saving ${fileUrl}`);
@@ -92,5 +96,4 @@ export class UploadSuccessComponent implements OnInit {
     this.qrCodeData = this.formatLink(i);
     this.qrCodeModalActive = true;
   }
-
 }

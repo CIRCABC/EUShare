@@ -25,7 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class CaptchaComponent implements OnInit {
   constructor(
     private captchaService: CaptchaControllerService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
   ) {}
 
   private capitalizationValue = false;
@@ -58,7 +58,7 @@ export class CaptchaComponent implements OnInit {
   @Input()
   get languageCode() {
     const result = this.captchaLang.find(
-      (captchaLang) => captchaLang.id === this.captchaLanguageId
+      (captchaLang) => captchaLang.id === this.captchaLanguageId,
     );
     if (result) {
       return result.code;
@@ -67,7 +67,7 @@ export class CaptchaComponent implements OnInit {
   }
   set languageCode(value: string) {
     const result = this.captchaLang.find(
-      (captchaLang) => captchaLang.code === value
+      (captchaLang) => captchaLang.code === value,
     );
     let newCaptchaLanguageId = 'en-GB';
     if (result) {
@@ -123,15 +123,15 @@ export class CaptchaComponent implements OnInit {
         this.capitalizationValue,
         undefined,
         undefined,
-        'response'
-      )
+        'response',
+      ),
     );
 
     if (captcha.body !== null) {
       this.captchaImage = `data:image/png;base64,${captcha.body.captchaImg}`;
       this.captchaId = captcha.body.captchaId;
       this.audioCaptcha = this.sanitizer.bypassSecurityTrustResourceUrl(
-        `data:audio/wav;base64,${captcha.body.audioCaptcha}`
+        `data:audio/wav;base64,${captcha.body.audioCaptcha}`,
       );
     }
 

@@ -31,7 +31,7 @@ export class ChangeExpirationDateModalComponent implements OnInit {
 
   constructor(
     private modalService: ModalsService,
-    private uploadedFileService: UploadedFilesService
+    private uploadedFileService: UploadedFilesService,
   ) {}
 
   ngOnInit() {
@@ -44,7 +44,7 @@ export class ChangeExpirationDateModalComponent implements OnInit {
         this.expirationDate = nextModalActiveValue.expirationDate
           .toString()
           .replace(/,/g, '-');
-      }
+      },
     );
   }
 

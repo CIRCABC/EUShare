@@ -16,7 +16,7 @@
         <mat-dialog-content>
           <div
             ><strong>Date/time:</strong>
-            {{ monitoringDetails.datetime | date : 'yy-MM-dd HH:mm' }}</div
+            {{ monitoringDetails.datetime | date: 'yy-MM-dd HH:mm' }}</div
           >
           <div
             ><strong>Event:</strong>
@@ -28,68 +28,80 @@
           >
 
           @if (monitoringDetails.filename) {
-          <div
-            ><strong>File Name:</strong> {{ monitoringDetails.filename }}</div
-          >
-          } @if (monitoringDetails.uploader_name) {
-          <div
-            ><strong>Uploader Name:</strong>
-            {{ monitoringDetails.uploader_name }}</div
-          >
-          } @if (monitoringDetails.uploader_email) {
-          <div
-            ><strong>Uploader Email:</strong>
-            {{ monitoringDetails.uploader_email }}</div
-          >
-          } @if (monitoringDetails.description) {
-          <div
-            ><strong>Details:</strong> {{ monitoringDetails.description }}</div
-          >
-          } @if (monitoringDetails.event &&
-          monitoringDetails.event.includes('DOWNLOAD')) {
-          <div>
-            <strong>User blame:</strong>
-            <select
-              [(ngModel)]="monitoringDetails.uploader_status"
-              name="uploader_status"
+            <div
+              ><strong>File Name:</strong> {{ monitoringDetails.filename }}</div
             >
-              @for (statusKey of statusKeys; track statusKey) {
-              <option [value]="statusKey">
-                {{ statusKey }} : {{ statusLabels[statusKey] }}
-              </option>
-              }
-            </select>
-          </div>
-          } @if (monitoringDetails.event &&
-          monitoringDetails.event.includes('UPLOAD')) {
-          <div>
-            <strong>User blame:</strong>
-            <select
-              [(ngModel)]="monitoringDetails.uploader_status"
-              name="uploader_status"
+          }
+          @if (monitoringDetails.uploader_name) {
+            <div
+              ><strong>Uploader Name:</strong>
+              {{ monitoringDetails.uploader_name }}</div
             >
-              @for (statusKey of statusKeys; track statusKey) {
-              <option [value]="statusKey">
-                {{ statusKey }} : {{ statusLabelsUploads[statusKey] }}
-              </option>
-              }
-            </select>
-          </div>
-          } @if (monitoringDetails.event &&
-          monitoringDetails.event.includes('USER')) {
-          <div>
-            <strong>User blame:</strong>
-            <select
-              [(ngModel)]="monitoringDetails.uploader_status"
-              name="uploader_status"
+          }
+          @if (monitoringDetails.uploader_email) {
+            <div
+              ><strong>Uploader Email:</strong>
+              {{ monitoringDetails.uploader_email }}</div
             >
-              @for (statusKey of statusKeys; track statusKey) {
-              <option [value]="statusKey">
-                {{ statusKey }} : {{ statusLabelsUser[statusKey] }}
-              </option>
-              }
-            </select>
-          </div>
+          }
+          @if (monitoringDetails.description) {
+            <div
+              ><strong>Details:</strong>
+              {{ monitoringDetails.description }}</div
+            >
+          }
+          @if (
+            monitoringDetails.event &&
+            monitoringDetails.event.includes('DOWNLOAD')
+          ) {
+            <div>
+              <strong>User blame:</strong>
+              <select
+                [(ngModel)]="monitoringDetails.uploader_status"
+                name="uploader_status"
+              >
+                @for (statusKey of statusKeys; track statusKey) {
+                  <option [value]="statusKey">
+                    {{ statusKey }} : {{ statusLabels[statusKey] }}
+                  </option>
+                }
+              </select>
+            </div>
+          }
+          @if (
+            monitoringDetails.event &&
+            monitoringDetails.event.includes('UPLOAD')
+          ) {
+            <div>
+              <strong>User blame:</strong>
+              <select
+                [(ngModel)]="monitoringDetails.uploader_status"
+                name="uploader_status"
+              >
+                @for (statusKey of statusKeys; track statusKey) {
+                  <option [value]="statusKey">
+                    {{ statusKey }} : {{ statusLabelsUploads[statusKey] }}
+                  </option>
+                }
+              </select>
+            </div>
+          }
+          @if (
+            monitoringDetails.event && monitoringDetails.event.includes('USER')
+          ) {
+            <div>
+              <strong>User blame:</strong>
+              <select
+                [(ngModel)]="monitoringDetails.uploader_status"
+                name="uploader_status"
+              >
+                @for (statusKey of statusKeys; track statusKey) {
+                  <option [value]="statusKey">
+                    {{ statusKey }} : {{ statusLabelsUser[statusKey] }}
+                  </option>
+                }
+              </select>
+            </div>
           }
         </mat-dialog-content>
       </section>

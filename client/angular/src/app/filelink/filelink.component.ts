@@ -52,7 +52,7 @@ export class FilelinkComponent implements OnInit {
     private fileApi: FileService,
     private dialog: MatDialog,
     private downloadsService: DownloadsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   async ngOnInit() {
@@ -65,8 +65,8 @@ export class FilelinkComponent implements OnInit {
             this.fileId = id;
             this.fileName = fileinfo.name;
             this.isFilePasswordProtected = fileinfo.hasPassword;
-          })
-        )
+          }),
+        ),
       );
     } else {
       this.router.navigateByUrl('/home');
@@ -90,26 +90,26 @@ export class FilelinkComponent implements OnInit {
       this.modalService.activateDownloadModal(
         this.fileId,
         this.fileName,
-        this.isFilePasswordProtected
+        this.isFilePasswordProtected,
       );
     } else {
       const result = await this.downloadsService.download(
         this.fileId,
         this.fileName,
-        this.inputPassword
+        this.inputPassword,
       );
       if (result === 'WRONG_PASSWORD') {
         this.notificationService.addErrorMessageTranslation(
           'wrong.password',
           undefined,
-          true
+          true,
         );
       }
       if (result === 'TOO_MANY_DOWNLOADS') {
         this.notificationService.addErrorMessageTranslation(
           'too.many.downloads',
           undefined,
-          true
+          true,
         );
       }
       if (result === 'OK') {

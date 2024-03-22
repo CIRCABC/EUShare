@@ -48,7 +48,7 @@ export class AbuseDetailsDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<AbuseDetailsDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails[]
+    @Inject(MAT_DIALOG_DATA) public data: AbuseReportDetails[],
   ) {}
 
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;

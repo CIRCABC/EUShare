@@ -1,12 +1,12 @@
 <div class="control" [class.is-expanded]="isFileHasPassword">
   @if (isFileHasPassword) {
-  <input
-    class="input is-info"
-    type="password"
-    placeholder="Type password here"
-    [(ngModel)]="inputPassword"
-    (keyup.enter)="download()"
-  />
+    <input
+      class="input is-info"
+      type="password"
+      placeholder="Type password here"
+      [(ngModel)]="inputPassword"
+      (keyup.enter)="download()"
+    />
   }
 </div>
 <div class="control">

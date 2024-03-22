@@ -30,7 +30,7 @@ export class NotificationComponent implements OnInit {
 
   constructor(
     private notificationService: NotificationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {

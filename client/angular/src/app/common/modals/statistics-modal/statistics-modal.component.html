@@ -45,28 +45,28 @@
         </thead>
         <tbody>
           @for (fileLog of fileLogs; track fileLog; let i = $index) {
-          <tr [attr.data-index]="i">
-            <td>
-              @if (fileLog.recipient !== '') {
-              <span>
-                {{
-                  fileLog.recipient.length > 35
-                    ? (fileLog.recipient | lowercase | slice : 0 : 35) + '..'
-                    : ((fileLog.recipient === ''
-                        ? 'Anonymous'
-                        : fileLog.recipient
-                      ) | lowercase)
-                }}
-              </span>
-              }
-            </td>
-            <td>
-              {{ fileLog.downloadDate }}
-            </td>
-            <td>
-              {{ formatLink(fileLog.downloadLink) }}
-            </td>
-          </tr>
+            <tr [attr.data-index]="i">
+              <td>
+                @if (fileLog.recipient !== '') {
+                  <span>
+                    {{
+                      fileLog.recipient.length > 35
+                        ? (fileLog.recipient | lowercase | slice: 0 : 35) + '..'
+                        : ((fileLog.recipient === ''
+                            ? 'Anonymous'
+                            : fileLog.recipient
+                          ) | lowercase)
+                    }}
+                  </span>
+                }
+              </td>
+              <td>
+                {{ fileLog.downloadDate }}
+              </td>
+              <td>
+                {{ formatLink(fileLog.downloadLink) }}
+              </td>
+            </tr>
           }
         </tbody>
       </table>

@@ -62,7 +62,7 @@ export class MonitoringAdminDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<MonitoringAdminDialogComponent>,
     private datePipe: DatePipe,
-    @Inject(MAT_DIALOG_DATA) public data: MonitoringDetails
+    @Inject(MAT_DIALOG_DATA) public data: MonitoringDetails,
   ) {
     this.monitoringDetails = { ...data };
   }

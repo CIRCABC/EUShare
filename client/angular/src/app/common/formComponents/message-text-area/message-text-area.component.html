@@ -1,7 +1,8 @@
 @if (isOptional) {
-<label class="label">{{ 'text.optional' | transloco }}</label>
-} @if (!isOptional) {
-<label class="label">{{ 'text' | transloco }}</label>
+  <label class="label">{{ 'text.optional' | transloco }}</label>
+}
+@if (!isOptional) {
+  <label class="label">{{ 'text' | transloco }}</label>
 }
 <textarea
   #textarea
@@ -12,5 +13,5 @@
   placeholder="{{ 'please.enter.message' | transloco }}"
 ></textarea>
 @if (errorMessage) {
-<label class="label error">{{ errorMessage }}</label>
+  <label class="label error">{{ errorMessage }}</label>
 }

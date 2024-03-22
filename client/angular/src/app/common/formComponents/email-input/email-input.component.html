@@ -16,14 +16,14 @@
   </div>
   <p class="control">
     @if (showAddRecipient) {
-    <button
-      [disabled]="errorMessage || input.value === ''"
-      (click)="addRecipient()"
-      type="button"
-      class="button"
-    >
-      {{ 'add.recipient' | transloco }}
-    </button>
+      <button
+        [disabled]="errorMessage || input.value === ''"
+        (click)="addRecipient()"
+        type="button"
+        class="button"
+      >
+        {{ 'add.recipient' | transloco }}
+      </button>
     }
   </p>
 </div>

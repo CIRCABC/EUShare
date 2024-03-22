@@ -32,7 +32,7 @@ export class NotificationSystemComponent implements OnDestroy {
         (message: NotificationMessage) => {
           this.messages.push(message);
           window.scroll(0, 0);
-        }
+        },
       );
 
     this.messageDestroyedSubscription$ =
@@ -40,7 +40,7 @@ export class NotificationSystemComponent implements OnDestroy {
         (message: NotificationMessage) => {
           const i = this.messages.indexOf(message);
           this.messages.splice(i, 1);
-        }
+        },
       );
   }
   public ngOnDestroy(): void {

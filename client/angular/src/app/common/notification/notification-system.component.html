@@ -1,5 +1,3 @@
-@for (msg of messages; track msg) {<app-notification
-  class="box--messages"
-  [message]="msg"
-></app-notification
->}
+@for (msg of messages; track msg) {
+  <app-notification class="box--messages" [message]="msg"></app-notification>
+}

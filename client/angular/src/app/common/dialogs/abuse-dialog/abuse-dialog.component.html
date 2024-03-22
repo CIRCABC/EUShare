@@ -26,15 +26,15 @@
           <div>
             <p><br /></p>{{ 'abuse.why' | transloco }}<p><br /></p>
             @for (reason of abuseReasons; track reason) {
-            <div>
-              <input
-                type="radio"
-                name="abuseReason"
-                [(ngModel)]="abuseReport.reason"
-                [value]="reason"
-              />
-              {{ reason | transloco }}
-            </div>
+              <div>
+                <input
+                  type="radio"
+                  name="abuseReason"
+                  [(ngModel)]="abuseReport.reason"
+                  [value]="reason"
+                />
+                {{ reason | transloco }}
+              </div>
             }
           </div>
           <p><br /></p>
@@ -52,24 +52,23 @@
           </div>
           <br />
           @if (!authentified) {
-          <div>{{ 'abuse.your.email' | transloco }}:</div>
-          } @if (!authentified) {
-
-          <div>
-            <input
-              matInput
-              name="reporter"
-              [(ngModel)]="abuseReport.reporter"
-              required
-            />
-          </div>
-
+            <div>{{ 'abuse.your.email' | transloco }}:</div>
+          }
+          @if (!authentified) {
+            <div>
+              <input
+                matInput
+                name="reporter"
+                [(ngModel)]="abuseReport.reporter"
+                required
+              />
+            </div>
           }
         </div>
         @if (!authentified) {
-        <div class="wrap-box captcha">
-          <cbc-captcha languageCode="en"></cbc-captcha>
-        </div>
+          <div class="wrap-box captcha">
+            <cbc-captcha languageCode="en"></cbc-captcha>
+          </div>
         }
       </section>
 

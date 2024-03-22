@@ -38,7 +38,7 @@ export class MonitoringComponent implements OnInit {
 
   constructor(
     private monitoringService: MonitoringService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -79,7 +79,7 @@ export class MonitoringComponent implements OnInit {
   private async updateMonitoringStatus(details: MonitoringDetails) {
     if (details.ID) {
       await firstValueFrom(
-        this.monitoringService.updateMonitoringEntry(details.ID, details)
+        this.monitoringService.updateMonitoringEntry(details.ID, details),
       );
       this.fetchData();
     }

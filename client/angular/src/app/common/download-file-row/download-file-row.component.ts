@@ -49,7 +49,7 @@ export class DownloadFileRowComponent {
     private modalService: ModalsService,
     private downloadsService: DownloadsService,
     private notificationService: NotificationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
 
   public displayMore() {
@@ -65,25 +65,25 @@ export class DownloadFileRowComponent {
       this.modalService.activateDownloadModal(
         this.fileToDisplay.fileId,
         this.fileToDisplay.name,
-        this.fileToDisplay.hasPassword
+        this.fileToDisplay.hasPassword,
       );
     } else {
       const result = await this.downloadsService.download(
         this.fileToDisplay.fileId,
-        this.fileToDisplay.name
+        this.fileToDisplay.name,
       );
       if (result === 'WRONG_PASSWORD') {
         this.notificationService.addErrorMessageTranslation(
           'wrong.password',
           undefined,
-          true
+          true,
         );
       }
       if (result === 'TOO_MANY_DOWNLOADS') {
         this.notificationService.addErrorMessageTranslation(
           'too.many.downloads',
           undefined,
-          true
+          true,
         );
       }
       if (result === 'OK') {

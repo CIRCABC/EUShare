@@ -11,98 +11,120 @@
           <div class="media-content">
             <p class="title is-4">
               {{
-              fileInfoUploader.name.length > 25
-              ? (fileInfoUploader.name | slice : 0 : 25) + '..'
-              : fileInfoUploader.name
+                fileInfoUploader.name.length > 25
+                  ? (fileInfoUploader.name | slice: 0 : 25) + '..'
+                  : fileInfoUploader.name
               }}
               {{ 'successfully.uploaded' | transloco }}
             </p>
             <p class="subtitle is-6">
               {{
-              'file.will.expire'
-              | transloco : { date: fileInfoUploader.expirationDate }
+                'file.will.expire'
+                  | transloco: { date: fileInfoUploader.expirationDate }
               }}
             </p>
           </div>
         </div>
 
         @if (!fileInfoUploader.sharedWith[0].email) {
-        <p class="subtitle is-6">
-          {{ 'notification.link' | transloco }}
-        </p>
-        } @if (fileInfoUploader.sharedWith[0].email) {
-        <p class="subtitle is-6">
-          {{ 'notification.links' | transloco }}
-        </p>
+          <p class="subtitle is-6">
+            {{ 'notification.link' | transloco }}
+          </p>
+        }
+        @if (fileInfoUploader.sharedWith[0].email) {
+          <p class="subtitle is-6">
+            {{ 'notification.links' | transloco }}
+          </p>
         }
 
         <table class="table">
           @if (fileInfoUploader.sharedWith.length > 1) {
-          <thead>
-            <tr>
-              <th>
-                <abbr title="Notifications">{{
-                  'notifications' | transloco
+            <thead>
+              <tr>
+                <th>
+                  <abbr title="Notifications">{{
+                    'notifications' | transloco
                   }}</abbr>
-              </th>
-              <th>
-                <abbr title="Links">{{ 'links' | transloco }}</abbr>
-              </th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
+                </th>
+                <th>
+                  <abbr title="Links">{{ 'links' | transloco }}</abbr>
+                </th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
           }
           <tbody>
-            @for ( recipient of fileInfoUploader.sharedWith; track recipient;
-            let i = $index) {
-            <tr [attr.data-index]="i">
-              <td>
-                @if (recipient.email) {
-                <span>
-                  {{
-                  recipient.email.length > 35
-                  ? (recipient.email | lowercase | slice : 0 : 35) + '..'
-                  : (recipient.email | lowercase)
-                  }}
-                </span>
+            @for (
+              recipient of fileInfoUploader.sharedWith;
+              track recipient;
+              let i = $index
+            ) {
+              <tr [attr.data-index]="i">
+                <td>
+                  @if (recipient.email) {
+                    <span>
+                      {{
+                        recipient.email.length > 35
+                          ? (recipient.email | lowercase | slice: 0 : 35) + '..'
+                          : (recipient.email | lowercase)
+                      }}
+                    </span>
+                  }
+                </td>
+                <td class="shorturl">
+                  <input
+                    data-cy="short-url"
+                    class="input"
+                    type="text"
+                    value="{{ formatLink(i) }}"
+                  />
+                </td>
+                <td>
+                  <a class="button" (click)="copyLink(i)">Copy</a>
+                </td>
+                @if (formatLink(i)) {
+                  <div class="qr-code-container">
+                    <qrcode
+                      [qrdata]="formatLink(i)"
+                      (click)="showQRCode(i)"
+                      [width]="100"
+                      [errorCorrectionLevel]="'M'"
+                    ></qrcode>
+                  </div>
                 }
-              </td>
-              <td class="shorturl">
-                <input data-cy="short-url" class="input" type="text" value="{{ formatLink(i)  }}" />
-              </td>
-              <td>
-                <a class="button" (click)="copyLink(i)">Copy</a>
-              </td>
-              @if ( formatLink(i) ) {
-              <div class="qr-code-container">
-                  <qrcode [qrdata]="formatLink(i)"  (click)="showQRCode(i)" [width]="100" [errorCorrectionLevel]="'M'"></qrcode>
-          
-              </div>
-              }
-            </tr>
+              </tr>
             }
           </tbody>
         </table>
       </div>
 
-      <div class="modal" [class.is-active]="qrCodeModalActive" id="qr-code-modal">
+      <div
+        class="modal"
+        [class.is-active]="qrCodeModalActive"
+        id="qr-code-modal"
+      >
         <div class="modal-background"></div>
         <div class="modal-card">
           <header class="modal-card-head">
             <p class="modal-card-title">QR Code</p>
-            <button class="delete" aria-label="close" (click)="qrCodeModalActive = false"></button>
+            <button
+              class="delete"
+              aria-label="close"
+              (click)="qrCodeModalActive = false"
+            ></button>
           </header>
-            <section class="modal-card-body">
-              @if (qrCodeData) {
-              <qrcode [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-              } 
-            </section>
+          <section class="modal-card-body">
+            @if (qrCodeData) {
+              <qrcode
+                [qrdata]="qrCodeData"
+                [width]="256"
+                [errorCorrectionLevel]="'M'"
+              ></qrcode>
+            }
+          </section>
         </div>
       </div>
-
-
-
     </div>
   </div>
 </div>

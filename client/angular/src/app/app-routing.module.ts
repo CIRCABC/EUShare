@@ -29,11 +29,11 @@ import { firstValueFrom, forkJoin } from 'rxjs';
 
 export function preloadAllTranslocoLanguages(
   transloco: TranslocoService,
-  config: TranslocoConfig
+  config: TranslocoConfig,
 ): Function {
   return () => {
     const allLanguages = config.availableLangs.map((lang) =>
-      transloco.load(lang as string)
+      transloco.load(lang as string),
     );
     return firstValueFrom(forkJoin(allLanguages));
   };
@@ -57,7 +57,7 @@ const appRoutes: Routes = [
     path: 'home',
     loadComponent: () =>
       import('./files/my-shared-files/my-shared-files.component').then(
-        (m) => m.MySharedFilesComponent
+        (m) => m.MySharedFilesComponent,
       ),
     canActivate: [loginCanActivate],
   },
@@ -84,7 +84,7 @@ const appRoutes: Routes = [
     path: 'administration',
     loadComponent: () =>
       import('./administration/administration.component').then(
-        (m) => m.AdministrationComponent
+        (m) => m.AdministrationComponent,
       ),
     canActivate: [loginCanActivate],
   },
@@ -107,7 +107,7 @@ const appRoutes: Routes = [
     path: 'privacyStatement',
     loadComponent: () =>
       import('./privacy-statement/privacy-statement.component').then(
-        (m) => m.PrivacyStatementComponent
+        (m) => m.PrivacyStatementComponent,
       ),
   },
   {

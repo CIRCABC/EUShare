@@ -25,9 +25,9 @@
               name="uploader_status"
             >
               @for (statusKey of statusKeys; track statusKey) {
-              <option [value]="statusKey">
-                {{ statusKey }} : {{ statusLabels[statusKey] }}
-              </option>
+                <option [value]="statusKey">
+                  {{ statusKey }} : {{ statusLabels[statusKey] }}
+                </option>
               }
             </select>
           </div>

@@ -9,53 +9,60 @@
     </tr>
   </thead>
   <tbody>
-    @for (abuseReportsForFile of abuseReportsDetailsMap | keyvalue; track
-    abuseReportsForFile.key) {
-    <tr>
-      @if (abuseReportsForFile.value[0].status === reportStatus) {
-
-      <td> {{ abuseReportsForFile.value[0].filename }}</td>
-      <td class="icon-cell"
-        ><a
-          (click)="tryDownload(abuseReportsForFile.value[0])"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="Download"
-          ><i class="material-icons">download</i></a
-        >
-      </td>
-      <td>{{ abuseReportsForFile.value[0].uploader_email }}</td>
-      <td>
-        <a (click)="showList(abuseReportsForFile.value)">{{
-          abuseReportsForFile.value.length
-        }}</a>
-      </td>
-      <td>
-        <button class="button" (click)="showList(abuseReportsForFile.value)">
-          <i class="material-icons">list</i>&nbsp;Show List
-        </button>
-        @if (reportStatus === 'WAITING' || reportStatus === 'DENIED') {
-        <button
-          class="button"
-          (click)="approveReport(abuseReportsForFile.value[0])"
-        >
-          <i class="material-icons">check</i>&nbsp;Approve
-        </button>
-        } @if (reportStatus === 'WAITING' || reportStatus === 'APPROVED') {
-        <button
-          class="button"
-          (click)="denyReport(abuseReportsForFile.value[0])"
-        >
-          <i class="material-icons">block</i>&nbsp;Deny
-        </button>
+    @for (
+      abuseReportsForFile of abuseReportsDetailsMap | keyvalue;
+      track abuseReportsForFile.key
+    ) {
+      <tr>
+        @if (abuseReportsForFile.value[0].status === reportStatus) {
+          <td> {{ abuseReportsForFile.value[0].filename }}</td>
+          <td class="icon-cell"
+            ><a
+              (click)="tryDownload(abuseReportsForFile.value[0])"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Download"
+              ><i class="material-icons">download</i></a
+            >
+          </td>
+          <td>{{ abuseReportsForFile.value[0].uploader_email }}</td>
+          <td>
+            <a (click)="showList(abuseReportsForFile.value)">{{
+              abuseReportsForFile.value.length
+            }}</a>
+          </td>
+          <td>
+            <button
+              class="button"
+              (click)="showList(abuseReportsForFile.value)"
+            >
+              <i class="material-icons">list</i>&nbsp;Show List
+            </button>
+            @if (reportStatus === 'WAITING' || reportStatus === 'DENIED') {
+              <button
+                class="button"
+                (click)="approveReport(abuseReportsForFile.value[0])"
+              >
+                <i class="material-icons">check</i>&nbsp;Approve
+              </button>
+            }
+            @if (reportStatus === 'WAITING' || reportStatus === 'APPROVED') {
+              <button
+                class="button"
+                (click)="denyReport(abuseReportsForFile.value[0])"
+              >
+                <i class="material-icons">block</i>&nbsp;Deny
+              </button>
+            }
+            <button
+              class="button"
+              (click)="delete(abuseReportsForFile.value[0])"
+            >
+              <i class="material-icons">delete</i>&nbsp;Delete
+            </button>
+          </td>
         }
-        <button class="button" (click)="delete(abuseReportsForFile.value[0])">
-          <i class="material-icons">delete</i>&nbsp;Delete
-        </button>
-      </td>
-
-      }
-    </tr>
+      </tr>
     }
   </tbody>
 </table>

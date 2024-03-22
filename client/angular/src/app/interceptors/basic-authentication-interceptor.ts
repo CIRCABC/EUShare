@@ -29,12 +29,12 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
   constructor(
     protected http: HttpClient,
     private sessionService: SessionStorageService,
-    private oAuthService: OAuthService
+    private oAuthService: OAuthService,
   ) {}
 
   intercept(
     req: HttpRequest<{}>,
-    next: HttpHandler
+    next: HttpHandler,
   ): Observable<HttpEvent<{}>> {
     const isSSOUrl = req.url.includes(environment.OIDC_ISSUER);
     const isOptions = req.method.includes('OPTIONS');
@@ -64,7 +64,7 @@ export class BasicAuthenticationInterceptor implements HttpInterceptor {
           });
         }
         return next.handle(req);
-      })
+      }),
     );
   }
 }

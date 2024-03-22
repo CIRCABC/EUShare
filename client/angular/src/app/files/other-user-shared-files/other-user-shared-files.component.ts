@@ -28,7 +28,7 @@ export class OtherUserSharedFilesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private notificationService: NotificationService,
-    private i18nService: I18nService
+    private i18nService: I18nService,
   ) {}
 
   async ngOnInit() {
@@ -40,8 +40,8 @@ export class OtherUserSharedFilesComponent implements OnInit {
     } else {
       this.notificationService.addErrorMessage(
         `${this.i18nService.translate(
-          'problem.occurred.download'
-        )} ${this.i18nService.contactSupport()}`
+          'problem.occurred.download',
+        )} ${this.i18nService.contactSupport()}`,
       );
     }
   }

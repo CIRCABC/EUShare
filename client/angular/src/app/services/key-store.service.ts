@@ -38,11 +38,11 @@ export class KeyStoreService {
       const keystore = KEYUTIL.generateKeypair('EC', 'secp256r1');
       localStorage.setItem(
         this._PRVKEY,
-        JSON.stringify(KEYUTIL.getJWKFromKey(keystore['prvKeyObj']))
+        JSON.stringify(KEYUTIL.getJWKFromKey(keystore['prvKeyObj'])),
       );
       localStorage.setItem(
         this._PUBKEY,
-        JSON.stringify(KEYUTIL.getJWKFromKey(keystore['pubKeyObj']))
+        JSON.stringify(KEYUTIL.getJWKFromKey(keystore['pubKeyObj'])),
       );
     }
   };
@@ -57,7 +57,7 @@ export class KeyStoreService {
     }
 
     throw Error(
-      'Keystore service not correctly initialized, cannot obtain public key'
+      'Keystore service not correctly initialized, cannot obtain public key',
     );
   };
 
@@ -71,7 +71,7 @@ export class KeyStoreService {
     }
 
     throw Error(
-      'Keystore service not correctly initialized, cannot obtain private key'
+      'Keystore service not correctly initialized, cannot obtain private key',
     );
   }
 

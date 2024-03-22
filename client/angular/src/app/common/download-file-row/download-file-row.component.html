@@ -3,16 +3,17 @@
   <div class="level-left">
     <div class="level-item has-text-centered">
       @if (!fileToDisplay.hasPassword) {
-      <fa-icon [icon]="faFile"></fa-icon>
-      } @if (fileToDisplay.hasPassword) {
-      <fa-icon [icon]="faLock"></fa-icon>
+        <fa-icon [icon]="faFile"></fa-icon>
+      }
+      @if (fileToDisplay.hasPassword) {
+        <fa-icon [icon]="faLock"></fa-icon>
       }
       <br />
       <p class="subtitle is-5 filename">
         <strong matTooltip="{{ fileToDisplay.name }}">
           {{
             fileToDisplay.name.length > 25
-              ? (fileToDisplay.name | slice : 0 : 25) + '..'
+              ? (fileToDisplay.name | slice: 0 : 25) + '..'
               : fileToDisplay.name
           }}
         </strong>
@@ -56,14 +57,14 @@
           <a class="navbar-link"> {{ 'actions' | transloco }} </a>
 
           @if (isMoreDisplayed) {
-          <div class="navbar-dropdown">
-            <a class="navbar-item" (click)="tryDownload()">
-              {{ 'download' | transloco }}
-            </a>
-            <a class="navbar-item" (click)="openAbuseDialog()">{{
-              'abuse.title' | transloco
-            }}</a>
-          </div>
+            <div class="navbar-dropdown">
+              <a class="navbar-item" (click)="tryDownload()">
+                {{ 'download' | transloco }}
+              </a>
+              <a class="navbar-item" (click)="openAbuseDialog()">{{
+                'abuse.title' | transloco
+              }}</a>
+            </div>
           }
         </div>
       </div>

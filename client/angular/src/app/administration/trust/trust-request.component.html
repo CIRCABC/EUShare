@@ -12,33 +12,33 @@
   </thead>
   <tbody>
     @for (request of trustRequests; track request) {
-    <tr>
-      <td>
-        <i
-          class="material-icons"
-          [ngClass]="{
-            'green-icon': request.approved,
-            'red-icon': !request.approved
-          }"
+      <tr>
+        <td>
+          <i
+            class="material-icons"
+            [ngClass]="{
+              'green-icon': request.approved,
+              'red-icon': !request.approved
+            }"
+          >
+            {{ request.approved ? 'done' : 'close' }}
+          </i>
+        </td>
+        <td>{{ request.email }}</td>
+        <td>{{ request.requestDateTime | date: 'dd-MM-yyyy HH:mm' }}</td>
+        <td>{{ request.name }}</td>
+        <td>{{ request.username }}</td>
+        <td
+          ><button class="button" (click)="onOpen(request)"
+            ><i class="material-icons">done</i>&nbsp;Open</button
+          ></td
         >
-          {{ request.approved ? 'done' : 'close' }}
-        </i>
-      </td>
-      <td>{{ request.email }}</td>
-      <td>{{ request.requestDateTime | date : 'dd-MM-yyyy HH:mm' }}</td>
-      <td>{{ request.name }}</td>
-      <td>{{ request.username }}</td>
-      <td
-        ><button class="button" (click)="onOpen(request)"
-          ><i class="material-icons">done</i>&nbsp;Open</button
-        ></td
-      >
-      <td
-        ><button class="button" (click)="onDelete(request.id)"
-          ><i class="material-icons">delete</i>&nbsp;Delete</button
-        ></td
-      >
-    </tr>
+        <td
+          ><button class="button" (click)="onDelete(request.id)"
+            ><i class="material-icons">delete</i>&nbsp;Delete</button
+          ></td
+        >
+      </tr>
     }
   </tbody>
 </table>

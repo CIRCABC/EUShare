@@ -1,36 +1,42 @@
 <div class="container">
   @if (fileInfoRecipientArray && fileInfoRecipientArray.length === 0) {
-  <div class="subtitle">
-    {{ 'no.files.to.download' | transloco }}
-  </div>
-  } @for (fileInfoUploader of fileInfoRecipientArray; track fileInfoUploader) {
-  <app-download-file-row
-    [fileToDisplay]="fileInfoUploader"
-  ></app-download-file-row>
-  } @if (fileInfoRecipientArrayNext.length > 0 || pageNumber > 0) {
-  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-    <a
-      [style.visibility]="pageNumber > 0 ? 'visible' : 'hidden'"
-      class="pagination-previous button"
-      (click)="previousPage()"
-      >{{ 'previous' | transloco }}</a
+    <div class="subtitle">
+      {{ 'no.files.to.download' | transloco }}
+    </div>
+  }
+  @for (fileInfoUploader of fileInfoRecipientArray; track fileInfoUploader) {
+    <app-download-file-row
+      [fileToDisplay]="fileInfoUploader"
+    ></app-download-file-row>
+  }
+  @if (fileInfoRecipientArrayNext.length > 0 || pageNumber > 0) {
+    <nav
+      class="pagination is-centered"
+      role="navigation"
+      aria-label="pagination"
     >
-    <ul class="pagination-list">
       <a
-        class="pagination-link is-current"
-        aria-label="Page number"
-        aria-current="page"
-        >{{ pageNumber + 1 }}</a
+        [style.visibility]="pageNumber > 0 ? 'visible' : 'hidden'"
+        class="pagination-previous button"
+        (click)="previousPage()"
+        >{{ 'previous' | transloco }}</a
       >
-    </ul>
-    <a
-      [style.visibility]="
-        fileInfoRecipientArrayNext.length > 0 ? 'visible' : 'hidden'
-      "
-      class="pagination-next button"
-      (click)="nextPage()"
-      >{{ 'next' | transloco }}</a
-    >
-  </nav>
+      <ul class="pagination-list">
+        <a
+          class="pagination-link is-current"
+          aria-label="Page number"
+          aria-current="page"
+          >{{ pageNumber + 1 }}</a
+        >
+      </ul>
+      <a
+        [style.visibility]="
+          fileInfoRecipientArrayNext.length > 0 ? 'visible' : 'hidden'
+        "
+        class="pagination-next button"
+        (click)="nextPage()"
+        >{{ 'next' | transloco }}</a
+      >
+    </nav>
   }
 </div>

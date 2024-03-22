@@ -1,161 +1,167 @@
 @if (loggedIn) {
-<nav
-  class="navbar"
-  [attr.aria-label]="'main.menu' | transloco"
-  role="navigation"
->
-  <div class="container">
-    <div
-      id="menu"
-      class="navbar-menu"
-      id="myMenu"
-      [class.is-active]="isBurgerActive"
-    >
-      @if (!loggedIn) {
-      <div class="navbar-start">
-        <a class="navbar-item" routerLink="home">
-          <fa-icon
-            class="icon is-large"
-            [icon]="faShareAlt"
-            size="2x"
-          ></fa-icon>
-          @if (!loggedIn) {
-          <p>CIRCABC Share</p>
-          }
-        </a>
-        @if (loggedIn) {
-        <a
-          role="button"
-          class="navbar-burger"
-          aria-label="menu"
-          aria-expanded="false"
-          [class.is-active]="isBurgerActive"
-          (click)="toggleBurger()"
-          data-target="myMenu"
-        >
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-        }a
-      </div>
-      } @if (loggedIn) {
-      <div class="navbar-start">
-        <a
-          (click)="toggleBurger()"
-          routerLinkActive="tab--current"
-          class="navbar-item is-family-secondary my-shared-files"
-          routerLink="home"
-        >
-          <span class="spanlabel">{{ 'my.shared.files' | transloco }}</span>
-        </a>
-        <a
-          (click)="toggleBurger()"
-          routerLinkActive="tab--current"
-          class="navbar-item is-family-secondary shared-with-me"
-          routerLink="download"
-        >
-          <span class="spanlabel">{{ 'shared.with.me' | transloco }} </span>
-        </a>
-        @if (isAdmin) {
-        <a
-          (click)="toggleBurger()"
-          routerLinkActive="tab--current"
-          class="navbar-item is-family-secondary administration"
-          routerLink="administration"
-        >
-          <span class="spanlabel">{{ 'administration' | transloco }} </span>
-        </a>
-        }
-
-        <a class="navbar-item is-family-secondary circabc-link-separator"></a>
-
-        <a
-          href="{{ circabc_url }}/eulogin"
-          class="navbar-item is-family-secondary circabc-link-dashboard"
-        >
-          <span class="spanlabel">{{ 'dashboard' | transloco }}</span>
-        </a>
-        <a
-          href="{{ circabc_url }}/eulogin?route=calendar"
-          class="navbar-item is-family-secondary circabc-link-my-calendar"
-        >
-          <span class="spanlabel">{{ 'my.calendar' | transloco }}</span>
-        </a>
-        <a
-          href="{{ circabc_url }}/eulogin?route=roles"
-          class="navbar-item is-family-secondary circabc-link-roles"
-        >
-          <span class="spanlabel">{{ 'roles' | transloco }}</span>
-        </a>
-        <a
-          href="{{ circabc_url }}/eulogin?route=explore"
-          class="navbar-item is-family-secondary circabc-link-browse-public-groups"
-        >
-          <span class="spanlabel">{{
-            'browse.public.groups' | transloco
-          }}</span>
-        </a>
-      </div>
-      }
-
-      <div class="navbar-end">
-        @if (loggedIn && router.url !== '/upload') {
-        <div class="navbar-item is-family-secondary">
-          <button
-            (click)="toggleBurger()"
-            class="button movedownbutton"
-            routerLink="upload"
-          >
-            <span class="icon is-small">
-              <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
-            </span>
-            &nbsp;{{ 'share.a.new.file' | transloco }}
-          </button>
-        </div>
-        }
-      </div>
-
-      <div class="main-nav menu2">
-        <!---->
-
-        <div class="menuitem">
-          <div class="personal-menu-help">
-            <a data-cy="help" class="tab tab--help">
-              <span class="labelhelp">{{ 'help' | transloco }}</span>
+  <nav
+    class="navbar"
+    [attr.aria-label]="'main.menu' | transloco"
+    role="navigation"
+  >
+    <div class="container">
+      <div
+        id="menu"
+        class="navbar-menu"
+        id="myMenu"
+        [class.is-active]="isBurgerActive"
+      >
+        @if (!loggedIn) {
+          <div class="navbar-start">
+            <a class="navbar-item" routerLink="home">
+              <fa-icon
+                class="icon is-large"
+                [icon]="faShareAlt"
+                size="2x"
+              ></fa-icon>
+              @if (!loggedIn) {
+                <p>CIRCABC Share</p>
+              }
             </a>
+            @if (loggedIn) {
+              <a
+                role="button"
+                class="navbar-burger"
+                aria-label="menu"
+                aria-expanded="false"
+                [class.is-active]="isBurgerActive"
+                (click)="toggleBurger()"
+                data-target="myMenu"
+              >
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
+            }
+            a
+          </div>
+        }
+        @if (loggedIn) {
+          <div class="navbar-start">
+            <a
+              (click)="toggleBurger()"
+              routerLinkActive="tab--current"
+              class="navbar-item is-family-secondary my-shared-files"
+              routerLink="home"
+            >
+              <span class="spanlabel">{{ 'my.shared.files' | transloco }}</span>
+            </a>
+            <a
+              (click)="toggleBurger()"
+              routerLinkActive="tab--current"
+              class="navbar-item is-family-secondary shared-with-me"
+              routerLink="download"
+            >
+              <span class="spanlabel">{{ 'shared.with.me' | transloco }} </span>
+            </a>
+            @if (isAdmin) {
+              <a
+                (click)="toggleBurger()"
+                routerLinkActive="tab--current"
+                class="navbar-item is-family-secondary administration"
+                routerLink="administration"
+              >
+                <span class="spanlabel"
+                  >{{ 'administration' | transloco }}
+                </span>
+              </a>
+            }
 
-            <div class="dropdown-help dropdown--personal-menu-help">
-              <section class="dropdown--personal-menu__sidebar">
-                <nav [attr.aria-label]="'help.menu' | transloco">
-                  <div class="links-group">
-                    <a href="{{ circabc_url }}/ui/help">{{
-                      'help.center' | transloco
-                    }}</a>
+            <a
+              class="navbar-item is-family-secondary circabc-link-separator"
+            ></a>
 
-                    <a href="{{ circabc_url }}/ui/help/contact">{{
-                      'contact.support.menu' | transloco
-                    }}</a>
+            <a
+              href="{{ circabc_url }}/eulogin"
+              class="navbar-item is-family-secondary circabc-link-dashboard"
+            >
+              <span class="spanlabel">{{ 'dashboard' | transloco }}</span>
+            </a>
+            <a
+              href="{{ circabc_url }}/eulogin?route=calendar"
+              class="navbar-item is-family-secondary circabc-link-my-calendar"
+            >
+              <span class="spanlabel">{{ 'my.calendar' | transloco }}</span>
+            </a>
+            <a
+              href="{{ circabc_url }}/eulogin?route=roles"
+              class="navbar-item is-family-secondary circabc-link-roles"
+            >
+              <span class="spanlabel">{{ 'roles' | transloco }}</span>
+            </a>
+            <a
+              href="{{ circabc_url }}/eulogin?route=explore"
+              class="navbar-item is-family-secondary circabc-link-browse-public-groups"
+            >
+              <span class="spanlabel">{{
+                'browse.public.groups' | transloco
+              }}</span>
+            </a>
+          </div>
+        }
 
-                    <a
-                      target="_blank"
-                      href="https://github.com/CIRCABC/Circabc-OSS"
-                      >{{ 'download.source' | transloco }}</a
-                    >
+        <div class="navbar-end">
+          @if (loggedIn && router.url !== '/upload') {
+            <div class="navbar-item is-family-secondary">
+              <button
+                (click)="toggleBurger()"
+                class="button movedownbutton"
+                routerLink="upload"
+              >
+                <span class="icon is-small">
+                  <fa-icon class="faIcon" [icon]="faShare"></fa-icon>
+                </span>
+                &nbsp;{{ 'share.a.new.file' | transloco }}
+              </button>
+            </div>
+          }
+        </div>
 
-                    <a href="{{ circabc_url }}/ui/help/about">{{
-                      'about.circabc' | transloco
-                    }}</a>
+        <div class="main-nav menu2">
+          <!---->
 
-                    <!---->
-                  </div>
-                </nav>
-              </section>
+          <div class="menuitem">
+            <div class="personal-menu-help">
+              <a data-cy="help" class="tab tab--help">
+                <span class="labelhelp">{{ 'help' | transloco }}</span>
+              </a>
+
+              <div class="dropdown-help dropdown--personal-menu-help">
+                <section class="dropdown--personal-menu__sidebar">
+                  <nav [attr.aria-label]="'help.menu' | transloco">
+                    <div class="links-group">
+                      <a href="{{ circabc_url }}/ui/help">{{
+                        'help.center' | transloco
+                      }}</a>
+
+                      <a href="{{ circabc_url }}/ui/help/contact">{{
+                        'contact.support.menu' | transloco
+                      }}</a>
+
+                      <a
+                        target="_blank"
+                        href="https://github.com/CIRCABC/Circabc-OSS"
+                        >{{ 'download.source' | transloco }}</a
+                      >
+
+                      <a href="{{ circabc_url }}/ui/help/about">{{
+                        'about.circabc' | transloco
+                      }}</a>
+
+                      <!---->
+                    </div>
+                  </nav>
+                </section>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</nav>
+  </nav>
 }

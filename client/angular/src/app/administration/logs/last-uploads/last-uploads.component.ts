@@ -72,10 +72,10 @@ export class LastUploadsComponent implements AfterViewInit {
                 this.paginator.pageIndex,
                 this.paginator.pageSize,
                 this.sort.active,
-                this.sort.direction
+                this.sort.direction,
               );
             }),
-            catchError(() => observableOf(null))
+            catchError(() => observableOf(null)),
           );
         }),
         map((data) => {
@@ -85,7 +85,7 @@ export class LastUploadsComponent implements AfterViewInit {
             return [];
           }
           return data;
-        })
+        }),
       )
       .subscribe((data) => (this.data = data));
   }
@@ -94,13 +94,13 @@ export class LastUploadsComponent implements AfterViewInit {
     pageIndex: number,
     pageSize: number,
     sortField: string,
-    sortOrder: SortDirection
+    sortOrder: SortDirection,
   ): Observable<LastUpload[]> {
     return this.logService.logGetLastUploadsGet(
       pageSize,
       pageIndex,
       sortField,
-      this.convertSortDirectionToSortOrder(sortOrder)
+      this.convertSortDirectionToSortOrder(sortOrder),
     );
   }
 

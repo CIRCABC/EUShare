@@ -48,7 +48,7 @@ export class NavbarComponent implements OnInit {
   constructor(
     private sessionService: SessionStorageService,
     private oAuthService: OAuthService,
-    public router: Router
+    public router: Router,
   ) {}
 
   ngOnInit() {

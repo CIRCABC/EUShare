@@ -72,7 +72,7 @@ export class AdministrationComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private statsService: StatsService
+    private statsService: StatsService,
   ) {}
 
   ngOnInit(): void {
@@ -87,7 +87,7 @@ export class AdministrationComponent implements OnInit {
 
   public async getMountPointSpaces() {
     this.mountPointSpaces = await firstValueFrom(
-      this.adminService.getDiskSpace()
+      this.adminService.getDiskSpace(),
     );
   }
 

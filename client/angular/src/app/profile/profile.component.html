@@ -53,21 +53,23 @@
         </div>
       </div>
 
-      @if ((userInfo.role?.toString() === 'API_KEY' ) || (
-      userInfo.role?.toString() === 'ADMIN')) {
-      <div class="field">
-        <label class="label">API Key</label>
-        <div class="control">
-          <div class="button" (click)="getApiKey()">Generate new API key</div>
-          <input
-            readonly="readonly"
-            class="input"
-            type="text"
-            placeholder="Text input"
-            value="{{ apiKey }}"
-          />
+      @if (
+        userInfo.role?.toString() === 'API_KEY' ||
+        userInfo.role?.toString() === 'ADMIN'
+      ) {
+        <div class="field">
+          <label class="label">API Key</label>
+          <div class="control">
+            <div class="button" (click)="getApiKey()">Generate new API key</div>
+            <input
+              readonly="readonly"
+              class="input"
+              type="text"
+              placeholder="Text input"
+              value="{{ apiKey }}"
+            />
+          </div>
         </div>
-      </div>
       }
     </div>
     <div class="column is-one-half"></div>

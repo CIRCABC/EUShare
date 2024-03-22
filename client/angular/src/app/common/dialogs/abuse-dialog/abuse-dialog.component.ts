@@ -65,7 +65,7 @@ export class AbuseDialogComponent implements AfterViewInit {
     private sessionApi: SessionStorageService,
     private abuseService: AbuseService,
     private notificationService: NotificationService,
-    @Inject(MAT_DIALOG_DATA) public fileId: string
+    @Inject(MAT_DIALOG_DATA) public fileId: string,
   ) {
     const userInfo = this.sessionApi.getStoredUserInfo();
     this.abuseReport.reporter = userInfo?.email;
@@ -100,14 +100,14 @@ export class AbuseDialogComponent implements AfterViewInit {
               this.captchaComponent.captchaToken,
               this.captchaComponent.answer.value as string,
             ]
-          : [])
+          : []),
       )
       .subscribe({
         next: () => {
           this.notificationService.addSuccessMessageTranslation(
             'abuse.feedback',
             undefined,
-            true
+            true,
           );
           this.dialogRef.close(this.abuseReport);
         },
@@ -118,7 +118,7 @@ export class AbuseDialogComponent implements AfterViewInit {
             .catch((refreshError) => {
               console.error(
                 'Error after refreshing the captcha:',
-                refreshError
+                refreshError,
               );
             });
         },

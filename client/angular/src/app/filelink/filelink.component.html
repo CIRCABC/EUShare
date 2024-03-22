@@ -4,26 +4,26 @@
     <h2 class="subtitle">
       {{ 'download' | transloco }}
       @if (fileName) {
-      <span>
-        {{
-          fileName.length > 25 ? (fileName | slice : 0 : 25) + '..' : fileName
-        }}.
-      </span>
+        <span>
+          {{
+            fileName.length > 25 ? (fileName | slice: 0 : 25) + '..' : fileName
+          }}.
+        </span>
       }
     </h2>
     @if (isFilePasswordProtected) {
-    <p>{{ 'file.is.protected' | transloco }}</p>
+      <p>{{ 'file.is.protected' | transloco }}</p>
     }
     <div class="action-container">
       <div class="control" [class.is-expanded]="isFileHasPassword">
         @if (isFileHasPassword) {
-        <input
-          class="input is-info"
-          type="password"
-          placeholder="Type password here"
-          [(ngModel)]="inputPassword"
-          (keyup.enter)="initiateDownload()"
-        />
+          <input
+            class="input is-info"
+            type="password"
+            placeholder="Type password here"
+            [(ngModel)]="inputPassword"
+            (keyup.enter)="initiateDownload()"
+          />
         }
       </div>
       <div class="control">

@@ -3,16 +3,17 @@
   <div class="level-left">
     <div class="level-item has-text-centered">
       @if (!file.hasPassword) {
-      <fa-icon [icon]="faFile"></fa-icon>
-      } @if (file.hasPassword) {
-      <fa-icon [icon]="faLock"></fa-icon>
+        <fa-icon [icon]="faFile"></fa-icon>
+      }
+      @if (file.hasPassword) {
+        <fa-icon [icon]="faLock"></fa-icon>
       }
       <br />
       <p class="subtitle is-5 filename">
         <strong matTooltip="{{ file.name }}">
           {{
             file.name.length > 25
-              ? (file.name | slice : 0 : 25) + '..'
+              ? (file.name | slice: 0 : 25) + '..'
               : file.name
           }}
         </strong>
@@ -39,26 +40,27 @@
   <div class="level">
     <div class="level-item">
       <a (click)="displayDownloads()">
-        {{ 'downloaded.times' | transloco : { count: file.fileLogs.length } }}
+        {{ 'downloaded.times' | transloco: { count: file.fileLogs.length } }}
       </a>
     </div>
     @if (displayAsUploader) {
-    <div class="level-item">&nbsp;|&nbsp; </div>
+      <div class="level-item">&nbsp;|&nbsp; </div>
     }
     <div class="level-item">
       @if (displayAsUploader) {
-      <a (click)="displayRecipients()">
-        {{ 'shared.times' | transloco : { count: file.sharedWith.length } }}
-      </a>
-      } @if (displayAsAdministrator || file.status !== 'AVAILABLE' ) {
-      <span
-        [ngClass]="[
-          file.status === 'AVAILABLE'
-            ? 'status-available'
-            : 'status-fail-or-pending'
-        ]"
-        >&nbsp;( {{ file.status }} )
-      </span>
+        <a (click)="displayRecipients()">
+          {{ 'shared.times' | transloco: { count: file.sharedWith.length } }}
+        </a>
+      }
+      @if (displayAsAdministrator || file.status !== 'AVAILABLE') {
+        <span
+          [ngClass]="[
+            file.status === 'AVAILABLE'
+              ? 'status-available'
+              : 'status-fail-or-pending'
+          ]"
+          >&nbsp;( {{ file.status }} )
+        </span>
       }
     </div>
 
@@ -75,33 +77,35 @@
           </a>
 
           @if (isMoreDisplayed) {
-          <div class="navbar-dropdown">
-            @if (displayAsUploader) {
-            <a class="navbar-item" (click)="displayRecipients()">
-                {{ 'display.links' | transloco }}
-            </a>
-            <a class="navbar-item" (click)="openAddRecipientsModal()"
-              >{{ 'add.recipient' | transloco }}
-            </a>
-            }
-            <a class="navbar-item" (click)="tryDownload()">
-              {{ 'download' | transloco }}
-            </a>
+            <div class="navbar-dropdown">
+              @if (displayAsUploader) {
+                <a class="navbar-item" (click)="displayRecipients()">
+                  {{ 'display.links' | transloco }}
+                </a>
+                <a class="navbar-item" (click)="openAddRecipientsModal()"
+                  >{{ 'add.recipient' | transloco }}
+                </a>
+              }
+              <a class="navbar-item" (click)="tryDownload()">
+                {{ 'download' | transloco }}
+              </a>
 
-            @if (displayAsAdministrator) {
-            <a class="navbar-item" (click)="openExpirationDateModal()"
-              >{{ 'change.expirationdate' | transloco }}
-            </a>
-            } @if (displayAsAdministrator && file.status !== 'FROZEN' ) {
-            <a class="navbar-item" (click)="freeze()">Freeze </a>
-            } @if (displayAsAdministrator && file.status === 'FROZEN') {
-            <a class="navbar-item" (click)="unfreeze()">Unfreeze </a>
-            }
-            <hr class="navbar-divider" />
-            <a class="navbar-item" (click)="delete()">
-              {{ 'delete' | transloco }}
-            </a>
-          </div>
+              @if (displayAsAdministrator) {
+                <a class="navbar-item" (click)="openExpirationDateModal()"
+                  >{{ 'change.expirationdate' | transloco }}
+                </a>
+              }
+              @if (displayAsAdministrator && file.status !== 'FROZEN') {
+                <a class="navbar-item" (click)="freeze()">Freeze </a>
+              }
+              @if (displayAsAdministrator && file.status === 'FROZEN') {
+                <a class="navbar-item" (click)="unfreeze()">Unfreeze </a>
+              }
+              <hr class="navbar-divider" />
+              <a class="navbar-item" (click)="delete()">
+                {{ 'delete' | transloco }}
+              </a>
+            </div>
           }
         </div>
       </div>
@@ -109,13 +113,13 @@
   </div>
 </div>
 @if (isLoading) {
-<div>
-  {{ percentageDownloaded }}%
-  <progress
-    class="progress is-success"
-    value="{{ percentageDownloaded }}"
-    max="100"
-    >{{ percentageDownloaded }}%</progress
-  >
-</div>
+  <div>
+    {{ percentageDownloaded }}%
+    <progress
+      class="progress is-success"
+      value="{{ percentageDownloaded }}"
+      max="100"
+      >{{ percentageDownloaded }}%</progress
+    >
+  </div>
 }

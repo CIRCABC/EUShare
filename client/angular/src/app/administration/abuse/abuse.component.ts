@@ -38,7 +38,10 @@ export class AbuseComponent implements OnInit {
   abuseReportsDetailsMap: { [key: string]: AbuseReportDetails[] } = {};
   public selectedTabIndex = signal(0);
 
-  constructor(private abuseService: AbuseService, private dialog: MatDialog) {}
+  constructor(
+    private abuseService: AbuseService,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     this.fetchData();
@@ -78,7 +81,7 @@ export class AbuseComponent implements OnInit {
 
   private async updateAbuseReportStatus(details: AbuseReportDetails) {
     await firstValueFrom(
-      this.abuseService.updateAbuseReport(details.ID as string, details)
+      this.abuseService.updateAbuseReport(details.ID as string, details),
     );
     this.fetchData();
   }
