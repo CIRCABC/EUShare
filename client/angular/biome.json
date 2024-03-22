@@ -31,13 +31,15 @@
         "noAssignInExpressions": "off"
       },
       "style": {
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "useImportType":"off"
       },
       "complexity": {
         "noUselessConstructor": "off",
         "useLiteralKeys": "off",
         "noBannedTypes": "off",
-        "noForEach": "off"
+        "noForEach": "off",
+        "useRegexLiterals": "off"
       }
     }
   },
