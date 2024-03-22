@@ -21,7 +21,7 @@ import {
 } from '@ngneat/transloco';
 import { OAuthModule, OAuthModuleConfig } from 'angular-oauth2-oidc';
 import 'hammerjs';
-import { NgChartsModule } from 'ng2-charts';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { AppRoutingModule } from './app/app-routing.module';
 import { AppComponent } from './app/app.component';
 import { BasicAuthenticationInterceptor } from './app/interceptors/basic-authentication-interceptor';
@@ -37,13 +37,15 @@ export class HttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
 
   getTranslation(langPath: string) {
-    return this.http.get<Translation>(`/share/assets/i18n/${langPath}.json`);
+    return this.http.get<Translation>(
+      `${environment.frontend_url}/assets/i18n/${langPath}.json`,
+    );
   }
 }
 
 const oauthModuleConfig: OAuthModuleConfig = {
   resourceServer: {
-    allowedUrls: ['https://localhost:8888'],
+    allowedUrls: ['https://localhost:8080'],
     sendAccessToken: true,
   },
 };
@@ -61,12 +63,11 @@ bootstrapApplication(AppComponent, {
       FormsModule,
 
       FontAwesomeModule,
-      NgChartsModule,
       HammerModule,
       ApiModule,
       AppRoutingModule,
       TranslocoModule,
-      HttpClientModule
+      HttpClientModule,
     ),
     KeyStoreService,
     { provide: APP_BASE_HREF, useValue: environment.frontend_url },
@@ -83,5 +84,6 @@ bootstrapApplication(AppComponent, {
     },
     provideTransloco({ config: translocoConfig, loader: HttpLoader }),
     provideAnimations(),
+    provideCharts(withDefaultRegisterables()),
   ],
 });
