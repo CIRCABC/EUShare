@@ -67,3 +67,6 @@ client/angular/cypress/videos/
 client/angular/cypress/downloads/
 client/angular/src/build.ts
 client/angular/src/build.ts
+ecas-mockup/
+docker/ecas-mockup-6.2.7.ear
+docker/original-ecas-mockup-6.2.7.ear
