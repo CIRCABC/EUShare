@@ -30,6 +30,7 @@
     ".scannerwork/**",
     ".cache/**",
     "**/src/app/openapi/.openapi-generator/VERSION",
-    "cypress/**"
+    "cypress/**",
+    "Earthfile"
   ]
 }

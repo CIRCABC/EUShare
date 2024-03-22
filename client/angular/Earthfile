@@ -1,0 +1,70 @@
+VERSION 0.7
+FROM node:20
+WORKDIR /usr/share-client
+
+deps:
+    COPY package*.json ./
+    COPY ./src/version.js ./src/version.js
+    # Copy the rest of the application code to the container
+    
+    COPY ./src/environments/ ./src/environments/
+
+    RUN touch ./src/environments/version.ts
+    
+    RUN npm install --force
+
+    # RUN node ./src/version.js
+    # Output these back in case npm install changes them.
+    SAVE ARTIFACT package.json AS LOCAL ./package.json
+    SAVE ARTIFACT package-lock.json AS LOCAL ./package-lock.json
+
+build:
+    ARG environment="build-local"
+    FROM +deps
+    COPY angular.json ./
+    COPY tsconfig.json ./
+    COPY ./src ./src 
+    RUN node ./src/version.js
+    RUN npm run $environment
+    SAVE ARTIFACT ./dist AS LOCAL ./dist
+
+circleci:
+    FROM +deps
+    COPY .eslintrc.json ./
+    COPY .prettierignore ./
+    COPY license-checker-config.json ./
+    COPY LICENSE_HEADER.txt ./
+    COPY biome.json ./
+    COPY angular.json ./
+    COPY tsconfig.json ./
+    COPY ./src ./src 
+    RUN node ./src/version.js
+    RUN npm run circleci
+docker:
+    # Use an official Nginx runtime as a base image
+    FROM nginx:alpine
+    # Copy the static files into the Nginx web root
+    COPY +build/dist /usr/share/nginx/html
+    COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf 
+    ENTRYPOINT ["nginx", "-g", "daemon off;"]
+    SAVE IMAGE share-client:latest
+
+docker-node:
+    COPY package*.json ./
+    COPY ./src/version.js ./src/version.js
+    # Copy the rest of the application code to the container
+    
+    COPY ./src/environments/ ./src/environments/
+
+    RUN touch ./src/environments/version.ts
+    
+    RUN npm install --force
+    RUN npm install -g @angular/cli
+    COPY angular.json ./
+    COPY tsconfig.json ./
+    COPY ./src ./src 
+    RUN node ./src/version.js
+    ENTRYPOINT ["npm", "run", "start-local-docker"]
+    EXPOSE 80
+    SAVE IMAGE share-client-node:latest
+   
