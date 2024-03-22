@@ -1,0 +1,76 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        opaquetoken:
+          introspection-uri: https://localhost:7002/cas/oauth2/token/introspect
+          client-id: RJAmmWE5qTQzImjrzn1od0tSElvyLzRWYObJnZOkNCR8xzzS1OHYpvJQ2rzuFGDwl96j7SAQ4Qv3e0c4LiK2X2G0-U2R13UEYAiGk1MvezS9nHV
+          client_secret: 9Qvb_R4Nb8MPJdqH57SQUxMtp534Rr_0R2aGIf0ZRHXABIc1E2w_qw9XV8Ck63LlS1-tq0BsTj_Np6TdysIN8meBNNzpqpnJElLObwnAPSzF-Lth4iyo2f_nJDM9UOdVeIRIAfXMaNgwr1wjAsPg8t1dZLqE2MPh7etG_g9stAc
+    adminusers: bournja
+  datasource:
+    #continue-on-error: true
+    #jdbc:oracle:thin:@localhost:1521:testing
+    url: jdbc:mysql://127.0.0.1:3306/easyshare
+    username: easyshare
+    password: easyshare
+    driverClassName: com.mysql.cj.jdbc.Driver 
+  jpa:
+    #org.hibernate.dialect.Oracle10gDialect
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate:
+      ddl-auto: update
+  mail:
+    host: maildev
+    port: 25
+    username: username
+    password: password
+    
+
+eushare:
+  brute_force_attack_rate.hourly_threshold: 10
+  brute_force_attack_rate.hourly_threshold_rt: 10
+  brute_force_attack_rate.daily_threshold: 100
+  brute_force_attack_rate.daily_threshold_rt: 100
+  clientHttpAddress: http://localhost
+  disks:
+    - /tmp/eushare/
+  file_recipients:
+    max_recipient_trusted_external: 25
+    max_recipient_external: 5
+  file_download_rate:
+    hourly_threshold: 10
+    hourly_threshold_rt: 15
+    daily_threshold: 50
+  file_upload_rate:
+    external_threshold_hour: 5
+    trusted_external_threshold_hour: 10
+    external_threshold_day: 50
+    trusted_external_threshold_day: 100
+    external_user_hourly_realtime: 2
+    trusted_external_user_hourly_realtime: 2
+    uploads_to_be_trusted_threshold: 50
+  user_creation_log:
+    user_creation_threshold: 10
+
+logging:
+  level:
+    root: WARN
+    org.springframework.web: DEBUG
+    org.springframework: DEBUG
+    org:
+      hibernate:
+        SQL: WARN
+       # type:
+         # descriptor:
+          #  sql: TRACE
+          # For bind parameter values
+          #type: TRACE
+
+javamelody:
+  init-parameters:
+    log: true
+    authorized-users: admin:pass
+    monitoring-spring-batch-enabled: true
+    monitoring-path: /jmd
+
+

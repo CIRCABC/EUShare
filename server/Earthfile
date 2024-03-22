@@ -1,0 +1,27 @@
+VERSION 0.7
+FROM maven:3.8.4-jdk-8
+WORKDIR /usr/share-server
+
+build:
+    ARG environment=local
+    COPY pom.xml ./
+    COPY api.yaml ./
+
+    COPY LICENSE_HEADER.txt ./
+
+    COPY ./src ./src
+    COPY ./openapi-spring-templates ./openapi-spring-templates
+    RUN mvn clean install -P=$environment -Dskip.unit.tests=true -Dskip.integration.tests=true
+    SAVE ARTIFACT ./target/eushareserver.jar AS LOCAL ./target/eushareserver.jar
+
+docker:
+    COPY +build/eushareserver.jar ./target/eushareserver.jar
+    COPY eulogin.crt eulogin.crt
+    RUN echo $JAVA_HOME
+    RUN echo yes | keytool -import -v -alias ecas-mockup-ssl -storepass changeit -file eulogin.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
+
+    EXPOSE 8080
+    ENTRYPOINT ["java", "-jar", "target/eushareserver.jar"]
+    SAVE IMAGE share-server:latest
+
+
