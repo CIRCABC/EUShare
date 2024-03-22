@@ -1,4 +1,4 @@
-VERSION 0.7
+VERSION 0.8
 FROM maven:3.8.4-jdk-8
 WORKDIR /usr/share-server
 
