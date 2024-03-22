@@ -11,7 +11,7 @@ build:
 
     COPY ./src ./src
     COPY ./openapi-spring-templates ./openapi-spring-templates
-    RUN mvn clean install -P=$environment -Dskip.unit.tests=true -Dskip.integration.tests=true
+    RUN mvn clean install -P=$environment -Dskip.unit.tests=true -Dskip.integration.tests=true -Dcodegen.skip=true
     SAVE ARTIFACT ./target/eushareserver.jar AS LOCAL ./target/eushareserver.jar
 
 docker:
