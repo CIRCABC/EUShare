@@ -20,8 +20,8 @@ spring:
     hibernate:
       ddl-auto: update
   mail:
-    host: maildev
-    port: 25
+    host: localhost
+    port: 1025
     username: username
     password: password
     
@@ -55,8 +55,8 @@ eushare:
 logging:
   level:
     root: WARN
-    org.springframework.web: DEBUG
-    org.springframework: DEBUG
+    org.springframework.web: WARN
+    org.springframework: WARN
     org:
       hibernate:
         SQL: WARN
