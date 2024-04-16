@@ -23,7 +23,7 @@ import org.springframework.data.repository.query.Param;
 import eu.europa.circabc.eushare.storage.entity.DBFileUploadRate;
 import eu.europa.circabc.eushare.storage.entity.DBUser;
 
-public interface FileUploadRateRepository extends JpaRepository<DBFileUploadRate, Integer> {
+public interface FileUploadRateRepository extends JpaRepository<DBFileUploadRate, String> {
 
     Optional<DBFileUploadRate> findByDateHourAndUser(LocalDateTime dateHour, DBUser user);
 

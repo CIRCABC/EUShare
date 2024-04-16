@@ -19,7 +19,7 @@ import org.springframework.data.jpa.repository.Modifying;
 
 import eu.europa.circabc.eushare.storage.entity.DBUserCreationLog;
 
-public interface UserCreationLogRepository extends JpaRepository<DBUserCreationLog, Integer> {
+public interface UserCreationLogRepository extends JpaRepository<DBUserCreationLog, String> {
 
     Optional<DBUserCreationLog> findByDateCreated(Date dateCreated);
 
