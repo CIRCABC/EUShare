@@ -276,7 +276,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/api.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/../api.yaml</inputSpec>
                             <output>.</output>
                             <generatorName>spring</generatorName>
                             <generateSupportingFiles>false</generateSupportingFiles>

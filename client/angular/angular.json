@@ -66,8 +66,8 @@
               "vendorChunk": false,
               "buildOptimizer": false,
               "serviceWorker": false,
-              "baseHref": "/",
-              "deployUrl": "/",
+              "baseHref": "/share",
+              "deployUrl": "/share",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",

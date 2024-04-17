@@ -3,16 +3,14 @@
   "version": "1.1.0",
   "license": "EUPL-1.1",
   "engines": {
-    "node": "^14.20.0 || ^16.13.0 || >=20.9.0",
-    "yarn": ">=1.22.4 <2",
-    "npm": "Please use yarn instead of NPM to install dependencies"
+    "node": "^20.12.2"
   },
   "scripts": {
-    "postinstall": "node ./src/version.js",
+    
     "ng": "ng",
     "start": "cross-env NG_BUILD_LEGACY_SASS=1  ng serve -o --port=8080 -c=dev",
     "start-local": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve -o --port=8080 -c=dev-local ",
-    "start-local-docker": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve  -c=local --port 80 --host 0.0.0.0 --disable-host-check",
+    "start-local-docker": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve  -c dev --host 0.0.0.0 --disable-host-check",
     "build": "cross-env NG_BUILD_LEGACY_SASS=1 ng build",
     "build-local": "cross-env NG_BUILD_LEGACY_SASS=1 ng build -c local",
     "maildev": "maildev",
