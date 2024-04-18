@@ -31,7 +31,7 @@ eushare:
   brute_force_attack_rate.hourly_threshold_rt: 10
   brute_force_attack_rate.daily_threshold: 100
   brute_force_attack_rate.daily_threshold_rt: 100
-  clientHttpAddress: http://localhost
+  clientHttpAddress: http://localhost:8081
   disks:
     - /tmp/eushare/
   file_recipients:
