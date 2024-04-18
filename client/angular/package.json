@@ -12,7 +12,7 @@
     "start-local": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve -o --port=8080 -c=dev-local ",
     "start-local-docker": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve  -c dev --host 0.0.0.0 --disable-host-check",
     "build": "cross-env NG_BUILD_LEGACY_SASS=1 ng build",
-    "build-local": "cross-env NG_BUILD_LEGACY_SASS=1 ng build -c local",
+    "build-local": "cross-env NG_BUILD_LEGACY_SASS=1 ng cache disable && ng build -c local",
     "maildev": "maildev",
     "lint": "ng lint client --format visualstudio",
     "lint-fix": "ng lint client --fix --force --format visualstudio",
