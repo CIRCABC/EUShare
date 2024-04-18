@@ -4,14 +4,13 @@ WORKDIR /usr/share-server
 
 build:
     ARG environment=local
-    COPY pom.xml ./
-    COPY api.yaml ./
+    COPY pom-no-generate.xml ./
 
     COPY LICENSE_HEADER.txt ./
 
     COPY ./src ./src
     COPY ./openapi-spring-templates ./openapi-spring-templates
-    RUN mvn clean install -P=$environment -Dskip.unit.tests=true -Dskip.integration.tests=true -Dcodegen.skip=true
+    RUN mvn clean install -f pom-no-generate.xml  -P=$environment -Dskip.unit.tests=true -Dskip.integration.tests=true -Dcodegen.skip=true
     SAVE ARTIFACT ./target/eushareserver.jar AS LOCAL ./target/eushareserver.jar
 
 docker:
