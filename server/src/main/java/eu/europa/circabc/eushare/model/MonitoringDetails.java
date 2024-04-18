@@ -24,12 +24,11 @@ import javax.validation.constraints.*;
 
 // eushare
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 /**
  * MonitoringDetails
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen")
-public class MonitoringDetails {
+public class MonitoringDetails   {
   @JsonProperty("ID")
   private String ID;
 
@@ -41,15 +40,15 @@ public class MonitoringDetails {
    */
   public enum EventEnum {
     DOWNLOAD_RATE_HOUR("DOWNLOAD_RATE_HOUR"),
-
+    
     UPLOAD_RATE_HOUR("UPLOAD_RATE_HOUR"),
-
+    
     DOWNLOAD_RATE_DAY("DOWNLOAD_RATE_DAY"),
-
+    
     UPLOAD_RATE_DAY("UPLOAD_RATE_DAY"),
-
+    
     USER_CREATION_DAY("USER_CREATION_DAY"),
-
+    
     BRUTE_FORCE_ATTACK_HOUR("BRUTE_FORCE_ATTACK_HOUR"),
     
     BRUTE_FORCE_ATTACK_DAY("BRUTE_FORCE_ATTACK_DAY");
@@ -98,9 +97,9 @@ public class MonitoringDetails {
    */
   public enum StatusEnum {
     WAITING("WAITING"),
-
+    
     DENIED("DENIED"),
-
+    
     APPROVED("APPROVED");
 
     private String value;
@@ -161,10 +160,10 @@ public class MonitoringDetails {
 
   /**
    * Get ID
-   * 
    * @return ID
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getID() {
     return ID;
@@ -181,10 +180,10 @@ public class MonitoringDetails {
 
   /**
    * Get datetime
-   * 
    * @return datetime
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getDatetime() {
     return datetime;
@@ -201,10 +200,10 @@ public class MonitoringDetails {
 
   /**
    * Get event
-   * 
    * @return event
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public EventEnum getEvent() {
     return event;
@@ -221,10 +220,10 @@ public class MonitoringDetails {
 
   /**
    * Get fileId
-   * 
    * @return fileId
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getFileId() {
     return fileId;
@@ -241,10 +240,10 @@ public class MonitoringDetails {
 
   /**
    * Get userId
-   * 
    * @return userId
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getUserId() {
     return userId;
@@ -261,10 +260,10 @@ public class MonitoringDetails {
 
   /**
    * Get counter
-   * 
    * @return counter
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public Long getCounter() {
     return counter;
@@ -281,10 +280,10 @@ public class MonitoringDetails {
 
   /**
    * Get status
-   * 
    * @return status
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public StatusEnum getStatus() {
     return status;
@@ -301,10 +300,10 @@ public class MonitoringDetails {
 
   /**
    * Get filename
-   * 
    * @return filename
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getFilename() {
     return filename;
@@ -321,9 +320,8 @@ public class MonitoringDetails {
 
   /**
    * Get filesize
-   * 
    * @return filesize
-   */
+  */
   @ApiModelProperty(value = "")
 
   @Valid
@@ -343,10 +341,10 @@ public class MonitoringDetails {
 
   /**
    * Get shortUrl
-   * 
    * @return shortUrl
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getShortUrl() {
     return shortUrl;
@@ -363,10 +361,10 @@ public class MonitoringDetails {
 
   /**
    * Get uploaderEmail
-   * 
    * @return uploaderEmail
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getUploaderEmail() {
     return uploaderEmail;
@@ -383,10 +381,10 @@ public class MonitoringDetails {
 
   /**
    * Get uploaderName
-   * 
    * @return uploaderName
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getUploaderName() {
     return uploaderName;
@@ -403,10 +401,10 @@ public class MonitoringDetails {
 
   /**
    * Get uploaderStatus
-   * 
    * @return uploaderStatus
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getUploaderStatus() {
     return uploaderStatus;
@@ -423,10 +421,10 @@ public class MonitoringDetails {
 
   /**
    * Get description
-   * 
    * @return description
-   */
+  */
   @ApiModelProperty(value = "")
+
 
   public String getDescription() {
     return description;
@@ -435,6 +433,7 @@ public class MonitoringDetails {
   public void setDescription(String description) {
     this.description = description;
   }
+
 
   @Override
   public boolean equals(Object o) {
@@ -463,15 +462,14 @@ public class MonitoringDetails {
 
   @Override
   public int hashCode() {
-    return Objects.hash(ID, datetime, event, fileId, userId, counter, status, filename, filesize, shortUrl,
-        uploaderEmail, uploaderName, uploaderStatus, description);
+    return Objects.hash(ID, datetime, event, fileId, userId, counter, status, filename, filesize, shortUrl, uploaderEmail, uploaderName, uploaderStatus, description);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class MonitoringDetails {\n");
-
+    
     sb.append("    ID: ").append(toIndentedString(ID)).append("\n");
     sb.append("    datetime: ").append(toIndentedString(datetime)).append("\n");
     sb.append("    event: ").append(toIndentedString(event)).append("\n");
@@ -501,3 +499,4 @@ public class MonitoringDetails {
     return o.toString().replace("\n", "\n    ");
   }
 }
+
