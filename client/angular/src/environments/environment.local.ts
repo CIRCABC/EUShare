@@ -13,7 +13,7 @@ export const environment: Environment = {
   OIDC_ISSUER: 'https://localhost:7002/cas/oauth2',
   OIDC_REDIRECTURI: `${window.location.origin}/callback`,
   OIDC_CLIENTID:
-    'XQh27dQZXHsRPaCbmhOlBHbuJ9tzyosbTGYzYywdXgRgRITzRKEcZTPjzaTSTYj6zxKaVBSgI5WYy4yXbrKMVIp-U2R13UEYAiGk1MvezS9nHV',
+    'P9FNOuRnO7eHqezpvczpNWbWM9d9mmXo3GLklux4zLzhcgnvdOV6GzqlNRVoNCtffl3NRksNYH26ORiCNxUzuYiW-U2R13UEYAiGNca1AdOhQ90',
   OIDC_BACKEND_CLIENTID:
     'RJAmmWE5qTQzImjrzn1od0tSElvyLzRWYObJnZOkNCR8xzzS1OHYpvJQ2rzuFGDwl96j7SAQ4Qv3e0c4LiK2X2G0-U2R13UEYAiGk1MvezS9nHV',
   OIDC_TOKENENDPOINT: 'https://localhost:7002/cas/oauth2/token',
