@@ -78,12 +78,12 @@ export class AppComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   clearLocalStorage() {
-    const timestamp = localStorage.getItem('timestamp');
+    const timestamp = sessionStorage.getItem('timestamp');
     if (timestamp !== null && Number(timestamp) !== this.timestamp) {
-      localStorage.removeItem('ES_AUTH');
-      localStorage.removeItem('ES_USERINFO');
-      localStorage.removeItem('id_token');
-      localStorage.removeItem('id_token_claims_obj');
+      sessionStorage.removeItem('ES_AUTH');
+      sessionStorage.removeItem('ES_USERINFO');
+      sessionStorage.removeItem('id_token');
+      sessionStorage.removeItem('id_token_claims_obj');
     }
   }
 
@@ -92,13 +92,13 @@ export class AppComponent {
     private readonly location: Location,
   ) {
     this.timestamp = new Date().getTime();
-    localStorage.setItem('timestamp', this.timestamp.toString());
+    sessionStorage.setItem('timestamp', this.timestamp.toString());
 
     this.configureOAuth();
   }
 
   private async configureOAuth() {
-    this.oauthService.setStorage(localStorage);
+    this.oauthService.setStorage(sessionStorage);
 
     this.oauthService.configure(authCodeFlowConfig);
 

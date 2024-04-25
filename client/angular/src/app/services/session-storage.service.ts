@@ -58,10 +58,10 @@ export class SessionStorageService {
   protected basePath = 'http://localhost:8888';
 
   public logout() {
-    localStorage.removeItem('ES_AUTH');
-    localStorage.removeItem('ES_USERINFO');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('id_token_claims_obj');
+    sessionStorage.removeItem('ES_AUTH');
+    sessionStorage.removeItem('ES_USERINFO');
+    sessionStorage.removeItem('id_token');
+    sessionStorage.removeItem('id_token_claims_obj');
     this.router.navigateByUrl('');
   }
   public defaultHeaders = new HttpHeaders();
@@ -72,7 +72,7 @@ export class SessionStorageService {
   public userInfo$ = this.userInfoSubject.asObservable();
 
   public getStoredUserInfo(): UserInfo | null {
-    const userInfoStringified = localStorage.getItem('ES_USERINFO');
+    const userInfoStringified = sessionStorage.getItem('ES_USERINFO');
     if (userInfoStringified) {
       const userInfo = JSON.parse(userInfoStringified);
       this.userInfoSubject.next(userInfo);
@@ -107,7 +107,7 @@ export class SessionStorageService {
 
   public setStoredUserInfo(userInfo: UserInfo) {
     this.userInfoSubject.next(userInfo);
-    localStorage.setItem('ES_USERINFO', JSON.stringify(userInfo));
+    sessionStorage.setItem('ES_USERINFO', JSON.stringify(userInfo));
   }
 
   public getAccessToken(): Observable<BearerToken> {
