@@ -123,11 +123,18 @@ export class AdministrationComponent implements OnInit {
   }
 
   public updateGraph(columnData: string, columnLabel: string) {
+    const dataToProcess = this.stats.map((stats) => {
+      const value = Reflect.get(stats, columnData);
+      return columnData === 'downloadsData' || columnData === 'uploadsData'
+        ? value / (1024*1024)
+        : value;
+    });
+  
     this.data = {
       labels: this.monthsLabels,
       datasets: [
         {
-          data: this.stats.map((stats) => Reflect.get(stats, columnData)),
+          data: dataToProcess,
           label: columnLabel,
         },
       ],
