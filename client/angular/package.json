@@ -59,7 +59,7 @@
     "@angular/platform-browser": "18.0.0",
     "@angular/platform-browser-dynamic": "18.0.0",
     "@angular/router": "18.0.0",
-    "@fortawesome/angular-fontawesome": "0.14.1",
+    "@fortawesome/angular-fontawesome": "0.15.0",
     "@fortawesome/fontawesome-free": "6.5.1",
     "@fortawesome/fontawesome-svg-core": "6.5.1",
     "@fortawesome/free-solid-svg-icons": "6.5.1",
