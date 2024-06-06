@@ -76,7 +76,7 @@
     "jsrsasign": "11.1.0",
     "license-check-and-add": "4.0.5",
     "material-icons": "^1.13.12",
-    "ng2-charts": "6.0.0",
+    "ng2-charts": "6.0.1",
     "prettier": "3.2.5",
     "rxjs": "7.8.1",
     "tslib": "2.6.2",
