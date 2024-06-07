@@ -14,26 +14,25 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'fileSizeFormat',
   standalone: true,
 })
+
 export class FileSizeFormatPipe implements PipeTransform {
+
   transform(value: number): string {
-    if (Number.isNaN(value)) {
-      return ' ERRORINTHEVALUE';
+ 
+    if (!value && Number.isNaN(value)) {
+      return 'ERRORINTHEVALUE';
     }
-    if (value < 0) {
-      return '0 Bytes';
+
+    if (value === 0) return '0 Bytes';
+
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    let index = 0; 
+
+    while (value >= 1024 && index < sizes.length - 1) {
+      value /= 1024;
+      index++;
     }
-    if (value >= 1024) {
-      const valueInKb = Math.round(value / 1024);
-      if (valueInKb >= 1024) {
-        const valueInMb = Math.round(valueInKb / 1024);
-        if (valueInMb >= 1024) {
-          const valueInGb = Math.round((valueInMb / 1024) * 1000) / 1000;
-          return `${valueInGb} GB`;
-        }
-        return `${valueInMb} MB`;
-      }
-      return `${valueInKb} KB`;
-    }
-    return `${value} Bytes`;
+
+    return `${value.toFixed(2)} ${sizes[index]}`;
   }
 }
