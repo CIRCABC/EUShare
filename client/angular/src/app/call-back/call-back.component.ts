@@ -32,7 +32,7 @@ export class CallBackComponent implements OnInit {
     private sessionService: SessionService,
     private oAuthService: OAuthService,
     private router: Router,
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.oAuthService.events.subscribe((next) => {
@@ -40,6 +40,13 @@ export class CallBackComponent implements OnInit {
 
       switch (nextType) {
         case 'token_expires': {
+          this.notificationService.addSuccessMessageTranslation(
+            'session.expired',
+          );
+          this.sessionStorageService.logout();
+          break;
+        }
+        case 'token_validation_error': {
           this.notificationService.addSuccessMessageTranslation(
             'session.expired',
           );
@@ -62,6 +69,7 @@ export class CallBackComponent implements OnInit {
           this.notificationService.addErrorMessageTranslation('oidc.error', {
             type: next.type,
           });
+
           break;
         }
       }

@@ -13,8 +13,8 @@ export const environment: Environment = {
   OIDC_ISSUER: 'https://eulogin:7002/cas/oauth2',
   OIDC_REDIRECTURI: `${window.location.origin}/share/callback`,
   OIDC_CLIENTID:
-    'qeBCzrSrDsizahesBX4QY30a6QYXLj8e1vRTIbqav1ajjnDjSJCPRdcZRwiIITzcbzITc7i8i8y6VZ5CDANzoL2-4y0FDGUzNApE4Hnya956ue',
+    'JlWW6FzZfCcI933QUaaVaWWPM8ag7NVUelCzesezV2pCOuioCjHIJRh1qbBnP3wkVQADFEarnsAjQOcEi815QTG-4y0FDGUzNApsrQw8Ga3xtG',
   OIDC_BACKEND_CLIENTID:
-    '6QCA7zVJsPSmaZfjsZ5QsjIxpXBmzadfzMjRX5Gc0WFywHmF392po2PjVRgzvWKo7n5qo3c5hyPxFEuItUdM3lK-4y0FDGUzNApE4Hnya956ue',
+    'Vfen4A1b6zvjn3HLY8aNpzzGzWCuAzJhZSQXFeO1upZR8l8vzkqrX0azwFKXvsRWpgeQomzpx7lYFA6IWeNoPgUr-4y0FDGUzNApsrQw8Ga3xtG',
   OIDC_TOKENENDPOINT: 'https://eulogin:7002/cas/oauth2/token',
 };
