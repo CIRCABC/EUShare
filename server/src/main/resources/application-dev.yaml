@@ -1,29 +1,31 @@
+
 spring:
+  profiles: dev
   security:
     oauth2:
       resourceserver:
         opaquetoken:
-          introspection-uri: https://ecas-mockup:7002/cas/oauth2/token/introspect
-          client-id: my_client_id
-          client_secret: my_client_secret
+          introspection-uri: https://eulogin:7002/cas/oauth2/token/introspect
+          client-id: HcoTkGJi0PxIzzJosaxC9iQmf5FcCtYzMJjRbTcYOGNe2o2ixouUVZWjR7zI0qe7mEL5BGwzMVJvPqCeePRtwdG-4y0FDGUzNApELWPIBzHLNzG
+          client_secret: b9WkTus1W6fs0FdvJLt9sxDGPlRg-pItGSxMcVEk4xqQyuRi4BQz6B7r0ARLVTgdVeAbac0rcFSmCeBgssmQJ2omeKVDixBMHeg9kyQH2SD0loPnQjoPlduqXN9jJUXuhiyFQakk5_zW3MCSX4Knx7uHxTh_PyPtYnok7lfjP4U
+    adminusers: bournja
   datasource:
-    #continue-on-error: true
-    #jdbc:oracle:thin:@localhost:1521:testing
+    # continue-on-error: true
+    # jdbc:oracle:thin:@localhost:1521:testing
     url: jdbc:mysql://db/easyshare
-    username: easyshare_username
-    password: easyshare_password
+    username: easyshare
+    password: easyshare
     driverClassName: com.mysql.cj.jdbc.Driver 
   jpa:
-    #org.hibernate.dialect.Oracle10gDialect
+    # org.hibernate.dialect.Oracle10gDialect
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: update
   mail:
     host: maildev
-    port: 25
+    port: 1025
     username: username
     password: password
-    
 
 eushare:
   clientHttpAddress: http://localhost/share
@@ -46,13 +48,16 @@ eushare:
     uploads_to_be_trusted_threshold: 50
   user_creation_log:
     user_creation_threshold: 10
-
+  brute_force_attack_rate:
+    hourly_threshold: 20
+    hourly_threshold_rt: 25
+    daily_threshold: 100
 
 logging:
   level:
     root: DEBUG
     org.springframework.web: OFF
-    org.springframework: DEBUG
+    org.springframework: OFF
     org:
       hibernate:
         SQL: DEBUG
@@ -63,5 +68,10 @@ logging:
           #type: TRACE
 
 
-
+javamelody:
+  init-parameters:
+    log: true
+    authorized-users: admin:pwd
+    monitoring-spring-batch-enabled: true
+    monitoring-path: /jmd
 
