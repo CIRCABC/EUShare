@@ -31,6 +31,5 @@
     ".cache/**",
     "**/src/app/openapi/.openapi-generator/VERSION",
     "cypress/**",
-    "Earthfile"
   ]
 }

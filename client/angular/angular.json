@@ -56,25 +56,6 @@
                 }
               ]
             },
-            "local": {
-              "optimization": false,
-              "outputHashing": "all",
-              "sourceMap": true,
-              "namedChunks": false,
-              "aot": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": false,
-              "serviceWorker": false,
-              "baseHref": "/share",
-              "deployUrl": "/share",
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.local.ts"
-                }
-              ]
-            },
             "prod": {
               "budgets": [
                 {
@@ -105,9 +86,6 @@
             "buildTarget": "client:build"
           },
           "configurations": {
-            "dev-local": {
-              "buildTarget": "client:build:dev-local"
-            },
             "dev": {
               "buildTarget": "client:build:dev"
             },

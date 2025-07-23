@@ -1,12 +1,14 @@
-version: "3.7"
+version: "3.8"
 services:
   db:
-    container_name: eushare_db
-    image: mysql:5.6
+    container_name: eushare_dev_db
+    image: mysql:8
     ports:
       - "3306:3306"
     environment:
         - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_GENERAL_LOG=1
+        - MYSQL_GENERAL_LOG_FILE="/var/lib/mysql/monitoring.log"
     volumes:
         - ./mysql:/docker-entrypoint-initdb.d/:ro
     command: --lower_case_table_names=1 --transaction-isolation=READ-COMMITTED
@@ -31,9 +33,10 @@ services:
   maildev:
     image: maildev/maildev
     ports:
-      - "1080:80"
+      - "1080:1080"
+      - "1025:1025"
   proxy:
-    image: nginx:alpine
+    image: nginx
     container_name: nginx_eushare_proxy
     volumes:
       - ./proxy/conf/nginx.conf:/etc/nginx/nginx.conf

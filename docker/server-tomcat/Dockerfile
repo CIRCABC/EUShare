@@ -1,4 +1,4 @@
-FROM tomcat:8.5.41-jdk8
+FROM tomcat:9.0.87-jdk8
 
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/ROOT"]
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/examples"]

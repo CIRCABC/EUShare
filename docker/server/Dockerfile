@@ -4,6 +4,11 @@ COPY ./conf/eulogin.crt eulogin.crt
 RUN echo yes | keytool -import -v -alias ecas-mockup-ssl -storepass changeit -file eulogin.crt -keystore "$JAVA_HOME/jre/lib/security/cacerts"
 
 WORKDIR /app
-COPY dist ./
+COPY dist/server /app
+COPY dist/api.yaml  /api.yaml
+
+RUN ls -al
+
+#CMD ["sleep", "infinity"]
 
 CMD ["mvn", "spring-boot:run", "-Pdev"]

@@ -48,11 +48,8 @@ docker-dev
 client/angular/src/environments/version.ts
 server/src/main/resources/application-dev-empty.yaml
 client/angular/src/environments/environment.dev-empty.ts
-client/angular/src/environments/environment.dev.ts
 client/angular/src/environments/environment.prod.ts
-server/src/main/resources/application-dev.yml
 server/src/main/resources/application-prod.yaml
-server/src/main/resources/application-dev.yaml
 server/.openapi-generator
 client/angular/.cache/
 server/.openapi-generator/api.yaml.sha256
@@ -70,3 +67,5 @@ client/angular/src/build.ts
 ecas-mockup/
 docker/ecas-mockup-6.2.7.ear
 docker/original-ecas-mockup-6.2.7.ear
+docker/client/dist
+docker/server/dist
