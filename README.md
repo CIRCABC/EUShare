@@ -80,7 +80,7 @@ Before deployment, **ask the DIGIT EULogin team to register your applications** 
 
 ### **Frontend (Angular)**
 
-Edit `client/angular/src/environments/environment.prod.ts` (for deployment) or `client/angular/src/environments/environment.dev.ts` (for development):
+Edit `client/angular/src/environments/environment.prod.ts` (for production deployment) or `environment.dev.ts` (for development):
 
 #### **Authentication Settings**
 
