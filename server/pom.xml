@@ -428,6 +428,31 @@
                 </configuration>
             </plugin>
 
+            <!-- plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <version>2.0.0</version>
+            <executions>
+                <execution>
+                <id>generate-third-party</id>
+                <goals>
+                    <goal>add-third-party</goal>
+                </goals>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/generated-resources/licenses</outputDirectory>
+                    <thirdPartyFilename>THIRD-PARTY.txt</thirdPartyFilename>
+                    <useMissingFile>true</useMissingFile>
+                    <missingFile>src/license/THIRD-PARTY.properties</missingFile>
+                    <failIfWarning>true</failIfWarning>
+                    <verbose>true</verbose>
+                </configuration>
+                </execution>
+            </executions>
+            </plugin -->
+
+
+
+
         </plugins>
     </build>
     <dependencies>
