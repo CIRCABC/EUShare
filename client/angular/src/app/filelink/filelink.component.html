@@ -1,6 +1,18 @@
 <div class="centered">
   <div class="centeredText">
     <h1 class="title">{{ 'download.shared.file' | transloco }}</h1>
+    <!-- Disclaimer Block Start -->
+    <hr class="disclaimer-separator" />
+    <div class="disclaimer">
+      <b>{{ 'disclaimer.title' | transloco }}</b><br />
+      <i>
+        {{ 'disclaimer.text1' | transloco }}<br />
+        {{ 'disclaimer.text2' | transloco }}
+      </i>
+    </div>
+    <hr class="disclaimer-separator" />
+    <!-- Disclaimer Block End -->
+
     <h2 class="subtitle">
       {{ 'download' | transloco }}
       @if (fileName) {
@@ -31,7 +43,6 @@
           {{ 'download' | transloco }}
         </a>
       </div>
-
       <a (click)="openAbuseDialog(fileId)">{{ 'abuse.title' | transloco }}</a>
     </div>
   </div>

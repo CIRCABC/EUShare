@@ -1,15 +1,19 @@
-@import '../../variables.scss';
-.button.is-fullwidth {
-  margin-top: 1em;
+.disclaimer {
+  font-size: 0.95em;
+  margin: 12px 0 8px 0;
+  color: #444;
 }
 
-.subtitle {
-  color: $grey;
+.disclaimer b {
+  color: #222;
 }
 
-.action-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
+.disclaimer i {
+  color: #666;
+}
+
+.disclaimer-separator {
+  border: none;
+  border-top: 1px solid #ccc;
+  margin: 12px 0 8px 0;
 }
