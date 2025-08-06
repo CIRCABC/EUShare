@@ -1,0 +1,54 @@
+See the LICENSE file at the root of this repository for the full EUPL text.
+
+This project incorporates third‑party software components listed below. Each is
+attributed with the license information and a reference URL, as you requested.
+For items where the generator reported “Unknown license” or no URL, that exact
+value is preserved here for review.
+
+Unless otherwise stated, third‑party components are provided by their respective
+authors “as is” under the terms of their licenses. Where a component lists more
+than one license, the upstream terms apply (e.g., “dual” or “either/or”).
+Nothing in this NOTICE supersedes or modifies the license texts of those works.
+
+
+Third-Party Notices
+
+- (The MIT License) @angular/animations (@angular/animations:17.3.1 - https://github.com/angular/angular)
+- (The MIT License) @angular/cdk (@angular/cdk:17.3.1 - https://github.com/angular/components)
+- (The MIT License) @angular/common (@angular/common:17.3.1 - https://github.com/angular/angular)
+- (The MIT License) @angular/compiler (@angular/compiler:17.3.1 - https://github.com/angular/angular)
+- (The MIT License) @angular/core (@angular/core:17.3.1 - https://github.com/angular/angular)
+- (The MIT License) @angular/forms (@angular/forms:17.3.1 - https://github.com/angular/angular)
+- (The MIT License) @angular/material (@angular/material:17.3.1 - https://github.com/angular/components)
+- (The MIT License) @angular/platform-browser (@angular/platform-browser:17.3.1 - https://github.com/angular/angular)
+- (The MIT License) @angular/platform-browser-dynamic (@angular/platform-browser-dynamic:17.3.1 - https://github.com/angular/angular)
+- (The MIT License) @angular/router (@angular/router:17.3.1 - https://github.com/angular/angular)
+
+- (MIT License) @fortawesome/angular-fontawesome (@fortawesome/angular-fontawesome:0.14.1 - https://github.com/FortAwesome/angular-fontawesome)
+- (CC-BY-4.0 AND OFL-1.1 AND MIT) @fortawesome/fontawesome-free (@fortawesome/fontawesome-free:6.5.1 - https://github.com/FortAwesome/Font-Awesome)
+- (MIT License) @fortawesome/fontawesome-svg-core (@fortawesome/fontawesome-svg-core:6.5.1 - https://github.com/FortAwesome/Font-Awesome)
+- (CC-BY-4.0 AND MIT) @fortawesome/free-solid-svg-icons (@fortawesome/free-solid-svg-icons:6.5.1 - https://github.com/FortAwesome/Font-Awesome)
+
+- (The MIT License) @ngneat/transloco (@ngneat/transloco:6.0.4 - https://github.com/jsverse/transloco)
+- (The MIT License) @schematics/angular (@schematics/angular:17.3.1 - https://github.com/angular/angular-cli)
+- (The MIT License) @types/jsrsasign (@types/jsrsasign:10.5.13 - https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/jsrsasign)
+
+- (The MIT License) angular-oauth2-oidc (angular-oauth2-oidc:17.0.1 - https://github.com/manfredsteyer/angular-oauth2-oidc)
+- (The MIT License) angularx-qrcode (angularx-qrcode:17.0.0 - https://github.com/Cordobo/angularx-qrcode)
+
+- (The MIT License) bulma (bulma:0.9.4 - https://github.com/jgthms/bulma)
+- (The MIT License) bulma-extensions (bulma-extensions:6.2.7 - https://github.com/Wikiki/bulma-extensions)
+
+- (The MIT License) chart.js (chart.js:4.4.2 - https://github.com/chartjs/Chart.js)
+- (The MIT License) ng2-charts (ng2-charts:6.0.0 - https://github.com/valor-software/ng2-charts)
+
+- (The MIT License) core-js (core-js:3.36.1 - https://github.com/zloirock/core-js)
+- (The MIT License) hammerjs (hammerjs:2.0.8 - https://github.com/hammerjs/hammer.js)
+- (The MIT License) jsrsasign (jsrsasign:11.1.0 - https://github.com/kjur/jsrsasign)
+- (Apache License 2.0) license-check-and-add (license-check-and-add:4.0.5 - https://github.com/awjh/license-check-and-add)
+- (Apache License 2.0) material-icons (material-icons:^1.13.12 - https://github.com/marella/material-icons)
+- (The MIT License) prettier (prettier:3.2.5 - https://github.com/prettier/prettier)
+- (Apache License 2.0) rxjs (rxjs:7.8.1 - https://github.com/ReactiveX/rxjs)
+- (0BSD) tslib (tslib:2.6.2 - https://github.com/microsoft/tslib)
+- (Ubuntu Font Licence 1.0) ubuntu-fontface (ubuntu-fontface:0.1.13 - https://github.com/earaujoassis/ubuntu-fontface)
+- (The MIT License) zone.js (zone.js:0.14.4 - https://github.com/angular/angular)
