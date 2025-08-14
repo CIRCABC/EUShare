@@ -34,12 +34,7 @@ export class Actor {
 }
 
 import { Inject, Injectable, Optional } from '@angular/core';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpParams,
-  HttpParameterCodec,
-} from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpParameterCodec } from '@angular/common/http';
 import { CustomHttpParameterCodec } from '../openapi/encoder';
 import { Observable, Subject } from 'rxjs';
 
