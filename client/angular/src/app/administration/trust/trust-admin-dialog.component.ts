@@ -19,12 +19,11 @@ import { TrustRequest } from '../../openapi';
 import { DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-trust-admin-dialog',
-  templateUrl: './trust-admin-dialog.component.html',
-  styleUrls: ['./trust-admin-dialog.component.scss'],
-  standalone: true,
-  imports: [MatDialogModule, FormsModule, TranslocoModule],
-  providers: [DatePipe],
+    selector: 'app-trust-admin-dialog',
+    templateUrl: './trust-admin-dialog.component.html',
+    styleUrls: ['./trust-admin-dialog.component.scss'],
+    imports: [MatDialogModule, FormsModule, TranslocoModule],
+    providers: [DatePipe]
 })
 export class TrustAdminDialogComponent {
   constructor(

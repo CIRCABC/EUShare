@@ -19,18 +19,17 @@ import { Monitoring, MonitoringDetails } from '../../openapi';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Component({
-  selector: 'app-monitoring',
-  templateUrl: './monitoring.component.html',
-  styleUrls: ['./monitoring.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    TranslocoModule,
-    MatTabsModule,
-    MonitoringTabComponent,
-  ],
-  providers: [DatePipe],
+    selector: 'app-monitoring',
+    templateUrl: './monitoring.component.html',
+    styleUrls: ['./monitoring.component.scss'],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        TranslocoModule,
+        MatTabsModule,
+        MonitoringTabComponent,
+    ],
+    providers: [DatePipe]
 })
 export class MonitoringComponent implements OnInit {
   monitoringDetails: MonitoringDetails[] = [];

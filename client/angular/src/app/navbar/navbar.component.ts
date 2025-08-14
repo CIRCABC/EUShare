@@ -27,11 +27,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
-  standalone: true,
-  imports: [RouterLink, FontAwesomeModule, RouterLinkActive, TranslocoModule],
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.scss'],
+    imports: [RouterLink, FontAwesomeModule, RouterLinkActive, TranslocoModule]
 })
 export class NavbarComponent implements OnInit {
   public faUsers = faUsers;

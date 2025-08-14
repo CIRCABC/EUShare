@@ -27,26 +27,25 @@ import { LogsComponent } from './logs/logs.component';
 import { UserAdminComponent } from './user/user-admin/user-admin.component';
 import { MonitoringComponent } from './monitoring/monitoring.component';
 @Component({
-  selector: 'app-administration',
-  templateUrl: './administration.component.html',
-  styleUrls: ['./administration.component.scss'],
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FormsModule,
-    FontAwesomeModule,
-    BarChartComponent,
-    TranslocoModule,
-    FileSizeFormatPipe,
-    MatTabsModule,
-    FileRowContainerComponent,
-    TrustComponent,
-    AbuseComponent,
-    MonitoringComponent,
-    LogsComponent,
-    MatIconModule,
-    UserAdminComponent,
-  ],
+    selector: 'app-administration',
+    templateUrl: './administration.component.html',
+    styleUrls: ['./administration.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        FontAwesomeModule,
+        BarChartComponent,
+        TranslocoModule,
+        FileSizeFormatPipe,
+        MatTabsModule,
+        FileRowContainerComponent,
+        TrustComponent,
+        AbuseComponent,
+        MonitoringComponent,
+        LogsComponent,
+        MatIconModule,
+        UserAdminComponent,
+    ]
 })
 export class AdministrationComponent implements OnInit {
   selectedTabChanged($event: number) {

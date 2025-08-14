@@ -23,18 +23,17 @@ import { DownloadsService } from '../services/downloads.service';
 import { NotificationService } from '../common/notification/notification.service';
 
 @Component({
-  selector: 'app-filelink',
-  templateUrl: './filelink.component.html',
-  styleUrls: ['./filelink.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TranslocoModule,
-    SlicePipe,
-    MatDialogModule,
-  ],
+    selector: 'app-filelink',
+    templateUrl: './filelink.component.html',
+    styleUrls: ['./filelink.component.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TranslocoModule,
+        SlicePipe,
+        MatDialogModule,
+    ]
 })
 export class FilelinkComponent implements OnInit {
   public fileName!: string;

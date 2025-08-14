@@ -14,10 +14,9 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { DownloadButtonComponent } from '../../buttons/download-button/download-button.component';
 
 @Component({
-  selector: 'app-download-modal',
-  templateUrl: './download-modal.component.html',
-  standalone: true,
-  imports: [DownloadButtonComponent, TranslocoModule],
+    selector: 'app-download-modal',
+    templateUrl: './download-modal.component.html',
+    imports: [DownloadButtonComponent, TranslocoModule]
 })
 export class DownloadModalComponent implements OnInit {
   public modalActive!: boolean;

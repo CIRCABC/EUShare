@@ -20,19 +20,18 @@ import { SortOrder } from '../../../openapi';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-last-logins',
-  templateUrl: './last-logins.component.html',
-  styleUrls: ['./last-logins.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    DatePipe,
-    MatSortModule,
-    MatIconModule,
-  ],
+    selector: 'app-last-logins',
+    templateUrl: './last-logins.component.html',
+    styleUrls: ['./last-logins.component.scss'],
+    imports: [
+        CommonModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        DatePipe,
+        MatSortModule,
+        MatIconModule,
+    ]
 })
 export class LastLoginsComponent implements AfterViewInit {
   displayedColumns: string[] = [

@@ -21,18 +21,17 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-abuse-details-dialog',
-  templateUrl: './abuse-details-dialog.component.html',
-  styleUrls: ['./abuse-details-dialog.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatTooltipModule,
-    MatIconModule,
-  ],
+    selector: 'app-abuse-details-dialog',
+    templateUrl: './abuse-details-dialog.component.html',
+    styleUrls: ['./abuse-details-dialog.component.scss'],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatTooltipModule,
+        MatIconModule,
+    ]
 })
 export class AbuseDetailsDialogComponent implements OnInit {
   displayedColumns: string[] = [

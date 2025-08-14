@@ -57,25 +57,24 @@ import { environment } from '../../environments/environment';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-upload',
-  templateUrl: './upload.component.html',
-  styleUrls: ['./upload.component.scss'],
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    FileAccessorDirective,
-    FontAwesomeModule,
-    EmailInputComponent,
-    MessageTextAreaComponent,
-    FileSizeFormatPipe,
-    TranslocoModule,
-    MatDialogModule,
-    MatSnackBarModule,
-    CaptchaComponent,
-    MatTooltipModule,
-    MatIconModule,
-  ],
-  providers: [FileSizeFormatPipe],
+    selector: 'app-upload',
+    templateUrl: './upload.component.html',
+    styleUrls: ['./upload.component.scss'],
+    imports: [
+        ReactiveFormsModule,
+        FileAccessorDirective,
+        FontAwesomeModule,
+        EmailInputComponent,
+        MessageTextAreaComponent,
+        FileSizeFormatPipe,
+        TranslocoModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        CaptchaComponent,
+        MatTooltipModule,
+        MatIconModule,
+    ],
+    providers: [FileSizeFormatPipe]
 })
 export class UploadComponent implements OnInit, AfterViewInit {
   public faUserSlash = faUserSlash;

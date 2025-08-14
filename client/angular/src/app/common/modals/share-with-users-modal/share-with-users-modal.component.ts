@@ -22,18 +22,17 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-share-with-users-modal',
-  templateUrl: './share-with-users-modal.component.html',
-  styleUrls: ['./share-with-users-modal.component.scss'],
-  preserveWhitespaces: true,
-  standalone: true,
-  imports: [
-    TranslocoModule,
-    LowerCasePipe,
-    MatIconModule,
-    QRCodeModule,
-    SlicePipe,
-  ],
+    selector: 'app-share-with-users-modal',
+    templateUrl: './share-with-users-modal.component.html',
+    styleUrls: ['./share-with-users-modal.component.scss'],
+    preserveWhitespaces: true,
+    imports: [
+        TranslocoModule,
+        LowerCasePipe,
+        MatIconModule,
+        QRCodeModule,
+        SlicePipe,
+    ]
 })
 export class ShareWithUsersModalComponent implements OnInit {
   public modalActive = false;

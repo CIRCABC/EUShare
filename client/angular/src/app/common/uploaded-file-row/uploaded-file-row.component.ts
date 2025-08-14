@@ -23,18 +23,17 @@ import { NotificationService } from '../notification/notification.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-uploaded-file-row',
-  templateUrl: './uploaded-file-row.component.html',
-  styleUrls: ['./uploaded-file-row.component.scss'],
-  standalone: true,
-  imports: [
-    FontAwesomeModule,
-    NgClass,
-    TranslocoModule,
-    SlicePipe,
-    FileSizeFormatPipe,
-    MatTooltipModule,
-  ],
+    selector: 'app-uploaded-file-row',
+    templateUrl: './uploaded-file-row.component.html',
+    styleUrls: ['./uploaded-file-row.component.scss'],
+    imports: [
+        FontAwesomeModule,
+        NgClass,
+        TranslocoModule,
+        SlicePipe,
+        FileSizeFormatPipe,
+        MatTooltipModule,
+    ]
 })
 export class UploadedFileRowComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

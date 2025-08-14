@@ -11,8 +11,8 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-  selector: 'confirm-dialog',
-  template: `
+    selector: 'confirm-dialog',
+    template: `
     <b>Confirm Role change</b>
     <div mat-dialog-content>
       <p>{{ data.message }}</p>
@@ -24,6 +24,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
       </button>
     </div>
   `,
+    standalone: false
 })
 export class ConfirmDialogComponent {
   constructor(

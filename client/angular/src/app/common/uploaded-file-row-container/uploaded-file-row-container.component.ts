@@ -16,11 +16,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { UploadedFileRowComponent } from '../uploaded-file-row/uploaded-file-row.component';
 
 @Component({
-  selector: 'app-uploaded-file-row-container',
-  templateUrl: './uploaded-file-row-container.component.html',
-  styleUrls: ['./uploaded-file-row-container.component.scss'],
-  standalone: true,
-  imports: [UploadedFileRowComponent, TranslocoModule],
+    selector: 'app-uploaded-file-row-container',
+    templateUrl: './uploaded-file-row-container.component.html',
+    styleUrls: ['./uploaded-file-row-container.component.scss'],
+    imports: [UploadedFileRowComponent, TranslocoModule]
 })
 export class FileRowContainerComponent implements OnInit, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename

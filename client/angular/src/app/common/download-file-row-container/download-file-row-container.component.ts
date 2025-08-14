@@ -15,11 +15,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { DownloadFileRowComponent } from '../download-file-row/download-file-row.component';
 
 @Component({
-  selector: 'app-download-file-row-container',
-  templateUrl: './download-file-row-container.component.html',
-  styleUrls: ['./download-file-row-container.component.scss'],
-  standalone: true,
-  imports: [DownloadFileRowComponent, TranslocoModule],
+    selector: 'app-download-file-row-container',
+    templateUrl: './download-file-row-container.component.html',
+    styleUrls: ['./download-file-row-container.component.scss'],
+    imports: [DownloadFileRowComponent, TranslocoModule]
 })
 export class DownloadFileRowContainerComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

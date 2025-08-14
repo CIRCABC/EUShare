@@ -23,16 +23,15 @@ import { NotificationService } from '../../notification/notification.service';
 import { CaptchaComponent } from '../../captcha/captcha.component';
 
 @Component({
-  selector: 'app-abuse-dialog',
-  templateUrl: './abuse-dialog.component.html',
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    FormsModule,
-    CommonModule,
-    TranslocoModule,
-    CaptchaComponent,
-  ],
+    selector: 'app-abuse-dialog',
+    templateUrl: './abuse-dialog.component.html',
+    imports: [
+        MatDialogModule,
+        FormsModule,
+        CommonModule,
+        TranslocoModule,
+        CaptchaComponent,
+    ]
 })
 export class AbuseDialogComponent implements AfterViewInit {
   abuseReport: AbuseReport = {

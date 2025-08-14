@@ -16,11 +16,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { CommonModule } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 @Component({
-  selector: 'app-notification',
-  templateUrl: './notification.component.html',
-  styleUrls: ['./notification.component.scss'],
-  standalone: true,
-  imports: [CommonModule, TranslocoModule, MatDialogModule],
+    selector: 'app-notification',
+    templateUrl: './notification.component.html',
+    styleUrls: ['./notification.component.scss'],
+    imports: [CommonModule, TranslocoModule, MatDialogModule]
 })
 export class NotificationComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

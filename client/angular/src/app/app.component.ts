@@ -52,26 +52,25 @@ const authCodeFlowConfig: AuthConfig = {
 };
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  imports: [
-    CbcHeaderComponent,
-    NavbarComponent,
-    ShareWithUsersModalComponent,
-    StatisticsModalComponent,
-    AddRecipientsModalComponent,
-    DeleteConfirmModalComponent,
-    DownloadModalComponent,
-    FileLinkModalComponent,
-    ChangeExpirationDateModalComponent,
-    OverwriteConfirmModalComponent,
-    NotificationSystemComponent,
-    RouterOutlet,
-    FooterComponent,
-    TranslocoModule,
-    MaintenanceModalComponent,
-  ],
-  standalone: true,
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    imports: [
+        CbcHeaderComponent,
+        NavbarComponent,
+        ShareWithUsersModalComponent,
+        StatisticsModalComponent,
+        AddRecipientsModalComponent,
+        DeleteConfirmModalComponent,
+        DownloadModalComponent,
+        FileLinkModalComponent,
+        ChangeExpirationDateModalComponent,
+        OverwriteConfirmModalComponent,
+        NotificationSystemComponent,
+        RouterOutlet,
+        FooterComponent,
+        TranslocoModule,
+        MaintenanceModalComponent,
+    ]
 })
 export class AppComponent {
   timestamp: number;

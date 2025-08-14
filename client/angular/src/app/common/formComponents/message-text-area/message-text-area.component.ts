@@ -22,11 +22,10 @@ import { I18nService } from '../../i18n/i18n.service';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-message-text-area',
-  templateUrl: './message-text-area.component.html',
-  styleUrls: ['./message-text-area.component.scss'],
-  standalone: true,
-  imports: [TranslocoModule],
+    selector: 'app-message-text-area',
+    templateUrl: './message-text-area.component.html',
+    styleUrls: ['./message-text-area.component.scss'],
+    imports: [TranslocoModule]
 })
 export class MessageTextAreaComponent implements ControlValueAccessor, OnInit {
   onChange!: (_: any) => void;

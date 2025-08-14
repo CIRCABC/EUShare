@@ -16,11 +16,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-trust-log-table',
-  templateUrl: './trust-log-table.component.html',
-  styleUrls: ['./trust-log-table.component.scss'],
-  standalone: true,
-  imports: [MatTableModule, MatSortModule, MatPaginatorModule, CommonModule],
+    selector: 'app-trust-log-table',
+    templateUrl: './trust-log-table.component.html',
+    styleUrls: ['./trust-log-table.component.scss'],
+    imports: [MatTableModule, MatSortModule, MatPaginatorModule, CommonModule]
 })
 export class TrustLogTableComponent implements OnInit {
   displayedColumns: string[] = ['trustDate', 'origin', 'trusted', 'truster'];

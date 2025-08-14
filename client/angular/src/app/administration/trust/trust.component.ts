@@ -16,17 +16,16 @@ import { TrustRequestComponent } from './trust-request.component';
 import { TrustLogTableComponent } from './trust-log-table.component';
 
 @Component({
-  selector: 'app-trust',
-  templateUrl: './trust.component.html',
-  styleUrls: ['./trust.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    MatTabsModule,
-    MatIconModule,
-    TrustRequestComponent,
-    TrustLogTableComponent,
-  ],
+    selector: 'app-trust',
+    templateUrl: './trust.component.html',
+    styleUrls: ['./trust.component.scss'],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        MatTabsModule,
+        MatIconModule,
+        TrustRequestComponent,
+        TrustLogTableComponent,
+    ]
 })
 export class TrustComponent {}

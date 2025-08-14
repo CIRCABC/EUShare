@@ -24,18 +24,17 @@ import { NotificationService } from '../../notification/notification.service';
 import { environment } from '../../../../environments/environment';
 
 @Component({
-  selector: 'app-upload-rights-dialog',
-  templateUrl: './upload-rights-dialog.component.html',
-  styleUrls: ['./upload-rights-dialog.component.scss'],
-  standalone: true,
-  imports: [
-    MatDialogModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    TranslocoModule,
-    FormsModule,
-    CommonModule,
-  ],
+    selector: 'app-upload-rights-dialog',
+    templateUrl: './upload-rights-dialog.component.html',
+    styleUrls: ['./upload-rights-dialog.component.scss'],
+    imports: [
+        MatDialogModule,
+        MatButtonModule,
+        MatCheckboxModule,
+        TranslocoModule,
+        FormsModule,
+        CommonModule,
+    ]
 })
 export class UploadRightsDialogComponent {
   constructor(

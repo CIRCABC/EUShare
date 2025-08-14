@@ -21,18 +21,17 @@ import { AbuseReport } from '../../openapi';
 import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
 
 @Component({
-  selector: 'app-abuse',
-  templateUrl: './abuse.component.html',
-  styleUrls: ['./abuse.component.scss'],
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatDialogModule,
-    TranslocoModule,
-    MatTabsModule,
-    AbuseTabComponent,
-  ],
-  providers: [DatePipe],
+    selector: 'app-abuse',
+    templateUrl: './abuse.component.html',
+    styleUrls: ['./abuse.component.scss'],
+    imports: [
+        CommonModule,
+        MatDialogModule,
+        TranslocoModule,
+        MatTabsModule,
+        AbuseTabComponent,
+    ],
+    providers: [DatePipe]
 })
 export class AbuseComponent implements OnInit {
   abuseReportsDetailsMap: { [key: string]: AbuseReportDetails[] } = {};

@@ -21,11 +21,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CbcEcLogoAppComponent } from '../cbc-ec-logo-app/cbc-ec-logo-app.component';
 
 @Component({
-  selector: 'app-cbc-header',
-  templateUrl: './cbc-header.component.html',
-  styleUrls: ['./cbc-header.component.scss'],
-  standalone: true,
-  imports: [CbcEcLogoAppComponent, ReactiveFormsModule, TranslocoModule],
+    selector: 'app-cbc-header',
+    templateUrl: './cbc-header.component.html',
+    styleUrls: ['./cbc-header.component.scss'],
+    imports: [CbcEcLogoAppComponent, ReactiveFormsModule, TranslocoModule]
 })
 export class CbcHeaderComponent implements OnInit {
   public circabc_url: string = environment.circabc_url;

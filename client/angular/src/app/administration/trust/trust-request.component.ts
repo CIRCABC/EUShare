@@ -16,11 +16,10 @@ import { TrustAdminDialogComponent } from './trust-admin-dialog.component';
 import { TrustLogTableComponent } from './trust-log-table.component';
 
 @Component({
-  selector: 'app-trust-request',
-  templateUrl: './trust-request.component.html',
-  styleUrls: ['./trust-request.component.scss'],
-  standalone: true,
-  imports: [CommonModule, MatDialogModule, TrustLogTableComponent],
+    selector: 'app-trust-request',
+    templateUrl: './trust-request.component.html',
+    styleUrls: ['./trust-request.component.scss'],
+    imports: [CommonModule, MatDialogModule, TrustLogTableComponent]
 })
 export class TrustRequestComponent implements OnInit {
   trustRequests: TrustRequest[] = [];

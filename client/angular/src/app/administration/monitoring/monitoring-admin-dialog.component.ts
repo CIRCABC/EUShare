@@ -44,12 +44,11 @@ export const StatusEnumLabelsUser = {
 
 type StatusEnumKeys = (keyof typeof StatusEnumLabels)[];
 @Component({
-  selector: 'app-monitoring-admin-dialog',
-  templateUrl: './monitoring-admin-dialog.component.html',
-  styleUrls: ['./monitoring-admin-dialog.component.scss'],
-  standalone: true,
-  imports: [MatDialogModule, FormsModule, TranslocoModule, CommonModule],
-  providers: [DatePipe],
+    selector: 'app-monitoring-admin-dialog',
+    templateUrl: './monitoring-admin-dialog.component.html',
+    styleUrls: ['./monitoring-admin-dialog.component.scss'],
+    imports: [MatDialogModule, FormsModule, TranslocoModule, CommonModule],
+    providers: [DatePipe]
 })
 export class MonitoringAdminDialogComponent {
   monitoringDetails: MonitoringDetails;

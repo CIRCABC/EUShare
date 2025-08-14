@@ -35,24 +35,23 @@ import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { UsersService } from '../../../openapi';
 
 @Component({
-  selector: 'app-user-admin',
-  standalone: true,
-  templateUrl: './user-admin.component.html',
-  styleUrls: ['./user-admin.component.scss'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    FontAwesomeModule,
-    TranslocoModule,
-    FileRowContainerComponent,
-    FileSizeFormatPipe,
-    MatIconModule,
-    MatDialogModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatIconModule,
-  ],
+    selector: 'app-user-admin',
+    templateUrl: './user-admin.component.html',
+    styleUrls: ['./user-admin.component.scss'],
+    imports: [
+        CommonModule,
+        FormsModule,
+        FontAwesomeModule,
+        TranslocoModule,
+        FileRowContainerComponent,
+        FileSizeFormatPipe,
+        MatIconModule,
+        MatDialogModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatIconModule,
+    ]
 })
 export class UserAdminComponent implements AfterViewInit {
   public faUser = faUser;

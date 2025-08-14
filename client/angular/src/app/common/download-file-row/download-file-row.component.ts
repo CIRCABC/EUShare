@@ -23,17 +23,16 @@ import { NotificationService } from '../notification/notification.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-download-file-row',
-  templateUrl: './download-file-row.component.html',
-  standalone: true,
-  imports: [
-    FontAwesomeModule,
-    TranslocoModule,
-    SlicePipe,
-    FileSizeFormatPipe,
-    MatDialogModule,
-    MatTooltipModule,
-  ],
+    selector: 'app-download-file-row',
+    templateUrl: './download-file-row.component.html',
+    imports: [
+        FontAwesomeModule,
+        TranslocoModule,
+        SlicePipe,
+        FileSizeFormatPipe,
+        MatDialogModule,
+        MatTooltipModule,
+    ]
 })
 export class DownloadFileRowComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

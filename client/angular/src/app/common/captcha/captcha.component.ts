@@ -16,11 +16,10 @@ import { CaptchaControllerService } from '../../openapi-eu-captcha/api/captchaCo
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'cbc-captcha',
-  templateUrl: './captcha.component.html',
-  styleUrls: ['./captcha.component.scss'],
-  standalone: true,
-  imports: [ReactiveFormsModule, TranslocoModule, MatIconModule],
+    selector: 'cbc-captcha',
+    templateUrl: './captcha.component.html',
+    styleUrls: ['./captcha.component.scss'],
+    imports: [ReactiveFormsModule, TranslocoModule, MatIconModule]
 })
 export class CaptchaComponent implements OnInit {
   constructor(

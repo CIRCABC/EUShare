@@ -13,11 +13,10 @@ import { ChartData, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
-  selector: 'app-bar-chart',
-  templateUrl: './bar-chart.component.html',
-  styleUrls: ['./bar-chart.component.scss'],
-  standalone: true,
-  imports: [BaseChartDirective],
+    selector: 'app-bar-chart',
+    templateUrl: './bar-chart.component.html',
+    styleUrls: ['./bar-chart.component.scss'],
+    imports: [BaseChartDirective]
 })
 export class BarChartComponent implements OnChanges {
   @Input() chartData: ChartData = {

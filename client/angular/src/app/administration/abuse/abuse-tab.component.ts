@@ -14,11 +14,10 @@ import { environment } from '../../../environments/environment';
 import { DownloadsService } from '../../services/downloads.service';
 
 @Component({
-  selector: 'app-abuse-tab',
-  templateUrl: './abuse-tab.component.html',
-  styleUrls: ['./abuse-tab.component.scss'],
-  standalone: true,
-  imports: [CommonModule],
+    selector: 'app-abuse-tab',
+    templateUrl: './abuse-tab.component.html',
+    styleUrls: ['./abuse-tab.component.scss'],
+    imports: [CommonModule]
 })
 export class AbuseTabComponent implements OnInit {
   @Input() reportStatus: AbuseReportDetails.StatusEnum | undefined;

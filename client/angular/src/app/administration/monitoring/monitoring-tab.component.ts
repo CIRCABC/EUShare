@@ -14,11 +14,10 @@ import { environment } from '../../../environments/environment';
 import { DownloadsService } from '../../services/downloads.service';
 
 @Component({
-  selector: 'app-monitoring-tab',
-  templateUrl: './monitoring-tab.component.html',
-  styleUrls: ['./monitoring-tab.component.scss'],
-  standalone: true,
-  imports: [CommonModule],
+    selector: 'app-monitoring-tab',
+    templateUrl: './monitoring-tab.component.html',
+    styleUrls: ['./monitoring-tab.component.scss'],
+    imports: [CommonModule]
 })
 export class MonitoringTabComponent implements OnInit {
   @Input() reportStatus: MonitoringDetails.StatusEnum | undefined;

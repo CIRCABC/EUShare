@@ -15,11 +15,10 @@ import { NotificationService } from './notification.service';
 import { NotificationComponent } from './notification.component';
 
 @Component({
-  selector: 'app-notification-system',
-  templateUrl: './notification-system.component.html',
-  styleUrls: ['./notification-system.component.scss'],
-  standalone: true,
-  imports: [NotificationComponent],
+    selector: 'app-notification-system',
+    templateUrl: './notification-system.component.html',
+    styleUrls: ['./notification-system.component.scss'],
+    imports: [NotificationComponent]
 })
 export class NotificationSystemComponent implements OnDestroy {
   public messages: NotificationMessage[] = [];

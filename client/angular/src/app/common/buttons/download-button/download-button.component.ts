@@ -15,11 +15,10 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-download-button',
-  templateUrl: './download-button.component.html',
-  styleUrls: ['./download-button.component.scss'],
-  standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, TranslocoModule],
+    selector: 'app-download-button',
+    templateUrl: './download-button.component.html',
+    styleUrls: ['./download-button.component.scss'],
+    imports: [ReactiveFormsModule, FormsModule, TranslocoModule]
 })
 export class DownloadButtonComponent {
   // eslint-disable-next-line @angular-eslint/no-input-rename

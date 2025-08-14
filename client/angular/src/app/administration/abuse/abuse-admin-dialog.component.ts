@@ -34,12 +34,11 @@ export const StatusEnumLabels = {
 
 type StatusEnumKeys = (keyof typeof StatusEnumLabels)[];
 @Component({
-  selector: 'app-abuse-admin-dialog',
-  templateUrl: './abuse-admin-dialog.component.html',
-  styleUrls: ['./abuse-admin-dialog.component.scss'],
-  standalone: true,
-  imports: [MatDialogModule, FormsModule, TranslocoModule, CommonModule],
-  providers: [DatePipe],
+    selector: 'app-abuse-admin-dialog',
+    templateUrl: './abuse-admin-dialog.component.html',
+    styleUrls: ['./abuse-admin-dialog.component.scss'],
+    imports: [MatDialogModule, FormsModule, TranslocoModule, CommonModule],
+    providers: [DatePipe]
 })
 export class AbuseAdminDialogComponent {
   abuseReportDetails: AbuseReportDetails;

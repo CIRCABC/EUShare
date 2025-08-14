@@ -13,11 +13,10 @@ import { MaintenanceService } from './maintenance.service';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  selector: 'app-maintenance-modal',
-  templateUrl: './maintenance-modal.component.html',
-  styleUrl: './maintenance-modal.component.scss',
-  standalone: true,
-  imports: [CommonModule, MatIconModule],
+    selector: 'app-maintenance-modal',
+    templateUrl: './maintenance-modal.component.html',
+    styleUrl: './maintenance-modal.component.scss',
+    imports: [CommonModule, MatIconModule]
 })
 export class MaintenanceModalComponent {
   modalOpen = true;

@@ -20,18 +20,17 @@ import { CommonModule, LowerCasePipe, SlicePipe } from '@angular/common';
 import { QRCodeModule } from 'angularx-qrcode';
 
 @Component({
-  selector: 'app-upload-success',
-  templateUrl: './upload-success.component.html',
-  styleUrls: ['./upload-success.component.scss'],
-  standalone: true,
-  imports: [
-    TranslocoModule,
-    QRCodeModule,
-    LowerCasePipe,
-    SlicePipe,
-    QRCodeModule,
-    CommonModule,
-  ],
+    selector: 'app-upload-success',
+    templateUrl: './upload-success.component.html',
+    styleUrls: ['./upload-success.component.scss'],
+    imports: [
+        TranslocoModule,
+        QRCodeModule,
+        LowerCasePipe,
+        SlicePipe,
+        QRCodeModule,
+        CommonModule,
+    ]
 })
 export class UploadSuccessComponent implements OnInit {
   public fileInfoUploader!: FileInfoUploader;

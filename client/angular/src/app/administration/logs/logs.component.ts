@@ -17,19 +17,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
-  selector: 'app-logs',
-  standalone: true,
-  imports: [
-    CommonModule,
-    LastLoginsComponent,
-    LastUploadsComponent,
-    LastDownloadsComponent,
-    MatTabsModule,
-    MatIconModule,
-    FontAwesomeModule,
-  ],
-  templateUrl: './logs.component.html',
-  styleUrls: ['./logs.component.scss'],
+    selector: 'app-logs',
+    imports: [
+        CommonModule,
+        LastLoginsComponent,
+        LastUploadsComponent,
+        LastDownloadsComponent,
+        MatTabsModule,
+        MatIconModule,
+        FontAwesomeModule,
+    ],
+    templateUrl: './logs.component.html',
+    styleUrls: ['./logs.component.scss']
 })
 export class LogsComponent {
   public selectedTabIndex = signal(0);

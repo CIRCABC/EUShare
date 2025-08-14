@@ -19,10 +19,9 @@ import { SessionStorageService } from '../services/session-storage.service';
 import { TranslocoModule } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-call-back',
-  templateUrl: './call-back.component.html',
-  standalone: true,
-  imports: [TranslocoModule],
+    selector: 'app-call-back',
+    templateUrl: './call-back.component.html',
+    imports: [TranslocoModule]
 })
 export class CallBackComponent implements OnInit {
   constructor(

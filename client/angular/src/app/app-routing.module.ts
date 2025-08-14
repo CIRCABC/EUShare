@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { NgModule, inject, provideAppInitializer } from '@angular/core';
 import { RouterModule, Routes, NoPreloading } from '@angular/router';
 import { loginCanActivate } from './login.guard';
 import { uploadSuccessCanActivate } from './upload-success.guard';
@@ -127,12 +127,10 @@ const appRoutes: Routes = [
   ],
   exports: [RouterModule],
   providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: preloadAllTranslocoLanguages,
-      deps: [TranslocoService, TRANSLOCO_CONFIG],
-      multi: true,
-    },
+    provideAppInitializer(() => {
+        const initializerFn = (preloadAllTranslocoLanguages)(inject(TranslocoService), inject(TRANSLOCO_CONFIG));
+        return initializerFn();
+      }),
   ],
 })
 export class AppRoutingModule {}
