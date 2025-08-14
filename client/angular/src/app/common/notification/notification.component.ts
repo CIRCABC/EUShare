@@ -13,13 +13,13 @@ import { NotificationLevel } from './notification-level';
 import { NotificationMessage } from './notification-message';
 import { NotificationService } from './notification.service';
 import { TranslocoModule } from '@ngneat/transloco';
-import { CommonModule } from '@angular/common';
+
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 @Component({
     selector: 'app-notification',
     templateUrl: './notification.component.html',
     styleUrls: ['./notification.component.scss'],
-    imports: [CommonModule, TranslocoModule, MatDialogModule]
+    imports: [TranslocoModule, MatDialogModule]
 })
 export class NotificationComponent implements OnInit {
   // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -17,7 +17,7 @@ import {
 import { TranslocoModule } from '@ngneat/transloco';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { TrustRequest } from '../../../openapi/model/trustRequest';
 import { TrustService } from '../../../openapi/api/trust.service';
 import { NotificationService } from '../../notification/notification.service';
@@ -28,13 +28,12 @@ import { environment } from '../../../../environments/environment';
     templateUrl: './upload-rights-dialog.component.html',
     styleUrls: ['./upload-rights-dialog.component.scss'],
     imports: [
-        MatDialogModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        TranslocoModule,
-        FormsModule,
-        CommonModule,
-    ]
+    MatDialogModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    TranslocoModule,
+    FormsModule
+]
 })
 export class UploadRightsDialogComponent {
   constructor(

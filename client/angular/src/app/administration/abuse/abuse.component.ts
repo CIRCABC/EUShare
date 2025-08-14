@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit, signal } from '@angular/core';
 import { AbuseService } from '../../openapi/api/abuse.service';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AbuseReportDetails } from '../../openapi/model/abuseReportDetails';
 import { AbuseAdminDialogComponent } from './abuse-admin-dialog.component';
@@ -25,12 +25,11 @@ import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
     templateUrl: './abuse.component.html',
     styleUrls: ['./abuse.component.scss'],
     imports: [
-        CommonModule,
-        MatDialogModule,
-        TranslocoModule,
-        MatTabsModule,
-        AbuseTabComponent,
-    ],
+    MatDialogModule,
+    TranslocoModule,
+    MatTabsModule,
+    AbuseTabComponent
+],
     providers: [DatePipe]
 })
 export class AbuseComponent implements OnInit {

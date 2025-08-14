@@ -15,7 +15,7 @@ import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { LogService } from '../../../openapi/api/log.service';
 import { LastDownload } from '../../../openapi/model/lastDownload';
-import { CommonModule } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { SortOrder } from '../../../openapi/model/sortOrder';
 
@@ -24,13 +24,12 @@ import { SortOrder } from '../../../openapi/model/sortOrder';
     templateUrl: './last-downloads.component.html',
     styleUrls: ['./last-downloads.component.scss'],
     imports: [
-        CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatIconModule,
-        MatSortModule,
-    ]
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule,
+    MatSortModule
+]
 })
 export class LastDownloadsComponent implements AfterViewInit {
   displayedColumns: string[] = [

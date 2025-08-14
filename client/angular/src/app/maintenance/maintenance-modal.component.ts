@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { MaintenanceService } from './maintenance.service';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
     selector: 'app-maintenance-modal',
     templateUrl: './maintenance-modal.component.html',
     styleUrl: './maintenance-modal.component.scss',
-    imports: [CommonModule, MatIconModule]
+    imports: [MatIconModule]
 })
 export class MaintenanceModalComponent {
   modalOpen = true;

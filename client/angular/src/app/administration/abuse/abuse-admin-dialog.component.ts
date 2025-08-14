@@ -16,7 +16,7 @@ This file is part of the "CIRCABC Share" project.
 This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
@@ -37,7 +37,7 @@ type StatusEnumKeys = (keyof typeof StatusEnumLabels)[];
     selector: 'app-abuse-admin-dialog',
     templateUrl: './abuse-admin-dialog.component.html',
     styleUrls: ['./abuse-admin-dialog.component.scss'],
-    imports: [MatDialogModule, FormsModule, TranslocoModule, CommonModule],
+    imports: [MatDialogModule, FormsModule, TranslocoModule],
     providers: [DatePipe]
 })
 export class AbuseAdminDialogComponent {

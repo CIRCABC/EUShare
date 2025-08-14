@@ -8,7 +8,7 @@ This code is publicly distributed under the terms of EUPL-V1.2 license,
 available at root of the project or at https://joinup.ec.europa.eu/collection/eupl/eupl-text-11-12.
 */
 import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { LastLoginsComponent } from './last-logins/last-logins.component';
 import { LastUploadsComponent } from './last-uploads/last-uploads.component';
 import { LastDownloadsComponent } from './last-downloads/last-downloads.component';
@@ -19,14 +19,13 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @Component({
     selector: 'app-logs',
     imports: [
-        CommonModule,
-        LastLoginsComponent,
-        LastUploadsComponent,
-        LastDownloadsComponent,
-        MatTabsModule,
-        MatIconModule,
-        FontAwesomeModule,
-    ],
+    LastLoginsComponent,
+    LastUploadsComponent,
+    LastDownloadsComponent,
+    MatTabsModule,
+    MatIconModule,
+    FontAwesomeModule
+],
     templateUrl: './logs.component.html',
     styleUrls: ['./logs.component.scss']
 })

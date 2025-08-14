@@ -15,7 +15,7 @@ import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { LogService } from '../../../openapi/api/log.service';
 import { LastUpload } from '../../../openapi/model/lastUpload';
-import { CommonModule } from '@angular/common';
+
 import { SortOrder } from '../../../openapi/model/sortOrder';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -24,12 +24,11 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './last-uploads.component.html',
     styleUrls: ['./last-uploads.component.scss'],
     imports: [
-        CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatIconModule,
-    ]
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatIconModule
+]
 })
 export class LastUploadsComponent implements AfterViewInit {
   displayedColumns: string[] = [

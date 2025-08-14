@@ -15,7 +15,7 @@ import { merge, Observable, of as observableOf } from 'rxjs';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { LogService } from '../../../openapi/api/log.service';
 import { LastLogin } from '../../../openapi/model/lastLogin';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { SortOrder } from '../../../openapi';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -24,14 +24,13 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './last-logins.component.html',
     styleUrls: ['./last-logins.component.scss'],
     imports: [
-        CommonModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        DatePipe,
-        MatSortModule,
-        MatIconModule,
-    ]
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    DatePipe,
+    MatSortModule,
+    MatIconModule
+]
 })
 export class LastLoginsComponent implements AfterViewInit {
   displayedColumns: string[] = [

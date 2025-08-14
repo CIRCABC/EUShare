@@ -9,7 +9,7 @@ available at root of the project or at https://joinup.ec.europa.eu/collection/eu
 */
 import { Component, OnInit, signal } from '@angular/core';
 import { MonitoringService } from '../../openapi/api/monitoring.service';
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MonitoringAdminDialogComponent } from './monitoring-admin-dialog.component';
 import { TranslocoModule } from '@ngneat/transloco';
@@ -23,12 +23,11 @@ import { firstValueFrom } from 'rxjs/internal/firstValueFrom';
     templateUrl: './monitoring.component.html',
     styleUrls: ['./monitoring.component.scss'],
     imports: [
-        CommonModule,
-        MatDialogModule,
-        TranslocoModule,
-        MatTabsModule,
-        MonitoringTabComponent,
-    ],
+    MatDialogModule,
+    TranslocoModule,
+    MatTabsModule,
+    MonitoringTabComponent
+],
     providers: [DatePipe]
 })
 export class MonitoringComponent implements OnInit {

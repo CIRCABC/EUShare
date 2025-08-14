@@ -17,7 +17,7 @@ import { AbuseReport } from '../../../openapi/model/abuseReport';
 import { TranslocoModule, getBrowserLang } from '@ngneat/transloco';
 import { SessionStorageService } from '../../../services/session-storage.service';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+
 import { AbuseService } from '../../../openapi/api/abuse.service';
 import { NotificationService } from '../../notification/notification.service';
 import { CaptchaComponent } from '../../captcha/captcha.component';
@@ -26,12 +26,11 @@ import { CaptchaComponent } from '../../captcha/captcha.component';
     selector: 'app-abuse-dialog',
     templateUrl: './abuse-dialog.component.html',
     imports: [
-        MatDialogModule,
-        FormsModule,
-        CommonModule,
-        TranslocoModule,
-        CaptchaComponent,
-    ]
+    MatDialogModule,
+    FormsModule,
+    TranslocoModule,
+    CaptchaComponent
+]
 })
 export class AbuseDialogComponent implements AfterViewInit {
   abuseReport: AbuseReport = {
