@@ -6,13 +6,11 @@
     "node": "^20.12.2"
   },
   "scripts": {
-    
     "ng": "ng",
-    "start": "cross-env NG_BUILD_LEGACY_SASS=1  ng serve -o --port=8080 -c=dev",
-    "start-local": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve -o --port=8080 -c=dev-local ",
-    "start-local-docker": "cross-env NG_BUILD_LEGACY_SASS=1 ng serve  -c dev --host 0.0.0.0 --disable-host-check",
-    "build": "cross-env NG_BUILD_LEGACY_SASS=1 ng build",
-    "build-local": "cross-env NG_BUILD_LEGACY_SASS=1 ng build -c local",
+    "start-local": "ng serve -o --port=8080 -c=dev-local ",
+    "start-local-docker": "ng serve  -c dev --host 0.0.0.0 --disable-host-check",
+    "build": "ng build",
+    "build-local": "ng build -c local",
     "maildev": "maildev",
     "lint": "ng lint client --format visualstudio",
     "lint-fix": "ng lint client --fix --force --format visualstudio",
@@ -123,6 +121,6 @@
     "stylelint": "16.2.1",
     "stylelint-config-standard": "36.0.0",
     "stylelint-config-standard-scss": "13.0.0",
-    "typescript": "5.4.3"
+    "typescript": "^5.4.5"
   }
 }
