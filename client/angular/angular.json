@@ -35,10 +35,14 @@
             ],
             "styles": [
               "./node_modules/ubuntu-fontface/ubuntu.min.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css"
             ],
             "scripts": [],
-            "browser": "src/main.ts"
+            "browser": "src/main.ts",
+            "stylePreprocessorOptions": {
+              "includePaths": ["src"]
+            }
           },
           "configurations": {
             "dev": {

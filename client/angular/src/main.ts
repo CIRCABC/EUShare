@@ -1,5 +1,11 @@
+// main.ts
 import { APP_BASE_HREF } from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+  withInterceptorsFromDi,   // <- add this
+} from '@angular/common/http';
 import { enableProdMode, importProvidersFrom, Injectable } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -31,7 +37,6 @@ import { translocoConfig } from './configs/transloco.config';
 @Injectable({ providedIn: 'root' })
 export class HttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
-
   getTranslation(langPath: string) {
     return this.http.get<Translation>(
       `${environment.frontend_url}/assets/i18n/${langPath}.json`,
@@ -57,29 +62,23 @@ bootstrapApplication(AppComponent, {
       BrowserModule,
       ReactiveFormsModule,
       FormsModule,
-
       FontAwesomeModule,
       HammerModule,
       ApiModule,
       AppRoutingModule,
       TranslocoModule,
-      HttpClientModule,
+      // HttpClientModule  <-- remove this
     ),
     KeyStoreService,
     { provide: APP_BASE_HREF, useValue: environment.frontend_url },
     { provide: BASE_PATH, useValue: environment.API_BASE_PATH },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: BasicAuthenticationInterceptor,
-      multi: true,
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: HttpErrorInterceptor,
-      multi: true,
-    },
+
+    { provide: HTTP_INTERCEPTORS, useClass: BasicAuthenticationInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpErrorInterceptor, multi: true },
+
     provideTransloco({ config: translocoConfig, loader: HttpLoader }),
     provideAnimations(),
     provideCharts(withDefaultRegisterables()),
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 });

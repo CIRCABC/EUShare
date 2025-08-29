@@ -17,18 +17,19 @@ import { I18nService } from '../common/i18n/i18n.service';
 import { environment } from '../../environments/environment';
 import { TranslocoModule } from '@ngneat/transloco';
 import { CommonModule, LowerCasePipe, SlicePipe } from '@angular/common';
-import { QRCodeModule } from 'angularx-qrcode';
+import { QRCodeComponent } from 'angularx-qrcode';
+
 
 @Component({
     selector: 'app-upload-success',
     templateUrl: './upload-success.component.html',
     styleUrls: ['./upload-success.component.scss'],
+    standalone: true,
     imports: [
         TranslocoModule,
-        QRCodeModule,
+        QRCodeComponent,
         LowerCasePipe,
         SlicePipe,
-        QRCodeModule,
         CommonModule,
     ]
 })

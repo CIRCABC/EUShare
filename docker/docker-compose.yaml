@@ -8,6 +8,7 @@ services:
     environment:
         - MYSQL_ROOT_PASSWORD=password
         - MYSQL_GENERAL_LOG=1
+        - MYSQL_ROOT_HOST=%         
         - MYSQL_GENERAL_LOG_FILE="/var/lib/mysql/monitoring.log"
     volumes:
         - ./mysql:/docker-entrypoint-initdb.d/:ro

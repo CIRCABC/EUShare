@@ -18,7 +18,7 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { TranslocoModule } from '@ngneat/transloco';
 import { LowerCasePipe, SlicePipe } from '@angular/common';
-import { QRCodeModule } from 'angularx-qrcode';
+import { QRCodeComponent } from 'angularx-qrcode';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -26,11 +26,12 @@ import { MatIconModule } from '@angular/material/icon';
     templateUrl: './share-with-users-modal.component.html',
     styleUrls: ['./share-with-users-modal.component.scss'],
     preserveWhitespaces: true,
+    standalone: true, 
     imports: [
         TranslocoModule,
         LowerCasePipe,
         MatIconModule,
-        QRCodeModule,
+        QRCodeComponent,
         SlicePipe,
     ]
 })
