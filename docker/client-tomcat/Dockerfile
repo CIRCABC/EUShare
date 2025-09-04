@@ -5,5 +5,5 @@ RUN ["rm", "-fr", "/usr/local/tomcat/webapps/examples"]
 RUN ["rm", "-fr", "/usr/local/tomcat/webapps/manager"]
 
 COPY ./dist/eushareclient.war /usr/local/tomcat/webapps/ROOT.war
-
+COPY ./context.xml /usr/local/tomcat/conf/context.xml
 

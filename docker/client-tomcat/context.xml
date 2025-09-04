@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+  <!-- cacheMaxSize is in KB; 256000 = ~250MB -->
+  <Resources cacheMaxSize="256000" cacheObjectMaxSize="2048" cachingAllowed="true" />
+</Context>

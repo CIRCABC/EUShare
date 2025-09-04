@@ -6,12 +6,20 @@ services:
     ports:
       - "3306:3306"
     environment:
-        - MYSQL_ROOT_PASSWORD=password
-        - MYSQL_GENERAL_LOG=1
-        - MYSQL_GENERAL_LOG_FILE="/var/lib/mysql/monitoring.log"
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_GENERAL_LOG=1
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_GENERAL_LOG_FILE=/var/lib/mysql/monitoring.log
     volumes:
-        - ./mysql:/docker-entrypoint-initdb.d/:ro
+      - ./mysql:/docker-entrypoint-initdb.d/:ro
     command: --lower_case_table_names=1 --transaction-isolation=READ-COMMITTED
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ppassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
   server:
     build: server-tomcat
     image: eushare-dev-tomcat-server
@@ -23,7 +31,9 @@ services:
         target: /easyshare/
     container_name: eushare_dev_tomcat_server
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
   client:
     build: client-tomcat
     image: eushare-dev-tomcat-client
@@ -32,10 +42,12 @@ services:
       - "8888:8080"
     depends_on:
       - server
+
   maildev:
     image: maildev/maildev
     ports:
       - "1080:80"
+
   proxy:
     image: nginx
     container_name: nginx_eushare_proxy

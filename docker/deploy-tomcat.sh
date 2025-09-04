@@ -1,5 +1,7 @@
 #!/bin/bash
 
+docker rmi -f eushare-dev-tomcat-client
+docker rmi -f eushare-dev-tomcat-server
 
 rm -rf ../client/target/eushareclient.war 
 rm -rf ../docker/client-tomcat/dist/eushareclient.war
@@ -7,7 +9,7 @@ pushd ../client/angular
 rm -rf dist
 mkdir -p dist
 npm install
-ng build --configuration=dev 
+npm run build-dev
 popd
 pushd ../client
 rm -rf target

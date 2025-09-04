@@ -42,7 +42,9 @@
             "browser": "src/main.ts",
             "stylePreprocessorOptions": {
               "includePaths": ["src"]
-            }
+            },
+            "baseHref": "/share/",
+            "deployUrl": "/share/"
           },
           "configurations": {
             "dev": {
@@ -94,9 +96,6 @@
           "configurations": {
             "dev": {
               "buildTarget": "client:build:dev"
-            },
-            "local": {
-              "buildTarget": "client:build:local"
             }
           }
         },

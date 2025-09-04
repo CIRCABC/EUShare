@@ -1,5 +1,8 @@
 #!/bin/bash
 
+docker rmi -f eushare-dev-client
+docker rmi -f eushare-dev-server
+
 pushd ../client/angular
 rm -rf ../docker/client/dist
 mkdir -p ../docker/client/dist
